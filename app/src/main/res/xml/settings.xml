@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:summary="Username and password information"
+        android:title="Settings" >
+        <CheckBoxPreference
+            android:key="notification"
+            android:summary="Enable/Disable"
+            android:title="Disable notification" />
+        <CheckBoxPreference android:key="acra.enable"
+            android:title="@string/pref_enable_acra"
+            android:summaryOn="@string/pref_acra_enabled"
+            android:summaryOff="@string/pref_acra_disabled"
+            android:defaultValue="true"/>
+        <Preference android:title="Information"
+            android:key="@string/pref_information"
+            android:summary="Id, serial numer, etc."/>
+    </PreferenceCategory>
+</PreferenceScreen>

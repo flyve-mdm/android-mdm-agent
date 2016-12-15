@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+ Copyright (C) 2008 ZXing authors
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+<resources>
+    <color name="contents_text">#ff000000</color>
+    <color name="encode_view">#ffffffff</color>
+    <color name="possible_result_points">#c0ffbd21</color>
+    <!-- Android standard ICS color -->
+    <color name="result_minor_text">#ffc0c0c0</color>
+    <color name="result_points">#c099cc00</color>
+    <!-- Android standard ICS color -->
+    <color name="result_text">#ffffffff</color>
+    <color name="result_view">#b0000000</color>
+    <color name="status_text">#ffffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="viewfinder_laser">#ffcc0000</color>
+    <!-- Android standard ICS color -->
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="enrolement_blue">#32bef0</color>
+    <color name="installation_yellow">#f8aa00</color>
+    <color name="installation_red">#d94a3a</color>
+
+    <color name="primary">#E43F3F</color>
+    <color name="primary_dark">#E12929</color>
+    <color name="primary_darker">#CC1D1D</color>
+    <color name="accent">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="jet">#222222</color>
+    <color name="oil">#333333</color>
+    <color name="monsoon">#777777</color>
+    <color name="jumbo">#888888</color>
+    <color name="aluminum">#999999</color>
+    <color name="base">#AAAAAA</color>
+    <color name="iron">#CCCCCC</color>
+    <color name="white">#FFFFFF</color>
+    <color name="OK_text">#4caf50</color>
+    <color name="textColor">#000</color>
+    <color name="error_box">#f44336</color>
+    <color name="error_box_light">#ef5350</color>
+    <color name="lightsteelblue_BG">#B0C4DE</color>
+    <color name="jaune">#f8aa00</color>
+    <color name="jaune_clair">#fff59d</color>
+    <color name="bleu">#32bef0</color>
+    <color name="Grey">#e0e0e0</color>
+    <color name="colorPrimary">#125688</color>
+    <color name="colorPrimaryDark">#125688</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+    <color name="colorAccent">#c8e8ff</color>
+    <color name="toolbar">#7692a6</color>
+    <color name="petrole_50">#b2f3f1</color>
+    <color name="petrole_100">#70e9e6</color>
+    <color name="petrole_200">#3fe1dd</color>
+    <color name="petrole_300">#1dbcb8</color>
+    <color name="petrole_400">#19a19e</color>
+    <color name="petrole_500">#158784</color>
+    <color name="petrole_600">#116c6a</color>
+    <color name="petrole_700">#0d5250</color>
+    <color name="petrole_800">#093836</color>
+    <color name="petrole_900">#051d1c</color>
+    <color name="petrole_A100">#b2f3f1</color>
+    <color name="petrole_A200">#70e9e6</color>
+    <color name="petrole_A400">#19a19e</color>
+    <color name="petrole_A700">#0d5250</color>
+    <color name="gris_50">#c4c3c3</color>
+    <color name="gris_100">#9e9c9c</color>
+    <color name="gris_200">#828080</color>
+    <color name="gris_300">#5e5c5c</color>
+    <color name="gris_400">#4e4d4d</color>
+    <color name="gris_500">#3f3e3e</color>
+    <color name="gris_600">#302f2f</color>
+    <color name="gris_700">#202020</color>
+    <color name="gris_800">#111010</color>
+    <color name="gris_900">#010101</color>
+    <color name="gris_A100">#c4c3c3</color>
+    <color name="gris_A200">#9e9c9c</color>
+    <color name="gris_A400">#4e4d4d</color>
+    <color name="gris_A700">#202020</color>
+</resources>

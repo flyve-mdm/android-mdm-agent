@@ -1,0 +1,92 @@
+import com.android.build.gradle.internal.dsl.SigningConfig
+
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '25.0.1'
+    defaultConfig {
+        multiDexEnabled true
+        applicationId "com.teclib.flyvemdm"
+        minSdkVersion 19
+        targetSdkVersion 22
+        versionCode 3
+        versionName "0.99.2"
+    }
+    signingConfigs {
+        release {
+            storeFile file("/home/gitlab-runner/keystore.jks")
+            storePassword System.getenv("KSTOREPWD")
+            keyAlias System.getenv("KEYNAME")
+            keyPassword System.getenv("KEYPWD")
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(
+                    output.outputFile.parent,
+                    output.outputFile.name.replace(".apk", "-${variant.versionName}.apk"))
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+        }
+    }
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+    productFlavors {
+
+    }
+    dexOptions {
+        preDexLibraries = false //delete the already predexed libraries
+    }
+}
+repositories {
+    mavenCentral()
+    maven {
+        url "https://repo.eclipse.org/content/repositories/paho-releases/"
+    }
+    maven {
+        url "https://raw.github.com/embarkmobile/zxing-android-minimal/mvn-repo/maven-repository/"
+    }
+
+}
+
+dependencies {
+    compile('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
+        exclude module: 'support-v4'
+    }
+    compile files('libs/org.apache.http.legacy.jar')
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'log4j:log4j:1.2.14'
+    compile 'de.mindpipe.android:android-logging-log4j:1.0.3'
+    compile 'com.android.support:design:23.2.1'
+    compile 'ch.acra:acra:4.5.0'
+    compile 'com.github.rahatarmanahmed:circularprogressview:2.4.0'
+    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.madgag.spongycastle:core:1.54.0.0'
+    compile 'com.madgag.spongycastle:prov:1.54.0.0'
+    compile 'com.madgag.spongycastle:pkix:1.54.0.0'
+    compile 'com.orhanobut:logger:1.15'
+    // Zxing libraries
+    compile 'com.journeyapps:zxing-android-embedded:3.4.0'
+    compile 'com.google.zxing:core:3.3.0'
+    // Unit testing dependencies
+    testCompile 'junit:junit:4.12'
+    // Optional -- Mockito framework
+    testCompile 'org.mockito:mockito-core:1.10.19'
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:23.+'
+}

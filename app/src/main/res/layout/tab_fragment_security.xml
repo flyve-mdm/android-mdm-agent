@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="" />
+
+    <ListView
+        android:id="@+id/securitylist"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:footerDividersEnabled="true"
+        android:divider="#b9b8b8"
+        android:dividerHeight="4px"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="150dp"
+        android:layout_marginTop="30dp">
+    </ListView>
+
+    <Button
+        android:id="@+id/apply_policies"
+        android:text="@string/policies_button"
+        android:textColor="#212121"
+        android:textSize="16sp"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_new_enrolment"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="46dp" />
+
+
+</RelativeLayout>

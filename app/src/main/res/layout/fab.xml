@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+        android:id="@+id/button2"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/cercle_default_bg"
+        android:animateLayoutChanges="true"
+        android:elevation="9dp"
+        android:visibility="visible"
+        android:clickable="false" />
+
+    <ImageButton
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:text="New Button"
+        android:animateLayoutChanges="true"
+        android:id="@+id/button1"
+        android:background="@drawable/cercle_default"
+        android:visibility="visible"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="9dp"
+        android:src="@drawable/ic_cloud_upload_white_48dp"
+        android:onClick="btn_click" />
+
+    <com.github.rahatarmanahmed.cpv.CircularProgressView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/progress_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:animateLayoutChanges="true"
+        app:cpv_animAutostart="true"
+        app:cpv_indeterminate="true"
+        app:cpv_thickness="10dp"
+        app:cpv_color="@color/jaune"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="10dp"
+        android:visibility="visible" />
+
+</merge>
