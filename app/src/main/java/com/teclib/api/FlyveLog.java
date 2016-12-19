@@ -35,7 +35,9 @@ import java.util.Objects;
 public class FlyveLog {
 
     public static void d(Object object) {
-        Logger.d(object);
+        if(MainApplication.getInstance().getIsDebuggable()) {
+            Logger.d(object);
+        }
     }
 
     public static void d(String message, Object... args) {
@@ -76,7 +78,9 @@ public class FlyveLog {
     }
 
     public static void json(String json) {
-        Logger.json(json);
+        if(MainApplication.getInstance().getIsDebuggable()) {
+            Logger.json(json);
+        }
     }
 
     public static void xml(String xml) {
