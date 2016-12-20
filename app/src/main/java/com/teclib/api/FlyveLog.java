@@ -69,9 +69,9 @@ public class FlyveLog {
         Logger.e(message, args);
     }
 
-    public static void w(String message, Objects... args) {
-        Logger.w(message,args);
-    }
+//    public static void w(String message, Objects... args) {
+//        Logger.w(message,args);
+//    }
 
     public static void wtf(String message, Object... args) {
         Logger.wtf(message,args);
