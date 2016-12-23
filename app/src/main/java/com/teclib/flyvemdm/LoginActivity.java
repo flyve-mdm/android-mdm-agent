@@ -38,26 +38,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.teclib.api.FlyveLog;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private String link;
     private String sendLink;
-    @InjectView(R.id.input_name) EditText _nameText;
-    @InjectView(R.id.input_email) EditText _emailText;
-    //@InjectView(R.id.input_password) EditText _passwordText;
-    @InjectView(R.id.btn_signup) Button _signupButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.inject(this);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null)
@@ -69,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             link=data.toString();
             getIntent().setData(null);
         }
-        System.out.println(link);
+        FlyveLog.d(link);
 
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
