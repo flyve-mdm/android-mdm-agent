@@ -60,8 +60,7 @@
         android:theme="@style/MyMaterialTheme">
         <activity
             android:name="com.teclib.flyvemdm.MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

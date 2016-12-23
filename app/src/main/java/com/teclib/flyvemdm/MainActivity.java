@@ -27,6 +27,7 @@
 package com.teclib.flyvemdm;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -59,7 +60,15 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_PORTRAIT) {
+            setContentView(R.layout.activity_main_portrait);
+            FlyveLog.d("PORTRAIT");
+        } else {
+            setContentView(R.layout.activity_main_paysage);
+            FlyveLog.d("PAYSAGE");
+        }
+
         View someView = findViewById(R.id.view);
         View root = someView.getRootView();
         root.setBackgroundColor(getResources().getColor(R.color.status_text));
