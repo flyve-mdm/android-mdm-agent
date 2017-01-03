@@ -71,7 +71,6 @@ dependencies {
     compile 'com.android.support:design:23.2.1'
     compile 'ch.acra:acra:4.5.0'
     compile 'com.github.rahatarmanahmed:circularprogressview:2.4.0'
-    compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.madgag.spongycastle:core:1.54.0.0'
     compile 'com.madgag.spongycastle:prov:1.54.0.0'
     compile 'com.madgag.spongycastle:pkix:1.54.0.0'
