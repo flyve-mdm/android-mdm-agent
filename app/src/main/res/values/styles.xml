@@ -64,6 +64,7 @@
         <item name="colorPrimary">@color/petrole_500</item>
         <item name="colorPrimaryDark">@color/petrole_500</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/petrole_500</item>
     </style>
 
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -73,6 +74,7 @@
         <item name="android:textColorPrimary">@android:color/holo_blue_light</item>
         <!-- android:actionMenuTextColor is the color of the text of action (menu) items  -->
         <item name="actionMenuTextColor">@android:color/holo_green_light</item>
+        <item name="colorButtonNormal">@color/petrole_500</item>
         <!-- Enable these below if you want clicking icons to trigger a ripple effect -->
         <!--
         <item name="selectableItemBackground">?android:selectableItemBackground</item>

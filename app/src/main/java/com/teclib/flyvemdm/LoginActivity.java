@@ -26,12 +26,12 @@
 
 package com.teclib.flyvemdm;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.Button;
@@ -44,10 +44,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = "LoginActivity";
+public class LoginActivity extends Activity {
     private String link;
     private String sendLink;
+
+    Button _signupButton;
+    EditText _nameText,_emailText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,9 @@ public class LoginActivity extends AppCompatActivity {
         }
         FlyveLog.d(link);
 
+        _signupButton = (Button)findViewById(R.id.button);
+        _nameText = (EditText)findViewById(R.id.editText);
+        _emailText = (EditText)findViewById(R.id.editText2);
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +109,6 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         sendLink = jsonObj.toString();
-        // TODO: Implement your own signup logic here.
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
