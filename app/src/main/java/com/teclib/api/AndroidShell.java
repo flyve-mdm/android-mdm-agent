@@ -40,7 +40,7 @@ public class AndroidShell {
      * @param command an absolute URL giving the base location of the image
      * @return Output command
      */
-    protected static String execSh(String command) {
+    public static String execSh(String command) {
 
         String line;
         String output = "";

@@ -3,7 +3,7 @@
     package="com.teclib.flyvemdm">
 
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
-
+    <uses-permission android:name="com.uhuru.permission.INSTALL_PACKAGE" />
     <!-- QR CODE -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -201,10 +201,10 @@
             android:screenOrientation="portrait" />
 
         <service android:name="com.teclib.service.NotificationRemoveService" />
-        <service android:name="com.teclib.fusioninventory.Agent" />
+        <service android:name="org.fusioninventory.Agent" />
 
         <activity
-            android:name="com.teclib.fusioninventory.FusionInventory"
+            android:name="org.fusioninventory.FusionInventory"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.teclib.flyvemdm.RemoveApplicationActivity"
@@ -222,6 +222,12 @@
         <activity
             android:name="com.teclib.database.InformationsActivity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".AppManagementActivity" android:theme="@android:style/Theme.NoDisplay" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
 
     </application>
 

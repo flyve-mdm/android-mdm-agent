@@ -50,7 +50,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivity extends FragmentActivity {
 
-    private static String TAG = "MainActivity";
     private SharedPreferenceMQTT msharedPreferenceMQTT = new SharedPreferenceMQTT();
     private SharedPreferenceSettings msharedPreferenceSettings = new SharedPreferenceSettings();
 

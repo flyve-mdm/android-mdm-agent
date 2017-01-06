@@ -40,7 +40,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.teclib.api.AppManagement;
 import com.teclib.api.FlyveLog;
 import com.teclib.database.SharedPreferenceAction;
 
@@ -56,7 +55,7 @@ public class TabApplications extends Fragment {
     public static boolean isInstalled;
     private Button finish_button;
     private SharedPreferenceAction sharedPreferenceAction;
-    private AppManagement appManagement;
+    private AppManagementActivity appManagementActivity;
 
     FragmentActivity listener;
 
@@ -95,8 +94,6 @@ public class TabApplications extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        appManagement = new AppManagement(mContext);
-
         isInstalled = false;
         sTabApplications = this;
 
@@ -118,7 +115,8 @@ public class TabApplications extends Fragment {
             public void onClick(View v) {
                 sharedPreferenceAction.removeApks(mContext);
                 try {
-                    appManagement.executeRemoveApks();
+                    //TODO gestion suppression app
+                   // appManagementActivity.executeRemoveApks();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -167,7 +165,8 @@ public class TabApplications extends Fragment {
         sharedPreferenceAction.removeApks(mContext);
 
         try {
-            appManagement.executeRemoveApks();
+            //TODO gestion suppression app
+            //appManagementActivity.executeRemoveApks();
         } catch (Exception e) {
             e.printStackTrace();
         }
