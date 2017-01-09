@@ -51,20 +51,20 @@ public class AppManagementTask extends Thread {
     }
 
     public void run() {
-        installApk(new File(upkFile), mActivity);
+        installApk(upkFile, mActivity);
         mActivity = null;
         return;
 
     }
 
-    private void installApk(File file, Activity activity) {
+    private void installApk(String file, Activity activity) {
 
         String returnCommand = null;
 
 
             FlyveLog.d(file);
             //returnCommand = mExec.execSh("am start -a android.intent.action.MAIN -n org.fdroid.fdroid/org.fdroid.fdroid.UPKDeployActivity --es UPKfilePath " + apk + " " + "--es Token " + "1");
-            //FlyveLog.d(returnCommand);
+            FlyveLog.d("AppManagementTask");
 
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
@@ -78,11 +78,8 @@ public class AppManagementTask extends Thread {
             intent.putExtra("token_id", 1);
             mActivity.startActivityForResult(intent, REQUEST_INSTALL);
             // delete this after test, execSh is public now, delete
-            returnCommand = mExec.execSh("rm " + file);
-
-            FlyveLog.d(returnCommand);
-
-        mSharedPreferenceAction.removeUpks(mContext);
+         //   returnCommand = mExec.execSh("rm " + file);
+         //   FlyveLog.d(returnCommand);
     }
 
     public static String getUpkDir() throws Exception {

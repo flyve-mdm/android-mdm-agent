@@ -223,7 +223,9 @@
             android:name="com.teclib.database.InformationsActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".AppManagementActivity" android:theme="@android:style/Theme.NoDisplay" >
+        <activity android:name=".AppManagementActivity"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>

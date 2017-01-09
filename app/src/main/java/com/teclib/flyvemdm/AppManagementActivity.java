@@ -58,7 +58,7 @@ public class AppManagementActivity extends Activity{
         super.onStart();
         mContext = this;
         mSharedPreferenceAction = new SharedPreferenceAction();
-
+        FlyveLog.d("AppManagementActivity");
         String Token = "";
         FlyveLog.v("UPKDeploy Activity launched -- from MDM");
         if(getIntent().getAction() != null && getIntent().getAction().equals("android.intent.action.MAIN")){
@@ -66,18 +66,21 @@ public class AppManagementActivity extends Activity{
             FlyveLog.v("UPKDeploy Activity intent exists");
             Token  = "1";
             Set<String> apks = mSharedPreferenceAction.getUpks(mContext);
+
             for(Iterator<String> it = apks.iterator(); it.hasNext(); ) {
                 String apk = it.next();
                 AppManagementTask task = new AppManagementTask(this, this, apk,true,Token);
                 task.start();
             }
+            mSharedPreferenceAction.removeUpks(mContext);
 
             finish();
         }
     }
 
-    public void onCreate(){
-
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_dns);
     }
 
 
