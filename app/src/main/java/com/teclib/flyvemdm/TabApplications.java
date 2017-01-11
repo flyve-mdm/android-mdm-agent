@@ -55,7 +55,6 @@ public class TabApplications extends Fragment {
     public static boolean isInstalled;
     private Button finish_button;
     private SharedPreferenceAction sharedPreferenceAction;
-    private AppManagementActivity appManagementActivity;
 
     FragmentActivity listener;
 
@@ -115,8 +114,7 @@ public class TabApplications extends Fragment {
             public void onClick(View v) {
                 sharedPreferenceAction.removeApks(mContext);
                 try {
-                    //TODO gestion suppression app
-                   // appManagementActivity.executeRemoveApks();
+                   executeRemoveApks();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -165,8 +163,7 @@ public class TabApplications extends Fragment {
         sharedPreferenceAction.removeApks(mContext);
 
         try {
-            //TODO gestion suppression app
-            //appManagementActivity.executeRemoveApks();
+            executeRemoveApks();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -195,6 +192,37 @@ public class TabApplications extends Fragment {
                 "application/vnd.android.package-archive");
 
         startActivityForResult(intent, 1);
+
+    }
+
+    /**
+     * @return SDCARD directory with apk folder
+     */
+    public static String getApkDir() throws Exception {
+        FlyveLog.d(System.getenv("EXTERNAL_STORAGE") + "/apk");
+        return System.getenv("EXTERNAL_STORAGE") + "/apk";
+    }
+
+    /**
+     * Remove downloaded application after installation
+     */
+    public final void executeRemoveApks() throws Exception {
+        File fileOrDirectory = new File(getApkDir());
+        if(fileOrDirectory.isDirectory())
+            for(File child : fileOrDirectory.listFiles())
+                DeleteRecursive(child);
+
+        fileOrDirectory.delete();
+    }
+
+
+    void DeleteRecursive(File fileOrDirectory) {
+
+        if(fileOrDirectory.isDirectory())
+            for(File child : fileOrDirectory.listFiles())
+                DeleteRecursive(child);
+
+        fileOrDirectory.delete();
 
     }
 

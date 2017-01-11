@@ -26,29 +26,19 @@
 
 package com.teclib.flyvemdm;
 
-import com.teclib.api.AndroidShell;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
 
 import com.teclib.api.FlyveLog;
 import com.teclib.database.SharedPreferenceAction;
 
-import java.io.File;
 import java.util.Iterator;
 import java.util.Set;
 
 public class AppManagementActivity extends Activity{
 
-    //adb shell am start -a android.intent.action.MAIN -n
-    // com.XXX.xxx/com.XXX.xxx.Main --es STRING_PAR_NAME stringParameterValue
-
-    // am start -a android.intent.action.MAIN -n org.fdroid.fdroid/org.fdroid.fdroid.UPKDeployActivity --es UPKfilePath An.stop-1.5.upk
-    // --es UPKfilePAth PATHUPK
     public static Context mContext = null;
     private SharedPreferenceAction mSharedPreferenceAction;
 
@@ -60,7 +50,6 @@ public class AppManagementActivity extends Activity{
         mSharedPreferenceAction = new SharedPreferenceAction();
         FlyveLog.d("AppManagementActivity");
         String Token = "";
-        FlyveLog.v("UPKDeploy Activity launched -- from MDM");
         if(getIntent().getAction() != null && getIntent().getAction().equals("android.intent.action.MAIN")){
 
             FlyveLog.v("UPKDeploy Activity intent exists");
@@ -72,15 +61,15 @@ public class AppManagementActivity extends Activity{
                 AppManagementTask task = new AppManagementTask(this, this, apk,true,Token);
                 task.start();
             }
+            // TODO check if install failed
             mSharedPreferenceAction.removeUpks(mContext);
 
             finish();
         }
     }
 
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dns);
+    public void onCreate(){
+
     }
 
 
