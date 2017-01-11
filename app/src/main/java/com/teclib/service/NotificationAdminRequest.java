@@ -66,10 +66,14 @@ public class NotificationAdminRequest extends Service {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION);
         registerReceiver(notifyServiceReceiver, intentFilter);
-        if(sharedPreferenceAction.getApks(getBaseContext()).equals(null)){
+        FlyveLog.d(sharedPreferenceAction.getApks(getBaseContext()).toString());
+        if(sharedPreferenceAction.getApks(getBaseContext()).toString().equals("[null]")){
             FlyveLog.e("notification whitout sharedpreference apk");
         }
-        CustomNotification();
+        else {
+            CustomNotification();
+        }
+
         return super.onStartCommand(intent, flags, startId);
     }
 
