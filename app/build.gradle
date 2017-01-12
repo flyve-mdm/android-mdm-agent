@@ -8,12 +8,12 @@ android {
         applicationId "com.teclib.flyvemdm"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 72
-        versionName "0.99.42"
+        versionCode 73
+        versionName "0.99.43"
     }
     signingConfigs {
         release {
-            storeFile file("/home/gitlab-runner/keystore.jks")
+            storeFile file("/home/dlarget/keystore.jks")
             storePassword System.getenv("KSTOREPWD")
             keyAlias System.getenv("KEYNAME")
             keyPassword System.getenv("KEYPWD")
