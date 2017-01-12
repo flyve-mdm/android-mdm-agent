@@ -1,21 +1,19 @@
-import com.android.build.gradle.internal.dsl.SigningConfig
-
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '25.0.1'
+    buildToolsVersion '23.0.3'
     defaultConfig {
         multiDexEnabled true
         applicationId "com.teclib.flyvemdm"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 72
-        versionName "0.99.42"
+        versionCode 73
+        versionName "0.99.43"
     }
     signingConfigs {
         release {
-            storeFile file("/home/gitlab-runner/keystore.jks")
+            storeFile file("/home/dlarget/keystore.jks")
             storePassword System.getenv("KSTOREPWD")
             keyAlias System.getenv("KEYNAME")
             keyPassword System.getenv("KEYPWD")
@@ -73,7 +71,6 @@ dependencies {
     compile 'com.android.support:design:23.2.1'
     compile 'ch.acra:acra:4.5.0'
     compile 'com.github.rahatarmanahmed:circularprogressview:2.4.0'
-    compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.madgag.spongycastle:core:1.54.0.0'
     compile 'com.madgag.spongycastle:prov:1.54.0.0'
     compile 'com.madgag.spongycastle:pkix:1.54.0.0'

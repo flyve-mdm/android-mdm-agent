@@ -26,38 +26,35 @@
 
 package com.teclib.flyvemdm;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.teclib.api.FlyveLog;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
-public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = "LoginActivity";
+public class LoginActivity extends Activity {
     private String link;
     private String sendLink;
-    @InjectView(R.id.input_name) EditText _nameText;
-    @InjectView(R.id.input_email) EditText _emailText;
-    //@InjectView(R.id.input_password) EditText _passwordText;
-    @InjectView(R.id.btn_signup) Button _signupButton;
+
+    Button _signupButton;
+    EditText _nameText,_emailText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.inject(this);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null)
@@ -69,8 +66,11 @@ public class LoginActivity extends AppCompatActivity {
             link=data.toString();
             getIntent().setData(null);
         }
-        System.out.println(link);
+        FlyveLog.d(link);
 
+        _signupButton = (Button)findViewById(R.id.button);
+        _nameText = (EditText)findViewById(R.id.editText);
+        _emailText = (EditText)findViewById(R.id.editText2);
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +109,6 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         sendLink = jsonObj.toString();
-        // TODO: Implement your own signup logic here.
 
         new android.os.Handler().postDelayed(
                 new Runnable() {

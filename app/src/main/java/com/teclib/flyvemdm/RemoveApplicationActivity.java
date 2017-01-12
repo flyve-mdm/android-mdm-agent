@@ -34,7 +34,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.teclib.api.AppManagement;
 import com.teclib.database.SharedPreferenceAction;
 import com.teclib.service.NotificationRemoveService;
 
@@ -50,14 +49,11 @@ public class RemoveApplicationActivity extends Activity {
     private Button finish_button;
     private SharedPreferenceAction sharedPreferenceAction;
     private Set<String> isEmptyApks;
-    private AppManagement appManagement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_install_application_check);
-        appManagement = new AppManagement(mContext);
-
         isInstalled = false;
 
         mContext=this;

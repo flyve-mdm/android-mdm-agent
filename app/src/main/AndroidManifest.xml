@@ -3,7 +3,7 @@
     package="com.teclib.flyvemdm">
 
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
-
+    <uses-permission android:name="com.uhuru.permission.INSTALL_PACKAGE" />
     <!-- QR CODE -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -22,7 +22,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <!-- GPS -->
@@ -61,8 +60,7 @@
         android:theme="@style/MyMaterialTheme">
         <activity
             android:name="com.teclib.flyvemdm.MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -153,7 +151,7 @@
         <activity
             android:name="com.teclib.flyvemdm.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dark">
+            android:theme="@style/MyMaterialTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -203,10 +201,10 @@
             android:screenOrientation="portrait" />
 
         <service android:name="com.teclib.service.NotificationRemoveService" />
-        <service android:name="com.teclib.fusioninventory.Agent" />
+        <service android:name="org.fusioninventory.Agent" />
 
         <activity
-            android:name="com.teclib.fusioninventory.FusionInventory"
+            android:name="org.fusioninventory.FusionInventory"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.teclib.flyvemdm.RemoveApplicationActivity"
@@ -224,6 +222,14 @@
         <activity
             android:name="com.teclib.database.InformationsActivity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".AppManagementActivity"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
 
     </application>
 
