@@ -26,6 +26,7 @@
 
 package com.teclib.flyvemdm;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -86,7 +87,6 @@ public class MainApplication extends Application {
     public static MainApplication getInstance(){
         return instance;
     }
-
 
     protected void acraInit(){
         SharedPreferences acra = PreferenceManager.getDefaultSharedPreferences(this);

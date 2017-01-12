@@ -32,7 +32,6 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.PowerManager;
 
-import com.teclib.api.AppManagement;
 import com.teclib.api.FlyveLog;
 import com.teclib.api.HttpRequest;
 import com.teclib.database.SharedPreferenceAction;
@@ -304,7 +303,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
             }
             mSharedPreferenceAction.saveApks(mContext, directory + mJsonDownload + ";;" + hash + ";;" + PackageName);
         } else if (fileType == 2) {
-            mSharedPreferenceAction.saveUpks(mContext, mJsonDownload);
+            mSharedPreferenceAction.saveUpks(mContext, directory + mJsonDownload);
             // TODO save hash and package name
         } else if (fileType == 0) {
             mSharedPreferenceAction.saveFiles(mContext, directory + mJsonDownload);
@@ -350,8 +349,12 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
                 fileType = 0;
 
             } else if (fileType == 2) {
-                AppManagement executeInstallUpk = new AppManagement(mContext);
-                executeInstallUpk.executeInstallUpk();
+                Intent myIntent = new Intent(mContext, AppManagementActivity.class);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                myIntent.setAction("android.intent.action.MAIN");
+                mContext.startActivity(myIntent);
+                //AppManagementActivity executeInstallUpk = new AppManagementActivity(mContext);
+                //executeInstallUpk.executeInstallUpk();
                 fileType = 0;
             }
 

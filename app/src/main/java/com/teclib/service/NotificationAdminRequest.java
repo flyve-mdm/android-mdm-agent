@@ -39,6 +39,8 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
+import com.teclib.api.FlyveLog;
+import com.teclib.database.SharedPreferenceAction;
 import com.teclib.flyvemdm.MQTTNotifierActivity;
 import com.teclib.flyvemdm.R;
 
@@ -46,6 +48,7 @@ import com.teclib.flyvemdm.R;
 public class NotificationAdminRequest extends Service {
 
     final static String ACTION = "NotificationAdminRequest";
+    private SharedPreferenceAction sharedPreferenceAction;
     final static String STOP_SERVICE_BROADCAST_KEY = "StopServiceAdminBroadcastKey";
     final static int RQS_STOP_SERVICE = 1;
 
@@ -59,11 +62,18 @@ public class NotificationAdminRequest extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        sharedPreferenceAction = new SharedPreferenceAction();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION);
         registerReceiver(notifyServiceReceiver, intentFilter);
-        CustomNotification();
+        FlyveLog.d(sharedPreferenceAction.getApks(getBaseContext()).toString());
+        if(sharedPreferenceAction.getApks(getBaseContext()).toString().equals("[null]")){
+            FlyveLog.e("notification whitout sharedpreference apk");
+        }
+        else {
+            CustomNotification();
+        }
+
         return super.onStartCommand(intent, flags, startId);
     }
 
