@@ -33,6 +33,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
         }
+        prerelease.initWith(buildTypes.release)
+        prerelease {
+            signingConfig null
+        }
     }
     lintOptions {
         abortOnError false
