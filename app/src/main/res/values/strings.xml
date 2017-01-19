@@ -141,6 +141,7 @@
     <string name="installAsk_string">Please install application</string>
     <string name="removeAsk_string">Please remove application</string>
     <string name="gpsAsk_string">Please active gps</string>
+    <string name="passwordPoliciesNotification_string">Change your password</string>
     <string name="policiesAsk_string">Policies</string>
 
 

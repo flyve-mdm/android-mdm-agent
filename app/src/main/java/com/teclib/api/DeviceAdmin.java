@@ -38,6 +38,7 @@ import android.app.Activity;
 
 import com.teclib.database.SharedPreferencePolicies;
 import com.teclib.flyvemdm.R;
+import com.teclib.service.NotificationPasswordPolicies;
 
 import java.util.ArrayList;
 
@@ -63,6 +64,7 @@ public class DeviceAdmin extends Activity {
 
 
     protected void onCreate(Bundle savedInstanceState) {
+        FlyveLog.d("DeviceAdmin onCreate");
         super.onCreate(savedInstanceState);
         mContext = this;
         // Prepare to work with the DPM
@@ -78,35 +80,45 @@ public class DeviceAdmin extends Activity {
             FlyveLog.d("onStart: Active DeviceAdmin mode");
             activeDeviceManagement();
         } else {
-
+            CheckPasswordPolicies();
             Bundle extras = getIntent().getExtras();
             if(extras != null) {
                 FlyveLog.d("onStart: Mode DeviceAdmin active");
-
+                boolean isPoliciesPasswordChanged = false;
                 ArrayList<String> Argslist =  getIntent().getStringArrayListExtra("ControllerArgs");
 
                 FlyveLog.d("Controller args: %s", Argslist.toString());
-
+                if(Argslist.contains("init")){
+                    initPolicies();
+                    isPoliciesPasswordChanged = true;
+                }
                 if(Argslist.contains("passwordQuality")){
                     setPasswordQuality();
+                    isPoliciesPasswordChanged = true;
                 }
                 if(Argslist.contains("passwordMinLetters")){
                     setPasswordMinumimLetters(sharedPreferencePolicies.getMinLetters(mContext));
+                    isPoliciesPasswordChanged = true;
                 }
                 if(Argslist.contains("passwordMinLowerCase")){
                     setPasswordMinimumLowerCase(sharedPreferencePolicies.getMinLowerCase(mContext));
+                    isPoliciesPasswordChanged = true;
                 }
                 if(Argslist.contains("passwordMinUpperCase")){
                     setPasswordMinimumUpperCase(sharedPreferencePolicies.getMinUpperCase(mContext));
+                    isPoliciesPasswordChanged = true;
                 }
                 if(Argslist.contains("passwordMinNonLetter")){
                     setPasswordMinimumNonLetter(sharedPreferencePolicies.getMinNonLetter(mContext));
+                    isPoliciesPasswordChanged = true;
                 }
                 if(Argslist.contains("passwordMinNumeric")){
                     setPasswordMinimumNumeric(sharedPreferencePolicies.getMinNumeric(mContext));
+                    isPoliciesPasswordChanged = true;
                 }
                 if(Argslist.contains("passwordMinLength")){
                     setPasswordLength();
+                    isPoliciesPasswordChanged = true;
                 }
                 if(Argslist.contains("MaximumFailedPasswordsForWipe")){
                     setMaximumFailedPasswordsForWipe(sharedPreferencePolicies.getMaxFailedWipe(mContext));
@@ -116,6 +128,7 @@ public class DeviceAdmin extends Activity {
                 }
                 if(Argslist.contains("passwordMinSymbols")){
                     setPasswordMinimumSymbols(sharedPreferencePolicies.getMinSymbols(mContext));
+                    isPoliciesPasswordChanged = true;
                 }
                 if(Argslist.contains("encryption")){
                     setStorageEncryption(sharedPreferencePolicies.getEncryption(mContext));
@@ -128,10 +141,40 @@ public class DeviceAdmin extends Activity {
                 if(Argslist.contains("wipe")){
                     WipeDevice();
                 }
+                if(isPoliciesPasswordChanged==true) {
+                    CheckPasswordPolicies();
+                }
             }
         }
         finish();
         return;
+    }
+
+    private void initPolicies() {
+        setPasswordLength();
+        setPasswordQuality();
+        setPasswordMinumimLetters(sharedPreferencePolicies.getMinLetters(mContext));
+        setPasswordMinimumLowerCase(sharedPreferencePolicies.getMinLowerCase(mContext));
+        setPasswordMinimumUpperCase(sharedPreferencePolicies.getMinUpperCase(mContext));
+        setPasswordMinimumNonLetter(sharedPreferencePolicies.getMinNonLetter(mContext));
+        setPasswordMinimumNumeric(sharedPreferencePolicies.getMinNumeric(mContext));
+        setMaximumFailedPasswordsForWipe(sharedPreferencePolicies.getMaxFailedWipe(mContext));
+        setMaximumTimeToLock(sharedPreferencePolicies.getMaxTimeToLock(mContext));
+        setPasswordMinimumSymbols(sharedPreferencePolicies.getMinSymbols(mContext));
+        setStorageEncryption(sharedPreferencePolicies.getEncryption(mContext));
+        disableCamera(sharedPreferencePolicies.getCameraStatus(mContext));
+    }
+
+    private void CheckPasswordPolicies() {
+        FlyveLog.d("CheckPasswordPolicies");
+        FlyveLog.d(mDPM.isActivePasswordSufficient());
+        FlyveLog.d(mDPM.getPasswordMinimumLength(mDeviceAdmin));
+
+        if (!mDPM.isActivePasswordSufficient()) {
+            // Triggers password change screen in Settings.
+            Intent intent = new Intent(this, NotificationPasswordPolicies.class);
+            startService(intent);
+        }
     }
 
 
@@ -295,6 +338,8 @@ public class DeviceAdmin extends Activity {
 
         @Override
         public void onDisabled(Context context, Intent intent) {
+            // Called when the app is about to be deactivated as a device administrator.
+            // Deletes previously stored password policy.
             FlyveLog.d("onDisabled: ");
             FlyveLog.i(context.getString(R.string.admin_receiver_status_disabled));
         }
@@ -303,6 +348,14 @@ public class DeviceAdmin extends Activity {
         public void onPasswordChanged(Context context, Intent intent) {
             FlyveLog.d("onPasswordChanged: ");
             FlyveLog.i(context.getString(R.string.admin_receiver_status_pw_changed));
+            DevicePolicyManager localDPM = (DevicePolicyManager) context
+                    .getSystemService(Context.DEVICE_POLICY_SERVICE);
+            // Create the same Explicit Intent
+            FlyveLog.d(localDPM.isActivePasswordSufficient());
+            if (localDPM.isActivePasswordSufficient()){
+                Intent i = new Intent("NotifyServiceActionKillNotification");
+                context.sendBroadcast(i);
+            }
         }
 
         @Override

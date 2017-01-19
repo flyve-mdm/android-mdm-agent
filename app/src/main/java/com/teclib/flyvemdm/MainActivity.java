@@ -103,8 +103,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Intent DeviceAdmin = new Intent(this.getBaseContext(), com.teclib.api.DeviceAdmin.class);
-        startActivity(DeviceAdmin);
 
         if (!msharedPreferenceMQTT.getSerialTopic(getBaseContext())[0].isEmpty()) {
              Intent intent = new Intent(getApplicationContext(), MQTTNotifierActivity.class);

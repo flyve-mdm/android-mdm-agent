@@ -41,6 +41,7 @@ import com.teclib.database.SharedPreferenceMQTT;
 import com.teclib.flyvemdm.MainActivity;
 import com.teclib.flyvemdm.R;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -52,6 +53,7 @@ public class BootService extends Service {
     private Set<String> mIsEmptyApks;
     private Set<String> mIsEmptyRemoveApks;
     private Context mContext;
+    private ArrayList<String> mIntentArgs;
 
     public BootService() { }
 
@@ -68,7 +70,7 @@ public class BootService extends Service {
         mThread.start();
 
         mContext = this.getBaseContext();
-
+        mIntentArgs = new ArrayList<String>();
         //verification de l'enrolement
         mSharedPreferenceMQTT = new SharedPreferenceMQTT();
         mSharedPreferenceAction = new SharedPreferenceAction();
@@ -87,6 +89,12 @@ public class BootService extends Service {
           //  Intent intent = new Intent(mContext,NotificationInstallService.class);
           //  mContext.startService(intent);
         }
+
+        mIntentArgs.add("init");
+        Intent DeviceAdmin = new Intent(this.getBaseContext(), com.teclib.api.DeviceAdmin.class);
+        DeviceAdmin.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        DeviceAdmin.putStringArrayListExtra("ControllerArgs", mIntentArgs);
+        mContext.startActivity(DeviceAdmin);
 
         mIsEmptyRemoveApks = mSharedPreferenceAction.getApksRemove(mContext);
         if(!Arrays.toString(mIsEmptyRemoveApks.toArray()).equals("[null]")){
@@ -132,7 +140,6 @@ public class BootService extends Service {
             }while (bThreadExec);
 
             stopForeground(true);
-
         }
     }
 
