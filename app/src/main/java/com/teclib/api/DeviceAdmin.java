@@ -189,13 +189,17 @@ public class DeviceAdmin extends Activity {
     private void setPasswordLength() {
         int length = sharedPreferencePolicies.getMinLength(mContext);
         FlyveLog.d("setPasswordLength: " + length);
-        mDPM.setPasswordMinimumLength(mDeviceAdmin, length);
+        if(mDPM.getPasswordMinimumLength(mDeviceAdmin)!=length){
+            FlyveLog.d("Apply setPasswordLength: " + length);
+            mDPM.setPasswordMinimumLength(mDeviceAdmin, length);
+        }
     }
 
 
     private void setPasswordQuality() {
         String quality = sharedPreferencePolicies.getQualityPassword(mContext);
-        switch(quality) {
+
+        switch (quality) {
             case "PASSWORD_QUALITY_NUMERIC":
                 FlyveLog.d("switch: PASSWORD_QUALITY_NUMERIC");
                 mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_NUMERIC);
@@ -227,43 +231,59 @@ public class DeviceAdmin extends Activity {
     }
 
     private void setPasswordMinumimLetters(int minLetters) {
-        FlyveLog.d("setPasswordMinumimLetters:  " + minLetters);
-        mDPM.setPasswordMinimumUpperCase(mDeviceAdmin, minLetters);
+        if(mDPM.getPasswordMinimumLetters(mDeviceAdmin)!=minLetters) {
+            FlyveLog.d("setPasswordMinumimLetters:  " + minLetters);
+            mDPM.setPasswordMinimumUpperCase(mDeviceAdmin, minLetters);
+        }
     }
 
     private void setPasswordMinimumLowerCase(int minLowerCase) {
-        FlyveLog.d("setPasswordMinimumLowerCase:  " + minLowerCase);
-        mDPM.setPasswordMinimumLowerCase(mDeviceAdmin, minLowerCase);
+        if(mDPM.getPasswordMinimumLowerCase(mDeviceAdmin)!=minLowerCase) {
+            FlyveLog.d("setPasswordMinimumLowerCase:  " + minLowerCase);
+            mDPM.setPasswordMinimumLowerCase(mDeviceAdmin, minLowerCase);
+        }
     }
 
     private void setPasswordMinimumUpperCase(int minUpperCase) {
-        FlyveLog.d("setPasswordMinimumUpperCase:  " + minUpperCase);
-        mDPM.setPasswordMinimumUpperCase(mDeviceAdmin, minUpperCase);
+        if(mDPM.getPasswordMinimumUpperCase(mDeviceAdmin)!=minUpperCase) {
+            FlyveLog.d("setPasswordMinimumUpperCase:  " + minUpperCase);
+            mDPM.setPasswordMinimumUpperCase(mDeviceAdmin, minUpperCase);
+        }
     }
 
     private void setPasswordMinimumNonLetter(int minNonLetter) {
-        FlyveLog.d("setPasswordMinimumNonLetter: " + minNonLetter);
-        mDPM.setPasswordMinimumNonLetter(mDeviceAdmin, minNonLetter);
+        if(mDPM.getPasswordMinimumNonLetter(mDeviceAdmin)!=minNonLetter) {
+            FlyveLog.d("setPasswordMinimumNonLetter: " + minNonLetter);
+            mDPM.setPasswordMinimumNonLetter(mDeviceAdmin, minNonLetter);
+        }
     }
 
     private void setPasswordMinimumNumeric(int minNumeric) {
-        FlyveLog.d("setPasswordMinimumNumeric:  " + minNumeric);
-        mDPM.setPasswordMinimumNumeric(mDeviceAdmin, minNumeric);
+        if(mDPM.getPasswordMinimumNumeric(mDeviceAdmin)!=minNumeric) {
+            FlyveLog.d("setPasswordMinimumNumeric:  " + minNumeric);
+            mDPM.setPasswordMinimumNumeric(mDeviceAdmin, minNumeric);
+        }
     }
 
     private void setPasswordMinimumSymbols(int minSymbols) {
-        FlyveLog.d("setPasswordMinimumSymbols:  " + minSymbols);
-        mDPM.setPasswordMinimumSymbols(mDeviceAdmin, minSymbols);
+        if(mDPM.getPasswordMinimumSymbols(mDeviceAdmin)!=minSymbols) {
+            FlyveLog.d("setPasswordMinimumSymbols:  " + minSymbols);
+            mDPM.setPasswordMinimumSymbols(mDeviceAdmin, minSymbols);
+        }
     }
 
     private void setMaximumFailedPasswordsForWipe(int maxFailed) {
-        FlyveLog.d("setMaximumFailedPasswordsForWipe:  " + maxFailed);
-        mDPM.setMaximumFailedPasswordsForWipe(mDeviceAdmin, maxFailed);
+        if(mDPM.getMaximumFailedPasswordsForWipe(mDeviceAdmin)!=maxFailed) {
+            FlyveLog.d("setMaximumFailedPasswordsForWipe:  " + maxFailed);
+            mDPM.setMaximumFailedPasswordsForWipe(mDeviceAdmin, maxFailed);
+        }
     }
 
     private void setMaximumTimeToLock(long timeMs) {
-        FlyveLog.d("setMaximumTimeToLock:  " + timeMs);
-        mDPM.setMaximumTimeToLock(mDeviceAdmin, timeMs);
+        if(mDPM.getMaximumTimeToLock(mDeviceAdmin)!=timeMs) {
+            FlyveLog.d("setMaximumTimeToLock:  " + timeMs);
+            mDPM.setMaximumTimeToLock(mDeviceAdmin, timeMs);
+        }
     }
 
     private void lockNow() {
@@ -272,8 +292,10 @@ public class DeviceAdmin extends Activity {
     }
 
     private void disableCamera(boolean isDisable) {
-        FlyveLog.d("disableCamera:");
-        mDPM.setCameraDisabled(mDeviceAdmin, isDisable);
+        if(mDPM.getCameraDisabled(mDeviceAdmin)!=isDisable) {
+            FlyveLog.d("disableCamera:");
+            mDPM.setCameraDisabled(mDeviceAdmin, isDisable);
+        }
     }
 
     private void setStorageEncryption(boolean isEncryption) {

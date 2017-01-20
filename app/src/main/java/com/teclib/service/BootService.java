@@ -77,8 +77,15 @@ public class BootService extends Service {
         String server = mSharedPreferenceMQTT.getServer(mContext);
         FlyveLog.d(server);
 
-        if(server.equals("null")){
+        if (server.equals("null")){
             CustomNotification(0);
+        }
+        else {
+            mIntentArgs.add("init");
+            Intent DeviceAdmin = new Intent(this.getBaseContext(), com.teclib.api.DeviceAdmin.class);
+            DeviceAdmin.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            DeviceAdmin.putStringArrayListExtra("ControllerArgs", mIntentArgs);
+            mContext.startActivity(DeviceAdmin);
         }
 
         mIsEmptyApks = mSharedPreferenceAction.getApks(mContext);
@@ -90,11 +97,6 @@ public class BootService extends Service {
           //  mContext.startService(intent);
         }
 
-        mIntentArgs.add("init");
-        Intent DeviceAdmin = new Intent(this.getBaseContext(), com.teclib.api.DeviceAdmin.class);
-        DeviceAdmin.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        DeviceAdmin.putStringArrayListExtra("ControllerArgs", mIntentArgs);
-        mContext.startActivity(DeviceAdmin);
 
         mIsEmptyRemoveApks = mSharedPreferenceAction.getApksRemove(mContext);
         if(!Arrays.toString(mIsEmptyRemoveApks.toArray()).equals("[null]")){
