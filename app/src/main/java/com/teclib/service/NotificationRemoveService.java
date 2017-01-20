@@ -46,8 +46,6 @@ import com.teclib.flyvemdm.RemoveApplicationActivity;
 public class NotificationRemoveService extends Service {
 
     final static String ACTION = "NotifyServiceRemoveAction";
-    final static String STOP_SERVICE_BROADCAST_KEY = "StopServiceRemoveBroadcastKey";
-    final static int RQS_STOP_SERVICE = 1;
 
     NotifyServiceReceiver notifyServiceReceiver;
 
@@ -105,10 +103,8 @@ public class NotificationRemoveService extends Service {
         remoteViews.setTextViewText(R.id.text, getString(R.string.removeAsk_string));
 
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationmanager.notify(4, builder.build());
-
+        notificationmanager.notify(3, builder.build());
     }
-
 
     public class NotifyServiceReceiver extends BroadcastReceiver{
 

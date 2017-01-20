@@ -77,6 +77,11 @@ public class MQTTNotifierActivity extends AppCompatActivity {
         intentFilter.addAction(ACTION);
         registerReceiver(mqttNotifierActivityReceiver, intentFilter);
 
+
+        Intent DeviceAdmin = new Intent(this.getBaseContext(), com.teclib.api.DeviceAdmin.class);
+        startActivity(DeviceAdmin);
+
+
         if (toolbar != null) {
             setSupportActionBar(toolbar);
 

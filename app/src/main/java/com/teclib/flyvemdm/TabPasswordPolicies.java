@@ -133,7 +133,6 @@ public class TabPasswordPolicies extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, mpaswwordList);
         mlv.setAdapter(adapter);

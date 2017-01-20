@@ -52,14 +52,14 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name="com.teclib.flyvemdm.MainApplication"
+        android:name=".MainApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name">
         android:allowBackup="true"
         android:label="@string/app_name"
         android:theme="@style/MyMaterialTheme">
         <activity
-            android:name="com.teclib.flyvemdm.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -71,7 +71,8 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.teclib.service.IsBootComplete"
+        <receiver
+            android:name="com.teclib.service.IsBootComplete"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -92,10 +93,9 @@
         </service>
 
         <activity
-            android:name="com.teclib.flyvemdm.MQTTNotifierActivity"
+            android:name=".MQTTNotifierActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme" />
-
 
         <receiver
             android:name="com.teclib.mqtt.MQTTAction"
@@ -116,8 +116,8 @@
 
         <receiver
             android:name="com.teclib.api.DeviceAdmin$AdminReceiver"
-            android:label="FlyveMDM"
             android:exported="false"
+            android:label="FlyveMDM"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
@@ -133,7 +133,6 @@
                 <action android:name="android.app.action.ACTION_PASSWORD_SUCCEEDED" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name="com.teclib.launcher.LauncherReceiver"
             android:enabled="true"
@@ -149,7 +148,7 @@
         <service android:name="com.teclib.service.MQTTNotificationService" />
 
         <activity
-            android:name="com.teclib.flyvemdm.LoginActivity"
+            android:name=".LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme">
             <intent-filter>
@@ -163,21 +162,21 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.teclib.flyvemdm.DNSActivity"
+            android:name=".DNSActivity"
             android:label="@string/title_activity_dns"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.teclib.flyvemdm.HTTPActivity"
+            android:name=".HTTPActivity"
             android:label="@string/title_activity_http"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 
-        <receiver android:name="com.teclib.mqtt.MQTTActionConnectivityReceiver"
+        <receiver
+            android:name="com.teclib.mqtt.MQTTActionConnectivityReceiver"
             android:exported="false">
             <intent-filter android:priority="100">
                 <action android:name="android.net.wifi.STATE_CHANGE" />
@@ -190,14 +189,13 @@
             android:name="com.teclib.service.NotificationGPSActivation"
             android:enabled="true"
             android:exported="true" />
-
         <service
             android:name="com.teclib.service.NotificationAdminRequest"
             android:enabled="true"
             android:exported="true" />
 
         <activity
-            android:name="com.teclib.flyvemdm.ActiveGPSActivity"
+            android:name=".ActiveGPSActivity"
             android:screenOrientation="portrait" />
 
         <service android:name="com.teclib.service.NotificationRemoveService" />
@@ -207,23 +205,21 @@
             android:name="org.fusioninventory.FusionInventory"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.teclib.flyvemdm.RemoveApplicationActivity"
+            android:name=".RemoveApplicationActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.teclib.database.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="com.teclib.flyvemdm.MQTTNotifierActivity">
+            android:parentActivityName=".MQTTNotifierActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.teclib.flyvemdm.MQTTNotifierActivity" />
         </activity>
-
         <activity
             android:name="com.teclib.database.InformationsActivity"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".AppManagementActivity"
+        <activity
+            android:name=".AppManagementActivity"
             android:theme="@android:style/Theme.NoDisplay"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
@@ -231,6 +227,10 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name="com.teclib.service.NotificationPasswordPolicies"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

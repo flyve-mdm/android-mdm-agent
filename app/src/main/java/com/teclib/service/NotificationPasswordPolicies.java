@@ -30,6 +30,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -38,22 +39,17 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
+import com.teclib.api.FlyveLog;
 import com.teclib.flyvemdm.ActiveGPSActivity;
 import com.teclib.flyvemdm.R;
 
+public class NotificationPasswordPolicies extends Service {
+    final static String ACTION = "NotifyServiceActionKillNotification";
 
-public class NotificationGPSActivation extends Service {
-
-    final static String ACTION = "NotifyServiceAction";
-    final static String STOP_SERVICE_BROADCAST_KEY = "StopServiceBroadcastKey";
-    final static int RQS_STOP_SERVICE = 1;
-
-    NotifyServiceReceiver notifyServiceReceiver;
-
-
+    NotificationPasswordPolicies.ServiceReceiverNotification notifyServiceReceiver;
     @Override
     public void onCreate() {
-        notifyServiceReceiver = new NotifyServiceReceiver();
+        notifyServiceReceiver = new ServiceReceiverNotification();
         super.onCreate();
     }
 
@@ -69,6 +65,7 @@ public class NotificationGPSActivation extends Service {
 
     @Override
     public void onDestroy() {
+        FlyveLog.d("onDestroy");
         this.unregisterReceiver(notifyServiceReceiver);
         super.onDestroy();
     }
@@ -82,18 +79,17 @@ public class NotificationGPSActivation extends Service {
     public void CustomNotification() {
         RemoteViews remoteViews = new RemoteViews(getPackageName(),
                 R.layout.notification_install_apps);
+        Intent intent =
+                new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
 
-        Intent intent = new Intent(this, ActiveGPSActivity.class);
-        
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_white_stork)
-                .setTicker(getString(R.string.gpsAsk_string))
                 .setOngoing(true)
+                .setTicker(getString(R.string.passwordPoliciesNotification_string))
                 .setContentIntent(pIntent)
-                .setAutoCancel(true)
                 .setContent(remoteViews);
 
         Notification notificationInstall = builder.build();
@@ -102,26 +98,22 @@ public class NotificationGPSActivation extends Service {
         remoteViews.setImageViewResource(R.id.imagenotileft, R.mipmap.ic_notification_install_apps);
 
         remoteViews.setTextViewText(R.id.title, getString(R.string.app_name));
-        remoteViews.setTextViewText(R.id.text, getString(R.string.gpsAsk_string));
+        remoteViews.setTextViewText(R.id.text, getString(R.string.passwordPoliciesNotification_string));
 
         NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationmanager.notify(4, builder.build());
+        notificationmanager.notify(5, builder.build());
 
     }
 
-    public class NotifyServiceReceiver extends BroadcastReceiver {
+    public class ServiceReceiverNotification extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context arg0, Intent arg1) {
-
-            int rqs = arg1.getIntExtra(STOP_SERVICE_BROADCAST_KEY, 0);
-            if (rqs == RQS_STOP_SERVICE){
-                stopSelf();
-                ((NotificationManager) getSystemService(NOTIFICATION_SERVICE))
-                        .cancel(4);
-            }
+            FlyveLog.d("ReceiverDelete");
+            stopSelf();
+            ((NotificationManager) getSystemService(NOTIFICATION_SERVICE))
+                    .cancel(5);
         }
     }
 
 }
-

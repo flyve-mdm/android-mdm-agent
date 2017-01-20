@@ -8,8 +8,8 @@ android {
         applicationId "com.teclib.flyvemdm"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 73
-        versionName "0.99.43"
+        versionCode 74
+        versionName "0.99.44"
     }
     signingConfigs {
         release {
@@ -32,6 +32,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
+        }
+        prerelease.initWith(buildTypes.release)
+        prerelease {
+            signingConfig null
         }
     }
     lintOptions {
