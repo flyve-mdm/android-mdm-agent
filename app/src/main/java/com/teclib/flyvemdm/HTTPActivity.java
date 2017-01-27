@@ -346,7 +346,7 @@ public class HTTPActivity extends Activity {
                 String jsonFullSession = request.GetRequest(false,mServeur + "/" + "getFullSession?" + "session_token=" + mSessionToken);
                 FlyveLog.json(jsonFullSession);
 
-                String pattern = "\"plugin_storkmdm_guest_profiles_id\":\\s*([0-9]+)";
+                String pattern = "\"plugin_flyvemdm_guest_profiles_id\":\\s*([0-9]+)";
 
                 // Create a Pattern object
                 Pattern search = Pattern.compile(pattern);
@@ -356,15 +356,15 @@ public class HTTPActivity extends Activity {
                 if (m.find( )) {
                     mPluginId = m.group(1);
                 }else {
-                    FlyveLog.wtf("plugin_storkmdm_guest_profiles_id");
+                    FlyveLog.wtf("plugin_flyvemdm_guest_profiles_id");
                 }
 
                 String changeActiveProfile = request.GetRequest(false,mServeur + "/" + "changeActiveProfile?" + "session_token=" + mSessionToken + "&profiles_id=" + mPluginId);
 
-                String Post = request.PostRequest(mServeur + "/" + "PluginStorkmdmAgent?" + "session_token=" + mSessionToken, mEmail, mInvitationToken, mSerial, mName);
+                String Post = request.PostRequest(mServeur + "/" + "PluginFlyvemdmAgent?" + "session_token=" + mSessionToken, mEmail, mInvitationToken, mSerial, mName);
                 FlyveLog.d(Post);
                 if (isInteger(Post, 10)) {
-                    String Get = request.GetRequest(false,mServeur + "/" + "PluginStorkmdmAgent/" + Post + "?" + "session_token=" + mSessionToken);
+                    String Get = request.GetRequest(false,mServeur + "/" + "PluginFlyvemdmAgent/" + Post + "?" + "session_token=" + mSessionToken);
                     FlyveLog.json(Get);
                     JSONObject jsonObject = null;
                     try {
@@ -379,7 +379,7 @@ public class HTTPActivity extends Activity {
                         mId = jsonObject.getInt("id");
                         mEntities_id = jsonObject.getInt("entities_id");
                         mNameEmail = jsonObject.getString("name");
-                        mFleet_id = jsonObject.getInt("plugin_storkmdm_fleets_id");
+                        mFleet_id = jsonObject.getInt("plugin_flyvemdm_fleets_id");
                     } catch (JSONException e) {
                         //TODO ne pas continuer l'enrollement
                         FlyveLog.e(e.getMessage());

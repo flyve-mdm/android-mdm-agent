@@ -198,7 +198,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
                 mSessionToken = jsonObj.getString("session_token");
             }
             String jsonFullSession = request.GetRequest(false, mServer + "/" + "getFullSession?" + "session_token=" + mSessionToken);
-            String pattern = "\"plugin_storkmdm_guest_profiles_id\":\\s*([0-9]+)";
+            String pattern = "\"plugin_flyvemdm_guest_profiles_id\":\\s*([0-9]+)";
 
             // Create a Pattern object
             Pattern search = Pattern.compile(pattern);
@@ -208,14 +208,14 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
             if (m.find()) {
                 mPluginId = m.group(1);
             } else {
-                FlyveLog.wtf("Error plugin_storkmdm_guest_profiles_id");
+                FlyveLog.wtf("Error plugin_flyvemdm_guest_profiles_id");
             }
 
             String changeActiveProfile = request.GetRequest(false, mServer + "/" + "changeActiveProfile?" + "session_token=" + mSessionToken + "&profiles_id=" + mPluginId);
             if (sUrl[0].equals("file")) {
-                mjsonGetDownload = request.GetRequest(false, mServer + "/" + "PluginStorkmdmFile/" + mFileId + "?" + "session_token=" + mSessionToken);
+                mjsonGetDownload = request.GetRequest(false, mServer + "/" + "PluginFlyvemdmFile/" + mFileId + "?" + "session_token=" + mSessionToken);
             } else {
-                mjsonGetDownload = request.GetRequest(false, mServer + "/" + "PluginStorkmdmPackage/" + mFileId + "?" + "session_token=" + mSessionToken);
+                mjsonGetDownload = request.GetRequest(false, mServer + "/" + "PluginFlyvemdmPackage/" + mFileId + "?" + "session_token=" + mSessionToken);
             }
 
             if (sUrl[0].equals("file")) {
@@ -278,11 +278,11 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
             try {
 
                 if (fileType == 1) {
-                    mDownloadFile = request.GetRequest(true, mServer + "/" + "PluginStorkmdmPackage/" + mFileId + "?" + "session_token=" + mSessionToken, "Accept::application/octet-stream", "Content-Type::application/json");
+                    mDownloadFile = request.GetRequest(true, mServer + "/" + "PluginFlyvemdmPackage/" + mFileId + "?" + "session_token=" + mSessionToken, "Accept::application/octet-stream", "Content-Type::application/json");
                 } else if (fileType == 2) {
-                    mDownloadFile = request.GetRequest(true, mServer + "/" + "PluginStorkmdmPackage/" + mFileId + "?" + "session_token=" + mSessionToken, "Accept::application/octet-stream", "Content-Type::application/json");
+                    mDownloadFile = request.GetRequest(true, mServer + "/" + "PluginFlyvemdmPackage/" + mFileId + "?" + "session_token=" + mSessionToken, "Accept::application/octet-stream", "Content-Type::application/json");
                 } else if (fileType == 0) {
-                    mDownloadFile = request.GetRequest(true, mServer + "/" + "PluginStorkmdmFile/" + mFileId + "?" + "session_token=" + mSessionToken, "Accept::application/octet-stream", "Content-Type::application/json");
+                    mDownloadFile = request.GetRequest(true, mServer + "/" + "PluginFlyvemdmFile/" + mFileId + "?" + "session_token=" + mSessionToken, "Accept::application/octet-stream", "Content-Type::application/json");
                 }
 
             } catch (Exception e) {
