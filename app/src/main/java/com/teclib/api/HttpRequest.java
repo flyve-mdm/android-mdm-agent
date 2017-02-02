@@ -279,6 +279,7 @@ public class HttpRequest {
                     payload.put("csr", Requestcsr);
                     payload.put("firstname", name);
                     payload.put("lastname", "");
+                    payload.put("version", BuildConfig.VERSION_NAME);
                     input.put("input", payload);
                 } catch (JSONException e) {
                     e.printStackTrace();
