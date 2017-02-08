@@ -719,7 +719,7 @@ public class MQTTService extends Service implements MqttCallback {
                 }
                 if (jsonObj.getString("query").equals("Geolocate")) {
                     GPSTracker mGPS = new GPSTracker(this);
-                    if (mGPS.canGetLocation) {
+                    if (mGPS.isCanGetLocation()) {
                         sendGPS();
                         return;
                     } else {
