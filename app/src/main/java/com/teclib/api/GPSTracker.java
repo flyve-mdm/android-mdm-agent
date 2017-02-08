@@ -142,7 +142,7 @@ public final class GPSTracker implements LocationListener {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            FlyveLog.e(e.getMessage());
         }
 
         return location;
