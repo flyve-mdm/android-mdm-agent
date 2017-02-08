@@ -76,10 +76,10 @@ public class AndroidShell {
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            FlyveLog.e(e.getMessage());
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            FlyveLog.e(e.getMessage());
         }
 
         return output;
