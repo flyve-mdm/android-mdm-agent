@@ -146,14 +146,14 @@ public class Network {
         try {
             inetAddress = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            FlyveLog.e(e.getMessage());
         }
         displayStuff("local host", inetAddress);
         try {
             inetAddress = InetAddress.getByName(hostName);
             IP = inetAddress.getHostAddress();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            FlyveLog.e(e.getMessage());
         }
         displayStuff(hostName, inetAddress);
         return IP;
