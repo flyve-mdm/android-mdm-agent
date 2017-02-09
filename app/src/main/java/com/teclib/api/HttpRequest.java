@@ -281,7 +281,7 @@ public class HttpRequest {
                     payload.put("lastname", "");
                     input.put("input", payload);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    FlyveLog.e(e.getMessage());
                 }
 
                 URL obj = new URL(url);
@@ -338,7 +338,7 @@ public class HttpRequest {
                             return answer.getString(1);
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        FlyveLog.e(e.getMessage());
                     }
                 }
 
@@ -351,7 +351,6 @@ public class HttpRequest {
                     }
                 } catch (JSONException e) {
                     FlyveLog.e(e.getMessage());
-                    e.printStackTrace();
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
                 }
@@ -379,7 +378,7 @@ public class HttpRequest {
                     payload.put("version", BuildConfig.VERSION_NAME);
                     input.put("input", payload);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    FlyveLog.e(e.getMessage());
                 }
 
                 URL obj = new URL(url);
@@ -426,7 +425,7 @@ public class HttpRequest {
                             return answer.getString("id");
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        FlyveLog.e(e.getMessage());
                     }
 
                 } else {
@@ -442,7 +441,7 @@ public class HttpRequest {
                             return answer.getString(1);
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        FlyveLog.e(e.getMessage());
                     }
 
                 }
@@ -456,7 +455,7 @@ public class HttpRequest {
                     }
                 } catch (JSONException e) {
                     FlyveLog.e(e.getMessage());
-                    e.printStackTrace();
+                    FlyveLog.e(e.getMessage());
                 }
 
             } catch (Exception ex) {
