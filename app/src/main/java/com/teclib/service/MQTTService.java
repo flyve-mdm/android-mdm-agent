@@ -705,15 +705,15 @@ public class MQTTService extends Service implements MqttCallback {
 
             // KeepAlive
             if (jsonObj.has("query")) {
-                if (jsonObj.getString("query").equals("Inventory")) {
+                if ("Inventory".equals(jsonObj.getString("query"))) {
                     generateInventory();
                     return;
                 }
-                if (jsonObj.getString("query").equals("Ping")) {
+                if ("Ping".equals(jsonObj.getString("query"))) {
                     sendKeepAlive();
                     return;
                 }
-                if (jsonObj.getString("query").equals("Geolocate")) {
+                if ("Geolocate".equals(jsonObj.getString("query"))) {
                     GPSTracker mGPS = new GPSTracker(this);
                     if (mGPS.canGetLocation) {
                         sendGPS();
@@ -728,7 +728,7 @@ public class MQTTService extends Service implements MqttCallback {
             }
 
             if (jsonObj.has("unenroll")) {
-                if (jsonObj.getString("unenroll").equals("now")) {
+                if ("now".equals(jsonObj.getString("unenroll"))) {
                     unEnrolment();
                     return;
                 }
