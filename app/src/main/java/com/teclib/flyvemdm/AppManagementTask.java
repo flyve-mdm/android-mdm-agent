@@ -17,11 +17,10 @@ import java.io.File;
 
 public class AppManagementTask extends Thread {
 
-    public static String upkFile = "";
-    public static Context mContext = null;
-    private SharedPreferenceAction mSharedPreferenceAction;
+    private String upkFile = "";
+    private Context mContext = null;
     static final int REQUEST_INSTALL = 0;
-    public static boolean isFromMDM = false;
+    private boolean isFromMDM = false;
     private static int token_id = -1;
     private Activity mActivity;
 
