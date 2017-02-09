@@ -91,7 +91,7 @@ public class MQTTNotificationService extends Service {
                         CustomNotificationNoConnected(getString(R.string.flyve_unconnect));
                     }
                 }
-                if(intent.getAction().equals("com.teclib.service.STOP")){
+                if("com.teclib.service.STOP".equals(intent.getAction())){
                     cancelNotification(context,1);
                 }
             }
