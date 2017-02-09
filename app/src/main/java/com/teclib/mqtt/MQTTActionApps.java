@@ -30,11 +30,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.teclib.api.AppInfo;
@@ -85,7 +83,7 @@ public class MQTTActionApps {
         for (Object object : pkgAppsList)
         {
             ResolveInfo info = (ResolveInfo) object;
-            String strPackageName  = info.activityInfo.applicationInfo.packageName.toString();
+            String strPackageName  = info.activityInfo.applicationInfo.packageName;
 
             if(strPackageName.equals(jsonObject.getString("removeApp"))) {
                 FlyveLog.d("getView: applications name =  " + strPackageName);
