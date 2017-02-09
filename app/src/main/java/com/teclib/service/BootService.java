@@ -77,7 +77,7 @@ public class BootService extends Service {
         String server = mSharedPreferenceMQTT.getServer(mContext);
         FlyveLog.d(server);
 
-        if (server.equals("null")){
+        if ("null".equals(server)){
             CustomNotification(0);
         }
         else {
@@ -90,16 +90,16 @@ public class BootService extends Service {
 
         mIsEmptyApks = mSharedPreferenceAction.getApks(mContext);
 
-        FlyveLog.d(Arrays.toString(mIsEmptyApks.toArray()).toString());
+        FlyveLog.d(Arrays.toString(mIsEmptyApks.toArray()));
 
-        if(!Arrays.toString(mIsEmptyApks.toArray()).equals("[null]")){
+        if(!"[null]".equals(Arrays.toString(mIsEmptyApks.toArray()))){
           //  Intent intent = new Intent(mContext,NotificationInstallService.class);
           //  mContext.startService(intent);
         }
 
 
         mIsEmptyRemoveApks = mSharedPreferenceAction.getApksRemove(mContext);
-        if(!Arrays.toString(mIsEmptyRemoveApks.toArray()).equals("[null]")){
+        if(!"[null]".equals(Arrays.toString(mIsEmptyRemoveApks.toArray()))){
             Intent intentRemove = new Intent(mContext,NotificationRemoveService.class);
             mContext.startService(intentRemove);
         }
@@ -128,7 +128,7 @@ public class BootService extends Service {
             do {
                 try {
                     Thread.sleep(10000);
-                    if(!mSharedPreferenceMQTT.getServer(mContext).equals("null")){
+                    if(!"null".equals(mSharedPreferenceMQTT.getServer(mContext))){
                         bThreadExec=false;
                         Intent mqtt = new Intent(mContext, MQTTService.class);
                         mqtt.setAction(MQTTService.ACTION_START);
@@ -138,6 +138,8 @@ public class BootService extends Service {
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     bThreadExec = false;
+                    FlyveLog.e("MQTT Interrupted Exception", e);
+                    Thread.currentThread().interrupt();
                 }
             }while (bThreadExec);
 
