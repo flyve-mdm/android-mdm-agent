@@ -46,19 +46,17 @@ import java.util.ArrayList;
 
 public class MQTTAction extends BroadcastReceiver {
 
-    private SharedPreferenceConnectivity mSharedPreferenceConnectivity;
-    private ArrayList<String> mIntentArgs;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(MQTTService.MQTT_MSG_RECEIVED_INTENT)) {
             String Jsonreceive = intent.getStringExtra(MQTTService.MQTT_MSG_RECEIVED_MSG);
-            mSharedPreferenceConnectivity = new SharedPreferenceConnectivity();
+            SharedPreferenceConnectivity mSharedPreferenceConnectivity = new SharedPreferenceConnectivity();
 
             try {
                 ExecuteCommands(context, Jsonreceive);
             } catch (JSONException e) {
-                e.printStackTrace();
+                FlyveLog.e("Execute commands ", e);
             }
 
             try {
@@ -74,8 +72,7 @@ public class MQTTAction extends BroadcastReceiver {
             }
             catch (Exception e)
             {
-                FlyveLog.e(e.getMessage());
-                e.printStackTrace();
+                FlyveLog.e("get WifiManager", e);
             }
 
             BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -91,7 +88,7 @@ public class MQTTAction extends BroadcastReceiver {
         JSONObject jsonObj = new JSONObject(message);
 
         if(jsonObj.has("application")){
-            JSONArray checkInstall = new JSONArray();
+            JSONArray checkInstall;
             checkInstall = jsonObj.getJSONArray("application");
 
             for(int i = 0; i < checkInstall.length(); i++){
@@ -109,7 +106,7 @@ public class MQTTAction extends BroadcastReceiver {
         }
 
         if(jsonObj.has("file")){
-            JSONArray checkInstall = new JSONArray();
+            JSONArray checkInstall;
             checkInstall = jsonObj.getJSONArray("file");
 
             for(int i = 0; i < checkInstall.length(); i++){
@@ -130,7 +127,7 @@ public class MQTTAction extends BroadcastReceiver {
             mqttActionLauncher.forward(jsonObj);
         }
         if(jsonObj.has("wipe")){
-            mIntentArgs = new ArrayList<String>();
+            ArrayList<String> mIntentArgs = new ArrayList<>();
             mIntentArgs.add("wipe");
 
             Intent intentone = new Intent(mContext.getApplicationContext(), com.teclib.api.DeviceAdmin.class);
