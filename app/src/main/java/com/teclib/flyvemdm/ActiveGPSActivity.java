@@ -41,19 +41,16 @@ public class ActiveGPSActivity extends Activity {
 
     private Context mContext;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
         startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 1);
     }
 
+    @Override
     protected void onResume(){
         super.onResume();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     @Override
