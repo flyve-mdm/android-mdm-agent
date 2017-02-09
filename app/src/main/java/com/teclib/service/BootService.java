@@ -138,6 +138,8 @@ public class BootService extends Service {
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     bThreadExec = false;
+                    FlyveLog.e("MQTT Interrupted Exception", e);
+                    Thread.currentThread().interrupt();
                 }
             }while (bThreadExec);
 
