@@ -90,7 +90,7 @@ public class BootService extends Service {
 
         mIsEmptyApks = mSharedPreferenceAction.getApks(mContext);
 
-        FlyveLog.d(Arrays.toString(mIsEmptyApks.toArray()).toString());
+        FlyveLog.d(Arrays.toString(mIsEmptyApks.toArray()));
 
         if(!"[null]".equals(Arrays.toString(mIsEmptyApks.toArray()))){
           //  Intent intent = new Intent(mContext,NotificationInstallService.class);
