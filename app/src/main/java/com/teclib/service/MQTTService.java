@@ -518,7 +518,7 @@ public class MQTTService extends Service implements MqttCallback {
                             }
                         });
                     } catch (Exception e) {
-                        // TODO: handle exception
+                        FlyveLog.e("Reconnect Thread", e);
                     }
                 }
             }
