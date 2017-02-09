@@ -138,12 +138,12 @@ public class MQTTService extends Service implements MqttCallback {
             NetworkInfo infos[] = mConnectivityManager.getAllNetworkInfo();
 
             for (int i = 0; i < infos.length; i++) {
-                if (infos[i].getTypeName().equalsIgnoreCase("MOBILE")) {
+                if ("MOBILE".equalsIgnoreCase(infos[i].getTypeName())) {
                     if ((infos[i].isConnected() != hasMmobile)) {
                         hasMmobile = infos[i].isConnected();
                     }
                     FlyveLog.d(infos[i].getTypeName() + " is " + infos[i].isConnected());
-                } else if (infos[i].getTypeName().equalsIgnoreCase("WIFI")) {
+                } else if ("WIFI".equalsIgnoreCase(infos[i].getTypeName())) {
                     if ((infos[i].isConnected() != hasWifi)) {
                         hasWifi = infos[i].isConnected();
                     }
@@ -349,7 +349,7 @@ public class MQTTService extends Service implements MqttCallback {
         password = sharedPreferenceMQTT.getPassword(getBaseContext());
         String strMqttPort = sharedPreferenceMQTT.getPort(getBaseContext());
         String mqttHost = sharedPreferenceMQTT.getServer(getBaseContext());
-        boolean isTls = sharedPreferenceMQTT.getTLS(getBaseContext()).equals("1");
+        boolean isTls = "1".equals(sharedPreferenceMQTT.getTLS(getBaseContext()));
         int mqttPort = 1883;
         try {
             mqttPort = Integer.parseInt(strMqttPort);
