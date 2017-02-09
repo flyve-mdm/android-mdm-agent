@@ -135,7 +135,6 @@ public class MQTTService extends Service implements MqttCallback {
     class MQTTBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            boolean hasConnectivity = false;
             NetworkInfo infos[] = mConnectivityManager.getAllNetworkInfo();
 
             for (int i = 0; i < infos.length; i++) {
