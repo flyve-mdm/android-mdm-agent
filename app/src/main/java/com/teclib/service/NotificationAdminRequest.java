@@ -67,7 +67,7 @@ public class NotificationAdminRequest extends Service {
         intentFilter.addAction(ACTION);
         registerReceiver(notifyServiceReceiver, intentFilter);
         FlyveLog.d(sharedPreferenceAction.getApks(getBaseContext()).toString());
-        if(sharedPreferenceAction.getApks(getBaseContext()).toString().equals("[null]")){
+        if("[null]".equals(sharedPreferenceAction.getApks(getBaseContext()).toString())){
             FlyveLog.e("notification whitout sharedpreference apk");
         }
         else {
