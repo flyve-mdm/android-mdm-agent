@@ -639,7 +639,7 @@ public class MQTTService extends Service implements MqttCallback {
     }
 
     public void sendGPSDesactivated() throws JSONException {
-        String gpsDesac = null;
+        String gpsDesac;
         JSONObject jsonNoGPS = new JSONObject();
 
         jsonNoGPS.put("gps", "off");
@@ -659,7 +659,7 @@ public class MQTTService extends Service implements MqttCallback {
 
 
     public void sendGPS() throws JSONException {
-        String gpsLoc = null;
+        String gpsLoc;
         double test = 0.0;
         GPSTracker mGPS = new GPSTracker(this);
         mGPS.getLocation();
@@ -735,7 +735,7 @@ public class MQTTService extends Service implements MqttCallback {
             }
 
             if (jsonObj.has("subscribe")) {
-                String NewTopics = new String();
+                String NewTopics;
                 JSONArray array = jsonObj.getJSONArray("subscribe");
                 Set<String> topicSet = sharedPreferenceMQTT.getTopics(getBaseContext());
                 String[] topicsTestTab = topicSet.toArray(new String[topicSet.size()]);
