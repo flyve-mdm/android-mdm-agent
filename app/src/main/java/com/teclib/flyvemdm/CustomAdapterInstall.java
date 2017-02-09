@@ -60,11 +60,11 @@ public class CustomAdapterInstall extends BaseAdapter {
     private String[] msplitResultFinal;
     private boolean[] minstalledApp;
 
-    public static String [] prgmNameList;
+    private String [] prgmNameList;
 
     public CustomAdapterInstall(Context context) {
 
-        listArray = new ArrayList<DataModelInstall>(20); //limit 20 applications in a configuration
+        listArray = new ArrayList<>(20); //limit 20 applications in a configuration
 
         msharedPreferenceAction = new SharedPreferenceAction();
         mcontext = context;
@@ -83,7 +83,7 @@ public class CustomAdapterInstall extends BaseAdapter {
             minstalledApp[i] = false;
         }
 
-        if(Arrays.toString(mapks.toArray()).equals("[null]")){
+        if("[null]".equals(Arrays.toString(mapks.toArray()))){
             FlyveLog.i("0 application found");
             return;
         }
@@ -97,7 +97,7 @@ public class CustomAdapterInstall extends BaseAdapter {
             msplitResultFinal = msplitResult[i].split("/");
             for(int j = 0 ; j < msplitResultFinal.length; j++){
                 if(msplitResultFinal[j].contains(".apk")){
-                    listArray.add(new DataModelInstall(msplitResultFinal[j].toString(), msplitPackageName[i]));
+                    listArray.add(new DataModelInstall(msplitResultFinal[j], msplitPackageName[i]));
                 }
             }
         }
@@ -145,7 +145,7 @@ public class CustomAdapterInstall extends BaseAdapter {
         for (Object object : pkgAppsList)
         {
             ResolveInfo info = (ResolveInfo) object;
-            String strPackageName  = info.activityInfo.applicationInfo.packageName.toString();
+            String strPackageName  = info.activityInfo.applicationInfo.packageName;
 
             if(strPackageName.equals(dataModelInstall.getPackageName())) {
                 FlyveLog.i("Applications name =  " + strPackageName);
@@ -183,7 +183,8 @@ public class CustomAdapterInstall extends BaseAdapter {
 
     public static boolean areAllTrue(boolean[] minstalledApp)
     {
-        for(boolean check : minstalledApp) if(!check) return false;
+        for(boolean check : minstalledApp)
+            if(!check) return false;
         return true;
     }
 
