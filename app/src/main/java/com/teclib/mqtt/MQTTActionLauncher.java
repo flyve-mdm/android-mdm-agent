@@ -33,6 +33,7 @@ import android.content.Intent;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.teclib.api.FlyveLog;
 import com.teclib.launcher.ReplyInterface;
 
 
@@ -53,7 +54,7 @@ public class MQTTActionLauncher {
             jsonObj.put(label, obj);
             newJSONStringLauncher = jsonObj.toString();
         } catch (JSONException e) {
-            e.printStackTrace();
+            FlyveLog.e("JSON String launcher", e);
         }
         return newJSONStringLauncher;
     }
@@ -87,7 +88,7 @@ public class MQTTActionLauncher {
         try{
             mContext.startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
+            FlyveLog.e("start activity", e);
         }
     }
 

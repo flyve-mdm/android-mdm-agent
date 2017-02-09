@@ -26,7 +26,6 @@
 
 package com.teclib.mqtt;
 
-import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.Intent;
 
@@ -38,7 +37,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class MQTTActionPolicies {

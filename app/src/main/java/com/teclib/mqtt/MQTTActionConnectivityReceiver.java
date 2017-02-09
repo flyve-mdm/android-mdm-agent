@@ -48,7 +48,7 @@ public class MQTTActionConnectivityReceiver extends BroadcastReceiver{
         mSharedPreferenceConnectivity = new SharedPreferenceConnectivity();
 
         //WIFI
-        if (action.equals("android.net.wifi.STATE_CHANGE")) {
+        if ("android.net.wifi.STATE_CHANGE".equals(action)) {
             NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
             if (info != null && info.isAvailable()) {
 
