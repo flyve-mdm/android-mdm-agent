@@ -39,7 +39,7 @@ import java.util.Set;
 
 public class AppManagementActivity extends Activity{
 
-    public static Context mContext = null;
+    private Context mContext = null;
     private SharedPreferenceAction mSharedPreferenceAction;
 
     @SuppressLint("SdCardPath")
