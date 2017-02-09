@@ -39,17 +39,15 @@ import java.util.Set;
 
 public class AppManagementActivity extends Activity{
 
-    private Context mContext = null;
-    private SharedPreferenceAction mSharedPreferenceAction;
-
     @SuppressLint("SdCardPath")
+    @Override
     public void onStart(){
 
         super.onStart();
-        mContext = this;
-        mSharedPreferenceAction = new SharedPreferenceAction();
+        Context mContext = this;
+        SharedPreferenceAction mSharedPreferenceAction = new SharedPreferenceAction();
         FlyveLog.d("AppManagementActivity");
-        String Token = "";
+        String Token;
         if(getIntent().getAction() != null && getIntent().getAction().equals("android.intent.action.MAIN")){
 
             FlyveLog.v("UPKDeploy Activity intent exists");
@@ -69,7 +67,7 @@ public class AppManagementActivity extends Activity{
     }
 
     public void onCreate(){
-
+        FlyveLog.d("onCreate");
     }
 
 
