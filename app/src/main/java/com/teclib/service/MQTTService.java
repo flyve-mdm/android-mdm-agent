@@ -224,7 +224,7 @@ public class MQTTService extends Service implements MqttCallback {
                 try {
                     sendGPS();
                 } catch (JSONException e) {
-                    FlyveLog.e(e.getMessage());
+                    FlyveLog.e("sendGPS", e);
                 }
             }
             if (action.equals(ACTION_SEND)) {
@@ -236,9 +236,9 @@ public class MQTTService extends Service implements MqttCallback {
                 try {
                     sendInventory();
                 } catch (MqttConnectivityException e) {
-                    FlyveLog.e(e.getMessage());
+                    FlyveLog.e("sendInventory MQTT Connectivity", e);
                 } catch (MqttException e) {
-                    FlyveLog.e(e.getMessage());
+                    FlyveLog.e("sendInventory MQTT", e);
                 }
             }
         }
@@ -293,7 +293,7 @@ public class MQTTService extends Service implements MqttCallback {
                 }
             });
         } catch (MqttException e) {
-            FlyveLog.e(e.getMessage());
+            FlyveLog.e("MQTT Token", e);
         }
 
     }
@@ -322,7 +322,7 @@ public class MQTTService extends Service implements MqttCallback {
             mClient.unsubscribe(sub);
 
         } catch (MqttException e) {
-            FlyveLog.e(e.getMessage());
+            FlyveLog.e("MQTT unsubscribe", e);
         }
 
         sharedPreferenceMQTT.removeTopics(getBaseContext());
@@ -354,7 +354,7 @@ public class MQTTService extends Service implements MqttCallback {
         try {
             mqttPort = Integer.parseInt(strMqttPort);
         } catch (Exception ex) {
-            FlyveLog.i("invalid mqtt port value '" + mqttPort + "', defaulted to 1883");
+            FlyveLog.e("Invalid mqtt port value '" + mqttPort + "', defaulted to 1883", ex);
         }
 
         FlyveLog.d("defined mqtt setting: port " + mqttPort + " address: " + mqttHost);
@@ -410,11 +410,9 @@ public class MQTTService extends Service implements MqttCallback {
                             generateInventory();
                             sharedPreferenceMQTT.saveIsInventory(getBaseContext(), true);
                         } catch (MqttConnectivityException e) {
-                            FlyveLog.e(e.getMessage());
-                            e.printStackTrace();
+                            FlyveLog.e("generateInventory MQTT Connectivity", e);
                         } catch (MqttException e) {
-                            FlyveLog.e(e.getMessage());
-                            e.printStackTrace();
+                            FlyveLog.e("generateInventory MQTT", e);
                         }
                     }
                 }
@@ -489,8 +487,7 @@ public class MQTTService extends Service implements MqttCallback {
         mClient = null;
         mStarted = false;
         isRunning = true;
-        FlyveLog.i("connectionLost: " + arg0.toString());
-        arg0.printStackTrace();
+        FlyveLog.i("connectionLost: ", arg0);
 
         if (isOnline()) {
             connect();
