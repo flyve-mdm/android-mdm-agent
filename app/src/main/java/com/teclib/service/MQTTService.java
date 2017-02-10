@@ -518,7 +518,7 @@ public class MQTTService extends Service implements MqttCallback {
                             }
                         });
                     } catch (Exception e) {
-                        // TODO: handle exception
+                        FlyveLog.e("Reconnect Thread", e);
                     }
                 }
             }
@@ -611,7 +611,9 @@ public class MQTTService extends Service implements MqttCallback {
         BufferedReader reader = null;
         StringBuilder text = new StringBuilder();
         try {
-            reader = new BufferedReader(new FileReader(new File(getBaseContext().getFilesDir(), "/android_inventory.xml")));
+            File tempFile = new File(getBaseContext().getFilesDir(), "/android_inventory.xml");
+            FileReader tempFileReader = new FileReader(tempFile);
+            reader = new BufferedReader(tempFileReader);
             String line;
 
             while ((line = reader.readLine()) != null) {
@@ -619,6 +621,7 @@ public class MQTTService extends Service implements MqttCallback {
                 text.append('\n');
             }
             reader.close();
+            tempFileReader.close();
         } catch (FileNotFoundException e) {
             FlyveLog.e("file not found exception", e);
         } catch (IOException e) {
@@ -639,7 +642,7 @@ public class MQTTService extends Service implements MqttCallback {
     }
 
     public void sendGPSDesactivated() throws JSONException {
-        String gpsDesac = null;
+        String gpsDesac;
         JSONObject jsonNoGPS = new JSONObject();
 
         jsonNoGPS.put("gps", "off");
@@ -659,7 +662,7 @@ public class MQTTService extends Service implements MqttCallback {
 
 
     public void sendGPS() throws JSONException {
-        String gpsLoc = null;
+        String gpsLoc;
         double test = 0.0;
         GPSTracker mGPS = new GPSTracker(this);
         mGPS.getLocation();
@@ -705,15 +708,15 @@ public class MQTTService extends Service implements MqttCallback {
 
             // KeepAlive
             if (jsonObj.has("query")) {
-                if (jsonObj.getString("query").equals("Inventory")) {
+                if ("Inventory".equals(jsonObj.getString("query"))) {
                     generateInventory();
                     return;
                 }
-                if (jsonObj.getString("query").equals("Ping")) {
+                if ("Ping".equals(jsonObj.getString("query"))) {
                     sendKeepAlive();
                     return;
                 }
-                if (jsonObj.getString("query").equals("Geolocate")) {
+                if ("Geolocate".equals(jsonObj.getString("query"))) {
                     GPSTracker mGPS = new GPSTracker(this);
                     if (mGPS.isCanGetLocation()) {
                         sendGPS();
@@ -728,14 +731,14 @@ public class MQTTService extends Service implements MqttCallback {
             }
 
             if (jsonObj.has("unenroll")) {
-                if (jsonObj.getString("unenroll").equals("now")) {
+                if ("now".equals(jsonObj.getString("unenroll"))) {
                     unEnrolment();
                     return;
                 }
             }
 
             if (jsonObj.has("subscribe")) {
-                String NewTopics = new String();
+                String NewTopics;
                 JSONArray array = jsonObj.getJSONArray("subscribe");
                 Set<String> topicSet = sharedPreferenceMQTT.getTopics(getBaseContext());
                 String[] topicsTestTab = topicSet.toArray(new String[topicSet.size()]);
