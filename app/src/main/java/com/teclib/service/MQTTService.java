@@ -609,10 +609,12 @@ public class MQTTService extends Service implements MqttCallback {
 
     public String ReadInventory() {
         BufferedReader reader = null;
+        File tempFile;
+        FileReader tempFileReader = null;
         StringBuilder text = new StringBuilder();
         try {
-            File tempFile = new File(getBaseContext().getFilesDir(), "/android_inventory.xml");
-            FileReader tempFileReader = new FileReader(tempFile);
+            tempFile = new File(getBaseContext().getFilesDir(), "/android_inventory.xml");
+            tempFileReader = new FileReader(tempFile);
             reader = new BufferedReader(tempFileReader);
             String line;
 
@@ -620,12 +622,19 @@ public class MQTTService extends Service implements MqttCallback {
                 text.append(line);
                 text.append('\n');
             }
-            reader.close();
-            tempFileReader.close();
         } catch (FileNotFoundException e) {
             FlyveLog.e("file not found exception", e);
         } catch (IOException e) {
             FlyveLog.e("io error", e);
+        } finally {
+            try {
+                reader.close();
+                tempFileReader.close();
+            } catch (IOException e) {
+                FlyveLog.e("io error", e);
+            } catch (NullPointerException e){
+                FlyveLog.e("Error on close", e);
+            }
         }
         return text.toString();
     }
