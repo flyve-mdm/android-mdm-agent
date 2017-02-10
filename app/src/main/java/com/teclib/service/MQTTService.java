@@ -611,7 +611,9 @@ public class MQTTService extends Service implements MqttCallback {
         BufferedReader reader = null;
         StringBuilder text = new StringBuilder();
         try {
-            reader = new BufferedReader(new FileReader(new File(getBaseContext().getFilesDir(), "/android_inventory.xml")));
+            File tempFile = new File(getBaseContext().getFilesDir(), "/android_inventory.xml");
+            FileReader tempFileReader = new FileReader(tempFile);
+            reader = new BufferedReader(tempFileReader);
             String line;
 
             while ((line = reader.readLine()) != null) {
@@ -619,6 +621,7 @@ public class MQTTService extends Service implements MqttCallback {
                 text.append('\n');
             }
             reader.close();
+            tempFileReader.close();
         } catch (FileNotFoundException e) {
             FlyveLog.e("file not found exception", e);
         } catch (IOException e) {
