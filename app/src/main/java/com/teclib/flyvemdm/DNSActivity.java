@@ -37,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.teclib.api.FlyveLog;
 import com.teclib.api.Network;
 
 import java.lang.reflect.InvocationTargetException;
@@ -49,7 +50,6 @@ public class DNSActivity extends Activity {
     private RelativeLayout client_status;
     private String URLIp;
     private String DNSIp;
-    private String link;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +91,6 @@ public class DNSActivity extends Activity {
 
         Network ac = new Network();
 
-        //int count = 0;
         int flag = 0;
 
         if (ac.getInstance(this).isOnline()){
@@ -125,13 +124,13 @@ public class DNSActivity extends Activity {
         try {
             DNSIp = ac.getDNSAddress();
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            FlyveLog.e("InvocationTargetException",e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            FlyveLog.e("IllegalAccessException",e);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            FlyveLog.e("NoSuchMethodException",e);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            FlyveLog.e("ClassNotFoundException",e);
         }
 
         if (!DNSIp.isEmpty()) {
@@ -164,7 +163,6 @@ public class DNSActivity extends Activity {
     }
 
     public void next_Page(View v){
-        link="&serial="+Build.SERIAL;
         Intent next = new Intent(DNSActivity.this, HTTPActivity.class);
         next.putExtra("serial", URLIp);
         next.putExtra("dnsip", DNSIp);
