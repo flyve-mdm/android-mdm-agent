@@ -93,19 +93,26 @@ public class AndroidCryptoProvider {
         if (!f.exists()) {
             return null;
         }
-
+        FileInputStream fin = null;
         try {
-            FileInputStream fin = new FileInputStream(f);
+            fin = new FileInputStream(f);
             byte[] fileData = new byte[(int) f.length()];
             if (fin.read(fileData) != f.length()) {
                 // Failed to read
                 fileData = null;
             }
-            fin.close();
             return fileData;
         } catch (IOException e) {
             FlyveLog.e(e.getMessage());
             return null;
+        } finally {
+            try {
+                fin.close();
+            } catch (IOException e){
+                FlyveLog.e("close FileInputStream, IO exception", e);
+            } catch (NullPointerException e){
+                FlyveLog.e("close FileInputStream, NullP exception", e);
+            }
         }
     }
 
@@ -182,9 +189,11 @@ public class AndroidCryptoProvider {
     }
 
     private void saveCsrKey() {
+        FileOutputStream csrOut = null;
+        FileOutputStream keyOut = null;
         try {
-            FileOutputStream csrOut = new FileOutputStream(csrFile);
-            FileOutputStream keyOut = new FileOutputStream(keyFile);
+            csrOut = new FileOutputStream(csrFile);
+            keyOut = new FileOutputStream(keyFile);
 
             String type = "CERTIFICATE REQUEST";
             byte[] encoding = csr.getEncoded();
@@ -210,20 +219,28 @@ public class AndroidCryptoProvider {
             // Write the private out in PKCS8 format
             keyOut.write(key.getEncoded());
 
-            csrOut.close();
-            keyOut.close();
 
         } catch (IOException e) {
             FlyveLog.e(e.getMessage());
             // This isn't good because it means we'll have
             // to re-pair next time
             e.printStackTrace();
+        } finally {
+            try {
+                csrOut.close();
+                keyOut.close();
+            } catch (IOException e){
+                FlyveLog.e("saveCsrKey, IOException", e);
+            } catch (NullPointerException e){
+                FlyveLog.e("saveCsrKey, NullP Exception", e);
+            }
         }
     }
 
     public void saveCertKey(String certString) {
+        FileOutputStream certOut = null;
         try {
-            FileOutputStream certOut = new FileOutputStream(certFile);
+            certOut = new FileOutputStream(certFile);
 
             byte[] certBytes = certString.getBytes();
 
@@ -257,6 +274,14 @@ public class AndroidCryptoProvider {
             // This isn't good because it means we'll have
             // to re-pair next time
             e.printStackTrace();
+        } finally {
+            try {
+                certOut.close();
+            } catch (IOException e){
+                FlyveLog.e("saveCertKey, IOException", e);
+            } catch (NullPointerException e){
+                FlyveLog.e("saveCertKey, NullP exception", e);
+            }
         }
     }
 
