@@ -195,8 +195,6 @@ public class AndroidCryptoProvider {
             String type = "CERTIFICATE REQUEST";
             byte[] encoding = csr.getEncoded();
 
-            PemObject pemObject = new PemObject(type, encoding);
-
             // Write the certificate in OpenSSL PEM format (important for the server)
             StringWriter strWriter = new StringWriter();
             JcaPEMWriter pemWriter = new JcaPEMWriter(strWriter);
