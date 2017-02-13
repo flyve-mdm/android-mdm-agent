@@ -103,7 +103,7 @@ public class AndroidCryptoProvider {
             }
             return fileData;
         } catch (IOException e) {
-            FlyveLog.e(e.getMessage());
+            FlyveLog.e("loadFileToBytes IOException",e);
             return null;
         } finally {
             try {
@@ -150,14 +150,12 @@ public class AndroidCryptoProvider {
             keyPairGenerator.initialize(4096);
             keyPair = keyPairGenerator.generateKeyPair();
         } catch (NoSuchAlgorithmException e1) {
-            FlyveLog.wtf(e1.getMessage());
+            FlyveLog.wtf("generateRequest",e1);
             // Should never happen
-            e1.printStackTrace();
             return false;
         } catch (NoSuchProviderException e) {
             // Should never happen
-            FlyveLog.wtf(e.getMessage());
-            e.printStackTrace();
+            FlyveLog.wtf("generateRequest",e);
             return false;
         }
 
@@ -167,7 +165,7 @@ public class AndroidCryptoProvider {
         try {
             signGen = new JcaContentSignerBuilder("SHA1withRSA").build(keyPair.getPrivate());
         } catch (OperatorCreationException e) {
-            e.printStackTrace();
+            FlyveLog.e("generateRequest",e);
         }
         PKCS10CertificationRequestBuilder builder = new JcaPKCS10CertificationRequestBuilder(subjectName, keyPair.getPublic());
         csr = builder.build(signGen);
@@ -176,8 +174,7 @@ public class AndroidCryptoProvider {
             key = (RSAPrivateKey) keyPair.getPrivate();
         } catch (Exception e) {
             // Nothing should go wrong here
-            FlyveLog.wtf(e.getMessage());
-            e.printStackTrace();
+            FlyveLog.wtf("generateRequest",e);
             return false;
         }
 
@@ -221,7 +218,7 @@ public class AndroidCryptoProvider {
 
 
         } catch (IOException e) {
-            FlyveLog.e(e.getMessage());
+            FlyveLog.e("saveCsrKey",e);
             // This isn't good because it means we'll have
             // to re-pair next time
             e.printStackTrace();
@@ -249,9 +246,9 @@ public class AndroidCryptoProvider {
                 certFactory = CertificateFactory.getInstance("X.509", "BC");
                 cert = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(certBytes));
             } catch (CertificateException e) {
-                e.printStackTrace();
+                FlyveLog.e("saveCertKey",e);
             } catch (NoSuchProviderException e) {
-                e.printStackTrace();
+                FlyveLog.e("saveCertKey",e);
             }
 
             // Write the certificate in OpenSSL PEM format (important for the server)
@@ -273,7 +270,7 @@ public class AndroidCryptoProvider {
         } catch (IOException e) {
             // This isn't good because it means we'll have
             // to re-pair next time
-            e.printStackTrace();
+            FlyveLog.e("saveCertKey",e);
         } finally {
             try {
                 certOut.close();
