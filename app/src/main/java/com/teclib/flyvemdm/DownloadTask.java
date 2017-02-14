@@ -72,7 +72,8 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 
     private static String mDownloadFile;
     private static String mDestination;
-    private  String directory;
+
+    private String directory;
 
 
     public DownloadTask(Context context) {
@@ -82,6 +83,10 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
         sharedPreferenceSettings = new SharedPreferenceSettings();
         //mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
+    public String getDirectory() {
+        return directory;
+    }
+
 
     public static String getmJsonDownload() {
         return mJsonDownload;

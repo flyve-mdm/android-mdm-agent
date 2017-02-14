@@ -102,7 +102,7 @@ public class HttpRequest {
      * @return http answer
      */
     public String GetRequest(Boolean download, String... urls) throws NoSuchAlgorithmException, IOException {
-
+        DownloadTask downloadTask = new DownloadTask(mContext);
         // check protocol
         if (urls[0].split(":")[0].equals("http")) {
             try {
@@ -127,11 +127,11 @@ public class HttpRequest {
                     try {
                         int fileLength = connection.getContentLength();
                         FlyveLog.d("GetRequest: filename" + filename);
-                        new File(DownloadTask.directory).mkdirs();
+                        new File(downloadTask.getDirectory()).mkdirs();
 
                         //copying
                         InputStream input = connection.getInputStream();
-                        OutputStream output = new FileOutputStream(DownloadTask.directory + filename);
+                        OutputStream output = new FileOutputStream(downloadTask.getDirectory() + filename);
                         FlyveLog.d("GetRequest input stream = " + input.toString());
 
 
@@ -209,9 +209,9 @@ public class HttpRequest {
                     int fileLength = connection.getContentLength();
 
                     FlyveLog.d("GetRequest: filename" + filename);
-                    new File(DownloadTask.directory).mkdirs();
+                    new File(downloadTask.getDirectory()).mkdirs();
                     InputStream input = connection.getInputStream();
-                    OutputStream output = new FileOutputStream(DownloadTask.directory + filename);
+                    OutputStream output = new FileOutputStream(downloadTask.getDirectory() + filename);
 
                     FlyveLog.d("GetRequest input stream = " + input.toString());
 
