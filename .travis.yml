@@ -35,3 +35,6 @@ licenses:
     - 'google-gdk-license-.+'
 script:
      - ./gradlew connectedCheck -PdisablePreDex -PtaskThreads=1 -PandroidThread=1
+     
+notifications:
+  webhooks: https://fathomless-fjord-24024.herokuapp.com/notify
