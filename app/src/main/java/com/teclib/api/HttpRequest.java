@@ -103,6 +103,7 @@ public class HttpRequest {
      */
     public String GetRequest(Boolean download, String... urls) throws NoSuchAlgorithmException, IOException {
         DownloadTask downloadTask = new DownloadTask(mContext);
+
         // check protocol
         if (urls[0].split(":")[0].equals("http")) {
             try {
@@ -127,11 +128,11 @@ public class HttpRequest {
                     try {
                         int fileLength = connection.getContentLength();
                         FlyveLog.d("GetRequest: filename" + filename);
-                        new File(downloadTask.getDirectory()).mkdirs();
+                        new File(DownloadTask.directory).mkdirs();
 
                         //copying
                         InputStream input = connection.getInputStream();
-                        OutputStream output = new FileOutputStream(downloadTask.getDirectory() + filename);
+                        OutputStream output = new FileOutputStream(DownloadTask.directory + filename);
                         FlyveLog.d("GetRequest input stream = " + input.toString());
 
 
@@ -209,9 +210,9 @@ public class HttpRequest {
                     int fileLength = connection.getContentLength();
 
                     FlyveLog.d("GetRequest: filename" + filename);
-                    new File(downloadTask.getDirectory()).mkdirs();
+                    new File(DownloadTask.directory).mkdirs();
                     InputStream input = connection.getInputStream();
-                    OutputStream output = new FileOutputStream(downloadTask.getDirectory() + filename);
+                    OutputStream output = new FileOutputStream(DownloadTask.directory + filename);
 
                     FlyveLog.d("GetRequest input stream = " + input.toString());
 
@@ -279,6 +280,7 @@ public class HttpRequest {
                     payload.put("csr", Requestcsr);
                     payload.put("firstname", name);
                     payload.put("lastname", "");
+                    payload.put("version", BuildConfig.VERSION_NAME);
                     input.put("input", payload);
                 } catch (JSONException e) {
                     FlyveLog.e(e.getMessage());

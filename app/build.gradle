@@ -8,8 +8,8 @@ android {
         applicationId "com.teclib.flyvemdm"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 75
-        versionName "0.99.45"
+        versionCode 76
+        versionName "0.99.46"
     }
     signingConfigs {
         release {
