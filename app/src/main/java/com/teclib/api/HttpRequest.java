@@ -102,6 +102,7 @@ public class HttpRequest {
      * @return http answer
      */
     public String GetRequest(Boolean download, String... urls) throws NoSuchAlgorithmException, IOException {
+        DownloadTask downloadTask = new DownloadTask(mContext);
 
         // check protocol
         if (urls[0].split(":")[0].equals("http")) {
@@ -279,9 +280,10 @@ public class HttpRequest {
                     payload.put("csr", Requestcsr);
                     payload.put("firstname", name);
                     payload.put("lastname", "");
+                    payload.put("version", BuildConfig.VERSION_NAME);
                     input.put("input", payload);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    FlyveLog.e(e.getMessage());
                 }
 
                 URL obj = new URL(url);
@@ -338,7 +340,7 @@ public class HttpRequest {
                             return answer.getString(1);
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        FlyveLog.e(e.getMessage());
                     }
                 }
 
@@ -351,7 +353,6 @@ public class HttpRequest {
                     }
                 } catch (JSONException e) {
                     FlyveLog.e(e.getMessage());
-                    e.printStackTrace();
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
                 }
@@ -379,7 +380,7 @@ public class HttpRequest {
                     payload.put("version", BuildConfig.VERSION_NAME);
                     input.put("input", payload);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    FlyveLog.e(e.getMessage());
                 }
 
                 URL obj = new URL(url);
@@ -426,7 +427,7 @@ public class HttpRequest {
                             return answer.getString("id");
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        FlyveLog.e(e.getMessage());
                     }
 
                 } else {
@@ -442,7 +443,7 @@ public class HttpRequest {
                             return answer.getString(1);
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        FlyveLog.e(e.getMessage());
                     }
 
                 }
@@ -456,7 +457,7 @@ public class HttpRequest {
                     }
                 } catch (JSONException e) {
                     FlyveLog.e(e.getMessage());
-                    e.printStackTrace();
+                    FlyveLog.e(e.getMessage());
                 }
 
             } catch (Exception ex) {

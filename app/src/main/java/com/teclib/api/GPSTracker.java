@@ -39,13 +39,15 @@ public final class GPSTracker implements LocationListener {
     private final Context mContext;
 
     // flag for GPS status
-    public boolean isGPSEnabled = false;
+    private boolean isGPSEnabled = false;
 
     // flag for network status
     boolean isNetworkEnabled = false;
 
+
+
     // flag for GPS status
-    public boolean canGetLocation = false;
+    private boolean canGetLocation = false;
 
     Location location; // location
     double latitude; // latitude
@@ -63,6 +65,14 @@ public final class GPSTracker implements LocationListener {
     public GPSTracker(Context context) {
         this.mContext = context;
         getLocation();
+    }
+
+    public boolean isCanGetLocation() {
+        return canGetLocation;
+    }
+
+    public void setCanGetLocation(boolean canGetLocation) {
+        this.canGetLocation = canGetLocation;
     }
 
     /**
@@ -132,7 +142,7 @@ public final class GPSTracker implements LocationListener {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            FlyveLog.e(e.getMessage());
         }
 
         return location;

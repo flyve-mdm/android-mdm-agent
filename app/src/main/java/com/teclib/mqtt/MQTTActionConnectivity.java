@@ -44,7 +44,7 @@ public class MQTTActionConnectivity {
     }
 
     public void SaveValues(JSONObject jsonObject) throws JSONException {
-        JSONArray connectivity = new JSONArray();
+        JSONArray connectivity;
         connectivity = jsonObject.getJSONArray("connectivity");
 
         mSharedPreferenceConnectivity = new SharedPreferenceConnectivity();

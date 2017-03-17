@@ -54,28 +54,26 @@ import java.util.regex.Pattern;
 
 public class DownloadTask extends AsyncTask<String, Integer, String> {
 
+    private static final String SESSION_TOKEN = "session_token=";
+    private static final String PLUGIN_FLYVEMDM_PACKAGE = "PluginFlyvemdmPackage/";
     private SharedPreferenceAction mSharedPreferenceAction;
     private SharedPreferenceMQTT sharedPreferenceMQTT;
     private SharedPreferenceSettings sharedPreferenceSettings;
 
     private Context mContext;
 
-    public int fileType = 0;
+    private int fileType = 0;
 
     public static String mJsonDownload = null;
+    private String PackageName;
 
-    private static String PackageName;
-    private static String mFileId;
-    private static String mServer;
-    private static String mUserToken;
     private String mSessionToken;
     private String mPluginId;
-    private static String mFilelength;
-    private String[] downloadType;
+
     private static String mDownloadFile;
     private static String mDestination;
+
     public static String directory;
-    private String mjsonGetDownload;
 
 
     public DownloadTask(Context context) {
@@ -166,13 +164,13 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
     @SuppressWarnings("resource")
     @Override
     protected String doInBackground(String... sUrl) {
+        String mFileId = sUrl[1];
+        String mjsonGetDownload;
+        String mServer = sharedPreferenceSettings.getApiServer(mContext);
+        String mUserToken = sharedPreferenceSettings.getUserToken(mContext);
 
-        mServer = sharedPreferenceSettings.getApiServer(mContext);
-        mUserToken = sharedPreferenceSettings.getUserToken(mContext);
 
-        mFileId = sUrl[1];
-
-        if (sUrl[0].equals("file")) {
+        if ("file".equals(sUrl[0])) {
             mDestination = sUrl[2];
         } else if (sUrl[0].equals("application")) {
             PackageName = sUrl[2];
@@ -197,7 +195,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
             if (jsonObj.has("session_token")) {
                 mSessionToken = jsonObj.getString("session_token");
             }
-            String jsonFullSession = request.GetRequest(false, mServer + "/" + "getFullSession?" + "session_token=" + mSessionToken);
+            String jsonFullSession = request.GetRequest(false, mServer + "/" + "getFullSession?" + SESSION_TOKEN + mSessionToken);
             String pattern = "\"plugin_flyvemdm_guest_profiles_id\":\\s*([0-9]+)";
 
             // Create a Pattern object
@@ -211,14 +209,15 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
                 FlyveLog.wtf("Error plugin_flyvemdm_guest_profiles_id");
             }
 
-            String changeActiveProfile = request.GetRequest(false, mServer + "/" + "changeActiveProfile?" + "session_token=" + mSessionToken + "&profiles_id=" + mPluginId);
-            if (sUrl[0].equals("file")) {
-                mjsonGetDownload = request.GetRequest(false, mServer + "/" + "PluginFlyvemdmFile/" + mFileId + "?" + "session_token=" + mSessionToken);
+            request.GetRequest(false, mServer + "/" + "changeActiveProfile?" + SESSION_TOKEN + mSessionToken + "&profiles_id=" + mPluginId);
+
+            if ("file".equals(sUrl[0])) {
+                mjsonGetDownload = request.GetRequest(false, mServer + "/" + "PluginFlyvemdmFile/" + mFileId + "?" + SESSION_TOKEN + mSessionToken);
             } else {
-                mjsonGetDownload = request.GetRequest(false, mServer + "/" + "PluginFlyvemdmPackage/" + mFileId + "?" + "session_token=" + mSessionToken);
+                mjsonGetDownload = request.GetRequest(false, mServer + "/" + PLUGIN_FLYVEMDM_PACKAGE + mFileId + "?" + SESSION_TOKEN + mSessionToken);
             }
 
-            if (sUrl[0].equals("file")) {
+            if ("file".equals(sUrl[0])) {
 
                 JSONObject jsonObjDownload = new JSONObject(mjsonGetDownload);
                 if (jsonObjDownload.has("name")) {
@@ -237,21 +236,21 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
                     return "fail";
                 }
 
-                downloadType = mJsonDownload.split("\\.");
-                if (downloadType[downloadType.length - 1].equals("upk")) {
+                String[] downloadType = mJsonDownload.split("\\.");
+                if ("upk".equals(downloadType[downloadType.length - 1])) {
                     fileType = 2;
                     try {
                         directory = getUpkDir();
                     } catch (Exception e) {
-                        e.printStackTrace();
+
                     }
                 }
-                if (downloadType[downloadType.length - 1].equals("apk")) {
+                if ("apk".equals(downloadType[downloadType.length - 1])) {
                     fileType = 1;
                     try {
                         directory = getDataDir();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        FlyveLog.e("",e);
                     }
                 }
             }
@@ -278,11 +277,11 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
             try {
 
                 if (fileType == 1) {
-                    mDownloadFile = request.GetRequest(true, mServer + "/" + "PluginFlyvemdmPackage/" + mFileId + "?" + "session_token=" + mSessionToken, "Accept::application/octet-stream", "Content-Type::application/json");
+                    mDownloadFile = request.GetRequest(true, mServer + "/" + PLUGIN_FLYVEMDM_PACKAGE + mFileId + "?" + SESSION_TOKEN + mSessionToken, "Accept::application/octet-stream", "Content-Type::application/json");
                 } else if (fileType == 2) {
-                    mDownloadFile = request.GetRequest(true, mServer + "/" + "PluginFlyvemdmPackage/" + mFileId + "?" + "session_token=" + mSessionToken, "Accept::application/octet-stream", "Content-Type::application/json");
+                    mDownloadFile = request.GetRequest(true, mServer + "/" + PLUGIN_FLYVEMDM_PACKAGE + mFileId + "?" + SESSION_TOKEN + mSessionToken, "Accept::application/octet-stream", "Content-Type::application/json");
                 } else if (fileType == 0) {
-                    mDownloadFile = request.GetRequest(true, mServer + "/" + "PluginFlyvemdmFile/" + mFileId + "?" + "session_token=" + mSessionToken, "Accept::application/octet-stream", "Content-Type::application/json");
+                    mDownloadFile = request.GetRequest(true, mServer + "/" + "PluginFlyvemdmFile/" + mFileId + "?" + SESSION_TOKEN + mSessionToken, "Accept::application/octet-stream", "Content-Type::application/json");
                 }
 
             } catch (Exception e) {

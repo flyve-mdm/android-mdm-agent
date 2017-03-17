@@ -135,16 +135,15 @@ public class MQTTService extends Service implements MqttCallback {
     class MQTTBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            boolean hasConnectivity = false;
             NetworkInfo infos[] = mConnectivityManager.getAllNetworkInfo();
 
             for (int i = 0; i < infos.length; i++) {
-                if (infos[i].getTypeName().equalsIgnoreCase("MOBILE")) {
+                if ("MOBILE".equalsIgnoreCase(infos[i].getTypeName())) {
                     if ((infos[i].isConnected() != hasMmobile)) {
                         hasMmobile = infos[i].isConnected();
                     }
                     FlyveLog.d(infos[i].getTypeName() + " is " + infos[i].isConnected());
-                } else if (infos[i].getTypeName().equalsIgnoreCase("WIFI")) {
+                } else if ("WIFI".equalsIgnoreCase(infos[i].getTypeName())) {
                     if ((infos[i].isConnected() != hasWifi)) {
                         hasWifi = infos[i].isConnected();
                     }
@@ -225,7 +224,7 @@ public class MQTTService extends Service implements MqttCallback {
                 try {
                     sendGPS();
                 } catch (JSONException e) {
-                    FlyveLog.e(e.getMessage());
+                    FlyveLog.e("sendGPS", e);
                 }
             }
             if (action.equals(ACTION_SEND)) {
@@ -237,9 +236,9 @@ public class MQTTService extends Service implements MqttCallback {
                 try {
                     sendInventory();
                 } catch (MqttConnectivityException e) {
-                    FlyveLog.e(e.getMessage());
+                    FlyveLog.e("sendInventory MQTT Connectivity", e);
                 } catch (MqttException e) {
-                    FlyveLog.e(e.getMessage());
+                    FlyveLog.e("sendInventory MQTT", e);
                 }
             }
         }
@@ -294,7 +293,7 @@ public class MQTTService extends Service implements MqttCallback {
                 }
             });
         } catch (MqttException e) {
-            FlyveLog.e(e.getMessage());
+            FlyveLog.e("MQTT Token", e);
         }
 
     }
@@ -323,7 +322,7 @@ public class MQTTService extends Service implements MqttCallback {
             mClient.unsubscribe(sub);
 
         } catch (MqttException e) {
-            FlyveLog.e(e.getMessage());
+            FlyveLog.e("MQTT unsubscribe", e);
         }
 
         sharedPreferenceMQTT.removeTopics(getBaseContext());
@@ -350,12 +349,12 @@ public class MQTTService extends Service implements MqttCallback {
         password = sharedPreferenceMQTT.getPassword(getBaseContext());
         String strMqttPort = sharedPreferenceMQTT.getPort(getBaseContext());
         String mqttHost = sharedPreferenceMQTT.getServer(getBaseContext());
-        boolean isTls = sharedPreferenceMQTT.getTLS(getBaseContext()).equals("1");
+        boolean isTls = "1".equals(sharedPreferenceMQTT.getTLS(getBaseContext()));
         int mqttPort = 1883;
         try {
             mqttPort = Integer.parseInt(strMqttPort);
         } catch (Exception ex) {
-            FlyveLog.i("invalid mqtt port value '" + mqttPort + "', defaulted to 1883");
+            FlyveLog.e("Invalid mqtt port value '" + mqttPort + "', defaulted to 1883", ex);
         }
 
         FlyveLog.d("defined mqtt setting: port " + mqttPort + " address: " + mqttHost);
@@ -411,11 +410,9 @@ public class MQTTService extends Service implements MqttCallback {
                             generateInventory();
                             sharedPreferenceMQTT.saveIsInventory(getBaseContext(), true);
                         } catch (MqttConnectivityException e) {
-                            FlyveLog.e(e.getMessage());
-                            e.printStackTrace();
+                            FlyveLog.e("generateInventory MQTT Connectivity", e);
                         } catch (MqttException e) {
-                            FlyveLog.e(e.getMessage());
-                            e.printStackTrace();
+                            FlyveLog.e("generateInventory MQTT", e);
                         }
                     }
                 }
@@ -490,8 +487,7 @@ public class MQTTService extends Service implements MqttCallback {
         mClient = null;
         mStarted = false;
         isRunning = true;
-        FlyveLog.i("connectionLost: " + arg0.toString());
-        arg0.printStackTrace();
+        FlyveLog.i("connectionLost: ", arg0);
 
         if (isOnline()) {
             connect();
@@ -522,7 +518,7 @@ public class MQTTService extends Service implements MqttCallback {
                             }
                         });
                     } catch (Exception e) {
-                        // TODO: handle exception
+                        FlyveLog.e("Reconnect Thread", e);
                     }
                 }
             }
@@ -613,20 +609,32 @@ public class MQTTService extends Service implements MqttCallback {
 
     public String ReadInventory() {
         BufferedReader reader = null;
+        File tempFile;
+        FileReader tempFileReader = null;
         StringBuilder text = new StringBuilder();
         try {
-            reader = new BufferedReader(new FileReader(new File(getBaseContext().getFilesDir(), "/android_inventory.xml")));
+            tempFile = new File(getBaseContext().getFilesDir(), "/android_inventory.xml");
+            tempFileReader = new FileReader(tempFile);
+            reader = new BufferedReader(tempFileReader);
             String line;
 
             while ((line = reader.readLine()) != null) {
                 text.append(line);
                 text.append('\n');
             }
-            reader.close();
         } catch (FileNotFoundException e) {
             FlyveLog.e("file not found exception", e);
         } catch (IOException e) {
             FlyveLog.e("io error", e);
+        } finally {
+            try {
+                reader.close();
+                tempFileReader.close();
+            } catch (IOException e) {
+                FlyveLog.e("io error", e);
+            } catch (NullPointerException e){
+                FlyveLog.e("Error on close", e);
+            }
         }
         return text.toString();
     }
@@ -643,7 +651,7 @@ public class MQTTService extends Service implements MqttCallback {
     }
 
     public void sendGPSDesactivated() throws JSONException {
-        String gpsDesac = null;
+        String gpsDesac;
         JSONObject jsonNoGPS = new JSONObject();
 
         jsonNoGPS.put("gps", "off");
@@ -663,7 +671,7 @@ public class MQTTService extends Service implements MqttCallback {
 
 
     public void sendGPS() throws JSONException {
-        String gpsLoc = null;
+        String gpsLoc;
         double test = 0.0;
         GPSTracker mGPS = new GPSTracker(this);
         mGPS.getLocation();
@@ -709,17 +717,17 @@ public class MQTTService extends Service implements MqttCallback {
 
             // KeepAlive
             if (jsonObj.has("query")) {
-                if (jsonObj.getString("query").equals("Inventory")) {
+                if ("Inventory".equals(jsonObj.getString("query"))) {
                     generateInventory();
                     return;
                 }
-                if (jsonObj.getString("query").equals("Ping")) {
+                if ("Ping".equals(jsonObj.getString("query"))) {
                     sendKeepAlive();
                     return;
                 }
-                if (jsonObj.getString("query").equals("Geolocate")) {
+                if ("Geolocate".equals(jsonObj.getString("query"))) {
                     GPSTracker mGPS = new GPSTracker(this);
-                    if (mGPS.canGetLocation) {
+                    if (mGPS.isCanGetLocation()) {
                         sendGPS();
                         return;
                     } else {
@@ -732,14 +740,14 @@ public class MQTTService extends Service implements MqttCallback {
             }
 
             if (jsonObj.has("unenroll")) {
-                if (jsonObj.getString("unenroll").equals("now")) {
+                if ("now".equals(jsonObj.getString("unenroll"))) {
                     unEnrolment();
                     return;
                 }
             }
 
             if (jsonObj.has("subscribe")) {
-                String NewTopics = new String();
+                String NewTopics;
                 JSONArray array = jsonObj.getJSONArray("subscribe");
                 Set<String> topicSet = sharedPreferenceMQTT.getTopics(getBaseContext());
                 String[] topicsTestTab = topicSet.toArray(new String[topicSet.size()]);

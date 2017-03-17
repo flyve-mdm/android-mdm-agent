@@ -41,26 +41,23 @@ public class ActiveGPSActivity extends Activity {
 
     private Context mContext;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
         startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 1);
     }
 
+    @Override
     protected void onResume(){
         super.onResume();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     @Override
     protected void onDestroy() {
         GPSTracker mGPS = new GPSTracker(this);
         super.onDestroy();
-        if(!mGPS.canGetLocation){
+        if(!mGPS.isCanGetLocation()){
             Intent intent = new Intent(mContext,NotificationGPSActivation.class);
             mContext.startService(intent);
         }
@@ -72,7 +69,7 @@ public class ActiveGPSActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         GPSTracker mGPS = new GPSTracker(this);
         super.onActivityResult(requestCode, resultCode, data);
-        if(mGPS.canGetLocation){
+        if(mGPS.isCanGetLocation()){
             Intent mqtt = new Intent(mContext, MQTTService.class);
             mqtt.setAction(MQTTService.ACTION_GPS);
             mContext.startService(mqtt);
