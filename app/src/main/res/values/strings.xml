@@ -303,31 +303,31 @@
     <string name="pref_name">Name</string>
     <string name="pref_computer_id">Computer id</string>
 
-    <string name="password_quality">Password quality : %1$s</string>
-    <string name="password_minimum_length">Password minimum length : %1$d</string>
-    <string name="password_minimum_numeric">Password minimum numeric : %1$d</string>
-    <string name="password_minimum_letters">Password minimum letters : %1$d</string>
-    <string name="password_minimum_symbols">Password minimum symbols : %1$d</string>
-    <string name="password_minimum_non_letters">Password minimum non letters : %1$d</string>
-    <string name="password_minimum_upper_case">Password minimum upper case : %1$d</string>
-    <string name="password_minimum_lower_case">Password minimum lower case : %1$d</string>
-    <string name="password_minimum_failed_before_wipe">Password minimum failed before wipe : %1$d</string>
-    <string name="password_minimum_before_lock">Password minimum before lock : %1$d</string>
+    <string name="password_quality">Password quality: %1$s</string>
+    <string name="password_minimum_length">Password minimum length: %1$d</string>
+    <string name="password_minimum_numeric">Password minimum numeric: %1$d</string>
+    <string name="password_minimum_letters">Password minimum letters: %1$d</string>
+    <string name="password_minimum_symbols">Password minimum symbols: %1$d</string>
+    <string name="password_minimum_non_letters">Password minimum non letters: %1$d</string>
+    <string name="password_minimum_upper_case">Password minimum upper case: %1$d</string>
+    <string name="password_minimum_lower_case">Password minimum lower case: %1$d</string>
+    <string name="password_minimum_failed_before_wipe">Password minimum failed before wipe: %1$d</string>
+    <string name="password_minimum_before_lock">Password minimum before lock: %1$d</string>
 
-    <string name="connectivity_wifi">Wifi : %1$s</string>
-    <string name="connectivity_bluetooth">Bluetooth : %1$s</string>
-    <string name="security_encryption">Encryption : %1$b</string>
-    <string name="security_camera">Disable camera : %1$b</string>
-    <string name="security_wifi">Disable wifi : %1$b</string>
-    <string name="security_bluetooth">Disable bluetooth : %1$b</string>
-    <string name="crash_toast_text">Ooooops ! I crashed, but a report has been sent to my developer to help fix the issue !</string>
+    <string name="connectivity_wifi">WiFi: %1$s</string>
+    <string name="connectivity_bluetooth">Bluetooth: %1$s</string>
+    <string name="security_encryption">Encryption: %1$b</string>
+    <string name="security_camera">Disable camera: %1$b</string>
+    <string name="security_wifi">Disable WiFi: %1$b</string>
+    <string name="security_bluetooth">Disable bluetooth: %1$b</string>
+    <string name="crash_toast_text">Ooooops! I crashed, but a report has been sent to my developer to help fix the issue!</string>
 
     <string name="crash_dialog_title">CrashTest has crashed</string>
 <string name="crash_dialog_text">An unexpected error occurred forcing the
     application to stop. Please help us fix this by sending us error data,
     all you have to do is click OK.</string>
     <string name="crash_dialog_comment_prompt">You might add your comments about the problem below:</string>
-    <string name="crash_dialog_ok_toast">Thank you !</string>
+    <string name="crash_dialog_ok_toast">Thank you!</string>
     <string name="crash_user_email_label">Email</string>
 
     <string name="pref_enable_acra">Send Syslogs in Reports</string>
