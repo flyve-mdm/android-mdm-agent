@@ -63,6 +63,7 @@ import com.teclib.database.SharedPreferenceMQTT;
 import com.teclib.database.SharedPreferencePolicies;
 import com.teclib.database.SharedPreferenceSettings;
 import com.teclib.flyvemdm.MainApplication;
+import com.teclib.mqtt.MQTTActionPing;
 
 import org.fusioninventory.InventoryTask;
 
@@ -84,6 +85,8 @@ import java.security.cert.CertificateFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
+
+
 
 public class MQTTService extends Service implements MqttCallback {
     public static final String TAG = "MqttService"; // Debug TAG
@@ -176,6 +179,9 @@ public class MQTTService extends Service implements MqttCallback {
         // Do not set keep alive interval on mOpts we keep track of it with alarm's
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         mHandler = new Handler();
+
+        MainApplication application = (MainApplication) getApplication();
+        application.setMqttService(this);
     }
 
     @Override
@@ -536,14 +542,6 @@ public class MQTTService extends Service implements MqttCallback {
         }
     }
 
-    private synchronized void sendKeepAlive() throws MqttConnectivityException, MqttException {
-
-        MqttMessage message = new MqttMessage("!".getBytes());
-        message.setQos(0);
-        mClient.publish(sharedPreferenceMQTT.getSerialTopic(getBaseContext())[0] + "/Status/Ping", message);
-        return;
-    }
-
     private synchronized void generateInventory() throws MqttConnectivityException, MqttException {
         InventoryTask inventory = new InventoryTask(getBaseContext());
         inventory.execute();
@@ -722,7 +720,8 @@ public class MQTTService extends Service implements MqttCallback {
                     return;
                 }
                 if ("Ping".equals(jsonObj.getString("query"))) {
-                    sendKeepAlive();
+                    MQTTActionPing actionPing = new MQTTActionPing();
+                    actionPing.sendPing();
                     return;
                 }
                 if ("Geolocate".equals(jsonObj.getString("query"))) {
@@ -797,5 +796,9 @@ public class MQTTService extends Service implements MqttCallback {
      */
     private class MqttConnectivityException extends Exception {
         private static final long serialVersionUID = -7385866796799469420L;
+    }
+
+    public MqttAndroidClient getClient() {
+        return mClient;
     }
 }

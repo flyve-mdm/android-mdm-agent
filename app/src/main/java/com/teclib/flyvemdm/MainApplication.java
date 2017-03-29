@@ -46,6 +46,7 @@ import org.acra.sender.HttpSender;
 
 import java.io.File;
 
+import com.teclib.service.MQTTService;
 
 @ReportsCrashes(
         formKey = "",
@@ -65,6 +66,7 @@ public class MainApplication extends Application {
 
     private static MainApplication instance;
     protected Boolean isDebuggable;
+    private MQTTService mMQTTService;
 
     @Override
     public void onCreate() {
@@ -143,4 +145,13 @@ public class MainApplication extends Application {
         return isDebuggable;
     }
 
+    public void setMqttService(MQTTService service) {
+        if (service != null) {
+            mMQTTService = service;
+        }
+    }
+
+    public MQTTService getMQTTService() {
+        return mMQTTService;
+    }
 }
