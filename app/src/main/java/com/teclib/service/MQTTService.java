@@ -366,6 +366,11 @@ public class MQTTService extends Service implements MqttCallback {
         mOpts.setPassword(password.toCharArray());
         mOpts.setUserName(Build.SERIAL);
         mOpts.setCleanSession(MQTT_CLEAN_SESSION);
+
+        // set will
+        String serialTopic = sharedPreferenceMQTT.getSerialTopic(getBaseContext())[0];
+        mOpts.setWill(serialTopic + "/Status/Online", "{\"online\":\"no\"}".getBytes(), 0, false);
+
         // disable timeout
         mOpts.setConnectionTimeout(0);
         if (isTls) {
@@ -400,6 +405,12 @@ public class MQTTService extends Service implements MqttCallback {
                     // We are connected
                     FlyveLog.i("onSuccess");
                     subscribe();
+                    MqttMessage message = new MqttMessage("{\"online\": \"yes\"}".getBytes());
+                    try {
+                        mClient.publish(sharedPreferenceMQTT.getSerialTopic(getBaseContext())[0] + "/Status/Online", message);
+                    } catch (MqttException e) {
+                        FlyveLog.e("advertise online status", e);
+                    }
                     mStarted = true; // Service is now connected
                     isRunning = false;
                     isStartedThread = false;
