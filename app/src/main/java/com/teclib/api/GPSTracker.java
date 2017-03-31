@@ -87,15 +87,12 @@ public final class GPSTracker implements LocationListener {
                     .getSystemService(Context.LOCATION_SERVICE);
 
             // getting GPS status
-            isGPSEnabled = locationManager
-                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
-
+            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
             FlyveLog.v("isGPSEnabled", "=" + isGPSEnabled);
 
             // getting network status
-            isNetworkEnabled = locationManager
-                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
             FlyveLog.v("isNetworkEnabled", "=" + isNetworkEnabled);
 
@@ -111,8 +108,7 @@ public final class GPSTracker implements LocationListener {
                             MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                     FlyveLog.d("Network", "Network");
                     if (locationManager != null) {
-                        location = locationManager
-                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if (location != null) {
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
@@ -123,15 +119,14 @@ public final class GPSTracker implements LocationListener {
                 if (isGPSEnabled) {
                     location=null;
                     if (location == null) {
-                      //  locationManager.requestLocationUpdates(provider, 2 * 60 * 1000, 10, locationListenerBest);
+                        //  locationManager.requestLocationUpdates(provider, 2 * 60 * 1000, 10, locationListenerBest);
                         locationManager.requestLocationUpdates(
                                 LocationManager.GPS_PROVIDER,
                                 MIN_TIME_BW_UPDATES,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                         FlyveLog.d("GPS Enabled", "GPS Enabled");
                         if (locationManager != null) {
-                            location = locationManager
-                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             if (location != null) {
                                 latitude = location.getLatitude();
                                 longitude = location.getLongitude();
