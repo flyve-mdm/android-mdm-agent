@@ -221,14 +221,12 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
             }
 
             if ("file".equals(sUrl[0])) {
-
                 JSONObject jsonObjDownload = new JSONObject(mjsonGetDownload);
                 if (jsonObjDownload.has("name")) {
                     mJsonDownload = jsonObjDownload.getString("name");
                 } else {
                     return "fail";
                 }
-
                 directory = convertPath(mDestination);
 
             } else {
@@ -245,7 +243,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
                     try {
                         directory = getUpkDir();
                     } catch (Exception e) {
-
+                        FlyveLog.e(e.getMessage());
                     }
                 }
                 if ("apk".equals(downloadType[downloadType.length - 1])) {
@@ -253,7 +251,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
                     try {
                         directory = getDataDir();
                     } catch (Exception e) {
-                        FlyveLog.e("",e);
+                        FlyveLog.e(e.getMessage());
                     }
                 }
             }
@@ -322,7 +320,6 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String result) {
 
         if (result != null) {
-            //FlyveLog.e("Download error: ");
             if (mCallBack != null) {
                 mCallBack.onFailure(new Exception("failure"));
             }
@@ -330,28 +327,6 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
             FlyveLog.i("Download ok");
 
             if (fileType == 1) {
-                /*
-                String serialTopic = sharedPreferenceMQTT.getSerialTopic(mContext)[0];
-
-                JSONObject jsonACK = new JSONObject();
-                try {
-                    jsonACK.put("ack", PackageName);
-                } catch (JSONException e) {
-                    FlyveLog.e(e.getMessage());
-                    e.printStackTrace();
-                }
-
-                // Send ACk to mqtt server
-                Intent mqtt = new Intent(mContext, MQTTService.class);
-                mqtt.setAction(MQTTService.ACTION_SEND);
-                mqtt.putExtra("topic", serialTopic + "/install");
-                mqtt.putExtra("message", jsonACK.toString());
-
-                mContext.startService(mqtt);
-
-                Intent intent = new Intent(mContext, NotificationAdminRequest.class);
-                mContext.startService(intent);
-                */
                 if (mCallBack != null) {
                     mCallBack.onSuccess("downloaded");
                 }

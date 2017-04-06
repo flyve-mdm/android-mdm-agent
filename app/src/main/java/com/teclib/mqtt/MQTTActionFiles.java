@@ -27,6 +27,8 @@
 package com.teclib.mqtt;
 
 import android.content.Context;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,10 +38,12 @@ import com.teclib.flyvemdm.AsyncTaskCallbackInterface;
 import com.teclib.flyvemdm.DownloadTask;
 import java.util.Set;
 
-public class MQTTActionFiles implements AsyncTaskCallbackInterface {
+public class MQTTActionFiles extends MQTTAction implements AsyncTaskCallbackInterface {
 
     Context mContext;
     SharedPreferenceAction sharedPreferenceAction;
+
+    private JSONObject mFileAction;
 
     public MQTTActionFiles(Context context){
         mContext = context;
@@ -48,8 +52,9 @@ public class MQTTActionFiles implements AsyncTaskCallbackInterface {
     public void download(JSONObject jsonObject) throws JSONException {
         //download file
         FlyveLog.d(jsonObject.getString("deployFile"));
+        mTaskFeedback = new JSONArray();
 
-        new DownloadTask(mContext, this).execute("file",jsonObject.getString("id"),jsonObject.getString("deployFile"));
+        new DownloadTask(mContext, this).execute("file", jsonObject.getString("id"), jsonObject.getString("deployFile"));
     }
 
     public void delete(JSONObject jsonObject) throws JSONException {
@@ -57,20 +62,23 @@ public class MQTTActionFiles implements AsyncTaskCallbackInterface {
         FlyveLog.d(jsonObject.getString("removeFile"));
         sharedPreferenceAction = new SharedPreferenceAction();
         Set<String> listFiles = sharedPreferenceAction.getFiles(mContext);
+        mTaskFeedback = new JSONArray();
 
         for(int i = 0 ; i < listFiles.size() ; i++){
             FlyveLog.d("delete file = " + listFiles.toArray()[i]);
         }
-
     }
 
     @Override
     public void onSuccess(String status) {
-
+        addTaskToFeedback(mFileAction, status);
+        sendTaskFeedback();
     }
 
     @Override
     public void onFailure(Exception e) {
-
+        addTaskToFeedback(mFileAction, e.getMessage());
+        sendTaskFeedback();
+        FlyveLog.e(e.getMessage());
     }
 }

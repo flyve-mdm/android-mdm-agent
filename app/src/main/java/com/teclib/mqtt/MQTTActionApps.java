@@ -81,6 +81,7 @@ public class MQTTActionApps extends MQTTAction implements AsyncTaskCallbackInter
 
 
         boolean isApp = false;
+        mTaskFeedback = new JSONArray();
         for (Object object : pkgAppsList) {
             ResolveInfo info = (ResolveInfo) object;
             String strPackageName  = info.activityInfo.applicationInfo.packageName;
