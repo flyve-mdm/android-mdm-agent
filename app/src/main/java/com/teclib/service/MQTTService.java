@@ -176,6 +176,9 @@ public class MQTTService extends Service implements MqttCallback {
         // Do not set keep alive interval on mOpts we keep track of it with alarm's
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         mHandler = new Handler();
+
+        MainApplication application = (MainApplication) getApplication();
+        application.setMqttService(this);
     }
 
     @Override
@@ -797,5 +800,9 @@ public class MQTTService extends Service implements MqttCallback {
      */
     private class MqttConnectivityException extends Exception {
         private static final long serialVersionUID = -7385866796799469420L;
+    }
+
+    public MqttAndroidClient getClient() {
+        return mClient;
     }
 }

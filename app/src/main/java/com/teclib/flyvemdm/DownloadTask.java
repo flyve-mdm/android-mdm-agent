@@ -73,11 +73,14 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
     private static String mDownloadFile;
     private static String mDestination;
 
+    private AsyncTaskCallbackInterface mCallBack;
+
     public static String directory;
 
 
-    public DownloadTask(Context context) {
-        this.mContext = context;
+    public DownloadTask(Context context, AsyncTaskCallbackInterface callback) {
+        mContext = context;
+        mCallBack = callback;
         mSharedPreferenceAction = new SharedPreferenceAction();
         sharedPreferenceMQTT = new SharedPreferenceMQTT();
         sharedPreferenceSettings = new SharedPreferenceSettings();
@@ -318,12 +321,16 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
 
-        if (result != null)
-            FlyveLog.e("Download error: ");
-        else {
+        if (result != null) {
+            //FlyveLog.e("Download error: ");
+            if (mCallBack != null) {
+                mCallBack.onFailure(new Exception("failure"));
+            }
+        } else {
             FlyveLog.i("Download ok");
 
             if (fileType == 1) {
+                /*
                 String serialTopic = sharedPreferenceMQTT.getSerialTopic(mContext)[0];
 
                 JSONObject jsonACK = new JSONObject();
@@ -344,6 +351,10 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 
                 Intent intent = new Intent(mContext, NotificationAdminRequest.class);
                 mContext.startService(intent);
+                */
+                if (mCallBack != null) {
+                    mCallBack.onSuccess("downloaded");
+                }
 
                 fileType = 0;
 

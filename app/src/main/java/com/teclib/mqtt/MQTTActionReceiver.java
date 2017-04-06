@@ -44,7 +44,7 @@ import com.teclib.service.MQTTService;
 import java.util.ArrayList;
 
 
-public class MQTTAction extends BroadcastReceiver {
+public class MQTTActionReceiver extends BroadcastReceiver {
 
 
     @Override

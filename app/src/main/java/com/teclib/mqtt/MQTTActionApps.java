@@ -30,6 +30,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,35 +39,35 @@ import java.util.List;
 import com.teclib.api.AppInfo;
 import com.teclib.api.FlyveLog;
 import com.teclib.database.SharedPreferenceAction;
+import com.teclib.flyvemdm.AsyncTaskCallbackInterface;
 import com.teclib.service.NotificationRemoveService;
 import com.teclib.flyvemdm.DownloadTask;
 
-public class MQTTActionApps {
+public class MQTTActionApps extends MQTTAction implements AsyncTaskCallbackInterface {
 
     Context mContext;
     private SharedPreferenceAction mSharedPreferenceAction;
     private AppInfo appinfo;
     private boolean isRemoveApp = false;
+    private JSONObject mApplicationAction;
 
     public MQTTActionApps(Context context){
         mContext = context;
     }
 
     public void install(JSONObject jsonObject) throws JSONException {
+        mApplicationAction = jsonObject;
 
         //download APK
         appinfo = new AppInfo(mContext);
 
-        String idlist;
-        String packageNamelist;
-        String versionCode;
+        String idlist = jsonObject.getString("id");
+        String packageNamelist = jsonObject.getString("deployApp");
+        String versionCode = jsonObject.getString("versionCode");
 
-        idlist = jsonObject.getString("id");
-        packageNamelist = jsonObject.getString("deployApp");
-        versionCode = jsonObject.getString("versionCode");
-
-        if(!appinfo.isInstall(packageNamelist,versionCode)){
-            new DownloadTask(mContext).execute("application",idlist, packageNamelist);
+        if (!appinfo.isInstall(packageNamelist, versionCode)) {
+            mTaskFeedback = new JSONArray();
+            new DownloadTask(mContext, this).execute("application", idlist, packageNamelist);
         }
     }
 
@@ -80,26 +81,38 @@ public class MQTTActionApps {
 
 
         boolean isApp = false;
-        for (Object object : pkgAppsList)
-        {
+        for (Object object : pkgAppsList) {
             ResolveInfo info = (ResolveInfo) object;
             String strPackageName  = info.activityInfo.applicationInfo.packageName;
 
-            if(strPackageName.equals(jsonObject.getString("removeApp"))) {
+            if (strPackageName.equals(jsonObject.getString("removeApp"))) {
                 FlyveLog.d("getView: applications name =  " + strPackageName);
                 isApp = true;
             }
         }
 
-        if(isApp){
+        if (isApp){
             isRemoveApp = true;
             mSharedPreferenceAction.saveApksRemove(mContext,jsonObject.getString("removeApp"));
         }
 
 
-        if(isRemoveApp){
+        if (isRemoveApp) {
             Intent intent = new Intent(mContext, NotificationRemoveService.class);
             mContext.startService(intent);
         }
+    }
+
+    @Override
+    public void onSuccess(String status) {
+        addTaskToFeedback(mApplicationAction, status);
+        sendTaskFeedback();
+    }
+
+    @Override
+    public void onFailure(Exception e) {
+        addTaskToFeedback(mApplicationAction, e.getMessage());
+        sendTaskFeedback();
+        FlyveLog.e(e.getMessage());
     }
 }

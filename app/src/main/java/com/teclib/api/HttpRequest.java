@@ -102,7 +102,7 @@ public class HttpRequest {
      * @return http answer
      */
     public String GetRequest(Boolean download, String... urls) throws NoSuchAlgorithmException, IOException {
-        DownloadTask downloadTask = new DownloadTask(mContext);
+        DownloadTask downloadTask = new DownloadTask(mContext, null);
 
         // check protocol
         if (urls[0].split(":")[0].equals("http")) {

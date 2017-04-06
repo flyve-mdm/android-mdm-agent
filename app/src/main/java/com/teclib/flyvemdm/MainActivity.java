@@ -103,13 +103,11 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         if (!msharedPreferenceMQTT.getSerialTopic(getBaseContext())[0].isEmpty()) {
              Intent intent = new Intent(getApplicationContext(), MQTTNotifierActivity.class);
              startActivity(intent);
              finish();
         }
-
     }
 
     @Override

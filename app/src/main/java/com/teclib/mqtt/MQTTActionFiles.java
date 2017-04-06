@@ -32,10 +32,11 @@ import org.json.JSONObject;
 
 import com.teclib.api.FlyveLog;
 import com.teclib.database.SharedPreferenceAction;
+import com.teclib.flyvemdm.AsyncTaskCallbackInterface;
 import com.teclib.flyvemdm.DownloadTask;
 import java.util.Set;
 
-public class MQTTActionFiles {
+public class MQTTActionFiles implements AsyncTaskCallbackInterface {
 
     Context mContext;
     SharedPreferenceAction sharedPreferenceAction;
@@ -48,7 +49,7 @@ public class MQTTActionFiles {
         //download file
         FlyveLog.d(jsonObject.getString("deployFile"));
 
-        new DownloadTask(mContext).execute("file",jsonObject.getString("id"),jsonObject.getString("deployFile"));
+        new DownloadTask(mContext, this).execute("file",jsonObject.getString("id"),jsonObject.getString("deployFile"));
     }
 
     public void delete(JSONObject jsonObject) throws JSONException {
@@ -60,6 +61,16 @@ public class MQTTActionFiles {
         for(int i = 0 ; i < listFiles.size() ; i++){
             FlyveLog.d("delete file = " + listFiles.toArray()[i]);
         }
+
+    }
+
+    @Override
+    public void onSuccess(String status) {
+
+    }
+
+    @Override
+    public void onFailure(Exception e) {
 
     }
 }

@@ -98,7 +98,7 @@
             android:theme="@style/MyMaterialTheme" />
 
         <receiver
-            android:name="com.teclib.mqtt.MQTTAction"
+            android:name="com.teclib.mqtt.MQTTActionReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

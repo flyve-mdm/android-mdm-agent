@@ -29,8 +29,14 @@ package com.teclib.mqtt;
 import android.content.Context;
 import android.content.Intent;
 
+import com.teclib.database.SharedPreferenceMQTT;
 import com.teclib.api.FlyveLog;
 import com.teclib.database.SharedPreferencePolicies;
+import com.teclib.flyvemdm.MainApplication;
+
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.android.service.MqttAndroidClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +45,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class MQTTActionPolicies {
+public class MQTTActionPolicies extends MQTTAction {
 
     private JSONObject jPoliciesObject;
     Context mContext;
@@ -72,6 +78,7 @@ public class MQTTActionPolicies {
         if (jsonObject.has("policies")) {
             jPoliciesObject = new JSONObject();
             JSONArray jPolicies = jsonObject.getJSONArray("policies");
+            mTaskFeedback = new JSONArray();
 
             for (int i = 0; i < jPolicies.length(); i++) {
 
@@ -88,6 +95,7 @@ public class MQTTActionPolicies {
                             FlyveLog.d("SetPolicies: mPasswordQuality = " + mPasswordQuality);
                             mSharedPreferencePolicies.savePasswordQuality(mContext, mPasswordQuality);
                             mIntentArgs.add("passwordQuality");
+                            addTaskToFeedback(jPoliciesObject, "done");
                         }
                     }
                 }
@@ -101,6 +109,7 @@ public class MQTTActionPolicies {
                         FlyveLog.d("SetPolicies: mPasswordMinLetters = " + mPasswordMinLetters);
                         mSharedPreferencePolicies.savePasswordMinLetters(mContext, mPasswordMinLetters);
                         mIntentArgs.add("passwordMinLetters");
+                        addTaskToFeedback(jPoliciesObject, "done");
                     }
                 }
 
@@ -113,6 +122,7 @@ public class MQTTActionPolicies {
                         FlyveLog.d("SetPolicies: mPasswordMinLowerCase = " + mPasswordMinLowerCase);
                         mSharedPreferencePolicies.savePasswordMinLowerCase(mContext, mPasswordMinLowerCase);
                         mIntentArgs.add("passwordMinLowerCase");
+                        addTaskToFeedback(jPoliciesObject, "done");
                     }
                 }
 
@@ -125,6 +135,7 @@ public class MQTTActionPolicies {
                         FlyveLog.d("SetPolicies: mPasswordMinUpperCase = " + mPasswordMinUpperCase);
                         mSharedPreferencePolicies.savePasswordMinUpperCase(mContext, mPasswordMinUpperCase);
                         mIntentArgs.add("passwordMinUpperCase");
+                        addTaskToFeedback(jPoliciesObject, "done");
                     }
                 }
 
@@ -137,6 +148,7 @@ public class MQTTActionPolicies {
                         FlyveLog.d("SetPolicies: mPasswordMinNonLetter = " + mPasswordMinNonLetter);
                         mSharedPreferencePolicies.savePasswordMinNonLetters(mContext, mPasswordMinNonLetter);
                         mIntentArgs.add("passwordMinNonLetter");
+                        addTaskToFeedback(jPoliciesObject, "done");
                     }
                 }
 
@@ -149,6 +161,7 @@ public class MQTTActionPolicies {
                         FlyveLog.d("SetPolicies: mPasswordMinNumeric = " + mPasswordMinNumeric);
                         mSharedPreferencePolicies.savePasswordMinNumeric(mContext, mPasswordMinNumeric);
                         mIntentArgs.add("passwordMinNumeric");
+                        addTaskToFeedback(jPoliciesObject, "done");
                     }
                 }
 
@@ -160,6 +173,7 @@ public class MQTTActionPolicies {
                         FlyveLog.d("SetPolicies: mPasswordMinLength = " + mPasswordMinLength);
                         mSharedPreferencePolicies.savePasswordMinLength(mContext, mPasswordMinLength);
                         mIntentArgs.add("passwordMinLength");
+                        addTaskToFeedback(jPoliciesObject, "done");
                     }
                 }
 
@@ -172,6 +186,7 @@ public class MQTTActionPolicies {
                         FlyveLog.d("SetPolicies: mMaximumFailedPasswordsForWipe = " + mMaximumFailedPasswordsForWipe);
                         mSharedPreferencePolicies.savePasswordMaxWipe(mContext, mMaximumFailedPasswordsForWipe);
                         mIntentArgs.add("MaximumFailedPasswordsForWipe");
+                        addTaskToFeedback(jPoliciesObject, "done");
                     }
                 }
 
@@ -183,6 +198,7 @@ public class MQTTActionPolicies {
                         FlyveLog.d("SetPolicies: mMaximumTimeToLock = " + mMaximumTimeToLock);
                         mSharedPreferencePolicies.saveMaxTimeToLock(mContext, mMaximumTimeToLock);
                         mIntentArgs.add("MaximumTimeToLock");
+                        addTaskToFeedback(jPoliciesObject, "done");
                     }
                 }
 
@@ -195,6 +211,7 @@ public class MQTTActionPolicies {
                         FlyveLog.d("SetPolicies: mPasswordMinSymbols = " + mPasswordMinSymbols);
                         mSharedPreferencePolicies.savePasswordMinSymbols(mContext, mPasswordMinSymbols);
                         mIntentArgs.add("passwordMinSymbols");
+                        addTaskToFeedback(jPoliciesObject, "done");
                     }
                 }
             }
@@ -202,30 +219,37 @@ public class MQTTActionPolicies {
 
         if (jsonObject.has("encryption")) {
             JSONArray jEncryption = jsonObject.getJSONArray("encryption");
+            if (jEncryption.length() == 1) {
+                jPoliciesObject = jEncryption.getJSONObject(0);
 
-            mEncryption = Boolean.valueOf(jEncryption.getJSONObject(0).getString("storageEncryption"));
-            Boolean encryption = mSharedPreferencePolicies.getEncryption(mContext);
+                mEncryption = Boolean.valueOf(jPoliciesObject.getString("storageEncryption"));
+                Boolean encryption = mSharedPreferencePolicies.getEncryption(mContext);
 
-            if (!(mEncryption == encryption)) {
-                FlyveLog.d("SetPolicies: mEncryption = " + mSharedPreferencePolicies.getMinSymbols(mContext));
-                mSharedPreferencePolicies.saveEnableStorageEncryption(mContext, mEncryption);
-                mIntentArgs.add("encryption");
+                if (!(mEncryption == encryption)) {
+                    FlyveLog.d("SetPolicies: mEncryption = " + mSharedPreferencePolicies.getMinSymbols(mContext));
+                    mSharedPreferencePolicies.saveEnableStorageEncryption(mContext, mEncryption);
+                    mIntentArgs.add("encryption");
+                    addTaskToFeedback(jPoliciesObject, "done");
+                }
             }
         }
 
         if (jsonObject.has("camera")) {
             JSONArray jCamera = jsonObject.getJSONArray("camera");
+            if (jCamera.length() == 1) {
+                jPoliciesObject = jCamera.getJSONObject(0);
 
-            mCamera = Boolean.valueOf(jCamera.getJSONObject(0).getString("disableCamera"));
-            Boolean camera = mSharedPreferencePolicies.getEncryption(mContext);
-            FlyveLog.d("SetPolicies mCamera = " + mCamera);
-            FlyveLog.d("SetPolicies camera = " + camera);
-            if (!(mCamera == camera)) {
-                FlyveLog.d("SetPolicies: Camera = " + mSharedPreferencePolicies.getCameraStatus(mContext));
-                mSharedPreferencePolicies.saveDisableCamera(mContext, mCamera);
-                mIntentArgs.add("camera");
+                mCamera = Boolean.valueOf(jPoliciesObject.getString("disableCamera"));
+                Boolean camera = mSharedPreferencePolicies.getEncryption(mContext);
+                FlyveLog.d("SetPolicies mCamera = " + mCamera);
+                FlyveLog.d("SetPolicies camera = " + camera);
+                if (!(mCamera == camera)) {
+                    FlyveLog.d("SetPolicies: Camera = " + mSharedPreferencePolicies.getCameraStatus(mContext));
+                    mSharedPreferencePolicies.saveDisableCamera(mContext, mCamera);
+                    mIntentArgs.add("camera");
+                    addTaskToFeedback(jPoliciesObject, "done");
+                }
             }
-
         }
 
         if (jsonObject.has("lock")) {
@@ -245,6 +269,7 @@ public class MQTTActionPolicies {
             intentone.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             intentone.putStringArrayListExtra("ControllerArgs", mIntentArgs);
             mContext.startActivity(intentone);
+            sendTaskFeedback();
         }
     }
 }
