@@ -104,164 +104,75 @@ public class HttpRequest {
     public String GetRequest(Boolean download, String... urls) throws NoSuchAlgorithmException, IOException {
         DownloadTask downloadTask = new DownloadTask(mContext);
 
-        // check protocol
-        if (urls[0].split(":")[0].equals("http")) {
-            try {
-                URL obj = new URL(urls[0]);
-
-                HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-                if (connection != null) {
-                    connection.setRequestMethod("GET");
-                    connection.setRequestProperty("User-Agent", "Flyve MDM");
-                    //Add headers
-                    if (urls.length != 1) {
-                        for (int i = 1; i < urls.length; i++) {
-                            String[] headers = urls[i].split("::");
-                            FlyveLog.d("GetRequest: " + headers[0] + "::" + headers[1]);
-                            connection.setRequestProperty(headers[0], headers[1]);
-                        }
+        try {
+            URL obj = new URL(urls[0]);
+            HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+            if (connection != null) {
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("User-Agent", "Flyve MDM");
+                //Add headers
+                if (urls.length != 1) {
+                    for (int i = 1; i < urls.length; i++) {
+                        String[] headers = urls[i].split("::");
+                        FlyveLog.d("GetRequest: " + headers[0] + "::" + headers[1]);
+                        connection.setRequestProperty(headers[0], headers[1]);
                     }
                 }
-
-                if (download) {
-                    String filename = DownloadTask.getmJsonDownload();
-                    try {
-                        int fileLength = connection.getContentLength();
-                        FlyveLog.d("GetRequest: filename" + filename);
-                        new File(DownloadTask.directory).mkdirs();
-
-                        //copying
-                        InputStream input = connection.getInputStream();
-                        OutputStream output = new FileOutputStream(DownloadTask.directory + filename);
-                        FlyveLog.d("GetRequest input stream = " + input.toString());
-
-
-                        byte data[] = new byte[4096];
-                        long total = 0;
-                        int count;
-
-                        while ((count = input.read(data)) != -1) {
-                            total += count;
-                            if (fileLength > 0) //publish progress only if total length is known
-                                onProgressUpdate((int) (total * 100 / fileLength));//(int)(total / 1024), fileLength/1024 );
-                            output.write(data, 0, count);
-                        }
-
-                        if (output != null)
-                            output.close();
-                        if (input != null)
-                            input.close();
-
-                        if (connection != null)
-                            connection.disconnect();
-                        return "OK";
-
-                    } catch (Exception e) {
-                        FlyveLog.e(e.toString());
-                        return e.toString();
-                    }
-                } else {
-
-                    int responseCode = connection.getResponseCode();
-                    FlyveLog.d("Sending 'GET' request to URL : " + urls[0]);
-                    FlyveLog.d("Response Code : " + responseCode);
-
-                    BufferedReader in = new BufferedReader(
-                            new InputStreamReader(connection.getInputStream()));
-                    String inputLine;
-                    StringBuffer response = new StringBuffer();
-
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
-                    }
-                    in.close();
-
-                    //print result
-                    FlyveLog.json("Response : " + response.toString());
-
-                    return response.toString();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
             }
 
-        } else if (urls[0].split(":")[0].equals("https")) {
+            if (download) {
+                String filename = DownloadTask.getmJsonDownload();
+                int fileLength = connection.getContentLength();
 
-            try {
+                FlyveLog.d("GetRequest: filename" + filename);
+                new File(DownloadTask.directory).mkdirs();
+                InputStream input = connection.getInputStream();
+                OutputStream output = new FileOutputStream(DownloadTask.directory + filename);
 
-                URL obj = new URL(urls[0]);
+                FlyveLog.d("GetRequest input stream = " + input.toString());
 
-                HttpsURLConnection connection = (HttpsURLConnection) obj.openConnection();
-                if (connection != null) {
-                    connection.setRequestMethod("GET");
-                    connection.setRequestProperty("User-Agent", "Flyve MDM");
-                    if (urls.length != 1) {
-                        for (int i = 1; i < urls.length; i++) {
-                            String[] headers = urls[i].split("::");
-                            FlyveLog.d("GetRequest: " + headers[0] + "::" + headers[1]);
-                            connection.setRequestProperty(headers[0], headers[1]);
-                        }
-                    }
+                byte data[] = new byte[4096];
+                long total = 0;
+                int count;
+
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+                    if (fileLength > 0) //publish progress only if total length is known
+                        onProgressUpdate((int) (total * 100 / fileLength));//(int)(total / 1024), fileLength/1024 );
+                    output.write(data, 0, count);
+
                 }
+                if (output != null)
+                    output.close();
+                if (input != null)
+                    input.close();
 
-                //read http answer and save file
-                if (download) {
-                    String filename = DownloadTask.getmJsonDownload();
-                    int fileLength = connection.getContentLength();
+                if (connection != null)
+                    connection.disconnect();
+                return "OK";
+            } else {
+                int responseCode = connection.getResponseCode();
+                FlyveLog.d("Sending 'GET' request to URL : " + urls[0]);
+                FlyveLog.d("Response Code : " + responseCode);
 
-                    FlyveLog.d("GetRequest: filename" + filename);
-                    new File(DownloadTask.directory).mkdirs();
-                    InputStream input = connection.getInputStream();
-                    OutputStream output = new FileOutputStream(DownloadTask.directory + filename);
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
 
-                    FlyveLog.d("GetRequest input stream = " + input.toString());
-
-                    byte data[] = new byte[4096];
-                    long total = 0;
-                    int count;
-
-                    while ((count = input.read(data)) != -1) {
-                        total += count;
-                        if (fileLength > 0) //publish progress only if total length is known
-                            onProgressUpdate((int) (total * 100 / fileLength));//(int)(total / 1024), fileLength/1024 );
-                        output.write(data, 0, count);
-
-                    }
-                    if (output != null)
-                        output.close();
-                    if (input != null)
-                        input.close();
-
-                    if (connection != null)
-                        connection.disconnect();
-                    return "OK";
-                } else {
-
-                    int responseCode = connection.getResponseCode();
-                    FlyveLog.d("Sending 'GET' request to URL : " + urls[0]);
-                    FlyveLog.d("Response Code : " + responseCode);
-
-                    BufferedReader in = new BufferedReader(
-                            new InputStreamReader(connection.getInputStream()));
-                    String inputLine;
-                    StringBuffer response = new StringBuffer();
-
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
-                    }
-                    in.close();
-
-                    //print result
-                    FlyveLog.d("Response : " + response.toString());
-                    return response.toString();
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
                 }
+                in.close();
 
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                //print result
+                FlyveLog.json("Response : " + response.toString());
+
+                return response.toString();
             }
-
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
         }
-
         return "ERROR_PROTOCOL";
     }
 
