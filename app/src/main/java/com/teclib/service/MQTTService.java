@@ -551,15 +551,14 @@ public class MQTTService extends Service implements MqttCallback {
     }
 
     private synchronized void sendInventory() throws MqttConnectivityException, MqttException {
-
-        MqttMessage message = new MqttMessage(ReadInventory().getBytes());
-        message.setQos(0);
-        mClient.publish(sharedPreferenceMQTT.getSerialTopic(getBaseContext())[0] + "/Status/Inventory", message);
-        return;
+        if (mClient != null && sharedPreferenceMQTT != null) {
+            MqttMessage message = new MqttMessage(ReadInventory().getBytes());
+            message.setQos(0);
+            mClient.publish(sharedPreferenceMQTT.getSerialTopic(getBaseContext())[0] + "/Status/Inventory", message);
+        }
     }
 
     private synchronized void unEnrolment() throws MqttConnectivityException, MqttException {
-
         SharedPreferenceAction sharedPreferenceAction = new SharedPreferenceAction();
         SharedPreferenceConnectivity sharedPreferenceConnectivity = new SharedPreferenceConnectivity();
         SharedPreferencePolicies sharedPreferencePolicies = new SharedPreferencePolicies();
