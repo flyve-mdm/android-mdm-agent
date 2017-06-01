@@ -1,6 +1,6 @@
 {
   "name": "@teclib/flyve-mdm-android",
-  "version": "0.99.46",
+  "version": "1.0",
   "description": "Mobile Device Management Software",
   "main": "index.js",
   "scripts": {
