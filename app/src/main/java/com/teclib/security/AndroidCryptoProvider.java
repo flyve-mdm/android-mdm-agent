@@ -26,6 +26,16 @@
 
 package com.teclib.security;
 
+import android.content.Context;
+import android.util.Base64;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+import org.spongycastle.openssl.jcajce.JcaPEMWriter;
+import org.spongycastle.operator.ContentSigner;
+import org.spongycastle.operator.OperatorCreationException;
+import org.spongycastle.operator.jcajce.JcaContentSignerBuilder;
+import org.spongycastle.pkcs.PKCS10CertificationRequest;
+import org.spongycastle.pkcs.PKCS10CertificationRequestBuilder;
+import org.spongycastle.pkcs.jcajce.JcaPKCS10CertificationRequestBuilder;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,23 +53,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPrivateKey;
-
-
-import android.content.Context;
-import android.util.Base64;
-
-import com.teclib.api.FlyveLog;
-
-import org.spongycastle.jce.provider.BouncyCastleProvider;
-import org.spongycastle.openssl.jcajce.JcaPEMWriter;
-import org.spongycastle.operator.ContentSigner;
-import org.spongycastle.operator.OperatorCreationException;
-import org.spongycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.spongycastle.pkcs.PKCS10CertificationRequest;
-import org.spongycastle.pkcs.PKCS10CertificationRequestBuilder;
-import org.spongycastle.pkcs.jcajce.JcaPKCS10CertificationRequestBuilder;
-import org.spongycastle.util.io.pem.PemObject;
-
 import javax.security.auth.x500.X500Principal;
 
 public class AndroidCryptoProvider {
@@ -103,15 +96,15 @@ public class AndroidCryptoProvider {
             }
             return fileData;
         } catch (IOException e) {
-            FlyveLog.e("loadFileToBytes IOException",e);
+            //FlyveLog.e("loadFileToBytes IOException",e);
             return null;
         } finally {
             try {
                 fin.close();
             } catch (IOException e){
-                FlyveLog.e("close FileInputStream, IO exception", e);
+                //FlyveLog.e("close FileInputStream, IO exception", e);
             } catch (NullPointerException e){
-                FlyveLog.e("close FileInputStream, NullP exception", e);
+                //FlyveLog.e("close FileInputStream, NullP exception", e);
             }
         }
     }
@@ -121,7 +114,7 @@ public class AndroidCryptoProvider {
         String test = new String(csrBytes);
         // If either file was missing, we definitely can't succeed
         if (csrBytes == null) {
-            FlyveLog.i("loadCsr: Missing csr need to generate a new one");
+            //FlyveLog.i("loadCsr: Missing csr need to generate a new one");
             //return false;
         }
         return test;
@@ -132,10 +125,10 @@ public class AndroidCryptoProvider {
         String test = new String(csrBytes);
         // If either file was missing, we definitely can't succeed
         if (csrBytes == null) {
-            FlyveLog.i("loadCsr: Missing csr need to generate a new one");
+            //FlyveLog.i("loadCsr: Missing csr need to generate a new one");
             return false;
         }
-        FlyveLog.d("loadCsr: " + test);
+        //FlyveLog.d("loadCsr: " + test);
         return true;
     }
 
@@ -150,12 +143,12 @@ public class AndroidCryptoProvider {
             keyPairGenerator.initialize(4096);
             keyPair = keyPairGenerator.generateKeyPair();
         } catch (NoSuchAlgorithmException e1) {
-            FlyveLog.wtf("generateRequest",e1);
+            //FlyveLog.wtf("generateRequest",e1);
             // Should never happen
             return false;
         } catch (NoSuchProviderException e) {
             // Should never happen
-            FlyveLog.wtf("generateRequest",e);
+            //FlyveLog.wtf("generateRequest",e);
             return false;
         }
 
@@ -165,7 +158,7 @@ public class AndroidCryptoProvider {
         try {
             signGen = new JcaContentSignerBuilder("SHA1withRSA").build(keyPair.getPrivate());
         } catch (OperatorCreationException e) {
-            FlyveLog.e("generateRequest",e);
+            //FlyveLog.e("generateRequest",e);
         }
         PKCS10CertificationRequestBuilder builder = new JcaPKCS10CertificationRequestBuilder(subjectName, keyPair.getPublic());
         csr = builder.build(signGen);
@@ -174,11 +167,11 @@ public class AndroidCryptoProvider {
             key = (RSAPrivateKey) keyPair.getPrivate();
         } catch (Exception e) {
             // Nothing should go wrong here
-            FlyveLog.wtf("generateRequest",e);
+            ///FlyveLog.wtf("generateRequest",e);
             return false;
         }
 
-        FlyveLog.d("generateCertKeyPair: Generated a new key pair");
+        //FlyveLog.d("generateCertKeyPair: Generated a new key pair");
         // Save the resulting pair
         saveCsrKey();
 
@@ -216,7 +209,7 @@ public class AndroidCryptoProvider {
 
 
         } catch (IOException e) {
-            FlyveLog.e("saveCsrKey",e);
+            //FlyveLog.e("saveCsrKey",e);
             // This isn't good because it means we'll have
             // to re-pair next time
             e.printStackTrace();
@@ -225,9 +218,9 @@ public class AndroidCryptoProvider {
                 csrOut.close();
                 keyOut.close();
             } catch (IOException e){
-                FlyveLog.e("saveCsrKey, IOException", e);
+                //FlyveLog.e("saveCsrKey, IOException", e);
             } catch (NullPointerException e){
-                FlyveLog.e("saveCsrKey, NullP Exception", e);
+                //FlyveLog.e("saveCsrKey, NullP Exception", e);
             }
         }
     }
@@ -244,9 +237,9 @@ public class AndroidCryptoProvider {
                 certFactory = CertificateFactory.getInstance("X.509", "BC");
                 cert = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(certBytes));
             } catch (CertificateException e) {
-                FlyveLog.e("saveCertKey",e);
+                //FlyveLog.e("saveCertKey",e);
             } catch (NoSuchProviderException e) {
-                FlyveLog.e("saveCertKey",e);
+                //FlyveLog.e("saveCertKey",e);
             }
 
             // Write the certificate in OpenSSL PEM format (important for the server)
@@ -268,14 +261,14 @@ public class AndroidCryptoProvider {
         } catch (IOException e) {
             // This isn't good because it means we'll have
             // to re-pair next time
-            FlyveLog.e("saveCertKey",e);
+            //FlyveLog.e("saveCertKey",e);
         } finally {
             try {
                 certOut.close();
             } catch (IOException e){
-                FlyveLog.e("saveCertKey, IOException", e);
+                //FlyveLog.e("saveCertKey, IOException", e);
             } catch (NullPointerException e){
-                FlyveLog.e("saveCertKey, NullP exception", e);
+                //FlyveLog.e("saveCertKey, NullP exception", e);
             }
         }
     }
