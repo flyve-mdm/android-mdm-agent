@@ -1,0 +1,90 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!-- <item name="colorPrimary">@color/colorPrimary</item>  -->
+        <!-- <item name="colorPrimaryDark">@color/colorPrimaryDark</item>  -->
+        <!-- <item name="colorAccent">@color/colorAccent</item>  -->
+   </style>
+
+   <style name="ResultButton" parent="@android:style/Widget.Holo.Button.Borderless.Small">
+       <item name="android:layout_width">0dip</item>
+       <item name="android:layout_height">wrap_content</item>
+       <item name="android:layout_weight">1</item>
+   </style>
+
+   <style name="ShareButton" parent="@android:style/Widget.Holo.Button.Borderless.Small">
+       <item name="android:layout_width">wrap_content</item>
+       <item name="android:layout_height">wrap_content</item>
+   </style>
+
+   <style name="AppTheme.NoActionBar">
+       <item name="windowActionBar">false</item>
+       <item name="windowNoTitle">true</item>
+   </style>
+
+   <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+   <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+   <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
+       <item name="colorAccent">@color/white</item>
+       <item name="android:textColorPrimary">@color/iron</item>
+       <item name="android:background">@color/black</item>
+   </style>
+
+   <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+       <item name="colorPrimary">@color/primary</item>
+       <item name="colorPrimaryDark">@color/primary_dark</item>
+       <item name="colorAccent">@color/accent</item>
+
+       <item name="android:windowBackground">@color/white</item>
+
+       <item name="colorControlNormal">@color/black</item>
+       <!-- Couleur de la barre du bas du textview avant selection -->
+        <item name="colorControlActivated">@color/black</item>
+        <!-- Nom au dessus du textview et curseur apres selection -->
+        <item name="colorControlHighlight">@color/white</item>
+        <item name="android:textColorHint">@color/black</item>
+        <!-- Couleur du texte Email, Password avant selection dans le textview -->
+
+        <item name="colorButtonNormal">@color/primary_darker</item>
+        <item name="android:colorButtonNormal" tools:targetApi="lollipop">@color/primary_darker
+        </item>
+    </style>
+
+    <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
+
+    </style>
+
+    <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/petrole_500</item>
+        <item name="colorPrimaryDark">@color/petrole_500</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/petrole_500</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!-- This would set the toolbar's background color -->
+        <item name="android:background">@color/petrole_500</item>
+        <!-- android:textColorPrimary is the color of the title text in the Toolbar  -->
+        <item name="android:textColorPrimary">@android:color/holo_blue_light</item>
+        <!-- android:actionMenuTextColor is the color of the text of action (menu) items  -->
+        <item name="actionMenuTextColor">@android:color/holo_green_light</item>
+        <item name="colorButtonNormal">@color/petrole_500</item>
+        <!-- Enable these below if you want clicking icons to trigger a ripple effect -->
+        <!--
+        <item name="selectableItemBackground">?android:selectableItemBackground</item>
+        <item name="selectableItemBackgroundBorderless">?android:selectableItemBackground</item>
+        -->
+    </style>
+
+    <!-- This configures the styles for the title within the Toolbar  -->
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">21sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+</resources>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.teclib.flyvemdm">
+
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    <uses-permission android:name="com.uhuru.permission.INSTALL_PACKAGE" />
+    <!-- QR CODE -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--  -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- For writing logfiles -->
+    <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- MQTT -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <!-- GPS -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+
+    <!-- Launcher -->
+    <permission
+        android:name="com.teclib.launcher.permission.REPLY"
+        android:protectionLevel="normal" />
+
+    <uses-permission android:name="com.teclib.launcher.permission.SEND_JSON" />
+    <uses-permission android:name="com.teclib.launcher.permission.START_JSON" />
+    <uses-permission android:name="com.teclib.launcher.permission.START" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:name=".MainApplication"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name">
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:theme="@style/MyMaterialTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.zxing.client.android.SCAN" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name="com.teclib.service.IsBootComplete"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.teclib.service.MQTTService" />
+        <service
+            android:name="com.teclib.service.BootService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".MQTTNotifierActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme" />
+
+        <receiver
+            android:name="com.teclib.mqtt.MQTTAction"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.dalelane.mqtt.MSGRECVD" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.teclib.api.DeviceAdmin"
+            android:label="DeviceAdmin">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name="com.teclib.api.DeviceAdmin$AdminReceiver"
+            android:exported="false"
+            android:label="FlyveMDM"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.ACTION_DEVICE_ADMIN_DISABLE_REQUESTED" />
+                <action android:name="android.app.action.ACTION_DEVICE_ADMIN_DISABLED" />
+                <action android:name="android.app.action.ACTION_PASSWORD_CHANGED" />
+                <action android:name="android.app.action.ACTION_PASSWORD_EXPIRING" />
+                <action android:name="android.app.action.ACTION_PASSWORD_FAILED" />
+                <action android:name="android.app.action.ACTION_PASSWORD_SUCCEEDED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.teclib.launcher.LauncherReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="com.teclib.launcher.permission.REPLY">
+            <intent-filter>
+                <action android:name="com.teclib.launcher.REPLY" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.teclib.service.MQTTNotificationService" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.teclib.com"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DNSActivity"
+            android:label="@string/title_activity_dns"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".HTTPActivity"
+            android:label="@string/title_activity_http"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
+
+        <receiver
+            android:name="com.teclib.mqtt.MQTTActionConnectivityReceiver"
+            android:exported="false">
+            <intent-filter android:priority="100">
+                <action android:name="android.net.wifi.STATE_CHANGE" />
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+                <action android:name="android.location.PROVIDERS_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.teclib.service.NotificationGPSActivation"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name="com.teclib.service.NotificationAdminRequest"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".ActiveGPSActivity"
+            android:screenOrientation="portrait" />
+
+        <service android:name="com.teclib.service.NotificationRemoveService" />
+        <service android:name="org.fusioninventory.Agent" />
+
+        <activity
+            android:name="org.fusioninventory.FusionInventory"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RemoveApplicationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.teclib.database.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MQTTNotifierActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.teclib.flyvemdm.MQTTNotifierActivity" />
+        </activity>
+        <activity
+            android:name="com.teclib.database.InformationsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AppManagementActivity"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name="com.teclib.service.NotificationPasswordPolicies"
+            android:enabled="true"
+            android:exported="true"></service>
+    </application>
+
+</manifest>
