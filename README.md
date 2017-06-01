@@ -1,6 +1,10 @@
 # flyve-mdm-android
 Flyve MDM Agent for Android
 
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+
+[![Telegram Group](https://img.shields.io/badge/Telegram-Group-blue.svg)](https://t.me/flyvemdm)
+
 This version work with Deep Link the format of the link is: flyve://register?data={{base64encode JSON}}
 
 JSON Format:

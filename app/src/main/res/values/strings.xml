@@ -231,8 +231,8 @@
     <string name="enrollment">ENROLLMENT</string>
     <string name="start_enrollment">START ENROLLMENT</string>
     <string name="dns">DNS Configuration</string>
-    <string name="stork_connect">FlyveMDM connected</string>
-    <string name="stork_unconnect">FlyveMDM unconnected</string>
+    <string name="flyve_connect">FlyveMDM connected</string>
+    <string name="flyve_unconnect">FlyveMDM unconnected</string>
     <string name="mqtt_reconnect">MQTT reconnect</string>
     <string name="install_button">Install applications</string>
     <string name="finish_button">FINISH</string>

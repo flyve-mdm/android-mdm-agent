@@ -46,3 +46,20 @@ Thumbs.db
 .idea/gradle.xml
 .idea/modules.xml
 .idea/vcs.xml
+
+
+# Node.js
+
+node_modules
+
+# Miscellaneous
+
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.externalNativeBuild

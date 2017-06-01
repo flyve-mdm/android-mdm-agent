@@ -86,12 +86,12 @@ public class MQTTNotificationService extends Service {
                 if (intent.getAction().equals(MQTTService.MQTT_STATUS_INTENT)) {
                     boolean receive = sharedPreferenceMQTT.getStatus(context);
                     if (receive) {
-                        CustomNotificationConnected(getString(R.string.stork_connect));
+                        CustomNotificationConnected(getString(R.string.flyve_connect));
                     } else {
-                        CustomNotificationNoConnected(getString(R.string.stork_unconnect));
+                        CustomNotificationNoConnected(getString(R.string.flyve_unconnect));
                     }
                 }
-                if(intent.getAction().equals("com.teclib.service.STOP")){
+                if("com.teclib.service.STOP".equals(intent.getAction())){
                     cancelNotification(context,1);
                 }
             }

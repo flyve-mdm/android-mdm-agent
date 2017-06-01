@@ -80,6 +80,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
 
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="com.teclib.api.PackageEventReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package"/>
             </intent-filter>
         </receiver>
 
@@ -230,7 +244,8 @@
         <service
             android:name="com.teclib.service.NotificationPasswordPolicies"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
     </application>
 
 </manifest>

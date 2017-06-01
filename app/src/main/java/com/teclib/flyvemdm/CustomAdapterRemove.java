@@ -48,25 +48,23 @@ import java.util.Set;
 
 public class CustomAdapterRemove extends BaseAdapter {
 
-    private static final String TAG = CustomAdapterRemove.class.getSimpleName();
     ArrayList<DataModelRemove> listArray;
     private SharedPreferenceAction msharedPreferenceAction;
     private Set<String> mapks;
     private Context mContext;
     private boolean[] mremovedApp;
 
-    public static String [] prgmNameList;
 
     public CustomAdapterRemove(Context context) {
 
-        listArray = new ArrayList<DataModelRemove>(20); //limit 20 applications in a configuration
+        listArray = new ArrayList<>(20); //limit 20 applications in a configuration
 
         msharedPreferenceAction = new SharedPreferenceAction();
         mContext = context;
 
         mapks = msharedPreferenceAction.getApksRemove(mContext);
 
-        prgmNameList = mapks.toArray(new String[mapks.size()]);
+        String [] prgmNameList = mapks.toArray(new String[mapks.size()]);
 
         mremovedApp = new boolean[mapks.size()];
 
@@ -76,7 +74,7 @@ public class CustomAdapterRemove extends BaseAdapter {
         }
 
         for(int i = 0 ; i < prgmNameList.length ; i++) {
-            listArray.add(new DataModelRemove(prgmNameList[i].toString()));
+            listArray.add(new DataModelRemove(prgmNameList[i]));
         }
 
     }
@@ -125,11 +123,10 @@ public class CustomAdapterRemove extends BaseAdapter {
         for (Object object : pkgAppsList)
         {
             ResolveInfo info = (ResolveInfo) object;
-            String strPackageName  = info.activityInfo.applicationInfo.packageName.toString();
+            String strPackageName  = info.activityInfo.applicationInfo.packageName;
 
             if(strPackageName.equals(dataModelRemove.getPackageName())) {
                 FlyveLog.i("Applications name =  " + strPackageName);
-               // button.setText("Already installed");
                 button.setEnabled(true);
                 mremovedApp[index]=true;
             }
@@ -175,7 +172,8 @@ public class CustomAdapterRemove extends BaseAdapter {
 
     public static boolean areAllTrue(boolean[] minstalledApp)
     {
-        for(boolean check : minstalledApp) if(check) return false;
+        for(boolean check : minstalledApp)
+            if(check) return false;
         return true;
     }
 

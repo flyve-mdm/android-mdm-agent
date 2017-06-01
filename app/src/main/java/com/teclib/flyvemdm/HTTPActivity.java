@@ -79,7 +79,7 @@ public class HTTPActivity extends Activity {
     private String mtopic;
     private String mpassword;
     private String mcert;
-    private int status;
+
     private int mComputers_id;
     private int mId;
     private int mEntities_id;
@@ -106,7 +106,7 @@ public class HTTPActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_http);
-        status = 0;
+
         sharedPreferenceMQTT = new SharedPreferenceMQTT();
         sharedPreferenceSettings = new SharedPreferenceSettings();
         mCrypto = new AndroidCryptoProvider(context);
@@ -115,7 +115,7 @@ public class HTTPActivity extends Activity {
             link = extras.getString("link");
             previous = extras.getString("previous");
         }
-        System.out.println(link);
+        FlyveLog.d(link);
 
         try {
             JSONObject jsonObj = new JSONObject(link);
@@ -142,8 +142,7 @@ public class HTTPActivity extends Activity {
             }
 
         } catch (JSONException e) {
-            FlyveLog.e(e.getMessage());
-            e.printStackTrace();
+            FlyveLog.e("",e);
         }
 
         btn_nxt = (RelativeLayout) findViewById(R.id.imageButton2);
@@ -178,7 +177,6 @@ public class HTTPActivity extends Activity {
     }
 
     public void checkConnection() {
-        String TAG = "check_Activation";
 
         TextView connection_status_text = (TextView) findViewById(R.id.connection_status_text);
         ImageView connection_status_image = (ImageView) findViewById(R.id.connection_status_image);
@@ -245,7 +243,7 @@ public class HTTPActivity extends Activity {
         }
         serial_status.setVisibility(View.VISIBLE);
 
-        if (EnrolmentStatus.equals("ok")) {
+        if ("ok".equals(EnrolmentStatus)) {
             btn_nxt.setVisibility(View.VISIBLE);
             btn_enrolment.setVisibility(View.INVISIBLE);
         }
@@ -275,11 +273,11 @@ public class HTTPActivity extends Activity {
     }
 
     public void prev_Page(View v) {
-        if (previous.equals("DNSActivity")) {
+        if ("DNSActivity".equals(previous)) {
             Intent previous = new Intent(HTTPActivity.this, DNSActivity.class);
             HTTPActivity.this.startActivity(previous);
             this.finish();
-        } else if (previous.equals("LoginActivity")) {
+        } else if ("LoginActivity".equals(previous)) {
             Intent previous = new Intent(HTTPActivity.this, LoginActivity.class);
             previous.putExtra("link", link.split("&serial")[0]);
             HTTPActivity.this.startActivity(previous);
@@ -294,6 +292,7 @@ public class HTTPActivity extends Activity {
         this.finish();
     }
 
+    @Override
     public void onDestroy() {
 
         super.onDestroy();
@@ -346,7 +345,7 @@ public class HTTPActivity extends Activity {
                 String jsonFullSession = request.GetRequest(false,mServeur + "/" + "getFullSession?" + "session_token=" + mSessionToken);
                 FlyveLog.json(jsonFullSession);
 
-                String pattern = "\"plugin_storkmdm_guest_profiles_id\":\\s*([0-9]+)";
+                String pattern = "\"plugin_flyvemdm_guest_profiles_id\":\\s*([0-9]+)";
 
                 // Create a Pattern object
                 Pattern search = Pattern.compile(pattern);
@@ -356,15 +355,15 @@ public class HTTPActivity extends Activity {
                 if (m.find( )) {
                     mPluginId = m.group(1);
                 }else {
-                    FlyveLog.wtf("plugin_storkmdm_guest_profiles_id");
+                    FlyveLog.wtf("plugin_flyvemdm_guest_profiles_id");
                 }
 
-                String changeActiveProfile = request.GetRequest(false,mServeur + "/" + "changeActiveProfile?" + "session_token=" + mSessionToken + "&profiles_id=" + mPluginId);
+                request.GetRequest(false,mServeur + "/" + "changeActiveProfile?" + "session_token=" + mSessionToken + "&profiles_id=" + mPluginId);
 
-                String Post = request.PostRequest(mServeur + "/" + "PluginStorkmdmAgent?" + "session_token=" + mSessionToken, mEmail, mInvitationToken, mSerial, mName);
+                String Post = request.PostRequest(mServeur + "/" + "PluginFlyvemdmAgent?" + "session_token=" + mSessionToken, mEmail, mInvitationToken, mSerial, mName);
                 FlyveLog.d(Post);
                 if (isInteger(Post, 10)) {
-                    String Get = request.GetRequest(false,mServeur + "/" + "PluginStorkmdmAgent/" + Post + "?" + "session_token=" + mSessionToken);
+                    String Get = request.GetRequest(false,mServeur + "/" + "PluginFlyvemdmAgent/" + Post + "?" + "session_token=" + mSessionToken);
                     FlyveLog.json(Get);
                     JSONObject jsonObject = null;
                     try {
@@ -379,7 +378,7 @@ public class HTTPActivity extends Activity {
                         mId = jsonObject.getInt("id");
                         mEntities_id = jsonObject.getInt("entities_id");
                         mNameEmail = jsonObject.getString("name");
-                        mFleet_id = jsonObject.getInt("plugin_storkmdm_fleets_id");
+                        mFleet_id = jsonObject.getInt("plugin_flyvemdm_fleets_id");
                     } catch (JSONException e) {
                         //TODO ne pas continuer l'enrollement
                         FlyveLog.e(e.getMessage());
