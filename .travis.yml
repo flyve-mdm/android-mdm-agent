@@ -49,3 +49,6 @@ before_script:
 
 script:
   - "./gradlew clean build connectedCheck -PdisablePreDex --stacktrace"
+
+notifications:
+  webhooks: https://fathomless-fjord-24024.herokuapp.com/notify

@@ -41,6 +41,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.teclib.data.DataStorage;
+import com.teclib.security.AndroidCryptoProvider;
 import com.teclib.utils.ConnectionHTTP;
 import com.teclib.utils.Helpers;
 import com.teclib.utils.Routes;
@@ -48,6 +49,7 @@ import com.teclib.utils.Routes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 /**
@@ -252,14 +254,14 @@ public class RegisterActivity extends AppCompatActivity {
             JSONObject payload = new JSONObject();
             JSONObject input = new JSONObject();
 
-            //AndroidCryptoProvider csr = new AndroidCryptoProvider(RegisterActivity.this.getBaseContext());
-            //String requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
+            AndroidCryptoProvider csr = new AndroidCryptoProvider(RegisterActivity.this.getBaseContext());
+            String requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
 
             try {
                 payload.put("_email", txtEmail.getText());
                 payload.put("_invitation_token", cache.getVariablePermanente("invitation_token"));
                 payload.put("_serial", Build.SERIAL); //Build.SERIAL
-                payload.put("csr", "");
+                payload.put("csr", requestCSR);
                 payload.put("firstname", txtName.getText());
                 payload.put("lastname", "Without");
                 payload.put("version", "0.99.0");
