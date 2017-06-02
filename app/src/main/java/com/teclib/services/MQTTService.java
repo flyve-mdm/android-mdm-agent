@@ -1,5 +1,5 @@
 /*
- *   Copyright © ${YEAR} Teclib. All rights reserved.
+ *   Copyright © 2017 Teclib. All rights reserved.
  *
  *   com.teclib.data is part of flyve-mdm-android
  *
