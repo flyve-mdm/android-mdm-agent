@@ -1,5 +1,5 @@
 /*
- *   Copyright © ${YEAR} Teclib. All rights reserved.
+ *   Copyright © 2017 Teclib. All rights reserved.
  *
  *   com.teclib.data is part of flyve-mdm-android
  *
@@ -243,6 +243,10 @@ public class RegisterActivity extends AppCompatActivity {
         txtdata.setText("Register Agent");
 
         try {
+            AndroidCryptoProvider createCertif = new AndroidCryptoProvider(getBaseContext());
+            createCertif.generateRequest();
+            createCertif.loadCsr();
+
             HashMap<String, String> header = new HashMap();
             header.put("Session-Token",cache.getVariablePermanente("session_token"));
 
