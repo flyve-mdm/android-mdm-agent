@@ -96,8 +96,9 @@ public class MQTTService extends IntentService implements MqttCallback {
 
         mBroker = cache.getVariablePermanente("broker");
         mPort = "8883"; //cache.getVariablePermanente("port");
-        mUser = "rafa"; //cache.getVariablePermanente("agent_id");
-        mPassword = "azlknvjkfbsdklfdsgfd"; //cache.getVariablePermanente("mqttpasswd");
+        mUser = cache.getVariablePermanente("mqttuser");
+        mPassword = cache.getVariablePermanente("mqttpasswd");
+
         mTopic = cache.getVariablePermanente("topic");
 
         String clientId = MqttClient.generateClientId();

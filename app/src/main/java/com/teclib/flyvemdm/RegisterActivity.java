@@ -120,9 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-
         initSession();
-
     }
 
     // STEP 1
@@ -338,10 +336,10 @@ public class RegisterActivity extends AppCompatActivity {
                     cache.setVariablePermanente("port", mport);
                     cache.setVariablePermanente("tls", mssl);
                     cache.setVariablePermanente("topic", mtopic);
+                    cache.setVariablePermanente("mqttuser", Build.SERIAL);
                     cache.setVariablePermanente("mqttpasswd", mpassword);
                     cache.setVariablePermanente("certificate", mcert);
                     cache.setVariablePermanente("name", mNameEmail);
-                    cache.setVariablePermanente("agent_id", String.valueOf(mId));
                     cache.setVariablePermanente("computers_id", String.valueOf(mComputers_id));
                     cache.setVariablePermanente("entities_id", String.valueOf(mEntities_id));
                     cache.setVariablePermanente("plugin_flyvemdm_fleets_id", String.valueOf(mFleet_id));
