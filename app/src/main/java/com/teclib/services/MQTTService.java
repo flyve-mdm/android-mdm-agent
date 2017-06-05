@@ -102,7 +102,7 @@ public class MQTTService extends IntentService implements MqttCallback {
         mTopic = cache.getVariablePermanente("topic");
 
         String clientId = MqttClient.generateClientId();
-        client = new MqttAndroidClient(this.getApplicationContext(), "ssl://" + mBroker + ":" + mPort,
+            client = new MqttAndroidClient(this.getApplicationContext(), "ssl://" + mBroker + ":" + mPort,
                 clientId);
 
         client.setCallback( this );
@@ -139,6 +139,11 @@ public class MQTTService extends IntentService implements MqttCallback {
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     // Something went wrong e.g. connection timeout or firewall problems
                     Log.d(TAG, "onFailure");
+
+                    Intent in = new Intent();
+                    in.putExtra("message", exception.getMessage());
+                    in.setAction("NOW");
+                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
                 }
             });
         }

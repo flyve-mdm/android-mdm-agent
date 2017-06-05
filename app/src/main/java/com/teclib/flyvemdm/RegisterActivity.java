@@ -43,13 +43,13 @@ import android.widget.TextView;
 import com.teclib.data.DataStorage;
 import com.teclib.security.AndroidCryptoProvider;
 import com.teclib.utils.ConnectionHTTP;
+import com.teclib.utils.FlyveLog;
 import com.teclib.utils.Helpers;
 import com.teclib.utils.Routes;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URLEncoder;
 import java.util.HashMap;
 
 /**
@@ -116,7 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pluginFlyvemdmAgent();
+                createX509cert();
             }
         });
 
@@ -235,15 +235,42 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     // STEP 4
+    private void createX509cert() {
+
+        new Thread(new Runnable() {
+            public void run() {
+
+                try {
+                    AndroidCryptoProvider createCertif = new AndroidCryptoProvider(getBaseContext());
+                    createCertif.generateRequest();
+                    createCertif.loadCsr();
+
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            pluginFlyvemdmAgent();
+                        }
+                    });
+                } catch (Exception ex) {
+                    FlyveLog.d("");
+                }
+
+            }
+
+
+
+        }).start();
+
+
+    }
+
+    // STEP 5
     private void pluginFlyvemdmAgent() {
 
         pb.setVisibility( View.VISIBLE );
         txtdata.setText("Register Agent");
 
         try {
-            AndroidCryptoProvider createCertif = new AndroidCryptoProvider(getBaseContext());
-            createCertif.generateRequest();
-            createCertif.loadCsr();
+
 
             HashMap<String, String> header = new HashMap();
             header.put("Session-Token",cache.getVariablePermanente("session_token"));
@@ -256,14 +283,14 @@ public class RegisterActivity extends AppCompatActivity {
             JSONObject payload = new JSONObject();
             JSONObject input = new JSONObject();
 
-            AndroidCryptoProvider csr = new AndroidCryptoProvider(RegisterActivity.this.getBaseContext());
-            String requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
+//            AndroidCryptoProvider csr = new AndroidCryptoProvider(RegisterActivity.this.getBaseContext());
+//            String requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
 
             try {
                 payload.put("_email", txtEmail.getText());
                 payload.put("_invitation_token", cache.getVariablePermanente("invitation_token"));
                 payload.put("_serial", Build.SERIAL); //Build.SERIAL
-                payload.put("csr", requestCSR);
+                payload.put("csr", "");
                 payload.put("firstname", txtName.getText());
                 payload.put("lastname", "Without");
                 payload.put("version", "0.99.0");
@@ -299,7 +326,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    // STEP 5
+    // STEP 6
     private void getDataPluginFlyvemdmAgent() {
 
         try {
