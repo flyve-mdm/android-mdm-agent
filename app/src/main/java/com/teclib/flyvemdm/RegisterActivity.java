@@ -1,3 +1,30 @@
+/*
+ *   Copyright © 2017 Teclib. All rights reserved.
+ *
+ *   com.teclib.data is part of flyve-mdm-android
+ *
+ * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @date      02/06/2017
+ * @copyright Copyright © ${YEAR} Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+
 package com.teclib.flyvemdm;
 
 import android.content.Intent;
@@ -14,6 +41,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.teclib.data.DataStorage;
+import com.teclib.security.AndroidCryptoProvider;
 import com.teclib.utils.ConnectionHTTP;
 import com.teclib.utils.Helpers;
 import com.teclib.utils.Routes;
@@ -21,6 +49,7 @@ import com.teclib.utils.Routes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 /**
@@ -214,6 +243,10 @@ public class RegisterActivity extends AppCompatActivity {
         txtdata.setText("Register Agent");
 
         try {
+            AndroidCryptoProvider createCertif = new AndroidCryptoProvider(getBaseContext());
+            createCertif.generateRequest();
+            createCertif.loadCsr();
+
             HashMap<String, String> header = new HashMap();
             header.put("Session-Token",cache.getVariablePermanente("session_token"));
 
@@ -225,14 +258,14 @@ public class RegisterActivity extends AppCompatActivity {
             JSONObject payload = new JSONObject();
             JSONObject input = new JSONObject();
 
-            //AndroidCryptoProvider csr = new AndroidCryptoProvider(RegisterActivity.this.getBaseContext());
-            //String requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
+            AndroidCryptoProvider csr = new AndroidCryptoProvider(RegisterActivity.this.getBaseContext());
+            String requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
 
             try {
                 payload.put("_email", txtEmail.getText());
                 payload.put("_invitation_token", cache.getVariablePermanente("invitation_token"));
                 payload.put("_serial", Build.SERIAL); //Build.SERIAL
-                payload.put("csr", "");
+                payload.put("csr", requestCSR);
                 payload.put("firstname", txtName.getText());
                 payload.put("lastname", "Without");
                 payload.put("version", "0.99.0");
