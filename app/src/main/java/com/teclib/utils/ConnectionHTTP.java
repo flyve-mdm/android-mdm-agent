@@ -182,17 +182,19 @@ public class ConnectionHTTP {
 				os.close();
 
 				if(conn.getResponseCode() == 400) {
+					InputStream is = conn.getErrorStream();
+					final String result = inputStreamToString(is);
+
 					ConnectionHTTP.runOnUI(new Runnable()
 					{
 						public void run()
 						{
-							callback.callback("Invitation is not pending");
+							callback.callback(result);
 						}
 					});
 				}
 
 				InputStream is = conn.getInputStream();
-
 				final String result = inputStreamToString(is);
 
 				ConnectionHTTP.runOnUI(new Runnable() {

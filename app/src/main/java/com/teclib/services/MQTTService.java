@@ -51,9 +51,6 @@ import java.io.UnsupportedEncodingException;
 
 import javax.net.ssl.SSLContext;
 
-/**
- * Created by rafaelhernandez on 09/05/2016.
- */
 public class MQTTService extends IntentService implements MqttCallback {
 
     private String TAG = "MQTT";
@@ -94,12 +91,12 @@ public class MQTTService extends IntentService implements MqttCallback {
 
         cache = new DataStorage(this.getApplicationContext());
 
-        mBroker = cache.getVariablePermanente("broker");
+        mBroker = cache.getBroker();
         mPort = "8883"; //cache.getVariablePermanente("port");
-        mUser = cache.getVariablePermanente("mqttuser");
-        mPassword = cache.getVariablePermanente("mqttpasswd");
+        mUser = cache.getMqttuser();
+        mPassword = cache.getMqttpasswd();
 
-        mTopic = cache.getVariablePermanente("topic");
+        mTopic = cache.getTopic();
 
         String clientId = MqttClient.generateClientId();
             client = new MqttAndroidClient(this.getApplicationContext(), "ssl://" + mBroker + ":" + mPort,
@@ -150,9 +147,6 @@ public class MQTTService extends IntentService implements MqttCallback {
         catch (MqttException ex) {
             ex.printStackTrace();
         }
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     @Override
@@ -181,7 +175,6 @@ public class MQTTService extends IntentService implements MqttCallback {
                     LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
 
                     sendKeepAlive();
-                    return;
                 }
             }
         } catch (Exception ex) {

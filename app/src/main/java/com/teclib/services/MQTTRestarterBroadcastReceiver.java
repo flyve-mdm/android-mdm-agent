@@ -1,7 +1,7 @@
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   com.teclib.data is part of flyve-mdm-android
+ *   This file is part of flyve-mdm-android
  *
  * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.

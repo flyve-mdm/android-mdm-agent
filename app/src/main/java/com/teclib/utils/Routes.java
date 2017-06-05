@@ -41,7 +41,7 @@ public class Routes {
 
     public Routes(Context context) {
         DataStorage cache = new DataStorage(context);
-        url = cache.getVariablePermanente("url");
+        url = cache.getUrl();
     }
 
     public String initSession(String user_token) {

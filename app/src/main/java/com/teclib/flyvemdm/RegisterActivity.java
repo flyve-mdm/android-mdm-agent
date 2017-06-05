@@ -50,11 +50,8 @@ import com.teclib.utils.Routes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
-
-/**
- * Created by rafaelhernandez on 6/5/17.
- */
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -83,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         cache = new DataStorage( RegisterActivity.this );
 
-        String broker = cache.getVariablePermanente("broker");
+        String broker = cache.getBroker();
         if(broker != null) {
             abrirMain();
         }
@@ -95,12 +92,12 @@ public class RegisterActivity extends AppCompatActivity {
             String user_token = jsonLink.getString("user_token");
             String invitation_token = jsonLink.getString("invitation_token");
 
-            cache.setVariablePermanente("url", url);
-            cache.setVariablePermanente("user_token", user_token);
-            cache.setVariablePermanente("invitation_token", invitation_token);
+            cache.setUrl(url);
+            cache.setUser_token( user_token );
+            cache.setInvitation_token( invitation_token );
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            FlyveLog.e( ex.getMessage() );
         }
 
         routes = new Routes( RegisterActivity.this );
@@ -129,7 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
             pb.setVisibility(View.VISIBLE);
             txtdata.setText("Init Session");
             ConnectionHTTP.getWebData(
-                    routes.initSession( cache.getVariablePermanente("user_token") ),
+                    routes.initSession( cache.getUser_token() ),
                     "GET" ,
                     new ConnectionHTTP.DataCallback() {
                 @Override
@@ -137,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     try {
                         JSONObject jsonSession = new JSONObject(data);
-                        cache.setVariablePermanente("session_token", jsonSession.getString("session_token"));
+                        cache.setSession_token( jsonSession.getString("session_token") );
 
                         txtdata.setText("get Full Session");
 
@@ -146,15 +143,15 @@ public class RegisterActivity extends AppCompatActivity {
                     } catch (Exception ex) {
                         txtdata.setText("ERROR JSON: initSession");
                         pb.setVisibility(View.GONE);
-                        ex.printStackTrace();
+                        FlyveLog.e( ex.getMessage() );
                     }
                 }
             });
         }
         catch (Exception ex) {
             pb.setVisibility(View.GONE);
-            ex.printStackTrace();
             txtdata.setText("ERROR: initSession");
+            FlyveLog.e( ex.getMessage() );
         }
     }
 
@@ -162,7 +159,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void getFullSession() {
         try {
             HashMap<String, String> header = new HashMap();
-            header.put("Session-Token",cache.getVariablePermanente("session_token"));
+            header.put("Session-Token",cache.getSession_token());
 
             header.put("Accept","application/json");
             header.put("Content-Type","application/json; charset=UTF-8");
@@ -183,14 +180,14 @@ public class RegisterActivity extends AppCompatActivity {
                         JSONObject jsonActiveProfile = jsonSession.getJSONObject("glpiactiveprofile");
 
                         String profile_id = jsonActiveProfile.getString("id");
-                        cache.setVariablePermanente("profile_id", profile_id);
+                        cache.setProfile_id( profile_id );
 
                         changeActiveProfile();
 
                     } catch (Exception ex) {
                         pb.setVisibility(View.GONE);
                         txtdata.setText("ERROR JSON: getFullSession");
-                        ex.printStackTrace();
+                        FlyveLog.e( ex.getMessage() );
                     }
 
                     changeActiveProfile();
@@ -199,8 +196,8 @@ public class RegisterActivity extends AppCompatActivity {
             });
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
-            ex.printStackTrace();
             txtdata.setText("ERROR: getFullSession");
+            FlyveLog.e( ex.getMessage() );
         }
     }
 
@@ -210,14 +207,14 @@ public class RegisterActivity extends AppCompatActivity {
         try {
 
             HashMap<String, String> header = new HashMap();
-            header.put("Session-Token",cache.getVariablePermanente("session_token"));
+            header.put("Session-Token",cache.getSession_token());
 
             header.put("Accept","application/json");
             header.put("Content-Type","application/json; charset=UTF-8");
             header.put("User-Agent","Flyve MDM");
             header.put("Referer",routes.getFullSession());
 
-            ConnectionHTTP.getWebData(routes.changeActiveProfile(cache.getVariablePermanente("profile_id")), "GET", header, new ConnectionHTTP.DataCallback() {
+            ConnectionHTTP.getWebData(routes.changeActiveProfile(cache.getProfile_id()), "GET", header, new ConnectionHTTP.DataCallback() {
                 @Override
                 public void callback(String data) {
                     pb.setVisibility(View.GONE);
@@ -228,14 +225,16 @@ public class RegisterActivity extends AppCompatActivity {
 
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
-            ex.printStackTrace();
             txtdata.setText("ERROR: changeActiveProfile");
+            FlyveLog.e( ex.getMessage() );
         }
 
     }
 
     // STEP 4
     private void createX509cert() {
+        txtdata.setText("Creating Certificate");
+        pb.setVisibility( View.VISIBLE );
 
         new Thread(new Runnable() {
             public void run() {
@@ -251,7 +250,9 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     });
                 } catch (Exception ex) {
-                    FlyveLog.d("");
+                    pb.setVisibility(View.GONE);
+                    txtdata.setText("ERROR: Creating Certificate X509");
+                    FlyveLog.e(ex.getMessage());
                 }
 
             }
@@ -260,37 +261,34 @@ public class RegisterActivity extends AppCompatActivity {
 
         }).start();
 
-
     }
 
     // STEP 5
     private void pluginFlyvemdmAgent() {
 
-        pb.setVisibility( View.VISIBLE );
         txtdata.setText("Register Agent");
 
         try {
-
-
             HashMap<String, String> header = new HashMap();
-            header.put("Session-Token",cache.getVariablePermanente("session_token"));
+            header.put("Session-Token",cache.getSession_token());
 
             header.put("Accept","application/json");
             header.put("Content-Type","application/json; charset=UTF-8");
-            //header.put("User-Agent","Flyve MDM");
-            //header.put("Referer",routes.PluginFlyvemdmAgent());
 
             JSONObject payload = new JSONObject();
             JSONObject input = new JSONObject();
 
-//            AndroidCryptoProvider csr = new AndroidCryptoProvider(RegisterActivity.this.getBaseContext());
-//            String requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
+            AndroidCryptoProvider csr = new AndroidCryptoProvider(RegisterActivity.this.getBaseContext());
+            String requestCSR = "";
+            if( csr.getlCsr() != null ) {
+                requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
+            }
 
             try {
                 payload.put("_email", txtEmail.getText());
-                payload.put("_invitation_token", cache.getVariablePermanente("invitation_token"));
-                payload.put("_serial", Build.SERIAL); //Build.SERIAL
-                payload.put("csr", "");
+                payload.put("_invitation_token", cache.getInvitation_token());
+                payload.put("_serial", Build.SERIAL);
+                payload.put("csr", requestCSR);
                 payload.put("firstname", txtName.getText());
                 payload.put("lastname", "Without");
                 payload.put("version", "0.99.0");
@@ -298,7 +296,7 @@ public class RegisterActivity extends AppCompatActivity {
             } catch (JSONException ex) {
                 pb.setVisibility(View.GONE);
                 txtdata.setText( "ERROR pluginFlyvemdmAgent JSON" );
-                ex.printStackTrace();
+                FlyveLog.e( ex.getMessage() );
             }
 
             ConnectionHTTP.getWebData(routes.PluginFlyvemdmAgent(), input, header, new ConnectionHTTP.DataCallback() {
@@ -308,13 +306,13 @@ public class RegisterActivity extends AppCompatActivity {
 
                     try {
                         JSONObject jsonAgent = new JSONObject(data);
-                        cache.setVariablePermanente("agent_id", jsonAgent.getString("id"));
+                        cache.setAgent_id(jsonAgent.getString("id"));
 
                         getDataPluginFlyvemdmAgent();
                     } catch(Exception ex) {
                         pb.setVisibility(View.GONE);
-                        txtdata.setText( "ERROR pluginFlyvemdmAgent HTTP" + ex.getMessage() );
-                        ex.printStackTrace();
+                        txtdata.setText( "ERROR pluginFlyvemdmAgent HTTP " + data );
+                        FlyveLog.e( ex.getMessage() );
                     }
                 }
             });
@@ -322,7 +320,7 @@ public class RegisterActivity extends AppCompatActivity {
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
             txtdata.setText( "ERROR pluginFlyvemdmAgent" );
-            ex.printStackTrace();
+            FlyveLog.e(ex.getMessage());
         }
     }
 
@@ -331,14 +329,14 @@ public class RegisterActivity extends AppCompatActivity {
 
         try {
             HashMap<String, String> header = new HashMap();
-            header.put("Session-Token",cache.getVariablePermanente("session_token"));
+            header.put("Session-Token",cache.getSession_token());
 
             header.put("Accept","application/json");
             header.put("Content-Type","application/json; charset=UTF-8");
             header.put("User-Agent","Flyve MDM");
             header.put("Referer",routes.PluginFlyvemdmAgent());
 
-            ConnectionHTTP.getWebData(routes.PluginFlyvemdmAgent(cache.getVariablePermanente("agent_id")), "GET", header, new ConnectionHTTP.DataCallback() {
+            ConnectionHTTP.getWebData(routes.PluginFlyvemdmAgent(cache.getAgent_id()), "GET", header, new ConnectionHTTP.DataCallback() {
                 @Override
                 public void callback(String data) {
 
@@ -359,30 +357,30 @@ public class RegisterActivity extends AppCompatActivity {
                     int mEntities_id = jsonObject.getInt("entities_id");
                     int mFleet_id = jsonObject.getInt("plugin_flyvemdm_fleets_id");
 
-                    cache.setVariablePermanente("broker", mbroker);
-                    cache.setVariablePermanente("port", mport);
-                    cache.setVariablePermanente("tls", mssl);
-                    cache.setVariablePermanente("topic", mtopic);
-                    cache.setVariablePermanente("mqttuser", Build.SERIAL);
-                    cache.setVariablePermanente("mqttpasswd", mpassword);
-                    cache.setVariablePermanente("certificate", mcert);
-                    cache.setVariablePermanente("name", mNameEmail);
-                    cache.setVariablePermanente("computers_id", String.valueOf(mComputers_id));
-                    cache.setVariablePermanente("entities_id", String.valueOf(mEntities_id));
-                    cache.setVariablePermanente("plugin_flyvemdm_fleets_id", String.valueOf(mFleet_id));
+                    cache.setBroker( mbroker );
+                    cache.setPort( mport );
+                    cache.setTls( mssl );
+                    cache.setTopic( mtopic );
+                    cache.setMqttuser( Build.SERIAL );
+                    cache.setMqttpasswd( mpassword );
+                    cache.setCertificate( mcert );
+                    cache.setName( mNameEmail );
+                    cache.setComputers_id( String.valueOf(mComputers_id) );
+                    cache.setEntities_id( String.valueOf(mEntities_id) );
+                    cache.setPlugin_flyvemdm_fleets_id( String.valueOf(mFleet_id) );
 
                     abrirMain();
 
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    FlyveLog.e(ex.getMessage());
                 }
                 }
             });
 
         } catch (Exception ex) {
-            ex.printStackTrace();
             pb.setVisibility(View.GONE);
             txtdata.setText( "ERROR getDataPluginFlyvemdmAgent" );
+            FlyveLog.e(ex.getMessage());
         }
     }
 

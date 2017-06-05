@@ -30,10 +30,6 @@ package com.teclib.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class DataStorage {
 
 	private final String SHARED_PREFS_FILE = "FlyveHMPrefs";
@@ -59,137 +55,167 @@ public class DataStorage {
 		}
 	}
 
-
-	/**
-	 * Retorna el valor almacenado en segun la llave
-	 * @param llave
-	 * @return
-	 */
-	public String getVariablePermanente(String llave){
-		return getSettings().getString(llave, null);  
-	}
-	/**
-	 * Retorna el valor almacenado en segun la llave boolean
-	 * @param llave
-	 * @return
-	 */
-	public Boolean getBooleanPermanente(String llave){
-		return getSettings().getBoolean(llave, true);  
-	}
-	/**
-	 * Retorna el valor almacenado en segun la llave entero
-	 * @param llave
-	 * @return
-	 */
-	public int getEnteroPermanente(String llave){
-		return getSettings().getInt(llave, 0);  
+	public String getUrl() {
+		return getData("url");
 	}
 
-	/**
-	 * Guarda las variables en formato llave valor
-	 * @param llave
-	 * @param valor
-	 */
-	public void setVariablePermanente(String llave, String valor){
+	public void setUrl(String url) {
+		setData("url", url);
+	}
+
+	public String getUser_token() {
+		return getData("user_token");
+	}
+
+	public void setUser_token(String user_token) {
+		setData("user_token", user_token);
+	}
+
+	public String getInvitation_token() {
+		return getData("invitation_token");
+	}
+
+	public void setInvitation_token(String invitation_token) {
+		setData("invitation_token", invitation_token);
+	}
+
+	public String getSession_token() {
+		return getData("session_token");
+	}
+
+	public void setSession_token(String session_token) {
+		setData("session_token", session_token);
+	}
+
+	public String getProfile_id() {
+		return getData("profile_id");
+	}
+
+	public void setProfile_id(String profile_id) {
+		setData("profile_id", profile_id);
+	}
+
+	public String getAgent_id() {
+		return getData("agent_id");
+	}
+
+	public void setAgent_id(String agent_id) {
+		setData("agent_id", agent_id);
+	}
+
+	public String getBroker() {
+		return getData("broker");
+	}
+
+	public void setBroker(String broker) {
+		setData("broker", broker);
+	}
+
+	public String getPort() {
+		return getData("port");
+	}
+
+	public void setPort(String port) {
+		setData("port", port);
+	}
+
+	public String getTls() {
+		return getData("tls");
+	}
+
+	public void setTls(String tls) {
+		setData("tls", tls);
+	}
+
+	public String getTopic() {
+		return getData("topic");
+	}
+
+	public void setTopic(String topic) {
+		setData("topic", topic);
+	}
+
+	public String getMqttuser() {
+		return getData("mqttuser");
+	}
+
+	public void setMqttuser(String mqttuser) {
+		setData("mqttuser", mqttuser);
+	}
+
+	public String getMqttpasswd() {
+		return getData("mqttpasswd");
+	}
+
+	public void setMqttpasswd(String mqttpasswd) {
+		setData("mqttpasswd", mqttpasswd);
+	}
+
+	public String getCertificate() {
+		return getData("certificate");
+	}
+
+	public void setCertificate(String certificate) {
+		setData("certificate", certificate);
+	}
+
+	public String getName() {
+		return getData("name");
+	}
+
+	public void setName(String name) {
+		setData("name", name);
+	}
+
+	public String getComputers_id() {
+		return getData("computers_id");
+	}
+
+	public void setComputers_id(String computers_id) {
+		setData("computers_id", computers_id);
+	}
+
+	public String getEntities_id() {
+		return getData("entities_id");
+	}
+
+	public void setEntities_id(String entities_id) {
+		setData("entities_id", entities_id);
+	}
+
+	public String getPlugin_flyvemdm_fleets_id() {
+		return getData("plugin_flyvemdm_fleets_id");
+	}
+
+	public void setPlugin_flyvemdm_fleets_id(String plugin_flyvemdm_fleets_id) {
+		setData("plugin_flyvemdm_fleets_id", plugin_flyvemdm_fleets_id);
+	}
+
+	private String getData(String key){
+		return getSettings().getString(key, null);
+	}
+
+	private void setData(String key, String value){
 		if(getSettings() != null) {
 			SharedPreferences.Editor editor = getSettings().edit();
-			editor.putString(llave, valor );
-			editor.commit();
+			editor.putString(key, value );
+			editor.apply();
 		}
 	}
 
-	/**
-	 * Guarda un valoor boolean especifico
-	 * @param llave
-	 * @param valor
-	 */
-	public void setBooleanPermanente(String llave, Boolean valor){
-		if(getSettings() != null) {
-			SharedPreferences.Editor editor = getSettings().edit();
-			editor.putBoolean(llave, valor);
-			editor.commit();
-		}
-	}
-	/**
-	 * Guarda un valoor Int especifico
-	 * @param llave
-	 * @param valor
-	 */
-	public void setEnteroPermanente(String llave, int valor){
-		if(getSettings() != null) {
-			SharedPreferences.Editor editor = getSettings().edit();
-			editor.putInt(llave, valor);
-			editor.commit();
-		}
-	}
-
-	/**
-	 * Borra todas las variables SharedPreferences
-	 */
 	public void clearSettings(){
 		if(getSettings() != null) {
 			SharedPreferences.Editor editor = getSettings().edit();
 			editor.clear();
-			editor.commit();
+			editor.apply();
 		}
 	}
 
-	/**
-	 * Elimina el valor de una llave especifica
-	 * @param llave
-	 */
 	public void deleteKeyCache(String llave){
 		if(getSettings() != null) {
 			SharedPreferences.Editor editor = getSettings().edit();
 			editor.remove(llave);
-			editor.commit();
+			editor.apply();
 		}
 	}
-
-	/**
-	 * Guarda un Objeto Json 
-	 * @param llave
-	 * @param object
-	 */
-	public void saveJSONObject(String llave, JSONObject object) {
-		if(getSettings() != null) {
-			SharedPreferences.Editor editor = getSettings().edit();
-			editor.putString(llave, object.toString());
-			editor.commit();
-		}
-	}
-
-	/**
-	 * Devuelve un Objeto Json
-	 * @param llave
-	 * @return
-	 * @throws JSONException
-	 */
-	public JSONObject loadJSONObject(String llave) throws JSONException {
-		return new JSONObject(getSettings().getString(llave, "{}"));
-	}	
-
-	/**
-	 * Guarda un Array Json 
-	 * @param llave
-	 * @param array
-	 */
-	public void saveJSONArray(String llave, JSONArray array) {
-		if(getSettings() != null) {
-			SharedPreferences.Editor editor = getSettings().edit();
-			editor.putString(llave, array.toString());
-			editor.commit();
-		}
-	}
-
-	/**
-	 * Devuelve un Array Json
-	 * @param llave
-	 * @return
-	 * @throws JSONException
-	 */
-	public JSONArray loadJSONArray(String llave) throws JSONException {
-		return new JSONArray(getSettings().getString(llave, "[]"));
-	}	    
-
 }

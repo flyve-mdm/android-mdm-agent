@@ -42,11 +42,9 @@ public class SplashActivity extends AppCompatActivity {
 
         DataStorage cache = new DataStorage( SplashActivity.this );
 
-        String broker = cache.getVariablePermanente("broker");
+        String broker = cache.getBroker();
         if(broker != null) {
-
             abrirMain();
-
         }
     }
 
