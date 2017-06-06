@@ -269,6 +269,10 @@ public class RegisterActivity extends AppCompatActivity {
         txtdata.setText("Register Agent");
 
         try {
+            AndroidCryptoProvider createCertif = new AndroidCryptoProvider(getBaseContext());
+            createCertif.generateRequest();
+            createCertif.loadCsr();
+
             HashMap<String, String> header = new HashMap();
             header.put("Session-Token",cache.getSession_token());
 
@@ -279,6 +283,7 @@ public class RegisterActivity extends AppCompatActivity {
             JSONObject input = new JSONObject();
 
             AndroidCryptoProvider csr = new AndroidCryptoProvider(RegisterActivity.this.getBaseContext());
+
             String requestCSR = "";
             if( csr.getlCsr() != null ) {
                 requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
