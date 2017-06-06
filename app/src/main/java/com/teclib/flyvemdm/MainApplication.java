@@ -1,7 +1,7 @@
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   com.teclib.data is part of flyve-mdm-android
+ *   This file is part of flyve-mdm-android
  *
  * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
@@ -27,30 +27,34 @@
 
 package com.teclib.flyvemdm;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.app.Application;
+import android.content.pm.ApplicationInfo;
 
-import com.teclib.data.DataStorage;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 
-public class SplashActivity extends AppCompatActivity {
+
+public class MainApplication extends Application {
+
+    private static MainApplication instance;
+    protected Boolean isDebuggable;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
 
-        DataStorage cache = new DataStorage( SplashActivity.this );
+        Logger.addLogAdapter(new AndroidLogAdapter());
 
-        String broker = cache.getBroker();
-        if(broker != null) {
-            abrirMain();
-        }
+        isDebuggable =  ( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
     }
 
-    private void abrirMain() {
-        Intent miIntent = new Intent(SplashActivity.this, MainActivity.class);
-        SplashActivity.this.startActivity(miIntent);
-        SplashActivity.this.finish();
+    public static MainApplication getInstance(){
+        return instance;
     }
+
+    public Boolean getIsDebuggable() {
+        return isDebuggable;
+    }
+
 }

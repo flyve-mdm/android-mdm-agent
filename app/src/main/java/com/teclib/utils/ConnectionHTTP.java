@@ -44,7 +44,7 @@ import java.util.Map;
 
 public class ConnectionHTTP {
 
-	public static Handler UIHandler;
+	private static Handler UIHandler;
 
 	static {
 		UIHandler = new Handler(Looper.getMainLooper());
@@ -66,6 +66,7 @@ public class ConnectionHTTP {
 				try
 				{
 					URL dataURL = new URL(url);
+					FlyveLog.i("Method: " + method + " - URL = " + url);
 					HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 					conn.setConnectTimeout(timeout);
@@ -75,6 +76,7 @@ public class ConnectionHTTP {
 					InputStream is = conn.getInputStream();
 
 					final String result = inputStreamToString(is);
+					FlyveLog.d("GetRequest input stream = " + result);
 
 					ConnectionHTTP.runOnUI(new Runnable() {
 						public void run() {
@@ -90,6 +92,7 @@ public class ConnectionHTTP {
 						public void run()
 						{
 						callback.callback("Exception (" + ex.getClass() + "): " + ex.getMessage());
+						FlyveLog.e("Exception (" + ex.getClass() + "): " + ex.getMessage());
 						}
 					});
 				}
@@ -108,6 +111,7 @@ public class ConnectionHTTP {
 				try
 				{
 					URL dataURL = new URL(url);
+					FlyveLog.i("Method: " + method + " - URL = " + url);
 					HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 					conn.setConnectTimeout(timeout);
@@ -117,11 +121,13 @@ public class ConnectionHTTP {
 
 					for (Map.Entry<String, String> entry : header.entrySet()) {
 						conn.setRequestProperty(entry.getKey(), entry.getValue());
+						FlyveLog.d(entry.getKey() + " = " + entry.getValue());
 					}
 
 					InputStream is = conn.getInputStream();
-
 					final String result = inputStreamToString(is);
+
+					FlyveLog.d("GetRequest input stream = " + result);
 
 					ConnectionHTTP.runOnUI(new Runnable() {
 						public void run() {
@@ -137,6 +143,7 @@ public class ConnectionHTTP {
 						public void run()
 						{
 						callback.callback("Exception (" + ex.getClass() + "): " + ex.getMessage());
+						FlyveLog.e("Exception (" + ex.getClass() + "): " + ex.getMessage());
 						}
 					});
 				}
@@ -154,15 +161,16 @@ public class ConnectionHTTP {
 			try
 			{
 				URL dataURL = new URL(url);
+				FlyveLog.i("Method: POST - URL = " + url);
 				HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 				conn.setRequestMethod("POST");
 				conn.setConnectTimeout(timeout);
 				conn.setReadTimeout(readtimeout);
-				//conn.setInstanceFollowRedirects(true);
 
 				for (Map.Entry<String, String> entry : header.entrySet()) {
 					conn.setRequestProperty(entry.getKey(), entry.getValue());
+					FlyveLog.d(entry.getKey() + " = " + entry.getValue());
 				}
 
 				// Send post request
@@ -174,17 +182,19 @@ public class ConnectionHTTP {
 				os.close();
 
 				if(conn.getResponseCode() == 400) {
+					InputStream is = conn.getErrorStream();
+					final String result = inputStreamToString(is);
+
 					ConnectionHTTP.runOnUI(new Runnable()
 					{
 						public void run()
 						{
-							callback.callback("Invitation is not pending");
+							callback.callback(result);
 						}
 					});
 				}
 
 				InputStream is = conn.getInputStream();
-
 				final String result = inputStreamToString(is);
 
 				ConnectionHTTP.runOnUI(new Runnable() {
@@ -201,6 +211,7 @@ public class ConnectionHTTP {
 					public void run()
 					{
 						callback.callback("Exception (" + ex.getClass() + "): " + ex.getMessage());
+						FlyveLog.e("Exception (" + ex.getClass() + "): " + ex.getMessage());
 					}
 				});
 			}

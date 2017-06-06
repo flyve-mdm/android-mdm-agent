@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         // ------------------
         // MQTT SERVICE
         // ------------------
-        mMQTTService = new MQTTService(this);
+        mMQTTService = new MQTTService();
         mServiceIntent = new Intent(MainActivity.this, mMQTTService.getClass());
         if (!isMyServiceRunning(mMQTTService.getClass())) {
             startService(mServiceIntent);
@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String type = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
-            tvMsg.setText( type );
+        String type = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
+        tvMsg.setText( type );
         }
     };
 
@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume()
     {
         super.onResume();
-        //registerReceiver(statusReceiver,mIntent);
         LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastReceiver, new IntentFilter("NOW"));
     }
 

@@ -27,8 +27,7 @@
 
 package com.teclib.services;
 
-import android.app.Service;
-import android.content.Context;
+import android.app.IntentService;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -52,43 +51,28 @@ import java.io.UnsupportedEncodingException;
 
 import javax.net.ssl.SSLContext;
 
-/**
- * Created by rafaelhernandez on 09/05/2016.
- */
-public class MQTTService extends Service implements MqttCallback {
+public class MQTTService extends IntentService implements MqttCallback {
 
     private String TAG = "MQTT";
     private MqttAndroidClient client;
     private DataStorage cache;
-
     private String mBroker = "";
     private String mPort = "";
     private String mUser = "";
     private String mPassword = "";
     private String mTopic = "";
 
-    public MQTTService(Context applicationContext) {
-        super();
-        Log.i("START", "SERVICE MQTT");
+    /**
+     * Creates an IntentService.  Invoked by your subclass's constructor.
+     *
+     * @param name Used to name the worker thread, important only for debugging.
+     */
+    public MQTTService(String name) {
+        super(name);
     }
 
     public MQTTService() {
-
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
-        connect();
-        return START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.i("EXIT", "ondestroy!");
-        Intent broadcastIntent = new Intent("com.teclib.RestartMQTT");
-        sendBroadcast(broadcastIntent);
+        super("MQTTService");
     }
 
     @Nullable
@@ -97,18 +81,25 @@ public class MQTTService extends Service implements MqttCallback {
         return null;
     }
 
+    @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+        Log.i("START", "SERVICE MQTT");
+        connect();
+    }
+
     public void connect() {
 
         cache = new DataStorage(this.getApplicationContext());
 
-        mBroker = cache.getVariablePermanente("broker");
+        mBroker = cache.getBroker();
         mPort = "8883"; //cache.getVariablePermanente("port");
-        mUser = "rafa"; //cache.getVariablePermanente("agent_id");
-        mPassword = "azlknvjkfbsdklfdsgfd"; //cache.getVariablePermanente("mqttpasswd");
-        mTopic = cache.getVariablePermanente("topic");
+        mUser = cache.getMqttuser();
+        mPassword = cache.getMqttpasswd();
+
+        mTopic = cache.getTopic();
 
         String clientId = MqttClient.generateClientId();
-        client = new MqttAndroidClient(this.getApplicationContext(), "ssl://" + mBroker + ":" + mPort,
+            client = new MqttAndroidClient(this.getApplicationContext(), "ssl://" + mBroker + ":" + mPort,
                 clientId);
 
         client.setCallback( this );
@@ -145,13 +136,15 @@ public class MQTTService extends Service implements MqttCallback {
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     // Something went wrong e.g. connection timeout or firewall problems
                     Log.d(TAG, "onFailure");
+
+                    Intent in = new Intent();
+                    in.putExtra("message", exception.getMessage());
+                    in.setAction("NOW");
+                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
                 }
             });
         }
         catch (MqttException ex) {
-            ex.printStackTrace();
-        }
-        catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -182,7 +175,6 @@ public class MQTTService extends Service implements MqttCallback {
                     LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
 
                     sendKeepAlive();
-                    return;
                 }
             }
         } catch (Exception ex) {
