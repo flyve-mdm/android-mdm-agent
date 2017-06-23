@@ -64,7 +64,6 @@ public class MQTTService extends IntentService implements MqttCallback {
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
      * @param name Used to name the worker thread, important only for debugging.
      */
     public MQTTService(String name) {
