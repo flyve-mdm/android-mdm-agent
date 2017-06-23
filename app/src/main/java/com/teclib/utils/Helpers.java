@@ -33,6 +33,8 @@ import java.io.UnsupportedEncodingException;
 
 public class Helpers {
 
+	private Helpers() {
+	}
 	
 	public static String base64decode(String text) {
 		String rtext = "";
@@ -41,7 +43,7 @@ public class Helpers {
 			byte[] bdata = Base64.decode(text, Base64.DEFAULT);
 			rtext = new String(bdata, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			FlyveLog.e(e.getMessage());
 		}
 		return rtext.trim();
 	}
@@ -54,8 +56,7 @@ public class Helpers {
 			rtext = Base64.encodeToString(data, Base64.DEFAULT);
 			rtext = rtext.trim().replace("==", "");
 		} catch (UnsupportedEncodingException e) {
-
-			e.printStackTrace();
+			FlyveLog.e(e.getMessage());
 		}
 		
 		return rtext.trim();

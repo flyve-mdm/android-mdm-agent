@@ -32,7 +32,7 @@ import android.content.SharedPreferences;
 
 public class DataStorage {
 
-	private final String SHARED_PREFS_FILE = "FlyveHMPrefs";
+	private static final String SHARED_PREFS_FILE = "FlyveHMPrefs";
 	private Context mContext;
 
 	/**
@@ -63,44 +63,44 @@ public class DataStorage {
 		setData("url", url);
 	}
 
-	public String getUser_token() {
+	public String getUserToken() {
 		return getData("user_token");
 	}
 
-	public void setUser_token(String user_token) {
-		setData("user_token", user_token);
+	public void setUserToken(String userToken) {
+		setData("user_token", userToken);
 	}
 
-	public String getInvitation_token() {
+	public String getInvitationToken() {
 		return getData("invitation_token");
 	}
 
-	public void setInvitation_token(String invitation_token) {
-		setData("invitation_token", invitation_token);
+	public void setInvitationToken(String invitationToken) {
+		setData("invitation_token", invitationToken);
 	}
 
-	public String getSession_token() {
+	public String getSessionToken() {
 		return getData("session_token");
 	}
 
-	public void setSession_token(String session_token) {
-		setData("session_token", session_token);
+	public void setSessionToken(String sessionToken) {
+		setData("session_token", sessionToken);
 	}
 
-	public String getProfile_id() {
+	public String getProfileId() {
 		return getData("profile_id");
 	}
 
-	public void setProfile_id(String profile_id) {
-		setData("profile_id", profile_id);
+	public void setProfileId(String profileId) {
+		setData("profile_id", profileId);
 	}
 
-	public String getAgent_id() {
+	public String getAgentId() {
 		return getData("agent_id");
 	}
 
-	public void setAgent_id(String agent_id) {
-		setData("agent_id", agent_id);
+	public void setAgentId(String agentId) {
+		setData("agent_id", agentId);
 	}
 
 	public String getBroker() {
@@ -167,53 +167,61 @@ public class DataStorage {
 		setData("name", name);
 	}
 
-	public String getComputers_id() {
+	public String getComputersId() {
 		return getData("computers_id");
 	}
 
-	public void setComputers_id(String computers_id) {
-		setData("computers_id", computers_id);
+	public void setComputersId(String computersId) {
+		setData("computers_id", computersId);
 	}
 
-	public String getEntities_id() {
+	public String getEntitiesId() {
 		return getData("entities_id");
 	}
 
-	public void setEntities_id(String entities_id) {
-		setData("entities_id", entities_id);
+	public void setEntitiesId(String entitiesId) {
+		setData("entities_id", entitiesId);
 	}
 
-	public String getPlugin_flyvemdm_fleets_id() {
+	public String getPluginFlyvemdmFleetsId() {
 		return getData("plugin_flyvemdm_fleets_id");
 	}
 
-	public void setPlugin_flyvemdm_fleets_id(String plugin_flyvemdm_fleets_id) {
-		setData("plugin_flyvemdm_fleets_id", plugin_flyvemdm_fleets_id);
+	public void setPluginFlyvemdmFleetsId(String pluginFlyvemdmFleetsId) {
+		setData("plugin_flyvemdm_fleets_id", pluginFlyvemdmFleetsId);
 	}
 
 	private String getData(String key){
-		return getSettings().getString(key, null);
+		String data = "";
+		SharedPreferences sp = getSettings();
+		if(sp != null) {
+			data = sp.getString(key, null);
+		}
+		return data;
 	}
 
-	private void setData(String key, String value){
-		if(getSettings() != null) {
-			SharedPreferences.Editor editor = getSettings().edit();
+	private void setData(String key, String value) {
+		SharedPreferences sp = getSettings();
+		if(sp != null) {
+			SharedPreferences.Editor editor = sp.edit();
 			editor.putString(key, value );
 			editor.apply();
 		}
 	}
 
 	public void clearSettings(){
-		if(getSettings() != null) {
-			SharedPreferences.Editor editor = getSettings().edit();
+		SharedPreferences sp = getSettings();
+		if(sp != null) {
+			SharedPreferences.Editor editor = sp.edit();
 			editor.clear();
 			editor.apply();
 		}
 	}
 
 	public void deleteKeyCache(String llave){
-		if(getSettings() != null) {
-			SharedPreferences.Editor editor = getSettings().edit();
+		SharedPreferences sp = getSettings();
+		if(sp != null) {
+			SharedPreferences.Editor editor = sp.edit();
 			editor.remove(llave);
 			editor.apply();
 		}

@@ -39,25 +39,24 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ConnectionHTTP {
 
-	private static Handler UIHandler;
+	private static Handler uiHandler;
 
 	static {
-		UIHandler = new Handler(Looper.getMainLooper());
+		uiHandler = new Handler(Looper.getMainLooper());
 	}
 
 	private static int timeout = 18000;
 	private static int readtimeout = 6000;
 
 	private static void runOnUI(Runnable runnable) {
-		UIHandler.post(runnable);
+		uiHandler.post(runnable);
 	}
 
-	public static void getWebData(final String url, final String method, final DataCallback callback) throws IOException
+	public static void getWebData(final String url, final String method, final DataCallback callback)
 	{
 		Thread t = new Thread(new Runnable()
 		{
@@ -92,7 +91,7 @@ public class ConnectionHTTP {
 						public void run()
 						{
 						callback.callback("Exception (" + ex.getClass() + "): " + ex.getMessage());
-						FlyveLog.e("Exception (" + ex.getClass() + "): " + ex.getMessage());
+						FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
 						}
 					});
 				}
@@ -102,7 +101,7 @@ public class ConnectionHTTP {
 	}	
 	
 	
-	public static void getWebData(final String url, final String method, final HashMap<String, String> header, final DataCallback callback) throws IOException
+	public static void getWebData(final String url, final String method, final Map<String, String> header, final DataCallback callback)
 	{
 		Thread t = new Thread(new Runnable()
 		{
@@ -143,7 +142,7 @@ public class ConnectionHTTP {
 						public void run()
 						{
 						callback.callback("Exception (" + ex.getClass() + "): " + ex.getMessage());
-						FlyveLog.e("Exception (" + ex.getClass() + "): " + ex.getMessage());
+						FlyveLog.e(ex.getClass() + " : " + ex.getMessage());
 						}
 					});
 				}
@@ -152,7 +151,7 @@ public class ConnectionHTTP {
 		t.start();
 	}
 
-	public static void getWebData(final String url, final JSONObject data, final HashMap<String, String> header, final DataCallback callback) throws IOException
+	public static void getWebData(final String url, final JSONObject data, final Map<String, String> header, final DataCallback callback)
 	{
 		Thread t = new Thread(new Runnable()
 		{
@@ -211,7 +210,7 @@ public class ConnectionHTTP {
 					public void run()
 					{
 						callback.callback("Exception (" + ex.getClass() + "): " + ex.getMessage());
-						FlyveLog.e("Exception (" + ex.getClass() + "): " + ex.getMessage());
+						FlyveLog.e(ex.getClass() + " : " + ex.getMessage());
 					}
 				});
 			}

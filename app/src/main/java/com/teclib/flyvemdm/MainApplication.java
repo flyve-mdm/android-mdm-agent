@@ -36,7 +36,7 @@ import com.orhanobut.logger.Logger;
 
 public class MainApplication extends Application {
 
-    private static MainApplication instance;
+    private MainApplication instance;
     protected Boolean isDebuggable;
 
     @Override
@@ -49,7 +49,7 @@ public class MainApplication extends Application {
         isDebuggable =  ( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
     }
 
-    public static MainApplication getInstance(){
+    public MainApplication getInstance(){
         return instance;
     }
 

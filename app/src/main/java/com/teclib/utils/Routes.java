@@ -44,24 +44,24 @@ public class Routes {
         url = cache.getUrl();
     }
 
-    public String initSession(String user_token) {
-        return url + "/initSession?user_token=" + user_token;
+    public String initSession(String userToken) {
+        return url + "/initSession?user_token=" + userToken;
     }
 
     public String getFullSession() {
         return url + "/getFullSession";
     }
 
-    public String changeActiveProfile(String profile_id) {
-        return url + "/changeActiveProfile?profile_id=" + profile_id;
+    public String changeActiveProfile(String profileId) {
+        return url + "/changeActiveProfile?profile_id=" + profileId;
     }
 
-    public String PluginFlyvemdmAgent() {
-        return url + "/PluginFlyvemdmAgent";
+    public String pluginFlyvemdmAgent() {
+        return url + "/pluginFlyvemdmAgent";
     }
 
-    public String PluginFlyvemdmAgent(String agent_id) {
-        return url + "/PluginFlyvemdmAgent/" + agent_id;
+    public String pluginFlyvemdmAgent(String agentId) {
+        return url + "/pluginFlyvemdmAgent/" + agentId;
     }
 
 

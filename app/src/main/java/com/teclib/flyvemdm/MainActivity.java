@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
     private IntentFilter mIntent;
 
     Intent mServiceIntent;
-    private MQTTService mMQTTService;
-
     private TextView tvMsg;
 
     @Override
@@ -58,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         // ------------------
         // MQTT SERVICE
         // ------------------
-        mMQTTService = new MQTTService();
+        MQTTService mMQTTService = new MQTTService();
         mServiceIntent = new Intent(MainActivity.this, mMQTTService.getClass());
         if (!isMyServiceRunning(mMQTTService.getClass())) {
             startService(mServiceIntent);
@@ -72,11 +70,11 @@ public class MainActivity extends AppCompatActivity {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                Log.i ("isMyServiceRunning?", true+"");
+                Log.i ("isMyServiceRunning?", Boolean.toString( true ));
                 return true;
             }
         }
-        Log.i ("isMyServiceRunning?", false+"");
+        Log.i ("isMyServiceRunning?", Boolean.toString( false ));
         return false;
     }
 
