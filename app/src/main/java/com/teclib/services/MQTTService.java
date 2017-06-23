@@ -35,6 +35,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.teclib.data.DataStorage;
+import com.teclib.utils.FlyveLog;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -53,13 +54,9 @@ import javax.net.ssl.SSLContext;
 
 public class MQTTService extends IntentService implements MqttCallback {
 
-    private String TAG = "MQTT";
+    private static final String TAG = "MQTT";
     private MqttAndroidClient client;
     private DataStorage cache;
-    private String mBroker = "";
-    private String mPort = "";
-    private String mUser = "";
-    private String mPassword = "";
     private String mTopic = "";
 
     /**
@@ -90,10 +87,10 @@ public class MQTTService extends IntentService implements MqttCallback {
 
         cache = new DataStorage(this.getApplicationContext());
 
-        mBroker = cache.getBroker();
-        mPort = "8883"; //cache.getVariablePermanente("port");
-        mUser = cache.getMqttuser();
-        mPassword = cache.getMqttpasswd();
+        String mBroker = cache.getBroker();
+        String mPort = cache.getPort();
+        String mUser = cache.getMqttuser();
+        String mPassword = cache.getMqttpasswd();
 
         mTopic = cache.getTopic();
 
@@ -144,7 +141,7 @@ public class MQTTService extends IntentService implements MqttCallback {
             });
         }
         catch (MqttException ex) {
-            ex.printStackTrace();
+            FlyveLog.e(ex.getMessage());
         }
     }
 
@@ -177,7 +174,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            FlyveLog.e(ex.getMessage());
         }
     }
 
@@ -195,9 +192,8 @@ public class MQTTService extends IntentService implements MqttCallback {
             MqttMessage message = new MqttMessage(encodedPayload);
             client.publish(topic, message);
             Log.d(TAG, "payload sended");
-        } catch (UnsupportedEncodingException | MqttException e) {
-            e.printStackTrace();
-            Log.d(TAG, "ERROR: " + e.getMessage());
+        } catch (UnsupportedEncodingException | MqttException ex) {
+            FlyveLog.e(ex.getMessage());
         }
     }
 
@@ -232,8 +228,8 @@ public class MQTTService extends IntentService implements MqttCallback {
 
                 }
             });
-        } catch (MqttException e) {
-            e.printStackTrace();
+        } catch (MqttException ex) {
+            FlyveLog.e(ex.getMessage());
         }
     }
 

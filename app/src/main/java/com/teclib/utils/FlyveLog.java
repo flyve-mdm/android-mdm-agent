@@ -35,13 +35,13 @@ public class FlyveLog {
     }
 
     public static void d(Object object) {
-        if(MainApplication.getInstance().getIsDebuggable()) {
+        if(new MainApplication().getInstance().getIsDebuggable()) {
             Logger.d(object);
         }
     }
 
     public static void d(String message, Object... args) {
-        if(MainApplication.getInstance().getIsDebuggable()){
+        if(new MainApplication().getInstance().getIsDebuggable()){
             // do something for a debug build
             Logger.d(message,args);
         }
@@ -49,7 +49,7 @@ public class FlyveLog {
 
 
     public static void v(String message, Object... args) {
-        if(MainApplication.getInstance().getIsDebuggable()){
+        if(new MainApplication().getInstance().getIsDebuggable()){
 
             Logger.v(message, args);
         }
@@ -72,7 +72,7 @@ public class FlyveLog {
     }
 
     public static void json(String json) {
-        if(MainApplication.getInstance().getIsDebuggable()) {
+        if(new MainApplication().getInstance().getIsDebuggable()) {
             Logger.json(json);
         }
     }
