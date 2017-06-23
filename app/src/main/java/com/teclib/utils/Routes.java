@@ -44,8 +44,8 @@ public class Routes {
         url = cache.getUrl();
     }
 
-    public String initSession(String user_token) {
-        return url + "/initSession?user_token=" + user_token;
+    public String initSession(String userToken) {
+        return url + "/initSession?user_token=" + userToken;
     }
 
     public String getFullSession() {
@@ -56,12 +56,12 @@ public class Routes {
         return url + "/changeActiveProfile?profile_id=" + profile_id;
     }
 
-    public String PluginFlyvemdmAgent() {
-        return url + "/PluginFlyvemdmAgent";
+    public String pluginFlyvemdmAgent() {
+        return url + "/pluginFlyvemdmAgent";
     }
 
-    public String PluginFlyvemdmAgent(String agent_id) {
-        return url + "/PluginFlyvemdmAgent/" + agent_id;
+    public String pluginFlyvemdmAgent(String agent_id) {
+        return url + "/pluginFlyvemdmAgent/" + agent_id;
     }
 
 
