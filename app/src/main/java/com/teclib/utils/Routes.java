@@ -52,16 +52,16 @@ public class Routes {
         return url + "/getFullSession";
     }
 
-    public String changeActiveProfile(String profile_id) {
-        return url + "/changeActiveProfile?profile_id=" + profile_id;
+    public String changeActiveProfile(String profileId) {
+        return url + "/changeActiveProfile?profile_id=" + profileId;
     }
 
     public String pluginFlyvemdmAgent() {
         return url + "/pluginFlyvemdmAgent";
     }
 
-    public String pluginFlyvemdmAgent(String agent_id) {
-        return url + "/pluginFlyvemdmAgent/" + agent_id;
+    public String pluginFlyvemdmAgent(String agentId) {
+        return url + "/pluginFlyvemdmAgent/" + agentId;
     }
 
 
