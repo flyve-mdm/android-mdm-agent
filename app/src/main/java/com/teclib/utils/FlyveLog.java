@@ -30,6 +30,10 @@ import com.teclib.flyvemdm.MainApplication;
 
 public class FlyveLog {
 
+    private FlyveLog() {
+
+    }
+
     public static void d(Object object) {
         if(MainApplication.getInstance().getIsDebuggable()) {
             Logger.d(object);

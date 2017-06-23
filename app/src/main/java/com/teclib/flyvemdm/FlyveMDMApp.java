@@ -35,15 +35,16 @@ import com.teclib.data.DataStorage;
 
 public class FlyveMDMApp extends Application {
 
-    public static DataStorage cache;
+    private DataStorage cache;
 
     @Override
     public void onCreate() {
         super.onCreate();
-
         cache = new DataStorage(this);
 
     }
 
-
+    public DataStorage getCache() {
+        return cache;
+    }
 }
