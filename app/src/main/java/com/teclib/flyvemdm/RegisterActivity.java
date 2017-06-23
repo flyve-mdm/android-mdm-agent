@@ -93,8 +93,8 @@ public class RegisterActivity extends AppCompatActivity {
             String invitation_token = jsonLink.getString("invitation_token");
 
             cache.setUrl(url);
-            cache.setUser_token( user_token );
-            cache.setInvitation_token( invitation_token );
+            cache.setUserToken( user_token );
+            cache.setInvitationToken( invitation_token );
 
         } catch (Exception ex) {
             FlyveLog.e( ex.getMessage() );
@@ -126,7 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
             pb.setVisibility(View.VISIBLE);
             txtdata.setText("Init Session");
             ConnectionHTTP.getWebData(
-                    routes.initSession( cache.getUser_token() ),
+                    routes.initSession( cache.getUserToken() ),
                     "GET" ,
                     new ConnectionHTTP.DataCallback() {
                 @Override
@@ -134,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     try {
                         JSONObject jsonSession = new JSONObject(data);
-                        cache.setSession_token( jsonSession.getString("session_token") );
+                        cache.setSessionToken( jsonSession.getString("session_token") );
 
                         txtdata.setText("get Full Session");
 
@@ -159,7 +159,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void getFullSession() {
         try {
             HashMap<String, String> header = new HashMap();
-            header.put("Session-Token",cache.getSession_token());
+            header.put("Session-Token",cache.getSessionToken());
 
             header.put("Accept","application/json");
             header.put("Content-Type","application/json; charset=UTF-8");
@@ -180,7 +180,7 @@ public class RegisterActivity extends AppCompatActivity {
                         JSONObject jsonActiveProfile = jsonSession.getJSONObject("glpiactiveprofile");
 
                         String profile_id = jsonActiveProfile.getString("id");
-                        cache.setProfile_id( profile_id );
+                        cache.setProfileId( profile_id );
 
                         changeActiveProfile();
 
@@ -207,14 +207,14 @@ public class RegisterActivity extends AppCompatActivity {
         try {
 
             HashMap<String, String> header = new HashMap();
-            header.put("Session-Token",cache.getSession_token());
+            header.put("Session-Token",cache.getSessionToken());
 
             header.put("Accept","application/json");
             header.put("Content-Type","application/json; charset=UTF-8");
             header.put("User-Agent","Flyve MDM");
             header.put("Referer",routes.getFullSession());
 
-            ConnectionHTTP.getWebData(routes.changeActiveProfile(cache.getProfile_id()), "GET", header, new ConnectionHTTP.DataCallback() {
+            ConnectionHTTP.getWebData(routes.changeActiveProfile(cache.getProfileId()), "GET", header, new ConnectionHTTP.DataCallback() {
                 @Override
                 public void callback(String data) {
                     pb.setVisibility(View.GONE);
@@ -274,7 +274,7 @@ public class RegisterActivity extends AppCompatActivity {
             createCertif.loadCsr();
 
             HashMap<String, String> header = new HashMap();
-            header.put("Session-Token",cache.getSession_token());
+            header.put("Session-Token",cache.getSessionToken());
 
             header.put("Accept","application/json");
             header.put("Content-Type","application/json; charset=UTF-8");
@@ -291,7 +291,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             try {
                 payload.put("_email", txtEmail.getText());
-                payload.put("_invitation_token", cache.getInvitation_token());
+                payload.put("_invitation_token", cache.getInvitationToken());
                 payload.put("_serial", Build.SERIAL);
                 payload.put("csr", requestCSR);
                 payload.put("firstname", txtName.getText());
@@ -311,7 +311,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     try {
                         JSONObject jsonAgent = new JSONObject(data);
-                        cache.setAgent_id(jsonAgent.getString("id"));
+                        cache.setAgentId(jsonAgent.getString("id"));
 
                         getDataPluginFlyvemdmAgent();
                     } catch(Exception ex) {
@@ -334,14 +334,14 @@ public class RegisterActivity extends AppCompatActivity {
 
         try {
             HashMap<String, String> header = new HashMap();
-            header.put("Session-Token",cache.getSession_token());
+            header.put("Session-Token",cache.getSessionToken());
 
             header.put("Accept","application/json");
             header.put("Content-Type","application/json; charset=UTF-8");
             header.put("User-Agent","Flyve MDM");
             header.put("Referer",routes.PluginFlyvemdmAgent());
 
-            ConnectionHTTP.getWebData(routes.PluginFlyvemdmAgent(cache.getAgent_id()), "GET", header, new ConnectionHTTP.DataCallback() {
+            ConnectionHTTP.getWebData(routes.PluginFlyvemdmAgent(cache.getAgentId()), "GET", header, new ConnectionHTTP.DataCallback() {
                 @Override
                 public void callback(String data) {
 
@@ -370,9 +370,9 @@ public class RegisterActivity extends AppCompatActivity {
                     cache.setMqttpasswd( mpassword );
                     cache.setCertificate( mcert );
                     cache.setName( mNameEmail );
-                    cache.setComputers_id( String.valueOf(mComputers_id) );
-                    cache.setEntities_id( String.valueOf(mEntities_id) );
-                    cache.setPlugin_flyvemdm_fleets_id( String.valueOf(mFleet_id) );
+                    cache.setComputersId( String.valueOf(mComputers_id) );
+                    cache.setEntitiesId( String.valueOf(mEntities_id) );
+                    cache.setPluginFlyvemdmFleetsId( String.valueOf(mFleet_id) );
 
                     abrirMain();
 
