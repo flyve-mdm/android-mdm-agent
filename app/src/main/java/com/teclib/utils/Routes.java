@@ -57,11 +57,11 @@ public class Routes {
     }
 
     public String pluginFlyvemdmAgent() {
-        return url + "/pluginFlyvemdmAgent";
+        return url + "/PluginFlyvemdmAgent";
     }
 
     public String pluginFlyvemdmAgent(String agentId) {
-        return url + "/pluginFlyvemdmAgent/" + agentId;
+        return url + "/PluginFlyvemdmAgent/" + agentId;
     }
 
 

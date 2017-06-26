@@ -41,6 +41,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.teclib.data.DataStorage;
+import com.teclib.security.AndroidCryptoProvider;
 import com.teclib.utils.ConnectionHTTP;
 import com.teclib.utils.FlyveLog;
 import com.teclib.utils.Helpers;
@@ -49,6 +50,7 @@ import com.teclib.utils.Routes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 public class RegisterActivity extends Activity {
@@ -235,9 +237,9 @@ public class RegisterActivity extends Activity {
             public void run() {
 
                 try {
-//                    AndroidCryptoProvider createCertif = new AndroidCryptoProvider(getBaseContext());
-//                    createCertif.generateRequest();
-//                    createCertif.loadCsr();
+                    AndroidCryptoProvider createCertif = new AndroidCryptoProvider(getBaseContext());
+                    createCertif.generateRequest();
+                    createCertif.loadCsr();
 
                     runOnUiThread(new Runnable() {
                         public void run() {
@@ -270,18 +272,17 @@ public class RegisterActivity extends Activity {
             JSONObject payload = new JSONObject();
             JSONObject input = new JSONObject();
 
-            //AndroidCryptoProvider csr = new AndroidCryptoProvider(RegisterActivity.this.getBaseContext());
-//            String requestCSR = "";
-//            if( csr.getlCsr() != null ) {
-//                requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
-//            }
+            AndroidCryptoProvider csr = new AndroidCryptoProvider(RegisterActivity.this.getBaseContext());
+            String requestCSR = "";
+            if( csr.getlCsr() != null ) {
+                requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
+            }
 
             try {
                 payload.put("_email", txtEmail.getText());
                 payload.put("_invitation_token", cache.getInvitationToken());
                 payload.put("_serial", Build.SERIAL);
-                //payload.put("csr", requestCSR);
-                payload.put("csr", "");
+                payload.put("csr", requestCSR);
                 payload.put("firstname", txtName.getText());
                 payload.put("lastname", "Without");
                 payload.put("version", "0.99.0");
