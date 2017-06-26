@@ -29,22 +29,40 @@ package com.teclib.flyvemdm;
 
 
 import android.app.Application;
+import android.content.pm.ApplicationInfo;
+import android.util.Log;
 
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 import com.teclib.data.DataStorage;
 
 
 public class FlyveMDMApp extends Application {
 
     private DataStorage cache;
+    private static FlyveMDMApp instance;
+    private static Boolean isDebuggable;
 
     @Override
     public void onCreate() {
         super.onCreate();
         cache = new DataStorage(this);
 
+        instance = this;
+        Logger.addLogAdapter(new AndroidLogAdapter());
+        isDebuggable =  ( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
+        Log.d("test", "is debug: " + isDebuggable );
     }
 
     public DataStorage getCache() {
         return cache;
+    }
+
+    public static FlyveMDMApp getInstance(){
+        return instance;
+    }
+
+    public static Boolean getIsDebuggable() {
+        return isDebuggable;
     }
 }

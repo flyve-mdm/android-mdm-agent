@@ -26,7 +26,7 @@
 package com.teclib.utils;
 
 import com.orhanobut.logger.Logger;
-import com.teclib.flyvemdm.MainApplication;
+import com.teclib.flyvemdm.FlyveMDMApp;
 
 public class FlyveLog {
 
@@ -35,13 +35,13 @@ public class FlyveLog {
     }
 
     public static void d(Object object) {
-        if(new MainApplication().getInstance().getIsDebuggable()) {
+        if(FlyveMDMApp.getIsDebuggable()) {
             Logger.d(object);
         }
     }
 
     public static void d(String message, Object... args) {
-        if(new MainApplication().getInstance().getIsDebuggable()){
+        if(FlyveMDMApp.getIsDebuggable()){
             // do something for a debug build
             Logger.d(message,args);
         }
@@ -49,7 +49,7 @@ public class FlyveLog {
 
 
     public static void v(String message, Object... args) {
-        if(new MainApplication().getInstance().getIsDebuggable()){
+        if(FlyveMDMApp.getIsDebuggable()){
 
             Logger.v(message, args);
         }
@@ -72,7 +72,7 @@ public class FlyveLog {
     }
 
     public static void json(String json) {
-        if(new MainApplication().getInstance().getIsDebuggable()) {
+        if(FlyveMDMApp.getIsDebuggable()) {
             Logger.json(json);
         }
     }
