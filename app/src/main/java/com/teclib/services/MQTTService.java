@@ -29,14 +29,10 @@ package com.teclib.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-
 import com.teclib.data.DataStorage;
 import com.teclib.utils.FlyveLog;
-
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -47,9 +43,6 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-
 import javax.net.ssl.SSLContext;
 
 public class MQTTService extends IntentService implements MqttCallback {
@@ -67,21 +60,16 @@ public class MQTTService extends IntentService implements MqttCallback {
         super(name);
     }
 
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        Log.i("START", "SERVICE MQTT");
+        connect();
+    }
+
     public MQTTService() {
         super("MQTTService");
     }
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        Log.i("START", "SERVICE MQTT");
-        connect();
-    }
 
     public void connect() {
 
@@ -192,7 +180,7 @@ public class MQTTService extends IntentService implements MqttCallback {
             MqttMessage message = new MqttMessage(encodedPayload);
             client.publish(topic, message);
             Log.d(TAG, "payload sended");
-        } catch (UnsupportedEncodingException | MqttException ex) {
+        } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
     }

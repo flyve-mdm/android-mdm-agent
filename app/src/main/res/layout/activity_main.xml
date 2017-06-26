@@ -15,7 +15,6 @@
             android:id="@+id/tvMsg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/textRegular"
             android:text="Waiting for MQTT Message"
             android:gravity="center"
             android:layout_margin="20dp"

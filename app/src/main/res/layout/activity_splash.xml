@@ -22,7 +22,6 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/logo"
-        style="@style/textRegular"
         />
 
 </RelativeLayout>
