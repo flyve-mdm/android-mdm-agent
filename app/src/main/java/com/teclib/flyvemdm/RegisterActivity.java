@@ -27,11 +27,11 @@
 
 package com.teclib.flyvemdm;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -53,15 +53,13 @@ import org.json.JSONObject;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends Activity {
 
     private ProgressBar pb;
     private Routes routes;
     private DataStorage cache;
-
     private TextView tvData;
     private LinearLayout lyUserData;
-
     private EditText txtName;
     private EditText txtEmail;
 

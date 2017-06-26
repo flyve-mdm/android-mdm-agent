@@ -27,6 +27,7 @@
 
 package com.teclib.flyvemdm;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,13 +35,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.teclib.services.MQTTService;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private BroadcastReceiver statusReceiver;
     private IntentFilter mIntent;

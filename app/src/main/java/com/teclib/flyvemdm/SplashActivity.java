@@ -27,13 +27,13 @@
 
 package com.teclib.flyvemdm;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.teclib.data.DataStorage;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
