@@ -285,7 +285,7 @@ public class RegisterActivity extends Activity {
                 payload.put("csr", requestCSR);
                 payload.put("firstname", txtName.getText());
                 payload.put("lastname", "Without");
-                payload.put("version", "0.99.0");
+                payload.put("version", BuildConfig.VERSION_NAME);
                 input.put("input", payload);
             } catch (JSONException ex) {
                 pb.setVisibility(View.GONE);
