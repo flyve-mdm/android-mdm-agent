@@ -1,9 +1,9 @@
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   com.teclib.data is part of flyve-mdm-android
+ * This file is part of flyve-mdm-android-agent
  *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -20,7 +20,7 @@
  * @date      02/06/2017
  * @copyright Copyright © ${YEAR} Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
@@ -56,6 +56,12 @@ public class ConnectionHTTP {
 		uiHandler.post(runnable);
 	}
 
+	/**
+	 * Get data from url in a thread
+	 * @param url String url
+	 * @param method String POST, GET, PUT, DELETE
+	 * @param callback DataCallback
+	 */
 	public static void getWebData(final String url, final String method, final DataCallback callback)
 	{
 		Thread t = new Thread(new Runnable()
@@ -98,11 +104,16 @@ public class ConnectionHTTP {
 			}
 		});
 		t.start();
-	}	
-	
-	
-	public static void getWebData(final String url, final String method, final Map<String, String> header, final DataCallback callback)
-	{
+	}
+
+	/**
+	 * Get data from url in a thread
+	 * @param url String url
+	 * @param method String POST, GET, PUT, DELETE
+	 * @param header Map with al the header information
+	 * @param callback DataCallback
+	 */
+	public static void getWebData(final String url, final String method, final Map<String, String> header, final DataCallback callback) {
 		Thread t = new Thread(new Runnable()
 		{
 			public void run()
@@ -151,6 +162,13 @@ public class ConnectionHTTP {
 		t.start();
 	}
 
+	/**
+	 * Send information by post with a JSONObject and header
+	 * @param url String url
+	 * @param data JSONObject data to send
+	 * @param header Map with al the header information
+	 * @param callback DataCallback
+	 */
 	public static void getWebData(final String url, final JSONObject data, final Map<String, String> header, final DataCallback callback)
 	{
 		Thread t = new Thread(new Runnable()
@@ -219,6 +237,12 @@ public class ConnectionHTTP {
 		t.start();
 	}
 
+	/**
+	 * Convert inputStream to String
+	 * @param stream InputStream to convert
+	 * @return String converted
+	 * @throws IOException error
+	 */
 	private static String inputStreamToString(final InputStream stream) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
 		StringBuilder sb = new StringBuilder();
@@ -230,10 +254,11 @@ public class ConnectionHTTP {
 		return sb.toString();
 	}
 
+	/**
+	 * This is the return data interface
+	 */
 	public interface DataCallback {
-
 		void callback(String data);
-
 	}
 
 }
