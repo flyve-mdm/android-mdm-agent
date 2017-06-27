@@ -32,6 +32,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import com.teclib.data.DataStorage;
+import com.teclib.flyvemdm.BuildConfig;
 import com.teclib.utils.FlyveLog;
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -155,6 +156,8 @@ public class MQTTService extends IntentService implements MqttCallback {
      */
     @Override
     public void connectionLost(Throwable cause) {
+        // send to backend that agent lost connection
+        sendOnlineStatus(false);
         Log.d(TAG, "Connection fail " + cause.getMessage());
     }
 
@@ -246,6 +249,40 @@ public class MQTTService extends IntentService implements MqttCallback {
     private void sendKeepAlive() {
         String topic = mTopic + "/Status/Ping";
         String payload = "!";
+        byte[] encodedPayload = new byte[0];
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            client.publish(topic, message);
+            Log.d(TAG, "payload sended");
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+    }
+
+    /**
+     * Send the Status version of the agent
+     */
+    private void sendStatusVersion() {
+        String topic = mTopic + "/FlyvemdmManifest/Status/Version";
+        String payload = "{\"version\":\"" + BuildConfig.VERSION_NAME + "\"}";
+        byte[] encodedPayload = new byte[0];
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            client.publish(topic, message);
+            Log.d(TAG, "payload sended");
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+    }
+
+    /**
+     * Send the Status version of the agent
+     */
+    private void sendOnlineStatus(Boolean status) {
+        String topic = mTopic + "/Status/Online";
+        String payload = "{\"online\": \"" + Boolean.toString( status ) + "\"}";
         byte[] encodedPayload = new byte[0];
         try {
             encodedPayload = payload.getBytes("UTF-8");
