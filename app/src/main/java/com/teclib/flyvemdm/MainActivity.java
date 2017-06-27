@@ -1,9 +1,9 @@
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   com.teclib.data is part of flyve-mdm-android
+ * This file is part of flyve-mdm-android-agent
  *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -20,7 +20,7 @@
  * @date      02/06/2017
  * @copyright Copyright © ${YEAR} Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
@@ -37,15 +37,15 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.TextView;
-
 import com.teclib.services.MQTTService;
 
+/**
+ * This is the main activity of the app
+ */
 public class MainActivity extends Activity {
 
-    private BroadcastReceiver statusReceiver;
     private IntentFilter mIntent;
-
-    Intent mServiceIntent;
+    private Intent mServiceIntent;
     private TextView tvMsg;
 
     @Override
@@ -58,6 +58,7 @@ public class MainActivity extends Activity {
         // ------------------
         MQTTService mMQTTService = new MQTTService();
         mServiceIntent = new Intent(MainActivity.this, mMQTTService.getClass());
+        // Start the service
         if (!isMyServiceRunning(mMQTTService.getClass())) {
             startService(mServiceIntent);
         }
@@ -66,6 +67,37 @@ public class MainActivity extends Activity {
 
     }
 
+    @Override
+    protected void onPause() {
+        // unregister the broadcast
+        if(mIntent != null) {
+            unregisterReceiver(broadcastReceiver);
+            mIntent = null;
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        // register the broadcast
+        super.onResume();
+        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastReceiver, new IntentFilter("flyve.mqtt.msg"));
+    }
+
+    @Override
+    protected void onDestroy() {
+        // stop the service
+        stopService(mServiceIntent);
+        Log.i("MAINACT", "onDestroy!");
+        super.onDestroy();
+
+    }
+
+    /**
+     * Check if the service is running
+     * @param serviceClass Class
+     * @return boolean
+     */
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -78,35 +110,14 @@ public class MainActivity extends Activity {
         return false;
     }
 
+    /**
+     * broadcastReceiver instance that receive all the message from Broadcast
+     */
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-        String type = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
-        tvMsg.setText( type );
+            String type = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
+            tvMsg.setText( type );
         }
     };
-
-    @Override
-    protected void onPause() {
-        if(mIntent != null) {
-            unregisterReceiver(statusReceiver);
-            mIntent = null;
-        }
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastReceiver, new IntentFilter("NOW"));
-    }
-
-    @Override
-    protected void onDestroy() {
-        stopService(mServiceIntent);
-        Log.i("MAINACT", "onDestroy!");
-        super.onDestroy();
-
-    }
 }
