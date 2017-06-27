@@ -8,7 +8,12 @@ android {
         minSdkVersion 15
         targetSdkVersion 15
         versionCode 1
-        versionName "1.0"
+        versionName "0.99.0"
+    }
+    productFlavors{
+        beta {
+            versionName "0.99-beta"
+        }
     }
     buildTypes {
         release {
