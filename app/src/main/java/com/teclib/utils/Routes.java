@@ -1,9 +1,9 @@
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   com.teclib.data is part of flyve-mdm-android
+ * This file is part of flyve-mdm-android-agent
  *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -18,9 +18,9 @@
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      02/06/2017
- * @copyright Copyright © ${YEAR} Teclib. All rights reserved.
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
@@ -31,31 +31,61 @@ import android.content.Context;
 
 import com.teclib.data.DataStorage;
 
+/**
+ * Content all the routes of the app
+ */
 public class Routes {
 
-    String url;
+    private String url;
 
+    /**
+     * Constructor
+     * @param context
+     */
     public Routes(Context context) {
         DataStorage cache = new DataStorage(context);
         url = cache.getUrl();
     }
 
+    /**
+     * initSession url
+     * @param userToken String user token
+     * @return String with the url
+     */
     public String initSession(String userToken) {
         return url + "/initSession?user_token=" + userToken;
     }
 
+    /**
+     * getFullSession url
+     * @return String with the url
+     */
     public String getFullSession() {
         return url + "/getFullSession";
     }
 
+    /**
+     * changeActiveProfile url
+     * @param profileId String profile id to activate
+     * @return String with the url
+     */
     public String changeActiveProfile(String profileId) {
         return url + "/changeActiveProfile?profile_id=" + profileId;
     }
 
+    /**
+     * PluginFlyvemdmAgent url
+     * @return String with the url
+     */
     public String pluginFlyvemdmAgent() {
         return url + "/PluginFlyvemdmAgent";
     }
 
+    /**
+     * PluginFlyvemdmAgent url
+     * @param agentId String Agent Id
+     * @return String with the url
+     */
     public String pluginFlyvemdmAgent(String agentId) {
         return url + "/PluginFlyvemdmAgent/" + agentId;
     }
