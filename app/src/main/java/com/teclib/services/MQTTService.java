@@ -1,9 +1,9 @@
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   com.teclib.data is part of flyve-mdm-android
+ * this file is part of flyve-mdm-android-agent
  *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -18,9 +18,9 @@
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      02/06/2017
- * @copyright Copyright © ${YEAR} Teclib. All rights reserved.
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
@@ -45,6 +45,10 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONObject;
 import javax.net.ssl.SSLContext;
 
+/**
+ * This is the service that get and send message from MQTT
+ */
+
 public class MQTTService extends IntentService implements MqttCallback {
 
     private static final String TAG = "MQTT";
@@ -60,17 +64,27 @@ public class MQTTService extends IntentService implements MqttCallback {
         super(name);
     }
 
+    /**
+     * The IntentService start point
+     * @param intent
+     */
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.i("START", "SERVICE MQTT");
         connect();
     }
 
+    /**
+     * Constructor
+     */
     public MQTTService() {
         super("MQTTService");
     }
 
 
+    /**
+     * This function connect the agent with MQTT server
+     */
     public void connect() {
 
         cache = new DataStorage(this.getApplicationContext());
@@ -107,11 +121,13 @@ public class MQTTService extends IntentService implements MqttCallback {
                 Log.e("Flyve","error while building ssl mqtt cnx", ex);
             }
 
+
             IMqttToken token = client.connect(options);
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
+                    // Everything ready waiting for message
                     Log.d(TAG, "onSuccess");
                     suscribe();
                 }
@@ -133,11 +149,21 @@ public class MQTTService extends IntentService implements MqttCallback {
         }
     }
 
+    /**
+     * If connection fail trigger this function
+     * @param cause Throwable error
+     */
     @Override
     public void connectionLost(Throwable cause) {
         Log.d(TAG, "Connection fail " + cause.getMessage());
     }
 
+    /**
+     * When a message from server arrive
+     * @param topic String topic where the message from
+     * @param message MqttMessage message content
+     * @throws Exception error
+     */
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         Log.d(TAG, "Topic " + topic);
@@ -149,7 +175,7 @@ public class MQTTService extends IntentService implements MqttCallback {
         try {
             JSONObject jsonObj = new JSONObject(messageBody);
 
-            // KeepAlive
+            // KeepAlive or PING
             if (jsonObj.has("query")) {
                 if ("Ping".equals(jsonObj.getString("query"))) {
 
@@ -166,25 +192,18 @@ public class MQTTService extends IntentService implements MqttCallback {
         }
     }
 
+    /**
+     * If delivery of the message was complete
+     * @param token get message token
+     */
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
         Log.d(TAG, "deliveryComplete ");
     }
 
-    private void sendKeepAlive() {
-        String topic = mTopic + "/Status/Ping";
-        String payload = "!";
-        byte[] encodedPayload = new byte[0];
-        try {
-            encodedPayload = payload.getBytes("UTF-8");
-            MqttMessage message = new MqttMessage(encodedPayload);
-            client.publish(topic, message);
-            Log.d(TAG, "payload sended");
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-        }
-    }
-
+    /**
+     * Suscribe to the topic
+     */
     private void suscribe() {
         String topic = mTopic + "/#";
         int qos = 1;
@@ -217,6 +236,23 @@ public class MQTTService extends IntentService implements MqttCallback {
                 }
             });
         } catch (MqttException ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+    }
+
+    /**
+     * Send PING to the MQTT server
+     */
+    private void sendKeepAlive() {
+        String topic = mTopic + "/Status/Ping";
+        String payload = "!";
+        byte[] encodedPayload = new byte[0];
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            client.publish(topic, message);
+            Log.d(TAG, "payload sended");
+        } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
     }
