@@ -1,9 +1,9 @@
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   com.teclib.data is part of flyve-mdm-android
+ * this file is part of flyve-mdm-android-agent
  *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -18,9 +18,9 @@
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      02/06/2017
- * @copyright Copyright © ${YEAR} Teclib. All rights reserved.
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
@@ -53,6 +53,9 @@ import org.json.JSONObject;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
+/**
+ * Register the agent to the platform
+ */
 public class RegisterActivity extends Activity {
 
     private ProgressBar pb;
@@ -79,7 +82,7 @@ public class RegisterActivity extends Activity {
 
         String broker = cache.getBroker();
         if(broker != null) {
-            abrirMain();
+            openMain();
         }
 
         try {
@@ -117,7 +120,9 @@ public class RegisterActivity extends Activity {
         initSession();
     }
 
-    // STEP 1
+    /**
+     * STEP 1 get session token
+     */
     private void initSession() {
         try {
             pb.setVisibility(View.VISIBLE);
@@ -152,7 +157,9 @@ public class RegisterActivity extends Activity {
         }
     }
 
-    // STEP 2
+    /**
+     * STEP 2 get full session information
+     */
     private void getFullSession() {
         try {
             HashMap<String, String> header = new HashMap();
@@ -198,7 +205,9 @@ public class RegisterActivity extends Activity {
         }
     }
 
-    // STEP 3
+    /**
+     * STEP 3 Activated the profile
+     */
     private void changeActiveProfile() {
 
         try {
@@ -228,7 +237,9 @@ public class RegisterActivity extends Activity {
 
     }
 
-    // STEP 4
+    /**
+     * STEP 4 create X509 certificate
+     */
     private void createX509cert() {
         tvData.setText("Creating Certificate");
         pb.setVisibility( View.VISIBLE );
@@ -256,7 +267,9 @@ public class RegisterActivity extends Activity {
 
     }
 
-    // STEP 5
+    /**
+     * STEP 5 Send the payload to register the agent
+     */
     private void pluginFlyvemdmAgent() {
 
         tvData.setText("Register Agent");
@@ -318,7 +331,9 @@ public class RegisterActivity extends Activity {
         }
     }
 
-    // STEP 6
+    /**
+     * STEP 6 get all the information of the agent and store this info on cache
+     */
     private void getDataPluginFlyvemdmAgent() {
 
         try {
@@ -363,7 +378,7 @@ public class RegisterActivity extends Activity {
                     cache.setEntitiesId( String.valueOf(mEntitiesId) );
                     cache.setPluginFlyvemdmFleetsId( String.valueOf(mFleetId) );
 
-                    abrirMain();
+                    openMain();
 
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
@@ -378,7 +393,10 @@ public class RegisterActivity extends Activity {
         }
     }
 
-    private void abrirMain() {
+    /**
+     * Open the main activity
+     */
+    private void openMain() {
         Intent miIntent = new Intent(RegisterActivity.this, MainActivity.class);
         RegisterActivity.this.startActivity(miIntent);
         RegisterActivity.this.finish();
