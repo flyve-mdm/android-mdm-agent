@@ -139,7 +139,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
                     Intent in = new Intent();
                     in.putExtra("message", exception.getMessage());
-                    in.setAction("NOW");
+                    in.setAction("flyve.mqtt.msg");
                     LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
                 }
             });
@@ -181,7 +181,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
                     Intent in = new Intent();
                     in.putExtra("message", "PING!");
-                    in.setAction("NOW");
+                    in.setAction("flyve.mqtt.msg");
                     LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
 
                     sendKeepAlive();
@@ -217,7 +217,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
                     Intent in = new Intent();
                     in.putExtra("message", "suscribed");
-                    in.setAction("NOW");
+                    in.setAction("flyve.mqtt.msg");
                     LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
                 }
 
@@ -230,7 +230,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
                     Intent in = new Intent();
                     in.putExtra("message", "ERROR: " + exception.getMessage());
-                    in.setAction("NOW");
+                    in.setAction("flyve.mqtt.msg");
                     LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
 
                 }

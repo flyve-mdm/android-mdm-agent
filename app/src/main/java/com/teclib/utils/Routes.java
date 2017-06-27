@@ -31,10 +31,6 @@ import android.content.Context;
 
 import com.teclib.data.DataStorage;
 
-/**
- * Created by rafaelhernandez on 6/5/17.
- */
-
 public class Routes {
 
     String url;
@@ -63,6 +59,4 @@ public class Routes {
     public String pluginFlyvemdmAgent(String agentId) {
         return url + "/PluginFlyvemdmAgent/" + agentId;
     }
-
-
 }
