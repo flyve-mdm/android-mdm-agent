@@ -1,9 +1,9 @@
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   com.teclib.data is part of flyve-mdm-android
+ * This file is part of flyve-mdm-android-agent
  *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -20,7 +20,7 @@
  * @date      02/06/2017
  * @copyright Copyright © ${YEAR} Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
@@ -31,11 +31,22 @@ import android.util.Base64;
 
 import java.io.UnsupportedEncodingException;
 
+/**
+ * This class content some helpers function
+ */
 public class Helpers {
 
+	/**
+	 * private construtor
+	 */
 	private Helpers() {
 	}
-	
+
+	/**
+	 * Convert Base64 String in to plain String
+	 * @param text String to convert
+	 * @return String with a plain text
+	 */
 	public static String base64decode(String text) {
 		String rtext = "";
 		if(text == null) { return ""; }
@@ -47,7 +58,12 @@ public class Helpers {
 		}
 		return rtext.trim();
 	}
-	
+
+	/**
+	 * Convert String in to Base64 encode
+	 * @param text String to convert
+	 * @return String with a base64 encode
+	 */
 	public static String base64encode(String text) {
 		String rtext = "";
 		if(text == null) { return ""; }
@@ -61,6 +77,4 @@ public class Helpers {
 		
 		return rtext.trim();
 	}
-
-    
 }
