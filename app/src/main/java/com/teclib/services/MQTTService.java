@@ -258,6 +258,10 @@ public class MQTTService extends IntentService implements MqttCallback {
         }
     }
 
+    public void sendBC(String message) {
+
+    }
+
     /**
      * If delivery of the message was complete
      * @param token get message token
