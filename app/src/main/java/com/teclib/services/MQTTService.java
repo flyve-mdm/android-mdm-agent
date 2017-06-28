@@ -216,6 +216,8 @@ public class MQTTService extends IntentService implements MqttCallback {
 
                     FlyveLog.d("Request Geolocate");
 
+                    sendGPS();
+
                     //send broadcast
                     broadcastReceivedMessage("Request Geolocate");
                 }
