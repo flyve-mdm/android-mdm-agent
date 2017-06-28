@@ -31,6 +31,7 @@ import android.os.Build;
 import android.util.Base64;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
 
 /**
  * This class content some helpers function
@@ -92,5 +93,16 @@ public class Helpers {
 		}
 
 		return serial;
+	}
+
+	/**
+	 * get Unix time
+	 * @return int unix time
+	 */
+	public static int GetUnixTime() {
+		Calendar calendar = Calendar.getInstance();
+		long now = calendar.getTimeInMillis();
+		int utc = (int) (now / 1000);
+		return (utc);
 	}
 }

@@ -36,6 +36,8 @@ import com.flyvemdm.inventory.InventoryTask;
 import com.teclib.data.DataStorage;
 import com.teclib.flyvemdm.BuildConfig;
 import com.teclib.utils.FlyveLog;
+import com.teclib.utils.GPSTracker;
+import com.teclib.utils.Helpers;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -46,6 +48,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.net.ssl.SSLContext;
@@ -218,7 +221,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                 }
             }
 
-            // WIPE
+            // WIPE Request
             if(jsonObj.has("wipe")) {
                 if("NOW".equals(jsonObj.getString("wipe"))) {
                     FlyveLog.v("Wipe in progress");
@@ -228,7 +231,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                 }
             }
 
-            // UNENROLL
+            // UNENROLL Request
             if (jsonObj.has("unenroll")) {
                 FlyveLog.v("Unenroll in progress");
 
@@ -402,6 +405,48 @@ public class MQTTService extends IntentService implements MqttCallback {
             client.publish(topic, message);
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
+        }
+    }
+
+    /**
+     * get the GPS informa
+     */
+
+    public void sendGPS() throws JSONException {
+        double test = 0.0;
+        GPSTracker mGPS = new GPSTracker(this);
+        mGPS.getLocation();
+
+        FlyveLog.i("sendGPS: " + "Lat = " + mGPS.getLatitude() + "Lon = " + mGPS.getLongitude());
+        JSONObject jsonGPS = new JSONObject();
+
+        if(Double.compare(test, mGPS.getLatitude())==0){
+            jsonGPS.put("latitude", "na");
+            jsonGPS.put("longitude", "na");
+        }
+        else{
+            jsonGPS.put("latitude", mGPS.getLatitude());
+            jsonGPS.put("longitude", mGPS.getLongitude());
+        }
+
+        jsonGPS.put("datetime", Helpers.GetUnixTime());
+
+        String topic = mTopic + "/Status/Geolocation";
+        String payload = jsonGPS.toString();
+        byte[] encodedPayload = new byte[0];
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            client.publish(topic, message);
+
+            // send broadcast
+            broadcastReceivedMessage("Geolocation send!");
+
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // send broadcast
+            broadcastReceivedMessage("Geolocation error:" + ex.getCause().toString());
         }
     }
 
