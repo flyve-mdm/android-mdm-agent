@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
     private IntentFilter mIntent;
     private Intent mServiceIntent;
     private TextView tvMsg;
+    private TextView tvStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,7 @@ public class MainActivity extends Activity {
         }
 
         tvMsg = (TextView) findViewById(R.id.tvMsg);
+        tvStatus = (TextView) findViewById(R.id.tvStatus);
 
         Button btnUnenroll = (Button) findViewById(R.id.btnClear);
         btnUnenroll.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +94,7 @@ public class MainActivity extends Activity {
     protected void onPause() {
         // unregister the broadcast
         if(mIntent != null) {
-            unregisterReceiver(broadcastReceiver);
+            unregisterReceiver(broadcastReceivedMessage);
             mIntent = null;
         }
         super.onPause();
@@ -102,7 +104,7 @@ public class MainActivity extends Activity {
     protected void onResume() {
         // register the broadcast
         super.onResume();
-        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastReceiver, new IntentFilter("flyve.mqtt.msg"));
+        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastReceivedMessage, new IntentFilter("flyve.mqtt.msg"));
     }
 
     @Override
@@ -132,13 +134,28 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * broadcastReceiver instance that receive all the message from Broadcast
+     * broadcastReceiverMessage instance that receive all the message from MQTTService
      */
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver broadcastReceivedMessage = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-        String type = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
-        tvMsg.setText( type );
+        String msg = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
+        tvMsg.setText( msg );
+        }
+    };
+
+    /**
+     * broadcastServiceStatus instance that receive service status from MQTTService
+     */
+    private BroadcastReceiver broadcastServiceStatus = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String msg = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
+            if(Boolean.parseBoolean(msg)) {
+                tvStatus.setText("Online");
+            } else {
+                tvStatus.setText("Offline");
+            }
         }
     };
 }
