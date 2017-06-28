@@ -184,11 +184,6 @@ public class MQTTService extends IntentService implements MqttCallback {
                 // PING request
                 if ("Ping".equalsIgnoreCase(jsonObj.getString("query"))) {
 
-                    Intent in = new Intent();
-                    in.putExtra("message", "PING!");
-                    in.setAction("flyve.mqtt.msg");
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
-
                     sendKeepAlive();
                 }
                 // INVENTORY Request
@@ -216,11 +211,14 @@ public class MQTTService extends IntentService implements MqttCallback {
                 // GEOLOCATE request
                 if("Geolocate".equalsIgnoreCase(jsonObj.getString("query"))) {
 
+                    FlyveLog.d("Request Geolocate");
 
-
+                    //send broadcast
+                    broadcastReceivedMessage("Request Geolocate");
                 }
             }
 
+            // WIPE
             if(jsonObj.has("wipe")) {
                 if("NOW".equals(jsonObj.getString("wipe"))) {
                     FlyveLog.v("Wipe in progress");
@@ -230,8 +228,12 @@ public class MQTTService extends IntentService implements MqttCallback {
                 }
             }
 
+            // UNENROLL
             if (jsonObj.has("unenroll")) {
                 FlyveLog.v("Unenroll in progress");
+
+                unenroll();
+
                 broadcastReceivedMessage("Unenroll in progress");
             }
 
@@ -271,6 +273,31 @@ public class MQTTService extends IntentService implements MqttCallback {
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
         FlyveLog.d( "deliveryComplete: " + token.toString());
+    }
+
+    /**
+     * Unenroll the device
+     */
+    private void unenroll() {
+        // clear settings
+        DataStorage cache = new DataStorage(getApplicationContext());
+        cache.clearSettings();
+
+        // Send message with unenroll
+        String topic = mTopic + "/Status/Unenroll";
+        String payload = "{\"unenroll\": \"unenrolled\"}";
+        byte[] encodedPayload = new byte[0];
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            client.publish(topic, message);
+
+            broadcastReceivedMessage("Unenroll");
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            broadcastReceivedMessage("Unenroll Error: " + ex.getCause().toString());
+        }
     }
 
     /**
@@ -316,8 +343,12 @@ public class MQTTService extends IntentService implements MqttCallback {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             client.publish(topic, message);
+
+            broadcastReceivedMessage("PING!");
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
+
+            broadcastReceivedMessage("PING Error: " + ex.getCause().toString());
         }
     }
 
