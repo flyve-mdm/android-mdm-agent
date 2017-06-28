@@ -30,7 +30,6 @@ package com.teclib.flyvemdm;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -63,7 +62,9 @@ public class RegisterActivity extends Activity {
     private DataStorage cache;
     private TextView tvData;
     private LinearLayout lyUserData;
+
     private EditText txtName;
+    private EditText txtLastName;
     private EditText txtEmail;
 
     @Override
@@ -106,6 +107,7 @@ public class RegisterActivity extends Activity {
         lyUserData = (LinearLayout) findViewById(R.id.user_data);
 
         txtName = (EditText) findViewById(R.id.txtName);
+        txtLastName = (EditText) findViewById(R.id.txtLastName);
         txtEmail = (EditText) findViewById(R.id.txtEmail);
         txtEmail.setImeActionLabel("Done", KeyEvent.KEYCODE_ENTER);
 
@@ -294,10 +296,10 @@ public class RegisterActivity extends Activity {
             try {
                 payload.put("_email", txtEmail.getText());
                 payload.put("_invitation_token", cache.getInvitationToken());
-                payload.put("_serial", Build.SERIAL);
+                payload.put("_serial", Helpers.getDeviceSerial());
                 payload.put("csr", requestCSR);
                 payload.put("firstname", txtName.getText());
-                payload.put("lastname", "Without");
+                payload.put("lastname", txtLastName.getText());
                 payload.put("version", BuildConfig.VERSION_NAME);
                 input.put("input", payload);
             } catch (JSONException ex) {
@@ -370,7 +372,7 @@ public class RegisterActivity extends Activity {
                     cache.setPort( mport );
                     cache.setTls( mssl );
                     cache.setTopic( mtopic );
-                    cache.setMqttuser( Build.SERIAL );
+                    cache.setMqttuser( Helpers.getDeviceSerial() );
                     cache.setMqttpasswd( mpassword );
                     cache.setCertificate( mcert );
                     cache.setName( mNameEmail );

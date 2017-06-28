@@ -27,6 +27,7 @@
 
 package com.teclib.utils;
 
+import android.os.Build;
 import android.util.Base64;
 
 import java.io.UnsupportedEncodingException;
@@ -76,5 +77,20 @@ public class Helpers {
 		}
 		
 		return rtext.trim();
+	}
+
+	/**
+	 * Get Device Serial to work with simulator and real devices
+	 * @return String with Device Serial
+	 */
+	public static String getDeviceSerial() {
+		String serial;
+		if(Build.SERIAL.equalsIgnoreCase("unknow")) {
+			serial = "ABCDEFGHIJ1234";
+		} else {
+			serial = Build.SERIAL;
+		}
+
+		return serial;
 	}
 }
