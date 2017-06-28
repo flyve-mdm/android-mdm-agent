@@ -60,7 +60,7 @@ public class MQTTService extends IntentService implements MqttCallback {
     private MqttAndroidClient client;
     private DataStorage cache;
     private String mTopic = "";
-    private boolean isConnected = false;
+
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      * @param name Used to name the worker thread, important only for debugging.
@@ -84,14 +84,6 @@ public class MQTTService extends IntentService implements MqttCallback {
      */
     public MQTTService() {
         super("MQTTService");
-    }
-
-    /**
-     * Get the status of the connection with MQTT
-     * @return boolean
-     */
-    public boolean isConnected() {
-        return isConnected;
     }
 
     /**
@@ -140,20 +132,17 @@ public class MQTTService extends IntentService implements MqttCallback {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
                     // Everything ready waiting for message
-                    Log.d(TAG, "onSuccess");
-                    isConnected = true;
+                    FlyveLog.d("Success we are online!");
+                    broadcastServiceStatus(true);
                     suscribe();
                 }
 
                 @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                public void onFailure(IMqttToken asyncActionToken, Throwable ex) {
                     // Something went wrong e.g. connection timeout or firewall problems
-                    Log.d(TAG, "onFailure");
-                    isConnected = false;
-                    Intent in = new Intent();
-                    in.putExtra("message", exception.getMessage());
-                    in.setAction("flyve.mqtt.msg");
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+                    FlyveLog.e("onFailure:" + ex.getCause().toString());
+                    broadcastReceivedMessage(ex.getCause().toString());
+                    broadcastServiceStatus(false);
                 }
             });
         }
@@ -170,7 +159,7 @@ public class MQTTService extends IntentService implements MqttCallback {
     public void connectionLost(Throwable cause) {
         // send to backend that agent lost connection
         sendOnlineStatus(false);
-        isConnected = false;
+        broadcastServiceStatus(false);
         Log.d(TAG, "Connection fail " + cause.getMessage());
     }
 
@@ -244,6 +233,10 @@ public class MQTTService extends IntentService implements MqttCallback {
         }
     }
 
+    /**
+     * Send broadcast for received messages from MQTT
+     * @param message String to send
+     */
     public void broadcastReceivedMessage(String message) {
         //send broadcast
         Intent in = new Intent();
@@ -252,6 +245,10 @@ public class MQTTService extends IntentService implements MqttCallback {
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
     }
 
+    /**
+     * Send broadcast for status of the service
+     * @param status boolean status
+     */
     private void broadcastServiceStatus(boolean status) {
         //send broadcast
         Intent in = new Intent();
