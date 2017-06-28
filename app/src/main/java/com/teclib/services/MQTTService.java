@@ -257,6 +257,8 @@ public class MQTTService extends IntentService implements MqttCallback {
 
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
+
+            broadcastReceivedMessage("Error: " + ex.getCause().toString());
         }
     }
 
@@ -426,9 +428,8 @@ public class MQTTService extends IntentService implements MqttCallback {
     }
 
     /**
-     * get the GPS informa
+     * get the GPS information
      */
-
     public void sendGPS() throws JSONException {
         double test = 0.0;
         GPSTracker mGPS = new GPSTracker(this);
