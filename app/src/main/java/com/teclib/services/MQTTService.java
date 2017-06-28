@@ -182,7 +182,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
             if (jsonObj.has("query")) {
                 // PING request
-                if ("Ping".equals(jsonObj.getString("query"))) {
+                if ("Ping".equalsIgnoreCase(jsonObj.getString("query"))) {
 
                     Intent in = new Intent();
                     in.putExtra("message", "PING!");
@@ -192,7 +192,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                     sendKeepAlive();
                 }
                 // INVENTORY Request
-                if("Inventory".equals(jsonObj.getString("query"))) {
+                if("Inventory".equalsIgnoreCase(jsonObj.getString("query"))) {
                     InventoryTask inventoryTask = new InventoryTask(getApplicationContext(), "agent_v1");
                     inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
                         @Override
@@ -211,6 +211,13 @@ public class MQTTService extends IntentService implements MqttCallback {
                             broadcastReceivedMessage("Inventory Error: " + error.getCause().toString());
                         }
                     });
+                }
+
+                // GEOLOCATE request
+                if("Geolocate".equalsIgnoreCase(jsonObj.getString("query"))) {
+
+
+
                 }
             }
 
@@ -324,7 +331,6 @@ public class MQTTService extends IntentService implements MqttCallback {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             IMqttDeliveryToken token = client.publish(topic, message);
-            client.publish(topic, message);
 
             // send broadcast
             broadcastReceivedMessage("Inventory send!");
