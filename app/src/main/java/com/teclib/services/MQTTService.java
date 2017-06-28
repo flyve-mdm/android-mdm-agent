@@ -31,6 +31,8 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+
+import com.flyvemdm.inventory.InventoryTask;
 import com.teclib.data.DataStorage;
 import com.teclib.flyvemdm.BuildConfig;
 import com.teclib.utils.FlyveLog;
@@ -90,9 +92,9 @@ public class MQTTService extends IntentService implements MqttCallback {
 
         cache = new DataStorage(this.getApplicationContext());
 
-        String mBroker = cache.getBroker();
+        String mBroker = "mqdev.flyve.org";//cache.getBroker();
         String mPort = "8883"; //cache.getPort();
-        String mUser = cache.getMqttuser();
+        String mUser = "ABCDEFGHIJ12345";//cache.getMqttuser();
         String mPassword = cache.getMqttpasswd();
 
         mTopic = cache.getTopic();
@@ -178,8 +180,8 @@ public class MQTTService extends IntentService implements MqttCallback {
         try {
             JSONObject jsonObj = new JSONObject(messageBody);
 
-            // KeepAlive or PING
             if (jsonObj.has("query")) {
+                // PING request
                 if ("Ping".equals(jsonObj.getString("query"))) {
 
                     Intent in = new Intent();
@@ -188,6 +190,36 @@ public class MQTTService extends IntentService implements MqttCallback {
                     LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
 
                     sendKeepAlive();
+                }
+                // INVENTORY Request
+                if("Inventory".equals(jsonObj.getString("query"))) {
+                    InventoryTask inventoryTask = new InventoryTask(getApplicationContext(), "agent_v1");
+                    inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
+                        @Override
+                        public void onTaskSuccess(String data) {
+                            FlyveLog.xml(data);
+
+                            // send inventory MQTT
+                            sendInventory(data);
+
+                            // send broadcast
+                            Intent in = new Intent();
+                            in.setAction("flyve.mqtt.msg");
+                            in.putExtra("message", "Inventory send!");
+                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+                        }
+
+                        @Override
+                        public void onTaskError(Throwable error) {
+                            FlyveLog.e(error.getCause().toString());
+
+                            //send broadcast
+                            Intent in = new Intent();
+                            in.setAction("flyve.mqtt.msg");
+                            in.putExtra("message", "Inventory Error: " + error.getCause().toString());
+                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+                        }
+                    });
                 }
             }
         } catch (Exception ex) {
@@ -201,7 +233,7 @@ public class MQTTService extends IntentService implements MqttCallback {
      */
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
-        Log.d(TAG, "deliveryComplete ");
+        FlyveLog.d( "deliveryComplete: " + token.toString());
     }
 
     /**
@@ -254,7 +286,21 @@ public class MQTTService extends IntentService implements MqttCallback {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             client.publish(topic, message);
-            Log.d(TAG, "payload sended");
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+    }
+
+    /**
+     * Send INVENTORY to the MQTT server
+     */
+    private void sendInventory(String payload) {
+        String topic = mTopic + "/Status/Inventory";
+        byte[] encodedPayload = new byte[0];
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            IMqttDeliveryToken token = client.publish(topic, message);
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
@@ -271,7 +317,6 @@ public class MQTTService extends IntentService implements MqttCallback {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             client.publish(topic, message);
-            Log.d(TAG, "payload sended");
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
@@ -288,7 +333,6 @@ public class MQTTService extends IntentService implements MqttCallback {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             client.publish(topic, message);
-            Log.d(TAG, "payload sended");
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
