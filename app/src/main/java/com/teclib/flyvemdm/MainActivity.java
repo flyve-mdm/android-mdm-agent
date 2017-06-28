@@ -95,6 +95,7 @@ public class MainActivity extends Activity {
         // unregister the broadcast
         if(mIntent != null) {
             unregisterReceiver(broadcastReceivedMessage);
+            unregisterReceiver(broadcastServiceStatus);
             mIntent = null;
         }
         super.onPause();
@@ -105,6 +106,7 @@ public class MainActivity extends Activity {
         // register the broadcast
         super.onResume();
         LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastReceivedMessage, new IntentFilter("flyve.mqtt.msg"));
+        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastServiceStatus, new IntentFilter("flyve.mqtt.status"));
     }
 
     @Override

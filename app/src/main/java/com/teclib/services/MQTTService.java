@@ -324,6 +324,7 @@ public class MQTTService extends IntentService implements MqttCallback {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             IMqttDeliveryToken token = client.publish(topic, message);
+            client.publish(topic, message);
 
             // send broadcast
             broadcastReceivedMessage("Inventory send!");

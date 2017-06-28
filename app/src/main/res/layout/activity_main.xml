@@ -48,6 +48,7 @@
         android:layout_marginBottom="20dp"
         android:layout_above="@+id/body"
         android:text="status"
+        android:gravity="center_horizontal"
         />
 
 </RelativeLayout>
