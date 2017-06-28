@@ -36,6 +36,7 @@ import com.flyvemdm.inventory.InventoryTask;
 import com.teclib.data.DataStorage;
 import com.teclib.flyvemdm.BuildConfig;
 import com.teclib.utils.FlyveLog;
+
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -46,6 +47,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONObject;
+
 import javax.net.ssl.SSLContext;
 
 /**
@@ -98,9 +100,10 @@ public class MQTTService extends IntentService implements MqttCallback {
     public void connect() {
         cache = new DataStorage(this.getApplicationContext());
 
-        String mBroker = "mqdev.flyve.org";//cache.getBroker();
+//      String mBroker = "mqdev.flyve.org";
+        String mBroker = cache.getBroker();
         String mPort = "8883"; //cache.getPort();
-        String mUser = "ABCDEFGHIJ12345";//cache.getMqttuser();
+        String mUser = cache.getMqttuser();
         String mPassword = cache.getMqttpasswd();
 
         mTopic = cache.getTopic();
@@ -209,12 +212,6 @@ public class MQTTService extends IntentService implements MqttCallback {
 
                             // send inventory MQTT
                             sendInventory(data);
-
-                            // send broadcast
-                            Intent in = new Intent();
-                            in.setAction("flyve.mqtt.msg");
-                            in.putExtra("message", "Inventory send!");
-                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
                         }
 
                         @Override
@@ -222,10 +219,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                             FlyveLog.e(error.getCause().toString());
 
                             //send broadcast
-                            Intent in = new Intent();
-                            in.setAction("flyve.mqtt.msg");
-                            in.putExtra("message", "Inventory Error: " + error.getCause().toString());
-                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+                            broadcastReceivedMessage("Inventory Error: " + error.getCause().toString());
                         }
                     });
                 }
@@ -236,21 +230,13 @@ public class MQTTService extends IntentService implements MqttCallback {
                     FlyveLog.v("Wipe in progress");
 
                     //send broadcast
-                    Intent in = new Intent();
-                    in.setAction("flyve.mqtt.msg");
-                    in.putExtra("message", "Wipe in progress");
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+                    broadcastReceivedMessage("Wipe in progress");
                 }
             }
 
             if (jsonObj.has("unenroll")) {
                 FlyveLog.v("Unenroll in progress");
-
-                //send broadcast
-                Intent in = new Intent();
-                in.setAction("flyve.mqtt.msg");
-                in.putExtra("message", "Unenroll in progress");
-                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+                broadcastReceivedMessage("Unenroll in progress");
             }
 
         } catch (Exception ex) {
@@ -258,8 +244,20 @@ public class MQTTService extends IntentService implements MqttCallback {
         }
     }
 
-    public void sendBC(String message) {
+    public void broadcastReceivedMessage(String message) {
+        //send broadcast
+        Intent in = new Intent();
+        in.setAction("flyve.mqtt.msg");
+        in.putExtra("message", message);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+    }
 
+    private void broadcastServiceStatus(boolean status) {
+        //send broadcast
+        Intent in = new Intent();
+        in.setAction("flyve.mqtt.status");
+        in.putExtra("message", Boolean.toString( status ) );
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
     }
 
     /**
@@ -285,10 +283,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                     // The message was published
                     FlyveLog.d("suscribed");
 
-                    Intent in = new Intent();
-                    in.putExtra("message", "suscribed");
-                    in.setAction("flyve.mqtt.msg");
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+                    broadcastReceivedMessage("suscribed");
                 }
 
                 @Override
@@ -298,11 +293,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                     // authorized to subscribe on the specified topic e.g. using wildcards
                     FlyveLog.e("ERROR: " + exception.getMessage());
 
-                    Intent in = new Intent();
-                    in.putExtra("message", "ERROR: " + exception.getMessage());
-                    in.setAction("flyve.mqtt.msg");
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
-
+                    broadcastReceivedMessage("ERROR: " + exception.getMessage());
                 }
             });
         } catch (MqttException ex) {
@@ -336,8 +327,14 @@ public class MQTTService extends IntentService implements MqttCallback {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             IMqttDeliveryToken token = client.publish(topic, message);
+
+            // send broadcast
+            broadcastReceivedMessage("Inventory send!");
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
+
+            // send broadcast
+            broadcastReceivedMessage("Error Inventory: " + ex.getCause().toString());
         }
     }
 

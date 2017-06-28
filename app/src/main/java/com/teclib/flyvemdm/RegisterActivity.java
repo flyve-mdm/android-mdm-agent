@@ -60,7 +60,7 @@ public class RegisterActivity extends Activity {
     private ProgressBar pb;
     private Routes routes;
     private DataStorage cache;
-    private TextView tvData;
+    private TextView tvMsg;
     private LinearLayout lyUserData;
 
     private EditText txtName;
@@ -103,7 +103,7 @@ public class RegisterActivity extends Activity {
 
         routes = new Routes( RegisterActivity.this );
 
-        tvData = (TextView) findViewById(R.id.data);
+        tvMsg = (TextView) findViewById(R.id.tvMsg);
         lyUserData = (LinearLayout) findViewById(R.id.user_data);
 
         txtName = (EditText) findViewById(R.id.txtName);
@@ -128,7 +128,7 @@ public class RegisterActivity extends Activity {
     private void initSession() {
         try {
             pb.setVisibility(View.VISIBLE);
-            tvData.setText("Init Session");
+            tvMsg.setText("Init Session");
             ConnectionHTTP.getWebData(
                     routes.initSession( cache.getUserToken() ),
                     "GET" ,
@@ -140,12 +140,12 @@ public class RegisterActivity extends Activity {
                         JSONObject jsonSession = new JSONObject(data);
                         cache.setSessionToken( jsonSession.getString("session_token") );
 
-                        tvData.setText("get Full Session");
+                        tvMsg.setText("get Full Session");
 
                         getFullSession();
 
                     } catch (Exception ex) {
-                        tvData.setText("ERROR JSON: initSession");
+                        tvMsg.setText("ERROR JSON: initSession");
                         pb.setVisibility(View.GONE);
                         FlyveLog.e( ex.getMessage() );
                     }
@@ -154,7 +154,7 @@ public class RegisterActivity extends Activity {
         }
         catch (Exception ex) {
             pb.setVisibility(View.GONE);
-            tvData.setText("ERROR: initSession");
+            tvMsg.setText("ERROR: initSession");
             FlyveLog.e( ex.getMessage() );
         }
     }
@@ -176,7 +176,7 @@ public class RegisterActivity extends Activity {
                 @Override
                 public void callback(String data) {
 
-                    tvData.setText("changeActiveProfile");
+                    tvMsg.setText("changeActiveProfile");
 
                     try {
                         JSONObject jsonFullSession = new JSONObject(data);
@@ -192,7 +192,7 @@ public class RegisterActivity extends Activity {
 
                     } catch (Exception ex) {
                         pb.setVisibility(View.GONE);
-                        tvData.setText("ERROR JSON: getFullSession");
+                        tvMsg.setText("ERROR JSON: getFullSession");
                         FlyveLog.e( ex.getMessage() );
                     }
 
@@ -202,7 +202,7 @@ public class RegisterActivity extends Activity {
             });
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
-            tvData.setText("ERROR: getFullSession");
+            tvMsg.setText("ERROR: getFullSession");
             FlyveLog.e( ex.getMessage() );
         }
     }
@@ -226,14 +226,14 @@ public class RegisterActivity extends Activity {
                 @Override
                 public void callback(String data) {
                     pb.setVisibility(View.GONE);
-                    tvData.setText("changeActiveProfile Ok!");
+                    tvMsg.setText("changeActiveProfile Ok!");
                     lyUserData.setVisibility(View.VISIBLE);
                 }
             });
 
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
-            tvData.setText("ERROR: changeActiveProfile");
+            tvMsg.setText("ERROR: changeActiveProfile");
             FlyveLog.e( ex.getMessage() );
         }
 
@@ -243,7 +243,7 @@ public class RegisterActivity extends Activity {
      * STEP 4 create X509 certificate
      */
     private void createX509cert() {
-        tvData.setText("Creating Certificate");
+        tvMsg.setText("Creating Certificate");
         pb.setVisibility( View.VISIBLE );
 
         new Thread(new Runnable() {
@@ -261,7 +261,7 @@ public class RegisterActivity extends Activity {
                     });
                 } catch (Exception ex) {
                     pb.setVisibility(View.GONE);
-                    tvData.setText("ERROR: Creating Certificate X509");
+                    tvMsg.setText("ERROR: Creating Certificate X509");
                     FlyveLog.e(ex.getMessage());
                 }
             }
@@ -274,7 +274,7 @@ public class RegisterActivity extends Activity {
      */
     private void pluginFlyvemdmAgent() {
 
-        tvData.setText("Register Agent");
+        tvMsg.setText("Register Agent");
 
         try {
 
@@ -304,14 +304,14 @@ public class RegisterActivity extends Activity {
                 input.put("input", payload);
             } catch (JSONException ex) {
                 pb.setVisibility(View.GONE);
-                tvData.setText( "ERROR pluginFlyvemdmAgent JSON" );
+                tvMsg.setText( "ERROR pluginFlyvemdmAgent JSON" );
                 FlyveLog.e( ex.getMessage() );
             }
 
             ConnectionHTTP.getWebData(routes.pluginFlyvemdmAgent(), input, header, new ConnectionHTTP.DataCallback() {
                 @Override
                 public void callback(String data) {
-                    tvData.setText("Register Agent");
+                    tvMsg.setText("Register Agent");
 
                     try {
                         JSONObject jsonAgent = new JSONObject(data);
@@ -320,7 +320,7 @@ public class RegisterActivity extends Activity {
                         getDataPluginFlyvemdmAgent();
                     } catch(Exception ex) {
                         pb.setVisibility(View.GONE);
-                        tvData.setText( "ERROR pluginFlyvemdmAgent HTTP " + data );
+                        tvMsg.setText( "ERROR pluginFlyvemdmAgent HTTP " + data );
                         FlyveLog.e( ex.getMessage() );
                     }
                 }
@@ -328,7 +328,7 @@ public class RegisterActivity extends Activity {
 
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
-            tvData.setText( "ERROR pluginFlyvemdmAgent" );
+            tvMsg.setText( "ERROR pluginFlyvemdmAgent" );
             FlyveLog.e(ex.getMessage());
         }
     }
@@ -390,7 +390,7 @@ public class RegisterActivity extends Activity {
 
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
-            tvData.setText( "ERROR getDataPluginFlyvemdmAgent" );
+            tvMsg.setText( "ERROR getDataPluginFlyvemdmAgent" );
             FlyveLog.e(ex.getMessage());
         }
     }
