@@ -28,6 +28,8 @@
 package com.teclib.services;
 
 import android.app.IntentService;
+import android.app.admin.DevicePolicyManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -237,6 +239,8 @@ public class MQTTService extends IntentService implements MqttCallback {
                 if("NOW".equals(jsonObj.getString("wipe"))) {
                     FlyveLog.v("Wipe in progress");
 
+                    wipe();
+
                     //send broadcast
                     broadcastReceivedMessage("Wipe in progress");
                 }
@@ -334,6 +338,17 @@ public class MQTTService extends IntentService implements MqttCallback {
             });
         } catch (MqttException ex) {
             FlyveLog.e(ex.getMessage());
+        }
+    }
+
+    private void wipe() {
+        // Prepare to work with the DPM
+        DevicePolicyManager mDPM = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+
+        try {
+            mDPM.wipeData(0);
+        } catch(Exception e) {
+            FlyveLog.e(e.getMessage());
         }
     }
 
