@@ -222,6 +222,29 @@ public class MQTTService extends IntentService implements MqttCallback {
                     });
                 }
             }
+
+            if(jsonObj.has("wipe")) {
+                if("NOW".equals(jsonObj.getString("wipe"))) {
+                    FlyveLog.v("Wipe in progress");
+
+                    //send broadcast
+                    Intent in = new Intent();
+                    in.setAction("flyve.mqtt.msg");
+                    in.putExtra("message", "Wipe in progress");
+                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+                }
+            }
+
+            if (jsonObj.has("unenroll")) {
+                FlyveLog.v("Unenroll in progress");
+
+                //send broadcast
+                Intent in = new Intent();
+                in.setAction("flyve.mqtt.msg");
+                in.putExtra("message", "Unenroll in progress");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+            }
+
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
