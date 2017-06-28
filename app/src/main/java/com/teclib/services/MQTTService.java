@@ -167,6 +167,15 @@ public class MQTTService extends IntentService implements MqttCallback {
     }
 
     /**
+     * If delivery of the message was complete
+     * @param token get message token
+     */
+    @Override
+    public void deliveryComplete(IMqttDeliveryToken token) {
+        FlyveLog.d( "deliveryComplete: " + token.toString());
+    }
+
+    /**
      * When a message from server arrive
      * @param topic String topic where the message from
      * @param message MqttMessage message content
@@ -269,15 +278,6 @@ public class MQTTService extends IntentService implements MqttCallback {
         in.setAction("flyve.mqtt.status");
         in.putExtra("message", Boolean.toString( status ) );
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
-    }
-
-    /**
-     * If delivery of the message was complete
-     * @param token get message token
-     */
-    @Override
-    public void deliveryComplete(IMqttDeliveryToken token) {
-        FlyveLog.d( "deliveryComplete: " + token.toString());
     }
 
     /**
