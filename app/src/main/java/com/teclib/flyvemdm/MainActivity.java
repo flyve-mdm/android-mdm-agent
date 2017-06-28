@@ -36,7 +36,11 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+
+import com.teclib.data.DataStorage;
 import com.teclib.services.MQTTService;
 
 /**
@@ -64,6 +68,23 @@ public class MainActivity extends Activity {
         }
 
         tvMsg = (TextView) findViewById(R.id.tvMsg);
+
+        Button btnUnenroll = (Button) findViewById(R.id.btnClear);
+        btnUnenroll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataStorage cache = new DataStorage(MainActivity.this);
+                cache.clearSettings();
+            }
+        });
+
+        Button btnUpdate = (Button) findViewById(R.id.btnUpdate);
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 
@@ -116,8 +137,8 @@ public class MainActivity extends Activity {
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String type = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
-            tvMsg.setText( type );
+        String type = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
+        tvMsg.setText( type );
         }
     };
 }

@@ -58,7 +58,7 @@ public class MQTTService extends IntentService implements MqttCallback {
     private MqttAndroidClient client;
     private DataStorage cache;
     private String mTopic = "";
-
+    private boolean isConnected = false;
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      * @param name Used to name the worker thread, important only for debugging.
@@ -84,12 +84,18 @@ public class MQTTService extends IntentService implements MqttCallback {
         super("MQTTService");
     }
 
+    /**
+     * Get the status of the connection with MQTT
+     * @return boolean
+     */
+    public boolean isConnected() {
+        return isConnected;
+    }
 
     /**
      * This function connect the agent with MQTT server
      */
     public void connect() {
-
         cache = new DataStorage(this.getApplicationContext());
 
         String mBroker = "mqdev.flyve.org";//cache.getBroker();
@@ -132,6 +138,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                     // We are connected
                     // Everything ready waiting for message
                     Log.d(TAG, "onSuccess");
+                    isConnected = true;
                     suscribe();
                 }
 
@@ -139,7 +146,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     // Something went wrong e.g. connection timeout or firewall problems
                     Log.d(TAG, "onFailure");
-
+                    isConnected = false;
                     Intent in = new Intent();
                     in.putExtra("message", exception.getMessage());
                     in.setAction("flyve.mqtt.msg");
@@ -160,6 +167,7 @@ public class MQTTService extends IntentService implements MqttCallback {
     public void connectionLost(Throwable cause) {
         // send to backend that agent lost connection
         sendOnlineStatus(false);
+        isConnected = false;
         Log.d(TAG, "Connection fail " + cause.getMessage());
     }
 
@@ -271,7 +279,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // The message was published
-                    Log.d(TAG, "suscribed");
+                    FlyveLog.d("suscribed");
 
                     Intent in = new Intent();
                     in.putExtra("message", "suscribed");
@@ -284,7 +292,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                                       Throwable exception) {
                     // The subscription could not be performed, maybe the user was not
                     // authorized to subscribe on the specified topic e.g. using wildcards
-                    Log.d(TAG, "ERROR: " + exception.getMessage());
+                    FlyveLog.e("ERROR: " + exception.getMessage());
 
                     Intent in = new Intent();
                     in.putExtra("message", "ERROR: " + exception.getMessage());
