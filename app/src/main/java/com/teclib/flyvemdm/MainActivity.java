@@ -36,12 +36,14 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.teclib.data.DataStorage;
+import com.teclib.adapter.LogAdapter;
 import com.teclib.services.MQTTService;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This is the main activity of the app
@@ -52,6 +54,8 @@ public class MainActivity extends Activity {
     private Intent mServiceIntent;
     private TextView tvMsg;
     private TextView tvStatus;
+    private ArrayList<HashMap<String, String>> arr_data;
+    LogAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,22 +75,12 @@ public class MainActivity extends Activity {
         tvMsg = (TextView) findViewById(R.id.tvMsg);
         tvStatus = (TextView) findViewById(R.id.tvStatus);
 
-        Button btnUnenroll = (Button) findViewById(R.id.btnClear);
-        btnUnenroll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DataStorage cache = new DataStorage(MainActivity.this);
-                cache.clearSettings();
-            }
-        });
+        arr_data = new ArrayList<HashMap<String, String>>();
 
-        Button btnUpdate = (Button) findViewById(R.id.btnUpdate);
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        ListView lst = (ListView) findViewById(R.id.lst);
+        mAdapter = new LogAdapter(MainActivity.this, arr_data);
+        lst.setAdapter(mAdapter);
 
-            }
-        });
 
     }
 
@@ -95,6 +89,7 @@ public class MainActivity extends Activity {
         // unregister the broadcast
         if(mIntent != null) {
             unregisterReceiver(broadcastReceivedMessage);
+            unregisterReceiver(broadcastReceivedLog);
             unregisterReceiver(broadcastServiceStatus);
             mIntent = null;
         }
@@ -106,6 +101,7 @@ public class MainActivity extends Activity {
         // register the broadcast
         super.onResume();
         LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastReceivedMessage, new IntentFilter("flyve.mqtt.msg"));
+        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastReceivedLog, new IntentFilter("flyve.mqtt.log"));
         LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastServiceStatus, new IntentFilter("flyve.mqtt.status"));
     }
 
@@ -138,6 +134,23 @@ public class MainActivity extends Activity {
     /**
      * broadcastReceiverMessage instance that receive all the message from MQTTService
      */
+    private BroadcastReceiver broadcastReceivedLog = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String msg = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
+            tvMsg.setText( msg );
+
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("message", msg);
+
+            arr_data.add(map);
+            mAdapter.notifyDataSetChanged();
+        }
+    };
+
+    /**
+     * broadcastReceiverMessage instance that receive all the message from MQTTService
+     */
     private BroadcastReceiver broadcastReceivedMessage = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -152,12 +165,19 @@ public class MainActivity extends Activity {
     private BroadcastReceiver broadcastServiceStatus = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String msg = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
-            if(Boolean.parseBoolean(msg)) {
-                tvStatus.setText("Online");
-            } else {
-                tvStatus.setText("Offline");
-            }
+        String msg = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
+        HashMap<String, String> map = new HashMap<String, String>();
+
+        if(Boolean.parseBoolean(msg)) {
+            tvStatus.setText("Online");
+            map.put("message", "Online");
+        } else {
+            tvStatus.setText("Offline");
+            map.put("message", "Offline");
+        }
+
+        arr_data.add(map);
+        mAdapter.notifyDataSetChanged();
         }
     };
 }

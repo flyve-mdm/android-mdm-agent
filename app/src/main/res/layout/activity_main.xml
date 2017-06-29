@@ -5,40 +5,26 @@
     android:layout_height="match_parent"
     >
 
-    <LinearLayout
-        android:id="@+id/body"
+
+    <TextView
+        android:id="@+id/tvMsg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:text="Waiting for MQTT Message"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_margin="20dp"
+        />
+
+    <ListView
+        android:id="@+id/lst"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/tvMsg"
+        android:layout_above="@+id/tvStatus"
         >
-
-        <TextView
-            android:id="@+id/tvMsg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Waiting for MQTT Message"
-            android:gravity="center"
-            android:layout_margin="20dp"
-            />
-
-        <Button
-            android:id="@+id/btnClear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Local unenroll"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            />
-
-        <Button
-            android:id="@+id/btnUpdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Update"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            />
-    </LinearLayout>
+    </ListView>
 
     <TextView
         android:id="@+id/tvStatus"

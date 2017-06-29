@@ -175,6 +175,7 @@ public class MQTTService extends IntentService implements MqttCallback {
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
         FlyveLog.d( "deliveryComplete: " + token.toString());
+        broadcastReceivedLog("Get response from MQTT:" + token.getMessageId());
     }
 
     /**
@@ -188,6 +189,8 @@ public class MQTTService extends IntentService implements MqttCallback {
         Log.d(TAG, "Topic " + topic);
         Log.d(TAG, "Message " + message.getPayload());
 
+        broadcastReceivedLog("GET TOPIC: " + topic + " - Message: " + message.getPayload().toString() );
+
         String messageBody;
         messageBody = new String(message.getPayload());
 
@@ -199,6 +202,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                 if ("Ping".equalsIgnoreCase(jsonObj.getString("query"))) {
 
                     sendKeepAlive();
+                    return;
                 }
                 // INVENTORY Request
                 if("Inventory".equalsIgnoreCase(jsonObj.getString("query"))) {
@@ -220,6 +224,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                             broadcastReceivedMessage("Inventory Error: " + error.getCause().toString());
                         }
                     });
+                    return;
                 }
 
                 // GEOLOCATE request
@@ -231,6 +236,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
                     //send broadcast
                     broadcastReceivedMessage("Request Geolocate");
+                    return;
                 }
             }
 
@@ -243,6 +249,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
                     //send broadcast
                     broadcastReceivedMessage("Wipe in progress");
+                    return;
                 }
             }
 
@@ -253,6 +260,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                 unenroll();
 
                 broadcastReceivedMessage("Unenroll in progress");
+                return;
             }
 
         } catch (Exception ex) {
@@ -270,6 +278,18 @@ public class MQTTService extends IntentService implements MqttCallback {
         //send broadcast
         Intent in = new Intent();
         in.setAction("flyve.mqtt.msg");
+        in.putExtra("message", message);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+    }
+
+    /**
+     * Send broadcast for log messages from MQTT
+     * @param message String to send
+     */
+    public void broadcastReceivedLog(String message) {
+        //send broadcast
+        Intent in = new Intent();
+        in.setAction("flyve.mqtt.log");
         in.putExtra("message", message);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
     }
@@ -325,6 +345,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                     // The message was published
                     FlyveLog.d("suscribed");
 
+                    broadcastReceivedLog("suscribed");
                     broadcastReceivedMessage("suscribed");
                 }
 
@@ -334,7 +355,6 @@ public class MQTTService extends IntentService implements MqttCallback {
                     // The subscription could not be performed, maybe the user was not
                     // authorized to subscribe on the specified topic e.g. using wildcards
                     FlyveLog.e("ERROR: " + exception.getMessage());
-
                     broadcastReceivedMessage("ERROR: " + exception.getMessage());
                 }
             });
@@ -364,8 +384,8 @@ public class MQTTService extends IntentService implements MqttCallback {
         try {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
-            client.publish(topic, message);
-
+            IMqttDeliveryToken token = client.publish(topic, message);
+            broadcastReceivedLog("Send to MQTT " + topic + "(ID:"+ token.getMessageId() +")" + " :" + message);
             broadcastReceivedMessage("PING!");
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
@@ -386,6 +406,7 @@ public class MQTTService extends IntentService implements MqttCallback {
             IMqttDeliveryToken token = client.publish(topic, message);
 
             // send broadcast
+            broadcastReceivedLog("Send to MQTT " + topic + "(ID:"+ token.getMessageId() +")" + " :" + message);
             broadcastReceivedMessage("Inventory send!");
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
@@ -421,7 +442,9 @@ public class MQTTService extends IntentService implements MqttCallback {
         try {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
-            client.publish(topic, message);
+            IMqttDeliveryToken token = client.publish(topic, message);
+
+            broadcastReceivedLog("Send to MQTT " + topic + "(ID:"+ token.getMessageId() +")" + " :" + message);
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
@@ -455,9 +478,10 @@ public class MQTTService extends IntentService implements MqttCallback {
         try {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
-            client.publish(topic, message);
+            IMqttDeliveryToken token = client.publish(topic, message);
 
             // send broadcast
+            broadcastReceivedLog("Send to MQTT " + topic + "(ID:"+ token.getMessageId() +")" + " :" + message);
             broadcastReceivedMessage("Geolocation send!");
 
         } catch (Exception ex) {
