@@ -62,6 +62,7 @@ public class RegisterActivity extends Activity {
     private DataStorage cache;
     private TextView tvMsg;
     private LinearLayout lyUserData;
+    private boolean certifiedX509Available = false;
 
     private EditText txtName;
     private EditText txtLastName;
@@ -115,10 +116,14 @@ public class RegisterActivity extends Activity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createX509cert();
+                pluginFlyvemdmAgent();
             }
         });
 
+        // start creating a certificated
+        createX509cert();
+
+        // start enrollment process
         initSession();
     }
 
@@ -243,36 +248,30 @@ public class RegisterActivity extends Activity {
      * STEP 4 create X509 certificate
      */
     private void createX509cert() {
-        tvMsg.setText("Creating Certificate");
-        pb.setVisibility( View.VISIBLE );
-
         new Thread(new Runnable() {
             public void run() {
-
                 try {
                     AndroidCryptoProvider createCertif = new AndroidCryptoProvider(getBaseContext());
                     createCertif.generateRequest();
                     createCertif.loadCsr();
-
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            pluginFlyvemdmAgent();
-                        }
-                    });
+                    certifiedX509Available = true;
                 } catch (Exception ex) {
-                    pb.setVisibility(View.GONE);
+                    certifiedX509Available = false;
                     tvMsg.setText("ERROR: Creating Certificate X509");
                     FlyveLog.e(ex.getMessage());
                 }
             }
         }).start();
-
     }
 
     /**
      * STEP 5 Send the payload to register the agent
      */
     private void pluginFlyvemdmAgent() {
+
+        if(!certifiedX509Available) {
+            tvMsg.setText("The certified is not available");
+        }
 
         tvMsg.setText("Register Agent");
 
@@ -313,15 +312,21 @@ public class RegisterActivity extends Activity {
                 public void callback(String data) {
                     tvMsg.setText("Register Agent");
 
-                    try {
-                        JSONObject jsonAgent = new JSONObject(data);
-                        cache.setAgentId(jsonAgent.getString("id"));
-
-                        getDataPluginFlyvemdmAgent();
-                    } catch(Exception ex) {
+                    if(data.contains("ERROR")){
                         pb.setVisibility(View.GONE);
                         tvMsg.setText( "ERROR pluginFlyvemdmAgent HTTP " + data );
-                        FlyveLog.e( ex.getMessage() );
+                        FlyveLog.e( data );
+                    } else {
+                        try {
+                            JSONObject jsonAgent = new JSONObject(data);
+                            cache.setAgentId(jsonAgent.getString("id"));
+
+                            getDataPluginFlyvemdmAgent();
+                        } catch (Exception ex) {
+                            pb.setVisibility(View.GONE);
+                            tvMsg.setText("ERROR pluginFlyvemdmAgent HTTP " + data);
+                            FlyveLog.e(ex.getMessage());
+                        }
                     }
                 }
             });

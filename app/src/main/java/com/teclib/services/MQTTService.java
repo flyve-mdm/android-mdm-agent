@@ -105,6 +105,12 @@ public class MQTTService extends IntentService implements MqttCallback {
 
         mTopic = cache.getTopic();
 
+        broadcastReceivedLog("MQTT Broker:" + mBroker);
+        broadcastReceivedLog("MQTT Port:" + mPort);
+        broadcastReceivedLog("MQTT User:" + mUser);
+        broadcastReceivedLog("MQTT Password:" + mPassword);
+        broadcastReceivedLog("MQTT Topic:" + mTopic);
+
         String clientId = MqttClient.generateClientId();
             client = new MqttAndroidClient(this.getApplicationContext(), "ssl://" + mBroker + ":" + mPort,
                 clientId);

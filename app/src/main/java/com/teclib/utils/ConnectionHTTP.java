@@ -209,6 +209,7 @@ public class ConnectionHTTP {
 							callback.callback(result);
 						}
 					});
+					return;
 				}
 
 				InputStream is = conn.getInputStream();
