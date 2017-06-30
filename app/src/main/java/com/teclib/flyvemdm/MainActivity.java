@@ -1,9 +1,9 @@
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   com.teclib.data is part of flyve-mdm-android
+ * This file is part of flyve-mdm-android-agent
  *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -20,13 +20,14 @@
  * @date      02/06/2017
  * @copyright Copyright © ${YEAR} Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
 
 package com.teclib.flyvemdm;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,19 +35,28 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.teclib.adapter.LogAdapter;
 import com.teclib.services.MQTTService;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.HashMap;
 
-    private BroadcastReceiver statusReceiver;
+
+/**
+ * This is the main activity of the app
+ */
+public class MainActivity extends Activity {
+
     private IntentFilter mIntent;
-
-    Intent mServiceIntent;
+    private Intent mServiceIntent;
     private TextView tvMsg;
+    private TextView tvStatus;
+    private ArrayList<HashMap<String, String>> arr_data;
+    LogAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +68,58 @@ public class MainActivity extends AppCompatActivity {
         // ------------------
         MQTTService mMQTTService = new MQTTService();
         mServiceIntent = new Intent(MainActivity.this, mMQTTService.getClass());
+        // Start the service
         if (!isMyServiceRunning(mMQTTService.getClass())) {
             startService(mServiceIntent);
         }
 
         tvMsg = (TextView) findViewById(R.id.tvMsg);
+        tvStatus = (TextView) findViewById(R.id.tvStatus);
+
+        arr_data = new ArrayList<HashMap<String, String>>();
+
+
+        ListView lst = (ListView) findViewById(R.id.lst);
+        mAdapter = new LogAdapter(MainActivity.this, arr_data);
+        lst.setAdapter(mAdapter);
 
     }
 
+    @Override
+    protected void onPause() {
+        // unregister the broadcast
+        if(mIntent != null) {
+            unregisterReceiver(broadcastReceivedMessage);
+            unregisterReceiver(broadcastReceivedLog);
+            unregisterReceiver(broadcastServiceStatus);
+            mIntent = null;
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        // register the broadcast
+        super.onResume();
+        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastReceivedMessage, new IntentFilter("flyve.mqtt.msg"));
+        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastReceivedLog, new IntentFilter("flyve.mqtt.log"));
+        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastServiceStatus, new IntentFilter("flyve.mqtt.status"));
+    }
+
+    @Override
+    protected void onDestroy() {
+        // stop the service
+        stopService(mServiceIntent);
+        Log.i("MAINACT", "onDestroy!");
+        super.onDestroy();
+
+    }
+
+    /**
+     * Check if the service is running
+     * @param serviceClass Class
+     * @return boolean
+     */
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -78,35 +132,53 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    /**
+     * broadcastReceiverMessage instance that receive all the message from MQTTService
+     */
+    private BroadcastReceiver broadcastReceivedLog = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-        String type = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
-        tvMsg.setText( type );
+            String msg = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
+            tvMsg.setText( msg );
+
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("message", msg);
+
+            arr_data.add(map);
+            mAdapter.notifyDataSetChanged();
         }
     };
 
-    @Override
-    protected void onPause() {
-        if(mIntent != null) {
-            unregisterReceiver(statusReceiver);
-            mIntent = null;
+    /**
+     * broadcastReceiverMessage instance that receive all the message from MQTTService
+     */
+    private BroadcastReceiver broadcastReceivedMessage = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+        String msg = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
+        tvMsg.setText( msg );
         }
-        super.onPause();
-    }
+    };
 
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastReceiver, new IntentFilter("NOW"));
-    }
+    /**
+     * broadcastServiceStatus instance that receive service status from MQTTService
+     */
+    private BroadcastReceiver broadcastServiceStatus = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+        String msg = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
+        HashMap<String, String> map = new HashMap<String, String>();
 
-    @Override
-    protected void onDestroy() {
-        stopService(mServiceIntent);
-        Log.i("MAINACT", "onDestroy!");
-        super.onDestroy();
+        if(Boolean.parseBoolean(msg)) {
+            tvStatus.setText("Online");
+            map.put("message", "Online");
+        } else {
+            tvStatus.setText("Offline");
+            map.put("message", "Offline");
+        }
 
-    }
+        arr_data.add(map);
+        mAdapter.notifyDataSetChanged();
+        }
+    };
 }

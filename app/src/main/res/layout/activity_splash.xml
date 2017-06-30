@@ -5,7 +5,7 @@
     >
 
     <ImageView
-        android:id="@+id/logo"
+        android:id="@+id/iv_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher"
@@ -14,15 +14,27 @@
         />
 
     <TextView
+        android:id="@+id/tv_intro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="If you want more information please visit our site https://demo.flyve.org"
+        android:text="@string/text_intro"
         android:gravity="center"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/logo"
-        style="@style/textRegular"
+        android:layout_below="@+id/iv_logo"
+        />
+
+    <TextView
+        android:id="@+id/tv_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_link"
+        android:gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/tv_intro"
         />
 
 </RelativeLayout>

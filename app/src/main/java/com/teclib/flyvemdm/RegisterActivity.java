@@ -1,9 +1,9 @@
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   com.teclib.data is part of flyve-mdm-android
+ * this file is part of flyve-mdm-android-agent
  *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -18,20 +18,19 @@
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      02/06/2017
- * @copyright Copyright © ${YEAR} Teclib. All rights reserved.
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
 
 package com.teclib.flyvemdm;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -53,16 +52,19 @@ import org.json.JSONObject;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
-public class RegisterActivity extends AppCompatActivity {
+/**
+ * Register the agent to the platform
+ */
+public class RegisterActivity extends Activity {
 
     private ProgressBar pb;
     private Routes routes;
     private DataStorage cache;
-
-    private TextView tvData;
+    private TextView tvMsg;
     private LinearLayout lyUserData;
-
+    private boolean certifiedX509Available = false;
     private EditText txtName;
+    private EditText txtLastName;
     private EditText txtEmail;
 
     @Override
@@ -81,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         String broker = cache.getBroker();
         if(broker != null) {
-            abrirMain();
+            openMain();
         }
 
         try {
@@ -101,10 +103,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         routes = new Routes( RegisterActivity.this );
 
-        tvData = (TextView) findViewById(R.id.data);
+        tvMsg = (TextView) findViewById(R.id.tvMsg);
         lyUserData = (LinearLayout) findViewById(R.id.user_data);
 
         txtName = (EditText) findViewById(R.id.txtName);
+        txtLastName = (EditText) findViewById(R.id.txtLastName);
         txtEmail = (EditText) findViewById(R.id.txtEmail);
         txtEmail.setImeActionLabel("Done", KeyEvent.KEYCODE_ENTER);
 
@@ -112,18 +115,24 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createX509cert();
+                pluginFlyvemdmAgent();
             }
         });
 
+        // start creating a certificated
+        createX509cert();
+
+        // start enrollment process
         initSession();
     }
 
-    // STEP 1
+    /**
+     * STEP 1 get session token
+     */
     private void initSession() {
         try {
             pb.setVisibility(View.VISIBLE);
-            tvData.setText("Init Session");
+            tvMsg.setText("Init Session");
             ConnectionHTTP.getWebData(
                     routes.initSession( cache.getUserToken() ),
                     "GET" ,
@@ -134,13 +143,11 @@ public class RegisterActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonSession = new JSONObject(data);
                         cache.setSessionToken( jsonSession.getString("session_token") );
-
-                        tvData.setText("get Full Session");
-
+                        tvMsg.setText("get Full Session");
                         getFullSession();
 
                     } catch (Exception ex) {
-                        tvData.setText("ERROR JSON: initSession");
+                        tvMsg.setText("ERROR JSON: initSession");
                         pb.setVisibility(View.GONE);
                         FlyveLog.e( ex.getMessage() );
                     }
@@ -149,12 +156,14 @@ public class RegisterActivity extends AppCompatActivity {
         }
         catch (Exception ex) {
             pb.setVisibility(View.GONE);
-            tvData.setText("ERROR: initSession");
+            tvMsg.setText("ERROR: initSession");
             FlyveLog.e( ex.getMessage() );
         }
     }
 
-    // STEP 2
+    /**
+     * STEP 2 get full session information
+     */
     private void getFullSession() {
         try {
             HashMap<String, String> header = new HashMap();
@@ -169,7 +178,7 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void callback(String data) {
 
-                    tvData.setText("changeActiveProfile");
+                    tvMsg.setText("changeActiveProfile");
 
                     try {
                         JSONObject jsonFullSession = new JSONObject(data);
@@ -185,7 +194,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     } catch (Exception ex) {
                         pb.setVisibility(View.GONE);
-                        tvData.setText("ERROR JSON: getFullSession");
+                        tvMsg.setText("ERROR JSON: getFullSession");
                         FlyveLog.e( ex.getMessage() );
                     }
 
@@ -195,12 +204,14 @@ public class RegisterActivity extends AppCompatActivity {
             });
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
-            tvData.setText("ERROR: getFullSession");
+            tvMsg.setText("ERROR: getFullSession");
             FlyveLog.e( ex.getMessage() );
         }
     }
 
-    // STEP 3
+    /**
+     * STEP 3 Activated the profile
+     */
     private void changeActiveProfile() {
 
         try {
@@ -217,60 +228,51 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void callback(String data) {
                     pb.setVisibility(View.GONE);
-                    tvData.setText("changeActiveProfile Ok!");
+                    tvMsg.setText("changeActiveProfile Ok!");
                     lyUserData.setVisibility(View.VISIBLE);
                 }
             });
 
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
-            tvData.setText("ERROR: changeActiveProfile");
+            tvMsg.setText("ERROR: changeActiveProfile");
             FlyveLog.e( ex.getMessage() );
         }
 
     }
 
-    // STEP 4
+    /**
+     * STEP 4 create X509 certificate
+     */
     private void createX509cert() {
-        tvData.setText("Creating Certificate");
-        pb.setVisibility( View.VISIBLE );
-
         new Thread(new Runnable() {
             public void run() {
-
                 try {
                     AndroidCryptoProvider createCertif = new AndroidCryptoProvider(getBaseContext());
                     createCertif.generateRequest();
                     createCertif.loadCsr();
-
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            pluginFlyvemdmAgent();
-                        }
-                    });
+                    certifiedX509Available = true;
                 } catch (Exception ex) {
-                    pb.setVisibility(View.GONE);
-                    tvData.setText("ERROR: Creating Certificate X509");
+                    certifiedX509Available = false;
+                    tvMsg.setText("ERROR: Creating Certificate X509");
                     FlyveLog.e(ex.getMessage());
                 }
-
             }
-
-
-
         }).start();
-
     }
 
-    // STEP 5
+    /**
+     * STEP 5 Send the payload to register the agent
+     */
     private void pluginFlyvemdmAgent() {
 
-        tvData.setText("Register Agent");
+        if(!certifiedX509Available) {
+            tvMsg.setText("The certified is not available");
+            return;
+        }
 
+        tvMsg.setText("Register Agent");
         try {
-            AndroidCryptoProvider createCertif = new AndroidCryptoProvider(getBaseContext());
-            createCertif.generateRequest();
-            createCertif.loadCsr();
 
             HashMap<String, String> header = new HashMap();
             header.put("Session-Token",cache.getSessionToken());
@@ -282,7 +284,6 @@ public class RegisterActivity extends AppCompatActivity {
             JSONObject input = new JSONObject();
 
             AndroidCryptoProvider csr = new AndroidCryptoProvider(RegisterActivity.this.getBaseContext());
-
             String requestCSR = "";
             if( csr.getlCsr() != null ) {
                 requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
@@ -291,44 +292,52 @@ public class RegisterActivity extends AppCompatActivity {
             try {
                 payload.put("_email", txtEmail.getText());
                 payload.put("_invitation_token", cache.getInvitationToken());
-                payload.put("_serial", Build.SERIAL);
+                payload.put("_serial", Helpers.getDeviceSerial());
                 payload.put("csr", requestCSR);
                 payload.put("firstname", txtName.getText());
-                payload.put("lastname", "Without");
-                payload.put("version", "0.99.0");
+                payload.put("lastname", txtLastName.getText());
+                payload.put("version", BuildConfig.VERSION_NAME);
                 input.put("input", payload);
             } catch (JSONException ex) {
                 pb.setVisibility(View.GONE);
-                tvData.setText( "ERROR pluginFlyvemdmAgent JSON" );
+                tvMsg.setText( "ERROR pluginFlyvemdmAgent JSON" );
                 FlyveLog.e( ex.getMessage() );
             }
 
             ConnectionHTTP.getWebData(routes.pluginFlyvemdmAgent(), input, header, new ConnectionHTTP.DataCallback() {
                 @Override
                 public void callback(String data) {
-                    tvData.setText("Register Agent");
+                    tvMsg.setText("Register Agent");
 
-                    try {
-                        JSONObject jsonAgent = new JSONObject(data);
-                        cache.setAgentId(jsonAgent.getString("id"));
-
-                        getDataPluginFlyvemdmAgent();
-                    } catch(Exception ex) {
+                    if(data.contains("ERROR")){
                         pb.setVisibility(View.GONE);
-                        tvData.setText( "ERROR pluginFlyvemdmAgent HTTP " + data );
-                        FlyveLog.e( ex.getMessage() );
+                        tvMsg.setText( "ERROR pluginFlyvemdmAgent HTTP " + data );
+                        FlyveLog.e( data );
+                    } else {
+                        try {
+                            JSONObject jsonAgent = new JSONObject(data);
+                            cache.setAgentId(jsonAgent.getString("id"));
+
+                            getDataPluginFlyvemdmAgent();
+                        } catch (Exception ex) {
+                            pb.setVisibility(View.GONE);
+                            tvMsg.setText("ERROR pluginFlyvemdmAgent HTTP " + data);
+                            FlyveLog.e(ex.getMessage());
+                        }
                     }
                 }
             });
 
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
-            tvData.setText( "ERROR pluginFlyvemdmAgent" );
+            tvMsg.setText( "ERROR pluginFlyvemdmAgent" );
             FlyveLog.e(ex.getMessage());
         }
     }
 
-    // STEP 6
+    /**
+     * STEP 6 get all the information of the agent and store this info on cache
+     */
     private void getDataPluginFlyvemdmAgent() {
 
         try {
@@ -365,7 +374,7 @@ public class RegisterActivity extends AppCompatActivity {
                     cache.setPort( mport );
                     cache.setTls( mssl );
                     cache.setTopic( mtopic );
-                    cache.setMqttuser( Build.SERIAL );
+                    cache.setMqttuser( Helpers.getDeviceSerial() );
                     cache.setMqttpasswd( mpassword );
                     cache.setCertificate( mcert );
                     cache.setName( mNameEmail );
@@ -373,7 +382,7 @@ public class RegisterActivity extends AppCompatActivity {
                     cache.setEntitiesId( String.valueOf(mEntitiesId) );
                     cache.setPluginFlyvemdmFleetsId( String.valueOf(mFleetId) );
 
-                    abrirMain();
+                    openMain();
 
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
@@ -383,12 +392,15 @@ public class RegisterActivity extends AppCompatActivity {
 
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
-            tvData.setText( "ERROR getDataPluginFlyvemdmAgent" );
+            tvMsg.setText( "ERROR getDataPluginFlyvemdmAgent" );
             FlyveLog.e(ex.getMessage());
         }
     }
 
-    private void abrirMain() {
+    /**
+     * Open the main activity
+     */
+    private void openMain() {
         Intent miIntent = new Intent(RegisterActivity.this, MainActivity.class);
         RegisterActivity.this.startActivity(miIntent);
         RegisterActivity.this.finish();

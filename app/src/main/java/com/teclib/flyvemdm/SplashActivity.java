@@ -1,9 +1,9 @@
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   com.teclib.data is part of flyve-mdm-android
+ * This file is part of flyve-mdm-android-agent
  *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -18,22 +18,26 @@
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      02/06/2017
- * @copyright Copyright © ${YEAR} Teclib. All rights reserved.
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
 
 package com.teclib.flyvemdm;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.teclib.data.DataStorage;
 
-public class SplashActivity extends AppCompatActivity {
+/**
+ * This is the first screen of the app here you can get information about flyve-mdm-agent
+ * if you are not register
+ */
+public class SplashActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +46,17 @@ public class SplashActivity extends AppCompatActivity {
 
         DataStorage cache = new DataStorage( SplashActivity.this );
 
+        // if broker is on cache open the main activity
         String broker = cache.getBroker();
         if(broker != null) {
-            abrirMain();
+            openMain();
         }
     }
 
-    private void abrirMain() {
+    /**
+     * Open the main activity
+     */
+    private void openMain() {
         Intent miIntent = new Intent(SplashActivity.this, MainActivity.class);
         SplashActivity.this.startActivity(miIntent);
         SplashActivity.this.finish();
