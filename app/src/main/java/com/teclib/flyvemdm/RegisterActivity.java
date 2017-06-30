@@ -60,16 +60,9 @@ public class RegisterActivity extends Activity {
     private ProgressBar pb;
     private Routes routes;
     private DataStorage cache;
-<<<<<<< HEAD
     private TextView tvMsg;
     private LinearLayout lyUserData;
     private boolean certifiedX509Available = false;
-=======
-
-    private TextView tvData;
-    private LinearLayout lyUserData;
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
-
     private EditText txtName;
     private EditText txtLastName;
     private EditText txtEmail;
@@ -110,11 +103,7 @@ public class RegisterActivity extends Activity {
 
         routes = new Routes( RegisterActivity.this );
 
-<<<<<<< HEAD
         tvMsg = (TextView) findViewById(R.id.tvMsg);
-=======
-        tvData = (TextView) findViewById(R.id.data);
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
         lyUserData = (LinearLayout) findViewById(R.id.user_data);
 
         txtName = (EditText) findViewById(R.id.txtName);
@@ -143,11 +132,7 @@ public class RegisterActivity extends Activity {
     private void initSession() {
         try {
             pb.setVisibility(View.VISIBLE);
-<<<<<<< HEAD
             tvMsg.setText("Init Session");
-=======
-            tvData.setText("Init Session");
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
             ConnectionHTTP.getWebData(
                     routes.initSession( cache.getUserToken() ),
                     "GET" ,
@@ -158,21 +143,11 @@ public class RegisterActivity extends Activity {
                     try {
                         JSONObject jsonSession = new JSONObject(data);
                         cache.setSessionToken( jsonSession.getString("session_token") );
-
-<<<<<<< HEAD
                         tvMsg.setText("get Full Session");
-=======
-                        tvData.setText("get Full Session");
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
-
                         getFullSession();
 
                     } catch (Exception ex) {
-<<<<<<< HEAD
                         tvMsg.setText("ERROR JSON: initSession");
-=======
-                        tvData.setText("ERROR JSON: initSession");
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
                         pb.setVisibility(View.GONE);
                         FlyveLog.e( ex.getMessage() );
                     }
@@ -181,11 +156,7 @@ public class RegisterActivity extends Activity {
         }
         catch (Exception ex) {
             pb.setVisibility(View.GONE);
-<<<<<<< HEAD
             tvMsg.setText("ERROR: initSession");
-=======
-            tvData.setText("ERROR: initSession");
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
             FlyveLog.e( ex.getMessage() );
         }
     }
@@ -207,11 +178,7 @@ public class RegisterActivity extends Activity {
                 @Override
                 public void callback(String data) {
 
-<<<<<<< HEAD
                     tvMsg.setText("changeActiveProfile");
-=======
-                    tvData.setText("changeActiveProfile");
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
 
                     try {
                         JSONObject jsonFullSession = new JSONObject(data);
@@ -227,11 +194,7 @@ public class RegisterActivity extends Activity {
 
                     } catch (Exception ex) {
                         pb.setVisibility(View.GONE);
-<<<<<<< HEAD
                         tvMsg.setText("ERROR JSON: getFullSession");
-=======
-                        tvData.setText("ERROR JSON: getFullSession");
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
                         FlyveLog.e( ex.getMessage() );
                     }
 
@@ -241,11 +204,7 @@ public class RegisterActivity extends Activity {
             });
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
-<<<<<<< HEAD
             tvMsg.setText("ERROR: getFullSession");
-=======
-            tvData.setText("ERROR: getFullSession");
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
             FlyveLog.e( ex.getMessage() );
         }
     }
@@ -269,22 +228,14 @@ public class RegisterActivity extends Activity {
                 @Override
                 public void callback(String data) {
                     pb.setVisibility(View.GONE);
-<<<<<<< HEAD
                     tvMsg.setText("changeActiveProfile Ok!");
-=======
-                    tvData.setText("changeActiveProfile Ok!");
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
                     lyUserData.setVisibility(View.VISIBLE);
                 }
             });
 
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
-<<<<<<< HEAD
             tvMsg.setText("ERROR: changeActiveProfile");
-=======
-            tvData.setText("ERROR: changeActiveProfile");
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
             FlyveLog.e( ex.getMessage() );
         }
 
@@ -294,12 +245,6 @@ public class RegisterActivity extends Activity {
      * STEP 4 create X509 certificate
      */
     private void createX509cert() {
-<<<<<<< HEAD
-=======
-        tvData.setText("Creating Certificate");
-        pb.setVisibility( View.VISIBLE );
-
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
         new Thread(new Runnable() {
             public void run() {
                 try {
@@ -308,13 +253,8 @@ public class RegisterActivity extends Activity {
                     createCertif.loadCsr();
                     certifiedX509Available = true;
                 } catch (Exception ex) {
-<<<<<<< HEAD
                     certifiedX509Available = false;
                     tvMsg.setText("ERROR: Creating Certificate X509");
-=======
-                    pb.setVisibility(View.GONE);
-                    tvData.setText("ERROR: Creating Certificate X509");
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
                     FlyveLog.e(ex.getMessage());
                 }
             }
@@ -326,16 +266,12 @@ public class RegisterActivity extends Activity {
      */
     private void pluginFlyvemdmAgent() {
 
-<<<<<<< HEAD
         if(!certifiedX509Available) {
             tvMsg.setText("The certified is not available");
+            return;
         }
 
         tvMsg.setText("Register Agent");
-=======
-        tvData.setText("Register Agent");
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
-
         try {
 
             HashMap<String, String> header = new HashMap();
@@ -356,11 +292,7 @@ public class RegisterActivity extends Activity {
             try {
                 payload.put("_email", txtEmail.getText());
                 payload.put("_invitation_token", cache.getInvitationToken());
-<<<<<<< HEAD
                 payload.put("_serial", Helpers.getDeviceSerial());
-=======
-                payload.put("_serial", Build.SERIAL);
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
                 payload.put("csr", requestCSR);
                 payload.put("firstname", txtName.getText());
                 payload.put("lastname", txtLastName.getText());
@@ -368,30 +300,17 @@ public class RegisterActivity extends Activity {
                 input.put("input", payload);
             } catch (JSONException ex) {
                 pb.setVisibility(View.GONE);
-<<<<<<< HEAD
                 tvMsg.setText( "ERROR pluginFlyvemdmAgent JSON" );
-=======
-                tvData.setText( "ERROR pluginFlyvemdmAgent JSON" );
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
                 FlyveLog.e( ex.getMessage() );
             }
 
             ConnectionHTTP.getWebData(routes.pluginFlyvemdmAgent(), input, header, new ConnectionHTTP.DataCallback() {
                 @Override
                 public void callback(String data) {
-<<<<<<< HEAD
                     tvMsg.setText("Register Agent");
-=======
-                    tvData.setText("Register Agent");
-
-                    try {
-                        JSONObject jsonAgent = new JSONObject(data);
-                        cache.setAgentId(jsonAgent.getString("id"));
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
 
                     if(data.contains("ERROR")){
                         pb.setVisibility(View.GONE);
-<<<<<<< HEAD
                         tvMsg.setText( "ERROR pluginFlyvemdmAgent HTTP " + data );
                         FlyveLog.e( data );
                     } else {
@@ -405,21 +324,13 @@ public class RegisterActivity extends Activity {
                             tvMsg.setText("ERROR pluginFlyvemdmAgent HTTP " + data);
                             FlyveLog.e(ex.getMessage());
                         }
-=======
-                        tvData.setText( "ERROR pluginFlyvemdmAgent HTTP " + data );
-                        FlyveLog.e( ex.getMessage() );
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
                     }
                 }
             });
 
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
-<<<<<<< HEAD
             tvMsg.setText( "ERROR pluginFlyvemdmAgent" );
-=======
-            tvData.setText( "ERROR pluginFlyvemdmAgent" );
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
             FlyveLog.e(ex.getMessage());
         }
     }
@@ -481,11 +392,7 @@ public class RegisterActivity extends Activity {
 
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
-<<<<<<< HEAD
             tvMsg.setText( "ERROR getDataPluginFlyvemdmAgent" );
-=======
-            tvData.setText( "ERROR getDataPluginFlyvemdmAgent" );
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
             FlyveLog.e(ex.getMessage());
         }
     }
