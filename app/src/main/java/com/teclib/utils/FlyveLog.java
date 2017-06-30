@@ -44,9 +44,8 @@ public class FlyveLog {
      * Send a DEBUG log message
      * @param object Object to write
      */
-
     public static void d(Object object) {
-        if(FlyveMDMApp.getIsDebuggable()) {
+        if(FlyveMDMApp.getIsDebuggable()){
             Logger.d(object);
         }
     }
@@ -80,7 +79,9 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void i(String message, Object... args) {
-        Logger.i(message, args);
+        if(FlyveMDMApp.getIsDebuggable()) {
+            Logger.i(message, args);
+        }
     }
 
     /**
@@ -90,7 +91,9 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void e(Throwable throwable, String message, Object... args) {
-        Logger.e(throwable,message,args);
+        if(FlyveMDMApp.getIsDebuggable()) {
+            Logger.e(throwable, message, args);
+        }
     }
 
     /**
@@ -99,7 +102,9 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void e(String message, Object... args) {
-        Logger.e(message, args);
+        if(FlyveMDMApp.getIsDebuggable()) {
+            Logger.e(message, args);
+        }
     }
 
     /**
@@ -108,7 +113,9 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void wtf(String message, Object... args) {
-        Logger.wtf(message,args);
+        if(FlyveMDMApp.getIsDebuggable()) {
+            Logger.wtf(message, args);
+        }
     }
 
     /**
@@ -126,7 +133,9 @@ public class FlyveLog {
      * @param xml String the xml to show
      */
     public static void xml(String xml) {
-        Logger.xml(xml);
+        if(FlyveMDMApp.getIsDebuggable()) {
+            Logger.xml(xml);
+        }
     }
 
 }

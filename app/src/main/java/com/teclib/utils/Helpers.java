@@ -38,6 +38,7 @@ import java.util.Calendar;
  */
 public class Helpers {
 
+<<<<<<< HEAD
 	/**
 	 * private construtor
 	 */
@@ -49,6 +50,11 @@ public class Helpers {
 	 * @param text String to convert
 	 * @return String with a plain text
 	 */
+=======
+	private Helpers() {
+	}
+	
+>>>>>>> 4959d8279a378008c355841710a6040797b112a2
 	public static String base64decode(String text) {
 		String rtext = "";
 		if(text == null) { return ""; }

@@ -47,11 +47,14 @@ public class Routes {
         url = cache.getUrl();
     }
 
+<<<<<<< HEAD
     /**
      * initSession url
      * @param userToken String user token
      * @return String with the url
      */
+=======
+>>>>>>> 4959d8279a378008c355841710a6040797b112a2
     public String initSession(String userToken) {
         return url + "/initSession?user_token=" + userToken;
     }
@@ -64,15 +67,19 @@ public class Routes {
         return url + "/getFullSession";
     }
 
+<<<<<<< HEAD
     /**
      * changeActiveProfile url
      * @param profileId String profile id to activate
      * @return String with the url
      */
+=======
+>>>>>>> 4959d8279a378008c355841710a6040797b112a2
     public String changeActiveProfile(String profileId) {
         return url + "/changeActiveProfile?profile_id=" + profileId;
     }
 
+<<<<<<< HEAD
     /**
      * PluginFlyvemdmAgent url
      * @return String with the url
@@ -88,5 +95,13 @@ public class Routes {
      */
     public String pluginFlyvemdmAgent(String agentId) {
         return url + "/PluginFlyvemdmAgent/" + agentId;
+=======
+    public String pluginFlyvemdmAgent() {
+        return url + "/pluginFlyvemdmAgent";
+    }
+
+    public String pluginFlyvemdmAgent(String agentId) {
+        return url + "/pluginFlyvemdmAgent/" + agentId;
+>>>>>>> 4959d8279a378008c355841710a6040797b112a2
     }
 }

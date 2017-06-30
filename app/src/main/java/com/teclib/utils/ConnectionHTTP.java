@@ -71,7 +71,7 @@ public class ConnectionHTTP {
 				try
 				{
 					URL dataURL = new URL(url);
-					FlyveLog.i("Method: " + method + " - URL = " + url);
+					FlyveLog.d("Method: " + method + " - URL = " + url);
 					HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 					conn.setConnectTimeout(timeout);
@@ -113,7 +113,8 @@ public class ConnectionHTTP {
 	 * @param header Map with al the header information
 	 * @param callback DataCallback
 	 */
-	public static void getWebData(final String url, final String method, final Map<String, String> header, final DataCallback callback) {
+	public static void getWebData(final String url, final String method, final Map<String, String> header, final DataCallback callback)
+	{
 		Thread t = new Thread(new Runnable()
 		{
 			public void run()

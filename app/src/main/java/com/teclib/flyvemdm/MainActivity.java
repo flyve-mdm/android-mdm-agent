@@ -45,6 +45,7 @@ import com.teclib.services.MQTTService;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+<<<<<<< HEAD
 /**
  * This is the main activity of the app
  */
@@ -52,6 +53,12 @@ public class MainActivity extends Activity {
 
     private IntentFilter mIntent;
     private Intent mServiceIntent;
+=======
+    private BroadcastReceiver statusReceiver;
+    private IntentFilter mIntent;
+
+    Intent mServiceIntent;
+>>>>>>> 4959d8279a378008c355841710a6040797b112a2
     private TextView tvMsg;
     private TextView tvStatus;
     private ArrayList<HashMap<String, String>> arr_data;
@@ -77,9 +84,23 @@ public class MainActivity extends Activity {
 
         arr_data = new ArrayList<HashMap<String, String>>();
 
+<<<<<<< HEAD
         ListView lst = (ListView) findViewById(R.id.lst);
         mAdapter = new LogAdapter(MainActivity.this, arr_data);
         lst.setAdapter(mAdapter);
+=======
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                Log.i ("isMyServiceRunning?", Boolean.toString( true ));
+                return true;
+            }
+        }
+        Log.i ("isMyServiceRunning?", Boolean.toString( false ));
+        return false;
+    }
+>>>>>>> 4959d8279a378008c355841710a6040797b112a2
 
 
     }
