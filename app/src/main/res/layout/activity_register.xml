@@ -18,8 +18,16 @@
             android:id="@+id/txtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/textRegular"
-            android:hint="Name"
+            android:hint="First Name"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            />
+
+        <EditText
+            android:id="@+id/txtLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Last Name"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             />
@@ -28,7 +36,6 @@
             android:id="@+id/txtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/textRegular"
             android:hint="Email"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -39,18 +46,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Register"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
             />
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/data"
+        android:id="@+id/tvMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        style="@style/textRegular"
         android:text="status"
         android:layout_marginBottom="30dp"
         />

@@ -5,22 +5,36 @@
     android:layout_height="match_parent"
     >
 
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/tvMsg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:text="Waiting for MQTT Message"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_margin="20dp"
+        />
+
+    <ListView
+        android:id="@+id/lst"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/tvMsg"
+        android:layout_above="@+id/tvStatus"
         >
+    </ListView>
 
-        <TextView
-            android:id="@+id/tvMsg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/textRegular"
-            android:text="Waiting for MQTT Message"
-            android:gravity="center"
-            android:layout_margin="20dp"
-            />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/body"
+        android:text="status"
+        android:gravity="center_horizontal"
+        />
 
 </RelativeLayout>

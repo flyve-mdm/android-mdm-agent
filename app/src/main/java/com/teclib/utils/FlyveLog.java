@@ -19,60 +19,112 @@
  * @author    Dorian LARGET
  * @copyright Copyright (c) 2016 Flyve MDM
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyvemdm/flyvemdm-android
+ * @link      https://github.com/flyvemdm/flyvemdm-android-agent
  * @link      http://www.glpi-project.org/
  * ------------------------------------------------------------------------------
  */
 package com.teclib.utils;
 
 import com.orhanobut.logger.Logger;
-import com.teclib.flyvemdm.MainApplication;
+import com.teclib.flyvemdm.FlyveMDMApp;
+
+/**
+ * This is a Log wrapper
+ */
 
 public class FlyveLog {
 
+    /**
+     * private constructor to prevent instances of this class
+     */
+    private FlyveLog() {
+    }
+
+    /**
+     * Send a DEBUG log message
+     * @param object Object to write
+     */
+
     public static void d(Object object) {
-        if(MainApplication.getInstance().getIsDebuggable()) {
+        if(FlyveMDMApp.getIsDebuggable()) {
             Logger.d(object);
         }
     }
 
+    /**
+     * Send a DEBUG log message
+     * @param message String message to log
+     * @param args Objects
+     */
     public static void d(String message, Object... args) {
-        if(MainApplication.getInstance().getIsDebuggable()){
+        if(FlyveMDMApp.getIsDebuggable()){
             // do something for a debug build
             Logger.d(message,args);
         }
     }
 
-
+    /**
+     * Send a VERBOSE log message
+     * @param message String message
+     * @param args Objects
+     */
     public static void v(String message, Object... args) {
-        if(MainApplication.getInstance().getIsDebuggable()){
-
+        if(FlyveMDMApp.getIsDebuggable()){
             Logger.v(message, args);
         }
     }
 
+    /**
+     * Send INFORMATION log message
+     * @param message String message
+     * @param args Objects
+     */
     public static void i(String message, Object... args) {
         Logger.i(message, args);
     }
 
+    /**
+     * Send ERROR log message
+     * @param throwable Throwable error
+     * @param message String message
+     * @param args Objects
+     */
     public static void e(Throwable throwable, String message, Object... args) {
         Logger.e(throwable,message,args);
     }
 
+    /**
+     * Send Error log message
+     * @param message String message
+     * @param args Objects
+     */
     public static void e(String message, Object... args) {
         Logger.e(message, args);
     }
 
+    /**
+     * send What a Terrible Failure log message
+     * @param message String message
+     * @param args Objects
+     */
     public static void wtf(String message, Object... args) {
         Logger.wtf(message,args);
     }
 
+    /**
+     * Send a JSON log message
+     * @param json String the json to show
+     */
     public static void json(String json) {
-        if(MainApplication.getInstance().getIsDebuggable()) {
+        if(FlyveMDMApp.getIsDebuggable()) {
             Logger.json(json);
         }
     }
 
+    /**
+     * Send a XML log message
+     * @param xml String the xml to show
+     */
     public static void xml(String xml) {
         Logger.xml(xml);
     }

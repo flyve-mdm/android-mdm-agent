@@ -63,3 +63,15 @@ node_modules
 /build
 /captures
 .externalNativeBuild
+
+/gen
+/bin
+/.settings/
+/doc/
+local.properties
+build
+.idea/
+.gradle/
+gradle/
+gradlew
+gradlew.bat

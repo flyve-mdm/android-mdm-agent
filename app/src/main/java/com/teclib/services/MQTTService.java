@@ -1,9 +1,9 @@
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   com.teclib.data is part of flyve-mdm-android
+ * this file is part of flyve-mdm-android-agent
  *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -18,9 +18,9 @@
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      02/06/2017
- * @copyright Copyright © ${YEAR} Teclib. All rights reserved.
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
@@ -28,13 +28,18 @@
 package com.teclib.services;
 
 import android.app.IntentService;
+import android.app.admin.DevicePolicyManager;
+import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.flyvemdm.inventory.InventoryTask;
 import com.teclib.data.DataStorage;
+import com.teclib.flyvemdm.BuildConfig;
+import com.teclib.utils.FlyveLog;
+import com.teclib.utils.GPSTracker;
+import com.teclib.utils.Helpers;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -45,21 +50,20 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 
 import javax.net.ssl.SSLContext;
 
+/**
+ * This is the service that get and send message from MQTT
+ */
+
 public class MQTTService extends IntentService implements MqttCallback {
 
-    private String TAG = "MQTT";
+    private static final String TAG = "MQTT";
     private MqttAndroidClient client;
     private DataStorage cache;
-    private String mBroker = "";
-    private String mPort = "";
-    private String mUser = "";
-    private String mPassword = "";
     private String mTopic = "";
 
     /**
@@ -70,32 +74,42 @@ public class MQTTService extends IntentService implements MqttCallback {
         super(name);
     }
 
-    public MQTTService() {
-        super("MQTTService");
-    }
-
-    @Nullable
+    /**
+     * The IntentService start point
+     * @param intent
+     */
     @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
+    protected void onHandleIntent(Intent intent) {
         Log.i("START", "SERVICE MQTT");
         connect();
     }
 
-    public void connect() {
+    /**
+     * Constructor
+     */
+    public MQTTService() {
+        super("MQTTService");
+    }
 
+    /**
+     * This function connect the agent with MQTT server
+     */
+    public void connect() {
         cache = new DataStorage(this.getApplicationContext());
 
-        mBroker = cache.getBroker();
-        mPort = "8883"; //cache.getVariablePermanente("port");
-        mUser = cache.getMqttuser();
-        mPassword = cache.getMqttpasswd();
+//      String mBroker = "mqdev.flyve.org";
+        String mBroker = cache.getBroker();
+        String mPort = "8883"; //cache.getPort();
+        String mUser = cache.getMqttuser();
+        String mPassword = cache.getMqttpasswd();
 
         mTopic = cache.getTopic();
+
+        broadcastReceivedLog("MQTT Broker:" + mBroker);
+        broadcastReceivedLog("MQTT Port:" + mPort);
+        broadcastReceivedLog("MQTT User:" + mUser);
+        broadcastReceivedLog("MQTT Password:" + mPassword);
+        broadcastReceivedLog("MQTT Topic:" + mTopic);
 
         String clientId = MqttClient.generateClientId();
             client = new MqttAndroidClient(this.getApplicationContext(), "ssl://" + mBroker + ":" + mPort,
@@ -122,41 +136,66 @@ public class MQTTService extends IntentService implements MqttCallback {
                 Log.e("Flyve","error while building ssl mqtt cnx", ex);
             }
 
+
             IMqttToken token = client.connect(options);
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
-                    Log.d(TAG, "onSuccess");
+                    // Everything ready waiting for message
+                    FlyveLog.d("Success we are online!");
+                    broadcastServiceStatus(true);
                     suscribe();
                 }
 
                 @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                public void onFailure(IMqttToken asyncActionToken, Throwable ex) {
                     // Something went wrong e.g. connection timeout or firewall problems
-                    Log.d(TAG, "onFailure");
-
-                    Intent in = new Intent();
-                    in.putExtra("message", exception.getMessage());
-                    in.setAction("NOW");
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+                    FlyveLog.e("onFailure:" + ex.getCause().toString());
+                    broadcastReceivedMessage(ex.getCause().toString());
+                    broadcastServiceStatus(false);
                 }
             });
         }
         catch (MqttException ex) {
-            ex.printStackTrace();
+            FlyveLog.e(ex.getMessage());
         }
     }
 
+    /**
+     * If connection fail trigger this function
+     * @param cause Throwable error
+     */
     @Override
     public void connectionLost(Throwable cause) {
+        // send to backend that agent lost connection
+        sendOnlineStatus(false);
+        broadcastServiceStatus(false);
         Log.d(TAG, "Connection fail " + cause.getMessage());
     }
 
+    /**
+     * If delivery of the message was complete
+     * @param token get message token
+     */
+    @Override
+    public void deliveryComplete(IMqttDeliveryToken token) {
+        FlyveLog.d( "deliveryComplete: " + token.toString());
+        broadcastReceivedLog("Get response from MQTT:" + token.getMessageId());
+    }
+
+    /**
+     * When a message from server arrive
+     * @param topic String topic where the message from
+     * @param message MqttMessage message content
+     * @throws Exception error
+     */
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         Log.d(TAG, "Topic " + topic);
         Log.d(TAG, "Message " + message.getPayload());
+
+        broadcastReceivedLog("GET TOPIC: " + topic + " - Message: " + message.getPayload().toString() );
 
         String messageBody;
         messageBody = new String(message.getPayload());
@@ -164,43 +203,143 @@ public class MQTTService extends IntentService implements MqttCallback {
         try {
             JSONObject jsonObj = new JSONObject(messageBody);
 
-            // KeepAlive
             if (jsonObj.has("query")) {
-                if ("Ping".equals(jsonObj.getString("query"))) {
-
-                    Intent in = new Intent();
-                    in.putExtra("message", "PING!");
-                    in.setAction("NOW");
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+                // PING request
+                if ("Ping".equalsIgnoreCase(jsonObj.getString("query"))) {
 
                     sendKeepAlive();
+                    return;
+                }
+                // INVENTORY Request
+                if("Inventory".equalsIgnoreCase(jsonObj.getString("query"))) {
+                    InventoryTask inventoryTask = new InventoryTask(getApplicationContext(), "agent_v1");
+                    inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
+                        @Override
+                        public void onTaskSuccess(String data) {
+                            FlyveLog.xml(data);
+
+                            // send inventory MQTT
+                            sendInventory(data);
+                        }
+
+                        @Override
+                        public void onTaskError(Throwable error) {
+                            FlyveLog.e(error.getCause().toString());
+
+                            //send broadcast
+                            broadcastReceivedMessage("Inventory Error: " + error.getCause().toString());
+                        }
+                    });
+                    return;
+                }
+
+                // GEOLOCATE request
+                if("Geolocate".equalsIgnoreCase(jsonObj.getString("query"))) {
+
+                    FlyveLog.d("Request Geolocate");
+
+                    sendGPS();
+
+                    //send broadcast
+                    broadcastReceivedMessage("Request Geolocate");
+                    return;
                 }
             }
+
+            // WIPE Request
+            if(jsonObj.has("wipe")) {
+                if("NOW".equals(jsonObj.getString("wipe"))) {
+                    FlyveLog.v("Wipe in progress");
+
+                    wipe();
+
+                    //send broadcast
+                    broadcastReceivedMessage("Wipe in progress");
+                    return;
+                }
+            }
+
+            // UNENROLL Request
+            if (jsonObj.has("unenroll")) {
+                FlyveLog.v("Unenroll in progress");
+
+                unenroll();
+
+                broadcastReceivedMessage("Unenroll in progress");
+                return;
+            }
+
         } catch (Exception ex) {
-            ex.printStackTrace();
+            FlyveLog.e(ex.getMessage());
+
+            broadcastReceivedMessage("Error: " + ex.getCause().toString());
         }
     }
 
-    @Override
-    public void deliveryComplete(IMqttDeliveryToken token) {
-        Log.d(TAG, "deliveryComplete ");
+    /**
+     * Send broadcast for received messages from MQTT
+     * @param message String to send
+     */
+    public void broadcastReceivedMessage(String message) {
+        //send broadcast
+        Intent in = new Intent();
+        in.setAction("flyve.mqtt.msg");
+        in.putExtra("message", message);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
     }
 
-    private void sendKeepAlive() {
-        String topic = mTopic + "/Status/Ping";
-        String payload = "!";
+    /**
+     * Send broadcast for log messages from MQTT
+     * @param message String to send
+     */
+    public void broadcastReceivedLog(String message) {
+        //send broadcast
+        Intent in = new Intent();
+        in.setAction("flyve.mqtt.log");
+        in.putExtra("message", message);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+    }
+
+    /**
+     * Send broadcast for status of the service
+     * @param status boolean status
+     */
+    private void broadcastServiceStatus(boolean status) {
+        //send broadcast
+        Intent in = new Intent();
+        in.setAction("flyve.mqtt.status");
+        in.putExtra("message", Boolean.toString( status ) );
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+    }
+
+    /**
+     * Unenroll the device
+     */
+    private void unenroll() {
+        // clear settings
+        DataStorage cache = new DataStorage(getApplicationContext());
+        cache.clearSettings();
+
+        // Send message with unenroll
+        String topic = mTopic + "/Status/Unenroll";
+        String payload = "{\"unenroll\": \"unenrolled\"}";
         byte[] encodedPayload = new byte[0];
         try {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             client.publish(topic, message);
-            Log.d(TAG, "payload sended");
-        } catch (UnsupportedEncodingException | MqttException e) {
-            e.printStackTrace();
-            Log.d(TAG, "ERROR: " + e.getMessage());
+
+            broadcastReceivedMessage("Unenroll");
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            broadcastReceivedMessage("Unenroll Error: " + ex.getCause().toString());
         }
     }
 
+    /**
+     * Suscribe to the topic
+     */
     private void suscribe() {
         String topic = mTopic + "/#";
         int qos = 1;
@@ -210,12 +349,10 @@ public class MQTTService extends IntentService implements MqttCallback {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // The message was published
-                    Log.d(TAG, "suscribed");
+                    FlyveLog.d("suscribed");
 
-                    Intent in = new Intent();
-                    in.putExtra("message", "suscribed");
-                    in.setAction("NOW");
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+                    broadcastReceivedLog("suscribed");
+                    broadcastReceivedMessage("suscribed");
                 }
 
                 @Override
@@ -223,17 +360,141 @@ public class MQTTService extends IntentService implements MqttCallback {
                                       Throwable exception) {
                     // The subscription could not be performed, maybe the user was not
                     // authorized to subscribe on the specified topic e.g. using wildcards
-                    Log.d(TAG, "ERROR: " + exception.getMessage());
-
-                    Intent in = new Intent();
-                    in.putExtra("message", "ERROR: " + exception.getMessage());
-                    in.setAction("NOW");
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
-
+                    FlyveLog.e("ERROR: " + exception.getMessage());
+                    broadcastReceivedMessage("ERROR: " + exception.getMessage());
                 }
             });
-        } catch (MqttException e) {
-            e.printStackTrace();
+        } catch (MqttException ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+    }
+
+    private void wipe() {
+        // Prepare to work with the DPM
+        DevicePolicyManager mDPM = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+
+        try {
+            mDPM.wipeData(0);
+        } catch(Exception e) {
+            FlyveLog.e(e.getMessage());
+        }
+    }
+
+    /**
+     * Send PING to the MQTT server
+     */
+    private void sendKeepAlive() {
+        String topic = mTopic + "/Status/Ping";
+        String payload = "!";
+        byte[] encodedPayload = new byte[0];
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            IMqttDeliveryToken token = client.publish(topic, message);
+            broadcastReceivedLog("Send to MQTT " + topic + "(ID:"+ token.getMessageId() +")" + " :" + message);
+            broadcastReceivedMessage("PING!");
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            broadcastReceivedMessage("PING Error: " + ex.getCause().toString());
+        }
+    }
+
+    /**
+     * Send INVENTORY to the MQTT server
+     */
+    private void sendInventory(String payload) {
+        String topic = mTopic + "/Status/Inventory";
+        byte[] encodedPayload = new byte[0];
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            IMqttDeliveryToken token = client.publish(topic, message);
+
+            // send broadcast
+            broadcastReceivedLog("Send to MQTT " + topic + "(ID:"+ token.getMessageId() +")" + " :" + message);
+            broadcastReceivedMessage("Inventory send!");
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // send broadcast
+            broadcastReceivedMessage("Error Inventory: " + ex.getCause().toString());
+        }
+    }
+
+    /**
+     * Send the Status version of the agent
+     */
+    private void sendStatusVersion() {
+        String topic = mTopic + "/FlyvemdmManifest/Status/Version";
+        String payload = "{\"version\":\"" + BuildConfig.VERSION_NAME + "\"}";
+        byte[] encodedPayload = new byte[0];
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            client.publish(topic, message);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+    }
+
+    /**
+     * Send the Status version of the agent
+     */
+    private void sendOnlineStatus(Boolean status) {
+        String topic = mTopic + "/Status/Online";
+        String payload = "{\"online\": \"" + Boolean.toString( status ) + "\"}";
+        byte[] encodedPayload = new byte[0];
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            IMqttDeliveryToken token = client.publish(topic, message);
+
+            broadcastReceivedLog("Send to MQTT " + topic + "(ID:"+ token.getMessageId() +")" + " :" + message);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+    }
+
+    /**
+     * get the GPS information
+     */
+    public void sendGPS() throws JSONException {
+        double test = 0.0;
+        GPSTracker mGPS = new GPSTracker(this);
+        mGPS.getLocation();
+
+        FlyveLog.i("sendGPS: " + "Lat = " + mGPS.getLatitude() + "Lon = " + mGPS.getLongitude());
+        JSONObject jsonGPS = new JSONObject();
+
+        if(Double.compare(test, mGPS.getLatitude())==0){
+            jsonGPS.put("latitude", "na");
+            jsonGPS.put("longitude", "na");
+        }
+        else{
+            jsonGPS.put("latitude", mGPS.getLatitude());
+            jsonGPS.put("longitude", mGPS.getLongitude());
+        }
+
+        jsonGPS.put("datetime", Helpers.GetUnixTime());
+
+        String topic = mTopic + "/Status/Geolocation";
+        String payload = jsonGPS.toString();
+        byte[] encodedPayload = new byte[0];
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            IMqttDeliveryToken token = client.publish(topic, message);
+
+            // send broadcast
+            broadcastReceivedLog("Send to MQTT " + topic + "(ID:"+ token.getMessageId() +")" + " :" + message);
+            broadcastReceivedMessage("Geolocation send!");
+
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // send broadcast
+            broadcastReceivedMessage("Geolocation error:" + ex.getCause().toString());
         }
     }
 

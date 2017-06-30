@@ -1,9 +1,9 @@
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   This file is part of flyve-mdm-android
+ * This file is part of flyve-mdm-android-agent
  *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -20,7 +20,7 @@
  * @date      02/06/2017
  * @copyright Copyright © ${YEAR} Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
@@ -33,13 +33,13 @@ import android.content.Intent;
 import android.util.Log;
 
 /**
- * Created by rafaelhernandez on 09/05/2016.
+ * Broadcast for BOOT
  */
 public class MQTTRestarterBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i(MQTTRestarterBroadcastReceiver.class.getSimpleName(), "Service Stops! Oooooooooooooppppssssss!!!!");
+        Log.i(MQTTRestarterBroadcastReceiver.class.getSimpleName(), "Service Stops!");
         context.startService(new Intent(context, MQTTService.class));
     }
 
