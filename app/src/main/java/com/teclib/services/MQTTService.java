@@ -36,14 +36,10 @@ import android.util.Log;
 
 import com.flyvemdm.inventory.InventoryTask;
 import com.teclib.data.DataStorage;
-<<<<<<< HEAD
 import com.teclib.flyvemdm.BuildConfig;
 import com.teclib.utils.FlyveLog;
 import com.teclib.utils.GPSTracker;
 import com.teclib.utils.Helpers;
-=======
-import com.teclib.utils.FlyveLog;
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -58,6 +54,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.net.ssl.SSLContext;
+
 
 /**
  * This is the service that get and send message from MQTT
@@ -101,14 +98,9 @@ public class MQTTService extends IntentService implements MqttCallback {
     public void connect() {
         cache = new DataStorage(this.getApplicationContext());
 
-<<<<<<< HEAD
 //      String mBroker = "mqdev.flyve.org";
         String mBroker = cache.getBroker();
         String mPort = "8883"; //cache.getPort();
-=======
-        String mBroker = cache.getBroker();
-        String mPort = cache.getPort();
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
         String mUser = cache.getMqttuser();
         String mPassword = cache.getMqttpasswd();
 
@@ -280,11 +272,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-<<<<<<< HEAD
-
             broadcastReceivedMessage("Error: " + ex.getCause().toString());
-=======
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
         }
     }
 
@@ -340,18 +328,10 @@ public class MQTTService extends IntentService implements MqttCallback {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             client.publish(topic, message);
-<<<<<<< HEAD
-
             broadcastReceivedMessage("Unenroll");
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-
             broadcastReceivedMessage("Unenroll Error: " + ex.getCause().toString());
-=======
-            Log.d(TAG, "payload sended");
-        } catch (UnsupportedEncodingException | MqttException ex) {
-            FlyveLog.e(ex.getMessage());
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
         }
     }
 
@@ -384,7 +364,6 @@ public class MQTTService extends IntentService implements MqttCallback {
             });
         } catch (MqttException ex) {
             FlyveLog.e(ex.getMessage());
-<<<<<<< HEAD
         }
     }
 
@@ -514,8 +493,6 @@ public class MQTTService extends IntentService implements MqttCallback {
 
             // send broadcast
             broadcastReceivedMessage("Geolocation error:" + ex.getCause().toString());
-=======
->>>>>>> 4959d8279a378008c355841710a6040797b112a2
         }
     }
 
