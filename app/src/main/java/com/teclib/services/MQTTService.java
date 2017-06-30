@@ -293,6 +293,7 @@ public class MQTTService extends IntentService implements MqttCallback {
      * @param message String to send
      */
     public void broadcastReceivedLog(String message) {
+        FlyveLog.i(message);
         //send broadcast
         Intent in = new Intent();
         in.setAction("flyve.mqtt.log");
