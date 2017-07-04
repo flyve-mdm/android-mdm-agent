@@ -2,7 +2,6 @@
     <string name="app_name" translatable="false">Flyve MDM</string>
     <string name="text_intro" translatable="false">Flyve MDM is a mobile device management software that enables you to secure and manage all the mobile devices of your business or family via web-based console</string>
     <string name="text_link" translatable="false">http://flyve-mdm.com</string>
-
     <string name="ERROR_ITEM_NOT_FOUND" translatable="false">http://flyve-mdm.com</string>
     <string name="ERROR_BAD_ARRAY" translatable="false">http://flyve-mdm.com</string>
     <string name="ERROR_METHOD_NOT_ALLOWED" translatable="false">http://flyve-mdm.com</string>
@@ -24,4 +23,5 @@
     <string name="ERROR_GLPI_PARTIAL_UPDATE" translatable="false">http://flyve-mdm.com</string>
     <string name="ERROR_GLPI_DELETE" translatable="false">http://flyve-mdm.com</string>
     <string name="ERROR_GLPI_PARTIAL_DELETE" translatable="false">http://flyve-mdm.com</string>
+
 </resources>

@@ -35,7 +35,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.teclib.data.DataStorage;
 import com.teclib.data.testData;
 import com.teclib.security.FlyveAdminReceiver;
