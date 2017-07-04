@@ -34,6 +34,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.teclib.data.DataStorage;
 import com.teclib.data.testData;
@@ -66,13 +67,15 @@ public class SplashActivity extends Activity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            testData data = new testData(SplashActivity.this);
-            data.load();
-
-            Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
-            intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "EXPLANATION");
-            startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
+                testData data = new testData(SplashActivity.this);
+                if(data.load()) {
+                    Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+                    intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
+                    intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "EXPLANATION");
+                    startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
+                } else {
+                    Toast.makeText(SplashActivity.this, "This function is not available, you need enroll with a deeplink", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

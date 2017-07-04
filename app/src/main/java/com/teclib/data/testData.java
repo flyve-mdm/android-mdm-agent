@@ -2,6 +2,10 @@ package com.teclib.data;
 
 import android.content.Context;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
@@ -31,44 +35,42 @@ import android.content.Context;
 public class testData {
 
     private DataStorage cache;
+    private Context mContext;
 
     public testData(Context context) {
+        mContext = context;
         cache = new DataStorage(context);
     }
 
-    public void load() {
-        String broker = "mqdev.flyve.org";
-        String agentId = "9";
-        String computerId = "13";
-        String entitiesId = "2";
-        String invitationToken = "9cf949fff1aeb857badde36c1a08b3a0bbd00db31b886c97f618fec6911ab5a4";
-        String url = "https://dev.flyve.org/glpi/apirest.php";
-        String mqttPassword = "h0WWfquQkGlXcC5wT7kbc9c8NvWOsJaJ";
-        String userMqtt = "ABCDEFGHIJ1234";
-        String name = "dyceca@hi2.in";
-        String fleetsId = "3";
-        String port = "8883";
-        String profileId = "9";
-        String sessionToken = "329g0b8aabatp185nvpu68mrm4";
-        String tls = "1";
-        String topic = "/2/agent/ABCDEFGHIJ1234";
-        String userToken = "tvspbbvfe3mmwj18shu619q01u9nqw5omo5j0phn";
+    public boolean load() {
+        Properties prop = new Properties();
 
-        cache.setProfileId(profileId);
-        cache.setSessionToken(sessionToken);
-        cache.setTls(tls);
-        cache.setName(name);
-        cache.setMqttpasswd(mqttPassword);
-        cache.setAgentId(agentId);
-        cache.setBroker(broker);
-        cache.setComputersId(computerId);
-        cache.setEntitiesId(entitiesId);
-        cache.setInvitationToken(invitationToken);
-        cache.setMqttuser(userMqtt);
-        cache.setPluginFlyvemdmFleetsId(fleetsId);
-        cache.setPort(port);
-        cache.setUserToken(userToken);
-        cache.setUrl(url);
-        cache.setTopic(topic);
+        try {
+            //load a properties file
+            InputStream inputStream = mContext.getAssets().open("app.properties");
+            prop.load(inputStream);
+
+            cache.setProfileId(prop.getProperty("profileId"));
+            cache.setSessionToken(prop.getProperty("sessionToken"));
+            cache.setTls(prop.getProperty("tls"));
+            cache.setName(prop.getProperty("name"));
+            cache.setMqttpasswd(prop.getProperty("mqttPassword"));
+            cache.setAgentId(prop.getProperty("agentId"));
+            cache.setBroker(prop.getProperty("broker"));
+            cache.setComputersId(prop.getProperty("computerId"));
+            cache.setEntitiesId(prop.getProperty("entitiesId"));
+            cache.setInvitationToken(prop.getProperty("invitationToken"));
+            cache.setMqttuser(prop.getProperty("userMqtt"));
+            cache.setPluginFlyvemdmFleetsId(prop.getProperty("fleetsId"));
+            cache.setPort(prop.getProperty("port"));
+            cache.setUserToken(prop.getProperty("userToken"));
+            cache.setUrl(prop.getProperty("url"));
+            cache.setTopic(prop.getProperty("topic"));
+
+            return true;
+        } catch (IOException ex) {
+            return false;
+        }
+
     }
 }
