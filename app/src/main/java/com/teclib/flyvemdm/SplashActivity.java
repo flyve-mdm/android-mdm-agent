@@ -30,8 +30,11 @@ package com.teclib.flyvemdm;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.teclib.data.DataStorage;
+import com.teclib.data.testData;
 
 /**
  * This is the first screen of the app here you can get information about flyve-mdm-agent
@@ -51,6 +54,17 @@ public class SplashActivity extends Activity {
         if(broker != null) {
             openMain();
         }
+
+        Button btnRegister = (Button) findViewById(R.id.btnRegister);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                testData data = new testData(SplashActivity.this);
+                data.load();
+
+                openMain();
+            }
+        });
     }
 
     /**

@@ -37,4 +37,11 @@
         android:layout_below="@+id/tv_intro"
         />
 
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test Register"
+        />
+
 </RelativeLayout>
