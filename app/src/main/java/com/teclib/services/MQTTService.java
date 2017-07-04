@@ -28,6 +28,8 @@
 package com.teclib.services;
 
 import android.app.IntentService;
+import android.app.admin.DevicePolicyManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -39,7 +41,6 @@ import com.teclib.security.FlyveDeviceAdminUtils;
 import com.teclib.utils.FlyveLog;
 import com.teclib.utils.GPSTracker;
 import com.teclib.utils.Helpers;
-
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
