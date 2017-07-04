@@ -28,6 +28,8 @@
 package com.teclib.flyvemdm;
 
 import android.app.Activity;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -35,6 +37,7 @@ import android.widget.Button;
 
 import com.teclib.data.DataStorage;
 import com.teclib.data.testData;
+import com.teclib.security.FlyveAdminReceiver;
 
 /**
  * This is the first screen of the app here you can get information about flyve-mdm-agent
@@ -42,12 +45,16 @@ import com.teclib.data.testData;
  */
 public class SplashActivity extends Activity {
 
+    private static final int REQUEST_CODE_ENABLE_ADMIN = 1;
+    ComponentName mDeviceAdmin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
         DataStorage cache = new DataStorage( SplashActivity.this );
+        mDeviceAdmin = new ComponentName(this, FlyveAdminReceiver.class);
 
         // if broker is on cache open the main activity
         String broker = cache.getBroker();
@@ -59,13 +66,23 @@ public class SplashActivity extends Activity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testData data = new testData(SplashActivity.this);
-                data.load();
+            testData data = new testData(SplashActivity.this);
+            data.load();
 
-                openMain();
+            Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
+            intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "EXPLANATION");
+            startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_ENABLE_ADMIN && resultCode == Activity.RESULT_OK) {
+            openMain();
+        }
+    }//onActivityResult
 
     /**
      * Open the main activity
