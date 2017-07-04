@@ -28,8 +28,6 @@
 package com.teclib.services;
 
 import android.app.IntentService;
-import android.app.admin.DevicePolicyManager;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -37,6 +35,7 @@ import android.util.Log;
 import com.flyvemdm.inventory.InventoryTask;
 import com.teclib.data.DataStorage;
 import com.teclib.flyvemdm.BuildConfig;
+import com.teclib.security.FlyveDeviceAdminUtils;
 import com.teclib.utils.FlyveLog;
 import com.teclib.utils.GPSTracker;
 import com.teclib.utils.Helpers;
@@ -249,7 +248,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
             // WIPE Request
             if(jsonObj.has("wipe")) {
-                if("NOW".equals(jsonObj.getString("wipe"))) {
+                if("NOW".equalsIgnoreCase(jsonObj.getString("wipe"))) {
                     FlyveLog.v("Wipe in progress");
 
                     wipe();
@@ -359,7 +358,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                                       Throwable exception) {
                     // The subscription could not be performed, maybe the user was not
                     // authorized to subscribe on the specified topic e.g. using wildcards
-                    FlyveLog.e("ERROR: " + exception.getMessage());
+                    FlyveLog.e("ERROR: " + exception.getCause().getMessage());
                     broadcastReceivedMessage("ERROR: " + exception.getMessage());
                 }
             });
@@ -368,12 +367,13 @@ public class MQTTService extends IntentService implements MqttCallback {
         }
     }
 
+    /**
+     * Erase all device data include SDCard
+     */
     private void wipe() {
-        // Prepare to work with the DPM
-        DevicePolicyManager mDPM = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-
         try {
-            mDPM.wipeData(0);
+            FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
+            mdm.wipe();
         } catch(Exception e) {
             FlyveLog.e(e.getMessage());
         }
