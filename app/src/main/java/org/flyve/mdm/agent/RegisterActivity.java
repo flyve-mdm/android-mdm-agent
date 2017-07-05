@@ -40,7 +40,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.data.DataStorage;
-
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
