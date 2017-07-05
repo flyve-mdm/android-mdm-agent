@@ -4,7 +4,7 @@ android {
     compileSdkVersion 15
     buildToolsVersion '22.0.1'
     defaultConfig {
-        applicationId "org.flyve.agent"
+        applicationId "org.flyve.mdm.agent"
         minSdkVersion 15
         targetSdkVersion 15
         versionCode 1

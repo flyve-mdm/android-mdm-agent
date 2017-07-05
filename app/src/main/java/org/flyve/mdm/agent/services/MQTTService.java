@@ -25,22 +25,15 @@
  * ------------------------------------------------------------------------------
  */
 
-package com.teclib.services;
+package org.flyve.mdm.agent.services;
 
 import android.app.IntentService;
-import android.app.admin.DevicePolicyManager;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.flyvemdm.inventory.InventoryTask;
-import com.teclib.data.DataStorage;
-import com.teclib.flyvemdm.BuildConfig;
-import com.teclib.security.FlyveDeviceAdminUtils;
-import com.teclib.utils.FlyveLog;
-import com.teclib.utils.GPSTracker;
-import com.teclib.utils.Helpers;
+
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -50,6 +43,12 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.flyve.mdm.agent.BuildConfig;
+import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.GPSTracker;
+import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -98,7 +97,6 @@ public class MQTTService extends IntentService implements MqttCallback {
     public void connect() {
         cache = new DataStorage(this.getApplicationContext());
 
-//      String mBroker = "mqdev.flyve.org";
         String mBroker = cache.getBroker();
         String mPort = "8883"; //cache.getPort();
         String mUser = cache.getMqttuser();
@@ -194,12 +192,11 @@ public class MQTTService extends IntentService implements MqttCallback {
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         Log.d(TAG, "Topic " + topic);
-        Log.d(TAG, "Message " + message.getPayload());
+        Log.d(TAG, "Message " + new String(message.getPayload()));
 
         broadcastReceivedLog("GET TOPIC: " + topic + " - Message: " + message.getPayload().toString() );
 
-        String messageBody;
-        messageBody = new String(message.getPayload());
+        String messageBody = new String(message.getPayload());
 
         try {
             JSONObject jsonObj = new JSONObject(messageBody);
@@ -316,7 +313,7 @@ public class MQTTService extends IntentService implements MqttCallback {
     /**
      * Unenroll the device
      */
-    private void unenroll() {
+    private boolean unenroll() {
         // clear settings
         DataStorage cache = new DataStorage(getApplicationContext());
         cache.clearSettings();
@@ -330,9 +327,13 @@ public class MQTTService extends IntentService implements MqttCallback {
             MqttMessage message = new MqttMessage(encodedPayload);
             client.publish(topic, message);
             broadcastReceivedMessage("Unenroll");
+
+            return true;
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
             broadcastReceivedMessage("Unenroll Error: " + ex.getCause().toString());
+
+            return false;
         }
     }
 
@@ -375,7 +376,7 @@ public class MQTTService extends IntentService implements MqttCallback {
         try {
             FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
             mdm.wipe();
-        } catch(Exception e) {
+        } catch (Exception e) {
             FlyveLog.e(e.getMessage());
         }
     }

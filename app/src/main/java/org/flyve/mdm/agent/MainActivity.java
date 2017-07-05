@@ -25,11 +25,13 @@
  * ------------------------------------------------------------------------------
  */
 
-package com.teclib.flyvemdm;
+package org.flyve.mdm.agent;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -39,8 +41,9 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.teclib.adapter.LogAdapter;
-import com.teclib.services.MQTTService;
+import org.flyve.mdm.agent.adapter.LogAdapter;
+import org.flyve.mdm.agent.security.FlyveAdminReceiver;
+import org.flyve.mdm.agent.services.MQTTService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,10 +61,21 @@ public class MainActivity extends Activity {
     private ArrayList<HashMap<String, String>> arr_data;
     LogAdapter mAdapter;
 
+    private static final int REQUEST_CODE_ENABLE_ADMIN = 1;
+    ComponentName mDeviceAdmin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Device Admin
+        mDeviceAdmin = new ComponentName(this, FlyveAdminReceiver.class);
+
+        Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
+        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "EXPLANATION");
+        startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
 
         // ------------------
         // MQTT SERVICE

@@ -1,4 +1,4 @@
-package com.teclib.adapter;
+package org.flyve.mdm.agent.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import com.teclib.flyvemdm.R;
+
+import org.flyve.mdm.agent.R;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

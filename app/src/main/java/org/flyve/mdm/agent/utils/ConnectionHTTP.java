@@ -25,7 +25,7 @@
  * ------------------------------------------------------------------------------
  */
 
-package com.teclib.utils;
+package org.flyve.mdm.agent.utils;
 
 import android.os.Handler;
 import android.os.Looper;

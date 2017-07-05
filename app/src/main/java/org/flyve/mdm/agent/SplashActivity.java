@@ -25,19 +25,17 @@
  * ------------------------------------------------------------------------------
  */
 
-package com.teclib.flyvemdm;
+package org.flyve.mdm.agent;
 
 import android.app.Activity;
-import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-import com.teclib.data.DataStorage;
-import com.teclib.data.testData;
-import com.teclib.security.FlyveAdminReceiver;
+
+import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.security.FlyveAdminReceiver;
 
 /**
  * This is the first screen of the app here you can get information about flyve-mdm-agent
@@ -66,15 +64,16 @@ public class SplashActivity extends Activity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testData data = new testData(SplashActivity.this);
-                if(data.load()) {
-                    Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-                    intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
-                    intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "EXPLANATION");
-                    startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
-                } else {
-                    Toast.makeText(SplashActivity.this, "This function is not available, you need enroll with a deeplink", Toast.LENGTH_SHORT).show();
-                }
+                openMain();
+//                testData data = new testData(SplashActivity.this);
+//                if(data.load()) {
+//                    Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+//                    intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
+//                    intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "EXPLANATION");
+//                    startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
+//                } else {
+//                    Toast.makeText(SplashActivity.this, "This function is not available, you need enroll with a deeplink", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
     }

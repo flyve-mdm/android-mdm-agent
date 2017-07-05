@@ -25,7 +25,7 @@
  * ------------------------------------------------------------------------------
  */
 
-package com.teclib.flyvemdm;
+package org.flyve.mdm.agent;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -39,12 +39,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.teclib.data.DataStorage;
-import com.teclib.security.AndroidCryptoProvider;
-import com.teclib.utils.ConnectionHTTP;
-import com.teclib.utils.FlyveLog;
-import com.teclib.utils.Helpers;
-import com.teclib.utils.Routes;
+import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.security.AndroidCryptoProvider;
+import org.flyve.mdm.agent.utils.ConnectionHTTP;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.mdm.agent.utils.Routes;
 
 import org.json.JSONArray;
 import org.json.JSONException;
