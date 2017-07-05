@@ -25,7 +25,7 @@
  * ------------------------------------------------------------------------------
  */
 
-package com.teclib.flyvemdm;
+package org.flyve.mdm.agent;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -39,12 +39,15 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.teclib.data.DataStorage;
-import com.teclib.security.AndroidCryptoProvider;
-import com.teclib.utils.ConnectionHTTP;
-import com.teclib.utils.FlyveLog;
-import com.teclib.utils.Helpers;
-import com.teclib.utils.Routes;
+import org.flyve.mdm.agent.data.DataStorage;
+
+import com.teclib.flyvemdm.BuildConfig;
+
+import org.flyve.mdm.agent.security.AndroidCryptoProvider;
+import org.flyve.mdm.agent.utils.ConnectionHTTP;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.mdm.agent.utils.Routes;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,9 +74,9 @@ public class RegisterActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(com.teclib.flyvemdm.R.layout.activity_register);
 
-        pb = (ProgressBar) findViewById(R.id.progressBar);
+        pb = (ProgressBar) findViewById(com.teclib.flyvemdm.R.id.progressBar);
 
         Intent intent = getIntent();
         Uri data = intent.getData();
@@ -104,15 +107,15 @@ public class RegisterActivity extends Activity {
 
         routes = new Routes( RegisterActivity.this );
 
-        tvMsg = (TextView) findViewById(R.id.tvMsg);
-        lyUserData = (LinearLayout) findViewById(R.id.user_data);
+        tvMsg = (TextView) findViewById(com.teclib.flyvemdm.R.id.tvMsg);
+        lyUserData = (LinearLayout) findViewById(com.teclib.flyvemdm.R.id.user_data);
 
-        txtName = (EditText) findViewById(R.id.txtName);
-        txtLastName = (EditText) findViewById(R.id.txtLastName);
-        txtEmail = (EditText) findViewById(R.id.txtEmail);
+        txtName = (EditText) findViewById(com.teclib.flyvemdm.R.id.txtName);
+        txtLastName = (EditText) findViewById(com.teclib.flyvemdm.R.id.txtLastName);
+        txtEmail = (EditText) findViewById(com.teclib.flyvemdm.R.id.txtEmail);
         txtEmail.setImeActionLabel("Done", KeyEvent.KEYCODE_ENTER);
 
-        Button btnRegister = (Button) findViewById(R.id.btn_register);
+        Button btnRegister = (Button) findViewById(com.teclib.flyvemdm.R.id.btn_register);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

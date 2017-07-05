@@ -1,4 +1,4 @@
-package com.teclib.adapter;
+package org.flyve.mdm.agent.adapter;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.teclib.data;
+package org.flyve.mdm.agent.data;
 
 import android.content.Context;
 

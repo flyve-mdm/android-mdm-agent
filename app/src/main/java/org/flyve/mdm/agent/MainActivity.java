@@ -25,7 +25,7 @@
  * ------------------------------------------------------------------------------
  */
 
-package com.teclib.flyvemdm;
+package org.flyve.mdm.agent;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -39,8 +39,8 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.teclib.adapter.LogAdapter;
-import com.teclib.services.MQTTService;
+import org.flyve.mdm.agent.adapter.LogAdapter;
+import org.flyve.mdm.agent.services.MQTTService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(com.teclib.flyvemdm.R.layout.activity_main);
 
         // ------------------
         // MQTT SERVICE
@@ -73,13 +73,13 @@ public class MainActivity extends Activity {
             startService(mServiceIntent);
         }
 
-        tvMsg = (TextView) findViewById(R.id.tvMsg);
-        tvStatus = (TextView) findViewById(R.id.tvStatus);
+        tvMsg = (TextView) findViewById(com.teclib.flyvemdm.R.id.tvMsg);
+        tvStatus = (TextView) findViewById(com.teclib.flyvemdm.R.id.tvStatus);
 
         arr_data = new ArrayList<HashMap<String, String>>();
 
 
-        ListView lst = (ListView) findViewById(R.id.lst);
+        ListView lst = (ListView) findViewById(com.teclib.flyvemdm.R.id.lst);
         mAdapter = new LogAdapter(MainActivity.this, arr_data);
         lst.setAdapter(mAdapter);
 

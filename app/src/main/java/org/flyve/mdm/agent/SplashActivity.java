@@ -25,7 +25,7 @@
  * ------------------------------------------------------------------------------
  */
 
-package com.teclib.flyvemdm;
+package org.flyve.mdm.agent;
 
 import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
@@ -35,9 +35,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import com.teclib.data.DataStorage;
-import com.teclib.data.testData;
-import com.teclib.security.FlyveAdminReceiver;
+import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.testData;
+import org.flyve.mdm.agent.security.FlyveAdminReceiver;
 
 /**
  * This is the first screen of the app here you can get information about flyve-mdm-agent
@@ -51,7 +51,7 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(com.teclib.flyvemdm.R.layout.activity_splash);
 
         DataStorage cache = new DataStorage( SplashActivity.this );
         mDeviceAdmin = new ComponentName(this, FlyveAdminReceiver.class);
@@ -62,7 +62,7 @@ public class SplashActivity extends Activity {
             openMain();
         }
 
-        Button btnRegister = (Button) findViewById(R.id.btnRegister);
+        Button btnRegister = (Button) findViewById(com.teclib.flyvemdm.R.id.btnRegister);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
