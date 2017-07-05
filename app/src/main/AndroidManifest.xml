@@ -62,6 +62,26 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name="com.teclib.security.FlyveAdminReceiver"
+            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" >
+            </meta-data>
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.ACTION_DEVICE_ADMIN_DISABLE_REQUESTED" />
+                <action android:name="android.app.action.ACTION_DEVICE_ADMIN_DISABLED" />
+                <action android:name="android.app.action.ACTION_PASSWORD_CHANGED" />
+                <action android:name="android.app.action.ACTION_PASSWORD_EXPIRING" />
+                <action android:name="android.app.action.ACTION_PASSWORD_FAILED" />
+                <action android:name="android.app.action.ACTION_PASSWORD_SUCCEEDED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

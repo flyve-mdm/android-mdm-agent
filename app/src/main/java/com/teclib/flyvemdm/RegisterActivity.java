@@ -46,6 +46,7 @@ import com.teclib.utils.FlyveLog;
 import com.teclib.utils.Helpers;
 import com.teclib.utils.Routes;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -311,8 +312,17 @@ public class RegisterActivity extends Activity {
 
                     if(data.contains("ERROR")){
                         pb.setVisibility(View.GONE);
-                        tvMsg.setText( "ERROR pluginFlyvemdmAgent HTTP " + data );
-                        FlyveLog.e( data );
+
+                        try {
+                            JSONArray jsonArr = new JSONArray(data);
+                            String msgError = jsonArr.get(1).toString();
+
+                            tvMsg.setText("ERROR pluginFlyvemdmAgent HTTP " + msgError);
+                            FlyveLog.e(data);
+                        } catch (Exception ex) {
+                            FlyveLog.e(ex.getCause().getMessage());
+                            tvMsg.setText("Unknow error");
+                        }
                     } else {
                         try {
                             JSONObject jsonAgent = new JSONObject(data);
