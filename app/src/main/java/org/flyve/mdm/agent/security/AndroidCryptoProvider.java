@@ -24,11 +24,11 @@
  * ------------------------------------------------------------------------------
  */
 
-package com.teclib.security;
+package org.flyve.mdm.agent.security;
 
 import android.content.Context;
 import android.util.Base64;
-import com.teclib.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.FlyveLog;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 import org.spongycastle.openssl.jcajce.JcaPEMWriter;
 import org.spongycastle.operator.ContentSigner;
@@ -36,6 +36,7 @@ import org.spongycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.spongycastle.pkcs.PKCS10CertificationRequest;
 import org.spongycastle.pkcs.PKCS10CertificationRequestBuilder;
 import org.spongycastle.pkcs.jcajce.JcaPKCS10CertificationRequestBuilder;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,13 +1,12 @@
-package com.teclib.security;
+package org.flyve.mdm.agent.security;
 
-import android.app.admin.DeviceAdminReceiver;
+import android.app.admin.DevicePolicyManager;
 import android.content.Context;
-import android.content.Intent;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   This file is part of flyve-mdm-android-agent
+ *   This file is part of flyve-mdm-android
  *
  * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
@@ -22,17 +21,28 @@ import android.content.Intent;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
- * @author    Rafael Hernandez
+ * @author    rafaelhernandez
  * @date      4/7/17
  * @copyright Copyright © 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class FlyveAdminReceiver extends DeviceAdminReceiver {
-    @Override
-    public void onEnabled(Context context, Intent intent) {
-        super.onEnabled(context, intent);
+public class FlyveDeviceAdminUtils {
+
+    private DevicePolicyManager mDPM;
+
+    public FlyveDeviceAdminUtils(Context context) {
+        mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
     }
+
+    /**
+     * Erase all data of the device
+     */
+    public void wipe() {
+        mDPM.wipeData(0);
+    }
+
+
 }

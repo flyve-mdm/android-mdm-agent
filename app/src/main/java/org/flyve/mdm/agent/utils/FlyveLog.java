@@ -23,10 +23,10 @@
  * @link      http://www.glpi-project.org/
  * ------------------------------------------------------------------------------
  */
-package com.teclib.utils;
+package org.flyve.mdm.agent.utils;
 
 import com.orhanobut.logger.Logger;
-import com.teclib.flyvemdm.FlyveMDMApp;
+import org.flyve.mdm.agent.FlyveMDMApp;
 
 /**
  * This is a Log wrapper

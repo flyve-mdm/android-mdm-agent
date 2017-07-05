@@ -25,11 +25,11 @@
  * ------------------------------------------------------------------------------
  */
 
-package com.teclib.utils;
+package org.flyve.mdm.agent.utils;
 
 import android.content.Context;
 
-import com.teclib.data.DataStorage;
+import org.flyve.mdm.agent.data.DataStorage;
 
 /**
  * Content all the routes of the app

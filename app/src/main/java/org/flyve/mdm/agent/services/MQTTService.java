@@ -25,22 +25,15 @@
  * ------------------------------------------------------------------------------
  */
 
-package com.teclib.services;
+package org.flyve.mdm.agent.services;
 
 import android.app.IntentService;
-import android.app.admin.DevicePolicyManager;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.flyvemdm.inventory.InventoryTask;
-import com.teclib.data.DataStorage;
-import com.teclib.flyvemdm.BuildConfig;
-import com.teclib.security.FlyveDeviceAdminUtils;
-import com.teclib.utils.FlyveLog;
-import com.teclib.utils.GPSTracker;
-import com.teclib.utils.Helpers;
+
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -50,6 +43,12 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.flyve.mdm.agent.BuildConfig;
+import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.GPSTracker;
+import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONException;
 import org.json.JSONObject;
 

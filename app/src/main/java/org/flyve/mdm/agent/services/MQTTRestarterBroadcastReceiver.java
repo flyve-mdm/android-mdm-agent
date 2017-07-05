@@ -25,58 +25,22 @@
  * ------------------------------------------------------------------------------
  */
 
-package com.teclib.flyvemdm;
+package org.flyve.mdm.agent.services;
 
-
-import android.app.Application;
-import android.content.pm.ApplicationInfo;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
-import com.teclib.data.DataStorage;
-
 /**
- * All the application configuration
+ * Broadcast for BOOT
  */
-public class FlyveMDMApp extends Application {
-
-    private DataStorage cache;
-    private static FlyveMDMApp instance;
-    private static Boolean isDebuggable;
+public class MQTTRestarterBroadcastReceiver extends BroadcastReceiver {
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        cache = new DataStorage(this);
-
-        instance = this;
-        Logger.addLogAdapter(new AndroidLogAdapter());
-        isDebuggable =  ( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
-        Log.d("test", "is debug: " + isDebuggable );
+    public void onReceive(Context context, Intent intent) {
+        Log.i(MQTTRestarterBroadcastReceiver.class.getSimpleName(), "Service Stops!");
+        context.startService(new Intent(context, MQTTService.class));
     }
 
-    /**
-     * Get the cache class
-     * @return DataStorage
-     */
-    public DataStorage getCache() {
-        return cache;
-    }
-
-    /**
-     * Get application instance
-     * @return FlyveMDMApp object
-     */
-    public static FlyveMDMApp getInstance(){
-        return instance;
-    }
-
-    /**
-     * Get if the app is debuggable or not
-     * @return Boolean
-     */
-    public static Boolean getIsDebuggable() {
-        return isDebuggable;
-    }
 }

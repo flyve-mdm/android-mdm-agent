@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.teclib.flyvemdm">
+    package="org.flyve.mdm.agent">
 
     <!-- For writing logfiles -->
     <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
@@ -45,12 +45,12 @@
         </service>
 
         <service
-            android:name="com.teclib.services.MQTTService"
+            android:name=".services.MQTTService"
             android:enabled="true" >
         </service>
 
         <receiver
-            android:name="com.teclib.services.MQTTRestarterBroadcastReceiver"
+            android:name=".services.MQTTRestarterBroadcastReceiver"
             android:enabled="true"
             android:exported="true"
             android:label="RestartServiceWhenStopped">
@@ -63,7 +63,7 @@
         </receiver>
 
         <receiver
-            android:name="com.teclib.security.FlyveAdminReceiver"
+            android:name=".security.FlyveAdminReceiver"
             android:permission="android.permission.BIND_DEVICE_ADMIN" >
 
             <meta-data

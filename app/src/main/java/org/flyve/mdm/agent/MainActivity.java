@@ -25,7 +25,7 @@
  * ------------------------------------------------------------------------------
  */
 
-package com.teclib.flyvemdm;
+package org.flyve.mdm.agent;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -39,8 +39,8 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.teclib.adapter.LogAdapter;
-import com.teclib.services.MQTTService;
+import org.flyve.mdm.agent.adapter.LogAdapter;
+import org.flyve.mdm.agent.services.MQTTService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
