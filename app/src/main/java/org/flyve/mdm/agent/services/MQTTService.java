@@ -192,12 +192,11 @@ public class MQTTService extends IntentService implements MqttCallback {
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         Log.d(TAG, "Topic " + topic);
-        Log.d(TAG, "Message " + message.getPayload());
+        Log.d(TAG, "Message " + new String(message.getPayload()));
 
         broadcastReceivedLog("GET TOPIC: " + topic + " - Message: " + message.getPayload().toString() );
 
-        String messageBody;
-        messageBody = new String(message.getPayload());
+        String messageBody = new String(message.getPayload());
 
         try {
             JSONObject jsonObj = new JSONObject(messageBody);
@@ -374,9 +373,6 @@ public class MQTTService extends IntentService implements MqttCallback {
      * Erase all device data include SDCard
      */
     private void wipe() {
-        // send unenroll first
-        unenroll();
-
         try {
             FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
             mdm.wipe();
