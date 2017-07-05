@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.teclib.flyvemdm.R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
         // ------------------
         // MQTT SERVICE
@@ -73,13 +73,13 @@ public class MainActivity extends Activity {
             startService(mServiceIntent);
         }
 
-        tvMsg = (TextView) findViewById(com.teclib.flyvemdm.R.id.tvMsg);
-        tvStatus = (TextView) findViewById(com.teclib.flyvemdm.R.id.tvStatus);
+        tvMsg = (TextView) findViewById(R.id.tvMsg);
+        tvStatus = (TextView) findViewById(R.id.tvStatus);
 
         arr_data = new ArrayList<HashMap<String, String>>();
 
 
-        ListView lst = (ListView) findViewById(com.teclib.flyvemdm.R.id.lst);
+        ListView lst = (ListView) findViewById(R.id.lst);
         mAdapter = new LogAdapter(MainActivity.this, arr_data);
         lst.setAdapter(mAdapter);
 

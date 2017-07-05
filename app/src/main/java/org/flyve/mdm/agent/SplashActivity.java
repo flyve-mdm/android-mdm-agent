@@ -51,7 +51,7 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.teclib.flyvemdm.R.layout.activity_splash);
+        setContentView(R.layout.activity_splash);
 
         DataStorage cache = new DataStorage( SplashActivity.this );
         mDeviceAdmin = new ComponentName(this, FlyveAdminReceiver.class);
@@ -62,7 +62,7 @@ public class SplashActivity extends Activity {
             openMain();
         }
 
-        Button btnRegister = (Button) findViewById(com.teclib.flyvemdm.R.id.btnRegister);
+        Button btnRegister = (Button) findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
