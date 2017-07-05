@@ -33,11 +33,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.flyvemdm.inventory.InventoryTask;
-import org.flyve.mdm.agent.data.DataStorage;
-import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
-import org.flyve.mdm.agent.utils.FlyveLog;
-import org.flyve.mdm.agent.utils.GPSTracker;
-import org.flyve.mdm.agent.utils.Helpers;
+
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -101,7 +97,6 @@ public class MQTTService extends IntentService implements MqttCallback {
     public void connect() {
         cache = new DataStorage(this.getApplicationContext());
 
-//      String mBroker = "mqdev.flyve.org";
         String mBroker = cache.getBroker();
         String mPort = "8883"; //cache.getPort();
         String mUser = cache.getMqttuser();
@@ -319,7 +314,7 @@ public class MQTTService extends IntentService implements MqttCallback {
     /**
      * Unenroll the device
      */
-    private void unenroll() {
+    private boolean unenroll() {
         // clear settings
         DataStorage cache = new DataStorage(getApplicationContext());
         cache.clearSettings();
@@ -333,9 +328,13 @@ public class MQTTService extends IntentService implements MqttCallback {
             MqttMessage message = new MqttMessage(encodedPayload);
             client.publish(topic, message);
             broadcastReceivedMessage("Unenroll");
+
+            return true;
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
             broadcastReceivedMessage("Unenroll Error: " + ex.getCause().toString());
+
+            return false;
         }
     }
 
@@ -375,10 +374,13 @@ public class MQTTService extends IntentService implements MqttCallback {
      * Erase all device data include SDCard
      */
     private void wipe() {
+        // send unenroll first
+        unenroll();
+
         try {
             FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
             mdm.wipe();
-        } catch(Exception e) {
+        } catch (Exception e) {
             FlyveLog.e(e.getMessage());
         }
     }
