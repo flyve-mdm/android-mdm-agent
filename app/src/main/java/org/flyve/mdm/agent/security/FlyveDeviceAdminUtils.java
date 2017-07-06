@@ -1,6 +1,7 @@
 package org.flyve.mdm.agent.security;
 
 import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Context;
 
 /*
@@ -32,9 +33,11 @@ import android.content.Context;
 public class FlyveDeviceAdminUtils {
 
     private DevicePolicyManager mDPM;
+    ComponentName mDeviceAdmin;
 
     public FlyveDeviceAdminUtils(Context context) {
         mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+        mDeviceAdmin = new ComponentName(context, FlyveAdminReceiver.class);
     }
 
     /**
@@ -44,5 +47,12 @@ public class FlyveDeviceAdminUtils {
         mDPM.wipeData(0);
     }
 
+    /**
+     * Disable the possibility to use the camera
+     * @param disable boolean true | false
+     */
+    public void disableCamera(boolean disable) {
+        mDPM.setCameraDisabled(mDeviceAdmin, disable);
+    }
 
 }
