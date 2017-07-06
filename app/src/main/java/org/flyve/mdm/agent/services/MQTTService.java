@@ -29,6 +29,7 @@ package org.flyve.mdm.agent.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -46,10 +47,9 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
+import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
-import org.flyve.mdm.agent.utils.GPSTracker;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.net.ssl.SSLContext;
@@ -460,43 +460,47 @@ public class MQTTService extends IntentService implements MqttCallback {
     /**
      * get the GPS information
      */
-    public void sendGPS() throws JSONException {
-        double test = 0.0;
-        GPSTracker mGPS = new GPSTracker(this);
-        mGPS.getLocation();
+    public void sendGPS() {
+        FastLocationProvider.requestSingleUpdate(getApplicationContext(), new FastLocationProvider.LocationCallback() {
+            @Override
+            public void onNewLocationAvailable(Location location) {
+                String latitude = String.valueOf(location.getLatitude());
+                String longitude = String.valueOf(location.getLongitude());
 
-        FlyveLog.i("sendGPS: " + "Lat = " + mGPS.getLatitude() + "Lon = " + mGPS.getLongitude());
-        JSONObject jsonGPS = new JSONObject();
+                FlyveLog.i("sendGPS: " + "Lat = " + latitude + "Lon = " + longitude);
 
-        if(Double.compare(test, mGPS.getLatitude())==0){
-            jsonGPS.put("latitude", "na");
-            jsonGPS.put("longitude", "na");
-        }
-        else{
-            jsonGPS.put("latitude", mGPS.getLatitude());
-            jsonGPS.put("longitude", mGPS.getLongitude());
-        }
+                JSONObject jsonGPS = new JSONObject();
 
-        jsonGPS.put("datetime", Helpers.GetUnixTime());
+                try {
+                    jsonGPS.put("latitude", latitude);
+                    jsonGPS.put("longitude", longitude);
+                    jsonGPS.put("datetime", Helpers.GetUnixTime());
+                } catch (Exception ex) {
+                    FlyveLog.e(ex.getMessage());
+                    // send broadcast
+                    broadcastReceivedMessage("Geolocation error:" + ex.getCause().toString());
+                    return;
+                }
 
-        String topic = mTopic + "/Status/Geolocation";
-        String payload = jsonGPS.toString();
-        byte[] encodedPayload = new byte[0];
-        try {
-            encodedPayload = payload.getBytes("UTF-8");
-            MqttMessage message = new MqttMessage(encodedPayload);
-            IMqttDeliveryToken token = client.publish(topic, message);
+                String topic = mTopic + "/Status/Geolocation";
+                String payload = jsonGPS.toString();
+                byte[] encodedPayload = new byte[0];
+                try {
+                    encodedPayload = payload.getBytes("UTF-8");
+                    MqttMessage message = new MqttMessage(encodedPayload);
+                    IMqttDeliveryToken token = client.publish(topic, message);
 
-            // send broadcast
-            broadcastReceivedLog("Send to MQTT " + topic + "(ID:"+ token.getMessageId() +")" + " :" + message);
-            broadcastReceivedMessage("Geolocation send!");
+                    // send broadcast
+                    broadcastReceivedLog("Send to MQTT " + topic + "(ID:"+ token.getMessageId() +")" + " :" + message);
+                    broadcastReceivedMessage("Geolocation send!");
+                } catch (Exception ex) {
+                    FlyveLog.e(ex.getMessage());
 
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-
-            // send broadcast
-            broadcastReceivedMessage("Geolocation error:" + ex.getCause().toString());
-        }
+                    // send broadcast
+                    broadcastReceivedMessage("Geolocation error:" + ex.getCause().toString());
+                }
+            }
+        });
     }
 
 }

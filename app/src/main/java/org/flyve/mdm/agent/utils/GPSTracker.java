@@ -43,8 +43,6 @@ public final class GPSTracker implements LocationListener {
     // flag for network status
     boolean isNetworkEnabled = false;
 
-
-
     // flag for GPS status
     private boolean canGetLocation = false;
 
@@ -186,8 +184,6 @@ public final class GPSTracker implements LocationListener {
      * Function to show settings alert dialog On pressing Settings button will
      * lauch Settings Options
      * */
-
-
     @Override
     public void onLocationChanged(Location location) {
     }
