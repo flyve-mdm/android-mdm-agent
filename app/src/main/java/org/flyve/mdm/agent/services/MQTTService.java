@@ -191,10 +191,10 @@ public class MQTTService extends IntentService implements MqttCallback {
      */
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        Log.d(TAG, "Topic " + topic);
-        Log.d(TAG, "Message " + new String(message.getPayload()));
+        FlyveLog.i("Topic " + topic);
+        FlyveLog.i("Message " + new String(message.getPayload()));
 
-        broadcastReceivedLog("GET TOPIC: " + topic + " - Message: " + message.getPayload().toString() );
+        broadcastReceivedLog("GET TOPIC: " + topic + " - Message: " + new String(message.getPayload()) );
 
         String messageBody = new String(message.getPayload());
 
@@ -383,6 +383,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
     /**
      * Send PING to the MQTT server
+     * payload: !
      */
     private void sendKeepAlive() {
         String topic = mTopic + "/Status/Ping";
@@ -403,6 +404,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
     /**
      * Send INVENTORY to the MQTT server
+     * payload: XML FusionInventory
      */
     private void sendInventory(String payload) {
         String topic = mTopic + "/Status/Inventory";
@@ -425,6 +427,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
     /**
      * Send the Status version of the agent
+     * payload: {"version": "0.99.0"}
      */
     private void sendStatusVersion() {
         String topic = mTopic + "/FlyvemdmManifest/Status/Version";
@@ -441,6 +444,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
     /**
      * Send the Status version of the agent
+     * payload: {"online": "true"}
      */
     private void sendOnlineStatus(Boolean status) {
         String topic = mTopic + "/Status/Online";
@@ -458,10 +462,11 @@ public class MQTTService extends IntentService implements MqttCallback {
     }
 
     /**
-     * get the GPS information
+     * Send the GPS information to MQTT
+     * payload: {"latitude":"10.2485486","longitude":"-67.5904498","datetime":1499364642}
      */
     public void sendGPS() {
-        FastLocationProvider.requestSingleUpdate(getApplicationContext(), new FastLocationProvider.LocationCallback() {
+        boolean isNetworkEnabled = FastLocationProvider.requestSingleUpdate(getApplicationContext(), new FastLocationProvider.LocationCallback() {
             @Override
             public void onNewLocationAvailable(Location location) {
                 String latitude = String.valueOf(location.getLatitude());
@@ -501,6 +506,11 @@ public class MQTTService extends IntentService implements MqttCallback {
                 }
             }
         });
+
+        // is network fail
+        if(!isNetworkEnabled) {
+            broadcastReceivedMessage("Geolocation error: network fail");
+        }
     }
 
 }

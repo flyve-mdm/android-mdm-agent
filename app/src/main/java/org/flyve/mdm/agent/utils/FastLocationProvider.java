@@ -44,7 +44,7 @@ public class FastLocationProvider {
 
     // with network is the fast way to get location if you need accuracy
     // add gps location this call usually takes <15ms
-    public static void requestSingleUpdate(final Context context, final LocationCallback callback) {
+    public static boolean requestSingleUpdate(final Context context, final LocationCallback callback) {
         final LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         if (isNetworkEnabled) {
@@ -60,6 +60,9 @@ public class FastLocationProvider {
                 @Override public void onProviderEnabled(String provider) { }
                 @Override public void onProviderDisabled(String provider) { }
             }, null);
+            return true;
         }
+
+        return false;
     }
 }
