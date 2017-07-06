@@ -28,8 +28,10 @@
 package org.flyve.mdm.agent.services;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.net.wifi.WifiManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -416,6 +418,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                 JSONObject jsonCamera = jsonCameras.getJSONObject(0);
                 boolean disable = jsonCamera.getBoolean("disableCamera");
                 mdm.disableCamera(disable);
+                broadcastReceivedLog("Disabled Camera: " + disable);
              }
         } catch (Exception ex) {
             broadcastReceivedLog("ERROR: disable camera" + ex.getCause().getMessage());
@@ -429,6 +432,32 @@ public class MQTTService extends IntentService implements MqttCallback {
      */
     private void disableConnetivity(JSONObject json) {
 
+        try {
+            JSONArray jsonConnectivities = json.getJSONArray("connectivity");
+            for (int i = 0; i <= jsonConnectivities.length(); i++) {
+                JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(0);
+
+                if (jsonConnectivity.has("disableWifi")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableCamera");
+
+                    WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                    wifiManager.setWifiEnabled(disable);
+
+                    broadcastReceivedLog("disableWifi: " + disable);
+                }
+
+                if (jsonConnectivity.has("disableBluetooth")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableBluetooth");
+                }
+
+                if (jsonConnectivity.has("disableGPS")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableBluetooth");
+                }
+
+            }
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getCause().getMessage());
+        }
     }
 
     /**
