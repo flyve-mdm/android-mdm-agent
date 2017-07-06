@@ -269,22 +269,22 @@ public class MQTTService extends IntentService implements MqttCallback {
 
             // FLEET Camera
             if(jsonObj.has("camera")) {
-
+                disableCamera(jsonObj);
             }
 
             // FLEET connectivity
             if(jsonObj.has("connectivity")) {
-
+                disableConnetivity(jsonObj);
             }
 
             // FLEET encryption
             if(jsonObj.has("encryption")) {
-
+                storageEncryption(jsonObj);
             }
 
             // FLEET policies
             if(jsonObj.has("policies")) {
-
+                policiesDevice(jsonObj);
             }
 
         } catch (Exception ex) {
@@ -361,6 +361,39 @@ public class MQTTService extends IntentService implements MqttCallback {
             FlyveLog.e(ex.getMessage());
         }
     }
+
+    /**
+     * FLEET Camera
+     * Example {"camera":[{"disableCamera":"true"}]}
+     */
+    private void disableCamera(JSONObject json) {
+
+    }
+
+    /**
+     * FLEET connectivity
+     * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
+     */
+    private void disableConnetivity(JSONObject json) {
+
+    }
+
+    /**
+     * FLEET encryption
+     * Example {"encryption":[{"storageEncryption":"false"}]}
+     */
+    private void storageEncryption(JSONObject json) {
+
+    }
+
+    /**
+     * FLEET policies
+     * Example {"policies":[{"passwordMinLength":"6"},{"passwordQuality":"PASSWORD_QUALITY_UNSPECIFIED"},{"passwordEnabled":"PASSWORD_PIN"},{"passwordMinLetters":"0"},{"passwordMinLowerCase":"0"},{"passwordMinNonLetter":"0"},{"passwordMinNumeric":"0"},{"passwordMinSymbols":"0"},{"passwordMinUpperCase":"0"},{"MaximumFailedPasswordsForWipe":"0"},{"MaximumTimeToLock":"60000"}]}
+     */
+    private void policiesDevice(JSONObject json) {
+
+    }
+
 
     /**
      * Unenroll the device
