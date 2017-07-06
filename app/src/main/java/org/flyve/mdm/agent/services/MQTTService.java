@@ -267,6 +267,26 @@ public class MQTTService extends IntentService implements MqttCallback {
                 return;
             }
 
+            // FLEET Camera
+            if(jsonObj.has("camera")) {
+
+            }
+
+            // FLEET connectivity
+            if(jsonObj.has("connectivity")) {
+
+            }
+
+            // FLEET encryption
+            if(jsonObj.has("encryption")) {
+
+            }
+
+            // FLEET policies
+            if(jsonObj.has("policies")) {
+
+            }
+
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
             broadcastReceivedMessage("Error: " + ex.getCause().toString());
@@ -311,33 +331,6 @@ public class MQTTService extends IntentService implements MqttCallback {
     }
 
     /**
-     * Unenroll the device
-     */
-    private boolean unenroll() {
-        // clear settings
-        DataStorage cache = new DataStorage(getApplicationContext());
-        cache.clearSettings();
-
-        // Send message with unenroll
-        String topic = mTopic + "/Status/Unenroll";
-        String payload = "{\"unenroll\": \"unenrolled\"}";
-        byte[] encodedPayload = new byte[0];
-        try {
-            encodedPayload = payload.getBytes("UTF-8");
-            MqttMessage message = new MqttMessage(encodedPayload);
-            client.publish(topic, message);
-            broadcastReceivedMessage("Unenroll");
-
-            return true;
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-            broadcastReceivedMessage("Unenroll Error: " + ex.getCause().toString());
-
-            return false;
-        }
-    }
-
-    /**
      * Suscribe to the topic
      */
     private void suscribe() {
@@ -366,6 +359,33 @@ public class MQTTService extends IntentService implements MqttCallback {
             });
         } catch (MqttException ex) {
             FlyveLog.e(ex.getMessage());
+        }
+    }
+
+    /**
+     * Unenroll the device
+     */
+    private boolean unenroll() {
+        // clear settings
+        DataStorage cache = new DataStorage(getApplicationContext());
+        cache.clearSettings();
+
+        // Send message with unenroll
+        String topic = mTopic + "/Status/Unenroll";
+        String payload = "{\"unenroll\": \"unenrolled\"}";
+        byte[] encodedPayload = new byte[0];
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            client.publish(topic, message);
+            broadcastReceivedMessage("Unenroll");
+
+            return true;
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+            broadcastReceivedMessage("Unenroll Error: " + ex.getCause().toString());
+
+            return false;
         }
     }
 
