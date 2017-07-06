@@ -50,6 +50,7 @@ import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.net.ssl.SSLContext;
@@ -144,7 +145,9 @@ public class MQTTService extends IntentService implements MqttCallback {
                     // Everything ready waiting for message
                     FlyveLog.d("Success we are online!");
                     broadcastServiceStatus(true);
-                    suscribe();
+
+                    // principal channel
+                    suscribe("/#");
                 }
 
                 @Override
@@ -267,6 +270,22 @@ public class MQTTService extends IntentService implements MqttCallback {
                 return;
             }
 
+            // Suscribe a new channel in MQTT
+            if(jsonObj.has("subscribe")) {
+                JSONArray jsonTopics = jsonObj.getJSONArray("subscribe");
+                for(int i=0; i<jsonTopics.length();i++) {
+                    JSONObject jsonTopic = jsonTopics.getJSONObject(0);
+
+                    // Add new channel
+                    suscribe(jsonTopic.getString("topic")+"/#");
+                }
+            }
+
+            // FLEET Camera
+            if(jsonObj.has("camera")) {
+                disableCamera(jsonObj);
+            }
+
             // FLEET Camera
             if(jsonObj.has("camera")) {
                 disableCamera(jsonObj);
@@ -332,9 +351,10 @@ public class MQTTService extends IntentService implements MqttCallback {
 
     /**
      * Suscribe to the topic
+     * when come from MQTT has a format like this {"subscribe":[{"topic":"/2/fleet/22"}]}
      */
-    private void suscribe() {
-        String topic = mTopic + "/#";
+    private void suscribe(String channel) {
+        String topic = mTopic + channel;
         int qos = 1;
         try {
             IMqttToken subToken = client.subscribe(topic, qos);
@@ -367,7 +387,18 @@ public class MQTTService extends IntentService implements MqttCallback {
      * Example {"camera":[{"disableCamera":"true"}]}
      */
     private void disableCamera(JSONObject json) {
+        try {
+            FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
 
+            JSONArray jsonCameras = json.getJSONArray("camera");
+            for(int i=0; i<= jsonCameras.length(); i++) {
+                JSONObject jsonCamera = jsonCameras.getJSONObject(0);
+                boolean disable = jsonCamera.getBoolean("disableCamera");
+                mdm.disableCamera(disable);
+             }
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getCause().getMessage());
+        }
     }
 
     /**
