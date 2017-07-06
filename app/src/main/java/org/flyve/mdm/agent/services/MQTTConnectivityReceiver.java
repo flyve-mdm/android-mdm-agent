@@ -33,6 +33,7 @@ import android.content.Intent;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 
+import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 
@@ -44,27 +45,25 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         final String action = intent.getAction();
         FlyveLog.d("network receiver");
 
+        DataStorage cache = new DataStorage(context);
         //WIFI
         if ("android.net.wifi.STATE_CHANGE".equals(action)) {
             NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
             if (info != null && info.isAvailable()) {
-
-                if (mSharedPreferenceConnectivity.getWifi(context)) {
-
-                    WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-                    wifiManager.setWifiEnabled(false);
-                }
+                boolean enable = cache.getConnectivityWifiEnable();
+                WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+                wifiManager.setWifiEnabled(enable);
             }
         }
 
         // Bluetooth
         if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-            if (bluetoothAdapter.isEnabled()) {
-                if (mSharedPreferenceConnectivity.getBluetooth(context)) {
-                    bluetoothAdapter.disable();
-                }
-            }
+//            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//            if (bluetoothAdapter.isEnabled()) {
+//                if (mSharedPreferenceConnectivity.getBluetooth(context)) {
+//                    bluetoothAdapter.disable();
+//                }
+//            }
         }
     }
 }
