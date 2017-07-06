@@ -53,6 +53,8 @@ import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import javax.net.ssl.SSLContext;
 
 
@@ -66,6 +68,7 @@ public class MQTTService extends IntentService implements MqttCallback {
     private MqttAndroidClient client;
     private DataStorage cache;
     private String mTopic = "";
+    private ArrayList<String> arrTopics = new ArrayList<String>();
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -147,7 +150,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                     broadcastServiceStatus(true);
 
                     // principal channel
-                    suscribe("/#");
+                    suscribe(mTopic + "/#");
                 }
 
                 @Override
@@ -286,11 +289,6 @@ public class MQTTService extends IntentService implements MqttCallback {
                 disableCamera(jsonObj);
             }
 
-            // FLEET Camera
-            if(jsonObj.has("camera")) {
-                disableCamera(jsonObj);
-            }
-
             // FLEET connectivity
             if(jsonObj.has("connectivity")) {
                 disableConnetivity(jsonObj);
@@ -350,22 +348,45 @@ public class MQTTService extends IntentService implements MqttCallback {
     }
 
     /**
-     * Suscribe to the topic
-     * when come from MQTT has a format like this {"subscribe":[{"topic":"/2/fleet/22"}]}
+     * Prevent duplicated topic and create String array with all the topic available
+     * @param channel String new channel to add
+     * @return String array
+     */
+    private String[] addTopic(String channel) {
+        for(int i=0; i<arrTopics.size();i++) {
+            if(channel.equalsIgnoreCase(arrTopics.get(i))) {
+                return null;
+            }
+        }
+        arrTopics.add(channel);
+        return arrTopics.toArray(new String[arrTopics.size()]);
+    }
+
+    /**
+     * Subscribe to the topic
+     * When come from MQTT has a format like this {"subscribe":[{"topic":"/2/fleet/22"}]}
      */
     private void suscribe(String channel) {
-        String topic = mTopic + channel;
-        int qos = 1;
+        String[] topics = addTopic(channel);
+
+        // if topic null
+        if(topics==null) {
+            return;
+        }
+
+        int Qos[] = new int[arrTopics.size()];
+        for (int k = 0; k < Qos.length; k++) {
+            Qos[k] = 0;
+        }
+
         try {
-            IMqttToken subToken = client.subscribe(topic, qos);
+            IMqttToken subToken = client.subscribe(topics, Qos);
             subToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // The message was published
                     FlyveLog.d("suscribed");
-
                     broadcastReceivedLog("suscribed");
-                    broadcastReceivedMessage("suscribed");
                 }
 
                 @Override
@@ -374,7 +395,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                     // The subscription could not be performed, maybe the user was not
                     // authorized to subscribe on the specified topic e.g. using wildcards
                     FlyveLog.e("ERROR: " + exception.getCause().getMessage());
-                    broadcastReceivedMessage("ERROR: " + exception.getMessage());
+                    broadcastReceivedLog("ERROR: " + exception.getMessage());
                 }
             });
         } catch (MqttException ex) {
@@ -397,6 +418,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                 mdm.disableCamera(disable);
              }
         } catch (Exception ex) {
+            broadcastReceivedLog("ERROR: disable camera" + ex.getCause().getMessage());
             FlyveLog.e(ex.getCause().getMessage());
         }
     }
