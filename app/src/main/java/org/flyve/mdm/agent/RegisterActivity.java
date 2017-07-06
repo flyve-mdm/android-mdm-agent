@@ -45,7 +45,6 @@ import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.Routes;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -294,7 +293,8 @@ public class RegisterActivity extends Activity {
                 payload.put("_email", txtEmail.getText());
                 payload.put("_invitation_token", cache.getInvitationToken());
                 payload.put("_serial", Helpers.getDeviceSerial());
-                payload.put("csr", requestCSR);
+                //payload.put("csr", requestCSR);
+                payload.put("csr", "");
                 payload.put("firstname", txtName.getText());
                 payload.put("lastname", txtLastName.getText());
                 payload.put("version", BuildConfig.VERSION_NAME);
