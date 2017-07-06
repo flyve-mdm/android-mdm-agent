@@ -191,6 +191,14 @@ public class DataStorage {
 		setData("plugin_flyvemdm_fleets_id", pluginFlyvemdmFleetsId);
 	}
 
+	public void setConnectivityWifiEnable(boolean enable) {
+		setData("ConnectivityWifiEnable", String.valueOf(enable));
+	}
+
+	public void getConnectivityWifiEnable() {
+		getData("ConnectivityWifiEnable");
+	}
+
 	private String getData(String key){
 		String data = "";
 		SharedPreferences sp = getSettings();

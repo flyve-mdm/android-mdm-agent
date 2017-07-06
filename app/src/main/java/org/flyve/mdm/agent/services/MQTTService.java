@@ -28,10 +28,8 @@
 package org.flyve.mdm.agent.services;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.net.wifi.WifiManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -439,9 +437,6 @@ public class MQTTService extends IntentService implements MqttCallback {
 
                 if (jsonConnectivity.has("disableWifi")) {
                     boolean disable = jsonConnectivity.getBoolean("disableCamera");
-
-                    WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                    wifiManager.setWifiEnabled(disable);
 
                     broadcastReceivedLog("disableWifi: " + disable);
                 }
