@@ -195,8 +195,8 @@ public class DataStorage {
 		setData("ConnectivityWifiEnable", String.valueOf(enable));
 	}
 
-	public void getConnectivityWifiEnable() {
-		getData("ConnectivityWifiEnable");
+	public boolean getConnectivityWifiEnable() {
+		return Boolean.getBoolean(getData("ConnectivityWifiEnable"));
 	}
 
 	private String getData(String key){
