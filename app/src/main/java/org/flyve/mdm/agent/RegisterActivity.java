@@ -297,7 +297,7 @@ public class RegisterActivity extends Activity {
                 payload.put("_serial", Helpers.getDeviceSerial());
                 //payload.put("csr", requestCSR);
                 payload.put("csr", "");
-                payload.put("uudi", new Hardware(RegisterActivity.this).getUUID());
+                payload.put("uuid", new Hardware(RegisterActivity.this).getUUID());
                 payload.put("firstname", txtName.getText());
                 payload.put("lastname", txtLastName.getText());
                 payload.put("version", BuildConfig.VERSION_NAME);
