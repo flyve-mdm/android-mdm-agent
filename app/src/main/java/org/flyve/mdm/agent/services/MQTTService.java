@@ -52,9 +52,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-
 import javax.net.ssl.SSLContext;
 
 
