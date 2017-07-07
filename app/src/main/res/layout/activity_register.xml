@@ -41,14 +41,31 @@
             android:layout_marginRight="20dp"
             />
 
-        <Button
-            android:id="@+id/btn_register"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Register"
+            android:orientation="horizontal"
             android:layout_gravity="right"
             android:layout_marginRight="20dp"
-            />
+            android:layout_marginTop="20dp"
+            >
+
+            <ProgressBar
+                android:id="@+id/progressBarX509"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical"
+                />
+
+            <Button
+                android:id="@+id/btn_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                />
+        </LinearLayout>
 
     </LinearLayout>
 

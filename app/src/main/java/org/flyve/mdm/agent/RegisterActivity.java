@@ -63,6 +63,7 @@ import java.util.HashMap;
 public class RegisterActivity extends Activity {
 
     private ProgressBar pb;
+    private ProgressBar pbx509;
     private Routes routes;
     private DataStorage cache;
     private TextView tvMsg;
@@ -88,6 +89,7 @@ public class RegisterActivity extends Activity {
         setContentView(R.layout.activity_register);
 
         pb = (ProgressBar) findViewById(R.id.progressBar);
+        pbx509 = (ProgressBar) findViewById(R.id.progressBarX509);
 
         Intent intent = getIntent();
         Uri data = intent.getData();
@@ -265,6 +267,7 @@ public class RegisterActivity extends Activity {
      * STEP 4 create X509 certificate
      */
     private void createX509cert() {
+        pbx509.setVisibility(View.VISIBLE);
         new Thread(new Runnable() {
             public void run() {
                 try {
@@ -274,8 +277,9 @@ public class RegisterActivity extends Activity {
                         public void onGenerate(final boolean work) {
                             RegisterActivity.runOnUI(new Runnable() {
                                 public void run() {
+                                    pbx509.setVisibility(View.GONE);
                                     if(work) {
-                                        btnRegister.setText("Register");
+                                        btnRegister.setText("Register now!");
                                         btnRegister.setEnabled(true);
                                     } else {
                                         btnRegister.setText("Error with certificate");
@@ -285,6 +289,7 @@ public class RegisterActivity extends Activity {
                         }
                     });
                 } catch (Exception ex) {
+                    pbx509.setVisibility(View.GONE);
                     tvMsg.setText("ERROR: Creating Certificate X509");
                     FlyveLog.e(ex.getMessage());
                 }
