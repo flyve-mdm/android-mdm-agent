@@ -453,7 +453,6 @@ public class MQTTService extends IntentService implements MqttCallback {
                     cache.setConnectivityBluetoothDisable(disable);
                     broadcastReceivedLog("disableBluetooth: " + disable);
                 }
-
             }
         } catch (Exception ex) {
             FlyveLog.e(ex.getCause().getMessage());

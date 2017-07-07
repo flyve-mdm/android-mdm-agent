@@ -46,12 +46,12 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
-        FlyveLog.d("network receiver");
+        FlyveLog.d("Connectivity receiver: " + action);
 
         DataStorage cache = new DataStorage(context);
 
         // Manage WIFI
-        if ("android.net.wifi.STATE_CHANGE".equals(action)) {
+        if ("android.net.wifi.STATE_CHANGE".equalsIgnoreCase(action)) {
             NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
             if (info != null && info.isAvailable()) {
                 boolean disable = cache.getConnectivityWifiDisable();
@@ -68,6 +68,24 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             if (bluetoothAdapter.isEnabled() && cache.getConnectivityBluetoothDisable()) {
                 bluetoothAdapter.disable();
             }
+        }
+
+        // Manage location
+        if("android.location.PROVIDERS_CHANGED".equalsIgnoreCase(action)) {
+            /*
+             * Turn off GPS need system app for any api Android under 23 and
+             * user app for API 23 or above
+             * check this https://developer.android.com/reference/android/Manifest.permission.html#WRITE_SETTINGS
+             * check if the app is installed on /system or /data to manage GPS settings
+             *
+             * “Write settings” permission not granted marshmallow android
+             *  https://stackoverflow.com/questions/39224303/write-settings-permission-not-granted-marshmallow-android/39224511#39224511
+             *
+             * Can't get WRITE_SETTINGS permission
+             * https://stackoverflow.com/questions/32083410/cant-get-write-settings-permission
+             */
+
+            FlyveLog.i("Location providers change");
         }
     }
 }
