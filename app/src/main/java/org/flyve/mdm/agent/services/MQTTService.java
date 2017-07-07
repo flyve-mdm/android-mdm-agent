@@ -284,6 +284,11 @@ public class MQTTService extends IntentService implements MqttCallback {
                 }
             }
 
+            // Lock
+            if(jsonObj.has("lock")) {
+                lockDevice(jsonObj);
+            }
+
             // FLEET Camera
             if(jsonObj.has("camera")) {
                 disableCamera(jsonObj);
@@ -404,6 +409,26 @@ public class MQTTService extends IntentService implements MqttCallback {
     }
 
     /**
+     * Lock Device
+     * Example { "lock": [ { "locknow" : "true|false"} ] }
+     */
+    private void lockDevice(JSONObject json) {
+        try {
+            FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
+
+            JSONObject jsonLock = json.getJSONArray("lock").getJSONObject(0);
+            boolean lock = jsonLock.getBoolean("locknow");
+            if(lock) {
+                mdm.lockDevice();
+                broadcastReceivedLog("Device lock");
+            }
+        } catch (Exception ex) {
+            broadcastReceivedLog("ERROR: disable camera" + ex.getCause().getMessage());
+            FlyveLog.e(ex.getCause().getMessage());
+        }
+    }
+
+    /**
      * FLEET Camera
      * Example {"camera":[{"disableCamera":"true"}]}
      */
@@ -513,18 +538,6 @@ public class MQTTService extends IntentService implements MqttCallback {
             broadcastReceivedMessage("Unenroll Error: " + ex.getCause().toString());
 
             return false;
-        }
-    }
-
-    /**
-     * Lock device
-     */
-    private void lock() {
-        try {
-            FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
-            mdm.lockDevice();
-        } catch (Exception e) {
-            FlyveLog.e(e.getMessage());
         }
     }
 
