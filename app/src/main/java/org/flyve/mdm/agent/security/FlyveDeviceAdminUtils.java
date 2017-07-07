@@ -48,6 +48,13 @@ public class FlyveDeviceAdminUtils {
     }
 
     /**
+     * Lock the device now
+     */
+    public void lockDevice() {
+        mDPM.lockNow();
+    }
+
+    /**
      * Disable the possibility to use the camera
      * @param disable boolean true | false
      */
