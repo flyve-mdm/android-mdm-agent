@@ -427,6 +427,7 @@ public class MQTTService extends IntentService implements MqttCallback {
     /**
      * FLEET connectivity
      * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
+     * The stored policies on cache this was used on MQTTConnectivityReceiver
      */
     private void disableConnetivity(JSONObject json) {
 
@@ -436,17 +437,21 @@ public class MQTTService extends IntentService implements MqttCallback {
                 JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(0);
 
                 if (jsonConnectivity.has("disableWifi")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableCamera");
-
+                    boolean disable = jsonConnectivity.getBoolean("disableWifi");
+                    cache.setConnectivityWifiDisable(disable);
                     broadcastReceivedLog("disableWifi: " + disable);
                 }
 
                 if (jsonConnectivity.has("disableBluetooth")) {
                     boolean disable = jsonConnectivity.getBoolean("disableBluetooth");
+                    cache.setConnectivityBluetoothDisable(disable);
+                    broadcastReceivedLog("disableBluetooth: " + disable);
                 }
 
                 if (jsonConnectivity.has("disableGPS")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableBluetooth");
+                    boolean disable = jsonConnectivity.getBoolean("disableGPS");
+                    cache.setConnectivityBluetoothDisable(disable);
+                    broadcastReceivedLog("disableBluetooth: " + disable);
                 }
 
             }

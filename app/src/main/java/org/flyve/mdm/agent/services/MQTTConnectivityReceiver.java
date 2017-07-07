@@ -36,7 +36,10 @@ import android.net.wifi.WifiManager;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
-
+/**
+ * Receive broadcast from android.net.wifi.STATE_CHANGE and android.bluetooth.adapter.action.STATE_CHANGED
+ * on AndroidManifest.xml
+ */
 public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
 
@@ -46,24 +49,24 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         FlyveLog.d("network receiver");
 
         DataStorage cache = new DataStorage(context);
-        //WIFI
+
+        // Manage WIFI
         if ("android.net.wifi.STATE_CHANGE".equals(action)) {
             NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
             if (info != null && info.isAvailable()) {
-                boolean enable = cache.getConnectivityWifiEnable();
-                WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-                wifiManager.setWifiEnabled(enable);
+                boolean disable = cache.getConnectivityWifiDisable();
+                // getApplicationContext to prevent memory leak
+                WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                wifiManager.setWifiEnabled(disable);
             }
         }
 
-        // Bluetooth
+        // Manage Bluetooth
         if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-//            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//            if (bluetoothAdapter.isEnabled()) {
-//                if (mSharedPreferenceConnectivity.getBluetooth(context)) {
-//                    bluetoothAdapter.disable();
-//                }
-//            }
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (bluetoothAdapter.isEnabled() && cache.getConnectivityBluetoothDisable()) {
+                bluetoothAdapter.disable();
+            }
         }
     }
 }

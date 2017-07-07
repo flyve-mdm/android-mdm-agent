@@ -35,6 +35,7 @@ import android.view.View;
 import android.widget.Button;
 
 import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.testData;
 import org.flyve.mdm.agent.security.FlyveAdminReceiver;
 
 /**
@@ -64,16 +65,9 @@ public class SplashActivity extends Activity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                testData data = new testData(SplashActivity.this);
+                data.load();
                 openMain();
-//                testData data = new testData(SplashActivity.this);
-//                if(data.load()) {
-//                    Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-//                    intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
-//                    intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "EXPLANATION");
-//                    startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
-//                } else {
-//                    Toast.makeText(SplashActivity.this, "This function is not available, you need enroll with a deeplink", Toast.LENGTH_SHORT).show();
-//                }
             }
         });
     }
