@@ -210,70 +210,37 @@ public class MQTTService extends IntentService implements MqttCallback {
             if (jsonObj.has("query")) {
                 // PING request
                 if ("Ping".equalsIgnoreCase(jsonObj.getString("query"))) {
-
                     sendKeepAlive();
                     return;
                 }
-                // INVENTORY Request
+                // Inventory Request
                 if("Inventory".equalsIgnoreCase(jsonObj.getString("query"))) {
-                    InventoryTask inventoryTask = new InventoryTask(getApplicationContext(), "agent_v1");
-                    inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
-                        @Override
-                        public void onTaskSuccess(String data) {
-                            FlyveLog.xml(data);
-
-                            // send inventory MQTT
-                            sendInventory(data);
-                        }
-
-                        @Override
-                        public void onTaskError(Throwable error) {
-                            FlyveLog.e(error.getCause().toString());
-
-                            //send broadcast
-                            broadcastReceivedMessage("Inventory Error: " + error.getCause().toString());
-                        }
-                    });
+                    createInventory();
                     return;
                 }
 
-                // GEOLOCATE request
+                // Geolocation request
                 if("Geolocate".equalsIgnoreCase(jsonObj.getString("query"))) {
-
-                    FlyveLog.d("Request Geolocate");
-
                     sendGPS();
-
-                    //send broadcast
-                    broadcastReceivedMessage("Request Geolocate");
                     return;
                 }
             }
 
-            // WIPE Request
+            // Wipe Request
             if(jsonObj.has("wipe")) {
                 if("NOW".equalsIgnoreCase(jsonObj.getString("wipe"))) {
-                    FlyveLog.v("Wipe in progress");
-
                     wipe();
-
-                    //send broadcast
-                    broadcastReceivedMessage("Wipe in progress");
                     return;
                 }
             }
 
-            // UNENROLL Request
+            // Unenroll Request
             if (jsonObj.has("unenroll")) {
-                FlyveLog.v("Unenroll in progress");
-
                 unenroll();
-
-                broadcastReceivedMessage("Unenroll in progress");
                 return;
             }
 
-            // Suscribe a new channel in MQTT
+            // Subscribe a new channel in MQTT
             if(jsonObj.has("subscribe")) {
                 JSONArray jsonTopics = jsonObj.getJSONArray("subscribe");
                 for(int i=0; i<jsonTopics.length();i++) {
@@ -282,31 +249,37 @@ public class MQTTService extends IntentService implements MqttCallback {
                     // Add new channel
                     suscribe(jsonTopic.getString("topic")+"/#");
                 }
+                return;
             }
 
             // Lock
             if(jsonObj.has("lock")) {
                 lockDevice(jsonObj);
+                return;
             }
 
             // FLEET Camera
             if(jsonObj.has("camera")) {
                 disableCamera(jsonObj);
+                return;
             }
 
             // FLEET connectivity
             if(jsonObj.has("connectivity")) {
                 disableConnetivity(jsonObj);
+                return;
             }
 
             // FLEET encryption
             if(jsonObj.has("encryption")) {
                 storageEncryption(jsonObj);
+                return;
             }
 
             // FLEET policies
             if(jsonObj.has("policies")) {
                 policiesDevice(jsonObj);
+                return;
             }
 
         } catch (Exception ex) {
@@ -406,6 +379,31 @@ public class MQTTService extends IntentService implements MqttCallback {
         } catch (MqttException ex) {
             FlyveLog.e(ex.getMessage());
         }
+    }
+
+    /**
+     * Create Device Inventory
+     * Example {"query": "inventory"}
+     */
+    private void createInventory() {
+        InventoryTask inventoryTask = new InventoryTask(getApplicationContext(), "agent_v1");
+        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
+            @Override
+            public void onTaskSuccess(String data) {
+                FlyveLog.xml(data);
+
+                // send inventory MQTT
+                sendInventory(data);
+            }
+
+            @Override
+            public void onTaskError(Throwable error) {
+                FlyveLog.e(error.getCause().toString());
+
+                //send broadcast
+                broadcastReceivedMessage("Inventory Error: " + error.getCause().toString());
+            }
+        });
     }
 
     /**
@@ -512,7 +510,6 @@ public class MQTTService extends IntentService implements MqttCallback {
     private void policiesDevice(JSONObject json) {
 
     }
-
 
     /**
      * Unenroll the device
