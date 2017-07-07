@@ -191,12 +191,20 @@ public class DataStorage {
 		setData("plugin_flyvemdm_fleets_id", pluginFlyvemdmFleetsId);
 	}
 
-	public void setConnectivityWifiEnable(boolean enable) {
-		setData("ConnectivityWifiEnable", String.valueOf(enable));
+	public void setConnectivityWifiDisable(boolean disable) {
+		setData("ConnectivityWifiDisable", String.valueOf(disable));
 	}
 
-	public boolean getConnectivityWifiEnable() {
-		return Boolean.getBoolean(getData("ConnectivityWifiEnable"));
+	public boolean getConnectivityWifiDisable() {
+		return Boolean.getBoolean(getData("ConnectivityWifiDisable"));
+	}
+
+	public void setConnectivityBluetoothDisable(boolean disable) {
+		setData("ConnectivityBluetoothDisable", String.valueOf(disable));
+	}
+
+	public boolean getConnectivityBluetoothDisable() {
+		return Boolean.getBoolean(getData("ConnectivityBluetoothDisable"));
 	}
 
 	private String getData(String key){
