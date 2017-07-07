@@ -207,6 +207,14 @@ public class DataStorage {
 		return Boolean.getBoolean(getData("ConnectivityBluetoothDisable"));
 	}
 
+	public void setConnectivityGPSDisable(boolean disable) {
+		setData("ConnectivityGPSDisable", String.valueOf(disable));
+	}
+
+	public boolean getConnectivityGPSDisable() {
+		return Boolean.getBoolean(getData("ConnectivityGPSDisable"));
+	}
+
 	private String getData(String key){
 		String data = "";
 		SharedPreferences sp = getSettings();
