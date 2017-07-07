@@ -55,9 +55,10 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
             if (info != null && info.isAvailable()) {
                 boolean disable = cache.getConnectivityWifiDisable();
-                // getApplicationContext to prevent memory leak
+
+                // getApplicationContext is used to prevent memory leak
                 WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                wifiManager.setWifiEnabled(disable);
+                wifiManager.setWifiEnabled(!disable);
             }
         }
 

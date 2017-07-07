@@ -295,9 +295,8 @@ public class RegisterActivity extends Activity {
                 payload.put("_email", txtEmail.getText());
                 payload.put("_invitation_token", cache.getInvitationToken());
                 payload.put("_serial", Helpers.getDeviceSerial());
-                //payload.put("csr", requestCSR);
-                payload.put("csr", "");
-                payload.put("uuid", new Hardware(RegisterActivity.this).getUUID());
+                payload.put("_uuid", new Hardware(RegisterActivity.this).getUUID());
+                payload.put("csr", requestCSR);
                 payload.put("firstname", txtName.getText());
                 payload.put("lastname", txtLastName.getText());
                 payload.put("version", BuildConfig.VERSION_NAME);
