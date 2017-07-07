@@ -50,8 +50,9 @@ import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
+import org.json.JSONArray;
 import org.json.JSONObject;
-
+import java.util.ArrayList;
 import javax.net.ssl.SSLContext;
 
 
@@ -65,6 +66,7 @@ public class MQTTService extends IntentService implements MqttCallback {
     private MqttAndroidClient client;
     private DataStorage cache;
     private String mTopic = "";
+    private ArrayList<String> arrTopics = new ArrayList<String>();
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -144,7 +146,9 @@ public class MQTTService extends IntentService implements MqttCallback {
                     // Everything ready waiting for message
                     FlyveLog.d("Success we are online!");
                     broadcastServiceStatus(true);
-                    suscribe();
+
+                    // principal channel
+                    suscribe(mTopic + "/#");
                 }
 
                 @Override
@@ -204,66 +208,75 @@ public class MQTTService extends IntentService implements MqttCallback {
             if (jsonObj.has("query")) {
                 // PING request
                 if ("Ping".equalsIgnoreCase(jsonObj.getString("query"))) {
-
                     sendKeepAlive();
                     return;
                 }
-                // INVENTORY Request
+                // Inventory Request
                 if("Inventory".equalsIgnoreCase(jsonObj.getString("query"))) {
-                    InventoryTask inventoryTask = new InventoryTask(getApplicationContext(), "agent_v1");
-                    inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
-                        @Override
-                        public void onTaskSuccess(String data) {
-                            FlyveLog.xml(data);
-
-                            // send inventory MQTT
-                            sendInventory(data);
-                        }
-
-                        @Override
-                        public void onTaskError(Throwable error) {
-                            FlyveLog.e(error.getCause().toString());
-
-                            //send broadcast
-                            broadcastReceivedMessage("Inventory Error: " + error.getCause().toString());
-                        }
-                    });
+                    createInventory();
                     return;
                 }
 
-                // GEOLOCATE request
+                // Geolocation request
                 if("Geolocate".equalsIgnoreCase(jsonObj.getString("query"))) {
-
-                    FlyveLog.d("Request Geolocate");
-
                     sendGPS();
-
-                    //send broadcast
-                    broadcastReceivedMessage("Request Geolocate");
                     return;
                 }
             }
 
-            // WIPE Request
+            // Wipe Request
             if(jsonObj.has("wipe")) {
                 if("NOW".equalsIgnoreCase(jsonObj.getString("wipe"))) {
-                    FlyveLog.v("Wipe in progress");
-
                     wipe();
-
-                    //send broadcast
-                    broadcastReceivedMessage("Wipe in progress");
                     return;
                 }
             }
 
-            // UNENROLL Request
+            // Unenroll Request
             if (jsonObj.has("unenroll")) {
-                FlyveLog.v("Unenroll in progress");
-
                 unenroll();
+                return;
+            }
 
-                broadcastReceivedMessage("Unenroll in progress");
+            // Subscribe a new channel in MQTT
+            if(jsonObj.has("subscribe")) {
+                JSONArray jsonTopics = jsonObj.getJSONArray("subscribe");
+                for(int i=0; i<jsonTopics.length();i++) {
+                    JSONObject jsonTopic = jsonTopics.getJSONObject(0);
+
+                    // Add new channel
+                    suscribe(jsonTopic.getString("topic")+"/#");
+                }
+                return;
+            }
+
+            // Lock
+            if(jsonObj.has("lock")) {
+                lockDevice(jsonObj);
+                return;
+            }
+
+            // FLEET Camera
+            if(jsonObj.has("camera")) {
+                disableCamera(jsonObj);
+                return;
+            }
+
+            // FLEET connectivity
+            if(jsonObj.has("connectivity")) {
+                disableConnetivity(jsonObj);
+                return;
+            }
+
+            // FLEET encryption
+            if(jsonObj.has("encryption")) {
+                storageEncryption(jsonObj);
+                return;
+            }
+
+            // FLEET policies
+            if(jsonObj.has("policies")) {
+                policiesDevice(jsonObj);
                 return;
             }
 
@@ -311,6 +324,192 @@ public class MQTTService extends IntentService implements MqttCallback {
     }
 
     /**
+     * Prevent duplicated topic and create String array with all the topic available
+     * @param channel String new channel to add
+     * @return String array
+     */
+    private String[] addTopic(String channel) {
+        for(int i=0; i<arrTopics.size();i++) {
+            if(channel.equalsIgnoreCase(arrTopics.get(i))) {
+                return null;
+            }
+        }
+        arrTopics.add(channel);
+        return arrTopics.toArray(new String[arrTopics.size()]);
+    }
+
+    /**
+     * Subscribe to the topic
+     * When come from MQTT has a format like this {"subscribe":[{"topic":"/2/fleet/22"}]}
+     */
+    private void suscribe(String channel) {
+        String[] topics = addTopic(channel);
+
+        // if topic null
+        if(topics==null) {
+            return;
+        }
+
+        int Qos[] = new int[arrTopics.size()];
+        for (int k = 0; k < Qos.length; k++) {
+            Qos[k] = 0;
+        }
+
+        try {
+            IMqttToken subToken = client.subscribe(topics, Qos);
+            subToken.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    // The message was published
+                    FlyveLog.d("suscribed");
+                    broadcastReceivedLog("suscribed");
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken,
+                                      Throwable exception) {
+                    // The subscription could not be performed, maybe the user was not
+                    // authorized to subscribe on the specified topic e.g. using wildcards
+                    FlyveLog.e("ERROR: " + exception.getCause().getMessage());
+                    broadcastReceivedLog("ERROR: " + exception.getMessage());
+                }
+            });
+        } catch (MqttException ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+    }
+
+    /**
+     * Create Device Inventory
+     * Example {"query": "inventory"}
+     */
+    private void createInventory() {
+        InventoryTask inventoryTask = new InventoryTask(getApplicationContext(), "agent_v1");
+        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
+            @Override
+            public void onTaskSuccess(String data) {
+                FlyveLog.xml(data);
+
+                // send inventory MQTT
+                sendInventory(data);
+            }
+
+            @Override
+            public void onTaskError(Throwable error) {
+                FlyveLog.e(error.getCause().toString());
+
+                //send broadcast
+                broadcastReceivedMessage("Inventory Error: " + error.getCause().toString());
+            }
+        });
+    }
+
+    /**
+     * Lock Device
+     * Example { "lock": [ { "locknow" : "true|false"} ] }
+     */
+    private void lockDevice(JSONObject json) {
+        try {
+            FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
+
+            JSONObject jsonLock = json.getJSONArray("lock").getJSONObject(0);
+            boolean lock = jsonLock.getBoolean("locknow");
+            if(lock) {
+                mdm.lockDevice();
+                broadcastReceivedLog("Device lock");
+            }
+        } catch (Exception ex) {
+            broadcastReceivedLog("ERROR: disable camera" + ex.getCause().getMessage());
+            FlyveLog.e(ex.getCause().getMessage());
+        }
+    }
+
+    /**
+     * FLEET Camera
+     * Example {"camera":[{"disableCamera":"true"}]}
+     */
+    private void disableCamera(JSONObject json) {
+        try {
+            FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
+
+            JSONArray jsonCameras = json.getJSONArray("camera");
+            for(int i=0; i<= jsonCameras.length(); i++) {
+                JSONObject jsonCamera = jsonCameras.getJSONObject(0);
+                boolean disable = jsonCamera.getBoolean("disableCamera");
+                mdm.disableCamera(disable);
+                broadcastReceivedLog("Disabled Camera: " + disable);
+             }
+        } catch (Exception ex) {
+            broadcastReceivedLog("ERROR: disable camera" + ex.getCause().getMessage());
+            FlyveLog.e(ex.getCause().getMessage());
+        }
+    }
+
+    /**
+     * FLEET connectivity
+     * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
+     * The stored policies on cache this was used on MQTTConnectivityReceiver
+     */
+    private void disableConnetivity(JSONObject json) {
+
+        try {
+            JSONArray jsonConnectivities = json.getJSONArray("connectivity");
+            for (int i = 0; i <= jsonConnectivities.length(); i++) {
+                JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(0);
+
+                if (jsonConnectivity.has("disableWifi")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableWifi");
+                    cache.setConnectivityWifiDisable(disable);
+                    broadcastReceivedLog("disableWifi: " + disable);
+                }
+
+                if (jsonConnectivity.has("disableBluetooth")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableBluetooth");
+                    cache.setConnectivityBluetoothDisable(disable);
+                    broadcastReceivedLog("disableBluetooth: " + disable);
+                }
+
+                if (jsonConnectivity.has("disableGPS")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableGPS");
+                    cache.setConnectivityGPSDisable(disable);
+                    broadcastReceivedLog("disableGPS: " + disable);
+                }
+            }
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getCause().getMessage());
+        }
+    }
+
+    /**
+     * FLEET encryption
+     * Example {"encryption":[{"storageEncryption":"false"}]}
+     */
+    private void storageEncryption(JSONObject json) {
+        try {
+            JSONObject jsonEncryption = json.getJSONArray("encryption").getJSONObject(0);
+            boolean enable = jsonEncryption.getBoolean("storageEncryption");
+            if(jsonEncryption.has("storageEncryption")) {
+
+                FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
+                mdm.storageEncryptionDevice(enable);
+
+                broadcastReceivedLog(" Begin storage encryption ");
+            }
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getCause().getMessage());
+            broadcastReceivedLog("Storage encryption fail: " + ex.getCause().getMessage());
+        }
+    }
+
+    /**
+     * FLEET policies
+     * Example {"policies":[{"passwordMinLength":"6"},{"passwordQuality":"PASSWORD_QUALITY_UNSPECIFIED"},{"passwordEnabled":"PASSWORD_PIN"},{"passwordMinLetters":"0"},{"passwordMinLowerCase":"0"},{"passwordMinNonLetter":"0"},{"passwordMinNumeric":"0"},{"passwordMinSymbols":"0"},{"passwordMinUpperCase":"0"},{"MaximumFailedPasswordsForWipe":"0"},{"MaximumTimeToLock":"60000"}]}
+     */
+    private void policiesDevice(JSONObject json) {
+
+    }
+
+    /**
      * Unenroll the device
      */
     private boolean unenroll() {
@@ -334,38 +533,6 @@ public class MQTTService extends IntentService implements MqttCallback {
             broadcastReceivedMessage("Unenroll Error: " + ex.getCause().toString());
 
             return false;
-        }
-    }
-
-    /**
-     * Suscribe to the topic
-     */
-    private void suscribe() {
-        String topic = mTopic + "/#";
-        int qos = 1;
-        try {
-            IMqttToken subToken = client.subscribe(topic, qos);
-            subToken.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    // The message was published
-                    FlyveLog.d("suscribed");
-
-                    broadcastReceivedLog("suscribed");
-                    broadcastReceivedMessage("suscribed");
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken,
-                                      Throwable exception) {
-                    // The subscription could not be performed, maybe the user was not
-                    // authorized to subscribe on the specified topic e.g. using wildcards
-                    FlyveLog.e("ERROR: " + exception.getCause().getMessage());
-                    broadcastReceivedMessage("ERROR: " + exception.getMessage());
-                }
-            });
-        } catch (MqttException ex) {
-            FlyveLog.e(ex.getMessage());
         }
     }
 

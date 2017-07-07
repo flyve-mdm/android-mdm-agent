@@ -39,6 +39,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.flyvemdm.inventory.categories.Hardware;
+
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
@@ -293,8 +295,8 @@ public class RegisterActivity extends Activity {
                 payload.put("_email", txtEmail.getText());
                 payload.put("_invitation_token", cache.getInvitationToken());
                 payload.put("_serial", Helpers.getDeviceSerial());
-                //payload.put("csr", requestCSR);
-                payload.put("csr", "");
+                payload.put("_uuid", new Hardware(RegisterActivity.this).getUUID());
+                payload.put("csr", requestCSR);
                 payload.put("firstname", txtName.getText());
                 payload.put("lastname", txtLastName.getText());
                 payload.put("version", BuildConfig.VERSION_NAME);
