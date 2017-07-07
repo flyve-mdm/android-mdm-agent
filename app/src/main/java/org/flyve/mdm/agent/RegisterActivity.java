@@ -343,7 +343,7 @@ public class RegisterActivity extends Activity {
                             JSONArray jsonArr = new JSONArray(data);
                             String msgError = jsonArr.get(1).toString();
 
-                            tvMsg.setText("ERROR pluginFlyvemdmAgent HTTP " + msgError);
+                            tvMsg.setText(msgError);
                             FlyveLog.e(data);
                         } catch (Exception ex) {
                             FlyveLog.e(ex.getCause().getMessage());
@@ -357,7 +357,7 @@ public class RegisterActivity extends Activity {
                             getDataPluginFlyvemdmAgent();
                         } catch (Exception ex) {
                             pb.setVisibility(View.GONE);
-                            tvMsg.setText("ERROR pluginFlyvemdmAgent HTTP " + data);
+                            tvMsg.setText(data);
                             FlyveLog.e(ex.getMessage());
                         }
                     }
