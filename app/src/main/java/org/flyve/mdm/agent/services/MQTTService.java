@@ -464,7 +464,20 @@ public class MQTTService extends IntentService implements MqttCallback {
      * Example {"encryption":[{"storageEncryption":"false"}]}
      */
     private void storageEncryption(JSONObject json) {
+        try {
+            JSONObject jsonEncryption = json.getJSONArray("encryption").getJSONObject(0);
+            boolean enable = jsonEncryption.getBoolean("storageEncryption");
+            if(jsonEncryption.has("storageEncryption")) {
 
+                FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
+                mdm.storageEncryptionDevice(enable);
+
+                broadcastReceivedLog(" Begin storage encryption ");
+            }
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getCause().getMessage());
+            broadcastReceivedLog("Storage encryption fail: " + ex.getCause().getMessage());
+        }
     }
 
     /**
