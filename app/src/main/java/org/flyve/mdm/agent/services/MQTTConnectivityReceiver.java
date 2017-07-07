@@ -85,7 +85,8 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
              * https://stackoverflow.com/questions/32083410/cant-get-write-settings-permission
              */
 
-            FlyveLog.i("Location providers change");
+            boolean disable = cache.getConnectivityGPSDisable();
+            FlyveLog.i("Location providers change: " + disable);
         }
     }
 }

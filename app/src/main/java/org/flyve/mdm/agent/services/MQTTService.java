@@ -450,8 +450,8 @@ public class MQTTService extends IntentService implements MqttCallback {
 
                 if (jsonConnectivity.has("disableGPS")) {
                     boolean disable = jsonConnectivity.getBoolean("disableGPS");
-                    cache.setConnectivityBluetoothDisable(disable);
-                    broadcastReceivedLog("disableBluetooth: " + disable);
+                    cache.setConnectivityGPSDisable(disable);
+                    broadcastReceivedLog("disableGPS: " + disable);
                 }
             }
         } catch (Exception ex) {
