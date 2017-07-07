@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Teclib'
+ * Copyright (C) 2016-2017 Teclib'
  *
  * This file is part of Flyve MDM Android.
  *
