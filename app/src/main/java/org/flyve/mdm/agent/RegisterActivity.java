@@ -31,6 +31,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.StrictMode;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -64,10 +67,20 @@ public class RegisterActivity extends Activity {
     private DataStorage cache;
     private TextView tvMsg;
     private LinearLayout lyUserData;
-    private boolean certifiedX509Available = false;
     private EditText txtName;
     private EditText txtLastName;
     private EditText txtEmail;
+    private Button btnRegister;
+
+    private static Handler uiHandler;
+
+    static {
+        uiHandler = new Handler(Looper.getMainLooper());
+    }
+
+    private static void runOnUI(Runnable runnable) {
+        uiHandler.post(runnable);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +93,9 @@ public class RegisterActivity extends Activity {
         Uri data = intent.getData();
 
         String deepLinkData = Helpers.base64decode(data.getQueryParameter("data"));
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         cache = new DataStorage( RegisterActivity.this );
 
@@ -113,7 +129,9 @@ public class RegisterActivity extends Activity {
         txtEmail = (EditText) findViewById(R.id.txtEmail);
         txtEmail.setImeActionLabel("Done", KeyEvent.KEYCODE_ENTER);
 
-        Button btnRegister = (Button) findViewById(R.id.btn_register);
+        btnRegister = (Button) findViewById(R.id.btn_register);
+        btnRegister.setText("Waiting for X509 certificate");
+        btnRegister.setEnabled(false);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,7 +167,7 @@ public class RegisterActivity extends Activity {
                         getFullSession();
 
                     } catch (Exception ex) {
-                        tvMsg.setText("ERROR JSON: initSession");
+                        tvMsg.setText("ERROR JSON: initSession " + ex.getMessage());
                         pb.setVisibility(View.GONE);
                         FlyveLog.e( ex.getMessage() );
                     }
@@ -158,7 +176,7 @@ public class RegisterActivity extends Activity {
         }
         catch (Exception ex) {
             pb.setVisibility(View.GONE);
-            tvMsg.setText("ERROR: initSession");
+            tvMsg.setText("ERROR: initSession: " + ex.getMessage());
             FlyveLog.e( ex.getMessage() );
         }
     }
@@ -251,11 +269,22 @@ public class RegisterActivity extends Activity {
             public void run() {
                 try {
                     AndroidCryptoProvider createCertif = new AndroidCryptoProvider(getBaseContext());
-                    createCertif.generateRequest();
-                    createCertif.loadCsr();
-                    certifiedX509Available = true;
+                    createCertif.generateRequest(new AndroidCryptoProvider.generateCallback() {
+                        @Override
+                        public void onGenerate(final boolean work) {
+                            RegisterActivity.runOnUI(new Runnable() {
+                                public void run() {
+                                    if(work) {
+                                        btnRegister.setText("Register");
+                                        btnRegister.setEnabled(true);
+                                    } else {
+                                        btnRegister.setText("Error with certificate");
+                                    }
+                                }
+                            });
+                        }
+                    });
                 } catch (Exception ex) {
-                    certifiedX509Available = false;
                     tvMsg.setText("ERROR: Creating Certificate X509");
                     FlyveLog.e(ex.getMessage());
                 }
@@ -267,11 +296,6 @@ public class RegisterActivity extends Activity {
      * STEP 5 Send the payload to register the agent
      */
     private void pluginFlyvemdmAgent() {
-
-        if(!certifiedX509Available) {
-            tvMsg.setText("The certified is not available");
-            return;
-        }
 
         tvMsg.setText("Register Agent");
         try {
