@@ -105,7 +105,7 @@ public class FlyveDeviceAdminUtils {
      * Set password length
      * @param length int
      */
-    private void setPasswordLength(int length) {
+    public void setPasswordLength(int length) {
         FlyveLog.d("setPasswordLength: " + length);
         if(mDPM.getPasswordMinimumLength(mDeviceAdmin)!=length){
             FlyveLog.d("Apply setPasswordLength: " + length);
@@ -117,7 +117,7 @@ public class FlyveDeviceAdminUtils {
      * Set password quality
      * @param quality String quality type
      */
-    private void setPasswordQuality(String quality) {
+    public void setPasswordQuality(String quality) {
          if("PASSWORD_QUALITY_NUMERIC".equalsIgnoreCase(quality)) {
              FlyveLog.d("switch: PASSWORD_QUALITY_NUMERIC");
              mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_NUMERIC);
@@ -153,7 +153,7 @@ public class FlyveDeviceAdminUtils {
      * Set Password minumim letters
      * @param minLetters int
      */
-    private void setPasswordMinumimLetters(int minLetters) {
+    public void setPasswordMinumimLetters(int minLetters) {
         if(mDPM.getPasswordMinimumLetters(mDeviceAdmin)!=minLetters) {
             FlyveLog.d("setPasswordMinumimLetters:  " + minLetters);
             mDPM.setPasswordMinimumUpperCase(mDeviceAdmin, minLetters);
@@ -164,7 +164,7 @@ public class FlyveDeviceAdminUtils {
      * set Password Minimum Lower Case
      * @param minLowerCase int
      */
-    private void setPasswordMinimumLowerCase(int minLowerCase) {
+    public void setPasswordMinimumLowerCase(int minLowerCase) {
         if(mDPM.getPasswordMinimumLowerCase(mDeviceAdmin)!=minLowerCase) {
             FlyveLog.d("setPasswordMinimumLowerCase:  " + minLowerCase);
             mDPM.setPasswordMinimumLowerCase(mDeviceAdmin, minLowerCase);
@@ -175,7 +175,7 @@ public class FlyveDeviceAdminUtils {
      * set Password Minimum Upper Case
      * @param minUpperCase int
      */
-    private void setPasswordMinimumUpperCase(int minUpperCase) {
+    public void setPasswordMinimumUpperCase(int minUpperCase) {
         if(mDPM.getPasswordMinimumUpperCase(mDeviceAdmin)!=minUpperCase) {
             FlyveLog.d("setPasswordMinimumUpperCase:  " + minUpperCase);
             mDPM.setPasswordMinimumUpperCase(mDeviceAdmin, minUpperCase);
@@ -186,7 +186,7 @@ public class FlyveDeviceAdminUtils {
      * set Password Minimum Non Letter
      * @param minNonLetter int
      */
-    private void setPasswordMinimumNonLetter(int minNonLetter) {
+    public void setPasswordMinimumNonLetter(int minNonLetter) {
         if(mDPM.getPasswordMinimumNonLetter(mDeviceAdmin)!=minNonLetter) {
             FlyveLog.d("setPasswordMinimumNonLetter: " + minNonLetter);
             mDPM.setPasswordMinimumNonLetter(mDeviceAdmin, minNonLetter);
@@ -197,7 +197,7 @@ public class FlyveDeviceAdminUtils {
      * set Password Minimum Numeric
      * @param minNumeric int
      */
-    private void setPasswordMinimumNumeric(int minNumeric) {
+    public void setPasswordMinimumNumeric(int minNumeric) {
         if(mDPM.getPasswordMinimumNumeric(mDeviceAdmin)!=minNumeric) {
             FlyveLog.d("setPasswordMinimumNumeric:  " + minNumeric);
             mDPM.setPasswordMinimumNumeric(mDeviceAdmin, minNumeric);
@@ -208,7 +208,7 @@ public class FlyveDeviceAdminUtils {
      * set Password Minimum Symbols
      * @param minSymbols int
      */
-    private void setPasswordMinimumSymbols(int minSymbols) {
+    public void setPasswordMinimumSymbols(int minSymbols) {
         if(mDPM.getPasswordMinimumSymbols(mDeviceAdmin)!=minSymbols) {
             FlyveLog.d("setPasswordMinimumSymbols:  " + minSymbols);
             mDPM.setPasswordMinimumSymbols(mDeviceAdmin, minSymbols);
@@ -219,7 +219,7 @@ public class FlyveDeviceAdminUtils {
      * set Maximum Failed Passwords For Wipe
      * @param maxFailed int
      */
-    private void setMaximumFailedPasswordsForWipe(int maxFailed) {
+    public void setMaximumFailedPasswordsForWipe(int maxFailed) {
         if(mDPM.getMaximumFailedPasswordsForWipe(mDeviceAdmin)!=maxFailed) {
             FlyveLog.d("setMaximumFailedPasswordsForWipe:  " + maxFailed);
             mDPM.setMaximumFailedPasswordsForWipe(mDeviceAdmin, maxFailed);
@@ -230,7 +230,7 @@ public class FlyveDeviceAdminUtils {
      * set Maximum Time To Lock
      * @param timeMs
      */
-    private void setMaximumTimeToLock(long timeMs) {
+    public void setMaximumTimeToLock(long timeMs) {
         if(mDPM.getMaximumTimeToLock(mDeviceAdmin)!=timeMs) {
             FlyveLog.d("setMaximumTimeToLock:  " + timeMs);
             mDPM.setMaximumTimeToLock(mDeviceAdmin, timeMs);
