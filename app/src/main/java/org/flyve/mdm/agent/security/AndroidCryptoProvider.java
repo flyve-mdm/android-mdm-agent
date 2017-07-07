@@ -105,13 +105,13 @@ public class AndroidCryptoProvider {
 
     public String getlCsr() {
         byte[] csrBytes = loadFileToBytes(csrFile);
-        String test = new String(csrBytes);
+        String strCsr = new String(csrBytes);
         // If either file was missing, we definitely can't succeed
         if (csrBytes == new byte[0]) {
             FlyveLog.i("loadCsr: Missing csr need to generate a new one");
             return "";
         }
-        return test;
+        return strCsr;
     }
 
     public boolean loadCsr() {
@@ -125,18 +125,18 @@ public class AndroidCryptoProvider {
     }
 
 
-    public boolean generateRequest() {
+    public void generateRequest(generateCallback callback) {
         byte[] snBytes = new byte[8];
         new SecureRandom().nextBytes(snBytes);
 
-        KeyPair keyPair;
+        KeyPair keyPair = null;
         try {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA", "BC");
             keyPairGenerator.initialize(4096);
             keyPair = keyPairGenerator.generateKeyPair();
         } catch (Exception ex) {
             FlyveLog.wtf("generateRequest", ex);
-            return false;
+            callback.onGenerate(false);
         }
 
         X500Principal subjectName = new X500Principal("CN=mydevice.stork-mdm.com");
@@ -144,26 +144,30 @@ public class AndroidCryptoProvider {
         ContentSigner signGen = null;
         try {
             signGen = new JcaContentSignerBuilder("SHA1withRSA").build(keyPair.getPrivate());
+            if(signGen == null) {
+                callback.onGenerate(false);
+            }
         } catch (Exception ex) {
             FlyveLog.e("generateRequest",ex);
+            callback.onGenerate(false);
         }
+
         PKCS10CertificationRequestBuilder builder = new JcaPKCS10CertificationRequestBuilder(subjectName, keyPair.getPublic());
-        if(signGen != null) {
-            csr = builder.build(signGen);
-            return false;
-        }
+        csr = builder.build(signGen);
 
         try {
             key = (RSAPrivateKey) keyPair.getPrivate();
         } catch (Exception ex) {
             FlyveLog.wtf("generateRequest",ex);
-            return false;
+            callback.onGenerate(false);
         }
 
         // Save the resulting pair
         saveCsrKey();
 
-        return true;
+        // true or false
+        boolean bvar = loadCsr();
+        callback.onGenerate(bvar);
     }
 
     private void saveCsrKey() {
@@ -248,72 +252,12 @@ public class AndroidCryptoProvider {
         }
     }
 
-    public X509Certificate getClientCertificate() {
-        // Use a lock here to ensure only one guy will be generating or loading
-        // the certificate and key at a time
-        synchronized (globalCryptoLock) {
-            // Return a loaded cert if we have one
-            if (cert != null) {
-                return cert;
-            }
-
-            // No loaded cert yet, let's see if we have one on disk
-            if (loadCsr()) {
-                // Got one
-                return cert;
-            }
-
-            // Try to generate a new key pair
-            if (!generateRequest()) {
-                // Failed
-                return null;
-            }
-
-            // Load the generated pair
-            loadCsr();
-            return cert;
-        }
-    }
-
-    public RSAPrivateKey getClientPrivateKey() {
-        // Use a lock here to ensure only one guy will be generating or loading
-        // the certificate and key at a time
-        synchronized (globalCryptoLock) {
-            // Return a loaded key if we have one
-            if (key != null) {
-                return key;
-            }
-
-            // No loaded key yet, let's see if we have one on disk
-            if (loadCsr()) {
-                // Got one
-                return key;
-            }
-
-            // Try to generate a new key pair
-            if (!generateRequest()) {
-                // Failed
-                return null;
-            }
-
-            // Load the generated pair
-            loadCsr();
-            return key;
-        }
-    }
-
-    public byte[] getPemEncodedClientCertificate() {
-        synchronized (globalCryptoLock) {
-            // Call our helper function to do the cert loading/generation for us
-            getClientCertificate();
-
-            // Return a cached value if we have it
-            return pemCsrBytes;
-        }
-    }
-
     public String encodeBase64String(byte[] data) {
         return Base64.encodeToString(data, Base64.NO_WRAP);
+    }
+
+    public interface generateCallback {
+        void onGenerate(boolean work);
     }
 }
 

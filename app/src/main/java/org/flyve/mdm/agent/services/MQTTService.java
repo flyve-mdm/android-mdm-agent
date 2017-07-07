@@ -477,6 +477,7 @@ public class MQTTService extends IntentService implements MqttCallback {
             }
         } catch (Exception ex) {
             FlyveLog.e(ex.getCause().getMessage());
+            broadcastReceivedLog("Disable Connetivity fail: " + ex.getMessage());
         }
     }
 
@@ -496,17 +497,94 @@ public class MQTTService extends IntentService implements MqttCallback {
                 broadcastReceivedLog(" Begin storage encryption ");
             }
         } catch (Exception ex) {
-            FlyveLog.e(ex.getCause().getMessage());
-            broadcastReceivedLog("Storage encryption fail: " + ex.getCause().getMessage());
+            FlyveLog.e(ex.getMessage());
+            broadcastReceivedLog("Storage encryption fail: " + ex.getMessage());
         }
     }
 
     /**
      * FLEET policies
-     * Example {"policies":[{"passwordMinLength":"6"},{"passwordQuality":"PASSWORD_QUALITY_UNSPECIFIED"},{"passwordEnabled":"PASSWORD_PIN"},{"passwordMinLetters":"0"},{"passwordMinLowerCase":"0"},{"passwordMinNonLetter":"0"},{"passwordMinNumeric":"0"},{"passwordMinSymbols":"0"},{"passwordMinUpperCase":"0"},{"MaximumFailedPasswordsForWipe":"0"},{"MaximumTimeToLock":"60000"}]}
+     * Example {"policies":[{"passwordMinLength":"6"},
+     * {"passwordQuality":"PASSWORD_QUALITY_UNSPECIFIED"},
+     * {"passwordEnabled":"PASSWORD_PIN"},
+     * {"passwordMinLetters":"0"},
+     * {"passwordMinLowerCase":"0"},
+     * {"passwordMinNonLetter":"0"},
+     * {"passwordMinNumeric":"0"},
+     * {"passwordMinSymbols":"0"},
+     * {"passwordMinUpperCase":"0"},
+     * {"MaximumFailedPasswordsForWipe":"0"},
+     * {"MaximumTimeToLock":"60000"}]}
      */
     private void policiesDevice(JSONObject json) {
 
+        try {
+            FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
+
+            JSONArray jsonPolicies = json.getJSONArray("policies");
+
+            for (int i = 0; i <= jsonPolicies.length(); i++) {
+                JSONObject jsonPolicie = jsonPolicies.getJSONObject(0);
+
+                if (jsonPolicie.has("passwordMinLength")) {
+                    int length = jsonPolicie.getInt("passwordMinLength");
+                    mdm.setPasswordLength(length);
+                }
+
+                if (jsonPolicie.has("passwordQuality")) {
+                    String quality = jsonPolicie.getString("passwordMinLength");
+                    mdm.setPasswordQuality(quality);
+                }
+
+                if (jsonPolicie.has("passwordEnabled")) {
+                    // Nothing
+                }
+
+                if (jsonPolicie.has("passwordMinLetters")) {
+                    int min = jsonPolicie.getInt("passwordMinLetters");
+                    mdm.setPasswordMinumimLetters(min);
+                }
+
+                if (jsonPolicie.has("passwordMinLowerCase")) {
+                    int min = jsonPolicie.getInt("passwordMinLowerCase");
+                    mdm.setPasswordMinimumLowerCase(min);
+                }
+
+                if (jsonPolicie.has("passwordMinNonLetter")) {
+                    int min = jsonPolicie.getInt("passwordMinNonLetter");
+                    mdm.setPasswordMinimumNonLetter(min);
+                }
+
+                if (jsonPolicie.has("passwordMinNumeric")) {
+                    int min = jsonPolicie.getInt("passwordMinNumeric");
+                    mdm.setPasswordMinimumNumeric(min);
+                }
+
+                if (jsonPolicie.has("passwordMinSymbols")) {
+                    int min = jsonPolicie.getInt("passwordMinSymbols");
+                    mdm.setPasswordMinimumSymbols(min);
+                }
+
+                if (jsonPolicie.has("passwordMinUpperCase")) {
+                    int min = jsonPolicie.getInt("passwordMinUpperCase");
+                    mdm.setPasswordMinimumUpperCase(min);
+                }
+
+                if (jsonPolicie.has("MaximumFailedPasswordsForWipe")) {
+                    int max = jsonPolicie.getInt("MaximumFailedPasswordsForWipe");
+                    mdm.setMaximumFailedPasswordsForWipe(max);
+                }
+
+                if (jsonPolicie.has("MaximumTimeToLock")) {
+                    int time = jsonPolicie.getInt("MaximumTimeToLock");
+                    mdm.setMaximumTimeToLock(time);
+                }
+
+            }// end for
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+            broadcastReceivedLog("Storage encryption fail: " + ex.getMessage());
+        }
     }
 
     /**
