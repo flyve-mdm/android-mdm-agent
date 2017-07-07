@@ -504,6 +504,18 @@ public class MQTTService extends IntentService implements MqttCallback {
     }
 
     /**
+     * Lock device
+     */
+    private void lock() {
+        try {
+            FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
+            mdm.lockDevice();
+        } catch (Exception e) {
+            FlyveLog.e(e.getMessage());
+        }
+    }
+
+    /**
      * Erase all device data include SDCard
      */
     private void wipe() {
