@@ -386,7 +386,7 @@ public class MQTTService extends IntentService implements MqttCallback {
      * Example {"query": "inventory"}
      */
     private void createInventory() {
-        InventoryTask inventoryTask = new InventoryTask(getApplicationContext(), "agent_v1");
+        InventoryTask inventoryTask = new InventoryTask(getApplicationContext(), "FlyveMDM-Agent_v1.0");
         inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
             @Override
             public void onTaskSuccess(String data) {
