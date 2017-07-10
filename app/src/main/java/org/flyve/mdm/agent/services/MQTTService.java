@@ -51,6 +51,7 @@ import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
 import org.flyve.mdm.agent.utils.AppInfo;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
+import org.flyve.mdm.agent.utils.FilesHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
@@ -287,13 +288,13 @@ public class MQTTService extends IntentService implements MqttCallback {
 
             // Files
             if(jsonObj.has("file")) {
-                policiesDevice(jsonObj);
+                filesOnDevices(jsonObj);
                 return;
             }
 
             // Aplications
             if(jsonObj.has("application")) {
-                policiesDevice(jsonObj);
+
                 return;
             }
 
@@ -514,6 +515,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
     /**
      * Application
+     * {"application":[{"deployApp":"org.flyve.inventory.agent","id":"1","versionCode":"1"}]}
      */
     private void applicationOnDevices(JSONObject json) {
         try {
@@ -555,10 +557,14 @@ public class MQTTService extends IntentService implements MqttCallback {
 
     /**
      * Files
+     * {"file":[{"deployFile":"%SDCARD%/","id":"2","version":"1"}]}
      */
     private void filesOnDevices(JSONObject json) {
         try {
-            JSONObject jsonFiles = json.getJSONArray("encryption").getJSONObject(0);
+            JSONObject jsonFiles = json.getJSONArray("file").getJSONObject(0);
+
+            FilesHelper filesHelper = new FilesHelper(getApplicationContext());
+            filesHelper.downloadFile(jsonFiles.getString("id"));
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
             broadcastReceivedLog("Files fail: " + ex.getMessage());

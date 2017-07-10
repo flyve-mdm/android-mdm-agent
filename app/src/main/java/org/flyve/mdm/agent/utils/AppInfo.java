@@ -72,7 +72,6 @@ public class AppInfo {
                 }
             }
         }
-
         return false;
     }
 
