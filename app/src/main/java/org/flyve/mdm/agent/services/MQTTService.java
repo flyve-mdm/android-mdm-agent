@@ -28,8 +28,10 @@
 package org.flyve.mdm.agent.services;
 
 import android.app.IntentService;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -47,6 +49,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
+import org.flyve.mdm.agent.utils.AppInfo;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -282,6 +285,19 @@ public class MQTTService extends IntentService implements MqttCallback {
                 return;
             }
 
+            // Files
+            if(jsonObj.has("file")) {
+                policiesDevice(jsonObj);
+                return;
+            }
+
+            // Aplications
+            if(jsonObj.has("application")) {
+                policiesDevice(jsonObj);
+                return;
+            }
+
+
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
             broadcastReceivedMessage("Error: " + ex.getCause().toString());
@@ -480,6 +496,72 @@ public class MQTTService extends IntentService implements MqttCallback {
         } catch (Exception ex) {
             FlyveLog.e(ex.getCause().getMessage());
             broadcastReceivedLog("Disable Connetivity fail: " + ex.getMessage());
+        }
+    }
+
+    public int removeApp(String mPackage){
+        Uri packageUri = Uri.parse("package:"+mPackage);
+        Intent uninstallIntent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
+        uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            getApplicationContext().startActivity(uninstallIntent);
+        } catch (ActivityNotFoundException e) {
+            FlyveLog.e(e.getMessage());
+            return 0;
+        }
+        return 1;
+    }
+
+    /**
+     * Application
+     */
+    private void applicationOnDevices(JSONObject json) {
+        try {
+            JSONArray checkInstall = json.getJSONArray("application");
+            AppInfo appInfo = new AppInfo(getApplicationContext());
+
+            for(int i=0; i<checkInstall.length(); i++) {
+                if(checkInstall.getJSONObject(i).has("removeApp")){
+                    FlyveLog.d("uninstall apps");
+
+                    JSONObject jsonApp = checkInstall.getJSONObject(i);
+                    if(appInfo.isInstall(jsonApp.getString("removeApp"))) {
+                        removeApp(jsonApp.getString("removeApp"));
+                    }
+                }
+                else if(checkInstall.getJSONObject(i).has("deployApp")){
+                    FlyveLog.d("install apps");
+
+                    JSONObject jsonApp = checkInstall.getJSONObject(i);
+
+                    String idlist;
+                    String packageNamelist;
+                    String versionCode;
+
+                    idlist = jsonApp.getString("id");
+                    packageNamelist = jsonApp.getString("deployApp");
+                    versionCode = jsonApp.getString("versionCode");
+
+                    if(!appInfo.isInstall(packageNamelist,versionCode)){
+                        //new DownloadTask(mContext).execute("application",idlist, packageNamelist);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+            broadcastReceivedLog("Files fail: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Files
+     */
+    private void filesOnDevices(JSONObject json) {
+        try {
+            JSONObject jsonFiles = json.getJSONArray("encryption").getJSONObject(0);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+            broadcastReceivedLog("Files fail: " + ex.getMessage());
         }
     }
 
