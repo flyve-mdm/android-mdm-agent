@@ -290,12 +290,12 @@ public class FilesHelper {
         return "";
     }
 
-    private int removeApk(String mPackage){
+    public static int removeApk(Context context, String mPackage){
         Uri packageUri = Uri.parse("package:"+mPackage);
-        Intent uninstallIntent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
-        uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
-            context.startActivity(uninstallIntent);
+            context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
             FlyveLog.e(e.getMessage());
             return 0;

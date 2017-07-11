@@ -517,7 +517,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
                     JSONObject jsonApp = checkInstall.getJSONObject(i);
                     if(appInfo.isInstall(jsonApp.getString("removeApp"))) {
-                        //removeApp(jsonApp.getString("removeApp"));
+                        FilesHelper.removeApk(getApplicationContext(), jsonApp.getString("removeApp"));
                     }
                 }
 
