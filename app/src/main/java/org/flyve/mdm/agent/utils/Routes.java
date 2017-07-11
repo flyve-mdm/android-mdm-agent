@@ -96,7 +96,7 @@ public class Routes {
      * @param fileId String file id
      * @return String url
      */
-    public String PluginFlyvemdmFile(String fileId) {
-        return url + "/PluginFlyvemdmFile/" + fileId + "?session_token=" + cache.getSessionToken();
+    public String PluginFlyvemdmFile(String fileId, String sessionToken) {
+        return url + "/PluginFlyvemdmFile/" + fileId + "?session_token=" + sessionToken;
     }
 }

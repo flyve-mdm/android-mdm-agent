@@ -42,7 +42,6 @@ public class FilesHelper {
     private Context context;
     private DataStorage cache;
     private Routes routes;
-    private String fileId;
 
     public FilesHelper(Context context) {
         this.context = context;
@@ -122,22 +121,32 @@ public class FilesHelper {
         return sreturn;
     }
 
-    public void downloadFile(String id) {
+    public void downloadFile(String path, String id) {
 
         //prevent CPU from going off if the user presses the power button during download
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
         wl.acquire();
 
-        fileId = id;
+        String filePath;
+        try {
+            filePath = convertPath(path);
+        } catch (Exception ex) {
+            filePath = "";
+            FlyveLog.e(ex.getMessage());
+        }
 
-        initSession();
+        String sessionToken = initSession();
+        download(id, filePath, sessionToken);
     }
 
     /**
      * STEP 1 get session token
      */
-    private void initSession() {
+    private String initSession() {
+
+        final String[] mSessionToken = {""};
+
         try {
             ConnectionHTTP.getWebData(
                     routes.initSession( cache.getUserToken() ),
@@ -145,12 +154,56 @@ public class FilesHelper {
                     new ConnectionHTTP.DataCallback() {
                         @Override
                         public void callback(String data) {
-
                             try {
                                 JSONObject jsonSession = new JSONObject(data);
                                 cache.setSessionToken( jsonSession.getString("session_token") );
-                                getFullSession();
 
+                                /**
+                                 * STEP 2 get full session information
+                                 */
+                                HashMap<String, String> header = new HashMap();
+                                header.put("Session-Token",cache.getSessionToken());
+
+                                header.put("Accept","application/json");
+                                header.put("Content-Type","application/json; charset=UTF-8");
+                                header.put("User-Agent","Flyve MDM");
+                                header.put("Referer",routes.getFullSession());
+
+                                ConnectionHTTP.getWebData(routes.getFullSession(), "GET", header, new ConnectionHTTP.DataCallback() {
+                                    @Override
+                                    public void callback(String data) {
+                                        try {
+                                            JSONObject jsonFullSession = new JSONObject(data);
+
+                                            JSONObject jsonSession = jsonFullSession.getJSONObject("session");
+
+                                            JSONObject jsonActiveProfile = jsonSession.getJSONObject("glpiactiveprofile");
+
+                                            String profileId = jsonActiveProfile.getString("id");
+                                            cache.setProfileId( profileId );
+
+                                            /**
+                                             * STEP 3 Activated the profile
+                                             */
+                                            HashMap<String, String> header = new HashMap();
+                                            header.put("Session-Token",cache.getSessionToken());
+
+                                            header.put("Accept","application/json");
+                                            header.put("Content-Type","application/json; charset=UTF-8");
+                                            header.put("User-Agent","Flyve MDM");
+                                            header.put("Referer",routes.getFullSession());
+
+                                            ConnectionHTTP.getWebData(routes.changeActiveProfile(cache.getProfileId()), "GET", header, new ConnectionHTTP.DataCallback() {
+                                                @Override
+                                                public void callback(String data) {
+                                                    mSessionToken[0] = cache.getSessionToken();
+                                                }
+                                            });
+                                        } catch (Exception ex) {
+                                            FlyveLog.e( ex.getMessage() );
+                                        }
+                                    }
+                                });
                             } catch (Exception ex) {
                                 FlyveLog.e( ex.getMessage() );
                             }
@@ -160,95 +213,50 @@ public class FilesHelper {
         catch (Exception ex) {
             FlyveLog.e( ex.getMessage() );
         }
+
+        return mSessionToken[0];
     }
 
     /**
-     * STEP 2 get full session information
+     * Download file from url to start need a fresh sessionToken
+     * @param fileId String file Id
+     * @param sessionToken String fresh sessionToken
+     * @return Boolean state of download
      */
-    private void getFullSession() {
-        try {
-            HashMap<String, String> header = new HashMap();
-            header.put("Session-Token",cache.getSessionToken());
+    private Boolean download(String fileId, final String path, String sessionToken) {
 
-            header.put("Accept","application/json");
-            header.put("Content-Type","application/json; charset=UTF-8");
-            header.put("User-Agent","Flyve MDM");
-            header.put("Referer",routes.getFullSession());
+        final Boolean[] bvar = {false};
 
-            ConnectionHTTP.getWebData(routes.getFullSession(), "GET", header, new ConnectionHTTP.DataCallback() {
-                @Override
-                public void callback(String data) {
-
-                    try {
-                        JSONObject jsonFullSession = new JSONObject(data);
-
-                        JSONObject jsonSession = jsonFullSession.getJSONObject("session");
-
-                        JSONObject jsonActiveProfile = jsonSession.getJSONObject("glpiactiveprofile");
-
-                        String profileId = jsonActiveProfile.getString("id");
-                        cache.setProfileId( profileId );
-
-                        changeActiveProfile();
-
-                    } catch (Exception ex) {
-                        FlyveLog.e( ex.getMessage() );
-                    }
-
-                    changeActiveProfile();
-
-                }
-            });
-        } catch (Exception ex) {
-            FlyveLog.e( ex.getMessage() );
-        }
-    }
-
-    /**
-     * STEP 3 Activated the profile
-     */
-    private void changeActiveProfile() {
-
-        try {
-            HashMap<String, String> header = new HashMap();
-            header.put("Session-Token",cache.getSessionToken());
-
-            header.put("Accept","application/json");
-            header.put("Content-Type","application/json; charset=UTF-8");
-            header.put("User-Agent","Flyve MDM");
-            header.put("Referer",routes.getFullSession());
-
-            ConnectionHTTP.getWebData(routes.changeActiveProfile(cache.getProfileId()), "GET", header, new ConnectionHTTP.DataCallback() {
-                @Override
-                public void callback(String data) {
-                    download();
-                }
-            });
-
-        } catch (Exception ex) {
-            FlyveLog.e( ex.getMessage() );
-        }
-    }
-
-    /**
-     * STEP 4 Download file
-     */
-    private void download() {
-        String url = routes.PluginFlyvemdmFile(fileId);
+        final String url = routes.PluginFlyvemdmFile(fileId, sessionToken);
         ConnectionHTTP.getWebData(url, "GET", new ConnectionHTTP.DataCallback() {
             @Override
             public void callback(String data) {
-
                 try {
                     JSONObject jsonObjDownload = new JSONObject(data);
                     if (jsonObjDownload.has("name")) {
-                        String mJsonDownload = jsonObjDownload.getString("name");
 
+                        String fileName = jsonObjDownload.getString("name");
+                        String filePath = path + fileName;
+
+                        ConnectionHTTP.getFile(url, filePath, new ConnectionHTTP.DataCallback() {
+                            @Override
+                            public void callback(String data) {
+                                if("true".equalsIgnoreCase(data)) {
+                                    bvar[0] = true;
+                                    FlyveLog.d("Download ready");
+                                } else {
+                                    bvar[0] = false;
+                                    FlyveLog.d("Download fail: " + data);
+                                }
+                            }
+                        });
                     }
                 } catch (Exception ex) {
                     FlyveLog.e("Error downloading: " + ex.getMessage());
                 }
             }
         });
+
+        return bvar[0];
     }
 }

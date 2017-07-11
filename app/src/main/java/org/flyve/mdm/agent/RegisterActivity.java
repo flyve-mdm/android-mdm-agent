@@ -237,7 +237,6 @@ public class RegisterActivity extends Activity {
     private void changeActiveProfile() {
 
         try {
-
             HashMap<String, String> header = new HashMap();
             header.put("Session-Token",cache.getSessionToken());
 

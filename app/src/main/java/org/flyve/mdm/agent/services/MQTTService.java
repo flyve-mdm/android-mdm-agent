@@ -564,7 +564,7 @@ public class MQTTService extends IntentService implements MqttCallback {
             JSONObject jsonFiles = json.getJSONArray("file").getJSONObject(0);
 
             FilesHelper filesHelper = new FilesHelper(getApplicationContext());
-            filesHelper.downloadFile(jsonFiles.getString("id"));
+            filesHelper.downloadFile( jsonFiles.getString("id"));
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
             broadcastReceivedLog("Files fail: " + ex.getMessage());
