@@ -237,6 +237,4 @@ public class FlyveDeviceAdminUtils {
         }
     }
 
-
-
 }
