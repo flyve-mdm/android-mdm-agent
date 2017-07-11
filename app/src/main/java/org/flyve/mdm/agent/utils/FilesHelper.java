@@ -290,7 +290,7 @@ public class FilesHelper {
         return "";
     }
 
-    public int removeApk(String mPackage){
+    private int removeApk(String mPackage){
         Uri packageUri = Uri.parse("package:"+mPackage);
         Intent uninstallIntent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
         uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -307,6 +307,7 @@ public class FilesHelper {
         FlyveLog.d(file);
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setDataAndType(Uri.parse("file://" + file), "application/vnd.android.package-archive");
         intent.putExtra("isFromMDM", true);
         intent.putExtra("UPKFilePath", file);
