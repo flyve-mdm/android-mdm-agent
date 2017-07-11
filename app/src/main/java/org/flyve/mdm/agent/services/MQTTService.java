@@ -47,7 +47,9 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
+import org.flyve.mdm.agent.utils.AppInfo;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
+import org.flyve.mdm.agent.utils.FilesHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
@@ -280,6 +282,19 @@ public class MQTTService extends IntentService implements MqttCallback {
                 return;
             }
 
+            // Files
+            if(jsonObj.has("file")) {
+                filesOnDevices(jsonObj);
+                return;
+            }
+
+            // Aplications
+            if(jsonObj.has("application")) {
+                applicationOnDevices(jsonObj);
+                return;
+            }
+
+
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
             broadcastReceivedMessage("Error: " + ex.getCause().toString());
@@ -384,7 +399,7 @@ public class MQTTService extends IntentService implements MqttCallback {
      * Example {"query": "inventory"}
      */
     private void createInventory() {
-        InventoryTask inventoryTask = new InventoryTask(getApplicationContext(), "agent_v1");
+        InventoryTask inventoryTask = new InventoryTask(getApplicationContext(), "FlyveMDM-Agent_v1.0");
         inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
             @Override
             public void onTaskSuccess(String data) {
@@ -478,6 +493,86 @@ public class MQTTService extends IntentService implements MqttCallback {
         } catch (Exception ex) {
             FlyveLog.e(ex.getCause().getMessage());
             broadcastReceivedLog("Disable Connetivity fail: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Application
+     * {"application":[{"deployApp":"org.flyve.inventory.agent","id":"1","versionCode":"1"}]}
+     */
+    private void applicationOnDevices(JSONObject json) {
+        try {
+            JSONArray checkInstall = json.getJSONArray("application");
+            AppInfo appInfo = new AppInfo(getApplicationContext());
+
+            FilesHelper filesHelper = new FilesHelper(getApplicationContext());
+            String sessionToken = filesHelper.getActiveSessionToken();
+
+            for(int i=0; i<checkInstall.length(); i++) {
+
+                if(checkInstall.getJSONObject(i).has("removeApp")){
+                    FlyveLog.d("uninstall apps");
+
+                    JSONObject jsonApp = checkInstall.getJSONObject(i);
+                    if(appInfo.isInstall(jsonApp.getString("removeApp"))) {
+                        FilesHelper.removeApk(getApplicationContext(), jsonApp.getString("removeApp"));
+                    }
+                }
+
+                if(checkInstall.getJSONObject(i).has("deployApp")){
+                    FlyveLog.d("install apps");
+
+                    JSONObject jsonApp = checkInstall.getJSONObject(i);
+
+                    String idlist;
+                    String packageNamelist;
+                    String versionCode;
+
+                    idlist = jsonApp.getString("id");
+                    packageNamelist = jsonApp.getString("deployApp");
+                    versionCode = jsonApp.getString("versionCode");
+
+                    if(!appInfo.isInstall(packageNamelist,versionCode)){
+                        filesHelper.downloadApk(packageNamelist, versionCode, sessionToken);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+            broadcastReceivedLog("Files fail: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Files
+     * {"file":[{"deployFile":"%SDCARD%/","id":"2","version":"1"}]}
+     */
+    private void filesOnDevices(JSONObject json) {
+        try {
+            JSONArray jsonFiles = json.getJSONArray("file");
+
+            FilesHelper filesHelper = new FilesHelper(getApplicationContext());
+            String sessionToken = filesHelper.getActiveSessionToken();
+
+            for(int i=0; i<=jsonFiles.length();i++) {
+                JSONObject jsonFile = jsonFiles.getJSONObject(i);
+
+                if(jsonFile.has("removeFile")){
+                    filesHelper.removeFile(jsonFile.getString("removeFile"));
+                }
+
+                if(jsonFile.has("deployFile")) {
+                    String fileId = jsonFile.getString("id");
+                    String filePath = jsonFile.getString("deployFile");
+
+                    if (filesHelper.downloadFile(filePath, fileId, sessionToken)) {
+                        FlyveLog.v("File was stored on: " + filePath);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+            broadcastReceivedLog("Files fail: " + ex.getMessage());
         }
     }
 

@@ -34,11 +34,14 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ConnectionHTTP {
@@ -78,6 +81,20 @@ public class ConnectionHTTP {
 					conn.setReadTimeout(readtimeout);
 					conn.setInstanceFollowRedirects(true);
 
+					if(conn.getResponseCode() >= 400) {
+						InputStream is = conn.getErrorStream();
+						final String result = inputStreamToString(is);
+
+						ConnectionHTTP.runOnUI(new Runnable()
+						{
+							public void run()
+							{
+								callback.callback(result);
+							}
+						});
+						return;
+					}
+
 					InputStream is = conn.getInputStream();
 
 					final String result = inputStreamToString(is);
@@ -104,6 +121,95 @@ public class ConnectionHTTP {
 			}
 		});
 		t.start();
+	}
+
+	public static String getSyncWebData(String url, String method, Map<String, String> header)
+	{
+		try
+		{
+			URL dataURL = new URL(url);
+			FlyveLog.d("Method: " + method + " - URL = " + url);
+			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
+
+			conn.setConnectTimeout(timeout);
+			conn.setReadTimeout(readtimeout);
+			conn.setInstanceFollowRedirects(true);
+
+			if(header != null) {
+				for (Map.Entry<String, String> entry : header.entrySet()) {
+					conn.setRequestProperty(entry.getKey(), entry.getValue());
+					FlyveLog.d(entry.getKey() + " = " + entry.getValue());
+				}
+			}
+
+			if(conn.getResponseCode() >= 400) {
+				InputStream is = conn.getErrorStream();
+				final String result = inputStreamToString(is);
+				return result;
+			}
+
+			InputStream is = conn.getInputStream();
+
+			final String result = inputStreamToString(is);
+			FlyveLog.d("GetRequest input stream = " + result);
+
+			return result;
+		}
+		catch (final Exception ex)
+		{
+			FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
+			return "Exception (" + ex.getClass() + "): " + ex.getMessage();
+		}
+	}
+
+	/**
+	 * Download and save files on device
+	 * @param url String the url to download the file
+	 * @param pathFile String place to save
+	 * @return Boolean if file is write
+	 */
+	public static Boolean getSyncFile(final String url, final String pathFile) {
+		try {
+			URL dataURL = new URL(url);
+			FlyveLog.d("Method: " + " - URL = " + url);
+			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
+
+			conn.setConnectTimeout(timeout);
+			conn.setReadTimeout(readtimeout);
+			conn.setInstanceFollowRedirects(true);
+
+			HashMap<String, String> header = new HashMap();
+			header.put("Accept","application/octet-stream");
+			header.put("Content-Type","application/json");
+
+			for (Map.Entry<String, String> entry : header.entrySet()) {
+				conn.setRequestProperty(entry.getKey(), entry.getValue());
+				FlyveLog.d(entry.getKey() + " = " + entry.getValue());
+			}
+
+			int fileLength = conn.getContentLength();
+
+			InputStream input = conn.getInputStream();
+			OutputStream output = new FileOutputStream(pathFile);
+
+			byte data[] = new byte[4096];
+			long total = 0;
+			int count;
+
+			while ((count = input.read(data)) != -1) {
+				total += count;
+				//publish progress only if total length is known
+				if (fileLength > 0) {
+					FlyveLog.v( String.valueOf (((int)(total * 100 / fileLength))));
+				}
+				output.write(data, 0, count);
+			}
+			return true;
+		}
+		catch (final Exception ex) {
+			FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
+			return false;
+		}
 	}
 
 	/**
@@ -133,6 +239,20 @@ public class ConnectionHTTP {
 					for (Map.Entry<String, String> entry : header.entrySet()) {
 						conn.setRequestProperty(entry.getKey(), entry.getValue());
 						FlyveLog.d(entry.getKey() + " = " + entry.getValue());
+					}
+
+					if(conn.getResponseCode() >= 400) {
+						InputStream is = conn.getErrorStream();
+						final String result = inputStreamToString(is);
+
+						ConnectionHTTP.runOnUI(new Runnable()
+						{
+							public void run()
+							{
+								callback.callback(result);
+							}
+						});
+						return;
 					}
 
 					InputStream is = conn.getInputStream();
@@ -199,7 +319,7 @@ public class ConnectionHTTP {
 				os.flush();
 				os.close();
 
-				if(conn.getResponseCode() == 400) {
+				if(conn.getResponseCode() >= 400) {
 					InputStream is = conn.getErrorStream();
 					final String result = inputStreamToString(is);
 

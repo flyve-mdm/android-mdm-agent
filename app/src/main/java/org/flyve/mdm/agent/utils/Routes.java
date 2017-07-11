@@ -37,13 +37,14 @@ import org.flyve.mdm.agent.data.DataStorage;
 public class Routes {
 
     private String url;
+    DataStorage cache;
 
     /**
      * Constructor
      * @param context
      */
     public Routes(Context context) {
-        DataStorage cache = new DataStorage(context);
+        cache = new DataStorage(context);
         url = cache.getUrl();
     }
 
@@ -89,4 +90,24 @@ public class Routes {
     public String pluginFlyvemdmAgent(String agentId) {
         return url + "/PluginFlyvemdmAgent/" + agentId;
     }
+
+    /**
+     * Download files
+     * @param fileId String file id
+     * @return String url
+     */
+    public String PluginFlyvemdmFile(String fileId, String sessionToken) {
+        return url + "/PluginFlyvemdmFile/" + fileId + "?session_token=" + sessionToken;
+    }
+
+    /**
+     * Download apk
+     * @param fileId String file id
+     * @return String url
+     */
+    public String PluginFlyvemdmPackage(String fileId, String sessionToken) {
+        return url + "/PluginFlyvemdmPackage/" + fileId + "?session_token=" + sessionToken;
+    }
+
+
 }
