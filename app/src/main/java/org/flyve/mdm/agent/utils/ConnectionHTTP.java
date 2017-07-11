@@ -109,6 +109,39 @@ public class ConnectionHTTP {
 		t.start();
 	}
 
+	public static String getSyncWebData(String url, String method, Map<String, String> header)
+	{
+		try
+		{
+			URL dataURL = new URL(url);
+			FlyveLog.d("Method: " + method + " - URL = " + url);
+			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
+
+			conn.setConnectTimeout(timeout);
+			conn.setReadTimeout(readtimeout);
+			conn.setInstanceFollowRedirects(true);
+
+			if(header != null) {
+				for (Map.Entry<String, String> entry : header.entrySet()) {
+					conn.setRequestProperty(entry.getKey(), entry.getValue());
+					FlyveLog.d(entry.getKey() + " = " + entry.getValue());
+				}
+			}
+
+			InputStream is = conn.getInputStream();
+
+			final String result = inputStreamToString(is);
+			FlyveLog.d("GetRequest input stream = " + result);
+
+			return result;
+		}
+		catch (final Exception ex)
+		{
+			FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
+			return "Exception (" + ex.getClass() + "): " + ex.getMessage();
+		}
+	}
+
 	/**
 	 * Download and save files on device
 	 * @param url String the url to download the file
