@@ -11,6 +11,7 @@ import android.os.StrictMode;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,7 +54,7 @@ public class FilesHelper {
         routes = new Routes(context);
     }
 
-    private static String getDataDir() throws Exception {
+    private static String getApkDir() throws Exception {
         FlyveLog.d(System.getenv("EXTERNAL_STORAGE") + "/apk/");
         return System.getenv("EXTERNAL_STORAGE") + "/apk/";
     }
@@ -66,11 +67,6 @@ public class FilesHelper {
     private static String getUpkDir() throws Exception {
         FlyveLog.d(System.getenv("EXTERNAL_STORAGE") + "/.fdroid/");
         return System.getenv("EXTERNAL_STORAGE") + "/.fdroid/";
-    }
-
-    private static String getFileDir() throws Exception {
-        FlyveLog.d(System.getenv("EXTERNAL_STORAGE") + "/file/");
-        return System.getenv("EXTERNAL_STORAGE") + "/file/";
     }
 
     private static String getPicturesDir() throws Exception {
@@ -138,15 +134,46 @@ public class FilesHelper {
         PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
         wl.acquire();
 
-        String filePath;
+        String filePath = "";
         try {
             filePath = convertPath(path);
         } catch (Exception ex) {
-            filePath = "";
             FlyveLog.e(ex.getMessage());
         }
 
-        return download(id, filePath, sessionToken);
+        final String url = routes.PluginFlyvemdmFile(id, sessionToken);
+        String completeFilePath = download(url, filePath);
+
+        return(completeFilePath.equalsIgnoreCase(""));
+    }
+
+    /**
+     * Download, save and install app
+     * @param packageFile String package of the app
+     * @param id String Id from
+     */
+    public Boolean downloadApk(String packageFile, String id, String sessionToken) {
+
+        //prevent CPU from going off if the user presses the power button during download
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
+        wl.acquire();
+
+        String filePath = "";
+        try {
+            filePath = getApkDir();
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+
+        final String url = routes.PluginFlyvemdmPackage(id, sessionToken);
+        String completeFilePath = download(url, filePath);
+        if(completeFilePath.equalsIgnoreCase("")) {
+            return false;
+        } else {
+            installApk(completeFilePath);
+            return true;
+        }
     }
 
     /**
@@ -210,43 +237,60 @@ public class FilesHelper {
 
     /**
      * Download file from url to start need a fresh sessionToken
-     * @param fileId String file Id
-     * @param sessionToken String fresh sessionToken
-     * @return Boolean state of download
+     * @param url String url to download the file
+     * @param path String path to save
+     * @return String complete path with name of the file
      */
-    private Boolean download(String fileId, final String path, String sessionToken) {
+    private String download(final String url, final String path) {
 
-        final String url = routes.PluginFlyvemdmFile(fileId, sessionToken);
         String data = ConnectionHTTP.getSyncWebData(url, "GET",null);
 
         if(!data.contains("Exception")) {
             try {
                 JSONObject jsonObjDownload = new JSONObject(data);
+
+                String fileName = "";
+
+                // Both has name
                 if (jsonObjDownload.has("name")) {
+                    fileName = jsonObjDownload.getString("name");
+                }
 
-                    String fileName = jsonObjDownload.getString("name");
-                    String filePath = path + fileName;
+                // is APK
+                if(jsonObjDownload.has("dl_filename")) {
+                    fileName = jsonObjDownload.getString("dl_filename");
+                }
 
-                    Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath);
-                    if(isSave) {
-                        FlyveLog.d("Download ready");
-                        return true;
-                    } else {
-                        FlyveLog.e("Download fail: " + data);
-                        return false;
-                    }
+                // validating if folder exists or create
+                new File(path).mkdirs();
+
+                // validating if file exists
+                String filePath = path + fileName;
+                File file = new File(filePath);
+                if(file.exists()) {
+                    FlyveLog.d("File exists");
+                    return "";
+                }
+
+                Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath);
+                if(isSave) {
+                    FlyveLog.d("Download ready");
+                    return filePath;
+                } else {
+                    FlyveLog.e("Download fail: " + data);
+                    return "";
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
-                return false;
+                return "";
             }
         } // endif Exception
 
         FlyveLog.e(data);
-        return false;
+        return "";
     }
 
-    public int removeApp(String mPackage){
+    public int removeApk(String mPackage){
         Uri packageUri = Uri.parse("package:"+mPackage);
         Intent uninstallIntent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
         uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

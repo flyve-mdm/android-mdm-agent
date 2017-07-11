@@ -99,4 +99,15 @@ public class Routes {
     public String PluginFlyvemdmFile(String fileId, String sessionToken) {
         return url + "/PluginFlyvemdmFile/" + fileId + "?session_token=" + sessionToken;
     }
+
+    /**
+     * Download apk
+     * @param fileId String file id
+     * @return String url
+     */
+    public String PluginFlyvemdmPackage(String fileId, String sessionToken) {
+        return url + "/PluginFlyvemdmPackage/" + fileId + "?session_token=" + sessionToken;
+    }
+
+
 }

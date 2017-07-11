@@ -28,10 +28,8 @@
 package org.flyve.mdm.agent.services;
 
 import android.app.IntentService;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.location.Location;
-import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -294,7 +292,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
             // Aplications
             if(jsonObj.has("application")) {
-
+                applicationOnDevices(jsonObj);
                 return;
             }
 
@@ -509,16 +507,21 @@ public class MQTTService extends IntentService implements MqttCallback {
             JSONArray checkInstall = json.getJSONArray("application");
             AppInfo appInfo = new AppInfo(getApplicationContext());
 
+            FilesHelper filesHelper = new FilesHelper(getApplicationContext());
+            String sessionToken = filesHelper.getActiveSessionToken();
+
             for(int i=0; i<checkInstall.length(); i++) {
+
                 if(checkInstall.getJSONObject(i).has("removeApp")){
                     FlyveLog.d("uninstall apps");
 
                     JSONObject jsonApp = checkInstall.getJSONObject(i);
                     if(appInfo.isInstall(jsonApp.getString("removeApp"))) {
-                        removeApp(jsonApp.getString("removeApp"));
+                        //removeApp(jsonApp.getString("removeApp"));
                     }
                 }
-                else if(checkInstall.getJSONObject(i).has("deployApp")){
+
+                if(checkInstall.getJSONObject(i).has("deployApp")){
                     FlyveLog.d("install apps");
 
                     JSONObject jsonApp = checkInstall.getJSONObject(i);
@@ -532,7 +535,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                     versionCode = jsonApp.getString("versionCode");
 
                     if(!appInfo.isInstall(packageNamelist,versionCode)){
-                        //new DownloadTask(mContext).execute("application",idlist, packageNamelist);
+                        filesHelper.downloadApk(packageNamelist, versionCode, sessionToken);
                     }
                 }
             }
