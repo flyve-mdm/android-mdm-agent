@@ -1,8 +1,12 @@
 package org.flyve.mdm.agent.utils;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.PowerManager;
+import android.os.StrictMode;
 
 import org.flyve.mdm.agent.data.DataStorage;
 import org.json.JSONObject;
@@ -150,6 +154,8 @@ public class FilesHelper {
      */
     public String getActiveSessionToken() {
         try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
 
             // STEP 1 get session token
             String data = ConnectionHTTP.getSyncWebData(routes.initSession(cache.getUserToken()), "GET", null);
@@ -238,5 +244,31 @@ public class FilesHelper {
 
         FlyveLog.e(data);
         return false;
+    }
+
+    public int removeApp(String mPackage){
+        Uri packageUri = Uri.parse("package:"+mPackage);
+        Intent uninstallIntent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
+        uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            context.startActivity(uninstallIntent);
+        } catch (ActivityNotFoundException e) {
+            FlyveLog.e(e.getMessage());
+            return 0;
+        }
+        return 1;
+    }
+
+    public void installApk(String file) {
+        FlyveLog.d(file);
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
+        intent.setDataAndType(Uri.parse("file://" + file), "application/vnd.android.package-archive");
+        intent.putExtra("isFromMDM", true);
+        intent.putExtra("UPKFilePath", file);
+        intent.putExtra("repoaddress", "");
+        intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+        intent.putExtra("token_id", 1);
+        context.startActivity(intent);
     }
 }

@@ -81,6 +81,20 @@ public class ConnectionHTTP {
 					conn.setReadTimeout(readtimeout);
 					conn.setInstanceFollowRedirects(true);
 
+					if(conn.getResponseCode() >= 400) {
+						InputStream is = conn.getErrorStream();
+						final String result = inputStreamToString(is);
+
+						ConnectionHTTP.runOnUI(new Runnable()
+						{
+							public void run()
+							{
+								callback.callback(result);
+							}
+						});
+						return;
+					}
+
 					InputStream is = conn.getInputStream();
 
 					final String result = inputStreamToString(is);
@@ -128,6 +142,12 @@ public class ConnectionHTTP {
 				}
 			}
 
+			if(conn.getResponseCode() >= 400) {
+				InputStream is = conn.getErrorStream();
+				final String result = inputStreamToString(is);
+				return result;
+			}
+
 			InputStream is = conn.getInputStream();
 
 			final String result = inputStreamToString(is);
@@ -148,10 +168,8 @@ public class ConnectionHTTP {
 	 * @param pathFile String place to save
 	 * @return Boolean if file is write
 	 */
-	public static Boolean getSyncFile(final String url, final String pathFile)
-	{
-		try
-		{
+	public static Boolean getSyncFile(final String url, final String pathFile) {
+		try {
 			URL dataURL = new URL(url);
 			FlyveLog.d("Method: " + " - URL = " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
@@ -188,8 +206,7 @@ public class ConnectionHTTP {
 			}
 			return true;
 		}
-		catch (final Exception ex)
-		{
+		catch (final Exception ex) {
 			FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
 			return false;
 		}
@@ -222,6 +239,20 @@ public class ConnectionHTTP {
 					for (Map.Entry<String, String> entry : header.entrySet()) {
 						conn.setRequestProperty(entry.getKey(), entry.getValue());
 						FlyveLog.d(entry.getKey() + " = " + entry.getValue());
+					}
+
+					if(conn.getResponseCode() >= 400) {
+						InputStream is = conn.getErrorStream();
+						final String result = inputStreamToString(is);
+
+						ConnectionHTTP.runOnUI(new Runnable()
+						{
+							public void run()
+							{
+								callback.callback(result);
+							}
+						});
+						return;
 					}
 
 					InputStream is = conn.getInputStream();
@@ -288,7 +319,7 @@ public class ConnectionHTTP {
 				os.flush();
 				os.close();
 
-				if(conn.getResponseCode() == 400) {
+				if(conn.getResponseCode() >= 400) {
 					InputStream is = conn.getErrorStream();
 					final String result = inputStreamToString(is);
 

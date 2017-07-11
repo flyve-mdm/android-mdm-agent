@@ -500,19 +500,6 @@ public class MQTTService extends IntentService implements MqttCallback {
         }
     }
 
-    public int removeApp(String mPackage){
-        Uri packageUri = Uri.parse("package:"+mPackage);
-        Intent uninstallIntent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
-        uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        try {
-            getApplicationContext().startActivity(uninstallIntent);
-        } catch (ActivityNotFoundException e) {
-            FlyveLog.e(e.getMessage());
-            return 0;
-        }
-        return 1;
-    }
-
     /**
      * Application
      * {"application":[{"deployApp":"org.flyve.inventory.agent","id":"1","versionCode":"1"}]}
@@ -572,10 +559,10 @@ public class MQTTService extends IntentService implements MqttCallback {
                 String fileId = jsonFile.getString("id");
                 String filePath = jsonFile.getString("deployFile");
 
-                filesHelper.downloadFile(filePath, fileId, sessionToken);
+                if(filesHelper.downloadFile(filePath, fileId, sessionToken)) {
+                    FlyveLog.v("File was stored on: " + filePath);
+                }
             }
-
-
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
             broadcastReceivedLog("Files fail: " + ex.getMessage());
