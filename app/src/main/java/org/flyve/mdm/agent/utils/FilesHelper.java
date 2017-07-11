@@ -290,6 +290,17 @@ public class FilesHelper {
         return "";
     }
 
+    public boolean removeFile(String filePath) {
+        try {
+            String realPath = convertPath(filePath);
+            File file = new File(realPath);
+            return file.delete();
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+            return false;
+        }
+    }
+
     public static int removeApk(Context context, String mPackage){
         Uri packageUri = Uri.parse("package:"+mPackage);
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);

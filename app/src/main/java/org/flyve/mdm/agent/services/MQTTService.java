@@ -557,13 +557,19 @@ public class MQTTService extends IntentService implements MqttCallback {
             String sessionToken = filesHelper.getActiveSessionToken();
 
             for(int i=0; i<=jsonFiles.length();i++) {
-                JSONObject jsonFile = jsonFiles.getJSONObject(0);
+                JSONObject jsonFile = jsonFiles.getJSONObject(i);
 
-                String fileId = jsonFile.getString("id");
-                String filePath = jsonFile.getString("deployFile");
+                if(jsonFile.has("removeFile")){
+                    filesHelper.removeFile(jsonFile.getString("removeFile"));
+                }
 
-                if(filesHelper.downloadFile(filePath, fileId, sessionToken)) {
-                    FlyveLog.v("File was stored on: " + filePath);
+                if(jsonFile.has("deployFile")) {
+                    String fileId = jsonFile.getString("id");
+                    String filePath = jsonFile.getString("deployFile");
+
+                    if (filesHelper.downloadFile(filePath, fileId, sessionToken)) {
+                        FlyveLog.v("File was stored on: " + filePath);
+                    }
                 }
             }
         } catch (Exception ex) {
