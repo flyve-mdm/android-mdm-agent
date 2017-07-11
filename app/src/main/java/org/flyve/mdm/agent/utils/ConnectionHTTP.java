@@ -146,70 +146,53 @@ public class ConnectionHTTP {
 	 * Download and save files on device
 	 * @param url String the url to download the file
 	 * @param pathFile String place to save
-	 * @param callback return response
+	 * @return Boolean if file is write
 	 */
-	public static void getFile(final String url, final String pathFile, final DataCallback callback)
+	public static Boolean getSyncFile(final String url, final String pathFile)
 	{
-		Thread t = new Thread(new Runnable()
+		try
 		{
-			public void run()
-			{
-				try
-				{
-					URL dataURL = new URL(url);
-					FlyveLog.d("Method: " + " - URL = " + url);
-					HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
+			URL dataURL = new URL(url);
+			FlyveLog.d("Method: " + " - URL = " + url);
+			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
-					conn.setConnectTimeout(timeout);
-					conn.setReadTimeout(readtimeout);
-					conn.setInstanceFollowRedirects(true);
-					int fileLength = conn.getContentLength();
+			conn.setConnectTimeout(timeout);
+			conn.setReadTimeout(readtimeout);
+			conn.setInstanceFollowRedirects(true);
 
-					HashMap<String, String> header = new HashMap();
-					header.put("Accept","application/octet-stream");
-					header.put("Content-Type","application/json");
+			HashMap<String, String> header = new HashMap();
+			header.put("Accept","application/octet-stream");
+			header.put("Content-Type","application/json");
 
-					for (Map.Entry<String, String> entry : header.entrySet()) {
-						conn.setRequestProperty(entry.getKey(), entry.getValue());
-						FlyveLog.d(entry.getKey() + " = " + entry.getValue());
-					}
-
-					InputStream input = conn.getInputStream();
-					OutputStream output = new FileOutputStream(pathFile);
-
-					byte data[] = new byte[4096];
-					long total = 0;
-					int count;
-
-					while ((count = input.read(data)) != -1) {
-						total += count;
-						//publish progress only if total length is known
-						if (fileLength > 0) {
-							FlyveLog.v( String.valueOf (((int)(total * 100 / fileLength))));
-						}
-						output.write(data, 0, count);
-					}
-
-					ConnectionHTTP.runOnUI(new Runnable() {
-						public void run() {
-							callback.callback("true");
-						}
-					});
-				}
-				catch (final Exception ex)
-				{
-					ConnectionHTTP.runOnUI(new Runnable()
-					{
-						public void run()
-						{
-							callback.callback("Exception (" + ex.getClass() + "): " + ex.getMessage());
-							FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
-						}
-					});
-				}
+			for (Map.Entry<String, String> entry : header.entrySet()) {
+				conn.setRequestProperty(entry.getKey(), entry.getValue());
+				FlyveLog.d(entry.getKey() + " = " + entry.getValue());
 			}
-		});
-		t.start();
+
+			int fileLength = conn.getContentLength();
+
+			InputStream input = conn.getInputStream();
+			OutputStream output = new FileOutputStream(pathFile);
+
+			byte data[] = new byte[4096];
+			long total = 0;
+			int count;
+
+			while ((count = input.read(data)) != -1) {
+				total += count;
+				//publish progress only if total length is known
+				if (fileLength > 0) {
+					FlyveLog.v( String.valueOf (((int)(total * 100 / fileLength))));
+				}
+				output.write(data, 0, count);
+			}
+			return true;
+		}
+		catch (final Exception ex)
+		{
+			FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
+			return false;
+		}
 	}
 
 	/**

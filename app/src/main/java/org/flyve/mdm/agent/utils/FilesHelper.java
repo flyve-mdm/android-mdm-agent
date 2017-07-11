@@ -127,7 +127,7 @@ public class FilesHelper {
      * @param path String path to save the file on device
      * @param id String Id from
      */
-    public void downloadFile(String path, String id, String sessionToken) {
+    public Boolean downloadFile(String path, String id, String sessionToken) {
 
         //prevent CPU from going off if the user presses the power button during download
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -142,7 +142,7 @@ public class FilesHelper {
             FlyveLog.e(ex.getMessage());
         }
 
-        download(id, filePath, sessionToken);
+        return download(id, filePath, sessionToken);
     }
 
     /**
@@ -208,7 +208,7 @@ public class FilesHelper {
      * @param sessionToken String fresh sessionToken
      * @return Boolean state of download
      */
-    private void download(String fileId, final String path, String sessionToken) {
+    private Boolean download(String fileId, final String path, String sessionToken) {
 
         final String url = routes.PluginFlyvemdmFile(fileId, sessionToken);
         String data = ConnectionHTTP.getSyncWebData(url, "GET",null);
@@ -221,20 +221,22 @@ public class FilesHelper {
                     String fileName = jsonObjDownload.getString("name");
                     String filePath = path + fileName;
 
-                    ConnectionHTTP.getFile(url, filePath, new ConnectionHTTP.DataCallback() {
-                        @Override
-                        public void callback(String data) {
-                            if ("true".equalsIgnoreCase(data)) {
-                                FlyveLog.d("Download ready");
-                            } else {
-                                FlyveLog.d("Download fail: " + data);
-                            }
-                        }
-                    });
+                    Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath);
+                    if(isSave) {
+                        FlyveLog.d("Download ready");
+                        return true;
+                    } else {
+                        FlyveLog.e("Download fail: " + data);
+                        return false;
+                    }
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
+                return false;
             }
         } // endif Exception
+
+        FlyveLog.e(data);
+        return false;
     }
 }
