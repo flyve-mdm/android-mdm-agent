@@ -21,6 +21,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    defaultConfig {
+        multiDexEnabled true
+    }
+
+    configurations {
+        all*.exclude group: 'com.android.support', module: 'support-v4'
+    }
 }
 
 repositories {
@@ -32,17 +44,6 @@ repositories {
     }
 }
 
-android {
-    lintOptions {
-        abortOnError false
-    }
-}
-
-android {
-    lintOptions {
-        abortOnError false
-    }
-}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
