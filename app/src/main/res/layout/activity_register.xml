@@ -5,6 +5,28 @@
     android:layout_height="match_parent"
     >
 
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:id="@+id/toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enrollment"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
     <LinearLayout
         android:id="@+id/user_data"
         android:layout_width="match_parent"

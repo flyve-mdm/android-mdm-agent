@@ -29,10 +29,6 @@ android {
     defaultConfig {
         multiDexEnabled true
     }
-
-    configurations {
-        all*.exclude group: 'com.android.support', module: 'support-v4'
-    }
 }
 
 repositories {
@@ -49,7 +45,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1'
     compile ('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
-        // exclude module: 'support-v4'
+        exclude module: 'support-v4'
         transitive=true
     }
 

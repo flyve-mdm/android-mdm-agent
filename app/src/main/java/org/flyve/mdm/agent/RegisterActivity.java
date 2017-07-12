@@ -27,14 +27,12 @@
 
 package org.flyve.mdm.agent;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,7 +58,7 @@ import java.util.HashMap;
 /**
  * Register the agent to the platform
  */
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends AppCompatActivity {
 
     private ProgressBar pb;
     private ProgressBar pbx509;
@@ -88,11 +86,6 @@ public class RegisterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        ActionBar actionBar = getActionBar();
-        if(actionBar!=null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
         pb = (ProgressBar) findViewById(R.id.progressBar);
         pbx509 = (ProgressBar) findViewById(R.id.progressBarX509);
 
@@ -119,17 +112,6 @@ public class RegisterActivity extends Activity {
 
         // start creating a certificated
         createX509cert();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     /**
