@@ -39,7 +39,17 @@
         <activity android:name=".MainActivity" android:configChanges="orientation|screenSize">
         </activity>
 
-        <activity android:name=".RegisterActivity" android:configChanges="orientation|screenSize">
+        <activity android:name=".RegisterActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/NoActionBar"
+            >
+        </activity>
+
+        <activity android:name=".StartEnrollmentActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/NoActionBar"
+            >
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -48,8 +58,9 @@
                 <data
                     android:scheme="flyve"
                     android:host="register"
-                     />
+                    />
             </intent-filter>
+
         </activity>
 
         <service android:name="org.eclipse.paho.android.service.MqttService" >
