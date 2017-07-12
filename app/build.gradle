@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 16
+    compileSdkVersion 22
     buildToolsVersion '22.0.1'
     defaultConfig {
         applicationId "org.flyve.mdm.agent"
@@ -51,6 +51,8 @@ dependencies {
         // exclude module: 'support-v4'
         transitive=true
     }
+
+    compile "com.android.support:appcompat-v7:22.2.0"
     compile 'com.madgag.spongycastle:core:1.54.0.0'
     compile 'com.madgag.spongycastle:prov:1.54.0.0'
     compile 'com.madgag.spongycastle:pkix:1.54.0.0'

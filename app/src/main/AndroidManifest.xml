@@ -41,7 +41,6 @@
 
         <activity android:name=".RegisterActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/NoActionBar"
             >
         </activity>
 

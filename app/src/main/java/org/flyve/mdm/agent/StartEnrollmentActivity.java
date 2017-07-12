@@ -105,6 +105,9 @@ public class StartEnrollmentActivity extends Activity {
                         btnEnroll.setVisibility(View.VISIBLE);
                         pb.setVisibility(View.GONE);
                         tvStatus.setText("");
+
+                        // Active Session Token is stored on cache
+                        openActivity();
                     }
 
                     @Override
@@ -120,11 +123,10 @@ public class StartEnrollmentActivity extends Activity {
     }
 
     /**
-     * Open the main activity
+     * Open activity
      */
-    private void openMain() {
-        Intent miIntent = new Intent(StartEnrollmentActivity.this, MainActivity.class);
+    private void openActivity() {
+        Intent miIntent = new Intent(StartEnrollmentActivity.this, RegisterActivity.class);
         StartEnrollmentActivity.this.startActivity(miIntent);
-        StartEnrollmentActivity.this.finish();
     }
 }
