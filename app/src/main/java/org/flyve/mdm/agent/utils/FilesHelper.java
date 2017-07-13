@@ -6,13 +6,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.PowerManager;
-import android.os.StrictMode;
-
 import org.flyve.mdm.agent.data.DataStorage;
 import org.json.JSONObject;
-
 import java.io.File;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -173,65 +169,6 @@ public class FilesHelper {
         } else {
             installApk(completeFilePath);
             return true;
-        }
-    }
-
-    /**
-     * STEP 1 get session token
-     */
-    public String getActiveSessionToken() {
-        try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-
-            // STEP 1 get session token
-            String data = ConnectionHTTP.getSyncWebData(routes.initSession(cache.getUserToken()), "GET", null);
-            if(data.contains("Exception")) {
-                FlyveLog.e(data);
-                return "";
-            }
-
-            JSONObject jsonSession = new JSONObject(data);
-            cache.setSessionToken(jsonSession.getString("session_token"));
-
-            // STEP 2 get full session information
-            HashMap<String, String> header = new HashMap();
-            header.put("Session-Token",cache.getSessionToken());
-            header.put("Accept","application/json");
-            header.put("Content-Type","application/json; charset=UTF-8");
-            header.put("User-Agent","Flyve MDM");
-            header.put("Referer",routes.getFullSession());
-
-            data = ConnectionHTTP.getSyncWebData(routes.getFullSession(), "GET", header);
-            if(data.contains("Exception")) {
-                FlyveLog.e(data);
-                return "";
-            }
-
-            JSONObject jsonFullSession = new JSONObject(data);
-            jsonSession = jsonFullSession.getJSONObject("session");
-            JSONObject jsonActiveProfile = jsonSession.getJSONObject("glpiactiveprofile");
-            String profileId = jsonActiveProfile.getString("id");
-            cache.setProfileId( profileId );
-
-            // STEP 3 Activated the profile
-            header = new HashMap();
-            header.put("Session-Token",cache.getSessionToken());
-            header.put("Accept","application/json");
-            header.put("Content-Type","application/json; charset=UTF-8");
-            header.put("User-Agent","Flyve MDM");
-            header.put("Referer",routes.getFullSession());
-
-            data = ConnectionHTTP.getSyncWebData(routes.changeActiveProfile(cache.getProfileId()), "GET", header);
-            if(data.contains("Exception")) {
-                FlyveLog.e(data);
-                return "";
-            } else {
-                return cache.getSessionToken();
-            }
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-            return "";
         }
     }
 

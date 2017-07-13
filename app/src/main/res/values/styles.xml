@@ -1,4 +1,64 @@
 <resources>
-    <style name="AppTheme" parent="android:Theme.Holo">
+    <style name="AppTheme" parent="Base.Theme.AppCompat.Light">
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+
+        <!-- colorPrimaryDark is used for the status bar -->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+
+        <!-- colorAccent is used as the default value for colorControlActivated
+             which is used to tint widgets -->
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="NoActionBar" parent="Base.Theme.AppCompat.Light">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="ToolBarStyle" parent="">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
+    <style name="regularText">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/grayDark</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="titleText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/grayDark</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="bigText">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">35sp</item>
+        <item name="android:textColor">@color/grayDark</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="linkText">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="registerFormEditText">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/grayDark</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
     </style>
 </resources>

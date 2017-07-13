@@ -31,7 +31,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.location.Location;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.flyvemdm.inventory.InventoryTask;
 
@@ -48,13 +47,16 @@ import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
 import org.flyve.mdm.agent.utils.AppInfo;
+import org.flyve.mdm.agent.utils.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FilesHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
+
 import javax.net.ssl.SSLContext;
 
 
@@ -84,7 +86,7 @@ public class MQTTService extends IntentService implements MqttCallback {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.i("START", "SERVICE MQTT");
+        FlyveLog.i("START", "SERVICE MQTT");
         connect();
     }
 
@@ -102,17 +104,16 @@ public class MQTTService extends IntentService implements MqttCallback {
         cache = new DataStorage(this.getApplicationContext());
 
         String mBroker = cache.getBroker();
-        String mPort = "8883"; //cache.getPort();
+        String mPort = cache.getPort();
         String mUser = cache.getMqttuser();
         String mPassword = cache.getMqttpasswd();
 
         mTopic = cache.getTopic();
 
-        broadcastReceivedLog("MQTT Broker:" + mBroker);
-        broadcastReceivedLog("MQTT Port:" + mPort);
-        broadcastReceivedLog("MQTT User:" + mUser);
-        broadcastReceivedLog("MQTT Password:" + mPassword);
-        broadcastReceivedLog("MQTT Topic:" + mTopic);
+        broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Broker", mBroker));
+        broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Port", mPort));
+        broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "User", mUser));
+        broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Topic", mTopic));
 
         String clientId = MqttClient.generateClientId();
             client = new MqttAndroidClient(this.getApplicationContext(), "ssl://" + mBroker + ":" + mPort,
@@ -134,9 +135,9 @@ public class MQTTService extends IntentService implements MqttCallback {
 
                 options.setSocketFactory(sslContext.getSocketFactory());
 
-                Log.d("Flyve", "ssl socket factory created from flyve ca");
+                FlyveLog.d("Flyve", "ssl socket factory created from flyve ca");
             } catch (Exception ex) {
-                Log.e("Flyve","error while building ssl mqtt cnx", ex);
+                FlyveLog.e("Flyve","error while building ssl mqtt cnx", ex);
             }
 
 
@@ -156,14 +157,15 @@ public class MQTTService extends IntentService implements MqttCallback {
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable ex) {
                     // Something went wrong e.g. connection timeout or firewall problems
-                    FlyveLog.e("onFailure:" + ex.getCause().toString());
-                    broadcastReceivedMessage(ex.getCause().toString());
+                    FlyveLog.e("onFailure:" + ex.getMessage());
+                    broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on connect - client.connect", ex.getMessage()));
                     broadcastServiceStatus(false);
                 }
             });
         }
         catch (MqttException ex) {
             FlyveLog.e(ex.getMessage());
+            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on connect", ex.getMessage()));
         }
     }
 
@@ -176,7 +178,8 @@ public class MQTTService extends IntentService implements MqttCallback {
         // send to backend that agent lost connection
         sendOnlineStatus(false);
         broadcastServiceStatus(false);
-        Log.d(TAG, "Connection fail " + cause.getMessage());
+        broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error", cause.getMessage()));
+        FlyveLog.d(TAG, "Connection fail " + cause.getMessage());
     }
 
     /**
@@ -186,7 +189,7 @@ public class MQTTService extends IntentService implements MqttCallback {
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
         FlyveLog.d( "deliveryComplete: " + token.toString());
-        broadcastReceivedLog("Get response from MQTT:" + token.getMessageId());
+        broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Response id", String.valueOf(token.getMessageId())));
     }
 
     /**
@@ -200,7 +203,8 @@ public class MQTTService extends IntentService implements MqttCallback {
         FlyveLog.i("Topic " + topic);
         FlyveLog.i("Message " + new String(message.getPayload()));
 
-        broadcastReceivedLog("GET TOPIC: " + topic + " - Message: " + new String(message.getPayload()) );
+        broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Topic", topic));
+        broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Message", new String(message.getPayload())));
 
         String messageBody = new String(message.getPayload());
 
@@ -266,7 +270,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
             // FLEET connectivity
             if(jsonObj.has("connectivity")) {
-                disableConnetivity(jsonObj);
+                disableConnectivity(jsonObj);
                 return;
             }
 
@@ -288,7 +292,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                 return;
             }
 
-            // Aplications
+            // Applications
             if(jsonObj.has("application")) {
                 applicationOnDevices(jsonObj);
                 return;
@@ -297,7 +301,7 @@ public class MQTTService extends IntentService implements MqttCallback {
 
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-            broadcastReceivedMessage("Error: " + ex.getCause().toString());
+            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on messageArrived", ex.getMessage()));
         }
     }
 
@@ -376,8 +380,8 @@ public class MQTTService extends IntentService implements MqttCallback {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // The message was published
-                    FlyveLog.d("suscribed");
-                    broadcastReceivedLog("suscribed");
+                    FlyveLog.d("Subscribed");
+                    broadcastReceivedLog(Helpers.broadCastMessage("TOPIC", "Subscribed", "Success"));
                 }
 
                 @Override
@@ -386,7 +390,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                     // The subscription could not be performed, maybe the user was not
                     // authorized to subscribe on the specified topic e.g. using wildcards
                     FlyveLog.e("ERROR: " + exception.getCause().getMessage());
-                    broadcastReceivedLog("ERROR: " + exception.getMessage());
+                    broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on suscribe", exception.getMessage()));
                 }
             });
         } catch (MqttException ex) {
@@ -405,16 +409,15 @@ public class MQTTService extends IntentService implements MqttCallback {
             public void onTaskSuccess(String data) {
                 FlyveLog.xml(data);
 
-                // send inventory MQTT
+                // send inventory to MQTT
                 sendInventory(data);
             }
 
             @Override
             public void onTaskError(Throwable error) {
                 FlyveLog.e(error.getCause().toString());
-
                 //send broadcast
-                broadcastReceivedMessage("Inventory Error: " + error.getCause().toString());
+                broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on createInventory", error.getMessage()));
             }
         });
     }
@@ -431,10 +434,10 @@ public class MQTTService extends IntentService implements MqttCallback {
             boolean lock = jsonLock.getBoolean("locknow");
             if(lock) {
                 mdm.lockDevice();
-                broadcastReceivedLog("Device lock");
+                broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Lock", "Device Lock"));
             }
         } catch (Exception ex) {
-            broadcastReceivedLog("ERROR: disable camera" + ex.getCause().getMessage());
+            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on lockDevice", ex.getMessage()));
             FlyveLog.e(ex.getCause().getMessage());
         }
     }
@@ -452,10 +455,10 @@ public class MQTTService extends IntentService implements MqttCallback {
                 JSONObject jsonCamera = jsonCameras.getJSONObject(0);
                 boolean disable = jsonCamera.getBoolean("disableCamera");
                 mdm.disableCamera(disable);
-                broadcastReceivedLog("Disabled Camera: " + disable);
+                broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Camera", "Disable " + disable));
              }
         } catch (Exception ex) {
-            broadcastReceivedLog("ERROR: disable camera" + ex.getCause().getMessage());
+            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on disableCamera", ex.getMessage()));
             FlyveLog.e(ex.getCause().getMessage());
         }
     }
@@ -465,7 +468,7 @@ public class MQTTService extends IntentService implements MqttCallback {
      * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
      * The stored policies on cache this was used on MQTTConnectivityReceiver
      */
-    private void disableConnetivity(JSONObject json) {
+    private void disableConnectivity(JSONObject json) {
 
         try {
             JSONArray jsonConnectivities = json.getJSONArray("connectivity");
@@ -475,24 +478,23 @@ public class MQTTService extends IntentService implements MqttCallback {
                 if (jsonConnectivity.has("disableWifi")) {
                     boolean disable = jsonConnectivity.getBoolean("disableWifi");
                     cache.setConnectivityWifiDisable(disable);
-                    broadcastReceivedLog("disableWifi: " + disable);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Wifi", "Disable " + disable));
                 }
 
                 if (jsonConnectivity.has("disableBluetooth")) {
                     boolean disable = jsonConnectivity.getBoolean("disableBluetooth");
                     cache.setConnectivityBluetoothDisable(disable);
-                    broadcastReceivedLog("disableBluetooth: " + disable);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Bluetooth", "Disable " + disable));
                 }
 
                 if (jsonConnectivity.has("disableGPS")) {
                     boolean disable = jsonConnectivity.getBoolean("disableGPS");
                     cache.setConnectivityGPSDisable(disable);
-                    broadcastReceivedLog("disableGPS: " + disable);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "GPS", "Disable " + disable));
                 }
             }
         } catch (Exception ex) {
-            FlyveLog.e(ex.getCause().getMessage());
-            broadcastReceivedLog("Disable Connetivity fail: " + ex.getMessage());
+            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on disableConnectivity", ex.getMessage()));
         }
     }
 
@@ -500,46 +502,66 @@ public class MQTTService extends IntentService implements MqttCallback {
      * Application
      * {"application":[{"deployApp":"org.flyve.inventory.agent","id":"1","versionCode":"1"}]}
      */
-    private void applicationOnDevices(JSONObject json) {
-        try {
-            JSONArray checkInstall = json.getJSONArray("application");
-            AppInfo appInfo = new AppInfo(getApplicationContext());
+    private void applicationOnDevices(final JSONObject json) {
 
-            FilesHelper filesHelper = new FilesHelper(getApplicationContext());
-            String sessionToken = filesHelper.getActiveSessionToken();
-
-            for(int i=0; i<checkInstall.length(); i++) {
-
-                if(checkInstall.getJSONObject(i).has("removeApp")){
-                    FlyveLog.d("uninstall apps");
-
-                    JSONObject jsonApp = checkInstall.getJSONObject(i);
-                    if(appInfo.isInstall(jsonApp.getString("removeApp"))) {
-                        FilesHelper.removeApk(getApplicationContext(), jsonApp.getString("removeApp"));
+            EnrollmentHelper sToken = new EnrollmentHelper(getApplicationContext());
+            sToken.getActiveSessionToken(new EnrollmentHelper.enrollCallBack() {
+                @Override
+                public void onSuccess(String data) {
+                    try {
+                        JSONArray checkInstall = json.getJSONArray("application");
+                        appWork(checkInstall, data);
+                    } catch (Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                        broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on applicationOnDevices - getActiveSessionToken", ex.getMessage()));
                     }
                 }
 
-                if(checkInstall.getJSONObject(i).has("deployApp")){
-                    FlyveLog.d("install apps");
+                @Override
+                public void onError(String error) {
+                    FlyveLog.e(error);
+                    broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on applicationOnDevices", error));
+                    broadcastReceivedLog("Application fail: " + error);
+                }
+            });
 
-                    JSONObject jsonApp = checkInstall.getJSONObject(i);
 
-                    String idlist;
-                    String packageNamelist;
-                    String versionCode;
+    }
 
-                    idlist = jsonApp.getString("id");
-                    packageNamelist = jsonApp.getString("deployApp");
-                    versionCode = jsonApp.getString("versionCode");
+    private void appWork(JSONArray checkInstall, String sessionToken) throws Exception {
+        AppInfo appInfo = new AppInfo(getApplicationContext());
+        FilesHelper filesHelper = new FilesHelper(getApplicationContext());
 
-                    if(!appInfo.isInstall(packageNamelist,versionCode)){
-                        filesHelper.downloadApk(packageNamelist, versionCode, sessionToken);
-                    }
+        for(int i=0; i<checkInstall.length(); i++) {
+
+            if(checkInstall.getJSONObject(i).has("removeApp")){
+                FlyveLog.d("uninstall apps");
+
+                JSONObject jsonApp = checkInstall.getJSONObject(i);
+                if(appInfo.isInstall(jsonApp.getString("removeApp"))) {
+                    FilesHelper.removeApk(getApplicationContext(), jsonApp.getString("removeApp"));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Remove app", "Package: " + jsonApp.getString("removeApp")));
                 }
             }
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-            broadcastReceivedLog("Files fail: " + ex.getMessage());
+
+            if(checkInstall.getJSONObject(i).has("deployApp")){
+                FlyveLog.d("install apps");
+
+                JSONObject jsonApp = checkInstall.getJSONObject(i);
+
+                String idlist;
+                String packageNamelist;
+                String versionCode;
+
+                idlist = jsonApp.getString("id");
+                packageNamelist = jsonApp.getString("deployApp");
+                versionCode = jsonApp.getString("versionCode");
+
+                if(!appInfo.isInstall(packageNamelist,versionCode)){
+                    filesHelper.downloadApk(packageNamelist, versionCode, sessionToken);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Download app", "Package: " + packageNamelist));
+                }
+            }
         }
     }
 
@@ -547,32 +569,51 @@ public class MQTTService extends IntentService implements MqttCallback {
      * Files
      * {"file":[{"deployFile":"%SDCARD%/","id":"2","version":"1"}]}
      */
-    private void filesOnDevices(JSONObject json) {
-        try {
-            JSONArray jsonFiles = json.getJSONArray("file");
+    private void filesOnDevices(final JSONObject json) {
 
-            FilesHelper filesHelper = new FilesHelper(getApplicationContext());
-            String sessionToken = filesHelper.getActiveSessionToken();
-
-            for(int i=0; i<=jsonFiles.length();i++) {
-                JSONObject jsonFile = jsonFiles.getJSONObject(i);
-
-                if(jsonFile.has("removeFile")){
-                    filesHelper.removeFile(jsonFile.getString("removeFile"));
-                }
-
-                if(jsonFile.has("deployFile")) {
-                    String fileId = jsonFile.getString("id");
-                    String filePath = jsonFile.getString("deployFile");
-
-                    if (filesHelper.downloadFile(filePath, fileId, sessionToken)) {
-                        FlyveLog.v("File was stored on: " + filePath);
+            EnrollmentHelper sToken = new EnrollmentHelper(getApplicationContext());
+            sToken.getActiveSessionToken(new EnrollmentHelper.enrollCallBack() {
+                @Override
+                public void onSuccess(String data) {
+                    try {
+                        JSONArray jsonFiles = json.getJSONArray("file");
+                        filesWork(jsonFiles, data);
+                    } catch (Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                        broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on applicationOnDevices", ex.getMessage()));
                     }
                 }
+
+                @Override
+                public void onError(String error) {
+                    FlyveLog.e(error);
+                    broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on applicationOnDevices", error));
+                }
+            });
+
+    }
+
+    private void filesWork(JSONArray jsonFiles, String sessionToken) throws Exception {
+
+        FilesHelper filesHelper = new FilesHelper(getApplicationContext());
+
+        for(int i=0; i<=jsonFiles.length();i++) {
+            JSONObject jsonFile = jsonFiles.getJSONObject(i);
+
+            if(jsonFile.has("removeFile")){
+                filesHelper.removeFile(jsonFile.getString("removeFile"));
+                broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Remove file", jsonFile.getString("removeFile")));
             }
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-            broadcastReceivedLog("Files fail: " + ex.getMessage());
+
+            if(jsonFile.has("deployFile")) {
+                String fileId = jsonFile.getString("id");
+                String filePath = jsonFile.getString("deployFile");
+
+                if (filesHelper.downloadFile(filePath, fileId, sessionToken)) {
+                    FlyveLog.v("File was stored on: " + filePath);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Download file", filePath));
+                }
+            }
         }
     }
 
@@ -585,15 +626,13 @@ public class MQTTService extends IntentService implements MqttCallback {
             JSONObject jsonEncryption = json.getJSONArray("encryption").getJSONObject(0);
             boolean enable = jsonEncryption.getBoolean("storageEncryption");
             if(jsonEncryption.has("storageEncryption")) {
-
                 FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
                 mdm.storageEncryptionDevice(enable);
-
-                broadcastReceivedLog(" Begin storage encryption ");
+                broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Encryption", "Encryption: " + enable));
             }
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-            broadcastReceivedLog("Storage encryption fail: " + ex.getMessage());
+            broadcastReceivedLog(Helpers.broadCastMessage("Error", "Error on storageEncryption", ex.getMessage()));
         }
     }
 
@@ -624,11 +663,13 @@ public class MQTTService extends IntentService implements MqttCallback {
                 if (jsonPolicie.has("passwordMinLength")) {
                     int length = jsonPolicie.getInt("passwordMinLength");
                     mdm.setPasswordLength(length);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinLength", String.valueOf(length)));
                 }
 
                 if (jsonPolicie.has("passwordQuality")) {
-                    String quality = jsonPolicie.getString("passwordMinLength");
+                    String quality = jsonPolicie.getString("passwordQuality");
                     mdm.setPasswordQuality(quality);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinLength", quality));
                 }
 
                 if (jsonPolicie.has("passwordEnabled")) {
@@ -638,47 +679,55 @@ public class MQTTService extends IntentService implements MqttCallback {
                 if (jsonPolicie.has("passwordMinLetters")) {
                     int min = jsonPolicie.getInt("passwordMinLetters");
                     mdm.setPasswordMinumimLetters(min);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinLetters", String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has("passwordMinLowerCase")) {
                     int min = jsonPolicie.getInt("passwordMinLowerCase");
                     mdm.setPasswordMinimumLowerCase(min);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinLowerCase", String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has("passwordMinNonLetter")) {
                     int min = jsonPolicie.getInt("passwordMinNonLetter");
                     mdm.setPasswordMinimumNonLetter(min);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinNonLetter", String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has("passwordMinNumeric")) {
                     int min = jsonPolicie.getInt("passwordMinNumeric");
                     mdm.setPasswordMinimumNumeric(min);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinNumeric", String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has("passwordMinSymbols")) {
                     int min = jsonPolicie.getInt("passwordMinSymbols");
                     mdm.setPasswordMinimumSymbols(min);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinSymbols", String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has("passwordMinUpperCase")) {
                     int min = jsonPolicie.getInt("passwordMinUpperCase");
                     mdm.setPasswordMinimumUpperCase(min);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinUpperCase", String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has("MaximumFailedPasswordsForWipe")) {
                     int max = jsonPolicie.getInt("MaximumFailedPasswordsForWipe");
                     mdm.setMaximumFailedPasswordsForWipe(max);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "MaximumFailedPasswordsForWipe", String.valueOf(max)));
                 }
 
                 if (jsonPolicie.has("MaximumTimeToLock")) {
                     int time = jsonPolicie.getInt("MaximumTimeToLock");
                     mdm.setMaximumTimeToLock(time);
+                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "MaximumFailedPasswordsForWipe", String.valueOf(time)));
                 }
 
             }// end for
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-            broadcastReceivedLog("Storage encryption fail: " + ex.getMessage());
+            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on policiesDevice", ex.getMessage()));
         }
     }
 
@@ -698,13 +747,12 @@ public class MQTTService extends IntentService implements MqttCallback {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             client.publish(topic, message);
-            broadcastReceivedMessage("Unenroll");
+            broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Unenroll", "Unenroll success"));
 
             return true;
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-            broadcastReceivedMessage("Unenroll Error: " + ex.getCause().toString());
-
+            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on unenroll", ex.getMessage()));
             return false;
         }
     }
@@ -716,8 +764,10 @@ public class MQTTService extends IntentService implements MqttCallback {
         try {
             FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.getApplicationContext());
             mdm.wipe();
-        } catch (Exception e) {
-            FlyveLog.e(e.getMessage());
+            broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Wipe", "Wipe success"));
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on wipe", ex.getMessage()));
         }
     }
 
@@ -733,12 +783,10 @@ public class MQTTService extends IntentService implements MqttCallback {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             IMqttDeliveryToken token = client.publish(topic, message);
-            broadcastReceivedLog("Send to MQTT " + topic + "(ID:"+ token.getMessageId() +")" + " :" + message);
-            broadcastReceivedMessage("PING!");
+            broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "PING", "ID: " + token.getMessageId()));
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-
-            broadcastReceivedMessage("PING Error: " + ex.getCause().toString());
+            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on sendKeepAlive", ex.getMessage()));
         }
     }
 
@@ -755,13 +803,12 @@ public class MQTTService extends IntentService implements MqttCallback {
             IMqttDeliveryToken token = client.publish(topic, message);
 
             // send broadcast
-            broadcastReceivedLog("Send to MQTT " + topic + "(ID:"+ token.getMessageId() +")" + " :" + message);
-            broadcastReceivedMessage("Inventory send!");
+            broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Send Inventory", "ID: " + token.getMessageId()));
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
 
             // send broadcast
-            broadcastReceivedMessage("Error Inventory: " + ex.getCause().toString());
+            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on sendKeepAlive", ex.getMessage()));
         }
     }
 
@@ -776,9 +823,11 @@ public class MQTTService extends IntentService implements MqttCallback {
         try {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
-            client.publish(topic, message);
+            IMqttDeliveryToken token = client.publish(topic, message);
+            broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Send Status Version", "ID: " + token.getMessageId()));
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
+            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on sendStatusVersion", ex.getMessage()));
         }
     }
 
@@ -794,10 +843,9 @@ public class MQTTService extends IntentService implements MqttCallback {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             IMqttDeliveryToken token = client.publish(topic, message);
-
-            broadcastReceivedLog("Send to MQTT " + topic + "(ID:"+ token.getMessageId() +")" + " :" + message);
+            broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Send Online Status", "ID: " + token.getMessageId()));
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on sendStatusVersion", ex.getMessage()));
         }
     }
 
@@ -823,7 +871,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
                     // send broadcast
-                    broadcastReceivedMessage("Geolocation error:" + ex.getCause().toString());
+                    broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on sendGPS", ex.getMessage()));
                     return;
                 }
 
@@ -836,20 +884,19 @@ public class MQTTService extends IntentService implements MqttCallback {
                     IMqttDeliveryToken token = client.publish(topic, message);
 
                     // send broadcast
-                    broadcastReceivedLog("Send to MQTT " + topic + "(ID:"+ token.getMessageId() +")" + " :" + message);
-                    broadcastReceivedMessage("Geolocation send!");
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Send Geolocation", "ID: " + token.getMessageId()));
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
 
                     // send broadcast
-                    broadcastReceivedMessage("Geolocation error:" + ex.getCause().toString());
+                    broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on sendGPS", ex.getMessage()));
                 }
             }
         });
 
         // is network fail
         if(!isNetworkEnabled) {
-            broadcastReceivedMessage("Geolocation error: network fail");
+            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on sendGPS", "Network fail"));
         }
     }
 

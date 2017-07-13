@@ -1,27 +1,39 @@
 <resources>
-    <string name="app_name" translatable="false">Flyve MDM</string>
-    <string name="text_intro" translatable="false">Flyve MDM is a mobile device management software that enables you to secure and manage all the mobile devices of your business or family via web-based console</string>
-    <string name="text_link" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_ITEM_NOT_FOUND" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_BAD_ARRAY" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_METHOD_NOT_ALLOWED" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_RIGHT_MISSING" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_SESSION_TOKEN_INVALID" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_SESSION_TOKEN_MISSING" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_APP_TOKEN_PARAMETERS_MISSING" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_NOT_DELETED" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_NOT_ALLOWED_IP" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_LOGIN_PARAMETERS_MISSING" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_LOGIN_WITH_CREDENTIALS_DISABLED" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_GLPI_LOGIN_USER_TOKEN" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_ITEMTYPE_NOT_FOUND_NOR_COMMONDBTM" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_SQL" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_RANGE_EXCEED_TOTAL" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_GLPI_ADD" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_GLPI_PARTIAL_ADD" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_GLPI_UPDATE" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_GLPI_PARTIAL_UPDATE" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_GLPI_DELETE" translatable="false">http://flyve-mdm.com</string>
-    <string name="ERROR_GLPI_PARTIAL_DELETE" translatable="false">http://flyve-mdm.com</string>
+    <string name="app_name">MDM Agent</string>
+    <string name="text_intro">Flyve MDM is a mobile device management software that enables you to secure and manage all the mobile devices of your business or family via web-based console</string>
+    <string name="flyve_link">http://flyve-mdm.com</string>
+    <string name="start_enroll">Enroll device</string>
+    <string name="fail_enroll">Enrollment fail</string>
+    <string name="please_wait">PLEASE WAIT</string>
+    <string name="enrollment">Enrollment</string>
+    <string name="user_information">User information</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+
+    <string name="ERROR_INTERNAL">Internal Error, please try again</string>
+    <string name="ERROR_DEEP_LINK">Problems with deep link</string>
+    <string name="ERROR_ITEM_NOT_FOUND">Error</string>
+    <string name="ERROR_BAD_ARRAY">Error</string>
+    <string name="ERROR_METHOD_NOT_ALLOWED">Error</string>
+    <string name="ERROR_RIGHT_MISSING">Error</string>
+    <string name="ERROR_SESSION_TOKEN_INVALID">Error</string>
+    <string name="ERROR_SESSION_TOKEN_MISSING">Error</string>
+    <string name="ERROR_APP_TOKEN_PARAMETERS_MISSING">Error</string>
+    <string name="ERROR_NOT_DELETED">Error</string>
+    <string name="ERROR_NOT_ALLOWED_IP">Error</string>
+    <string name="ERROR_LOGIN_PARAMETERS_MISSING">Error</string>
+    <string name="ERROR_LOGIN_WITH_CREDENTIALS_DISABLED">Error</string>
+    <string name="ERROR_GLPI_LOGIN_USER_TOKEN">Error</string>
+    <string name="ERROR_ITEMTYPE_NOT_FOUND_NOR_COMMONDBTM">Error</string>
+    <string name="ERROR_SQL">Error</string>
+    <string name="ERROR_RANGE_EXCEED_TOTAL">Error</string>
+    <string name="ERROR_GLPI_ADD">Error</string>
+    <string name="ERROR_GLPI_PARTIAL_ADD">Error</string>
+    <string name="ERROR_GLPI_UPDATE">Error</string>
+    <string name="ERROR_GLPI_PARTIAL_UPDATE">Error</string>
+    <string name="ERROR_GLPI_DELETE">Error</string>
+    <string name="ERROR_GLPI_PARTIAL_DELETE">Error</string>
 
 </resources>

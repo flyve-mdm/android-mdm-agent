@@ -37,13 +37,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.adapter.LogAdapter;
 import org.flyve.mdm.agent.security.FlyveAdminReceiver;
 import org.flyve.mdm.agent.services.MQTTService;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,8 +57,8 @@ public class MainActivity extends Activity {
 
     private IntentFilter mIntent;
     private Intent mServiceIntent;
-    private TextView tvMsg;
-    private TextView tvStatus;
+    private TextView txtMessage;
+    private TextView txtTitle;
     private ArrayList<HashMap<String, String>> arr_data;
     LogAdapter mAdapter;
 
@@ -87,11 +88,10 @@ public class MainActivity extends Activity {
             startService(mServiceIntent);
         }
 
-        tvMsg = (TextView) findViewById(R.id.tvMsg);
-        tvStatus = (TextView) findViewById(R.id.tvStatus);
+        txtMessage = (TextView) findViewById(R.id.txtMessage);
+        txtTitle = (TextView) findViewById(R.id.txtTitle);
 
         arr_data = new ArrayList<HashMap<String, String>>();
-
 
         ListView lst = (ListView) findViewById(R.id.lst);
         mAdapter = new LogAdapter(MainActivity.this, arr_data);
@@ -124,7 +124,7 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         // stop the service
         stopService(mServiceIntent);
-        Log.i("MAINACT", "onDestroy!");
+        FlyveLog.i("onDestroy!");
         super.onDestroy();
 
     }
@@ -138,11 +138,11 @@ public class MainActivity extends Activity {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                Log.i ("isMyServiceRunning?", Boolean.toString( true ));
+                FlyveLog.i ("isMyServiceRunning?", Boolean.toString( true ));
                 return true;
             }
         }
-        Log.i ("isMyServiceRunning?", Boolean.toString( false ));
+        FlyveLog.i ("isMyServiceRunning?", Boolean.toString( false ));
         return false;
     }
 
@@ -152,14 +152,23 @@ public class MainActivity extends Activity {
     private BroadcastReceiver broadcastReceivedLog = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String msg = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
-            tvMsg.setText( msg );
+            String msg = intent.getStringExtra("message");
 
-            HashMap<String, String> map = new HashMap<String, String>();
-            map.put("message", msg);
+            try {
+                HashMap<String, String> map = new HashMap<String, String>();
 
-            arr_data.add(map);
-            mAdapter.notifyDataSetChanged();
+                JSONObject json = new JSONObject(msg);
+
+                map.put("type", json.getString("type"));
+                map.put("title", json.getString("title"));
+                map.put("body", json.getString("body"));
+                map.put("date", json.getString("date"));
+
+                arr_data.add(map);
+                mAdapter.notifyDataSetChanged();
+            } catch (Exception ex) {
+                FlyveLog.d("ERROR" + ex.getMessage());
+            }
         }
     };
 
@@ -169,8 +178,8 @@ public class MainActivity extends Activity {
     private BroadcastReceiver broadcastReceivedMessage = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-        String msg = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
-        tvMsg.setText( msg );
+        String msg = intent.getStringExtra("message");
+        txtTitle.setText(msg);
         }
     };
 
@@ -180,19 +189,13 @@ public class MainActivity extends Activity {
     private BroadcastReceiver broadcastServiceStatus = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-        String msg = intent.getStringExtra("message");  //get the type of message from MyGcmListenerService 1 - lock or 0 -Unlock
-        HashMap<String, String> map = new HashMap<String, String>();
+        String msg = intent.getStringExtra("message");
 
         if(Boolean.parseBoolean(msg)) {
-            tvStatus.setText("Online");
-            map.put("message", "Online");
+            txtMessage.setText("Online");
         } else {
-            tvStatus.setText("Offline");
-            map.put("message", "Offline");
+            txtMessage.setText("Offline");
         }
-
-        arr_data.add(map);
-        mAdapter.notifyDataSetChanged();
         }
     };
 }

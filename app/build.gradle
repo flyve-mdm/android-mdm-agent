@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 15
+    compileSdkVersion 22
     buildToolsVersion '22.0.1'
     defaultConfig {
         applicationId "org.flyve.mdm.agent"
-        minSdkVersion 15
-        targetSdkVersion 15
+        minSdkVersion 16
+        targetSdkVersion 16
         versionCode 1
         versionName "0.99.0"
     }
@@ -21,6 +21,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    defaultConfig {
+        multiDexEnabled true
+    }
 }
 
 repositories {
@@ -32,25 +40,16 @@ repositories {
     }
 }
 
-android {
-    lintOptions {
-        abortOnError false
-    }
-}
-
-android {
-    lintOptions {
-        abortOnError false
-    }
-}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1'
     compile ('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
-        // exclude module: 'support-v4'
+        exclude module: 'support-v4'
         transitive=true
     }
+
+    compile "com.android.support:appcompat-v7:22.2.0"
     compile 'com.madgag.spongycastle:core:1.54.0.0'
     compile 'com.madgag.spongycastle:prov:1.54.0.0'
     compile 'com.madgag.spongycastle:pkix:1.54.0.0'
