@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.PowerManager;
-
 import org.flyve.mdm.agent.data.DataStorage;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

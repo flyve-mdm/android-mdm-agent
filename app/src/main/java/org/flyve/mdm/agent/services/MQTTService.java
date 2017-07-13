@@ -561,7 +561,6 @@ public class MQTTService extends IntentService implements MqttCallback {
                 }
             }
         }
-
     }
 
     /**
@@ -612,7 +611,6 @@ public class MQTTService extends IntentService implements MqttCallback {
                 }
             }
         }
-
     }
 
     /**

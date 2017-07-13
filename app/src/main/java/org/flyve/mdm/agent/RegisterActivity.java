@@ -56,6 +56,7 @@ import org.json.JSONObject;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
+
 /**
  * Register the agent to the platform
  */
@@ -113,6 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
         txtLastName = (EditText) findViewById(R.id.txtLastName);
         txtEmail = (EditText) findViewById(R.id.txtEmail);
         txtEmail.setImeActionLabel("Save", KeyEvent.KEYCODE_ENTER);
+
 
         btnRegister = (ImageView) findViewById(R.id.btnSave);
         btnRegister.setEnabled(false);
@@ -174,10 +176,12 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onGenerate(final boolean work) {
                             RegisterActivity.runOnUI(new Runnable() {
                                 public void run() {
+
                                 pbx509.setVisibility(View.GONE);
                                 if(work) {
                                     btnRegister.setEnabled(true);
                                 }
+
                                 }
                             });
                         }
@@ -185,6 +189,7 @@ public class RegisterActivity extends AppCompatActivity {
                 } catch (Exception ex) {
                     pbx509.setVisibility(View.GONE);
                     txtMsg.setText("ERROR: Creating Certificate X509");
+
                     FlyveLog.e(ex.getMessage());
                 }
             }
@@ -197,6 +202,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void pluginFlyvemdmAgent() {
 
         txtMsg.setText("Register Agent");
+
         try {
 
             HashMap<String, String> header = new HashMap();
@@ -243,6 +249,7 @@ public class RegisterActivity extends AppCompatActivity {
                             String msgError = jsonArr.get(1).toString();
 
                             txtMsg.setText(msgError);
+
                             FlyveLog.e(data);
                         } catch (Exception ex) {
                             FlyveLog.e(ex.getCause().getMessage());
