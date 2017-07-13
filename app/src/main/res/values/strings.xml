@@ -4,7 +4,8 @@
     <string name="text_link">http://flyve-mdm.com</string>
     <string name="text_start_enroll">Enroll device</string>
     <string name="please_wait">PLEASE WAIT</string>
-    <string name="enrollment">ENROLLMENT</string>
+    <string name="enrollment">Enrollment</string>
+    <string name="user_information">User information</string>
 
     <string name="ERROR_ITEM_NOT_FOUND">http://flyve-mdm.com</string>
     <string name="ERROR_BAD_ARRAY">http://flyve-mdm.com</string>

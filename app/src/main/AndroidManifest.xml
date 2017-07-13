@@ -46,7 +46,6 @@
 
         <activity android:name=".StartEnrollmentActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/NoActionBar"
             >
 
             <intent-filter>

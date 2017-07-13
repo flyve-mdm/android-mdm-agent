@@ -9,6 +9,9 @@
         <!-- colorAccent is used as the default value for colorControlActivated
              which is used to tint widgets -->
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="NoActionBar" parent="Base.Theme.AppCompat.Light">
@@ -23,6 +26,13 @@
 
     <style name="regularText">
         <item name="android:textStyle">normal</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/grayDark</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="titleText">
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/grayDark</item>
         <item name="android:fontFamily">sans-serif</item>
