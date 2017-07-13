@@ -220,6 +220,8 @@ public class EnrollmentActivity extends AppCompatActivity {
 
     private void sendEnroll() {
         try {
+            pb.setVisibility(View.VISIBLE);
+
             AndroidCryptoProvider csr = new AndroidCryptoProvider(EnrollmentActivity.this.getBaseContext());
             String requestCSR = "";
             if( csr.getlCsr() != null ) {
@@ -242,6 +244,8 @@ public class EnrollmentActivity extends AppCompatActivity {
             enroll.enrollment(payload, new EnrollmentHelper.enrollCallback() {
                 @Override
                 public void onSuccess(String data) {
+                    pb.setVisibility(View.GONE);
+
                     // Store user information
                     cache.setUserFirstName(editName.getText().toString());
                     cache.setUserLastName(editLastName.getText().toString());
@@ -253,11 +257,14 @@ public class EnrollmentActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(String error) {
+                    pb.setVisibility(View.GONE);
                     enableFields(true);
                     txtMessage.setText(error);
                 }
             });
         } catch (Exception ex) {
+            pb.setVisibility(View.GONE);
+            enableFields(true);
             txtMessage.setText( ex.getMessage() );
             FlyveLog.e( ex.getMessage() );
         }
