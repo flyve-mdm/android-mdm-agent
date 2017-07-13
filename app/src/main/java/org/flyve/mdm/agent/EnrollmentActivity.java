@@ -60,7 +60,7 @@ import java.util.HashMap;
 /**
  * Register the agent to the platform
  */
-public class RegisterActivity extends AppCompatActivity {
+public class EnrollmentActivity extends AppCompatActivity {
 
     private ProgressBar pb;
     private ProgressBar pbx509;
@@ -86,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_enrollment);
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -104,8 +104,8 @@ public class RegisterActivity extends AppCompatActivity {
         pb = (ProgressBar) findViewById(R.id.progressBar);
         pbx509 = (ProgressBar) findViewById(R.id.progressBarX509);
 
-        cache = new DataStorage( RegisterActivity.this );
-        routes = new Routes( RegisterActivity.this );
+        cache = new DataStorage( EnrollmentActivity.this );
+        routes = new Routes( EnrollmentActivity.this );
 
         txtMsg = (TextView) findViewById(R.id.tvMsg);
         lyUserData = (LinearLayout) findViewById(R.id.userData);
@@ -174,7 +174,7 @@ public class RegisterActivity extends AppCompatActivity {
                     createCertif.generateRequest(new AndroidCryptoProvider.generateCallback() {
                         @Override
                         public void onGenerate(final boolean work) {
-                            RegisterActivity.runOnUI(new Runnable() {
+                            EnrollmentActivity.runOnUI(new Runnable() {
                                 public void run() {
 
                                 pbx509.setVisibility(View.GONE);
@@ -214,7 +214,7 @@ public class RegisterActivity extends AppCompatActivity {
             JSONObject payload = new JSONObject();
             JSONObject input = new JSONObject();
 
-            AndroidCryptoProvider csr = new AndroidCryptoProvider(RegisterActivity.this.getBaseContext());
+            AndroidCryptoProvider csr = new AndroidCryptoProvider(EnrollmentActivity.this.getBaseContext());
             String requestCSR = "";
             if( csr.getlCsr() != null ) {
                 requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
@@ -224,7 +224,7 @@ public class RegisterActivity extends AppCompatActivity {
                 payload.put("_email", txtEmail.getText());
                 payload.put("_invitation_token", cache.getInvitationToken());
                 payload.put("_serial", Helpers.getDeviceSerial());
-                payload.put("_uuid", new Hardware(RegisterActivity.this).getUUID());
+                payload.put("_uuid", new Hardware(EnrollmentActivity.this).getUUID());
                 payload.put("csr", requestCSR);
                 payload.put("firstname", txtName.getText());
                 payload.put("lastname", txtLastName.getText());
@@ -343,8 +343,8 @@ public class RegisterActivity extends AppCompatActivity {
      * Open the main activity
      */
     private void openMain() {
-        Intent miIntent = new Intent(RegisterActivity.this, MainActivity.class);
-        RegisterActivity.this.startActivity(miIntent);
-        RegisterActivity.this.finish();
+        Intent miIntent = new Intent(EnrollmentActivity.this, MainActivity.class);
+        EnrollmentActivity.this.startActivity(miIntent);
+        EnrollmentActivity.this.finish();
     }
 }

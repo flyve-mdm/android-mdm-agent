@@ -126,7 +126,7 @@ public class StartEnrollmentActivity extends Activity {
      * Open activity
      */
     private void openActivity() {
-        Intent miIntent = new Intent(StartEnrollmentActivity.this, RegisterActivity.class);
+        Intent miIntent = new Intent(StartEnrollmentActivity.this, EnrollmentActivity.class);
         StartEnrollmentActivity.this.startActivity(miIntent);
     }
 }
