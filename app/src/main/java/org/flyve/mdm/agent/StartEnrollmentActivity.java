@@ -55,7 +55,7 @@ public class StartEnrollmentActivity extends Activity {
 
         DataStorage cache = new DataStorage( StartEnrollmentActivity.this );
 
-        tvStatus = (TextView) findViewById(R.id.tvStatus);
+        tvStatus = (TextView) findViewById(R.id.txtMessage);
         pb = (ProgressBar) findViewById(R.id.progressBar);
 
         Intent intent = getIntent();

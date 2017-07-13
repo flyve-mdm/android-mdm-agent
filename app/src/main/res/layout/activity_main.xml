@@ -7,10 +7,10 @@
 
 
     <TextView
-        android:id="@+id/tvMsg"
+        android:id="@+id/txtTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Waiting for MQTT Message"
+        android:text="Message from MQTT Service"
         android:gravity="center"
         android:layout_alignParentTop="true"
         android:layout_margin="20dp"
@@ -21,18 +21,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:layout_below="@+id/tvMsg"
-        android:layout_above="@+id/tvStatus"
+        android:layout_below="@+id/txtMessage"
+        android:layout_above="@+id/txtMessage"
         >
     </ListView>
 
     <TextView
-        android:id="@+id/tvStatus"
+        android:id="@+id/txtMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:text="status"
+        android:text=""
         android:gravity="center_horizontal"
         />
 

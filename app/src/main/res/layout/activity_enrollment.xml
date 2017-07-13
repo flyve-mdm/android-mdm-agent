@@ -92,7 +92,7 @@
             />
 
         <EditText
-            android:id="@+id/txtName"
+            android:id="@+id/editName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="First Name"
@@ -101,7 +101,7 @@
             />
 
         <EditText
-            android:id="@+id/txtLastName"
+            android:id="@+id/editLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Last Name"
@@ -110,7 +110,7 @@
             />
 
         <EditText
-            android:id="@+id/txtEmail"
+            android:id="@+id/editEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
@@ -119,7 +119,7 @@
             />
 
         <EditText
-            android:id="@+id/txtPhone"
+            android:id="@+id/editPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Phone"
@@ -130,7 +130,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tvMsg"
+        android:id="@+id/txtMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

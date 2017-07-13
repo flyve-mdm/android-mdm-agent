@@ -87,8 +87,8 @@ public class MainActivity extends Activity {
             startService(mServiceIntent);
         }
 
-        tvMsg = (TextView) findViewById(R.id.tvMsg);
-        tvStatus = (TextView) findViewById(R.id.tvStatus);
+        tvMsg = (TextView) findViewById(R.id.txtMessage);
+        tvStatus = (TextView) findViewById(R.id.txtMessage);
 
         arr_data = new ArrayList<HashMap<String, String>>();
 

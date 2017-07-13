@@ -107,12 +107,12 @@ public class EnrollmentActivity extends AppCompatActivity {
         cache = new DataStorage( EnrollmentActivity.this );
         routes = new Routes( EnrollmentActivity.this );
 
-        txtMsg = (TextView) findViewById(R.id.tvMsg);
+        txtMsg = (TextView) findViewById(R.id.txtMessage);
         lyUserData = (LinearLayout) findViewById(R.id.userData);
 
-        txtName = (EditText) findViewById(R.id.txtName);
-        txtLastName = (EditText) findViewById(R.id.txtLastName);
-        txtEmail = (EditText) findViewById(R.id.txtEmail);
+        txtName = (EditText) findViewById(R.id.editName);
+        txtLastName = (EditText) findViewById(R.id.editLastName);
+        txtEmail = (EditText) findViewById(R.id.editEmail);
         txtEmail.setImeActionLabel("Save", KeyEvent.KEYCODE_ENTER);
 
 
