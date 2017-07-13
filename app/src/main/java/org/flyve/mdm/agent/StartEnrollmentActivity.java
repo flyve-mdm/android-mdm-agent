@@ -55,6 +55,11 @@ public class StartEnrollmentActivity extends Activity {
         setContentView(R.layout.activity_start_enrollment);
 
         DataStorage cache = new DataStorage( StartEnrollmentActivity.this );
+        // if broker is on cache open the main activity
+        String broker = cache.getBroker();
+        if(broker != null) {
+            openMain();
+        }
 
         txtMessage = (TextView) findViewById(R.id.txtMessage);
         txtTitle = (TextView) findViewById(R.id.txtTitle);
@@ -147,5 +152,14 @@ public class StartEnrollmentActivity extends Activity {
     private void openActivity() {
         Intent miIntent = new Intent(StartEnrollmentActivity.this, EnrollmentActivity.class);
         StartEnrollmentActivity.this.startActivity(miIntent);
+    }
+
+    /**
+     * Open the main activity
+     */
+    private void openMain() {
+        Intent miIntent = new Intent(StartEnrollmentActivity.this, MainActivity.class);
+        StartEnrollmentActivity.this.startActivity(miIntent);
+        StartEnrollmentActivity.this.finish();
     }
 }
