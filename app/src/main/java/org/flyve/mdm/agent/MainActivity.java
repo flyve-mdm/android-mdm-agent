@@ -37,13 +37,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.adapter.LogAdapter;
 import org.flyve.mdm.agent.security.FlyveAdminReceiver;
 import org.flyve.mdm.agent.services.MQTTService;
+import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,7 +92,6 @@ public class MainActivity extends Activity {
 
         arr_data = new ArrayList<HashMap<String, String>>();
 
-
         ListView lst = (ListView) findViewById(R.id.lst);
         mAdapter = new LogAdapter(MainActivity.this, arr_data);
         lst.setAdapter(mAdapter);
@@ -124,7 +123,7 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         // stop the service
         stopService(mServiceIntent);
-        Log.i("MAINACT", "onDestroy!");
+        FlyveLog.i("onDestroy!");
         super.onDestroy();
 
     }
@@ -138,11 +137,11 @@ public class MainActivity extends Activity {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                Log.i ("isMyServiceRunning?", Boolean.toString( true ));
+                FlyveLog.i ("isMyServiceRunning?", Boolean.toString( true ));
                 return true;
             }
         }
-        Log.i ("isMyServiceRunning?", Boolean.toString( false ));
+        FlyveLog.i ("isMyServiceRunning?", Boolean.toString( false ));
         return false;
     }
 

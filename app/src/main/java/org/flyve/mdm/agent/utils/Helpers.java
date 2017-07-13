@@ -90,7 +90,7 @@ public class Helpers {
 	public static String getDeviceSerial() {
 		String serial;
 		if(Build.SERIAL.equalsIgnoreCase("unknown")) {
-			serial = "ABCDEFGHIJ1234";
+			serial = "ABCDEFGHIJ12345";
 		} else {
 			serial = Build.SERIAL;
 		}

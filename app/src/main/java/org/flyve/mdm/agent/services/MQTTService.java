@@ -105,7 +105,7 @@ public class MQTTService extends IntentService implements MqttCallback {
         cache = new DataStorage(this.getApplicationContext());
 
         String mBroker = cache.getBroker();
-        String mPort = "8883"; //cache.getPort();
+        String mPort = cache.getPort();
         String mUser = cache.getMqttuser();
         String mPassword = cache.getMqttpasswd();
 
