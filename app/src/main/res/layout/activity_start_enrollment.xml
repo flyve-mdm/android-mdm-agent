@@ -30,7 +30,7 @@
         android:id="@+id/txtEnrollText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/text_start_enroll"
+        android:text="@string/start_enroll"
         android:gravity="center"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"

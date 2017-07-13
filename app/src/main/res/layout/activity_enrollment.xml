@@ -95,7 +95,8 @@
             android:id="@+id/editName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="First Name"
+            android:hint="@string/first_name"
+            android:inputType="textPersonName"
             android:drawableLeft="@drawable/ic_user"
             style="@style/registerFormEditText"
             />
@@ -104,7 +105,8 @@
             android:id="@+id/editLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Last Name"
+            android:hint="@string/last_name"
+            android:inputType="textPersonName"
             android:drawableLeft="@drawable/ic_user"
             style="@style/registerFormEditText"
             />
@@ -113,7 +115,8 @@
             android:id="@+id/editEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
             android:drawableLeft="@drawable/ic_mail"
             style="@style/registerFormEditText"
             />
@@ -122,7 +125,8 @@
             android:id="@+id/editPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Phone"
+            android:hint="@string/phone"
+            android:inputType="phone"
             android:drawableLeft="@drawable/ic_phone"
             style="@style/registerFormEditText"
             />
