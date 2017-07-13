@@ -39,7 +39,7 @@
         <activity android:name=".MainActivity" android:configChanges="orientation|screenSize">
         </activity>
 
-        <activity android:name=".RegisterActivity"
+        <activity android:name=".EnrollmentActivity"
             android:configChanges="orientation|screenSize"
             >
         </activity>

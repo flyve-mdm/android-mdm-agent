@@ -27,11 +27,18 @@
 
 package org.flyve.mdm.agent.utils;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Base64;
 
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * This class content some helpers function
@@ -87,7 +94,7 @@ public class Helpers {
 	public static String getDeviceSerial() {
 		String serial;
 		if(Build.SERIAL.equalsIgnoreCase("unknown")) {
-			serial = "ABCDEFGHIJ1234";
+			serial = "ABCDEFGHIJ12345";
 		} else {
 			serial = Build.SERIAL;
 		}
@@ -104,5 +111,33 @@ public class Helpers {
 		long now = calendar.getTimeInMillis();
 		int utc = (int) (now / 1000);
 		return (utc);
+	}
+
+	/**
+	 * Open url on browser
+ 	 * @param context Context where is working
+	 * @param url String the url to display
+	 */
+	public static void openURL(Context context, String url) {
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		context.startActivity(browserIntent);
+	}
+
+	public static String broadCastMessage(String type, String title, String body) {
+		try {
+			JSONObject json = new JSONObject();
+			json.put("type", type);
+			json.put("title", title);
+			json.put("body", body);
+
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String currentDateTime = sdf.format(new Date());
+			json.put("date", currentDateTime);
+
+			return json.toString();
+
+		} catch(Exception ex) {
+			return null;
+		}
 	}
 }

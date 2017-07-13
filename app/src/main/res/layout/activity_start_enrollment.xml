@@ -5,7 +5,7 @@
     >
 
     <ImageView
-        android:id="@+id/ivLogo"
+        android:id="@+id/imgLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/logoflyve"
@@ -14,7 +14,7 @@
         />
 
     <TextView
-        android:id="@+id/tvIntro"
+        android:id="@+id/txtIntro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/text_intro"
@@ -22,20 +22,20 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="30dp"
-        android:layout_below="@+id/ivLogo"
+        android:layout_below="@+id/imgLogo"
         style="@style/regularText"
         />
 
     <TextView
-        android:id="@+id/tvEnrollText"
+        android:id="@+id/txtTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/text_start_enroll"
+        android:text="@string/start_enroll"
         android:gravity="center"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="30dp"
-        android:layout_below="@+id/tvIntro"
+        android:layout_below="@+id/txtIntro"
         style="@style/bigText"
         />
 
@@ -43,7 +43,7 @@
         android:id="@+id/btnEnroll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvEnrollText"
+        android:layout_below="@+id/txtTitle"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         >
@@ -64,24 +64,26 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvEnrollText"
+        android:layout_below="@+id/txtTitle"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge"
         />
 
     <TextView
-        android:id="@+id/tvStatus"
+        android:id="@+id/txtMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/regularText"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text=""
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
         android:layout_marginBottom="20dp"
+        style="@style/regularText"
         />
 
 </RelativeLayout>
