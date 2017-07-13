@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logoflyve"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        />
+
+    <TextView
+        android:id="@+id/tvIntro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_intro"
+        android:gravity="center"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/ivLogo"
+        style="@style/regularText"
+        />
+
+    <TextView
+        android:id="@+id/tvEnrollText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_start_enroll"
+        android:gravity="center"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/tvIntro"
+        style="@style/bigText"
+        />
+
+    <RelativeLayout
+        android:id="@+id/btnEnroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEnrollText"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_play"
+            />
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEnrollText"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/regularText"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text=""
+        android:layout_marginBottom="20dp"
+        />
+
+</RelativeLayout>

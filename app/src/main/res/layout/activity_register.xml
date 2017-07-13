@@ -5,50 +5,24 @@
     android:layout_height="match_parent"
     >
 
-    <LinearLayout
-        android:id="@+id/user_data"
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerVertical="true"
-        android:visibility="gone"
-        >
+        android:background="@color/colorPrimaryDark"
+        android:id="@+id/toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <EditText
-            android:id="@+id/txtName"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="First Name"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            />
-
-        <EditText
-            android:id="@+id/txtLastName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Last Name"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            />
-
-        <EditText
-            android:id="@+id/txtEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="right"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="match_parent"
             >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enrollment"
+                android:layout_centerVertical="true"
+                />
 
             <ProgressBar
                 android:id="@+id/progressBarX509"
@@ -57,15 +31,101 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:layout_gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:layout_alignLeft="@+id/btnSave"
+                android:layout_marginLeft="-30dp"
                 />
 
-            <Button
-                android:id="@+id/btn_register"
+            <ImageView
+                android:id="@+id/btnSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Register"
+                android:src="@drawable/ic_check"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
                 />
-        </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/imgPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bg_user"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:layout_below="@+id/toolbar"
+        />
+
+    <ImageView
+        android:id="@+id/btnCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imgPhoto"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_camera"
+        />
+
+    <LinearLayout
+        android:id="@+id/userData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:visibility="visible"
+        android:layout_below="@+id/imgPhoto"
+        android:layout_marginTop="20dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_information"
+            style="@style/titleText"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            />
+
+        <EditText
+            android:id="@+id/txtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="First Name"
+            android:drawableLeft="@drawable/ic_user"
+            style="@style/registerFormEditText"
+            />
+
+        <EditText
+            android:id="@+id/txtLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Last Name"
+            android:drawableLeft="@drawable/ic_user"
+            style="@style/registerFormEditText"
+            />
+
+        <EditText
+            android:id="@+id/txtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:drawableLeft="@drawable/ic_mail"
+            style="@style/registerFormEditText"
+            />
+
+        <EditText
+            android:id="@+id/txtPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone"
+            android:drawableLeft="@drawable/ic_phone"
+            style="@style/registerFormEditText"
+            />
 
     </LinearLayout>
 
@@ -73,10 +133,11 @@
         android:id="@+id/tvMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="status"
-        android:layout_marginBottom="30dp"
+        android:text=""
+        android:layout_below="@+id/userData"
+        android:layout_margin="20dp"
+        style="@style/regularText"
         />
 
     <ProgressBar

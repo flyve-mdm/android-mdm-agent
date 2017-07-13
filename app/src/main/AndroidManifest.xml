@@ -26,7 +26,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashActivity" android:configChanges="orientation|screenSize">
+        <activity android:name=".SplashActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,7 +39,15 @@
         <activity android:name=".MainActivity" android:configChanges="orientation|screenSize">
         </activity>
 
-        <activity android:name=".RegisterActivity" android:configChanges="orientation|screenSize">
+        <activity android:name=".RegisterActivity"
+            android:configChanges="orientation|screenSize"
+            >
+        </activity>
+
+        <activity android:name=".StartEnrollmentActivity"
+            android:configChanges="orientation|screenSize"
+            >
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -45,8 +56,9 @@
                 <data
                     android:scheme="flyve"
                     android:host="register"
-                     />
+                    />
             </intent-filter>
+
         </activity>
 
         <service android:name="org.eclipse.paho.android.service.MqttService" >

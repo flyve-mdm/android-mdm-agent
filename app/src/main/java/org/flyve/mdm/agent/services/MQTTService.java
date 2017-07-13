@@ -52,6 +52,7 @@ import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FilesHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.mdm.agent.utils.Session;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -502,80 +503,116 @@ public class MQTTService extends IntentService implements MqttCallback {
      * Application
      * {"application":[{"deployApp":"org.flyve.inventory.agent","id":"1","versionCode":"1"}]}
      */
-    private void applicationOnDevices(JSONObject json) {
-        try {
-            JSONArray checkInstall = json.getJSONArray("application");
-            AppInfo appInfo = new AppInfo(getApplicationContext());
+    private void applicationOnDevices(final JSONObject json) {
 
-            FilesHelper filesHelper = new FilesHelper(getApplicationContext());
-            String sessionToken = filesHelper.getActiveSessionToken();
-
-            for(int i=0; i<checkInstall.length(); i++) {
-
-                if(checkInstall.getJSONObject(i).has("removeApp")){
-                    FlyveLog.d("uninstall apps");
-
-                    JSONObject jsonApp = checkInstall.getJSONObject(i);
-                    if(appInfo.isInstall(jsonApp.getString("removeApp"))) {
-                        FilesHelper.removeApk(getApplicationContext(), jsonApp.getString("removeApp"));
+            Session sToken = new Session(getApplicationContext());
+            sToken.getActiveSessionToken(new Session.sessionCallback() {
+                @Override
+                public void onSuccess(String data) {
+                    try {
+                        JSONArray checkInstall = json.getJSONArray("application");
+                        appWork(checkInstall, data);
+                    } catch (Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                        broadcastReceivedLog("Application fail: " + ex.getMessage());
                     }
                 }
 
-                if(checkInstall.getJSONObject(i).has("deployApp")){
-                    FlyveLog.d("install apps");
+                @Override
+                public void onError(String error) {
+                    FlyveLog.e(error);
+                    broadcastReceivedLog("Application fail: " + error);
+                }
+            });
 
-                    JSONObject jsonApp = checkInstall.getJSONObject(i);
 
-                    String idlist;
-                    String packageNamelist;
-                    String versionCode;
+    }
 
-                    idlist = jsonApp.getString("id");
-                    packageNamelist = jsonApp.getString("deployApp");
-                    versionCode = jsonApp.getString("versionCode");
+    private void appWork(JSONArray checkInstall, String sessionToken) throws Exception {
+        AppInfo appInfo = new AppInfo(getApplicationContext());
+        FilesHelper filesHelper = new FilesHelper(getApplicationContext());
 
-                    if(!appInfo.isInstall(packageNamelist,versionCode)){
-                        filesHelper.downloadApk(packageNamelist, versionCode, sessionToken);
-                    }
+        for(int i=0; i<checkInstall.length(); i++) {
+
+            if(checkInstall.getJSONObject(i).has("removeApp")){
+                FlyveLog.d("uninstall apps");
+
+                JSONObject jsonApp = checkInstall.getJSONObject(i);
+                if(appInfo.isInstall(jsonApp.getString("removeApp"))) {
+                    FilesHelper.removeApk(getApplicationContext(), jsonApp.getString("removeApp"));
                 }
             }
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-            broadcastReceivedLog("Files fail: " + ex.getMessage());
+
+            if(checkInstall.getJSONObject(i).has("deployApp")){
+                FlyveLog.d("install apps");
+
+                JSONObject jsonApp = checkInstall.getJSONObject(i);
+
+                String idlist;
+                String packageNamelist;
+                String versionCode;
+
+                idlist = jsonApp.getString("id");
+                packageNamelist = jsonApp.getString("deployApp");
+                versionCode = jsonApp.getString("versionCode");
+
+                if(!appInfo.isInstall(packageNamelist,versionCode)){
+                    filesHelper.downloadApk(packageNamelist, versionCode, sessionToken);
+                }
+            }
         }
+
     }
 
     /**
      * Files
      * {"file":[{"deployFile":"%SDCARD%/","id":"2","version":"1"}]}
      */
-    private void filesOnDevices(JSONObject json) {
-        try {
-            JSONArray jsonFiles = json.getJSONArray("file");
+    private void filesOnDevices(final JSONObject json) {
 
-            FilesHelper filesHelper = new FilesHelper(getApplicationContext());
-            String sessionToken = filesHelper.getActiveSessionToken();
-
-            for(int i=0; i<=jsonFiles.length();i++) {
-                JSONObject jsonFile = jsonFiles.getJSONObject(i);
-
-                if(jsonFile.has("removeFile")){
-                    filesHelper.removeFile(jsonFile.getString("removeFile"));
-                }
-
-                if(jsonFile.has("deployFile")) {
-                    String fileId = jsonFile.getString("id");
-                    String filePath = jsonFile.getString("deployFile");
-
-                    if (filesHelper.downloadFile(filePath, fileId, sessionToken)) {
-                        FlyveLog.v("File was stored on: " + filePath);
+            Session sToken = new Session(getApplicationContext());
+            sToken.getActiveSessionToken(new Session.sessionCallback() {
+                @Override
+                public void onSuccess(String data) {
+                    try {
+                        JSONArray jsonFiles = json.getJSONArray("file");
+                        filesWork(jsonFiles, data);
+                    } catch (Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                        broadcastReceivedLog("Files fail: " + ex.getMessage());
                     }
                 }
+
+                @Override
+                public void onError(String error) {
+                    FlyveLog.e(error);
+                    broadcastReceivedLog("Files fail: " + error);
+                }
+            });
+
+    }
+
+    private void filesWork(JSONArray jsonFiles, String sessionToken) throws Exception {
+
+        FilesHelper filesHelper = new FilesHelper(getApplicationContext());
+
+        for(int i=0; i<=jsonFiles.length();i++) {
+            JSONObject jsonFile = jsonFiles.getJSONObject(i);
+
+            if(jsonFile.has("removeFile")){
+                filesHelper.removeFile(jsonFile.getString("removeFile"));
             }
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-            broadcastReceivedLog("Files fail: " + ex.getMessage());
+
+            if(jsonFile.has("deployFile")) {
+                String fileId = jsonFile.getString("id");
+                String filePath = jsonFile.getString("deployFile");
+
+                if (filesHelper.downloadFile(filePath, fileId, sessionToken)) {
+                    FlyveLog.v("File was stored on: " + filePath);
+                }
+            }
         }
+
     }
 
     /**
