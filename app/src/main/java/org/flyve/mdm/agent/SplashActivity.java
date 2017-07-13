@@ -28,15 +28,15 @@
 package org.flyve.mdm.agent;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.data.testData;
-import org.flyve.mdm.agent.security.FlyveAdminReceiver;
+import org.flyve.mdm.agent.utils.Helpers;
 
 /**
  * This is the first screen of the app here you can get information about flyve-mdm-agent
@@ -44,22 +44,26 @@ import org.flyve.mdm.agent.security.FlyveAdminReceiver;
  */
 public class SplashActivity extends Activity {
 
-    private static final int REQUEST_CODE_ENABLE_ADMIN = 1;
-    ComponentName mDeviceAdmin;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
         DataStorage cache = new DataStorage( SplashActivity.this );
-        mDeviceAdmin = new ComponentName(this, FlyveAdminReceiver.class);
 
         // if broker is on cache open the main activity
         String broker = cache.getBroker();
         if(broker != null) {
             openMain();
         }
+
+        final TextView txtLink = (TextView) findViewById(R.id.txtLink);
+        txtLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Helpers.openURL( SplashActivity.this, txtLink.getText().toString() );
+            }
+        });
 
         Button btnRegister = (Button) findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -71,13 +75,6 @@ public class SplashActivity extends Activity {
             }
         });
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_ENABLE_ADMIN && resultCode == Activity.RESULT_OK) {
-            openMain();
-        }
-    }//onActivityResult
 
     /**
      * Open the main activity

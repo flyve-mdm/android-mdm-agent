@@ -27,6 +27,9 @@
 
 package org.flyve.mdm.agent.utils;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Base64;
 
@@ -104,5 +107,15 @@ public class Helpers {
 		long now = calendar.getTimeInMillis();
 		int utc = (int) (now / 1000);
 		return (utc);
+	}
+
+	/**
+	 * Open url on browser
+ 	 * @param context Context where is working
+	 * @param url String the url to display
+	 */
+	public static void openURL(Context context, String url) {
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		context.startActivity(browserIntent);
 	}
 }
