@@ -122,7 +122,7 @@ public class EnrollmentActivity extends AppCompatActivity {
 
         // start creating a certificated
         pbx509.setVisibility(View.VISIBLE);
-        enroll.createX509cert(new EnrollmentHelper.enrollCallback() {
+        enroll.createX509cert(new EnrollmentHelper.enrollCallBack() {
             @Override
             public void onSuccess(String data) {
                 pbx509.setVisibility(View.GONE);
@@ -221,7 +221,7 @@ public class EnrollmentActivity extends AppCompatActivity {
             payload.put("phone", editPhone.getText().toString());
             payload.put("version", BuildConfig.VERSION_NAME);
 
-            enroll.enrollment(payload, new EnrollmentHelper.enrollCallback() {
+            enroll.enrollment(payload, new EnrollmentHelper.enrollCallBack() {
                 @Override
                 public void onSuccess(String data) {
                     pb.setVisibility(View.GONE);

@@ -506,7 +506,7 @@ public class MQTTService extends IntentService implements MqttCallback {
     private void applicationOnDevices(final JSONObject json) {
 
             EnrollmentHelper sToken = new EnrollmentHelper(getApplicationContext());
-            sToken.getActiveSessionToken(new EnrollmentHelper.enrollCallback() {
+            sToken.getActiveSessionToken(new EnrollmentHelper.enrollCallBack() {
                 @Override
                 public void onSuccess(String data) {
                     try {
@@ -570,7 +570,7 @@ public class MQTTService extends IntentService implements MqttCallback {
     private void filesOnDevices(final JSONObject json) {
 
             EnrollmentHelper sToken = new EnrollmentHelper(getApplicationContext());
-            sToken.getActiveSessionToken(new EnrollmentHelper.enrollCallback() {
+            sToken.getActiveSessionToken(new EnrollmentHelper.enrollCallBack() {
                 @Override
                 public void onSuccess(String data) {
                     try {

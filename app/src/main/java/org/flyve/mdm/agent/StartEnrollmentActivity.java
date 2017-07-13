@@ -116,7 +116,7 @@ public class StartEnrollmentActivity extends Activity {
                 pb.setVisibility(View.VISIBLE);
 
                 EnrollmentHelper sessionToken = new EnrollmentHelper(StartEnrollmentActivity.this);
-                sessionToken.getActiveSessionToken(new EnrollmentHelper.enrollCallback() {
+                sessionToken.getActiveSessionToken(new EnrollmentHelper.enrollCallBack() {
                     @Override
                     public void onSuccess(String data) {
                         btnEnroll.setVisibility(View.VISIBLE);
