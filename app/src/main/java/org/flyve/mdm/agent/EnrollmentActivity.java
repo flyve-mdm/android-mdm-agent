@@ -176,6 +176,7 @@ public class EnrollmentActivity extends AppCompatActivity {
         if(allowSave){
             sendEnroll();
         } else {
+            enableFields(true);
             txtMessage.setText(errMsg);
         }
     }
