@@ -162,6 +162,47 @@ public class ConnectionHTTP {
 		}
 	}
 
+	public static String getSyncWebData(final String url, final JSONObject data, final Map<String, String> header) {
+		try
+		{
+			URL dataURL = new URL(url);
+			FlyveLog.i("Method: POST - URL = " + url);
+			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
+
+			conn.setRequestMethod("POST");
+			conn.setConnectTimeout(timeout);
+			conn.setReadTimeout(readtimeout);
+
+			for (Map.Entry<String, String> entry : header.entrySet()) {
+				conn.setRequestProperty(entry.getKey(), entry.getValue());
+				FlyveLog.d(entry.getKey() + " = " + entry.getValue());
+			}
+
+			// Send post request
+			conn.setDoOutput(true);
+
+			DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+			os.writeBytes(data.toString());
+			os.flush();
+			os.close();
+
+			if(conn.getResponseCode() >= 400) {
+				InputStream is = conn.getErrorStream();
+				return inputStreamToString(is);
+			}
+
+			InputStream is = conn.getInputStream();
+			return inputStreamToString(is);
+
+		}
+		catch (final Exception ex)
+		{
+			String error = "Exception: " + ex.getMessage();
+			FlyveLog.e(error);
+			return error;
+		}
+	}
+
 	/**
 	 * Download and save files on device
 	 * @param url String the url to download the file

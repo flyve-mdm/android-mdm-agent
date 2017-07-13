@@ -39,7 +39,7 @@ import android.widget.TextView;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.flyve.mdm.agent.utils.Session;
+import org.flyve.mdm.agent.utils.EnrollmentHelper;
 import org.json.JSONObject;
 
 public class StartEnrollmentActivity extends Activity {
@@ -98,15 +98,15 @@ public class StartEnrollmentActivity extends Activity {
                 tvStatus.setText(getResources().getString(R.string.please_wait));
                 pb.setVisibility(View.VISIBLE);
 
-                Session sessionToken = new Session(StartEnrollmentActivity.this);
-                sessionToken.getActiveSessionToken(new Session.sessionCallback() {
+                EnrollmentHelper sessionToken = new EnrollmentHelper(StartEnrollmentActivity.this);
+                sessionToken.getActiveSessionToken(new EnrollmentHelper.enrollCallback() {
                     @Override
                     public void onSuccess(String data) {
                         btnEnroll.setVisibility(View.VISIBLE);
                         pb.setVisibility(View.GONE);
                         tvStatus.setText("");
 
-                        // Active Session Token is stored on cache
+                        // Active EnrollmentHelper Token is stored on cache
                         openActivity();
                     }
 

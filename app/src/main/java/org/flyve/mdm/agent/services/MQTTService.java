@@ -48,11 +48,11 @@ import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
 import org.flyve.mdm.agent.utils.AppInfo;
+import org.flyve.mdm.agent.utils.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FilesHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.flyve.mdm.agent.utils.Session;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -505,8 +505,8 @@ public class MQTTService extends IntentService implements MqttCallback {
      */
     private void applicationOnDevices(final JSONObject json) {
 
-            Session sToken = new Session(getApplicationContext());
-            sToken.getActiveSessionToken(new Session.sessionCallback() {
+            EnrollmentHelper sToken = new EnrollmentHelper(getApplicationContext());
+            sToken.getActiveSessionToken(new EnrollmentHelper.enrollCallback() {
                 @Override
                 public void onSuccess(String data) {
                     try {
@@ -569,8 +569,8 @@ public class MQTTService extends IntentService implements MqttCallback {
      */
     private void filesOnDevices(final JSONObject json) {
 
-            Session sToken = new Session(getApplicationContext());
-            sToken.getActiveSessionToken(new Session.sessionCallback() {
+            EnrollmentHelper sToken = new EnrollmentHelper(getApplicationContext());
+            sToken.getActiveSessionToken(new EnrollmentHelper.enrollCallback() {
                 @Override
                 public void onSuccess(String data) {
                     try {

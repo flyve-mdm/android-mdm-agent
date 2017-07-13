@@ -55,6 +55,30 @@ public class DataStorage {
 		}
 	}
 
+	public String getUserFirstName() {
+		return getData("userFirstName");
+	}
+	public void setUserFirstName(String firstName) {
+		setData("userFirstName", firstName);
+	}
+
+	public String getUserLastName() {
+		return getData("userLastName");
+	}
+	public void setUserLastName(String lastName) {
+		setData("userLastName", lastName);
+	}
+
+	public String getUserEmail() { return getData("userEmail");}
+	public void setUserEmail(String email) { setData("userEmail", email); }
+
+	public String getUserPhone() {
+		return getData("userPhone");
+	}
+	public void setUserPhone(String userPhone) {
+		setData("userPhone", userPhone);
+	}
+
 	public String getUrl() {
 		return getData("url");
 	}

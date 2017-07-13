@@ -34,6 +34,7 @@ import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,17 +45,13 @@ import com.flyvemdm.inventory.categories.Hardware;
 
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
-import org.flyve.mdm.agent.utils.ConnectionHTTP;
+import org.flyve.mdm.agent.utils.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.InputValidatorHelper;
-import org.flyve.mdm.agent.utils.Routes;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
-import java.util.HashMap;
 
 
 /**
@@ -64,13 +61,12 @@ public class EnrollmentActivity extends AppCompatActivity {
 
     private ProgressBar pb;
     private ProgressBar pbx509;
-    private Routes routes;
     private DataStorage cache;
-    private TextView txtMsg;
-    private LinearLayout lyUserData;
-    private EditText txtName;
-    private EditText txtLastName;
-    private EditText txtEmail;
+    private TextView txtMessage;
+    private EditText editName;
+    private EditText editLastName;
+    private EditText editEmail;
+    private EditText editPhone;
     private ImageView btnRegister;
 
     private static Handler uiHandler;
@@ -105,56 +101,31 @@ public class EnrollmentActivity extends AppCompatActivity {
         pbx509 = (ProgressBar) findViewById(R.id.progressBarX509);
 
         cache = new DataStorage( EnrollmentActivity.this );
-        routes = new Routes( EnrollmentActivity.this );
 
-        txtMsg = (TextView) findViewById(R.id.txtMessage);
-        lyUserData = (LinearLayout) findViewById(R.id.userData);
+        txtMessage = (TextView) findViewById(R.id.txtMessage);
 
-        txtName = (EditText) findViewById(R.id.editName);
-        txtLastName = (EditText) findViewById(R.id.editLastName);
-        txtEmail = (EditText) findViewById(R.id.editEmail);
-        txtEmail.setImeActionLabel("Save", KeyEvent.KEYCODE_ENTER);
-
+        editName = (EditText) findViewById(R.id.editName);
+        editLastName = (EditText) findViewById(R.id.editLastName);
+        editEmail = (EditText) findViewById(R.id.editEmail);
+        editPhone = (EditText) findViewById(R.id.editPhone);
+        editPhone.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        editPhone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    enroll();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         btnRegister = (ImageView) findViewById(R.id.btnSave);
         btnRegister.setEnabled(false);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StringBuilder errMsg = new StringBuilder("Please fix the following errors and try again.\n\n");
-                txtMsg.setText("");
-
-                //Validate and Save
-                boolean allowSave = true;
-
-                String email = txtEmail.getText().toString().trim();
-                String name = txtName.getText().toString().trim();
-                String lastName = txtLastName.getText().toString().trim();
-
-                // Email
-                if (InputValidatorHelper.isNullOrEmpty(name)) {
-                    errMsg.append("- First name should not be empty.\n");
-                    allowSave = false;
-                }
-
-                // First name
-                if (InputValidatorHelper.isNullOrEmpty(lastName)) {
-                    errMsg.append("- Last name should not be empty.\n");
-                    allowSave = false;
-                }
-
-                // Last name
-                if (email.equals("") || !InputValidatorHelper.isValidEmail(email)) {
-                    errMsg.append("- Invalid email address.\n");
-                    allowSave = false;
-                }
-
-                if(allowSave){
-                    pluginFlyvemdmAgent();
-                } else {
-                    txtMsg.setText(errMsg);
-                }
-
+                enroll();
             }
         });
 
@@ -163,7 +134,61 @@ public class EnrollmentActivity extends AppCompatActivity {
     }
 
     /**
-     * STEP 4 create X509 certificate
+     * Send information to enroll
+     */
+    private void enroll() {
+        StringBuilder errMsg = new StringBuilder("Please fix the following errors and try again.\n\n");
+        txtMessage.setText("");
+
+        //Validate and Save
+        boolean allowSave = true;
+
+        // block fields on form
+        enableFields(false);
+
+        String email = editEmail.getText().toString().trim();
+        String name = editName.getText().toString().trim();
+        String lastName = editLastName.getText().toString().trim();
+
+        // Email
+        if (InputValidatorHelper.isNullOrEmpty(name)) {
+            errMsg.append("- First name should not be empty.\n");
+            allowSave = false;
+        }
+
+        // First name
+        if (InputValidatorHelper.isNullOrEmpty(lastName)) {
+            errMsg.append("- Last name should not be empty.\n");
+            allowSave = false;
+        }
+
+        // Last name
+        if (email.equals("") || !InputValidatorHelper.isValidEmail(email)) {
+            errMsg.append("- Invalid email address.\n");
+            allowSave = false;
+        }
+
+        if(allowSave){
+            sendEnroll();
+        } else {
+            txtMessage.setText(errMsg);
+        }
+    }
+
+    private void enableFields(Boolean enable) {
+        LinearLayout ll = (LinearLayout) findViewById(R.id.userData);
+        for (View view : ll.getTouchables()){
+            if (view instanceof EditText){
+                EditText editText = (EditText) view;
+                editText.setEnabled(enable);
+                editText.setFocusable(enable);
+                editText.setFocusableInTouchMode(enable);
+            }
+        }
+    }
+
+    /**
+     * Create X509 certificate
      */
     private void createX509cert() {
         pbx509.setVisibility(View.VISIBLE);
@@ -176,166 +201,65 @@ public class EnrollmentActivity extends AppCompatActivity {
                         public void onGenerate(final boolean work) {
                             EnrollmentActivity.runOnUI(new Runnable() {
                                 public void run() {
-
                                 pbx509.setVisibility(View.GONE);
                                 if(work) {
                                     btnRegister.setEnabled(true);
                                 }
-
                                 }
                             });
                         }
                     });
                 } catch (Exception ex) {
                     pbx509.setVisibility(View.GONE);
-                    txtMsg.setText("ERROR: Creating Certificate X509");
-
+                    txtMessage.setText("Error creating certificate X509");
                     FlyveLog.e(ex.getMessage());
                 }
             }
         }).start();
     }
 
-    /**
-     * STEP 5 Send the payload to register the agent
-     */
-    private void pluginFlyvemdmAgent() {
-
-        txtMsg.setText("Register Agent");
-
+    private void sendEnroll() {
         try {
-
-            HashMap<String, String> header = new HashMap();
-            header.put("Session-Token",cache.getSessionToken());
-
-            header.put("Accept","application/json");
-            header.put("Content-Type","application/json; charset=UTF-8");
-
-            JSONObject payload = new JSONObject();
-            JSONObject input = new JSONObject();
-
             AndroidCryptoProvider csr = new AndroidCryptoProvider(EnrollmentActivity.this.getBaseContext());
             String requestCSR = "";
             if( csr.getlCsr() != null ) {
                 requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
             }
 
-            try {
-                payload.put("_email", txtEmail.getText());
-                payload.put("_invitation_token", cache.getInvitationToken());
-                payload.put("_serial", Helpers.getDeviceSerial());
-                payload.put("_uuid", new Hardware(EnrollmentActivity.this).getUUID());
-                payload.put("csr", requestCSR);
-                payload.put("firstname", txtName.getText());
-                payload.put("lastname", txtLastName.getText());
-                payload.put("version", BuildConfig.VERSION_NAME);
-                input.put("input", payload);
-            } catch (JSONException ex) {
-                pb.setVisibility(View.GONE);
-                txtMsg.setText( "ERROR pluginFlyvemdmAgent JSON" );
-                FlyveLog.e( ex.getMessage() );
-            }
+            JSONObject payload = new JSONObject();
 
-            ConnectionHTTP.getWebData(routes.pluginFlyvemdmAgent(), input, header, new ConnectionHTTP.DataCallback() {
+            payload.put("_email", editEmail.getText().toString());
+            payload.put("_invitation_token", cache.getInvitationToken());
+            payload.put("_serial", Helpers.getDeviceSerial());
+            payload.put("_uuid", new Hardware(EnrollmentActivity.this).getUUID());
+            payload.put("csr", requestCSR);
+            payload.put("firstname", editName.getText().toString());
+            payload.put("lastname", editLastName.getText().toString());
+            payload.put("phone", editPhone.getText().toString());
+            payload.put("version", BuildConfig.VERSION_NAME);
+
+            EnrollmentHelper enroll = new EnrollmentHelper(EnrollmentActivity.this);
+            enroll.enrollment(payload, new EnrollmentHelper.enrollCallback() {
                 @Override
-                public void callback(String data) {
-                    txtMsg.setText("Register Agent");
-
-                    if(data.contains("ERROR")){
-                        pb.setVisibility(View.GONE);
-
-                        try {
-                            JSONArray jsonArr = new JSONArray(data);
-                            String msgError = jsonArr.get(1).toString();
-
-                            txtMsg.setText(msgError);
-
-                            FlyveLog.e(data);
-                        } catch (Exception ex) {
-                            FlyveLog.e(ex.getCause().getMessage());
-                            txtMsg.setText("Unknow error");
-                        }
-                    } else {
-                        try {
-                            JSONObject jsonAgent = new JSONObject(data);
-                            cache.setAgentId(jsonAgent.getString("id"));
-
-                            getDataPluginFlyvemdmAgent();
-                        } catch (Exception ex) {
-                            pb.setVisibility(View.GONE);
-                            txtMsg.setText(data);
-                            FlyveLog.e(ex.getMessage());
-                        }
-                    }
-                }
-            });
-
-        } catch (Exception ex) {
-            pb.setVisibility(View.GONE);
-            txtMsg.setText( "ERROR pluginFlyvemdmAgent" );
-            FlyveLog.e(ex.getMessage());
-        }
-    }
-
-    /**
-     * STEP 6 get all the information of the agent and store this info on cache
-     */
-    private void getDataPluginFlyvemdmAgent() {
-
-        try {
-            HashMap<String, String> header = new HashMap();
-            header.put("Session-Token",cache.getSessionToken());
-
-            header.put("Accept","application/json");
-            header.put("Content-Type","application/json; charset=UTF-8");
-            header.put("User-Agent","Flyve MDM");
-            header.put("Referer",routes.pluginFlyvemdmAgent());
-
-            ConnectionHTTP.getWebData(routes.pluginFlyvemdmAgent(cache.getAgentId()), "GET", header, new ConnectionHTTP.DataCallback() {
-                @Override
-                public void callback(String data) {
-
-                pb.setVisibility(View.GONE);
-
-                try {
-                    JSONObject jsonObject = new JSONObject(data);
-
-                    String mbroker = jsonObject.getString("broker");
-                    String mport = jsonObject.getString("port");
-                    String mssl = jsonObject.getString("tls");
-                    String mtopic = jsonObject.getString("topic");
-                    String mpassword = jsonObject.getString("mqttpasswd");
-                    String mcert = jsonObject.getString("certificate");
-                    String mNameEmail = jsonObject.getString("name");
-                    int mComputersId = jsonObject.getInt("computers_id");
-                    int mId = jsonObject.getInt("id");
-                    int mEntitiesId = jsonObject.getInt("entities_id");
-                    int mFleetId = jsonObject.getInt("plugin_flyvemdm_fleets_id");
-
-                    cache.setBroker( mbroker );
-                    cache.setPort( mport );
-                    cache.setTls( mssl );
-                    cache.setTopic( mtopic );
-                    cache.setMqttuser( Helpers.getDeviceSerial() );
-                    cache.setMqttpasswd( mpassword );
-                    cache.setCertificate( mcert );
-                    cache.setName( mNameEmail );
-                    cache.setComputersId( String.valueOf(mComputersId) );
-                    cache.setEntitiesId( String.valueOf(mEntitiesId) );
-                    cache.setPluginFlyvemdmFleetsId( String.valueOf(mFleetId) );
+                public void onSuccess(String data) {
+                    // Store user information
+                    cache.setUserFirstName(editName.getText().toString());
+                    cache.setUserLastName(editLastName.getText().toString());
+                    cache.setUserEmail(editEmail.getText().toString());
+                    cache.setUserPhone(editPhone.getText().toString());
 
                     openMain();
-
-                } catch (Exception ex) {
-                    FlyveLog.e(ex.getMessage());
                 }
+
+                @Override
+                public void onError(String error) {
+                    enableFields(true);
+                    txtMessage.setText(error);
                 }
             });
-
         } catch (Exception ex) {
-            pb.setVisibility(View.GONE);
-            txtMsg.setText( "ERROR getDataPluginFlyvemdmAgent" );
-            FlyveLog.e(ex.getMessage());
+            txtMessage.setText( ex.getMessage() );
+            FlyveLog.e( ex.getMessage() );
         }
     }
 
