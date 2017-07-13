@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.os.StrictMode;
 
 import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -234,6 +235,38 @@ public class EnrollmentHelper {
             }
         });
         t.start();
+    }
+
+    /**
+     * Create X509 certificate
+     */
+    public void createX509cert(final enrollCallback callback) {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    AndroidCryptoProvider createCertificate = new AndroidCryptoProvider(context);
+                    createCertificate.generateRequest(new AndroidCryptoProvider.generateCallback() {
+                        @Override
+                        public void onGenerate(final boolean work) {
+                            EnrollmentHelper.runOnUI(new Runnable() {
+                                public void run() {
+                                    if(work) {
+                                        callback.onSuccess("true");
+                                    }
+                                }
+                            });
+                        }
+                    });
+                } catch (Exception ex) {
+                    FlyveLog.e(ex.getMessage());
+                    EnrollmentHelper.runOnUI(new Runnable() {
+                        public void run() {
+                            callback.onError("false");
+                        }
+                    });
+                }
+            }
+        }).start();
     }
 
     public interface enrollCallback {

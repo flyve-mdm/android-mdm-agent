@@ -29,8 +29,6 @@ package org.flyve.mdm.agent;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -62,22 +60,14 @@ public class EnrollmentActivity extends AppCompatActivity {
     private ProgressBar pb;
     private ProgressBar pbx509;
     private DataStorage cache;
+    private EnrollmentHelper enroll;
+
     private TextView txtMessage;
     private EditText editName;
     private EditText editLastName;
     private EditText editEmail;
     private EditText editPhone;
     private ImageView btnRegister;
-
-    private static Handler uiHandler;
-
-    static {
-        uiHandler = new Handler(Looper.getMainLooper());
-    }
-
-    private static void runOnUI(Runnable runnable) {
-        uiHandler.post(runnable);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +90,8 @@ public class EnrollmentActivity extends AppCompatActivity {
         pb = (ProgressBar) findViewById(R.id.progressBar);
         pbx509 = (ProgressBar) findViewById(R.id.progressBarX509);
 
-        cache = new DataStorage( EnrollmentActivity.this );
+        enroll = new EnrollmentHelper(EnrollmentActivity.this);
+        cache = new DataStorage(EnrollmentActivity.this);
 
         txtMessage = (TextView) findViewById(R.id.txtMessage);
 
@@ -130,7 +121,21 @@ public class EnrollmentActivity extends AppCompatActivity {
         });
 
         // start creating a certificated
-        createX509cert();
+        pbx509.setVisibility(View.VISIBLE);
+        enroll.createX509cert(new EnrollmentHelper.enrollCallback() {
+            @Override
+            public void onSuccess(String data) {
+                pbx509.setVisibility(View.GONE);
+                btnRegister.setEnabled(true);
+            }
+
+            @Override
+            public void onError(String error) {
+                pbx509.setVisibility(View.GONE);
+                btnRegister.setEnabled(false);
+                txtMessage.setText("Error creating certificate X509");
+            }
+        });
     }
 
     /**
@@ -175,6 +180,10 @@ public class EnrollmentActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Enable / Disable field
+     * @param enable Boolean
+     */
     private void enableFields(Boolean enable) {
         LinearLayout ll = (LinearLayout) findViewById(R.id.userData);
         for (View view : ll.getTouchables()){
@@ -188,36 +197,8 @@ public class EnrollmentActivity extends AppCompatActivity {
     }
 
     /**
-     * Create X509 certificate
+     * Send information to enroll the device
      */
-    private void createX509cert() {
-        pbx509.setVisibility(View.VISIBLE);
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    AndroidCryptoProvider createCertif = new AndroidCryptoProvider(getBaseContext());
-                    createCertif.generateRequest(new AndroidCryptoProvider.generateCallback() {
-                        @Override
-                        public void onGenerate(final boolean work) {
-                            EnrollmentActivity.runOnUI(new Runnable() {
-                                public void run() {
-                                pbx509.setVisibility(View.GONE);
-                                if(work) {
-                                    btnRegister.setEnabled(true);
-                                }
-                                }
-                            });
-                        }
-                    });
-                } catch (Exception ex) {
-                    pbx509.setVisibility(View.GONE);
-                    txtMessage.setText("Error creating certificate X509");
-                    FlyveLog.e(ex.getMessage());
-                }
-            }
-        }).start();
-    }
-
     private void sendEnroll() {
         try {
             pb.setVisibility(View.VISIBLE);
@@ -240,7 +221,6 @@ public class EnrollmentActivity extends AppCompatActivity {
             payload.put("phone", editPhone.getText().toString());
             payload.put("version", BuildConfig.VERSION_NAME);
 
-            EnrollmentHelper enroll = new EnrollmentHelper(EnrollmentActivity.this);
             enroll.enrollment(payload, new EnrollmentHelper.enrollCallback() {
                 @Override
                 public void onSuccess(String data) {
