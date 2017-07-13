@@ -113,7 +113,7 @@ public class ConnectionHTTP {
 					{
 						public void run()
 						{
-						callback.callback("Exception (" + ex.getClass() + "): " + ex.getMessage());
+						callback.callback("EXCEPTION_HTTP_" + ex.getMessage());
 						FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
 						}
 					});
@@ -158,7 +158,7 @@ public class ConnectionHTTP {
 		catch (final Exception ex)
 		{
 			FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
-			return "Exception (" + ex.getClass() + "): " + ex.getMessage();
+			return "EXCEPTION_HTTP_" + ex.getMessage();
 		}
 	}
 
@@ -197,7 +197,7 @@ public class ConnectionHTTP {
 		}
 		catch (final Exception ex)
 		{
-			String error = "Exception: " + ex.getMessage();
+			String error = "EXCEPTION_HTTP_" + ex.getMessage();
 			FlyveLog.e(error);
 			return error;
 		}
@@ -314,7 +314,7 @@ public class ConnectionHTTP {
 					{
 						public void run()
 						{
-						callback.callback("Exception (" + ex.getClass() + "): " + ex.getMessage());
+						callback.callback("EXCEPTION_HTTP_" + ex.getMessage());
 						FlyveLog.e(ex.getClass() + " : " + ex.getMessage());
 						}
 					});
@@ -390,7 +390,7 @@ public class ConnectionHTTP {
 				{
 					public void run()
 					{
-						callback.callback("Exception (" + ex.getClass() + "): " + ex.getMessage());
+						callback.callback("EXCEPTION_HTTP_" + ex.getMessage());
 						FlyveLog.e(ex.getClass() + " : " + ex.getMessage());
 					}
 				});

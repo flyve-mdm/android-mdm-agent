@@ -45,7 +45,8 @@ import org.json.JSONObject;
 public class StartEnrollmentActivity extends Activity {
 
     private RelativeLayout btnEnroll;
-    private TextView tvStatus;
+    private TextView txtMessage;
+    private TextView txtTitle;
     private ProgressBar pb;
 
     @Override
@@ -55,7 +56,8 @@ public class StartEnrollmentActivity extends Activity {
 
         DataStorage cache = new DataStorage( StartEnrollmentActivity.this );
 
-        tvStatus = (TextView) findViewById(R.id.txtMessage);
+        txtMessage = (TextView) findViewById(R.id.txtMessage);
+        txtTitle = (TextView) findViewById(R.id.txtTitle);
         pb = (ProgressBar) findViewById(R.id.progressBar);
 
         Intent intent = getIntent();
@@ -63,23 +65,36 @@ public class StartEnrollmentActivity extends Activity {
 
         String deepLinkData = Helpers.base64decode(data.getQueryParameter("data"));
 
-        String url = "";
-        String userToken = "";
-        String invitationToken = "";
+        String url;
+        String userToken;
+        String invitationToken;
+        String deepLinkErrorMessage = getResources().getString(R.string.ERROR_DEEP_LINK);
 
         try {
             JSONObject jsonLink = new JSONObject(deepLinkData);
 
             if(jsonLink.has("url")) {
                 url = jsonLink.getString("url");
+            } else {
+                deepLinkErrorMessage = "URL " + deepLinkErrorMessage;
+                txtMessage.setText(deepLinkErrorMessage);
+                return;
             }
 
             if(jsonLink.has("user_token")) {
                 userToken = jsonLink.getString("user_token");
+            } else {
+                deepLinkErrorMessage = "USER " + deepLinkErrorMessage;
+                txtMessage.setText(deepLinkErrorMessage);
+                return;
             }
 
             if(jsonLink.has("invitation_token")) {
                 invitationToken = jsonLink.getString("invitation_token");
+            } else {
+                deepLinkErrorMessage = "TOKEN " + deepLinkErrorMessage;
+                txtMessage.setText(deepLinkErrorMessage);
+                return;
             }
 
             cache.setUrl(url);
@@ -88,6 +103,8 @@ public class StartEnrollmentActivity extends Activity {
 
         } catch (Exception ex) {
             FlyveLog.e( ex.getMessage() );
+            txtMessage.setText(deepLinkErrorMessage);
+            return;
         }
 
         btnEnroll = (RelativeLayout) findViewById(R.id.btnEnroll);
@@ -95,7 +112,7 @@ public class StartEnrollmentActivity extends Activity {
             @Override
             public void onClick(View v) {
                 btnEnroll.setVisibility(View.GONE);
-                tvStatus.setText(getResources().getString(R.string.please_wait));
+                txtMessage.setText(getResources().getString(R.string.please_wait));
                 pb.setVisibility(View.VISIBLE);
 
                 EnrollmentHelper sessionToken = new EnrollmentHelper(StartEnrollmentActivity.this);
@@ -104,7 +121,8 @@ public class StartEnrollmentActivity extends Activity {
                     public void onSuccess(String data) {
                         btnEnroll.setVisibility(View.VISIBLE);
                         pb.setVisibility(View.GONE);
-                        tvStatus.setText("");
+                        txtMessage.setText("");
+                        txtTitle.setText(getResources().getString(R.string.start_enroll));
 
                         // Active EnrollmentHelper Token is stored on cache
                         openActivity();
@@ -114,7 +132,8 @@ public class StartEnrollmentActivity extends Activity {
                     public void onError(String error) {
                         btnEnroll.setVisibility(View.VISIBLE);
                         pb.setVisibility(View.GONE);
-                        tvStatus.setText(error);
+                        txtMessage.setText(error);
+                        txtTitle.setText(getResources().getString(R.string.fail_enroll));
                     }
                 });
 

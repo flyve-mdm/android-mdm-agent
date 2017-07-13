@@ -3,8 +3,8 @@ package org.flyve.mdm.agent.utils;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.StrictMode;
 
+import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.json.JSONArray;
@@ -72,16 +72,31 @@ public class EnrollmentHelper {
             public void run()
             {
                 try {
-                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                    StrictMode.setThreadPolicy(policy);
-
                     // STEP 1 get session token
                     final String data = getSyncWebData(routes.initSession(cache.getUserToken()), "GET", null);
-                    if(data.contains("Exception")) {
+                    if(data.contains("EXCEPTION_HTTP") || data.contains("ERROR")) {
                         FlyveLog.e(data);
+
+                        if(data.contains("EXCEPTION_HTTP")) {
+                            EnrollmentHelper.runOnUI(new Runnable() {
+                                public void run() {
+                                    callback.onError(context.getResources().getString(R.string.ERROR_INTERNAL));
+                                }
+                            });
+                            return;
+                        }
+
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
-                                callback.onError(data);
+                            String errorMessage = context.getResources().getString(R.string.ERROR_INTERNAL);
+                            try {
+                                JSONArray jError = new JSONArray(data);
+                                errorMessage = jError.getString(1);
+                            } catch (Exception ex) {
+                                FlyveLog.e(ex.getMessage());
+                            }
+
+                            callback.onError(errorMessage);
                             }
                         });
                     }
@@ -98,13 +113,33 @@ public class EnrollmentHelper {
                     header.put("Referer",routes.getFullSession());
 
                     final String dataFullSession = getSyncWebData(routes.getFullSession(), "GET", header);
-                    if(dataFullSession.contains("Exception")) {
+                    if(dataFullSession.contains("EXCEPTION_HTTP") || dataFullSession.contains("ERROR")) {
                         FlyveLog.e(dataFullSession);
+
+                        if(dataFullSession.contains("EXCEPTION_HTTP")) {
+                            EnrollmentHelper.runOnUI(new Runnable() {
+                                public void run() {
+                                    callback.onError(context.getResources().getString(R.string.ERROR_INTERNAL));
+                                }
+                            });
+                            return;
+                        }
+
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
-                                callback.onError(dataFullSession);
+                                String errorMessage = context.getResources().getString(R.string.ERROR_INTERNAL);
+                                try {
+                                    JSONArray jError = new JSONArray(dataFullSession);
+                                    errorMessage = jError.getString(1);
+                                } catch (Exception ex) {
+                                    FlyveLog.e(ex.getMessage());
+                                }
+
+                                callback.onError(errorMessage);
                             }
                         });
+
+                        return;
                     }
 
                     JSONObject jsonFullSession = new JSONObject(dataFullSession);
@@ -122,14 +157,33 @@ public class EnrollmentHelper {
                     header.put("Referer",routes.getFullSession());
 
                     final String dataActiveProfile = getSyncWebData(routes.changeActiveProfile(cache.getProfileId()), "GET", header);
-                    if(dataActiveProfile.contains("Exception")) {
+                    if(dataActiveProfile.contains("EXCEPTION_HTTP") || dataActiveProfile.contains("ERROR")) {
                         FlyveLog.e(dataActiveProfile);
+
+                        if(dataFullSession.contains("EXCEPTION_HTTP")) {
+                            EnrollmentHelper.runOnUI(new Runnable() {
+                                public void run() {
+                                    callback.onError(context.getResources().getString(R.string.ERROR_INTERNAL));
+                                }
+                            });
+                            return;
+                        }
+
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
-                                callback.onError(dataActiveProfile);
+                                String errorMessage = context.getResources().getString(R.string.ERROR_INTERNAL);
+                                try {
+                                    JSONArray jError = new JSONArray(dataFullSession);
+                                    errorMessage = jError.getString(1);
+                                } catch (Exception ex) {
+                                    FlyveLog.e(ex.getMessage());
+                                }
+
+                                callback.onError(errorMessage);
                             }
                         });
                     } else {
+                        // Success
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
                                 callback.onSuccess(cache.getSessionToken());
@@ -140,7 +194,7 @@ public class EnrollmentHelper {
                     FlyveLog.e(ex.getMessage());
                     EnrollmentHelper.runOnUI(new Runnable() {
                         public void run() {
-                            callback.onError(ex.getMessage());
+                            callback.onError(context.getResources().getString(R.string.ERROR_INTERNAL));
                         }
                     });
                 }

@@ -27,7 +27,7 @@
         />
 
     <TextView
-        android:id="@+id/txtEnrollText"
+        android:id="@+id/txtTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/start_enroll"
@@ -43,7 +43,7 @@
         android:id="@+id/btnEnroll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtEnrollText"
+        android:layout_below="@+id/txtTitle"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         >
@@ -64,24 +64,26 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtEnrollText"
+        android:layout_below="@+id/txtTitle"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge"
         />
 
     <TextView
         android:id="@+id/txtMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/regularText"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text=""
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
         android:layout_marginBottom="20dp"
+        style="@style/regularText"
         />
 
 </RelativeLayout>

@@ -104,7 +104,7 @@ public class EnrollmentActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    enroll();
+                    validateForm();
                     return true;
                 }
                 return false;
@@ -116,7 +116,7 @@ public class EnrollmentActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enroll();
+                validateForm();
             }
         });
 
@@ -139,9 +139,9 @@ public class EnrollmentActivity extends AppCompatActivity {
     }
 
     /**
-     * Send information to enroll
+     * Send information to validateForm
      */
-    private void enroll() {
+    private void validateForm() {
         StringBuilder errMsg = new StringBuilder("Please fix the following errors and try again.\n\n");
         txtMessage.setText("");
 
@@ -197,7 +197,7 @@ public class EnrollmentActivity extends AppCompatActivity {
     }
 
     /**
-     * Send information to enroll the device
+     * Send information to validateForm the device
      */
     private void sendEnroll() {
         try {
