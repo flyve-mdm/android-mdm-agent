@@ -32,7 +32,7 @@ platform :android do
     )
 
     zipalign(apk_path: "#{lane_context[SharedValues::SIGNED_APK_PATH]}")
-    gradle(task: "test")
+    #gradle(task: "test")
 
   supply(
      track: 'alpha',
