@@ -6,7 +6,8 @@ then
     fastlane android alpha storepass:'$KEYSTORE' keypass:'$ALIAS'
 fi
 
-if [[ "$TRAVIS_BRANCH" == "feature/travis" ]];
+if [[ "$TRAVIS_BRANCH" == "develop" ]];
 then
+    tar -zxvf google.tar.gz
     fastlane android alpha storepass:'$KEYSTORE' keypass:'$ALIAS'
 fi
