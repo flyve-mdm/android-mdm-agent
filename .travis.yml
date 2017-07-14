@@ -20,5 +20,3 @@ env:
 before_install:
 - openssl aes-256-cbc -K $encrypted_fbe35f3d891b_key -iv $encrypted_fbe35f3d891b_iv
   -in google.tar.gz.enc -out ci/google.tar.gz -d
-- openssl aes-256-cbc -K $encrypted_fbe35f3d891b_key -iv $encrypted_fbe35f3d891b_iv
-  -in release.keystore.enc -out ci/release.keystore -d
