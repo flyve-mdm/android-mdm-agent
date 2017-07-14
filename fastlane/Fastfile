@@ -1,0 +1,44 @@
+# Customise this file, documentation can be found here:
+# https://github.com/fastlane/fastlane/tree/master/fastlane/docs
+# All available actions: https://docs.fastlane.tools/actions
+# can also be listed using the `fastlane actions` command
+
+# Change the syntax highlighting to Ruby
+# All lines starting with a # are ignored when running `fastlane`
+
+# If you want to automatically update fastlane if a new version is available:
+# update_fastlane
+
+# This is the minimum version number required.
+# Update this, if you use features of a newer version
+fastlane_version "2.45.0"
+
+default_platform :android
+
+platform :android do
+
+  desc "Alpha release app. Deploy a new version to the Google Play Store - Alpha channel"
+  lane :alpha do |options|
+    #gradle(task: "clean")
+
+    #gradle(task: "assemble")
+
+    sign_apk(
+      keystore_path: "ci/release.keystore",
+      alias: "mdmagent",
+      storepass: options[:storepass],
+      tsa: "http://timestamp.comodoca.com/rfc316",
+      keypass: options[:keypass]
+    )
+
+    zipalign(apk_path: "#{lane_context[SharedValues::SIGNED_APK_PATH]}")
+    #gradle(task: "test")
+
+  supply(
+     track: 'alpha',
+     apk: "#{lane_context[SharedValues::SIGNED_APK_PATH]}"
+  )
+  end
+end
+
+# how to used it fastlane android alpha storepass:'#KEYSTORE_PASSWORD' keypass:'#ALIAS_PASSWORD'
