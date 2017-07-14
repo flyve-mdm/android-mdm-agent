@@ -7,7 +7,7 @@ android:
 install:
 - rvm install 2.3.4
 - gem install fastlane
-script:
+after_success:
 - "./ci/deploy.sh"
 notifications:
   webhooks: https://fathomless-fjord-24024.herokuapp.com/notify
