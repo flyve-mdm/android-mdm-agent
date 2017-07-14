@@ -8,6 +8,16 @@ fi
 
 if [[ "$TRAVIS_BRANCH" == "develop" ]];
 then
+    cd ci
     tar -zxvf google.tar.gz
+    cd ..
+    fastlane android alpha storepass:'$KEYSTORE' keypass:'$ALIAS'
+fi
+
+if [[ "$TRAVIS_BRANCH" == "feature/travis" ]];
+then
+    cd ci
+    tar -zxvf google.tar.gz
+    cd ..
     fastlane android alpha storepass:'$KEYSTORE' keypass:'$ALIAS'
 fi
