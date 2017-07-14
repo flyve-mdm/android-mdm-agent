@@ -5,6 +5,6 @@ android:
     - android-22
     - extra-android-m2repository
 after_success:
-  - ci/deploy.sh
+  - ./ci/deploy.sh
 notifications:
   webhooks: https://fathomless-fjord-24024.herokuapp.com/notify
