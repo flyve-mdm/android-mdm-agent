@@ -4,6 +4,9 @@ android:
     - build-tools-22.0.1
     - android-22
     - extra-android-m2repository
-
+script:
+  - gradle clean build
+after_success:
+  - ci/deploy.sh
 notifications:
   webhooks: https://fathomless-fjord-24024.herokuapp.com/notify

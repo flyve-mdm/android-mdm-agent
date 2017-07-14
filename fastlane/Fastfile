@@ -19,23 +19,26 @@ platform :android do
 
   desc "Alpha release app. Deploy a new version to the Google Play Store - Alpha channel"
   lane :alpha do |options|
-    gradle(task: "clean")
+    #gradle(task: "clean")
 
-    gradle(task: "assemble")
+    #gradle(task: "assemble")
 
     sign_apk(
       keystore_path: "ci/release.keystore",
-      alias: "InventoryAgent",
+      alias: "mdmagent",
       storepass: options[:storepass],
       tsa: "http://timestamp.comodoca.com/rfc316",
+      keypass: options[:keypass]
     )
 
     zipalign(apk_path: "#{lane_context[SharedValues::SIGNED_APK_PATH]}")
     gradle(task: "test")
 
-  supply(
-     track: 'alpha',
-     apk: "#{lane_context[SharedValues::SIGNED_APK_PATH]}"
-  )
+  #supply(
+  #   track: 'alpha',
+  #   apk: "#{lane_context[SharedValues::SIGNED_APK_PATH]}"
+  #)
   end
 end
+
+# how to used it fastlane android alpha storepass:'#KEYSTORE_PASSWORD' keypass:'#ALIAS_PASSWORD'
