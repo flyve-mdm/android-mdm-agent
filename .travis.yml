@@ -19,6 +19,6 @@ env:
   - secure: aoYBJcY4gpvfeTtPmu5j5Vr+rt+7RnsZeWwl0z5iSIty+M8eSA+p3B4JHOQoa90aW+eLZIgA/XsnJUm5+wOGjlz8BGPdAyVVlMBF4qrAJKj12fP+M1n+AK59N+wuN+m9EraXlCf2JE2Ty1ioaxWhWlauFI4Ihw5hY6QKHot4frtNq7VCiJ9kQWSFMrIrSJTMAQNZG7wfweGE/CUKSHWeJ/L/YFvbLRjgYEcqkG4lDWYt/noDCElu1OFLKeFiPYVhxrDMf4H+HsxPQYu61H8JKtOFaiusjcEpvvOAlCX1kzM0wsMK4U846nUw+WENd36WMN6YcWiP5CtHt0vOloyhOLVHWELSUbLfw+TRtT+HeOZ/jxueQ8BfLygj6Pb5TClKLK3ENlrqTlafT4PMgMZNsLQ3e0++UJoyRKrHleFArzqR+Bk6MN3xibZAkiy1DPidjQPLvmuSmoACvcjnr5h4etli9bdUo50UagbRORSxCLItn3JePHwlNpLvKEld5zSK0C5lPexCAbLFVAhVw1pO5CCHJeX4FuSbdIhiOsY8GmZg6ZAccgW91tDyhtijwmf1NxiGr+0PcHCHl92jg+U4RgQTmInveOnStRYpEOO+MJaInfuQkxrY+PJbnlR37/QtjOX6lsVcv0c7nfp0BA0IWK4sg3DEdI2D8jBbVgwYS58=
 before_install:
 - openssl aes-256-cbc -K $encrypted_fbe35f3d891b_key -iv $encrypted_fbe35f3d891b_iv
-  -in release.keystore.enc -out ci/release.keystore -d
+  -in google.tar.gz.enc -out ci/google.tar.gz -d
 - openssl aes-256-cbc -K $encrypted_fbe35f3d891b_key -iv $encrypted_fbe35f3d891b_iv
-  -in gplay.json.enc -out ci/gplay.json -d
+  -in release.keystore.enc -out ci/release.keystore -d
