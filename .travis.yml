@@ -4,10 +4,9 @@ android:
     - build-tools-22.0.1
     - android-22
     - extra-android-m2repository
-rvm:
-  - 1.9.3
-before_script:
-  - sudo gem install fastlane
+before_install:
+  - rvm install 2.3.4
+  - gem install fastlane
 after_success:
   - ./ci/deploy.sh
 notifications:
