@@ -4,10 +4,10 @@ android:
   - build-tools-22.0.1
   - android-22
   - extra-android-m2repository
-before_install:
+install:
 - rvm install 2.3.4
 - gem install fastlane
-after_success:
+script:
 - "./ci/deploy.sh"
 notifications:
   webhooks: https://fathomless-fjord-24024.herokuapp.com/notify
