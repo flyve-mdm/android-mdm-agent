@@ -14,13 +14,13 @@ module Fastlane
          rename_command = ["mv -n",params[:apk_path],new_name]
          Fastlane::Actions.sh(rename_command, log: false)
 
-         aligncmd = ["zipalign -v -f 4", new_name , " ", params[:apk_path] ]
+         aligncmd = ["$ANDROID_HOME/build-tools/$BUILD_TOOL/zipalign -v -f 4", new_name , " ", params[:apk_path] ]
          Fastlane::Actions.sh(aligncmd, log: true)
 
          return
         end
 
-       zipalign = Fastlane::Actions.sh("zipalign -c -v 4 #{params[:apk_path]}", log: false , error_callback: error_callback)
+       zipalign = Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/zipalign -c -v 4 #{params[:apk_path]}", log: false , error_callback: error_callback)
     
        UI.message('Input apk is aligned')
 
