@@ -26,7 +26,7 @@
 package org.flyve.mdm.agent.utils;
 
 import com.orhanobut.logger.Logger;
-import org.flyve.mdm.agent.FlyveMDMApp;
+import org.flyve.mdm.agent.MDMAgent;
 
 /**
  * This is a Log wrapper
@@ -45,7 +45,7 @@ public class FlyveLog {
      * @param object Object to write
      */
     public static void d(Object object) {
-        if(FlyveMDMApp.getIsDebuggable()){
+        if(MDMAgent.getIsDebuggable()){
             Logger.d(object);
         }
     }
@@ -56,7 +56,7 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void d(String message, Object... args) {
-        if(FlyveMDMApp.getIsDebuggable()){
+        if(MDMAgent.getIsDebuggable()){
             // do something for a debug build
             Logger.d(message,args);
         }
@@ -68,7 +68,7 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void v(String message, Object... args) {
-        if(FlyveMDMApp.getIsDebuggable()){
+        if(MDMAgent.getIsDebuggable()){
             Logger.v(message, args);
         }
     }
@@ -79,7 +79,7 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void i(String message, Object... args) {
-        if(FlyveMDMApp.getIsDebuggable()) {
+        if(MDMAgent.getIsDebuggable()) {
             Logger.i(message, args);
         }
     }
@@ -91,7 +91,7 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void e(Throwable throwable, String message, Object... args) {
-        if(FlyveMDMApp.getIsDebuggable()) {
+        if(MDMAgent.getIsDebuggable()) {
             Logger.e(throwable, message, args);
         }
     }
@@ -102,7 +102,7 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void e(String message, Object... args) {
-        if(FlyveMDMApp.getIsDebuggable()) {
+        if(MDMAgent.getIsDebuggable()) {
             Logger.e(message, args);
         }
     }
@@ -113,7 +113,7 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void wtf(String message, Object... args) {
-        if(FlyveMDMApp.getIsDebuggable()) {
+        if(MDMAgent.getIsDebuggable()) {
             Logger.wtf(message, args);
         }
     }
@@ -123,7 +123,7 @@ public class FlyveLog {
      * @param json String the json to show
      */
     public static void json(String json) {
-        if(FlyveMDMApp.getIsDebuggable()) {
+        if(MDMAgent.getIsDebuggable()) {
             Logger.json(json);
         }
     }
@@ -133,7 +133,7 @@ public class FlyveLog {
      * @param xml String the xml to show
      */
     public static void xml(String xml) {
-        if(FlyveMDMApp.getIsDebuggable()) {
+        if(MDMAgent.getIsDebuggable()) {
             Logger.xml(xml);
         }
     }
