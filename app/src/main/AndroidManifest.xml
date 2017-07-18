@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.flyve.mdm.agent"
-    android:versionCode="16"
-    android:versionName="1.0.18">
+    android:versionCode="20"
+    android:versionName="1.0.22">
 
     <!-- For writing logfiles -->
     <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
@@ -38,11 +38,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LogActivity"
-            android:configChanges="orientation|screenSize"></activity>
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize">
+        </activity>
         <activity
             android:name=".EnrollmentActivity"
-            android:configChanges="orientation|screenSize"></activity>
+            android:configChanges="orientation|screenSize">
+        </activity>
         <activity
             android:name=".StartEnrollmentActivity"
             android:configChanges="orientation|screenSize"
@@ -59,11 +61,13 @@
             </intent-filter>
         </activity>
 
-        <service android:name="org.eclipse.paho.android.service.MqttService"></service>
+        <service android:name="org.eclipse.paho.android.service.MqttService">
+        </service>
         <service
             android:name=".services.MQTTService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false">
+        </service>
 
         <!-- This receiver is for restart MQTT on reboot device -->
         <receiver
@@ -82,7 +86,8 @@
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
-                android:resource="@xml/device_admin"></meta-data>
+                android:resource="@xml/device_admin">
+            </meta-data>
 
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
@@ -105,10 +110,6 @@
                 <action android:name="android.location.PROVIDERS_CHANGED" />
             </intent-filter>
         </receiver>
-
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main"></activity>
     </application>
 
 </manifest>

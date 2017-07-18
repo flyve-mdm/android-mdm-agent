@@ -43,7 +43,7 @@ import org.flyve.mdm.agent.utils.Helpers;
  */
 public class SplashActivity extends Activity {
 
-    private final int SPLASH_TIME = 3000;
+    private static final int TIME = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class SplashActivity extends Activity {
                 public void run() {
                     openMain();
                 }
-            }, SPLASH_TIME);
+            }, TIME);
 
             return;
         }
@@ -77,15 +77,13 @@ public class SplashActivity extends Activity {
                 Helpers.openURL( SplashActivity.this, txtLink.getText().toString() );
             }
         });
-
-
     }
 
     /**
      * Open the main activity
      */
     private void openMain() {
-        Intent miIntent = new Intent(SplashActivity.this, LogActivity.class);
+        Intent miIntent = new Intent(SplashActivity.this, MainActivity.class);
         SplashActivity.this.startActivity(miIntent);
         SplashActivity.this.finish();
     }

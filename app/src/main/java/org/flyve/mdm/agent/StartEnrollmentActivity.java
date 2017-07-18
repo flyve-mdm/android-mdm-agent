@@ -158,7 +158,7 @@ public class StartEnrollmentActivity extends Activity {
      * Open the main activity
      */
     private void openMain() {
-        Intent miIntent = new Intent(StartEnrollmentActivity.this, LogActivity.class);
+        Intent miIntent = new Intent(StartEnrollmentActivity.this, MainActivity.class);
         StartEnrollmentActivity.this.startActivity(miIntent);
         StartEnrollmentActivity.this.finish();
     }
