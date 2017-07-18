@@ -27,10 +27,7 @@
 
 package org.flyve.mdm.agent;
 
-import android.app.ActivityManager;
-import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -44,8 +41,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.adapter.LogAdapter;
-import org.flyve.mdm.agent.security.FlyveAdminReceiver;
-import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.json.JSONObject;
 
@@ -58,38 +53,16 @@ import java.util.HashMap;
  */
 public class FragmentLog extends Fragment {
 
-    private IntentFilter mIntent;
-    private Intent mServiceIntent;
     private TextView txtMessage;
     private TextView txtTitle;
     private ArrayList<HashMap<String, String>> arr_data;
-    LogAdapter mAdapter;
-
-    private static final int REQUEST_CODE_ENABLE_ADMIN = 1;
-    ComponentName mDeviceAdmin;
+    private LogAdapter mAdapter;
+    private IntentFilter mIntent;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_log, container, false);
-
-        // Device Admin
-        mDeviceAdmin = new ComponentName(this.getActivity(), FlyveAdminReceiver.class);
-
-        Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
-        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "EXPLANATION");
-        startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
-
-        // ------------------
-        // MQTT SERVICE
-        // ------------------
-        MQTTService mMQTTService = new MQTTService();
-        mServiceIntent = new Intent(FragmentLog.this.getActivity(), mMQTTService.getClass());
-        // Start the service
-        if (!isMyServiceRunning(mMQTTService.getClass())) {
-            getActivity().startService(mServiceIntent);
-        }
 
         txtMessage = (TextView) v.findViewById(R.id.txtMessage);
         txtTitle = (TextView) v.findViewById(R.id.txtTitle);
@@ -122,31 +95,6 @@ public class FragmentLog extends Fragment {
         LocalBroadcastManager.getInstance(FragmentLog.this.getActivity()).registerReceiver(broadcastReceivedMessage, new IntentFilter("flyve.mqtt.msg"));
         LocalBroadcastManager.getInstance(FragmentLog.this.getActivity()).registerReceiver(broadcastReceivedLog, new IntentFilter("flyve.mqtt.log"));
         LocalBroadcastManager.getInstance(FragmentLog.this.getActivity()).registerReceiver(broadcastServiceStatus, new IntentFilter("flyve.mqtt.status"));
-    }
-
-    @Override
-    public void onDestroy() {
-        // stop the service
-        getActivity().stopService(mServiceIntent);
-        FlyveLog.i("onDestroy!");
-        super.onDestroy();
-    }
-
-    /**
-     * Check if the service is running
-     * @param serviceClass Class
-     * @return boolean
-     */
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                FlyveLog.i ("isMyServiceRunning?", Boolean.toString( true ));
-                return true;
-            }
-        }
-        FlyveLog.i ("isMyServiceRunning?", Boolean.toString( false ));
-        return false;
     }
 
     /**
