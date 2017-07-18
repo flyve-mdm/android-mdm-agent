@@ -53,7 +53,7 @@ import java.util.HashMap;
 /**
  * This is the main activity of the app
  */
-public class MainActivity extends Activity {
+public class LogActivity extends Activity {
 
     private IntentFilter mIntent;
     private Intent mServiceIntent;
@@ -68,7 +68,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_log);
 
         // Device Admin
         mDeviceAdmin = new ComponentName(this, FlyveAdminReceiver.class);
@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
         // MQTT SERVICE
         // ------------------
         MQTTService mMQTTService = new MQTTService();
-        mServiceIntent = new Intent(MainActivity.this, mMQTTService.getClass());
+        mServiceIntent = new Intent(LogActivity.this, mMQTTService.getClass());
         // Start the service
         if (!isMyServiceRunning(mMQTTService.getClass())) {
             startService(mServiceIntent);
@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
         arr_data = new ArrayList<HashMap<String, String>>();
 
         ListView lst = (ListView) findViewById(R.id.lst);
-        mAdapter = new LogAdapter(MainActivity.this, arr_data);
+        mAdapter = new LogAdapter(LogActivity.this, arr_data);
         lst.setAdapter(mAdapter);
 
     }
@@ -115,9 +115,9 @@ public class MainActivity extends Activity {
     protected void onResume() {
         // register the broadcast
         super.onResume();
-        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastReceivedMessage, new IntentFilter("flyve.mqtt.msg"));
-        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastReceivedLog, new IntentFilter("flyve.mqtt.log"));
-        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(broadcastServiceStatus, new IntentFilter("flyve.mqtt.status"));
+        LocalBroadcastManager.getInstance(LogActivity.this).registerReceiver(broadcastReceivedMessage, new IntentFilter("flyve.mqtt.msg"));
+        LocalBroadcastManager.getInstance(LogActivity.this).registerReceiver(broadcastReceivedLog, new IntentFilter("flyve.mqtt.log"));
+        LocalBroadcastManager.getInstance(LogActivity.this).registerReceiver(broadcastServiceStatus, new IntentFilter("flyve.mqtt.status"));
     }
 
     @Override

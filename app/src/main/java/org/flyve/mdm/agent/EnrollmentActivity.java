@@ -255,7 +255,7 @@ public class EnrollmentActivity extends AppCompatActivity {
      * Open the main activity
      */
     private void openMain() {
-        Intent miIntent = new Intent(EnrollmentActivity.this, MainActivity.class);
+        Intent miIntent = new Intent(EnrollmentActivity.this, LogActivity.class);
         EnrollmentActivity.this.startActivity(miIntent);
         EnrollmentActivity.this.finish();
     }

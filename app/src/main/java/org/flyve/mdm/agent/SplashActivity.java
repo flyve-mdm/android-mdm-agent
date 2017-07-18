@@ -80,7 +80,7 @@ public class SplashActivity extends Activity {
      * Open the main activity
      */
     private void openMain() {
-        Intent miIntent = new Intent(SplashActivity.this, MainActivity.class);
+        Intent miIntent = new Intent(SplashActivity.this, LogActivity.class);
         SplashActivity.this.startActivity(miIntent);
         SplashActivity.this.finish();
     }
