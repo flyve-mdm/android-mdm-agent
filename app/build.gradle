@@ -35,18 +35,20 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1'
-    compile ('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
+    compile('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
         exclude module: 'support-v4'
-        transitive=true
+        transitive = true
     }
 
-    compile "com.android.support:appcompat-v7:22.2.0"
+    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1'
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:design:22.2.0'
     compile 'com.madgag.spongycastle:core:1.54.0.0'
     compile 'com.madgag.spongycastle:prov:1.54.0.0'
     compile 'com.madgag.spongycastle:pkix:1.54.0.0'
     compile 'com.orhanobut:logger:2.1.0'
     compile 'com.flyvemdm:inventory:1.0.2@aar'
+    compile 'com.android.support:support-v4:22.2.1'
 }
 
 import java.util.regex.Pattern
@@ -71,10 +73,12 @@ task('incrementVersionName') << {
     def majorVersion = Integer.parseInt(matcherVersionNumber.group(1))
     def minorVersion = Integer.parseInt(matcherVersionNumber.group(2))
     def pointVersion = Integer.parseInt(matcherVersionNumber.group(3))
-    def mNextVersionName = majorVersion + "." + minorVersion + "." + (pointVersion+1)
+    def mNextVersionName = majorVersion + "." + minorVersion + "." + (pointVersion + 1)
     def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
     manifestFile.write(manifestContent)
 }
+
+
 
 tasks.whenTaskAdded { task ->
     if (task.name == 'generateReleaseBuildConfig' || task.name == 'generateDebugBuildConfig') {
