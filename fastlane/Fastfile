@@ -35,7 +35,11 @@ platform :android do
     #gradle(task: "test")
 
   supply(
+<<<<<<< HEAD
      track: 'beta',
+=======
+     track: 'alpha',
+>>>>>>> 784eb68aca55b058b95f411861f4804a79b6ea37
      apk: "#{lane_context[SharedValues::SIGNED_APK_PATH]}"
   )
   end
