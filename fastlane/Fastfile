@@ -17,8 +17,8 @@ default_platform :android
 
 platform :android do
 
-  desc "Alpha release app. Deploy a new version to the Google Play Store - Alpha channel"
-  lane :alpha do |options|
+  desc "Beta release app. Deploy a new version to the Google Play Store - Beta channel"
+  lane :beta do |options|
     #gradle(task: "clean")
 
     #gradle(task: "assemble")
@@ -35,7 +35,7 @@ platform :android do
     #gradle(task: "test")
 
   supply(
-     track: 'alpha',
+     track: 'beta',
      apk: "#{lane_context[SharedValues::SIGNED_APK_PATH]}"
   )
   end

@@ -39,10 +39,10 @@ import org.flyve.mdm.agent.data.DataStorage;
 /**
  * All the application configuration
  */
-public class FlyveMDMApp extends Application {
+public class MDMAgent extends Application {
 
     private DataStorage cache;
-    private static FlyveMDMApp instance;
+    private static MDMAgent instance;
     private static Boolean isDebuggable;
 
     @Override
@@ -66,9 +66,9 @@ public class FlyveMDMApp extends Application {
 
     /**
      * Get application instance
-     * @return FlyveMDMApp object
+     * @return MDMAgent object
      */
-    public static FlyveMDMApp getInstance(){
+    public static MDMAgent getInstance(){
         return instance;
     }
 

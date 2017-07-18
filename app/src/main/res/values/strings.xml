@@ -35,5 +35,5 @@
     <string name="ERROR_GLPI_PARTIAL_UPDATE">Error</string>
     <string name="ERROR_GLPI_DELETE">Error</string>
     <string name="ERROR_GLPI_PARTIAL_DELETE">Error</string>
-
+    <string name="title_activity_main">MainActivity</string>
 </resources>
