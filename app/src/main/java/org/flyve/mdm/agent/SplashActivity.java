@@ -35,6 +35,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
 /**
@@ -55,6 +56,7 @@ public class SplashActivity extends Activity {
         String broker = cache.getBroker();
         if(broker != null) {
             // if user is enrolled show landing screen
+            FlyveLog.d(cache.getSessionToken());
 
             setContentView(R.layout.activity_splash_enrolled);
             new Handler().postDelayed(new Runnable() {
