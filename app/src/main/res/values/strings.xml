@@ -37,4 +37,7 @@
     <string name="ERROR_GLPI_PARTIAL_DELETE">Error</string>
     <string name="title_activity_main">MainActivity</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

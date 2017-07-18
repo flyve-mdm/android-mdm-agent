@@ -1,0 +1,133 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logoflyve"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        />
+
+
+    <RelativeLayout
+        android:id="@+id/rlSupervisor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgLogo"
+        android:layout_marginTop="20dp"
+        android:padding="20dp"
+        >
+
+        <TextView
+            android:id="@+id/txtTitleSupervisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DEVICE SUPERVISED BY"
+            style="@style/regularText"
+            />
+
+        <ImageView
+            android:id="@+id/imgLogoSupervisor"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/logoflyve"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/txtTitleSupervisor"
+            />
+
+        <TextView
+            android:id="@+id/txtNameSupervisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name Supervisor"
+            android:layout_toRightOf="@id/imgLogoSupervisor"
+            android:layout_alignTop="@+id/imgLogoSupervisor"
+            android:layout_marginLeft="10dp"
+            style="@style/titleText"
+            />
+
+        <TextView
+            android:id="@+id/txtDescriptionSupervisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description Supervisor"
+            android:layout_toRightOf="@id/imgLogoSupervisor"
+            android:layout_below="@+id/txtNameSupervisor"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            style="@style/regularText"
+            />
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/rlSupervisor"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rlUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlSupervisor"
+        android:layout_marginTop="20dp"
+        android:padding="20dp"
+        >
+
+        <TextView
+            android:id="@+id/txtTitleUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="USER INFORMATION"
+            style="@style/regularText"
+            />
+
+        <ImageView
+            android:id="@+id/imgLogoUser"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/logoflyve"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/txtTitleUser"
+            />
+
+        <TextView
+            android:id="@+id/txtNameUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Name"
+            android:layout_toRightOf="@id/imgLogoUser"
+            android:layout_alignTop="@+id/imgLogoUser"
+            android:layout_marginLeft="10dp"
+            style="@style/titleText"
+            />
+
+        <TextView
+            android:id="@+id/txtDescriptionUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Email"
+            android:layout_toRightOf="@id/imgLogoUser"
+            android:layout_below="@+id/txtNameUser"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            style="@style/regularText"
+            />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/rlUser"
+        />
+
+
+</RelativeLayout>

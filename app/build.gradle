@@ -48,6 +48,7 @@ dependencies {
     compile 'com.madgag.spongycastle:pkix:1.54.0.0'
     compile 'com.orhanobut:logger:2.1.0'
     compile 'com.flyvemdm:inventory:1.0.2@aar'
+    compile 'com.android.support:support-v4:22.2.1'
 }
 
 import java.util.regex.Pattern
@@ -76,6 +77,7 @@ task('incrementVersionName') << {
     def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
     manifestFile.write(manifestContent)
 }
+
 
 
 tasks.whenTaskAdded { task ->
