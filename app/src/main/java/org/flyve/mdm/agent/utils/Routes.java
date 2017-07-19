@@ -37,7 +37,7 @@ import org.flyve.mdm.agent.data.DataStorage;
 public class Routes {
 
     private String url;
-    DataStorage cache;
+    private DataStorage cache;
 
     /**
      * Constructor
@@ -54,7 +54,9 @@ public class Routes {
      * @return String with the url
      */
     public String initSession(String userToken) {
-        return url + "/initSession?user_token=" + userToken;
+        String str = url + "/initSession?user_token=" + userToken;
+        FlyveLog.d("initSession URL: ",  str);
+        return str;
     }
 
     /**
@@ -62,7 +64,10 @@ public class Routes {
      * @return String with the url
      */
     public String getFullSession() {
-        return url + "/getFullSession";
+        String str = url + "/getFullSession";
+        FlyveLog.d("getFullSession: ",  str);
+        return str;
+
     }
 
     /**
@@ -71,7 +76,9 @@ public class Routes {
      * @return String with the url
      */
     public String changeActiveProfile(String profileId) {
-        return url + "/changeActiveProfile?profile_id=" + profileId;
+        String str = url + "/changeActiveProfile?profile_id=" + profileId;
+        FlyveLog.d("changeActiveProfile: ",  str);
+        return str;
     }
 
     /**
@@ -79,7 +86,9 @@ public class Routes {
      * @return String with the url
      */
     public String pluginFlyvemdmAgent() {
-        return url + "/PluginFlyvemdmAgent";
+        String str = url + "/PluginFlyvemdmAgent";
+        FlyveLog.d("pluginFlyvemdmAgent: ",  str);
+        return str;
     }
 
     /**
@@ -88,7 +97,9 @@ public class Routes {
      * @return String with the url
      */
     public String pluginFlyvemdmAgent(String agentId) {
-        return url + "/PluginFlyvemdmAgent/" + agentId;
+        String str = url + "/PluginFlyvemdmAgent/" + agentId;
+        FlyveLog.d("pluginFlyvemdmAgent: ",  str);
+        return  str;
     }
 
     /**
@@ -97,7 +108,9 @@ public class Routes {
      * @return String url
      */
     public String PluginFlyvemdmFile(String fileId, String sessionToken) {
-        return url + "/PluginFlyvemdmFile/" + fileId + "?session_token=" + sessionToken;
+        String str = url + "/PluginFlyvemdmFile/" + fileId + "?session_token=" + sessionToken;
+        FlyveLog.d("PluginFlyvemdmFile: ",  str);
+        return str;
     }
 
     /**
@@ -106,7 +119,9 @@ public class Routes {
      * @return String url
      */
     public String PluginFlyvemdmPackage(String fileId, String sessionToken) {
-        return url + "/PluginFlyvemdmPackage/" + fileId + "?session_token=" + sessionToken;
+        String str = url + "/PluginFlyvemdmPackage/" + fileId + "?session_token=" + sessionToken;
+        FlyveLog.d("PluginFlyvemdmPackage: ",  str);
+        return str;
     }
 
 
