@@ -253,7 +253,7 @@ public class EnrollmentHelper {
                     FlyveLog.e(error);
                     EnrollmentHelper.runOnUI(new Runnable() {
                         public void run() {
-                            callback.onError(error);
+                            callback.onError(context.getResources().getString(R.string.ERROR_INTERNAL));
                         }
                     });
                 }
