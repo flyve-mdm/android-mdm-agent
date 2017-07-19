@@ -141,12 +141,12 @@ public class EnrollmentHelper {
 
                     JSONObject jsonFullSession = new JSONObject(dataFullSession);
                     jsonSession = jsonFullSession.getJSONObject("session");
-                    JSONObject jsonActiveProfile = jsonSession.getJSONObject("glpiactiveprofile");
-                    String profileId = jsonActiveProfile.getString("id");
+                    String profileId = jsonSession.getString("plugin_flyvemdm_guest_profiles_id");
+
                     cache.setProfileId( profileId );
 
                     // STEP 3 Activated the profile
-                    final String dataActiveProfile = getSyncWebData(routes.changeActiveProfile(cache.getProfileId()), "GET", header);
+                    final String dataActiveProfile = getSyncWebData(routes.changeActiveProfile(cache.getProfileId()), "POST", header);
                     final String errorActiveProfile = manageError(dataActiveProfile);
                     if(!errorActiveProfile.equals("")) {
                         EnrollmentHelper.runOnUI(new Runnable() {
@@ -253,7 +253,7 @@ public class EnrollmentHelper {
                     FlyveLog.e(error);
                     EnrollmentHelper.runOnUI(new Runnable() {
                         public void run() {
-                            callback.onError(error);
+                            callback.onError(context.getResources().getString(R.string.ERROR_INTERNAL));
                         }
                     });
                 }
