@@ -146,7 +146,7 @@ public class EnrollmentHelper {
                     cache.setProfileId( profileId );
 
                     // STEP 3 Activated the profile
-                    final String dataActiveProfile = getSyncWebData(routes.changeActiveProfile(cache.getProfileId()), "GET", header);
+                    final String dataActiveProfile = getSyncWebData(routes.changeActiveProfile(cache.getProfileId()), "POST", header);
                     final String errorActiveProfile = manageError(dataActiveProfile);
                     if(!errorActiveProfile.equals("")) {
                         EnrollmentHelper.runOnUI(new Runnable() {

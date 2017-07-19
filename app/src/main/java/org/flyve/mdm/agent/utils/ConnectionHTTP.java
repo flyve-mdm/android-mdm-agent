@@ -134,7 +134,7 @@ public class ConnectionHTTP {
 			conn.setConnectTimeout(timeout);
 			conn.setReadTimeout(readtimeout);
 			conn.setInstanceFollowRedirects(true);
-			conn.setRequestMethod("GET");
+			conn.setRequestMethod(method);
 
 			if(header != null) {
 				for (Map.Entry<String, String> entry : header.entrySet()) {
