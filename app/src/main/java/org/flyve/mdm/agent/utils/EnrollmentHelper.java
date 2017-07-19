@@ -142,7 +142,7 @@ public class EnrollmentHelper {
                     JSONObject jsonFullSession = new JSONObject(dataFullSession);
                     jsonSession = jsonFullSession.getJSONObject("session");
                     JSONObject jsonActiveProfile = jsonSession.getJSONObject("glpiactiveprofile");
-                    String profileId = jsonActiveProfile.getString("id");
+                    String profileId = jsonActiveProfile.getString("plugin_flyvemdm_guest_profiles_id");
                     cache.setProfileId( profileId );
 
                     // STEP 3 Activated the profile
