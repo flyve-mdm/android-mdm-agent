@@ -76,7 +76,7 @@ public class Routes {
      * @return String with the url
      */
     public String changeActiveProfile(String profileId) {
-        String str = url + "/changeActiveProfile?profile_id=" + profileId;
+        String str = url + "/changeActiveProfile?profiles_id=" + profileId;
         FlyveLog.d("changeActiveProfile: ",  str);
         return str;
     }
