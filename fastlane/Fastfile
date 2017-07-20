@@ -11,7 +11,6 @@
 
 # This is the minimum version number required.
 # Update this, if you use features of a newer version
-ENV["SLACK_URL"] ||= "https://integram.org/ckNa3mjYlqw"
 
 fastlane_version "2.45.0"
 
@@ -43,29 +42,18 @@ platform :android do
   end
 end
 
-################
-# Success/Error:
-################
-
 after_all do |lane|
-  # This block is called, only if the executed lane was successful
-  if ENV["SLACK_URL"]
-    slack(
-      message: nil,
-      success: true,
-      default_payloads: [:git_author, :git_branch]
+    telegram(
+        url_horn: "https://integram.org/ckNa3mjYlqw",
+        message: "Fastlane is OK"
     )
-  end
 end
-
 
 error do |lane, exception|
-  if ENV["SLACK_URL"]
-    slack(
-      message: exception.to_s,
-      success: false
+    telegram(
+        url_horn: "https://integram.org/ckNa3mjYlqw",
+        message: "Error:" + exception.to_s
     )
-  end
 end
 
-# how to used it fastlane android alpha storepass:'#KEYSTORE_PASSWORD' keypass:'#ALIAS_PASSWORD'
+# how to used it fastlane android beta storepass:'#KEYSTORE_PASSWORD' keypass:'#ALIAS_PASSWORD'
