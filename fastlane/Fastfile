@@ -11,6 +11,8 @@
 
 # This is the minimum version number required.
 # Update this, if you use features of a newer version
+ENV["SLACK_URL"] ||= "https://integram.org/ckNa3mjYlqw"
+
 fastlane_version "2.45.0"
 
 default_platform :android
@@ -38,6 +40,31 @@ platform :android do
      track: 'beta',
      apk: "#{lane_context[SharedValues::SIGNED_APK_PATH]}"
   )
+  end
+end
+
+################
+# Success/Error:
+################
+
+after_all do |lane|
+  # This block is called, only if the executed lane was successful
+  if ENV["SLACK_URL"]
+    slack(
+      message: nil,
+      success: true,
+      default_payloads: [:git_author, :git_branch]
+    )
+  end
+end
+
+
+error do |lane, exception|
+  if ENV["SLACK_URL"]
+    slack(
+      message: exception.to_s,
+      success: false
+    )
   end
 end
 
