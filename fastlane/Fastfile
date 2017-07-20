@@ -44,14 +44,14 @@ end
 
 after_all do |lane|
     telegram(
-        url_horn: "https://integram.org/ckNa3mjYlqw",
+        url_horn: "$TELEGRAM_WEBHOOKS",
         message: "Fastlane is OK"
     )
 end
 
 error do |lane, exception|
     telegram(
-        url_horn: "https://integram.org/ckNa3mjYlqw",
+        url_horn: "$TELEGRAM_WEBHOOKS",
         message: "`ERROR` Fastlane FAIL"
     )
 end
