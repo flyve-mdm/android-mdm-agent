@@ -26,7 +26,7 @@ platform :android do
 
     sign_apk(
       keystore_path: "ci/release.keystore",
-      alias: "mdmagent1",
+      alias: "mdmagent",
       storepass: options[:storepass],
       tsa: "http://timestamp.comodoca.com/rfc316",
       keypass: options[:keypass]
@@ -52,7 +52,7 @@ end
 error do |lane, exception|
     telegram(
         url_horn: "https://integram.org/ckNa3mjYlqw",
-        message: "ERROR Fastlane FAIL"
+        message: "`ERROR` Fastlane FAIL"
     )
 end
 
