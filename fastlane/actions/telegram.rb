@@ -11,7 +11,7 @@ module Fastlane
 
             req = Net::HTTP::Post.new(uri.request_uri)
             req.set_form_data({
-              'payload' => '{ "text": "' + params[:message] + "- *Branch*: " + Actions.git_branch + "- *Author*: " + Actions.git_author_email + '" }'
+              'payload' => '{ "text": "' + params[:message] + "\\n- *Branch*: " + Actions.git_branch + "\\n- *Author*: " + Actions.git_author_email + '" }'
             })
 
             response = https.request(req)
