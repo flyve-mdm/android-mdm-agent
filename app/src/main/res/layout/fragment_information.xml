@@ -21,31 +21,35 @@
         android:padding="20dp"
         >
 
-        <TextView
-            android:id="@+id/txtTitleSupervisor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DEVICE SUPERVISED BY"
-            style="@style/regularText"
-            />
 
         <ImageView
             android:id="@+id/imgLogoSupervisor"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/logoflyve"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/txtTitleSupervisor"
+            android:src="@drawable/ic_teclib"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            />
+
+        <TextView
+            android:id="@+id/txtTitleSupervisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DEVICE SUPERVISED BY"
+            android:layout_toRightOf="@id/imgLogoSupervisor"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
+            style="@style/regularText"
             />
 
         <TextView
             android:id="@+id/txtNameSupervisor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name Supervisor"
+            android:text="Teclib Spain SL"
             android:layout_toRightOf="@id/imgLogoSupervisor"
-            android:layout_alignTop="@+id/imgLogoSupervisor"
             android:layout_marginLeft="10dp"
+            android:layout_below="@+id/txtTitleSupervisor"
             style="@style/titleText"
             />
 
@@ -53,7 +57,7 @@
             android:id="@+id/txtDescriptionSupervisor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description Supervisor"
+            android:text="sales@teclib.com"
             android:layout_toRightOf="@id/imgLogoSupervisor"
             android:layout_below="@+id/txtNameSupervisor"
             android:layout_marginLeft="10dp"
@@ -61,12 +65,12 @@
             style="@style/regularText"
             />
 
-
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginLeft="80dp"
         android:background="@android:color/darker_gray"
         android:layout_below="@+id/rlSupervisor"
         />
@@ -80,21 +84,24 @@
         android:padding="20dp"
         >
 
-        <TextView
-            android:id="@+id/txtTitleUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="USER INFORMATION"
-            style="@style/regularText"
-            />
-
         <ImageView
             android:id="@+id/imgLogoUser"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/logoflyve"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/txtTitleUser"
+            android:src="@drawable/ic_user_round"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            />
+
+        <TextView
+            android:id="@+id/txtTitleUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/imgLogoUser"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:text="USER INFORMATION"
+            style="@style/regularText"
             />
 
         <TextView
@@ -103,7 +110,7 @@
             android:layout_height="wrap_content"
             android:text="User Name"
             android:layout_toRightOf="@id/imgLogoUser"
-            android:layout_alignTop="@+id/imgLogoUser"
+            android:layout_below="@+id/txtTitleUser"
             android:layout_marginLeft="10dp"
             style="@style/titleText"
             />
@@ -125,9 +132,36 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginLeft="80dp"
         android:background="@android:color/darker_gray"
         android:layout_below="@+id/rlUser"
         />
 
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        >
+            <ImageView
+                android:id="@+id/imgOnline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_online"
+                />
+
+            <TextView
+                android:id="@+id/txtOnline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Online"
+                android:layout_marginLeft="10dp"
+                style="@style/regularText"
+                />
+
+    </LinearLayout>
 
 </RelativeLayout>
