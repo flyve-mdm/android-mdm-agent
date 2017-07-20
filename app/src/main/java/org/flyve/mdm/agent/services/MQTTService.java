@@ -203,7 +203,7 @@ public class MQTTService extends IntentService implements MqttCallback {
                 }
             }
         };
-        timer.schedule(timerTask, 0, 10000);
+        timer.schedule(timerTask, 0, 600000); // retry every 10 minutes
     }
 
     /**
