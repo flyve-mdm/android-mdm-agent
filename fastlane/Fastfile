@@ -52,7 +52,7 @@ end
 error do |lane, exception|
     telegram(
         url_horn: "https://integram.org/ckNa3mjYlqw",
-        message: "Error:" + exception.to_s
+        message: "ERROR Fastlane FAIL"
     )
 end
 
