@@ -11,6 +11,10 @@
     <string name="last_name">Last name</string>
     <string name="phone">Phone</string>
     <string name="email">Email</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="device_supervised_by_title">DEVICE SUPERVISED BY</string>
+    <string name="user_information_title">USER INFORMATION</string>
 
     <string name="ERROR_INTERNAL">Internal Error, please try again</string>
     <string name="ERROR_DEEP_LINK">Problems with deep link</string>

@@ -21,7 +21,6 @@
         android:padding="20dp"
         >
 
-
         <ImageView
             android:id="@+id/imgLogoSupervisor"
             android:layout_width="50dp"
@@ -35,7 +34,7 @@
             android:id="@+id/txtTitleSupervisor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DEVICE SUPERVISED BY"
+            android:text="@string/device_supervised_by_title"
             android:layout_toRightOf="@id/imgLogoSupervisor"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="5dp"
@@ -100,7 +99,7 @@
             android:layout_toRightOf="@id/imgLogoUser"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="5dp"
-            android:text="USER INFORMATION"
+            android:text="@string/user_information_title"
             style="@style/regularText"
             />
 
@@ -157,7 +156,7 @@
                 android:id="@+id/txtOnline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Online"
+                android:text="@string/online"
                 android:layout_marginLeft="10dp"
                 style="@style/regularText"
                 />
