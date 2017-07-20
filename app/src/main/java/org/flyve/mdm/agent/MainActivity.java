@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         adapter.addFragment(new FragmentInformation(), getResources().getString(R.string.app_name));
-        //adapter.addFragment(new FragmentLog(), "Log");
+        adapter.addFragment(new FragmentLog(), "Log");
 
         viewPager.setAdapter(adapter);
     }

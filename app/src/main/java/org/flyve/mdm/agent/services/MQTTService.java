@@ -56,6 +56,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.net.ssl.SSLContext;
 
@@ -71,6 +73,8 @@ public class MQTTService extends IntentService implements MqttCallback {
     private DataStorage cache;
     private String mTopic = "";
     private ArrayList<String> arrTopics = new ArrayList<String>();
+    private Boolean connected = false;
+    private Timer timer;
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -180,6 +184,26 @@ public class MQTTService extends IntentService implements MqttCallback {
         broadcastServiceStatus(false);
         broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error", cause.getMessage()));
         FlyveLog.d(TAG, "Connection fail " + cause.getMessage());
+
+        reconnect();
+    }
+
+    private void reconnect() {
+        timer = new Timer();
+
+        TimerTask timerTask = new TimerTask() {
+            public void run() {
+                if(!connected) {
+                    connect();
+                    FlyveLog.d("try to reconnect");
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Reconnect", "Try to reconnect"));
+                } else {
+                    FlyveLog.d("Timer cancel");
+                    timer.cancel();
+                }
+            }
+        };
+        timer.schedule(timerTask, 0, 10000);
     }
 
     /**
@@ -335,6 +359,8 @@ public class MQTTService extends IntentService implements MqttCallback {
      * @param status boolean status
      */
     private void broadcastServiceStatus(boolean status) {
+        connected = status;
+
         //send broadcast
         Intent in = new Intent();
         in.setAction("flyve.mqtt.status");

@@ -75,5 +75,4 @@ public class FragmentInformation extends Fragment {
             }
         }
     };
-
 }
