@@ -5,8 +5,6 @@ module Fastlane
             require 'net/http'
             require 'uri'
 
-            UI.message(params[:url_horn])
-
             uri = URI.parse(params[:url_horn])
             https = Net::HTTP.new(uri.host, uri.port)
             https.use_ssl = true
@@ -25,7 +23,7 @@ module Fastlane
              #####################################################
 
              def self.description
-               "Telegram send message to telegram with Horn"
+               "Telegram send message to telegram with @bullhorn_bot"
              end
 
              def self.available_options

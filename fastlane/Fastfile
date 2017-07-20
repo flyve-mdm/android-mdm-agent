@@ -26,7 +26,7 @@ platform :android do
 
     sign_apk(
       keystore_path: "ci/release.keystore",
-      alias: "mdmagent",
+      alias: "mdmagent1",
       storepass: options[:storepass],
       tsa: "http://timestamp.comodoca.com/rfc316",
       keypass: options[:keypass]
