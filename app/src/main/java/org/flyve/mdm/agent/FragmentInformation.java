@@ -47,6 +47,16 @@ public class FragmentInformation extends Fragment {
 
         DataStorage cache = new DataStorage(FragmentInformation.this.getActivity());
 
+        ImageView imgLogo = (ImageView) v.findViewById(R.id.imgLogo);
+        imgLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+            }
+        });
+
         TextView txtName = (TextView) v.findViewById(R.id.txtNameUser);
         txtName.setText(cache.getUserFirstName() + " " + cache.getUserLastName());
 
