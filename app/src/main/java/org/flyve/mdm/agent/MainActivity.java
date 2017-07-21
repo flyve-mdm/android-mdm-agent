@@ -40,6 +40,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.FlyveAdminReceiver;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private Intent mServiceIntent;
     private static final int REQUEST_CODE_ENABLE_ADMIN = 1;
     private ComponentName mDeviceAdmin;
+    private DataStorage cache;
 
     @Override
     public void onDestroy() {
@@ -68,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        cache = new DataStorage(this);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -115,7 +119,10 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         adapter.addFragment(new FragmentInformation(), getResources().getString(R.string.app_name));
-        //adapter.addFragment(new FragmentLog(), "Log");
+
+        if(cache.getEasterEgg()) {
+            adapter.addFragment(new FragmentLog(), "Log");
+        }
 
         viewPager.setAdapter(adapter);
     }
