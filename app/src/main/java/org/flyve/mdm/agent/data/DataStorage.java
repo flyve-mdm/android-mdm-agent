@@ -220,7 +220,7 @@ public class DataStorage {
 	}
 
 	public boolean getConnectivityWifiDisable() {
-		return Boolean.getBoolean(getData("ConnectivityWifiDisable"));
+		return Boolean.valueOf(getData("ConnectivityWifiDisable"));
 	}
 
 	public void setConnectivityBluetoothDisable(boolean disable) {
@@ -228,7 +228,7 @@ public class DataStorage {
 	}
 
 	public boolean getConnectivityBluetoothDisable() {
-		return Boolean.getBoolean(getData("ConnectivityBluetoothDisable"));
+		return Boolean.valueOf(getData("ConnectivityBluetoothDisable"));
 	}
 
 	public void setConnectivityGPSDisable(boolean disable) {
@@ -236,15 +236,15 @@ public class DataStorage {
 	}
 
 	public boolean getConnectivityGPSDisable() {
-		return Boolean.getBoolean(getData("ConnectivityGPSDisable"));
+		return Boolean.valueOf(getData("ConnectivityGPSDisable"));
 	}
 
-	public void setEasterEgg(boolean disable) {
-		setData("easterEgg", String.valueOf(disable));
+	public void setEasterEgg(boolean enable) {
+		setData("easterEgg", String.valueOf(enable));
 	}
 
 	public boolean getEasterEgg() {
-		return Boolean.getBoolean(getData("easterEgg"));
+		return Boolean.valueOf(getData("easterEgg"));
 	}
 
 	private String getData(String key){

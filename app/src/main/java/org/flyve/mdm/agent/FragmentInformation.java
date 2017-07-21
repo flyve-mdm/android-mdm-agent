@@ -53,12 +53,15 @@ public class FragmentInformation extends Fragment {
         imgLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                countEasterEgg++;
-                if(countEasterEgg > 6) {
-                    Toast.makeText(FragmentInformation.this.getActivity(), "You have " + countEasterEgg + " Attempts", Toast.LENGTH_SHORT).show();
-                }
-                if(countEasterEgg >= 10) {
-                    cache.setEasterEgg(true);
+                if(!cache.getEasterEgg()) {
+                    countEasterEgg++;
+                    if (countEasterEgg > 6 && countEasterEgg <= 10) {
+                        Toast.makeText(FragmentInformation.this.getActivity(), "You have " + countEasterEgg + " Attempts", Toast.LENGTH_SHORT).show();
+                    }
+                    if (countEasterEgg >= 10) {
+                        Toast.makeText(FragmentInformation.this.getActivity(), "Now you have log version agent", Toast.LENGTH_SHORT).show();
+                        cache.setEasterEgg(true);
+                    }
                 }
             }
         });
