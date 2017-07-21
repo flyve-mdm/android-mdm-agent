@@ -239,6 +239,14 @@ public class DataStorage {
 		return Boolean.getBoolean(getData("ConnectivityGPSDisable"));
 	}
 
+	public void setEasterEgg(boolean disable) {
+		setData("easterEgg", String.valueOf(disable));
+	}
+
+	public boolean getEasterEgg() {
+		return Boolean.getBoolean(getData("easterEgg"));
+	}
+
 	private String getData(String key){
 		String data = "";
 		SharedPreferences sp = getSettings();
