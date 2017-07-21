@@ -83,13 +83,13 @@
             android:id="@+id/txtMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btnEnroll"
+            android:layout_below="@+id/txtTitle"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:gravity="center"
             android:text=""
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="100dp"
             style="@style/regularText"
             />
 
