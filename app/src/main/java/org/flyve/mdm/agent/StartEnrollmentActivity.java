@@ -48,6 +48,7 @@ public class StartEnrollmentActivity extends Activity {
     private TextView txtMessage;
     private TextView txtTitle;
     private ProgressBar pb;
+    private static final int REQUEST_EXIT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +152,7 @@ public class StartEnrollmentActivity extends Activity {
      */
     private void openActivity() {
         Intent miIntent = new Intent(StartEnrollmentActivity.this, EnrollmentActivity.class);
-        StartEnrollmentActivity.this.startActivity(miIntent);
+        StartEnrollmentActivity.this.startActivityForResult(miIntent, REQUEST_EXIT);
     }
 
     /**
@@ -161,5 +162,12 @@ public class StartEnrollmentActivity extends Activity {
         Intent miIntent = new Intent(StartEnrollmentActivity.this, MainActivity.class);
         StartEnrollmentActivity.this.startActivity(miIntent);
         StartEnrollmentActivity.this.finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_EXIT && resultCode == RESULT_OK) {
+            this.finish();
+        }
     }
 }

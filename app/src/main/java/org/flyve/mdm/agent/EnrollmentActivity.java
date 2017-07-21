@@ -145,6 +145,11 @@ public class EnrollmentActivity extends AppCompatActivity {
         StringBuilder errMsg = new StringBuilder("Please fix the following errors and try again.\n\n");
         txtMessage.setText("");
 
+        // waiting for cert x509
+        if(pbx509.getVisibility() == View.VISIBLE) {
+            return;
+        }
+
         //Validate and Save
         boolean allowSave = true;
 
@@ -257,6 +262,7 @@ public class EnrollmentActivity extends AppCompatActivity {
     private void openMain() {
         Intent miIntent = new Intent(EnrollmentActivity.this, MainActivity.class);
         EnrollmentActivity.this.startActivity(miIntent);
+        setResult(RESULT_OK, null);
         EnrollmentActivity.this.finish();
     }
 }

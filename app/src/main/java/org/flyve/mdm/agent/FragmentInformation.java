@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class FragmentInformation extends Fragment {
 
@@ -66,12 +67,16 @@ public class FragmentInformation extends Fragment {
         public void onReceive(Context context, Intent intent) {
             String msg = intent.getStringExtra("message");
 
-            if(Boolean.parseBoolean(msg)) {
-                txtOnline.setText(getResources().getString(R.string.online));
-                imgOnline.setImageResource(R.drawable.ic_online);
-            } else {
-                txtOnline.setText(getResources().getString(R.string.offline));
-                imgOnline.setImageResource(R.drawable.ic_offline);
+            try {
+                if (Boolean.parseBoolean(msg)) {
+                    txtOnline.setText(getResources().getString(R.string.online));
+                    imgOnline.setImageResource(R.drawable.ic_online);
+                } else {
+                    txtOnline.setText(getResources().getString(R.string.offline));
+                    imgOnline.setImageResource(R.drawable.ic_offline);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
             }
         }
     };
