@@ -6,7 +6,7 @@
     <string name="fail_enroll">Enrollment fail</string>
     <string name="please_wait">PLEASE WAIT</string>
     <string name="enrollment">Enrollment</string>
-    <string name="user_information">User information</string>
+    <string name="user_information_enroll">User information</string>
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="phone">Phone</string>

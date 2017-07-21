@@ -50,30 +50,10 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <ImageView
-        android:id="@+id/imgPhoto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/bg_user"
-        android:scaleType="centerCrop"
-        android:adjustViewBounds="true"
-        android:layout_below="@+id/toolbar"
-        />
-
-    <ImageView
-        android:id="@+id/btnCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imgPhoto"
-        android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_camera"
-        />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/imgPhoto"
+        android:layout_below="@+id/toolbar"
         >
 
         <LinearLayout
@@ -82,13 +62,36 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="visible"
-            android:layout_marginTop="20dp"
             >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/bg_user"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    />
+
+                <ImageView
+                    android:id="@+id/btnCamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/imgPhoto"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/ic_camera"
+                    />
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/user_information"
+                android:text="@string/user_information_enroll"
                 style="@style/titleText"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"
