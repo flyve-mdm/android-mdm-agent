@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -21,6 +22,7 @@ public class FragmentInformation extends Fragment {
     private IntentFilter mIntent;
     private TextView txtOnline;
     private ImageView imgOnline;
+    private int countEasterEgg;
 
     @Override
     public void onPause() {
@@ -45,15 +47,19 @@ public class FragmentInformation extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_information, container, false);
 
-        DataStorage cache = new DataStorage(FragmentInformation.this.getActivity());
+        final DataStorage cache = new DataStorage(FragmentInformation.this.getActivity());
 
         ImageView imgLogo = (ImageView) v.findViewById(R.id.imgLogo);
         imgLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
+                countEasterEgg++;
+                if(countEasterEgg > 6) {
+                    Toast.makeText(FragmentInformation.this.getActivity(), "You have " + countEasterEgg + " Attempts", Toast.LENGTH_SHORT).show();
+                }
+                if(countEasterEgg >= 10) {
+                    cache.setEasterEgg(true);
+                }
             }
         });
 
