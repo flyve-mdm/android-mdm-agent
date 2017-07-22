@@ -35,6 +35,14 @@ module Fastlane
                  FastlaneCore::ConfigItem.new(key: :message,
                                               env_name: "MESSAGE",
                                               description: "Text to send",
+                                              is_string: true),
+                 FastlaneCore::ConfigItem.new(key: :repo,
+                                              env_name: "REPO",
+                                              description: "Get github repository",
+                                              is_string: true),
+                 FastlaneCore::ConfigItem.new(key: :branch,
+                                              env_name: "BRANCH",
+                                              description: "Get github branch",
                                               is_string: true)
                ]
              end
