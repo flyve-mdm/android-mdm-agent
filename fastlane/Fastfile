@@ -44,14 +44,18 @@ end
 
 after_all do |lane|
     telegram(
-        url_horn: "$TELEGRAM_WEBHOOKS",
+        url_horn: ENV["TELEGRAM_WEBHOOKS"],
+        repo: ENV["GIT_REPO"],
+        branch: ENV["GIT_BRANCH"],
         message: "Fastlane is OK"
     )
 end
 
 error do |lane, exception|
     telegram(
-        url_horn: "$TELEGRAM_WEBHOOKS",
+        url_horn: ENV["TELEGRAM_WEBHOOKS"],
+        repo: ENV["GIT_REPO"],
+        branch: ENV["GIT_BRANCH"],
         message: "`ERROR` Fastlane FAIL"
     )
 end
