@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         // ------------------
         // MQTT SERVICE
         // ------------------
-        MQTTService mMQTTService = new MQTTService();
+        MQTTService mMQTTService = new MQTTService(getApplicationContext());
         mServiceIntent = new Intent(this, mMQTTService.getClass());
         // Start the service
         if (!isMyServiceRunning(mMQTTService.getClass())) {
