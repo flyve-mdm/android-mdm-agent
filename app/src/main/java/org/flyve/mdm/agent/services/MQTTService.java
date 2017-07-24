@@ -28,13 +28,11 @@
 package org.flyve.mdm.agent.services;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.flyvemdm.inventory.InventoryTask;
 
@@ -79,11 +77,6 @@ public class MQTTService extends Service implements MqttCallback {
     private ArrayList<String> arrTopics = new ArrayList<String>();
     private Boolean connected = false;
     private Timer timer;
-
-    public MQTTService(Context context) {
-        super();
-        Log.i("HERE", "here I am!");
-    }
 
     public MQTTService() {
     }
