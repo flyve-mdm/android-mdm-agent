@@ -8,3 +8,11 @@ then
     cd ..
     fastlane android beta storepass:'$KEYSTORE' keypass:'$ALIAS'
 fi
+
+if [[ "$TRAVIS_BRANCH" == "feature/mqtt" ]];
+then
+    cd ci
+    tar -zxvf google.tar.gz
+    cd ..
+    fastlane android beta storepass:'$KEYSTORE' keypass:'$ALIAS'
+fi

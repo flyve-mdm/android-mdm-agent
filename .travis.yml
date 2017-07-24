@@ -5,7 +5,7 @@ android:
   - android-$ANDROID_API
   - extra-android-m2repository
 before_script:
-  - echo TELEGRAM_WEBHOOKS=$TELEGRAM_WEBHOOKS >> .env
+  - echo TELEGRAM_WEBHOOKS=$TELEGRAM_WEBHOOKS > .env
   - echo GIT_REPO=$TRAVIS_REPO_SLUG >> .env
   - echo GIT_BRANCH=$TRAVIS_BRANCH >> .env
 install:
