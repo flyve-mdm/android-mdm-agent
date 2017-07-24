@@ -28,11 +28,13 @@
 package org.flyve.mdm.agent.services;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import com.flyvemdm.inventory.InventoryTask;
 
@@ -78,6 +80,14 @@ public class MQTTService extends Service implements MqttCallback {
     private Boolean connected = false;
     private Timer timer;
 
+    public MQTTService(Context context) {
+        super();
+        Log.i("HERE", "here I am!");
+    }
+
+    public MQTTService() {
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
@@ -89,8 +99,7 @@ public class MQTTService extends Service implements MqttCallback {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Intent broadcastIntent = new Intent("org.flyve.mdm.agent.restart");
-        sendBroadcast(broadcastIntent);
+        getApplicationContext().startService(new Intent(getApplicationContext(), MQTTService.class));
     }
 
     @Nullable
@@ -122,7 +131,6 @@ public class MQTTService extends Service implements MqttCallback {
                 clientId);
 
         client.setCallback( this );
-
         try {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setPassword(mPassword.toCharArray());
@@ -201,7 +209,7 @@ public class MQTTService extends Service implements MqttCallback {
                 }
             }
         };
-        timer.schedule(timerTask, 0, 600000); // retry every 10 minutes
+        timer.schedule(timerTask, 0, 6000); // retry every 600000 10 minutes
     }
 
     /**
