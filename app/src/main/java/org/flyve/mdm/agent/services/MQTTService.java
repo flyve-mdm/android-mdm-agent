@@ -160,8 +160,13 @@ public class MQTTService extends Service implements MqttCallback {
                     FlyveLog.d("Success we are online!");
                     broadcastServiceStatus(true);
 
+                    // clear topic channel on array
+                    arrTopics.clear();
+
                     // principal channel
-                    suscribe(mTopic + "/#");
+                    String channel = mTopic + "/#";
+                    FlyveLog.d("MQTT Channel: " + channel);
+                    suscribe(channel);
                 }
 
                 @Override
@@ -398,6 +403,7 @@ public class MQTTService extends Service implements MqttCallback {
 
         // if topic null
         if(topics==null) {
+            FlyveLog.e("NULL TOPIC");
             return;
         }
 
