@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         // stop the service
         stopService(mServiceIntent);
         FlyveLog.i("onDestroy!");
+
         super.onDestroy();
     }
 
