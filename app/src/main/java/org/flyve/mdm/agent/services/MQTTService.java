@@ -27,9 +27,11 @@
 
 package org.flyve.mdm.agent.services;
 
-import android.app.IntentService;
+import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.flyvemdm.inventory.InventoryTask;
@@ -66,7 +68,7 @@ import javax.net.ssl.SSLContext;
  * This is the service that get and send message from MQTT
  */
 
-public class MQTTService extends IntentService implements MqttCallback {
+public class MQTTService extends Service implements MqttCallback {
 
     private static final String TAG = "MQTT";
     private MqttAndroidClient client;
@@ -76,29 +78,25 @@ public class MQTTService extends IntentService implements MqttCallback {
     private Boolean connected = false;
     private Timer timer;
 
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     * @param name Used to name the worker thread, important only for debugging.
-     */
-    public MQTTService(String name) {
-        super(name);
-    }
-
-    /**
-     * The IntentService start point
-     * @param intent
-     */
     @Override
-    protected void onHandleIntent(Intent intent) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
         FlyveLog.i("START", "SERVICE MQTT");
         connect();
+        return START_STICKY;
     }
 
-    /**
-     * Constructor
-     */
-    public MQTTService() {
-        super("MQTTService");
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Intent broadcastIntent = new Intent("org.flyve.mdm.agent.restart");
+        sendBroadcast(broadcastIntent);
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     /**

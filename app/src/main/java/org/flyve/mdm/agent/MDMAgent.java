@@ -34,6 +34,7 @@ import android.util.Log;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+
 import org.flyve.mdm.agent.data.DataStorage;
 
 /**

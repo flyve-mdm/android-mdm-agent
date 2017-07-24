@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.flyve.mdm.agent"
-    android:versionCode="71"
-    android:versionName="1.0.73">
+    android:versionCode="88"
+    android:versionName="1.0.90">
 
     <!-- For writing logfiles -->
     <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
@@ -62,12 +62,13 @@
             </intent-filter>
         </activity>
 
-        <service android:name="org.eclipse.paho.android.service.MqttService">
+        <service android:name="org.eclipse.paho.android.service.MqttService"
+            android:label="Paho MQTT Service"
+            >
         </service>
         <service
             android:name=".services.MQTTService"
             android:enabled="true"
-            android:exported="false"
             android:label="M2M communications"
             >
         </service>
@@ -80,6 +81,7 @@
             android:label="RestartServiceWhenStopped">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="org.flyve.mdm.agent.restart" />
             </intent-filter>
         </receiver>
 
