@@ -363,7 +363,7 @@ public class MQTTService extends Service implements MqttCallback {
      * @param status boolean status
      */
     private void broadcastServiceStatus(boolean status) {
-        connected = status;
+        this.connected = status;
 
         //send broadcast
         Intent in = new Intent();
@@ -766,10 +766,6 @@ public class MQTTService extends Service implements MqttCallback {
      * Unenroll the device
      */
     private boolean unenroll() {
-        // clear settings
-        DataStorage cache = new DataStorage(getApplicationContext());
-        cache.clearSettings();
-
         // Send message with unenroll
         String topic = mTopic + "/Status/Unenroll";
         String payload = "{\"unenroll\": \"unenrolled\"}";
@@ -783,11 +779,11 @@ public class MQTTService extends Service implements MqttCallback {
             // clear cache
             cache.clearSettings();
 
+            // send message
+            broadcastReceivedMessage(Helpers.broadCastMessage("action", "open", "splash"));
+
             // show offline
             broadcastServiceStatus(false);
-
-            // send message
-            broadcastReceivedMessage(Helpers.broadCastMessage("action", "open", "enroll"));
 
             return true;
         } catch (Exception ex) {
