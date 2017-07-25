@@ -786,6 +786,9 @@ public class MQTTService extends Service implements MqttCallback {
             // show offline
             broadcastServiceStatus(false);
 
+            // send message
+            broadcastReceivedMessage(Helpers.broadCastMessage("action", "open", "enroll"));
+
             return true;
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
