@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.flyve.mdm.agent"
-    android:versionCode="101"
-    android:versionName="1.0.103">
+    android:versionCode="103"
+    android:versionName="1.0.105">
 
     <!-- For writing logfiles -->
     <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
@@ -30,6 +30,7 @@
         <activity
             android:name=".SplashActivity"
             android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask"
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

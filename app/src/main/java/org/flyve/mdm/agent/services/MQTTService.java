@@ -780,6 +780,12 @@ public class MQTTService extends Service implements MqttCallback {
             client.publish(topic, message);
             broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Unenroll", "Unenroll success"));
 
+            // clear cache
+            cache.clearSettings();
+
+            // show offline
+            broadcastServiceStatus(false);
+
             return true;
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
