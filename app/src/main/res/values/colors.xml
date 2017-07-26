@@ -10,4 +10,5 @@
     <color name="grayLight">#767677</color>
     <color name="grayDark">#4C4C4C</color>
     <color name="blue">#4073B9</color>
+    <color name="snackbar_action">#ffff7663</color>
 </resources>

@@ -112,6 +112,11 @@ public class MQTTService extends Service implements MqttCallback {
         String mUser = cache.getMqttuser();
         String mPassword = cache.getMqttpasswd();
 
+        if(mPassword==null) {
+            FlyveLog.d("Flyve", "Password can't be null");
+            return;
+        }
+
         mTopic = cache.getTopic();
 
         broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Broker", mBroker));
@@ -171,7 +176,7 @@ public class MQTTService extends Service implements MqttCallback {
                 }
             });
         }
-        catch (MqttException ex) {
+        catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
             broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on connect", ex.getMessage()));
         }
@@ -204,6 +209,7 @@ public class MQTTService extends Service implements MqttCallback {
                 } else {
                     FlyveLog.d("Timer cancel");
                     timer.cancel();
+                    timer = null;
                 }
             }
         };
@@ -363,7 +369,7 @@ public class MQTTService extends Service implements MqttCallback {
      * @param status boolean status
      */
     private void broadcastServiceStatus(boolean status) {
-        connected = status;
+        this.connected = status;
 
         //send broadcast
         Intent in = new Intent();
@@ -766,10 +772,6 @@ public class MQTTService extends Service implements MqttCallback {
      * Unenroll the device
      */
     private boolean unenroll() {
-        // clear settings
-        DataStorage cache = new DataStorage(getApplicationContext());
-        cache.clearSettings();
-
         // Send message with unenroll
         String topic = mTopic + "/Status/Unenroll";
         String payload = "{\"unenroll\": \"unenrolled\"}";
@@ -779,6 +781,15 @@ public class MQTTService extends Service implements MqttCallback {
             MqttMessage message = new MqttMessage(encodedPayload);
             client.publish(topic, message);
             broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Unenroll", "Unenroll success"));
+
+            // clear cache
+            cache.clearSettings();
+
+            // send message
+            broadcastReceivedMessage(Helpers.broadCastMessage("action", "open", "splash"));
+
+            // show offline
+            broadcastServiceStatus(false);
 
             return true;
         } catch (Exception ex) {
