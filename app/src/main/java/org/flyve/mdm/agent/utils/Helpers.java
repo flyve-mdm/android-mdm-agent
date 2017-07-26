@@ -31,8 +31,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.util.Base64;
+import android.view.View;
 
+import org.flyve.mdm.agent.R;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -139,5 +142,18 @@ public class Helpers {
 		} catch(Exception ex) {
 			return null;
 		}
+	}
+
+	public static void snack(View view, Context context, String message) {
+		Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+				.setActionTextColor(context.getResources().getColor(R.color.snackbar_action))
+				.show();
+	}
+
+	public static  void snack(View view, Context context, String message, String action,  View.OnClickListener callback) {
+		Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+				.setActionTextColor(context.getResources().getColor(R.color.snackbar_action))
+				.setAction(action, callback)
+				.show();
 	}
 }
