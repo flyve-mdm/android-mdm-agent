@@ -28,9 +28,13 @@
 package org.flyve.mdm.agent;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.TextView;
 
@@ -45,6 +49,25 @@ import org.flyve.mdm.agent.utils.Helpers;
 public class SplashActivity extends Activity {
 
     private static final int TIME = 3000;
+    private IntentFilter mIntent;
+
+    @Override
+    public void onPause() {
+        // unregister the broadcast
+        if(mIntent != null) {
+            unregisterReceiver(broadcastMessage);
+            mIntent = null;
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        // register the broadcast
+        super.onResume();
+        LocalBroadcastManager.getInstance(SplashActivity.this).registerReceiver(broadcastMessage, new IntentFilter("flyve.ACTION_CLOSE"));
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,4 +112,18 @@ public class SplashActivity extends Activity {
         SplashActivity.this.startActivity(miIntent);
         SplashActivity.this.finish();
     }
+
+    private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            // Close this activity
+            if("flyve.ACTION_CLOSE".equalsIgnoreCase(action)) {
+                SplashActivity.this.finish();
+            }
+        }
+    };
+
+
 }

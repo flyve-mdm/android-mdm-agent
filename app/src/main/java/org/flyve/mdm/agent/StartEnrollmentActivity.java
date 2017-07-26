@@ -31,15 +31,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.utils.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.flyve.mdm.agent.utils.EnrollmentHelper;
 import org.json.JSONObject;
 
 public class StartEnrollmentActivity extends Activity {
@@ -54,6 +55,8 @@ public class StartEnrollmentActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_enrollment);
+
+        broadcastClose();
 
         DataStorage cache = new DataStorage( StartEnrollmentActivity.this );
         // if broker is on cache open the main activity
@@ -146,6 +149,14 @@ public class StartEnrollmentActivity extends Activity {
             }
         });
     }
+
+    public void broadcastClose() {
+        //send broadcast
+        Intent in = new Intent();
+        in.setAction("flyve.ACTION_CLOSE");
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+    }
+
 
     /**
      * Open activity
