@@ -112,6 +112,11 @@ public class MQTTService extends Service implements MqttCallback {
         String mUser = cache.getMqttuser();
         String mPassword = cache.getMqttpasswd();
 
+        if(mPassword==null) {
+            FlyveLog.d("Flyve", "Password can't be null");
+            return;
+        }
+
         mTopic = cache.getTopic();
 
         broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Broker", mBroker));
@@ -171,7 +176,7 @@ public class MQTTService extends Service implements MqttCallback {
                 }
             });
         }
-        catch (MqttException ex) {
+        catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
             broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on connect", ex.getMessage()));
         }

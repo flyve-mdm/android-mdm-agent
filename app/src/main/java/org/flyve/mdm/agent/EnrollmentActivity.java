@@ -261,7 +261,6 @@ public class EnrollmentActivity extends AppCompatActivity {
      */
     private void openMain() {
         Intent intent = new Intent(EnrollmentActivity.this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         EnrollmentActivity.this.startActivity(intent);
         setResult(RESULT_OK, null);
         EnrollmentActivity.this.finish();
