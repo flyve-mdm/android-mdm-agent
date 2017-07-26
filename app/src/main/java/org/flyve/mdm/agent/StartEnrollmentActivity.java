@@ -160,7 +160,6 @@ public class StartEnrollmentActivity extends Activity {
      */
     private void openMain() {
         Intent intent = new Intent(StartEnrollmentActivity.this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         StartEnrollmentActivity.this.startActivity(intent);
         StartEnrollmentActivity.this.finish();
     }

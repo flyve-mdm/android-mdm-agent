@@ -149,7 +149,6 @@ public class FragmentInformation extends Fragment {
 
     private void openSplash() {
         Intent intent = new Intent(FragmentInformation.this.getActivity(), SplashActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         FragmentInformation.this.getActivity().startActivity(intent);
         FragmentInformation.this.getActivity().finish();
     }
