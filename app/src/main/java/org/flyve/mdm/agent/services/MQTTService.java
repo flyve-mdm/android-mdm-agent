@@ -209,6 +209,7 @@ public class MQTTService extends Service implements MqttCallback {
                 } else {
                     FlyveLog.d("Timer cancel");
                     timer.cancel();
+                    timer = null;
                 }
             }
         };
