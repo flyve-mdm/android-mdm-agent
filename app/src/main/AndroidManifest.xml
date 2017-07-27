@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.flyve.mdm.agent"
-    android:versionCode="144"
-    android:versionName="1.0.146">
+    android:versionCode="145"
+    android:versionName="1.0.147">
 
     <!-- For writing logfiles -->
     <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
@@ -116,6 +116,16 @@
                 <action android:name="android.net.wifi.STATE_CHANGE" />
                 <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
                 <action android:name="android.location.PROVIDERS_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- This receiver check if any app is installed, deleted or updated -->
+        <receiver android:name=".services.AppsReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.ACTION_PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.ACTION_PACKAGE_REPLACED" />
+                <data android:scheme="package"/>
             </intent-filter>
         </receiver>
     </application>
