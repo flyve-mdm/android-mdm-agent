@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONObject;
 
 public class FragmentInformation extends Fragment {
@@ -124,6 +125,15 @@ public class FragmentInformation extends Fragment {
 
                     if("action".equalsIgnoreCase(type) && "open".equalsIgnoreCase(title) && "splash".equalsIgnoreCase(body)) {
                         openSplash();
+                    }
+
+                    if("ERROR".equalsIgnoreCase(type)) {
+
+                        Helpers.snack(FragmentInformation.this.getActivity(), body, "close", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                            }
+                        });
                     }
 
                 } catch (Exception ex) {

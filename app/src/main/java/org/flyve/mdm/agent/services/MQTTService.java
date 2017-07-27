@@ -38,7 +38,9 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -146,13 +148,27 @@ public class MQTTService extends Service implements MqttCallback {
                 public void onFailure(IMqttToken asyncActionToken, Throwable ex) {
                     // Something went wrong e.g. connection timeout or firewall problems
                     FlyveLog.e(TAG, "onFailure:" + ex.getMessage());
+                    String errorCode;
+
+                    try {
+                        errorCode = String.valueOf(((MqttException) ex).getReasonCode());
+                    } catch (Exception exception) {
+                        errorCode = "0";
+                    }
+
                     broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on connect - client.connect", ex.getMessage()));
+                    broadcastMessage(Helpers.broadCastMessage("ERROR", errorCode, ex.getMessage()));
                     broadcastServiceStatus(false);
                 }
             });
         }
-        catch (Exception ex) {
+        catch (MqttException ex) {
             FlyveLog.e(TAG, ex.getMessage());
+            broadcastMessage(Helpers.broadCastMessage("ERROR", String.valueOf(ex.getReasonCode()), ex.getMessage()));
+            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on connect", ex.getMessage()));
+        } catch (Exception ex) {
+            FlyveLog.e(TAG, ex.getMessage());
+            broadcastMessage(Helpers.broadCastMessage("ERROR", "0", getApplicationContext().getResources().getString(R.string.MQTT_ERROR_CONNECTION)));
             broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on connect", ex.getMessage()));
         }
     }
@@ -309,6 +325,15 @@ public class MQTTService extends Service implements MqttCallback {
             FlyveLog.e(TAG, ex.getMessage());
             broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on messageArrived", ex.getMessage()));
         }
+    }
+
+    /**
+     * Send broadcast for log messages from MQTT
+     * @param message String to send
+     */
+    public void broadcastMessage(String message) {
+        //send broadcast
+        Helpers.sendBroadcast(message, Helpers.BROADCAST_MSG, getApplicationContext());
     }
 
     /**

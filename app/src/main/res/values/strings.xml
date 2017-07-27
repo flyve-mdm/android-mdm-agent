@@ -17,6 +17,8 @@
     <string name="device_supervised_by_title">DEVICE SUPERVISED BY</string>
     <string name="user_information_title">USER INFORMATION</string>
 
+    <string name="MQTT_ERROR_CONNECTION">Please check your connectivity</string>
+
     <string name="ERROR_INTERNAL">Internal Error, please try again</string>
     <string name="ERROR_DEEP_LINK">Problems with deep link</string>
     <string name="ERROR_ITEM_NOT_FOUND">Error</string>
@@ -40,5 +42,4 @@
     <string name="ERROR_GLPI_PARTIAL_UPDATE">Error</string>
     <string name="ERROR_GLPI_DELETE">Error</string>
     <string name="ERROR_GLPI_PARTIAL_DELETE">Error</string>
-    <string name="title_activity_main">MainActivity</string>
 </resources>
