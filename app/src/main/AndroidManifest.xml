@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.flyve.mdm.agent"
-    android:versionCode="145"
-    android:versionName="1.0.147">
+    android:versionCode="147"
+    android:versionName="1.0.149">
 
     <!-- For writing logfiles -->
     <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
@@ -72,6 +72,10 @@
             android:enabled="true"
             android:label="M2M communications"
             >
+            <intent-filter>
+                <action android:name="org.flyve.mdm.agent.ACTION_START"/>
+                <action android:name="org.flyve.mdm.agent.ACTION_INVENTORY"/>
+            </intent-filter>
         </service>
 
         <!-- This receiver is for restart MQTT on reboot device -->
