@@ -33,6 +33,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Base64;
 import android.view.View;
 
@@ -48,6 +49,10 @@ import java.util.Date;
  * This class content some helpers function
  */
 public class Helpers {
+
+	public static final String BROADCAST_LOG = "flyve.mqtt.log";
+	public static final String BROADCAST_MSG = "flyve.mqtt.msg";
+	public static final String BROADCAST_STATUS = "flyve.mqtt.status";
 
 	/**
 	 * private construtor
@@ -156,5 +161,34 @@ public class Helpers {
 				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))
 				.setAction(action, callback)
 				.show();
+	}
+
+	/**
+	 * Send broadcast
+	 * @param message String to send
+	 * @param action String action
+	 * @param context String context
+	 */
+	public static void sendBroadcast(String message, String action, Context context) {
+		FlyveLog.i(message);
+		//send broadcast
+		Intent in = new Intent();
+		in.setAction(action);
+		in.putExtra("message", message);
+		LocalBroadcastManager.getInstance(context).sendBroadcast(in);
+	}
+
+	/**
+	 * Send broadcast
+	 * @param message Boolean to send
+	 * @param action String action
+	 * @param context String context
+	 */
+	public static void sendBroadcast(Boolean message, String action, Context context) {
+		//send broadcast
+		Intent in = new Intent();
+		in.setAction(action);
+		in.putExtra("message", Boolean.toString( message ) );
+		LocalBroadcastManager.getInstance(context).sendBroadcast(in);
 	}
 }
