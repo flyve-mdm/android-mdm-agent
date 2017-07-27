@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.json.JSONObject;
@@ -80,18 +78,6 @@ public class FragmentInformation extends Fragment {
         imgOnline = (ImageView) v.findViewById(R.id.imgOnline);
 
         return v;
-    }
-
-    private void showError() {
-        Snackbar.make(FragmentInformation.this.getView(), "Message", Snackbar.LENGTH_LONG)
-                .setActionTextColor(getResources().getColor(R.color.snackbar_action))
-                .setAction("Retry", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        FlyveLog.d("Retry", "reconnect");
-                    }
-                })
-                .show();
     }
 
     /**
