@@ -50,14 +50,12 @@ import java.util.TimerTask;
 import javax.net.ssl.SSLContext;
 
 /**
- * This is the service that get and send message from MQTT
+ * This is the service get and send message from MQTT
  */
-
 public class MQTTService extends Service implements MqttCallback {
 
     private static final String TAG = "MQTT";
     private MqttAndroidClient client;
-    private DataStorage cache;
     private Boolean connected = false;
     private MQTTHelper mqttHelper;
 
@@ -67,7 +65,7 @@ public class MQTTService extends Service implements MqttCallback {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        FlyveLog.i(TAG, "SERVICE MQTT");
+        FlyveLog.i(TAG, "STARTING SERVICE MQTT");
         connect();
         return START_STICKY;
     }
@@ -88,19 +86,18 @@ public class MQTTService extends Service implements MqttCallback {
      * This function connect the agent with MQTT server
      */
     public void connect() {
-        cache = new DataStorage(this.getApplicationContext());
+        DataStorage cache = new DataStorage(this.getApplicationContext());
 
-        String mBroker = cache.getBroker();
-        String mPort = cache.getPort();
-        String mUser = cache.getMqttuser();
-        String mPassword = cache.getMqttpasswd();
+        final String mBroker = cache.getBroker();
+        final String mPort = cache.getPort();
+        final String mUser = cache.getMqttuser();
+        final String mPassword = cache.getMqttpasswd();
+        final String mTopic = cache.getTopic();
 
         if(mPassword==null) {
             FlyveLog.d(TAG, "Password can't be null");
             return;
         }
-
-        final String mTopic = cache.getTopic();
 
         broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Broker", mBroker));
         broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Port", mPort));
@@ -108,10 +105,10 @@ public class MQTTService extends Service implements MqttCallback {
         broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Topic", mTopic));
 
         String clientId = MqttClient.generateClientId();
-            client = new MqttAndroidClient(this.getApplicationContext(), "ssl://" + mBroker + ":" + mPort,
-                clientId);
+        client = new MqttAndroidClient(this.getApplicationContext(), "ssl://" + mBroker + ":" + mPort, clientId);
 
         client.setCallback( this );
+
         try {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setPassword(mPassword.toCharArray());
@@ -120,17 +117,10 @@ public class MQTTService extends Service implements MqttCallback {
             options.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1);
             options.setConnectionTimeout(0);
 
-            try {
-                SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
-                sslContext.init(null, null, null);
-
-                options.setSocketFactory(sslContext.getSocketFactory());
-
-                FlyveLog.d(TAG, "ssl socket factory created from flyve ca");
-            } catch (Exception ex) {
-                FlyveLog.e(TAG,"error while building ssl mqtt cnx", ex);
-            }
-
+            // SSL
+            SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+            sslContext.init(null, null, null);
+            options.setSocketFactory(sslContext.getSocketFactory());
 
             IMqttToken token = client.connect(options);
             token.setActionCallback(new IMqttActionListener() {
@@ -143,7 +133,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                     mqttHelper = new MQTTHelper(getApplicationContext(), client);
 
-                    // principal channel
+                    // main channel
                     String channel = mTopic + "/#";
                     FlyveLog.d(TAG, "MQTT Channel: " + channel);
                     mqttHelper.suscribe(channel);
@@ -264,7 +254,7 @@ public class MQTTService extends Service implements MqttCallback {
             if(jsonObj.has("subscribe")) {
                 JSONArray jsonTopics = jsonObj.getJSONArray("subscribe");
                 for(int i=0; i<jsonTopics.length();i++) {
-                    JSONObject jsonTopic = jsonTopics.getJSONObject(0);
+                    JSONObject jsonTopic = jsonTopics.getJSONObject(i);
 
                     // Add new channel
                     mqttHelper.suscribe(jsonTopic.getString("topic")+"/#");
