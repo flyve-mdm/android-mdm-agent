@@ -27,12 +27,17 @@
 
 package org.flyve.mdm.agent.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Base64;
+import android.view.View;
 
+import org.flyve.mdm.agent.R;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -44,6 +49,10 @@ import java.util.Date;
  * This class content some helpers function
  */
 public class Helpers {
+
+	public static final String BROADCAST_LOG = "flyve.mqtt.log";
+	public static final String BROADCAST_MSG = "flyve.mqtt.msg";
+	public static final String BROADCAST_STATUS = "flyve.mqtt.status";
 
 	/**
 	 * private construtor
@@ -139,5 +148,47 @@ public class Helpers {
 		} catch(Exception ex) {
 			return null;
 		}
+	}
+
+	public static void snack(Activity activity, String message) {
+		Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))
+				.show();
+	}
+
+	public static void snack(Activity activity, String message, String action,  View.OnClickListener callback) {
+		Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
+				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))
+				.setAction(action, callback)
+				.show();
+	}
+
+	/**
+	 * Send broadcast
+	 * @param message String to send
+	 * @param action String action
+	 * @param context String context
+	 */
+	public static void sendBroadcast(String message, String action, Context context) {
+		FlyveLog.i(message);
+		//send broadcast
+		Intent in = new Intent();
+		in.setAction(action);
+		in.putExtra("message", message);
+		LocalBroadcastManager.getInstance(context).sendBroadcast(in);
+	}
+
+	/**
+	 * Send broadcast
+	 * @param message Boolean to send
+	 * @param action String action
+	 * @param context String context
+	 */
+	public static void sendBroadcast(Boolean message, String action, Context context) {
+		//send broadcast
+		Intent in = new Intent();
+		in.setAction(action);
+		in.putExtra("message", Boolean.toString( message ) );
+		LocalBroadcastManager.getInstance(context).sendBroadcast(in);
 	}
 }

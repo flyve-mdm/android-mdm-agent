@@ -86,7 +86,7 @@ public class StartEnrollmentActivity extends Activity {
                 url = jsonLink.getString("url");
             } else {
                 deepLinkErrorMessage = "URL " + deepLinkErrorMessage;
-                txtMessage.setText(deepLinkErrorMessage);
+                showError( deepLinkErrorMessage );
                 return;
             }
 
@@ -94,7 +94,7 @@ public class StartEnrollmentActivity extends Activity {
                 userToken = jsonLink.getString("user_token");
             } else {
                 deepLinkErrorMessage = "USER " + deepLinkErrorMessage;
-                txtMessage.setText(deepLinkErrorMessage);
+                showError( deepLinkErrorMessage );
                 return;
             }
 
@@ -102,7 +102,7 @@ public class StartEnrollmentActivity extends Activity {
                 invitationToken = jsonLink.getString("invitation_token");
             } else {
                 deepLinkErrorMessage = "TOKEN " + deepLinkErrorMessage;
-                txtMessage.setText(deepLinkErrorMessage);
+                showError( deepLinkErrorMessage );
                 return;
             }
 
@@ -112,7 +112,7 @@ public class StartEnrollmentActivity extends Activity {
 
         } catch (Exception ex) {
             FlyveLog.e( ex.getMessage() );
-            txtMessage.setText(deepLinkErrorMessage);
+            showError( deepLinkErrorMessage );
             return;
         }
 
@@ -141,8 +141,7 @@ public class StartEnrollmentActivity extends Activity {
                     public void onError(String error) {
                         btnEnroll.setVisibility(View.VISIBLE);
                         pb.setVisibility(View.GONE);
-                        txtMessage.setText(error);
-                        txtTitle.setText(getResources().getString(R.string.fail_enroll));
+                        showError( error );
                     }
                 });
 
@@ -157,6 +156,15 @@ public class StartEnrollmentActivity extends Activity {
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
     }
 
+    private void showError(String message) {
+        txtTitle.setText(getResources().getString(R.string.fail_enroll));
+
+        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+    }
 
     /**
      * Open activity

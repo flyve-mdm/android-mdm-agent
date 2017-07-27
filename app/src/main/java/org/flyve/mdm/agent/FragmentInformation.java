@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
@@ -14,9 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONObject;
 
 public class FragmentInformation extends Fragment {
@@ -82,18 +81,6 @@ public class FragmentInformation extends Fragment {
         return v;
     }
 
-    private void showError() {
-        Snackbar.make(FragmentInformation.this.getView(), "Message", Snackbar.LENGTH_LONG)
-                .setActionTextColor(getResources().getColor(R.color.snackbar_action))
-                .setAction("Retry", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        FlyveLog.d("Retry", "reconnect");
-                    }
-                })
-                .show();
-    }
-
     /**
      * broadcastServiceStatus instance that receive service status from MQTTService
      */
@@ -138,6 +125,15 @@ public class FragmentInformation extends Fragment {
 
                     if("action".equalsIgnoreCase(type) && "open".equalsIgnoreCase(title) && "splash".equalsIgnoreCase(body)) {
                         openSplash();
+                    }
+
+                    if("ERROR".equalsIgnoreCase(type)) {
+
+                        Helpers.snack(FragmentInformation.this.getActivity(), body, "close", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                            }
+                        });
                     }
 
                 } catch (Exception ex) {
