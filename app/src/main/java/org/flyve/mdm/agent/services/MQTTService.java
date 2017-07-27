@@ -165,6 +165,9 @@ public class MQTTService extends Service implements MqttCallback {
                     String channel = mTopic + "/#";
                     FlyveLog.d("MQTT Channel: " + channel);
                     suscribe(channel);
+
+                    // send inventory on connect
+                    createInventory();
                 }
 
                 @Override
