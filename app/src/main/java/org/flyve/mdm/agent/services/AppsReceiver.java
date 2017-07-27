@@ -33,8 +33,7 @@ import android.content.Intent;
 public class AppsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-
-
-
+        Intent mIntent = new Intent(MQTTService.ACTION_INVENTORY);
+        context.startService(mIntent);
     }
 }

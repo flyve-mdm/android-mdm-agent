@@ -56,6 +56,9 @@ import javax.net.ssl.SSLContext;
  */
 public class MQTTService extends Service implements MqttCallback {
 
+    public static final String ACTION_START = "org.flyve.mdm.agent.ACTION_START";
+    public static final String ACTION_INVENTORY = "org.flyve.mdm.agent.ACTION_INVENTORY";
+
     private static final String TAG = "MQTT";
     private MqttAndroidClient client;
     private Boolean connected = false;
@@ -67,8 +70,22 @@ public class MQTTService extends Service implements MqttCallback {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        FlyveLog.i(TAG, "STARTING SERVICE MQTT");
-        connect();
+        String action = intent.getAction();
+
+        if(action == null) {
+            action = "";
+        }
+
+        FlyveLog.i(TAG, "SERVICE MQTT: " + action);
+
+        if(!connected) {
+            connect();
+        }
+
+        if(action.equalsIgnoreCase(ACTION_INVENTORY) && connected) {
+            mqttHelper.createInventory();
+        }
+
         return START_STICKY;
     }
 
