@@ -257,7 +257,7 @@ public class EnrollmentActivity extends AppCompatActivity {
     }
 
     private void showError(String message) {
-        Helpers.snack(this, message, "close", new View.OnClickListener() {
+        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }

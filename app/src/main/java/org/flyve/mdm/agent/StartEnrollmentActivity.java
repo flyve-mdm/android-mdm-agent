@@ -159,7 +159,7 @@ public class StartEnrollmentActivity extends Activity {
     private void showError(String message) {
         txtTitle.setText(getResources().getString(R.string.fail_enroll));
 
-        Helpers.snack(this, message, "close", new View.OnClickListener() {
+        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
