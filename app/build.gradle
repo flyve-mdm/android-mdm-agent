@@ -41,14 +41,15 @@ dependencies {
     }
 
     compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1'
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:design:22.2.0'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:design:22.2.1'
+    compile 'com.android.support:support-v4:22.2.1'
     compile 'com.madgag.spongycastle:core:1.54.0.0'
     compile 'com.madgag.spongycastle:prov:1.54.0.0'
     compile 'com.madgag.spongycastle:pkix:1.54.0.0'
     compile 'com.orhanobut:logger:2.1.0'
     compile 'com.flyvemdm:inventory:1.0.2@aar'
-    compile 'com.android.support:support-v4:22.2.0'
+
 }
 
 import java.util.regex.Pattern

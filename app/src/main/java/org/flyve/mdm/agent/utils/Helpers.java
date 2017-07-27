@@ -27,6 +27,7 @@
 
 package org.flyve.mdm.agent.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -144,15 +145,15 @@ public class Helpers {
 		}
 	}
 
-	public static void snack(View view, Context context, String message) {
-		Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-				.setActionTextColor(context.getResources().getColor(R.color.snackbar_action))
+	public static void snack(Activity activity, String message) {
+		Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))
 				.show();
 	}
 
-	public static  void snack(View view, Context context, String message, String action,  View.OnClickListener callback) {
-		Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-				.setActionTextColor(context.getResources().getColor(R.color.snackbar_action))
+	public static void snack(Activity activity, String message, String action,  View.OnClickListener callback) {
+		Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
+				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))
 				.setAction(action, callback)
 				.show();
 	}
