@@ -133,7 +133,7 @@ public class EnrollmentActivity extends AppCompatActivity {
             public void onError(String error) {
                 pbx509.setVisibility(View.GONE);
                 btnRegister.setEnabled(false);
-                txtMessage.setText("Error creating certificate X509");
+                showError("Error creating certificate X509");
             }
         });
     }
@@ -245,15 +245,23 @@ public class EnrollmentActivity extends AppCompatActivity {
                 public void onError(String error) {
                     pb.setVisibility(View.GONE);
                     enableFields(true);
-                    txtMessage.setText(error);
+                    showError(error);
                 }
             });
         } catch (Exception ex) {
             pb.setVisibility(View.GONE);
             enableFields(true);
-            txtMessage.setText( ex.getMessage() );
+            showError( ex.getMessage() );
             FlyveLog.e( ex.getMessage() );
         }
+    }
+
+    private void showError(String message) {
+        Helpers.snack(this, message, "close", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
     }
 
     /**
