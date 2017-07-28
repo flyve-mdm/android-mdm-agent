@@ -36,7 +36,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -154,9 +153,6 @@ public class EnrollmentActivity extends AppCompatActivity {
         //Validate and Save
         boolean allowSave = true;
 
-        // block fields on form
-        enableFields(false);
-
         String email = editEmail.getText().toString().trim();
         String name = editName.getText().toString().trim();
         String lastName = editLastName.getText().toString().trim();
@@ -182,24 +178,7 @@ public class EnrollmentActivity extends AppCompatActivity {
         if(allowSave){
             sendEnroll();
         } else {
-            enableFields(true);
             txtMessage.setText(errMsg);
-        }
-    }
-
-    /**
-     * Enable / Disable field
-     * @param enable Boolean
-     */
-    private void enableFields(Boolean enable) {
-        LinearLayout ll = (LinearLayout) findViewById(R.id.userData);
-        for (View view : ll.getTouchables()){
-            if (view instanceof EditText){
-                EditText editText = (EditText) view;
-                editText.setEnabled(enable);
-                editText.setFocusable(enable);
-                editText.setFocusableInTouchMode(enable);
-            }
         }
     }
 
@@ -245,15 +224,11 @@ public class EnrollmentActivity extends AppCompatActivity {
                 @Override
                 public void onError(String error) {
                     pd.dismiss();
-
-                    enableFields(true);
                     showError(error);
                 }
             });
         } catch (Exception ex) {
             pd.dismiss();
-
-            enableFields(true);
             showError( ex.getMessage() );
             FlyveLog.e( ex.getMessage() );
         }
