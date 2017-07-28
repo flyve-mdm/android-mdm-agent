@@ -27,6 +27,7 @@
 
 package org.flyve.mdm.agent;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -57,7 +58,6 @@ import java.net.URLEncoder;
  */
 public class EnrollmentActivity extends AppCompatActivity {
 
-    private ProgressBar pb;
     private ProgressBar pbx509;
     private DataStorage cache;
     private EnrollmentHelper enroll;
@@ -68,6 +68,8 @@ public class EnrollmentActivity extends AppCompatActivity {
     private EditText editEmail;
     private EditText editPhone;
     private ImageView btnRegister;
+
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +89,6 @@ public class EnrollmentActivity extends AppCompatActivity {
             });
         }
 
-        pb = (ProgressBar) findViewById(R.id.progressBar);
         pbx509 = (ProgressBar) findViewById(R.id.progressBarX509);
 
         enroll = new EnrollmentHelper(EnrollmentActivity.this);
@@ -207,7 +208,7 @@ public class EnrollmentActivity extends AppCompatActivity {
      */
     private void sendEnroll() {
         try {
-            pb.setVisibility(View.VISIBLE);
+            pd = ProgressDialog.show(EnrollmentActivity.this, "", getResources().getString(R.string.loading));
 
             AndroidCryptoProvider csr = new AndroidCryptoProvider(EnrollmentActivity.this.getBaseContext());
             String requestCSR = "";
@@ -230,7 +231,7 @@ public class EnrollmentActivity extends AppCompatActivity {
             enroll.enrollment(payload, new EnrollmentHelper.enrollCallBack() {
                 @Override
                 public void onSuccess(String data) {
-                    pb.setVisibility(View.GONE);
+                    pd.dismiss();
 
                     // Store user information
                     cache.setUserFirstName(editName.getText().toString());
@@ -243,13 +244,15 @@ public class EnrollmentActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(String error) {
-                    pb.setVisibility(View.GONE);
+                    pd.dismiss();
+
                     enableFields(true);
                     showError(error);
                 }
             });
         } catch (Exception ex) {
-            pb.setVisibility(View.GONE);
+            pd.dismiss();
+
             enableFields(true);
             showError( ex.getMessage() );
             FlyveLog.e( ex.getMessage() );

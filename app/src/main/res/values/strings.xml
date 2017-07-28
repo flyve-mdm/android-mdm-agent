@@ -14,11 +14,11 @@
     <string name="online">Online</string>
     <string name="offline">Offline</string>
     <string name="snackbar_close">Dismiss</string>
+    <string name="loading">Enrollment in process</string>
     <string name="device_supervised_by_title">DEVICE SUPERVISED BY</string>
     <string name="user_information_title">USER INFORMATION</string>
 
     <string name="MQTT_ERROR_CONNECTION">Please check your connectivity</string>
-
     <string name="ERROR_INTERNAL">Internal Error, please try again</string>
     <string name="ERROR_DEEP_LINK">Problems with deep link</string>
     <string name="ERROR_ITEM_NOT_FOUND">Error</string>
