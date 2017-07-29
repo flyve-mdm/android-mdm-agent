@@ -103,7 +103,7 @@ public class Helpers {
 	public static String getDeviceSerial() {
 		String serial;
 		if(Build.SERIAL.equalsIgnoreCase("unknown")) {
-			serial = "ABCEDF12345678";//"sim" + GetUnixTime();
+			serial = "ABCEDF012345678";//"sim" + GetUnixTime();
 		} else {
 			serial = Build.SERIAL;
 		}

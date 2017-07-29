@@ -23,6 +23,10 @@ public class FragmentInformation extends Fragment {
     private IntentFilter mIntent;
     private TextView txtOnline;
     private ImageView imgOnline;
+    private DataStorage cache;
+    private TextView txtNameUser;
+    private TextView txtEmailUser;
+
     private int countEasterEgg;
 
     @Override
@@ -50,7 +54,7 @@ public class FragmentInformation extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_information, container, false);
 
-        final DataStorage cache = new DataStorage(FragmentInformation.this.getActivity());
+        cache = new DataStorage(FragmentInformation.this.getActivity());
 
         ImageView imgLogo = (ImageView) v.findViewById(R.id.imgLogo);
         imgLogo.setOnClickListener(new View.OnClickListener() {
@@ -69,16 +73,20 @@ public class FragmentInformation extends Fragment {
             }
         });
 
-        TextView txtName = (TextView) v.findViewById(R.id.txtNameUser);
-        txtName.setText(cache.getUserFirstName() + " " + cache.getUserLastName());
-
-        TextView txtEmail = (TextView) v.findViewById(R.id.txtDescriptionUser);
-        txtEmail.setText(cache.getUserEmail());
+        txtNameUser = (TextView) v.findViewById(R.id.txtNameUser);
+        txtEmailUser = (TextView) v.findViewById(R.id.txtDescriptionUser);
 
         txtOnline = (TextView) v.findViewById(R.id.txtOnline);
         imgOnline = (ImageView) v.findViewById(R.id.imgOnline);
 
+        loadClientInfo();
+
         return v;
+    }
+
+    private void loadClientInfo() {
+        txtNameUser.setText(cache.getUserFirstName() + " " + cache.getUserLastName());
+        txtEmailUser.setText(cache.getUserEmail());
     }
 
     /**
