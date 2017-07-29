@@ -15,6 +15,7 @@
     <string name="offline">Offline</string>
     <string name="snackbar_close">Dismiss</string>
     <string name="loading">Enrollment in process</string>
+    <string name="creating_certified_x509">Creating certified</string>
     <string name="device_supervised_by_title">DEVICE SUPERVISED BY</string>
     <string name="user_information_title">USER INFORMATION</string>
 

@@ -28,12 +28,14 @@
 package org.flyve.mdm.agent;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -67,6 +69,7 @@ public class EnrollmentActivity extends AppCompatActivity {
     private EditText editEmail;
     private EditText editPhone;
     private ImageView btnRegister;
+    private boolean sendEnrollment = false;
 
     private ProgressDialog pd;
 
@@ -112,7 +115,6 @@ public class EnrollmentActivity extends AppCompatActivity {
         });
 
         btnRegister = (ImageView) findViewById(R.id.btnSave);
-        btnRegister.setEnabled(false);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,13 +128,15 @@ public class EnrollmentActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String data) {
                 pbx509.setVisibility(View.GONE);
-                btnRegister.setEnabled(true);
+                if(sendEnrollment) {
+                    pd.dismiss();
+                    validateForm();
+                }
             }
 
             @Override
             public void onError(String error) {
                 pbx509.setVisibility(View.GONE);
-                btnRegister.setEnabled(false);
                 showError("Error creating certificate X509");
             }
         });
@@ -145,8 +149,17 @@ public class EnrollmentActivity extends AppCompatActivity {
         StringBuilder errMsg = new StringBuilder("Please fix the following errors and try again.\n\n");
         txtMessage.setText("");
 
+        // Hide keyboard
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
         // waiting for cert x509
         if(pbx509.getVisibility() == View.VISIBLE) {
+            sendEnrollment = true;
+            pd = ProgressDialog.show(EnrollmentActivity.this, "", getResources().getString(R.string.creating_certified_x509));
             return;
         }
 
