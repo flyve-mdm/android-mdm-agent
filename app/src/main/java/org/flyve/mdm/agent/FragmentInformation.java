@@ -26,6 +26,8 @@ public class FragmentInformation extends Fragment {
     private DataStorage cache;
     private TextView txtNameUser;
     private TextView txtEmailUser;
+    private TextView txtNameSupervisor;
+    private TextView txtDescriptionSupervisor;
 
     private int countEasterEgg;
 
@@ -76,12 +78,21 @@ public class FragmentInformation extends Fragment {
         txtNameUser = (TextView) v.findViewById(R.id.txtNameUser);
         txtEmailUser = (TextView) v.findViewById(R.id.txtDescriptionUser);
 
+        txtNameSupervisor = (TextView) v.findViewById(R.id.txtNameSupervisor);
+        txtDescriptionSupervisor = (TextView) v.findViewById(R.id.txtDescriptionSupervisor);
+
         txtOnline = (TextView) v.findViewById(R.id.txtOnline);
         imgOnline = (ImageView) v.findViewById(R.id.imgOnline);
 
+        loadSupervisor();
         loadClientInfo();
 
         return v;
+    }
+
+    private void loadSupervisor() {
+        txtNameSupervisor.setText("Teclib Spain SL");
+        txtDescriptionSupervisor.setText("sales@teclib.com");
     }
 
     private void loadClientInfo() {
