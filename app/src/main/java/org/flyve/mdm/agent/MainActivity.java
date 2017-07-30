@@ -170,6 +170,11 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.replace(R.id.containerView, f).commit();
             return;
         }
+
+        // Feedback
+        if (item.get("id").equals("3")) {
+            return;
+        }
     }
 
     private void loadListDrawer() {
@@ -194,6 +199,14 @@ public class MainActivity extends AppCompatActivity {
             arrDrawer.add(map);
 
         }
+
+        // Feedback
+        map = new HashMap<>();
+        map.put("id", "3");
+        map.put("name", getResources().getString(R.string.drawer_feedback));
+        map.put("img", "ic_feedback");
+        map.put("separator", "true");
+        arrDrawer.add(map);
 
         try {
             // lad adapter
