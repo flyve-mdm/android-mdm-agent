@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.flyve.mdm.agent"
-    android:versionCode="154"
-    android:versionName="1.0.156">
+    android:versionCode="178"
+    android:versionName="1.0.178">
 
     <!-- For writing logfiles -->
     <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
