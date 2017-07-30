@@ -33,25 +33,36 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import org.flyve.mdm.agent.adapter.DrawerAdapter;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.FlyveAdminReceiver;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+    private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
+    private FragmentManager mFragmentManager;
+    private ListView lstDrawer;
+    private ArrayList<HashMap<String, String>> arrDrawer;
+    private HashMap<String, String> selectedItem;
+    private TextView txtToolbarTitle;
+
 
     private Intent mServiceIntent;
     private static final int REQUEST_CODE_ENABLE_ADMIN = 1;
@@ -74,11 +85,35 @@ public class MainActivity extends AppCompatActivity {
 
         cache = new DataStorage(this);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+         // Setup the DrawerLayout and NavigationView
+        txtToolbarTitle = (TextView) findViewById(R.id.txtToolbarTitle);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mNavigationView = (NavigationView) findViewById(R.id.shitstuff);
+
+        lstDrawer = (ListView) findViewById(R.id.lstNV);
+        lstDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            mDrawerLayout.closeDrawers();
+            selectedItem = arrDrawer.get(position);
+            loadFragment(selectedItem);
+            }
+        });
+
+        mFragmentManager = getSupportFragmentManager();
+
+
+        // Setup Drawer Toggle of the Toolbar
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout, toolbar,R.string.app_name,
+                R.string.app_name);
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        mDrawerToggle.syncState();
+
+        loadListDrawer();
 
         // Device Admin
         mDeviceAdmin = new ComponentName(this, FlyveAdminReceiver.class);
@@ -116,45 +151,43 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+    private void loadFragment(HashMap<String, String> item) {
 
-        adapter.addFragment(new FragmentInformation(), getResources().getString(R.string.app_name));
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 
-        if(cache.getEasterEgg()) {
-            adapter.addFragment(new FragmentLog(), "Log");
-        }
+        txtToolbarTitle.setText(item.get("name").toUpperCase());
 
-        viewPager.setAdapter(adapter);
-    }
+        if (item.get("id").equals("1")) {
 
-    private class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
+            FragmentInformation f = new FragmentInformation();
+            fragmentTransaction.replace(R.id.containerView, f).commit();
 
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
+            return;
         }
     }
 
+    private void loadListDrawer() {
+
+        arrDrawer = new ArrayList<>();
+
+        // Information
+        HashMap<String, String> map = new HashMap<>();
+        map.put("id", "1");
+        map.put("name", getResources().getString(R.string.drawer_information));
+        map.put("img", "ic_logout");
+
+        arrDrawer.add(map);
+
+        try {
+            // lad adapter
+            DrawerAdapter adapter = new DrawerAdapter(this, arrDrawer);
+            lstDrawer.setAdapter(adapter);
+
+            // Select Information //
+            selectedItem = arrDrawer.get(0);
+            loadFragment(selectedItem);
+        } catch(Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+    }
 }
