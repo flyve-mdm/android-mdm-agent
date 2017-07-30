@@ -70,10 +70,11 @@ public class MQTTService extends Service implements MqttCallback {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        String action = intent.getAction();
 
-        if(action == null) {
-            action = "";
+
+        String action = "";
+        if(intent.getAction() != null) {
+            action = intent.getAction();
         }
 
         FlyveLog.i(TAG, "SERVICE MQTT: " + action);
