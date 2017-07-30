@@ -157,11 +157,17 @@ public class MainActivity extends AppCompatActivity {
 
         txtToolbarTitle.setText(item.get("name").toUpperCase());
 
+        // Information
         if (item.get("id").equals("1")) {
-
             FragmentInformation f = new FragmentInformation();
             fragmentTransaction.replace(R.id.containerView, f).commit();
+            return;
+        }
 
+        // Log
+        if (item.get("id").equals("2")) {
+            FragmentLog f = new FragmentLog();
+            fragmentTransaction.replace(R.id.containerView, f).commit();
             return;
         }
     }
@@ -194,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
             DrawerAdapter adapter = new DrawerAdapter(this, arrDrawer);
             lstDrawer.setAdapter(adapter);
 
-            // Select Information //
+            // Select Information on load //
             selectedItem = arrDrawer.get(0);
             loadFragment(selectedItem);
         } catch(Exception ex) {
