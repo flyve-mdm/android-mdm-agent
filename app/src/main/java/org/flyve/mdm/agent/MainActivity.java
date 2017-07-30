@@ -174,9 +174,20 @@ public class MainActivity extends AppCompatActivity {
         HashMap<String, String> map = new HashMap<>();
         map.put("id", "1");
         map.put("name", getResources().getString(R.string.drawer_information));
-        map.put("img", "ic_logout");
-
+        map.put("img", "ic_info");
         arrDrawer.add(map);
+
+        // if easterEgg is active
+        if(cache.getEasterEgg()) {
+
+            // Log
+            map = new HashMap<>();
+            map.put("id", "2");
+            map.put("name", getResources().getString(R.string.drawer_log));
+            map.put("img", "ic_log");
+            arrDrawer.add(map);
+
+        }
 
         try {
             // lad adapter
