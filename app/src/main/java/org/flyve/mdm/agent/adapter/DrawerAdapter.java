@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import org.flyve.mdm.agent.R;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,6 +46,13 @@ public class DrawerAdapter extends BaseAdapter {
 		hashdata = this.data.get(position);
 		
 		View vi = inflater.inflate(R.layout.list_item_drawer, null);
+
+		View viewSeparator = vi.findViewById(R.id.viewSeparator);
+		if(hashdata.containsKey("separator") && "true".equalsIgnoreCase(hashdata.get("separator"))) {
+			viewSeparator.setVisibility(View.VISIBLE);
+		} else {
+			viewSeparator.setVisibility(View.GONE);
+		}
 
 		TextView txtTitle = (TextView)vi.findViewById(R.id.txtTitle);
         ImageView img = (ImageView) vi.findViewById(R.id.img);
