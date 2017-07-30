@@ -35,7 +35,6 @@
             android:layout_marginLeft="16dp"
             android:layout_gravity="center_vertical"
             style="@style/regularText"
-            android:text="asdfasdfasdfasf"
              />
 
     </LinearLayout>
