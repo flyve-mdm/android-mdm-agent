@@ -33,7 +33,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -56,13 +55,11 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
-    private NavigationView mNavigationView;
     private FragmentManager mFragmentManager;
     private ListView lstDrawer;
     private ArrayList<HashMap<String, String>> arrDrawer;
     private HashMap<String, String> selectedItem;
     private TextView txtToolbarTitle;
-
 
     private Intent mServiceIntent;
     private static final int REQUEST_CODE_ENABLE_ADMIN = 1;
@@ -87,9 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
          // Setup the DrawerLayout and NavigationView
         txtToolbarTitle = (TextView) findViewById(R.id.txtToolbarTitle);
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        mNavigationView = (NavigationView) findViewById(R.id.shitstuff);
 
         lstDrawer = (ListView) findViewById(R.id.lstNV);
         lstDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
