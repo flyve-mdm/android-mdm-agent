@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.flyve.mdm.agent.data.DataStorage;
@@ -80,6 +81,14 @@ public class FragmentInformation extends Fragment {
 
         txtNameSupervisor = (TextView) v.findViewById(R.id.txtNameSupervisor);
         txtDescriptionSupervisor = (TextView) v.findViewById(R.id.txtDescriptionSupervisor);
+
+        RelativeLayout layoutUser = (RelativeLayout) v.findViewById(R.id.rlUser);
+        layoutUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openEditUser();
+            }
+        });
 
         txtOnline = (TextView) v.findViewById(R.id.txtOnline);
         imgOnline = (ImageView) v.findViewById(R.id.imgOnline);
@@ -164,6 +173,12 @@ public class FragmentInformation extends Fragment {
 
     private void openSplash() {
         Intent intent = new Intent(FragmentInformation.this.getActivity(), SplashActivity.class);
+        FragmentInformation.this.getActivity().startActivity(intent);
+        FragmentInformation.this.getActivity().finish();
+    }
+
+    private void openEditUser() {
+        Intent intent = new Intent(FragmentInformation.this.getActivity(), EditUserActivity.class);
         FragmentInformation.this.getActivity().startActivity(intent);
         FragmentInformation.this.getActivity().finish();
     }
