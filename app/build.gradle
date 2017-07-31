@@ -78,9 +78,3 @@ task('incrementVersionName') << {
     def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
     manifestFile.write(manifestContent)
 }
-tasks.whenTaskAdded { task ->
-    if (task.name == 'generateReleaseBuildConfig' || task.name == 'generateDebugBuildConfig') {
-        task.dependsOn 'increaseVersionCode'
-        task.dependsOn 'incrementVersionName'
-    }
-}
