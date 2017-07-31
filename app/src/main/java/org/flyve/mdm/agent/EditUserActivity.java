@@ -109,6 +109,9 @@ public class EditUserActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Storage information
+     */
     private void save() {
         cache.setUserFirstName( editName.getText().toString() );
         cache.setUserLastName( editLastName.getText().toString() );

@@ -101,6 +101,9 @@ public class EditSupervisorActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Storage information
+     */
     private void save() {
         cache.setSupervisorName( editName.getText().toString() );
         cache.setSupervisorEmail( editEmail.getText().toString() );
