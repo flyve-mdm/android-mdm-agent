@@ -82,6 +82,7 @@ public class EditUserActivity extends AppCompatActivity {
         editLastName.setText( cache.getUserLastName() );
 
         editEmail = (EditText) findViewById(R.id.editEmail);
+        editEmail.setEnabled(false);
         editEmail.setText( cache.getUserEmail() );
 
         editPhone = (EditText) findViewById(R.id.editPhone);
@@ -111,7 +112,6 @@ public class EditUserActivity extends AppCompatActivity {
     private void save() {
         cache.setUserFirstName( editName.getText().toString() );
         cache.setUserLastName( editLastName.getText().toString() );
-        cache.setUserEmail( editEmail.getText().toString() );
         cache.setUserPhone( editPhone.getText().toString() );
 
         Helpers.snack( EditUserActivity.this, "Saved" );
