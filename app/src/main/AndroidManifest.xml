@@ -47,6 +47,10 @@
             android:configChanges="orientation|screenSize">
         </activity>
         <activity
+            android:name=".EditUserActivity"
+            android:configChanges="orientation|screenSize">
+        </activity>
+        <activity
             android:name=".StartEnrollmentActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
