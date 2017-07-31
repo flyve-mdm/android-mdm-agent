@@ -27,15 +27,17 @@
 
 package org.flyve.mdm.agent;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -57,7 +59,6 @@ import java.net.URLEncoder;
  */
 public class EnrollmentActivity extends AppCompatActivity {
 
-    private ProgressBar pb;
     private ProgressBar pbx509;
     private DataStorage cache;
     private EnrollmentHelper enroll;
@@ -68,6 +69,9 @@ public class EnrollmentActivity extends AppCompatActivity {
     private EditText editEmail;
     private EditText editPhone;
     private ImageView btnRegister;
+    private boolean sendEnrollment = false;
+
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +91,6 @@ public class EnrollmentActivity extends AppCompatActivity {
             });
         }
 
-        pb = (ProgressBar) findViewById(R.id.progressBar);
         pbx509 = (ProgressBar) findViewById(R.id.progressBarX509);
 
         enroll = new EnrollmentHelper(EnrollmentActivity.this);
@@ -112,7 +115,6 @@ public class EnrollmentActivity extends AppCompatActivity {
         });
 
         btnRegister = (ImageView) findViewById(R.id.btnSave);
-        btnRegister.setEnabled(false);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,13 +128,15 @@ public class EnrollmentActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String data) {
                 pbx509.setVisibility(View.GONE);
-                btnRegister.setEnabled(true);
+                if(sendEnrollment) {
+                    pd.dismiss();
+                    validateForm();
+                }
             }
 
             @Override
             public void onError(String error) {
                 pbx509.setVisibility(View.GONE);
-                btnRegister.setEnabled(false);
                 showError("Error creating certificate X509");
             }
         });
@@ -145,16 +149,22 @@ public class EnrollmentActivity extends AppCompatActivity {
         StringBuilder errMsg = new StringBuilder("Please fix the following errors and try again.\n\n");
         txtMessage.setText("");
 
+        // Hide keyboard
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
         // waiting for cert x509
         if(pbx509.getVisibility() == View.VISIBLE) {
+            sendEnrollment = true;
+            pd = ProgressDialog.show(EnrollmentActivity.this, "", getResources().getString(R.string.creating_certified_x509));
             return;
         }
 
         //Validate and Save
         boolean allowSave = true;
-
-        // block fields on form
-        enableFields(false);
 
         String email = editEmail.getText().toString().trim();
         String name = editName.getText().toString().trim();
@@ -181,24 +191,7 @@ public class EnrollmentActivity extends AppCompatActivity {
         if(allowSave){
             sendEnroll();
         } else {
-            enableFields(true);
             txtMessage.setText(errMsg);
-        }
-    }
-
-    /**
-     * Enable / Disable field
-     * @param enable Boolean
-     */
-    private void enableFields(Boolean enable) {
-        LinearLayout ll = (LinearLayout) findViewById(R.id.userData);
-        for (View view : ll.getTouchables()){
-            if (view instanceof EditText){
-                EditText editText = (EditText) view;
-                editText.setEnabled(enable);
-                editText.setFocusable(enable);
-                editText.setFocusableInTouchMode(enable);
-            }
         }
     }
 
@@ -207,7 +200,7 @@ public class EnrollmentActivity extends AppCompatActivity {
      */
     private void sendEnroll() {
         try {
-            pb.setVisibility(View.VISIBLE);
+            pd = ProgressDialog.show(EnrollmentActivity.this, "", getResources().getString(R.string.loading));
 
             AndroidCryptoProvider csr = new AndroidCryptoProvider(EnrollmentActivity.this.getBaseContext());
             String requestCSR = "";
@@ -230,7 +223,7 @@ public class EnrollmentActivity extends AppCompatActivity {
             enroll.enrollment(payload, new EnrollmentHelper.enrollCallBack() {
                 @Override
                 public void onSuccess(String data) {
-                    pb.setVisibility(View.GONE);
+                    pd.dismiss();
 
                     // Store user information
                     cache.setUserFirstName(editName.getText().toString());
@@ -243,14 +236,12 @@ public class EnrollmentActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(String error) {
-                    pb.setVisibility(View.GONE);
-                    enableFields(true);
+                    pd.dismiss();
                     showError(error);
                 }
             });
         } catch (Exception ex) {
-            pb.setVisibility(View.GONE);
-            enableFields(true);
+            pd.dismiss();
             showError( ex.getMessage() );
             FlyveLog.e( ex.getMessage() );
         }
