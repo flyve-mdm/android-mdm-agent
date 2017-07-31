@@ -102,7 +102,8 @@ public class EditSupervisorActivity extends AppCompatActivity {
     }
 
     private void save() {
-
+        cache.setSupervisorName( editName.getText().toString() );
+        cache.setSupervisorEmail( editEmail.getText().toString() );
         Helpers.snack( EditSupervisorActivity.this, "Saved" );
     }
 
