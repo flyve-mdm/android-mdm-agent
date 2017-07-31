@@ -107,11 +107,17 @@ public class FragmentInformation extends Fragment {
         return v;
     }
 
+    /**
+     * Load Supervisor information
+     */
     private void loadSupervisor() {
         txtNameSupervisor.setText(cache.getSupervisorName());
         txtDescriptionSupervisor.setText(cache.getSupervisorEmail());
     }
 
+    /**
+     * Load Client information
+     */
     private void loadClientInfo() {
         txtNameUser.setText(cache.getUserFirstName() + " " + cache.getUserLastName());
         txtEmailUser.setText(cache.getUserEmail());
@@ -143,6 +149,9 @@ public class FragmentInformation extends Fragment {
         }
     };
 
+    /**
+     * Instance that receive message from mqtt service
+     */
     private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -179,17 +188,26 @@ public class FragmentInformation extends Fragment {
         }
     };
 
+    /**
+     * Open Splash Activity
+     */
     private void openSplash() {
         Intent intent = new Intent(FragmentInformation.this.getActivity(), SplashActivity.class);
         FragmentInformation.this.getActivity().startActivity(intent);
         FragmentInformation.this.getActivity().finish();
     }
 
+    /**
+     * Open Edit User Activity
+     */
     private void openEditUser() {
         Intent intent = new Intent(FragmentInformation.this.getActivity(), EditUserActivity.class);
         FragmentInformation.this.getActivity().startActivity(intent);
     }
 
+    /**
+     * Open Supervisor Activity
+     */
     private void openSupervisorUser() {
         Intent intent = new Intent(FragmentInformation.this.getActivity(), EditSupervisorActivity.class);
         FragmentInformation.this.getActivity().startActivity(intent);
