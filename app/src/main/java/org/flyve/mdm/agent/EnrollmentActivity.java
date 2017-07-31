@@ -231,6 +231,10 @@ public class EnrollmentActivity extends AppCompatActivity {
                     cache.setUserEmail(editEmail.getText().toString());
                     cache.setUserPhone(editPhone.getText().toString());
 
+                    // Store supervisor information
+                    cache.setSupervisorName("Teclib Spain SL");
+                    cache.setSupervisorEmail("sales@teclib.com");
+
                     openMain();
                 }
 

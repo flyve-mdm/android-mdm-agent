@@ -55,6 +55,20 @@ public class DataStorage {
 		}
 	}
 
+	public String getSupervisorName() {
+		return getData("supervisorName");
+	}
+	public void setSupervisorName(String name) {
+		setData("supervisorName", name);
+	}
+
+	public String getSupervisorEmail() {
+		return getData("supervisorEmail");
+	}
+	public void setSupervisorEmail(String email) {
+		setData("supervisorEmail", email);
+	}
+
 	public String getUserFirstName() {
 		return getData("userFirstName");
 	}
