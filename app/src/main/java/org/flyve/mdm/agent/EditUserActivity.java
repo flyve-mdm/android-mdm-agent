@@ -69,6 +69,9 @@ public class EditUserActivity extends AppCompatActivity {
             });
         }
 
+        TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle.setText( "" );
+
         txtMessage = (TextView) findViewById(R.id.txtMessage);
 
         editName = (EditText) findViewById(R.id.editName);

@@ -180,6 +180,5 @@ public class FragmentInformation extends Fragment {
     private void openEditUser() {
         Intent intent = new Intent(FragmentInformation.this.getActivity(), EditUserActivity.class);
         FragmentInformation.this.getActivity().startActivity(intent);
-        FragmentInformation.this.getActivity().finish();
     }
 }
