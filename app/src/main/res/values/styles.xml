@@ -24,6 +24,12 @@
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
 
+    <style name="LineSeparator">
+        <item name="android:background">@drawable/separator_line</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+
     <style name="regularText">
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">15sp</item>
