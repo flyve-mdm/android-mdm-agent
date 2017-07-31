@@ -172,6 +172,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Help
         if (item.get("id").equals("4")) {
+            FragmentHelp f = new FragmentHelp();
+            fragmentTransaction.replace(R.id.containerView, f).commit();
             return;
         }
     }
