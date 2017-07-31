@@ -82,6 +82,14 @@ public class FragmentInformation extends Fragment {
         txtNameSupervisor = (TextView) v.findViewById(R.id.txtNameSupervisor);
         txtDescriptionSupervisor = (TextView) v.findViewById(R.id.txtDescriptionSupervisor);
 
+        RelativeLayout layoutSupervisor = (RelativeLayout) v.findViewById(R.id.rlSupervisor);
+        layoutSupervisor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSupervisorUser();
+            }
+        });
+
         RelativeLayout layoutUser = (RelativeLayout) v.findViewById(R.id.rlUser);
         layoutUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +187,11 @@ public class FragmentInformation extends Fragment {
 
     private void openEditUser() {
         Intent intent = new Intent(FragmentInformation.this.getActivity(), EditUserActivity.class);
+        FragmentInformation.this.getActivity().startActivity(intent);
+    }
+
+    private void openSupervisorUser() {
+        Intent intent = new Intent(FragmentInformation.this.getActivity(), EditSupervisorActivity.class);
         FragmentInformation.this.getActivity().startActivity(intent);
     }
 }
