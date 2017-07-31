@@ -108,8 +108,8 @@ public class FragmentInformation extends Fragment {
     }
 
     private void loadSupervisor() {
-        txtNameSupervisor.setText("Teclib Spain SL");
-        txtDescriptionSupervisor.setText("sales@teclib.com");
+        txtNameSupervisor.setText(cache.getSupervisorName());
+        txtDescriptionSupervisor.setText(cache.getSupervisorEmail());
     }
 
     private void loadClientInfo() {
