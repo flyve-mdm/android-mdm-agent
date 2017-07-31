@@ -169,6 +169,11 @@ public class MainActivity extends AppCompatActivity {
         if (item.get("id").equals("3")) {
             return;
         }
+
+        // Help
+        if (item.get("id").equals("4")) {
+            return;
+        }
     }
 
     private void loadListDrawer() {
@@ -200,6 +205,13 @@ public class MainActivity extends AppCompatActivity {
         map.put("name", getResources().getString(R.string.drawer_feedback));
         map.put("img", "ic_feedback");
         map.put("separator", "true");
+        arrDrawer.add(map);
+
+        // Help
+        map = new HashMap<>();
+        map.put("id", "4");
+        map.put("name", getResources().getString(R.string.drawer_help));
+        map.put("img", "ic_help");
         arrDrawer.add(map);
 
         try {
