@@ -1,5 +1,4 @@
 language: android
-dist: precise
 android:
   components:
   - build-tools-$BUILD_TOOL
@@ -9,6 +8,7 @@ before_script:
   - echo TELEGRAM_WEBHOOKS=$TELEGRAM_WEBHOOKS > .env
   - echo GIT_REPO=$TRAVIS_REPO_SLUG >> .env
   - echo GIT_BRANCH=$TRAVIS_BRANCH >> .env
+  - gradle --version
 install:
   - rvm install 2.3.4
   - gem install fastlane
