@@ -74,11 +74,11 @@ public class EditSupervisorActivity extends AppCompatActivity {
         txtMessage = (TextView) findViewById(R.id.txtMessage);
 
         editName = (EditText) findViewById(R.id.editName);
-        editName.setText( cache.getUserFirstName() );
+        editName.setText( cache.getSupervisorName() );
 
         editEmail = (EditText) findViewById(R.id.editEmail);
         editEmail.setEnabled(false);
-        editEmail.setText( cache.getUserEmail() );
+        editEmail.setText( cache.getSupervisorEmail() );
         editEmail.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
