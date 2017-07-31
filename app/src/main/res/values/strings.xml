@@ -19,6 +19,10 @@
     <string name="device_supervised_by_title">DEVICE SUPERVISED BY</string>
     <string name="user_information_title">USER INFORMATION</string>
 
+    <string name="supervisor_information">Supervisor information</string>
+    <string name="supervisor_name">Organization</string>
+    <string name="supervisor_email">Email</string>
+
     <string name="drawer_information">Information</string>
     <string name="drawer_log">Log</string>
     <string name="drawer_feedback">Feedback</string>
