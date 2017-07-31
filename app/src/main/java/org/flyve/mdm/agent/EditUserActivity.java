@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.data.DataStorage;
-import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.InputValidatorHelper;
 
 /*
@@ -48,13 +48,14 @@ public class EditUserActivity extends AppCompatActivity {
     private EditText editLastName;
     private EditText editEmail;
     private EditText editPhone;
+    private DataStorage cache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enrollment);
 
-        DataStorage cache = new DataStorage(EditUserActivity.this);
+        cache = new DataStorage(EditUserActivity.this);
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -108,7 +109,12 @@ public class EditUserActivity extends AppCompatActivity {
     }
 
     private void save() {
-        FlyveLog.d("Save information");
+        cache.setUserFirstName( editName.getText().toString() );
+        cache.setUserLastName( editLastName.getText().toString() );
+        cache.setUserEmail( editEmail.getText().toString() );
+        cache.setUserPhone( editPhone.getText().toString() );
+
+        Helpers.snack( EditUserActivity.this, "Saved" );
     }
 
     /**
