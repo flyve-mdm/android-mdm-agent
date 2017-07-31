@@ -8,7 +8,6 @@ before_script:
   - echo TELEGRAM_WEBHOOKS=$TELEGRAM_WEBHOOKS > .env
   - echo GIT_REPO=$TRAVIS_REPO_SLUG >> .env
   - echo GIT_BRANCH=$TRAVIS_BRANCH >> .env
-  - gradle --version
 install:
   - rvm install 2.3.4
   - gem install fastlane
@@ -18,7 +17,7 @@ notifications:
   webhooks: https://fathomless-fjord-24024.herokuapp.com/notify
 env:
   global:
-  - BUILD_TOOL=26.0.0
+  - BUILD_TOOL=25.0.3
   - ANDROID_API=22
   - secure: AWlCndEn3Aiax6wEMp392YiWyzm1cy+olTvEx176ww6FWXc2Gwu1znauXcGkcCEB1d9V0t/6osCSKHtZssEtddPvBkavMEw45W45PylTVJFE3MBQmTUy9wLIKQll2+1LhrVPkjMBMKHFprqgkuDZ78cs2B3EgGvejYt+8D298PseaEmkSo4zWD0AwAwVJ8jJQC2A48lN1Hx9bewRE4pTW9KGh87z4GmcX/pADzkAEIZ2SrZj5msH6ghGoFUlKCE5VpjO8iKrI6i4PTbxBylJQsbpNvwnbuWN0sQaeMjQqjAokx6UpzX9YNyJPt2rWvJnwjUF3Up0TltU1avKr14Jv3pgizFi95/W10AEj9l0VuQxdWXOgIeuCUmbvmD2BQw6IX3v4qzoorw888W53bJGYy9W1XNbUJ+5KOzVkbZjr3AtjuX8v0PSmP/gqDkWTIEeUTP9btHYajAfIpPunedHe+g7mZ9APTfyagAof8+AKlVNzt/5l40Fn+iQ9dNijwDDKOVzzSHFUplv8YKbCibN4Rsq2S2liWZqPJYyE2xRPtn5XlqDM2w/Q6c4fMbknXjfAtwXKhDBH8u9mMX9z8tjWxVQpUUtOx4FRREwC1V5ongvzsyzEMLDZrwnChvDZz6P4OgegSxwhZhAnwk3Rmd9W8sa9mrkBcvnFHheC01rCZY=
   - secure: aoYBJcY4gpvfeTtPmu5j5Vr+rt+7RnsZeWwl0z5iSIty+M8eSA+p3B4JHOQoa90aW+eLZIgA/XsnJUm5+wOGjlz8BGPdAyVVlMBF4qrAJKj12fP+M1n+AK59N+wuN+m9EraXlCf2JE2Ty1ioaxWhWlauFI4Ihw5hY6QKHot4frtNq7VCiJ9kQWSFMrIrSJTMAQNZG7wfweGE/CUKSHWeJ/L/YFvbLRjgYEcqkG4lDWYt/noDCElu1OFLKeFiPYVhxrDMf4H+HsxPQYu61H8JKtOFaiusjcEpvvOAlCX1kzM0wsMK4U846nUw+WENd36WMN6YcWiP5CtHt0vOloyhOLVHWELSUbLfw+TRtT+HeOZ/jxueQ8BfLygj6Pb5TClKLK3ENlrqTlafT4PMgMZNsLQ3e0++UJoyRKrHleFArzqR+Bk6MN3xibZAkiy1DPidjQPLvmuSmoACvcjnr5h4etli9bdUo50UagbRORSxCLItn3JePHwlNpLvKEld5zSK0C5lPexCAbLFVAhVw1pO5CCHJeX4FuSbdIhiOsY8GmZg6ZAccgW91tDyhtijwmf1NxiGr+0PcHCHl92jg+U4RgQTmInveOnStRYpEOO+MJaInfuQkxrY+PJbnlR37/QtjOX6lsVcv0c7nfp0BA0IWK4sg3DEdI2D8jBbVgwYS58=
