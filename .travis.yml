@@ -1,5 +1,4 @@
 language: android
-dist: precise
 android:
   components:
   - build-tools-$BUILD_TOOL
