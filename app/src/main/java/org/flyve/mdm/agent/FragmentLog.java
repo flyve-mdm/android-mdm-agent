@@ -29,6 +29,7 @@ package org.flyve.mdm.agent;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ import java.util.HashMap;
 /**
  * This is the main activity of the app
  */
-public class FragmentLog extends Fragment {
+public class FragmentLog extends Fragment  {
 
     private TextView txtMessage;
     private TextView txtTitle;
@@ -66,6 +67,15 @@ public class FragmentLog extends Fragment {
         txtTitle = (TextView) v.findViewById(R.id.txtTitle);
 
         arr_data = new ArrayList<>();
+
+        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(false);
+                loadLogFile();
+            }
+        });
 
         ListView lst = (ListView) v.findViewById(R.id.lst);
         mAdapter = new LogAdapter(FragmentLog.this.getActivity(), arr_data);

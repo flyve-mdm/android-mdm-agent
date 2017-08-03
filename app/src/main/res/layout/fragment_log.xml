@@ -16,15 +16,23 @@
         android:layout_margin="20dp"
         />
 
-    <ListView
-        android:id="@+id/lst"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
         android:layout_below="@+id/txtTitle"
         android:layout_above="@+id/txtMessage"
         >
-    </ListView>
+
+        <ListView
+            android:id="@+id/lst"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            >
+        </ListView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/txtMessage"
