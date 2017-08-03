@@ -26,8 +26,11 @@
 package org.flyve.mdm.agent.utils;
 
 import android.os.Environment;
+
 import com.orhanobut.logger.Logger;
+
 import org.flyve.mdm.agent.MDMAgent;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -168,9 +171,10 @@ public class FlyveLog {
                 }
             }
 
+            FileWriter fw = null;
             try {
                 //BufferedWriter for performance, true to set append to file flag
-                FileWriter fw = new FileWriter(logFile, true);
+                fw = new FileWriter(logFile, true);
                 BufferedWriter buf = new BufferedWriter(fw);
 
                 buf.write(message);
@@ -178,9 +182,58 @@ public class FlyveLog {
                 buf.flush();
                 buf.close();
                 fw.close();
-            } catch (IOException ex) {
+            }
+            catch (IOException ex) {
                 e(ex.getMessage());
             }
+            finally {
+                if(fw!=null) {
+                    try {
+                        fw.close();
+                    } catch(Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                    }
+                }
+            }
+        }
+    }
+
+    public static void clearLog(String filename) {
+        String state = Environment.getExternalStorageState();
+
+        File dir = new File("/sdcard/FlyveMDM");
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            if (!dir.exists()) {
+                FlyveLog.d("Dir created ", "Dir created ");
+                dir.mkdirs();
+            }
+
+            File logFile = new File("/sdcard/FlyveMDM/" + filename);
+
+            FileWriter fw = null;
+            try {
+                //BufferedWriter for performance, true to set append to file flag
+                fw = new FileWriter(logFile, false);
+                BufferedWriter buf = new BufferedWriter(fw);
+
+                buf.write("");
+                buf.flush();
+                buf.close();
+                fw.close();
+            }
+            catch (IOException ex) {
+                e(ex.getMessage());
+            }
+            finally {
+                if(fw!=null) {
+                    try {
+                        fw.close();
+                    } catch(Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                    }
+                }
+            }
+
         }
     }
 
