@@ -27,13 +27,8 @@
 
 package org.flyve.mdm.agent;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +39,11 @@ import org.flyve.mdm.agent.adapter.LogAdapter;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 
@@ -57,7 +56,6 @@ public class FragmentLog extends Fragment {
     private TextView txtTitle;
     private ArrayList<HashMap<String, String>> arr_data;
     private LogAdapter mAdapter;
-    private IntentFilter mIntent;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,86 +65,62 @@ public class FragmentLog extends Fragment {
         txtMessage = (TextView) v.findViewById(R.id.txtMessage);
         txtTitle = (TextView) v.findViewById(R.id.txtTitle);
 
-        arr_data = new ArrayList<HashMap<String, String>>();
+        arr_data = new ArrayList<>();
 
         ListView lst = (ListView) v.findViewById(R.id.lst);
         mAdapter = new LogAdapter(FragmentLog.this.getActivity(), arr_data);
         lst.setAdapter(mAdapter);
 
+        loadLogFile();
+
         return v;
     }
 
-    @Override
-    public void onPause() {
-        // unregister the broadcast
-        if(mIntent != null) {
-            getActivity().unregisterReceiver(broadcastReceivedMessage);
-            getActivity().unregisterReceiver(broadcastReceivedLog);
-            getActivity().unregisterReceiver(broadcastServiceStatus);
-            mIntent = null;
-        }
-        super.onPause();
-    }
+    private void addLine(String line) {
+        try {
+            HashMap<String, String> map = new HashMap<>();
 
-    @Override
-    public void onResume() {
-        // register the broadcast
-        super.onResume();
-        LocalBroadcastManager.getInstance(FragmentLog.this.getActivity()).registerReceiver(broadcastReceivedMessage, new IntentFilter("flyve.mqtt.msg"));
-        LocalBroadcastManager.getInstance(FragmentLog.this.getActivity()).registerReceiver(broadcastReceivedLog, new IntentFilter("flyve.mqtt.log"));
-        LocalBroadcastManager.getInstance(FragmentLog.this.getActivity()).registerReceiver(broadcastServiceStatus, new IntentFilter("flyve.mqtt.status"));
+            JSONObject json = new JSONObject(line);
+
+            map.put("type", json.getString("type"));
+            map.put("title", json.getString("title"));
+            map.put("body", json.getString("body"));
+            map.put("date", json.getString("date"));
+
+            arr_data.add(map);
+            Collections.reverse(arr_data);
+            mAdapter.notifyDataSetChanged();
+        } catch (Exception ex) {
+            FlyveLog.d("ERROR" + ex.getMessage());
+        }
     }
 
     /**
-     * broadcastReceiverMessage instance that receive all the message from MQTTService
+     * Load Log from files
      */
-    private BroadcastReceiver broadcastReceivedLog = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String msg = intent.getStringExtra("message");
-
-            try {
-                HashMap<String, String> map = new HashMap<String, String>();
-
-                JSONObject json = new JSONObject(msg);
-
-                map.put("type", json.getString("type"));
-                map.put("title", json.getString("title"));
-                map.put("body", json.getString("body"));
-                map.put("date", json.getString("date"));
-
-                arr_data.add(map);
-                mAdapter.notifyDataSetChanged();
-            } catch (Exception ex) {
-                FlyveLog.d("ERROR" + ex.getMessage());
+    private void loadLogFile() {
+        File file = new File("/sdcard/FlyveMDM/" + FlyveLog.FILE_NAME_LOG);
+        FileReader fr = null;
+        try {
+            fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                addLine(line);
+            }
+            br.close();
+        }
+        catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+        finally {
+            if(fr!=null) {
+                try {
+                    fr.close();
+                }catch (Exception ex) {
+                    FlyveLog.e(ex.getMessage());
+                }
             }
         }
-    };
-
-    /**
-     * broadcastReceiverMessage instance that receive all the message from MQTTService
-     */
-    private BroadcastReceiver broadcastReceivedMessage = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-        String msg = intent.getStringExtra("message");
-        txtTitle.setText(msg);
-        }
-    };
-
-    /**
-     * broadcastServiceStatus instance that receive service status from MQTTService
-     */
-    private BroadcastReceiver broadcastServiceStatus = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-        String msg = intent.getStringExtra("message");
-
-        if(Boolean.parseBoolean(msg)) {
-            txtMessage.setText("Online");
-        } else {
-            txtMessage.setText("Offline");
-        }
-        }
-    };
+    }
 }
