@@ -28,6 +28,7 @@
 package org.flyve.mdm.agent;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -66,6 +67,16 @@ public class FragmentLog extends Fragment  {
         txtMessage = (TextView) v.findViewById(R.id.txtMessage);
         txtTitle = (TextView) v.findViewById(R.id.txtTitle);
 
+        FloatingActionButton btnDelete = (FloatingActionButton) v.findViewById(R.id.btnDelete);
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FlyveLog.clearLog( FlyveLog.FILE_NAME_LOG );
+                arr_data.clear();
+                loadLogFile();
+            }
+        });
+
         arr_data = new ArrayList<>();
 
         final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
@@ -73,6 +84,7 @@ public class FragmentLog extends Fragment  {
             @Override
             public void onRefresh() {
                 swipeLayout.setRefreshing(false);
+                arr_data.clear();
                 loadLogFile();
             }
         });
@@ -99,7 +111,6 @@ public class FragmentLog extends Fragment  {
 
             arr_data.add(map);
             Collections.reverse(arr_data);
-            mAdapter.notifyDataSetChanged();
         } catch (Exception ex) {
             FlyveLog.d("ERROR" + ex.getMessage());
         }
@@ -119,6 +130,13 @@ public class FragmentLog extends Fragment  {
                 addLine(line);
             }
             br.close();
+            mAdapter.notifyDataSetChanged();
+
+            if(arr_data.isEmpty()) {
+                txtMessage.setText("Without Log to show");
+            } else {
+                txtMessage.setText("");
+            }
         }
         catch (Exception ex) {
             FlyveLog.e(ex.getMessage());

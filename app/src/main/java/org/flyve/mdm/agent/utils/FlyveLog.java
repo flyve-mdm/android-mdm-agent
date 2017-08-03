@@ -35,6 +35,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * This is a Log wrapper
@@ -214,12 +215,9 @@ public class FlyveLog {
             try {
                 //BufferedWriter for performance, true to set append to file flag
                 fw = new FileWriter(logFile, false);
-                BufferedWriter buf = new BufferedWriter(fw);
-
-                buf.write("");
-                buf.flush();
-                buf.close();
-                fw.close();
+                PrintWriter pwOb = new PrintWriter(fw, false);
+                pwOb.flush();
+                pwOb.close();
             }
             catch (IOException ex) {
                 e(ex.getMessage());
