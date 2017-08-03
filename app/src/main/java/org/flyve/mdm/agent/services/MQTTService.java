@@ -118,10 +118,10 @@ public class MQTTService extends Service implements MqttCallback {
             return;
         }
 
-        broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Broker", mBroker));
-        broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Port", mPort));
-        broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "User", mUser));
-        broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Topic", mTopic));
+        broadcastReceivedLog(Helpers.broadCastMessage("MQTT Login", "Broker", mBroker));
+        broadcastReceivedLog(Helpers.broadCastMessage("MQTT Login", "Port", mPort));
+        broadcastReceivedLog(Helpers.broadCastMessage("MQTT Login", "User", mUser));
+        broadcastReceivedLog(Helpers.broadCastMessage("MQTT Login", "Topic", mTopic));
 
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), "ssl://" + mBroker + ":" + mPort, clientId);
@@ -229,7 +229,7 @@ public class MQTTService extends Service implements MqttCallback {
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
         FlyveLog.d(TAG, "deliveryComplete: " + token.toString());
-        broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Response id", String.valueOf(token.getMessageId())));
+        broadcastReceivedLog(Helpers.broadCastMessage("MQTT Delivery", "Response id", String.valueOf(token.getMessageId())));
     }
 
     /**
@@ -244,6 +244,8 @@ public class MQTTService extends Service implements MqttCallback {
         FlyveLog.d(TAG, "Message " + new String(message.getPayload()));
 
         String messageBody = new String(message.getPayload());
+
+        broadcastReceivedLog(Helpers.broadCastMessage("MQTT Message", "Body", messageBody));
 
         try {
             JSONObject jsonObj = new JSONObject(messageBody);

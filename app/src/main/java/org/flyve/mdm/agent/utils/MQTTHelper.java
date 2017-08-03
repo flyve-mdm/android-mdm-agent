@@ -132,6 +132,8 @@ public class MQTTHelper {
 
                 // send inventory to MQTT
                 sendInventory(data);
+
+                broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Inventory", "Inventory Send"));
             }
 
             @Override
@@ -155,7 +157,7 @@ public class MQTTHelper {
             boolean lock = jsonLock.getBoolean("locknow");
             if(lock) {
                 mdm.lockDevice();
-                broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Lock", "Device Lock"));
+                broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Lock", "Device Lock"));
             }
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on lockDevice", ex.getMessage()));
@@ -176,7 +178,7 @@ public class MQTTHelper {
                 JSONObject jsonCamera = jsonCameras.getJSONObject(0);
                 boolean disable = jsonCamera.getBoolean("disableCamera");
                 mdm.disableCamera(disable);
-                broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Camera", "Disable " + disable));
+                broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Camera", "Disable " + disable));
             }
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on disableCamera", ex.getMessage()));
@@ -199,19 +201,19 @@ public class MQTTHelper {
                 if (jsonConnectivity.has("disableWifi")) {
                     boolean disable = jsonConnectivity.getBoolean("disableWifi");
                     cache.setConnectivityWifiDisable(disable);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Wifi", "Disable " + disable));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Wifi", "Disable " + disable));
                 }
 
                 if (jsonConnectivity.has("disableBluetooth")) {
                     boolean disable = jsonConnectivity.getBoolean("disableBluetooth");
                     cache.setConnectivityBluetoothDisable(disable);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Bluetooth", "Disable " + disable));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Bluetooth", "Disable " + disable));
                 }
 
                 if (jsonConnectivity.has("disableGPS")) {
                     boolean disable = jsonConnectivity.getBoolean("disableGPS");
                     cache.setConnectivityGPSDisable(disable);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "GPS", "Disable " + disable));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "GPS", "Disable " + disable));
                 }
             }
         } catch (Exception ex) {
@@ -261,7 +263,7 @@ public class MQTTHelper {
                 JSONObject jsonApp = checkInstall.getJSONObject(i);
                 if(appInfo.isInstall(jsonApp.getString("removeApp"))) {
                     FilesHelper.removeApk(this.context, jsonApp.getString("removeApp"));
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Remove app", "Package: " + jsonApp.getString("removeApp")));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Remove app", "Package: " + jsonApp.getString("removeApp")));
                 }
             }
 
@@ -280,7 +282,7 @@ public class MQTTHelper {
 
                 if(!appInfo.isInstall(packageNamelist,versionCode)){
                     filesHelper.downloadApk(packageNamelist, versionCode, sessionToken);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Download app", "Package: " + packageNamelist));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Download app", "Package: " + packageNamelist));
                 }
             }
         }
@@ -323,7 +325,7 @@ public class MQTTHelper {
 
             if(jsonFile.has("removeFile")){
                 filesHelper.removeFile(jsonFile.getString("removeFile"));
-                broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Remove file", jsonFile.getString("removeFile")));
+                broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Remove file", jsonFile.getString("removeFile")));
             }
 
             if(jsonFile.has("deployFile")) {
@@ -332,7 +334,7 @@ public class MQTTHelper {
 
                 if (filesHelper.downloadFile(filePath, fileId, sessionToken)) {
                     FlyveLog.v("File was stored on: " + filePath);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Download file", filePath));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Download file", filePath));
                 }
             }
         }
@@ -349,7 +351,7 @@ public class MQTTHelper {
             if(jsonEncryption.has("storageEncryption")) {
                 FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.context);
                 mdm.storageEncryptionDevice(enable);
-                broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Encryption", "Encryption: " + enable));
+                broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Encryption", "Encryption: " + enable));
             }
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
@@ -384,13 +386,13 @@ public class MQTTHelper {
                 if (jsonPolicie.has("passwordMinLength")) {
                     int length = jsonPolicie.getInt("passwordMinLength");
                     mdm.setPasswordLength(length);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinLength", String.valueOf(length)));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "passwordMinLength", String.valueOf(length)));
                 }
 
                 if (jsonPolicie.has("passwordQuality")) {
                     String quality = jsonPolicie.getString("passwordQuality");
                     mdm.setPasswordQuality(quality);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinLength", quality));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "passwordMinLength", quality));
                 }
 
                 if (jsonPolicie.has("passwordEnabled")) {
@@ -400,49 +402,49 @@ public class MQTTHelper {
                 if (jsonPolicie.has("passwordMinLetters")) {
                     int min = jsonPolicie.getInt("passwordMinLetters");
                     mdm.setPasswordMinumimLetters(min);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinLetters", String.valueOf(min)));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "passwordMinLetters", String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has("passwordMinLowerCase")) {
                     int min = jsonPolicie.getInt("passwordMinLowerCase");
                     mdm.setPasswordMinimumLowerCase(min);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinLowerCase", String.valueOf(min)));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "passwordMinLowerCase", String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has("passwordMinNonLetter")) {
                     int min = jsonPolicie.getInt("passwordMinNonLetter");
                     mdm.setPasswordMinimumNonLetter(min);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinNonLetter", String.valueOf(min)));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "passwordMinNonLetter", String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has("passwordMinNumeric")) {
                     int min = jsonPolicie.getInt("passwordMinNumeric");
                     mdm.setPasswordMinimumNumeric(min);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinNumeric", String.valueOf(min)));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "passwordMinNumeric", String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has("passwordMinSymbols")) {
                     int min = jsonPolicie.getInt("passwordMinSymbols");
                     mdm.setPasswordMinimumSymbols(min);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinSymbols", String.valueOf(min)));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "passwordMinSymbols", String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has("passwordMinUpperCase")) {
                     int min = jsonPolicie.getInt("passwordMinUpperCase");
                     mdm.setPasswordMinimumUpperCase(min);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "passwordMinUpperCase", String.valueOf(min)));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "passwordMinUpperCase", String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has("MaximumFailedPasswordsForWipe")) {
                     int max = jsonPolicie.getInt("MaximumFailedPasswordsForWipe");
                     mdm.setMaximumFailedPasswordsForWipe(max);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "MaximumFailedPasswordsForWipe", String.valueOf(max)));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "MaximumFailedPasswordsForWipe", String.valueOf(max)));
                 }
 
                 if (jsonPolicie.has("MaximumTimeToLock")) {
                     int time = jsonPolicie.getInt("MaximumTimeToLock");
                     mdm.setMaximumTimeToLock(time);
-                    broadcastReceivedLog(Helpers.broadCastMessage("MDM", "MaximumFailedPasswordsForWipe", String.valueOf(time)));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "MaximumFailedPasswordsForWipe", String.valueOf(time)));
                 }
 
             }// end for
@@ -459,7 +461,7 @@ public class MQTTHelper {
         try {
             FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.context);
             mdm.wipe();
-            broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Wipe", "Wipe success"));
+            broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Wipe", "Wipe success"));
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
             broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on wipe", ex.getMessage()));
@@ -478,7 +480,7 @@ public class MQTTHelper {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             client.publish(topic, message);
-            broadcastReceivedLog(Helpers.broadCastMessage("MDM", "Unenroll", "Unenroll success"));
+            broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Unenroll", "Unenroll success"));
 
             // clear cache
             cache.clearSettings();
@@ -509,7 +511,7 @@ public class MQTTHelper {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             IMqttDeliveryToken token = client.publish(topic, message);
-            broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "PING", "ID: " + token.getMessageId()));
+            broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "PING", "ID: " + token.getMessageId()));
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
             broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on sendKeepAlive", ex.getMessage()));
@@ -529,7 +531,7 @@ public class MQTTHelper {
             IMqttDeliveryToken token = client.publish(topic, message);
 
             // send broadcast
-            broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Send Inventory", "ID: " + token.getMessageId()));
+            broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Send Inventory", "ID: " + token.getMessageId()));
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
 
@@ -550,7 +552,7 @@ public class MQTTHelper {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             IMqttDeliveryToken token = client.publish(topic, message);
-            broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Send Status Version", "ID: " + token.getMessageId()));
+            broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Send Status Version", "ID: " + token.getMessageId()));
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
             broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on sendStatusVersion", ex.getMessage()));
@@ -569,7 +571,7 @@ public class MQTTHelper {
             encodedPayload = payload.getBytes("UTF-8");
             MqttMessage message = new MqttMessage(encodedPayload);
             IMqttDeliveryToken token = client.publish(topic, message);
-            broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Send Online Status", "ID: " + token.getMessageId()));
+            broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Send Online Status", "ID: " + token.getMessageId()));
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on sendStatusVersion", ex.getMessage()));
         }
@@ -610,7 +612,7 @@ public class MQTTHelper {
                     IMqttDeliveryToken token = client.publish(topic, message);
 
                     // send broadcast
-                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Send Geolocation", "ID: " + token.getMessageId()));
+                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT Send", "Send Geolocation", "ID: " + token.getMessageId()));
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
 
