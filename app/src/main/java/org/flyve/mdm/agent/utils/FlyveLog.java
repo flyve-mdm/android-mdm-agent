@@ -25,14 +25,21 @@
  */
 package org.flyve.mdm.agent.utils;
 
+import android.os.Environment;
 import com.orhanobut.logger.Logger;
 import org.flyve.mdm.agent.MDMAgent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * This is a Log wrapper
  */
-
 public class FlyveLog {
+
+    private static final String FILE_NAME_FEEDBACK = "FlyveMDMFeedback.txt";
+    public static final String FILE_NAME_LOG = "FlyveMDMLog.txt";
 
     /**
      * private constructor to prevent instances of this class
@@ -56,7 +63,7 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void d(String message, Object... args) {
-        if(MDMAgent.getIsDebuggable()){
+        if(MDMAgent.getIsDebuggable() && message != null){
             // do something for a debug build
             Logger.d(message,args);
         }
@@ -68,7 +75,7 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void v(String message, Object... args) {
-        if(MDMAgent.getIsDebuggable()){
+        if(MDMAgent.getIsDebuggable() && message != null){
             Logger.v(message, args);
         }
     }
@@ -79,7 +86,7 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void i(String message, Object... args) {
-        if(MDMAgent.getIsDebuggable()) {
+        if(MDMAgent.getIsDebuggable() && message != null) {
             Logger.i(message, args);
         }
     }
@@ -91,8 +98,9 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void e(Throwable throwable, String message, Object... args) {
-        if(MDMAgent.getIsDebuggable()) {
+        if(MDMAgent.getIsDebuggable() && message != null) {
             Logger.e(throwable, message, args);
+            f(message, FILE_NAME_FEEDBACK);
         }
     }
 
@@ -102,8 +110,9 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void e(String message, Object... args) {
-        if(MDMAgent.getIsDebuggable()) {
+        if(MDMAgent.getIsDebuggable() && message != null) {
             Logger.e(message, args);
+            f(message, FILE_NAME_FEEDBACK);
         }
     }
 
@@ -113,7 +122,7 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void wtf(String message, Object... args) {
-        if(MDMAgent.getIsDebuggable()) {
+        if(MDMAgent.getIsDebuggable() && message != null) {
             Logger.wtf(message, args);
         }
     }
@@ -123,7 +132,7 @@ public class FlyveLog {
      * @param json String the json to show
      */
     public static void json(String json) {
-        if(MDMAgent.getIsDebuggable()) {
+        if(MDMAgent.getIsDebuggable() && json != null) {
             Logger.json(json);
         }
     }
@@ -133,8 +142,45 @@ public class FlyveLog {
      * @param xml String the xml to show
      */
     public static void xml(String xml) {
-        if(MDMAgent.getIsDebuggable()) {
+        if(MDMAgent.getIsDebuggable() && xml != null) {
             Logger.xml(xml);
+        }
+    }
+
+    public static void f(String message, String filename) {
+        String state = Environment.getExternalStorageState();
+
+        File dir = new File("/sdcard/FlyveMDM");
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            if(!dir.exists()) {
+                FlyveLog.d("Dir created ", "Dir created ");
+                dir.mkdirs();
+            }
+
+            File logFile = new File("/sdcard/FlyveMDM/" + filename);
+
+            if (!logFile.exists())  {
+                try  {
+                    FlyveLog.d("File created ", "File created ");
+                    logFile.createNewFile();
+                } catch (IOException ex) {
+                    FlyveLog.e(ex.getMessage());
+                }
+            }
+
+            try {
+                //BufferedWriter for performance, true to set append to file flag
+                FileWriter fw = new FileWriter(logFile, true);
+                BufferedWriter buf = new BufferedWriter(fw);
+
+                buf.write(message);
+                buf.newLine();
+                buf.flush();
+                buf.close();
+                fw.close();
+            } catch (IOException ex) {
+                e(ex.getMessage());
+            }
         }
     }
 

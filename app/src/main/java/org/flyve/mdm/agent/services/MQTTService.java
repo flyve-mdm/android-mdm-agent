@@ -206,7 +206,7 @@ public class MQTTService extends Service implements MqttCallback {
                 }
             }
         };
-        timer.schedule(timerTask, 0, 6000); // retry every 600000 10 minutes
+        timer.schedule(timerTask, 0, 6000); // retry every 6 seconds
     }
 
     /**
@@ -356,8 +356,8 @@ public class MQTTService extends Service implements MqttCallback {
      * @param message String to send
      */
     public void broadcastReceivedLog(String message) {
-        //send broadcast
-        Helpers.sendBroadcast(message, Helpers.BROADCAST_LOG, getApplicationContext());
+        // write log file
+        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);
     }
 
     /**
