@@ -55,6 +55,13 @@ public class DataStorage {
 		}
 	}
 
+	public String getManifestVersion() {
+		return getData("manifestVersion");
+	}
+	public void setManifestVersion(String version) {
+		setData("manifestVersion", version);
+	}
+
 	public String getSupervisorName() {
 		return getData("supervisorName");
 	}
