@@ -101,6 +101,7 @@ public class FragmentInformation extends Fragment {
         txtOnline = (TextView) v.findViewById(R.id.txtOnline);
         imgOnline = (ImageView) v.findViewById(R.id.imgOnline);
 
+        statusMQTT(false); //offline by default
         loadSupervisor();
         loadClientInfo();
 
@@ -123,6 +124,16 @@ public class FragmentInformation extends Fragment {
         txtEmailUser.setText(cache.getUserEmail());
     }
 
+    private void statusMQTT(Boolean bval) {
+        if (bval) {
+            txtOnline.setText(getResources().getString(R.string.online));
+            imgOnline.setImageResource(R.drawable.ic_online);
+        } else {
+            txtOnline.setText(getResources().getString(R.string.offline));
+            imgOnline.setImageResource(R.drawable.ic_offline);
+        }
+    }
+
     /**
      * broadcastServiceStatus instance that receive service status from MQTTService
      */
@@ -135,13 +146,7 @@ public class FragmentInformation extends Fragment {
             // status ONLINE / OFFLINE
             if("flyve.mqtt.status".equalsIgnoreCase(action)) {
                 try {
-                    if (Boolean.parseBoolean(msg)) {
-                        txtOnline.setText(getResources().getString(R.string.online));
-                        imgOnline.setImageResource(R.drawable.ic_online);
-                    } else {
-                        txtOnline.setText(getResources().getString(R.string.offline));
-                        imgOnline.setImageResource(R.drawable.ic_offline);
-                    }
+                    statusMQTT(Boolean.parseBoolean(msg));
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
                 }
