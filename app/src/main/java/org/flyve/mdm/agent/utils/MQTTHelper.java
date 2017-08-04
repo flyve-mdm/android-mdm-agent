@@ -78,6 +78,19 @@ public class MQTTHelper {
     }
 
     /**
+     * Add Manifest version of backend to local storage
+     * @param json JSONObject with this format {"version":"2.0.0-dev"}
+     */
+    public void addManifest(JSONObject json) {
+        try {
+            String version = json.getString("version");
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+
+    }
+
+    /**
      * Subscribe to the topic
      * When come from MQTT has a format like this {"subscribe":[{"topic":"/2/fleet/22"}]}
      */
