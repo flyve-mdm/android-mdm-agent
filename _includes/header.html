@@ -1,0 +1,45 @@
+<header class="site-header" role="banner">
+
+  <div class="wrapper">
+  
+    <nav class="navbar navbar-default">
+    
+        <div class="navbar-global theme-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <img src="{{ site.github.owner_gravatar_url }}" class="logo">
+                    <a href="{{ "/" | relative_url }}">{{ site.github.repository_name | escape | replace: "-", " "}}</a>
+                </div>
+            </div>
+        </div>
+    
+    
+        <div class="navbar-local color-accent theme-dark">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                        <span class="sr-only">Toggle navigation</span>
+                        <i class="glyph glyph-hamburger"></i>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                    <ul class="nav navbar-nav">
+
+                        <li>
+                            <a class="color-type-secondary" href="{{ site.baseurl }}/">Home</a>
+                        </li>
+
+                        <li>
+                            <a class="color-type-secondary" href="news">News</a>
+                        </li>
+
+                        <li>
+                            <a class="color-type-secondary" href="products">Products</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            
+  </div>
+</header>

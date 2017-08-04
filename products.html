@@ -1,0 +1,18 @@
+---
+layout: page
+---
+
+<h1>More products of Flyve-MDM</h1>
+<ul class="list-products">
+    {% for repositorie in site.github.public_repositories %}
+        {% if repositorie.name != "flyve-mdm.github.io" %}
+            {% capture url_repositorie %}https://{{repositorie.owner.login}}.github.io/{{repositorie.name}}/{% endcapture %}
+            <li>
+                <a href="{{ url_repositorie }}">{{ repositorie.name | escape }}</a>
+            </li>
+            <p>
+                {{ repositorie.description }}
+            </p>
+        {% endif %}
+    {% endfor %}
+</ul>

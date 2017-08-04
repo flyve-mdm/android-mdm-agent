@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {% include head.html %}
+
+  <body>
+
+    {% include header.html %}
+
+    <main class="container" aria-label="Content">
+      <div class="wrapper">
+        {{ content }}
+      </div>
+    </main>
+
+  </body>
+  <script src="{{ "/js/bootstrap.min.js" | relative_url }}"></script>
+  <script src="{{ "/js/app.js" | relative_url }}"></script>
+</html>
