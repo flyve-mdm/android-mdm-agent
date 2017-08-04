@@ -39,13 +39,9 @@ import android.widget.TextView;
 
 import org.flyve.mdm.agent.adapter.LogAdapter;
 import org.flyve.mdm.agent.utils.FlyveLog;
-import org.json.JSONObject;
+import org.flyve.mdm.agent.utils.LogFileReader;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 
@@ -57,7 +53,7 @@ public class FragmentLog extends Fragment  {
     private TextView txtMessage;
     private TextView txtTitle;
     private ArrayList<HashMap<String, String>> arr_data;
-    private LogAdapter mAdapter;
+    private ListView lst;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,66 +85,34 @@ public class FragmentLog extends Fragment  {
             }
         });
 
-        ListView lst = (ListView) v.findViewById(R.id.lst);
-        mAdapter = new LogAdapter(FragmentLog.this.getActivity(), arr_data);
-        lst.setAdapter(mAdapter);
-
+        lst = (ListView) v.findViewById(R.id.lst);
         loadLogFile();
 
         return v;
-    }
-
-    private void addLine(String line) {
-        try {
-            HashMap<String, String> map = new HashMap<>();
-
-            JSONObject json = new JSONObject(line);
-
-            map.put("type", json.getString("type"));
-            map.put("title", json.getString("title"));
-            map.put("body", json.getString("body"));
-            map.put("date", json.getString("date"));
-
-            arr_data.add(map);
-            Collections.reverse(arr_data);
-        } catch (Exception ex) {
-            FlyveLog.d("ERROR" + ex.getMessage());
-        }
     }
 
     /**
      * Load Log from files
      */
     private void loadLogFile() {
-        File file = new File("/sdcard/FlyveMDM/" + FlyveLog.FILE_NAME_LOG);
-        FileReader fr = null;
-        try {
-            fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
-            String line;
-            while ((line = br.readLine()) != null) {
-                addLine(line);
-            }
-            br.close();
-            mAdapter.notifyDataSetChanged();
-
-            if(arr_data.isEmpty()) {
-                txtMessage.setText("Without Log to show");
-            } else {
-                txtMessage.setText("");
-            }
-        }
-        catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-        }
-        finally {
-            if(fr!=null) {
-                try {
-                    fr.close();
-                }catch (Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+        LogFileReader.loadLog(FlyveLog.FILE_NAME_LOG, new LogFileReader.LogFileCallback() {
+            @Override
+            public void onSuccess(ArrayList<HashMap<String, String>> data) {
+                arr_data = data;
+                if(arr_data.isEmpty()) {
+                    txtMessage.setText("Without data to show");
+                } else {
+                    txtMessage.setText("");
                 }
+
+                LogAdapter mAdapter = new LogAdapter(FragmentLog.this.getActivity(), arr_data);
+                lst.setAdapter(mAdapter);
             }
-        }
+
+            @Override
+            public void onError(String error) {
+                txtMessage.setText("We can't show the log data please delete and try again");
+            }
+        });
     }
 }
