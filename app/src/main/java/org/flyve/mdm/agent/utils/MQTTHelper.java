@@ -84,10 +84,11 @@ public class MQTTHelper {
     public void addManifest(JSONObject json) {
         try {
             String version = json.getString("version");
+            cache.setManifestVersion(version);
+            broadcastReceivedLog(Helpers.broadCastMessage("MQTT Message", "Manifest Version", json.toString()));
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
-
     }
 
     /**
@@ -124,7 +125,7 @@ public class MQTTHelper {
                     // The subscription could not be performed, maybe the user was not
                     // authorized to subscribe on the specified topic e.g. using wildcards
                     FlyveLog.e("ERROR: " + exception.getCause().getMessage());
-                    broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on suscribe", exception.getMessage()));
+                    broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on subscribe", exception.getMessage()));
                 }
             });
         } catch (MqttException ex) {
