@@ -85,7 +85,6 @@ public class MQTTHelper {
         try {
             String version = json.getString("version");
             cache.setManifestVersion(version);
-            broadcastReceivedLog(Helpers.broadCastMessage("MQTT Message", "Manifest Version", json.toString()));
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
