@@ -31,6 +31,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -47,8 +48,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.MQTTHelper;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import java.util.Timer;
-import java.util.TimerTask;
+
 import javax.net.ssl.SSLContext;
 
 /**
@@ -135,6 +135,7 @@ public class MQTTService extends Service implements MqttCallback {
             options.setCleanSession(true);
             options.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1);
             options.setConnectionTimeout(0);
+            options.setAutomaticReconnect(true);
 
             // SSL
             SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
@@ -188,25 +189,6 @@ public class MQTTService extends Service implements MqttCallback {
             broadcastMessage(Helpers.broadCastMessage("ERROR", "0", getApplicationContext().getResources().getString(R.string.MQTT_ERROR_CONNECTION)));
             broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on connect", ex.getMessage()));
         }
-    }
-
-    private void reconnect() {
-        final Timer timer = new Timer();
-
-        TimerTask timerTask = new TimerTask() {
-            public void run() {
-                if(!connected) {
-                    connect();
-                    FlyveLog.d(TAG, "try to reconnect");
-                    broadcastReceivedLog(Helpers.broadCastMessage("MQTT", "Reconnect", "Try to reconnect"));
-                } else {
-                    FlyveLog.d(TAG, "Timer cancel");
-                    timer.cancel();
-                    timer.purge();
-                }
-            }
-        };
-        timer.schedule(timerTask, 0, 6000); // retry every 6 seconds
     }
 
     /**
@@ -379,9 +361,6 @@ public class MQTTService extends Service implements MqttCallback {
      */
     private void broadcastServiceStatus(boolean status) {
         //send broadcast
-        if(!status) {
-            reconnect();
-        }
         this.connected = status;
         Helpers.sendBroadcast(status, Helpers.BROADCAST_STATUS, getApplicationContext());
     }
