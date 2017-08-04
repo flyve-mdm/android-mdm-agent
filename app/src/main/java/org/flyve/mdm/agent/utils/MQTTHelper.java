@@ -95,7 +95,7 @@ public class MQTTHelper {
      * Subscribe to the topic
      * When come from MQTT has a format like this {"subscribe":[{"topic":"/2/fleet/22"}]}
      */
-    public void suscribe(String channel) {
+    public void suscribe(final String channel) {
         String[] topics = addTopic(channel);
 
         // if topic null
@@ -116,7 +116,7 @@ public class MQTTHelper {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // The message was published
                     FlyveLog.d("Subscribed");
-                    broadcastReceivedLog(Helpers.broadCastMessage("TOPIC", "Subscribed", "Success"));
+                    broadcastReceivedLog(Helpers.broadCastMessage("TOPIC", "Subscribed", channel));
                 }
 
                 @Override
