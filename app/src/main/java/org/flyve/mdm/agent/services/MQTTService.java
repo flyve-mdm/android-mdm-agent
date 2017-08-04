@@ -277,6 +277,17 @@ public class MQTTService extends Service implements MqttCallback {
                 }
             }
 
+            // Version Manifest
+            if(jsonObj.has("version")) {
+                mqttHelper.addManifest(jsonObj);
+            }
+
+            // Unenroll Request
+            if (jsonObj.has("unenroll")) {
+                mqttHelper.unenroll();
+                return;
+            }
+
             // Unenroll Request
             if (jsonObj.has("unenroll")) {
                 mqttHelper.unenroll();
