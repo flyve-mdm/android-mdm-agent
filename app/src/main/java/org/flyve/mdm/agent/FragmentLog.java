@@ -35,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.adapter.LogAdapter;
@@ -42,6 +43,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.LogFileReader;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 
@@ -54,6 +56,7 @@ public class FragmentLog extends Fragment  {
     private TextView txtTitle;
     private ArrayList<HashMap<String, String>> arr_data;
     private ListView lst;
+    private ProgressBar pb;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,6 +65,7 @@ public class FragmentLog extends Fragment  {
 
         txtMessage = (TextView) v.findViewById(R.id.txtMessage);
         txtTitle = (TextView) v.findViewById(R.id.txtTitle);
+        pb = (ProgressBar) v.findViewById(R.id.progressBar);
 
         FloatingActionButton btnDelete = (FloatingActionButton) v.findViewById(R.id.btnDelete);
         btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -95,9 +99,15 @@ public class FragmentLog extends Fragment  {
      * Load Log from files
      */
     private void loadLogFile() {
+        pb.setVisibility(View.VISIBLE);
+
         LogFileReader.loadLog(FlyveLog.FILE_NAME_LOG, new LogFileReader.LogFileCallback() {
             @Override
             public void onSuccess(ArrayList<HashMap<String, String>> data) {
+                pb.setVisibility(View.GONE);
+
+                // order data last first
+                Collections.reverse(data);
                 arr_data = data;
                 if(arr_data.isEmpty()) {
                     txtMessage.setText("Without data to show");
@@ -111,6 +121,7 @@ public class FragmentLog extends Fragment  {
 
             @Override
             public void onError(String error) {
+                pb.setVisibility(View.GONE);
                 txtMessage.setText("We can't show the log data please delete and try again");
             }
         });
