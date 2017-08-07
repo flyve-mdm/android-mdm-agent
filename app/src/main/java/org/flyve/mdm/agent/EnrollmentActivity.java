@@ -76,7 +76,7 @@ public class EnrollmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_enrollment);
+        setContentView(R.layout.activity_user_form);
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
