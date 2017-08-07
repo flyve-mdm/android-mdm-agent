@@ -1,6 +1,7 @@
 package org.flyve.mdm.agent;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -9,11 +10,15 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.InputValidatorHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -47,7 +52,18 @@ public class EditUserActivity extends AppCompatActivity {
     private EditText editName;
     private EditText editLastName;
     private EditText editPhone;
+    private List<EditText> editEmailList = new ArrayList<>();
+    private LinearLayout lnEmails;
     private DataStorage cache;
+
+    private EditText editEmail(int id) {
+        EditText editText = new EditText(this);
+        editText.setId(id);
+        editText.setHint(getResources().getString(R.string.email));
+        editText.setBackgroundColor(Color.WHITE);
+        editEmailList.add(editText);
+        return editText;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +110,9 @@ public class EditUserActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        lnEmails = (LinearLayout) findViewById(R.id.lnEmails);
+        lnEmails.addView( editEmail(0) );
 
         ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);
         btnRegister.setOnClickListener(new View.OnClickListener() {
