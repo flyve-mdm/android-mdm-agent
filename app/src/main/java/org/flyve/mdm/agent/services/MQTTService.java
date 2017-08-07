@@ -157,6 +157,9 @@ public class MQTTService extends Service implements MqttCallback {
 
                     mqttHelper = new MQTTHelper(getApplicationContext(), client);
 
+                    // send status online true to MQTT
+                    mqttHelper.sendOnlineStatus(true);
+
                     // main channel
                     String channel = mTopic + "/#";
                     FlyveLog.d(TAG, "MQTT Channel: " + channel);
@@ -205,7 +208,6 @@ public class MQTTService extends Service implements MqttCallback {
     @Override
     public void connectionLost(Throwable cause) {
         // send to backend that agent lost connection
-        mqttHelper.sendOnlineStatus(false);
         broadcastServiceStatus(false);
         broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error", cause.getMessage()));
         FlyveLog.d(TAG, "Connection fail " + cause.getMessage());
