@@ -119,6 +119,15 @@
                 style="@style/registerFormEditText"
                 />
 
+
+            <LinearLayout
+                android:id="@+id/lnEmails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+            </LinearLayout>
+
             <EditText
                 android:id="@+id/editEmail"
                 android:layout_width="match_parent"
