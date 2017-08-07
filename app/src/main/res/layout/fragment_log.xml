@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
-        android:src="@android:drawable/ic_menu_delete"
+        android:src="@drawable/ic_delete"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         app:backgroundTint="@color/red"
