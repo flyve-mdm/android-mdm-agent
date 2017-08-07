@@ -2,8 +2,10 @@ package org.flyve.mdm.agent;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -55,12 +57,30 @@ public class EditUserActivity extends AppCompatActivity {
     private List<EditText> editEmailList = new ArrayList<>();
     private LinearLayout lnEmails;
     private DataStorage cache;
+    private int emailIndex = 0;
 
     private EditText editEmail(int id) {
         EditText editText = new EditText(this);
         editText.setId(id);
         editText.setHint(getResources().getString(R.string.email));
+        editText.setTag("");
         editText.setBackgroundColor(Color.WHITE);
+        editText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        editText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(!"used".equalsIgnoreCase(v.getTag().toString())) {
+                    v.setTag("used");
+                    lnEmails.addView(editEmail(++emailIndex));
+                }
+                return false;
+            }
+        });
+
+        Drawable img = getResources().getDrawable( R.drawable.ic_mail );
+        img.setBounds( 0, 0, 60, 60 );
+        editText.setCompoundDrawables( img, null, null, null );
+
         editEmailList.add(editText);
         return editText;
     }
@@ -112,7 +132,7 @@ public class EditUserActivity extends AppCompatActivity {
         });
 
         lnEmails = (LinearLayout) findViewById(R.id.lnEmails);
-        lnEmails.addView( editEmail(0) );
+        lnEmails.addView( editEmail(emailIndex) );
 
         ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);
         btnRegister.setOnClickListener(new View.OnClickListener() {
