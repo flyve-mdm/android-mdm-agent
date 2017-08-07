@@ -46,7 +46,6 @@ public class EditUserActivity extends AppCompatActivity {
     private TextView txtMessage;
     private EditText editName;
     private EditText editLastName;
-    private EditText editEmail;
     private EditText editPhone;
     private DataStorage cache;
 
@@ -80,10 +79,6 @@ public class EditUserActivity extends AppCompatActivity {
 
         editLastName = (EditText) findViewById(R.id.editLastName);
         editLastName.setText( cache.getUserLastName() );
-
-        editEmail = (EditText) findViewById(R.id.editEmail);
-        editEmail.setEnabled(false);
-        editEmail.setText( cache.getUserEmail() );
 
         editPhone = (EditText) findViewById(R.id.editPhone);
         editPhone.setText( cache.getUserPhone() );
@@ -137,25 +132,18 @@ public class EditUserActivity extends AppCompatActivity {
         //Validate and Save
         boolean allowSave = true;
 
-        String email = editEmail.getText().toString().trim();
         String name = editName.getText().toString().trim();
         String lastName = editLastName.getText().toString().trim();
 
-        // Email
+        // Name
         if (InputValidatorHelper.isNullOrEmpty(name)) {
             errMsg.append("- First name should not be empty.\n");
             allowSave = false;
         }
 
-        // First name
+        // Last name
         if (InputValidatorHelper.isNullOrEmpty(lastName)) {
             errMsg.append("- Last name should not be empty.\n");
-            allowSave = false;
-        }
-
-        // Last name
-        if (email.equals("") || !InputValidatorHelper.isValidEmail(email)) {
-            errMsg.append("- Invalid email address.\n");
             allowSave = false;
         }
 
