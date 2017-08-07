@@ -53,7 +53,7 @@ public class EditUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_enrollment);
+        setContentView(R.layout.activity_user_form);
 
         cache = new DataStorage(EditUserActivity.this);
 
