@@ -7,12 +7,12 @@
         <div class="navbar-global theme-default">
             <div class="container">
                 <div class="navbar-header">
-                    <img src="{{ site.github.owner_gravatar_url }}" class="logo">
-                    <a href="{{ "/" | relative_url }}">{{ site.github.repository_name | escape | replace: "-", " "}}</a>
+                    <a href="{{ '/' | relative_url }}" class="navbar-brand">
+                        <img src="images/typo.png"   height="23" />
+                    </a>
                 </div>
             </div>
         </div>
-    
     
         <div class="navbar-local color-accent theme-dark">
             <div class="container">
@@ -26,12 +26,20 @@
                     <ul class="nav navbar-nav">
 
                         <li>
-                            <a class="color-type-secondary" href="{{ site.baseurl }}/">Home</a>
+                            <a class="color-type-secondary logo" href="{{ site.baseurl }}/">
+                                <img src="images/logo.svg">
+                            </a>
                         </li>
 
                         <li>
                             <a class="color-type-secondary" href="news">News</a>
                         </li>
+                        
+                        {% if site.github.wiki_url %}
+                            <li>
+                                <a class="color-type-secondary" href="{{ site.github.wiki_url }}">Developer Documentation</a>
+                            </li>
+                        {% endif %}
 
                         <li>
                             <a class="color-type-secondary" href="products">Products</a>
@@ -40,6 +48,19 @@
                     </ul>
                 </div>
             </div>
-            
-  </div>
+        
+        </div>
+            <div class="page-header">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-24 col-sm-16">
+                            {% assign name = site.github.project_title | replace: "flyve-mdm-", "" %}
+                            {% assign name = name | replace: "-", " " %}
+                            <h2><span class="color-type-primary">{{ name }}</span> <span class="color-type-secondary"> {{ site.github.latest_release.tag_name }} </span></h2>
+                            <div class="type-sh2">{{ site.github.project_tagline }}</div>
+                            <div class="m-t-xs m-b-md"><a href="{{ site.github.repository_url }}" class="btn btn-primary">{{ name }}</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 </header>

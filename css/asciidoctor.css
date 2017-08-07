@@ -1,0 +1,180 @@
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title {
+ line-height:1.45;
+ font-weight:normal;
+ margin-top:0;
+ margin-bottom:0.25em;
+}
+.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock {
+ margin-bottom:1.25em;
+}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title {
+ text-rendering:optimizeLegibility;
+ text-align:left;
+ font-family:"Lato",Arial,sans-serif;
+ font-size:1rem;
+ font-style:italic;
+}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child {
+ margin-bottom:0;
+}
+.literalblock pre,.listingblock pre:not(.highlight),.listingblock pre[class="highlight"],.listingblock pre[class^="highlight "],.listingblock pre.CodeRay,.listingblock pre.prettyprint {
+ background:#f7f7f8;
+}
+.sidebarblock .literalblock pre,.sidebarblock .listingblock pre:not(.highlight),.sidebarblock .listingblock pre[class="highlight"],.sidebarblock .listingblock pre[class^="highlight "],.sidebarblock .listingblock pre.CodeRay,.sidebarblock .listingblock pre.prettyprint {
+ background:#f2f1f1;
+}
+.literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class] {
+ -webkit-border-radius:4px;
+ border-radius:4px;
+ word-wrap:break-word;
+ padding:1em;
+ font-size:0.8125em;
+}
+.literalblock pre.nowrap,.literalblock pre[class].nowrap,.listingblock pre.nowrap,.listingblock pre[class].nowrap {
+ overflow-x:auto;
+ white-space:pre;
+ word-wrap:normal;
+}
+@media only screen and (min-width: 768px) {
+ .literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class] {
+  font-size:0.90625em;
+ }
+}
+@media only screen and (min-width: 1280px) {
+ .literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class] {
+  font-size:1em;
+ }
+}
+.literalblock.output pre {
+ color:#f7f7f8;
+ background-color:rgba(0,0,0,0.9);
+}
+.listingblock pre.highlightjs {
+ padding:0;
+}
+.listingblock pre.highlightjs>code {
+ padding:1em;
+ -webkit-border-radius:4px;
+ border-radius:4px;
+ overflow-x:auto;
+}
+.listingblock pre.highlight {
+ overflow-x:auto;
+}
+.listingblock pre.highlight>code {
+ white-space:pre;
+}
+.listingblock pre.prettyprint {
+ border-width:0;
+}
+.listingblock>.content {
+ position:relative;
+}
+.listingblock code[data-lang]:before {
+ display:none;
+ content:attr(data-lang);
+ position:absolute;
+ font-size:0.75em;
+ top:0.425rem;
+ right:0.5rem;
+ line-height:1;
+ text-transform:uppercase;
+ color:#999;
+}
+.listingblock:hover code[data-lang]:before {
+ display:block;
+}
+.listingblock.terminal pre .command:before {
+ content:attr(data-prompt);
+ padding-right:0.5em;
+ color:#999;
+}
+.listingblock.terminal pre .command:not([data-prompt]):before {
+ content:"$";
+}
+ol.arabic {
+ list-style-type:decimal;
+}
+ol.decimal {
+ list-style-type:decimal-leading-zero;
+}
+ol.loweralpha {
+ list-style-type:lower-alpha;
+}
+ol.upperalpha {
+ list-style-type:upper-alpha;
+}
+ol.lowerroman {
+ list-style-type:lower-roman;
+}
+ol.upperroman {
+ list-style-type:upper-roman;
+}
+ol.lowergreek {
+ list-style-type:lower-greek;
+}
+.hdlist>table,.colist>table {
+ border:0;
+ background:none;
+}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr {
+ background:none;
+}
+td.hdlist1,td.hdlist2 {
+ vertical-align:top;
+ padding:0 0.625em;
+}
+td.hdlist1 {
+ font-weight:bold;
+ padding-bottom:1.25em;
+}
+.literalblock+.colist,.listingblock+.colist {
+ margin-top:-0.5em;
+}
+.colist>table tr>td:first-of-type {
+ padding:0 0.75em;
+ line-height:1;
+}
+.colist>table tr>td:first-of-type img {
+ max-width:initial;
+}
+.colist>table tr>td:last-of-type {
+ padding:0.25em 0;
+}
+.conum[data-value] {
+ display:inline-block;
+ color:#fff!important;
+ background-color:rgba(0,0,0,0.8);
+ -webkit-border-radius:100px;
+ border-radius:100px;
+ text-align:center;
+ font-size:0.75em;
+ width:1.67em;
+ height:1.67em;
+ line-height:1.67em;
+ font-family:"Lato",Arial,sans-serif;
+ font-style:normal;
+ font-weight:bold;
+}
+.conum[data-value] * {
+ color:#fff!important;
+}
+.conum[data-value]+b {
+ display:none;
+}
+.conum[data-value]:after {
+ content:attr(data-value);
+}
+pre .conum[data-value] {
+ position:relative;
+ top:-0.125em;
+}
+b.conum * {
+ color:inherit!important;
+}
+.conum:not([data-value]):empty {
+ display:none;
+}
+.print-only {
+ display:none!important;
+}
