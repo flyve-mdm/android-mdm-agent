@@ -101,7 +101,7 @@ public class FragmentInformation extends Fragment {
         txtOnline = (TextView) v.findViewById(R.id.txtOnline);
         imgOnline = (ImageView) v.findViewById(R.id.imgOnline);
 
-        statusMQTT(false); //offline by default
+        statusMQTT(cache.getOnlineStatus());
         loadSupervisor();
         loadClientInfo();
 

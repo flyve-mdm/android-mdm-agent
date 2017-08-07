@@ -55,6 +55,13 @@ public class DataStorage {
 		}
 	}
 
+	public boolean getOnlineStatus() {
+		return Boolean.valueOf(getData("onlineStatus"));
+	}
+	public void setOnlineStatus(boolean status) {
+		setData("onlineStatus", String.valueOf(status));
+	}
+
 	public String getManifestVersion() {
 		return getData("manifestVersion");
 	}

@@ -371,6 +371,10 @@ public class MQTTService extends Service implements MqttCallback {
     private void broadcastServiceStatus(boolean status) {
         //send broadcast
         this.connected = status;
+
+        DataStorage cache = new DataStorage(this.getApplicationContext());
+        cache.setOnlineStatus(status);
+
         Helpers.sendBroadcast(status, Helpers.BROADCAST_STATUS, getApplicationContext());
     }
 }
