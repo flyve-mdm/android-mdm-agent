@@ -137,6 +137,10 @@ public class MQTTService extends Service implements MqttCallback {
             options.setConnectionTimeout(0);
             options.setAutomaticReconnect(true);
 
+            // Create a testament to send when MQTT connection is down
+            String will = "{ online: false }";
+            options.setWill("/Status/Online", will.getBytes(), 0, false);
+
             // SSL
             SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
             sslContext.init(null, null, null);
