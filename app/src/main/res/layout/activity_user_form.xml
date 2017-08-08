@@ -119,13 +119,32 @@
                 style="@style/registerFormEditText"
                 />
 
-            <LinearLayout
-                android:id="@+id/lnEmails"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="20dp"
                 >
-            </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/icEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_mail"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/lnEmails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toRightOf="@+id/icEmail"
+                    >
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <EditText
                 android:id="@+id/editPhone"
