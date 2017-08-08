@@ -8,7 +8,7 @@
             <div class="container">
                 <div class="navbar-header">
                     <a href="{{ '/' | relative_url }}" class="navbar-brand">
-                        <img src="images/typo.png"   height="23" />
+                        <img src="{{ 'images/typo.png' | relative_url }}"  height="23" />
                     </a>
                 </div>
             </div>
@@ -26,23 +26,23 @@
                     <ul class="nav navbar-nav">
 
                         <li>
-                            <a class="color-type-secondary logo" href="{{ site.baseurl }}/">
-                                <img src="images/logo.png">
+                            <a class="color-type-secondary logo" href="{{ '/' | relative_url }}">
+                                <img src="{{ 'images/logo.png' | relative_url }}">
                             </a>
                         </li>
 
                         <li>
-                            <a class="color-type-secondary" href="news">News</a>
+                            <a class="color-type-secondary" href="{{ '/news' | relative_url }}">News</a>
                         </li>
                         
                         {% if site.github.wiki_url %}
                             <li>
-                                <a class="color-type-secondary" href="{{ site.github.wiki_url }}">Developer Documentation</a>
+                                <a class="color-type-secondary" href="{{ site.github.wiki_url }}">Wiki</a>
                             </li>
                         {% endif %}
 
                         <li>
-                            <a class="color-type-secondary" href="products">Products</a>
+                            <a class="color-type-secondary" href="{{ '/products' | relative_url }}">Projects</a>
                         </li>
 
                     </ul>
@@ -50,17 +50,4 @@
             </div>
         
         </div>
-            <div class="page-header">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xs-24 col-sm-16">
-                            {% assign name = site.github.project_title | replace: "flyve-mdm-", "" %}
-                            {% assign name = name | replace: "-", " " %}
-                            <h2><span class="color-type-primary">{{ name }}</span> <span class="color-type-secondary"> {{ site.github.latest_release.tag_name }} </span></h2>
-                            <div class="type-sh2">{{ site.github.project_tagline }}</div>
-                            <div class="m-t-xs m-b-md"><a href="{{ site.github.repository_url }}" class="btn btn-primary">{{ name }} on Github</a></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 </header>

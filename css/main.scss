@@ -21,3 +21,20 @@ html {
         padding: 10px !important;
     }
 }
+.title-page {
+    font-size: 2.5rem;
+    padding: 10px 0;
+    font-family: "Segoe UI Light","Segoe UI","Selawik Light",Tahoma,Verdana,Arial,sans-serif;
+}
+
+.Page-not-found {
+    text-align: center;
+    h1 {
+        font-size: 12rem;
+    }
+    p {
+        display: inline-block;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+    }
+}
