@@ -4,9 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,8 +15,6 @@ import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.InputValidatorHelper;
 import org.flyve.mdm.agent.utils.MultipleEditText;
-
-import static org.flyve.mdm.agent.R.string.email;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -51,7 +47,6 @@ public class EditUserActivity extends AppCompatActivity {
     private TextView txtMessage;
     private EditText editName;
     private EditText editLastName;
-    private EditText editPhone;
     private DataStorage cache;
 
     @Override
@@ -85,27 +80,33 @@ public class EditUserActivity extends AppCompatActivity {
         editLastName = (EditText) findViewById(R.id.editLastName);
         editLastName.setText( cache.getUserLastName() );
 
-        editPhone = (EditText) findViewById(R.id.editPhone);
-        editPhone.setText( cache.getUserPhone() );
 
-        editPhone.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        editPhone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    validateForm();
-                    return true;
-                }
-                return false;
-            }
-        });
+//        editPhone.setImeOptions(EditorInfo.IME_ACTION_DONE);
+//        editPhone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                    validateForm();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
+        // Multiples Emails
         LinearLayout lnEmails = (LinearLayout) findViewById(R.id.lnEmails);
-        MultipleEditText editEmail = new MultipleEditText(this, lnEmails, getResources().getString(email));
+        MultipleEditText editEmail = new MultipleEditText(this, lnEmails, getResources().getString(R.string.email));
         editEmail.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        editEmail.setLimit(3);
         lnEmails.addView( editEmail.createEditText() );
 
+        // 3 Phones
+        LinearLayout lnPhone = (LinearLayout) findViewById(R.id.lnPhone);
+        MultipleEditText editPhone = new MultipleEditText(this, lnPhone, getResources().getString(R.string.phone));
+        editPhone.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        editPhone.setLimit(3);
+        lnPhone.addView( editPhone.createEditText() );
+
+        // Button Register
         ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +122,6 @@ public class EditUserActivity extends AppCompatActivity {
     private void save() {
         cache.setUserFirstName( editName.getText().toString() );
         cache.setUserLastName( editLastName.getText().toString() );
-        cache.setUserPhone( editPhone.getText().toString() );
 
         Helpers.snack( EditUserActivity.this, "Saved" );
     }

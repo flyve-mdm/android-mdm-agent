@@ -6,9 +6,11 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import org.flyve.mdm.agent.R;
 
@@ -44,6 +46,7 @@ import java.util.List;
 public class MultipleEditText {
 
     private List<EditText> editList = new ArrayList<>();
+    private List<Spinner> spinnList = new ArrayList<>();
     private int index = 0;
     private Context context;
     private ViewGroup container;
@@ -70,6 +73,10 @@ public class MultipleEditText {
         return editList;
     }
 
+    public List<Spinner> getSpinnList() {
+        return spinnList;
+    }
+
     public LinearLayout createEditText() {
         int id = ++index;
 
@@ -78,18 +85,29 @@ public class MultipleEditText {
             return new LinearLayout(context);
         }
 
-        // LinearLayout
-        final LinearLayout ll = new LinearLayout(context);
+        LinearLayout llv = new LinearLayout(context);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
                 (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(0,0,0,0);
-        ll.setLayoutParams(params);
+        llv.setLayoutParams(params);
+        llv.setOrientation(LinearLayout.VERTICAL);
 
+        // -------------------
+        // LinearLayout HORIZONTAL
+        // -------------------
+        final LinearLayout ll = new LinearLayout(context);
+        ll.setLayoutParams(params);
+        ll.setOrientation(LinearLayout.HORIZONTAL);
+
+        // -------------------
         // Email Layout
+        // -------------------
         LinearLayout.LayoutParams paramsEdit = new LinearLayout.LayoutParams
                 (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
 
+        // -------------------
         // Email EditText
+        // -------------------
         final EditText editText = new EditText(context);
         editText.setId(id);
         editText.setLayoutParams(paramsEdit);
@@ -106,10 +124,11 @@ public class MultipleEditText {
                 return false;
             }
         });
-
         ll.addView(editText);
 
+        // -------------------
         // Clear Button
+        // -------------------
         LinearLayout.LayoutParams paramsImg = new LinearLayout.LayoutParams
                 (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         paramsImg.gravity= Gravity.CENTER;
@@ -133,11 +152,32 @@ public class MultipleEditText {
         });
         ll.addView(imgDelete);
 
+        // -------------------
         // Add email to list
+        // -------------------
         editList.add(editText);
 
-        return ll;
+        llv.addView(ll);
 
+        // -----------------
+        // Add spinner
+        // -----------------
+        Spinner spinner = new Spinner(context);
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
+                R.array.email_array, android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        spinnList.add(spinner);
+
+        llv.addView(spinner);
+
+        return llv;
     }
 
 }
