@@ -3,7 +3,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
+  {% assign name = site.github.project_title | replace: "flyve-mdm-", "" %}   
+  {% assign name = name | replace: "-", " " %}   
+  <title>{{ name }}</title>
   <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
 
   <link rel="stylesheet" href="{{ "/css/main.css" | relative_url }}">
@@ -12,7 +14,8 @@
   <link rel="stylesheet" href="css/flyve-mdm.min.css" />
   <link rel="stylesheet" href="css/flyve-mdm-optional.min.css" />
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/coderay.css" />
+  <link rel="stylesheet" href="css/coderay.css" /> 
+  <link rel="icon" href="{{ "/images/favicon.png" | relative_url }}">
 
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ "/feed.xml" | relative_url }}">
