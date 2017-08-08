@@ -4,10 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -18,9 +16,9 @@ import android.widget.TextView;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.InputValidatorHelper;
+import org.flyve.mdm.agent.utils.MultipleEditText;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.flyve.mdm.agent.R.string.email;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -54,72 +52,7 @@ public class EditUserActivity extends AppCompatActivity {
     private EditText editName;
     private EditText editLastName;
     private EditText editPhone;
-    private List<EditText> editEmailList = new ArrayList<>();
-    private LinearLayout lnEmails;
     private DataStorage cache;
-    private int emailIndex = 0;
-
-    private LinearLayout editEmail(final int id) {
-
-        // LinearLayout
-        final LinearLayout ll = new LinearLayout(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
-                (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0,0,0,0);
-        ll.setLayoutParams(params);
-
-        // Email Layout
-        LinearLayout.LayoutParams paramsEdit = new LinearLayout.LayoutParams
-                (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
-
-        // Email EditText
-        final EditText editText = new EditText(this);
-        editText.setId(id);
-        editText.setLayoutParams(paramsEdit);
-        editText.setHint(getResources().getString(R.string.email));
-        editText.setTag("");
-        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        editText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(!"used".equalsIgnoreCase(v.getTag().toString())) {
-                    v.setTag("used");
-                    lnEmails.addView(editEmail(++emailIndex));
-                }
-                return false;
-            }
-        });
-
-        ll.addView(editText);
-
-        // Clear Button
-        LinearLayout.LayoutParams paramsImg = new LinearLayout.LayoutParams
-                (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        paramsImg.gravity=Gravity.CENTER;
-
-        ImageView imgDelete = new ImageView(this);
-        imgDelete.setId(id);
-        imgDelete.setLayoutParams(paramsImg);
-        imgDelete.setImageDrawable(getResources().getDrawable(R.drawable.ic_clear));
-        imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(editEmailList.size()>=2) {
-                    lnEmails.removeView(ll);
-                    editEmailList.remove(editText);
-                } else {
-                    editText.setText("");
-                    editText.setTag("");
-                }
-            }
-        });
-        ll.addView(imgDelete);
-
-        // Add email to list
-        editEmailList.add(editText);
-
-        return ll;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,8 +100,11 @@ public class EditUserActivity extends AppCompatActivity {
             }
         });
 
-        lnEmails = (LinearLayout) findViewById(R.id.lnEmails);
-        lnEmails.addView( editEmail(emailIndex) );
+        LinearLayout lnEmails = (LinearLayout) findViewById(R.id.lnEmails);
+        MultipleEditText editEmail = new MultipleEditText(this, lnEmails, getResources().getString(email));
+        editEmail.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        editEmail.setLimit(3);
+        lnEmails.addView( editEmail.createEditText() );
 
         ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);
         btnRegister.setOnClickListener(new View.OnClickListener() {
