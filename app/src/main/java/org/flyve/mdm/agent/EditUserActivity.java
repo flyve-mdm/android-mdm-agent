@@ -1,10 +1,10 @@
 package org.flyve.mdm.agent;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,16 +90,16 @@ public class EditUserActivity extends AppCompatActivity {
             }
         });
 
-        // Email Left Image
-        Drawable img = getResources().getDrawable(R.drawable.ic_mail);
-        img.setBounds(0, 0, 60, 60);
-        editText.setCompoundDrawables(img, null, null, null);
-
         ll.addView(editText);
 
         // Clear Button
+        LinearLayout.LayoutParams paramsImg = new LinearLayout.LayoutParams
+                (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        paramsImg.gravity=Gravity.CENTER;
+
         ImageView imgDelete = new ImageView(this);
         imgDelete.setId(id);
+        imgDelete.setLayoutParams(paramsImg);
         imgDelete.setImageDrawable(getResources().getDrawable(R.drawable.ic_clear));
         imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
