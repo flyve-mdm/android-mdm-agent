@@ -35,6 +35,12 @@
         <item>other</item>
     </string-array>
 
+    <string-array name="language_array">
+        <item>English</item>
+        <item>French</item>
+        <item>Spanish</item>
+    </string-array>
+
     <string-array name="phone_array">
         <item>mobile</item>
         <item>home</item>

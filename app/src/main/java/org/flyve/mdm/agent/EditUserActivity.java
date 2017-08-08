@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.data.DataStorage;
@@ -106,6 +108,19 @@ public class EditUserActivity extends AppCompatActivity {
         editPhone.setLimit(3);
         editPhone.setSpinnerArray(R.array.phone_array);
         lnPhones.addView( editPhone.createEditText() );
+
+        // Language
+        Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.language_array, android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        spinnerLanguage.setAdapter(adapter);
 
         // Button Register
         ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);
