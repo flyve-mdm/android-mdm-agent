@@ -80,7 +80,6 @@ public class EditUserActivity extends AppCompatActivity {
         editLastName = (EditText) findViewById(R.id.editLastName);
         editLastName.setText( cache.getUserLastName() );
 
-
 //        editPhone.setImeOptions(EditorInfo.IME_ACTION_DONE);
 //        editPhone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 //            @Override
@@ -97,14 +96,16 @@ public class EditUserActivity extends AppCompatActivity {
         LinearLayout lnEmails = (LinearLayout) findViewById(R.id.lnEmails);
         MultipleEditText editEmail = new MultipleEditText(this, lnEmails, getResources().getString(R.string.email));
         editEmail.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        editEmail.setSpinnerArray(R.array.email_array);
         lnEmails.addView( editEmail.createEditText() );
 
         // 3 Phones
-        LinearLayout lnPhone = (LinearLayout) findViewById(R.id.lnPhone);
-        MultipleEditText editPhone = new MultipleEditText(this, lnPhone, getResources().getString(R.string.phone));
-        editPhone.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        LinearLayout lnPhones = (LinearLayout) findViewById(R.id.lnPhones);
+        MultipleEditText editPhone = new MultipleEditText(this, lnPhones, getResources().getString(R.string.phone));
+        editPhone.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_PHONE);
         editPhone.setLimit(3);
-        lnPhone.addView( editPhone.createEditText() );
+        editPhone.setSpinnerArray(R.array.phone_array);
+        lnPhones.addView( editPhone.createEditText() );
 
         // Button Register
         ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);
