@@ -184,14 +184,14 @@
                     android:layout_marginTop="10dp"
                     />
 
-                <EditText
-                    android:id="@+id/editPhone"
+                <LinearLayout
+                    android:id="@+id/lnPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/phone"
-                    android:inputType="phone"
+                    android:orientation="vertical"
                     android:layout_toRightOf="@+id/icPhone"
-                    />
+                    >
+                </LinearLayout>
             </RelativeLayout>
 
             <TextView
@@ -203,6 +203,8 @@
                 android:layout_gravity="center_horizontal"
                 style="@style/regularText"
                 />
+
+
         </LinearLayout>
     </ScrollView>
 
