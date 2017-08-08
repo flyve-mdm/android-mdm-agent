@@ -115,7 +115,6 @@ public class EditUserActivity extends AppCompatActivity {
         });
         ll.addView(imgDelete);
 
-
         // Add email to list
         editEmailList.add(editText);
 
