@@ -1,13 +1,13 @@
 package org.flyve.mdm.agent;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -59,13 +59,26 @@ public class EditUserActivity extends AppCompatActivity {
     private DataStorage cache;
     private int emailIndex = 0;
 
-    private EditText editEmail(int id) {
-        EditText editText = new EditText(this);
+    private LinearLayout editEmail(final int id) {
+
+        // LinearLayout
+        final LinearLayout ll = new LinearLayout(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
+                (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0,0,0,0);
+        ll.setLayoutParams(params);
+
+        // Email Layout
+        LinearLayout.LayoutParams paramsEdit = new LinearLayout.LayoutParams
+                (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
+
+        // Email EditText
+        final EditText editText = new EditText(this);
         editText.setId(id);
+        editText.setLayoutParams(paramsEdit);
         editText.setHint(getResources().getString(R.string.email));
         editText.setTag("");
-        editText.setBackgroundColor(Color.WHITE);
-        editText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -77,12 +90,36 @@ public class EditUserActivity extends AppCompatActivity {
             }
         });
 
-        Drawable img = getResources().getDrawable( R.drawable.ic_mail );
-        img.setBounds( 0, 0, 60, 60 );
-        editText.setCompoundDrawables( img, null, null, null );
+        // Email Left Image
+        Drawable img = getResources().getDrawable(R.drawable.ic_mail);
+        img.setBounds(0, 0, 60, 60);
+        editText.setCompoundDrawables(img, null, null, null);
 
+        ll.addView(editText);
+
+        // Clear Button
+        ImageView imgDelete = new ImageView(this);
+        imgDelete.setId(id);
+        imgDelete.setImageDrawable(getResources().getDrawable(R.drawable.ic_clear));
+        imgDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(editEmailList.size()>=2) {
+                    lnEmails.removeView(ll);
+                    editEmailList.remove(editText);
+                } else {
+                    editText.setText("");
+                    editText.setTag("");
+                }
+            }
+        });
+        ll.addView(imgDelete);
+
+
+        // Add email to list
         editEmailList.add(editText);
-        return editText;
+
+        return ll;
     }
 
     @Override
