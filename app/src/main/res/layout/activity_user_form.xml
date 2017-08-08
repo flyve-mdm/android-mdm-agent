@@ -194,6 +194,33 @@
                 </LinearLayout>
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                >
+
+                <ImageView
+                    android:id="@+id/icAdministrative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_administrative"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    />
+
+                <EditText
+                    android:id="@+id/editAdministrative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:hint="@string/administrative_number"
+                    android:layout_toRightOf="@+id/icAdministrative"
+                    />
+
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/txtMessage"
                 android:layout_width="wrap_content"

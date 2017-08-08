@@ -11,6 +11,7 @@
     <string name="last_name">Last name</string>
     <string name="phone">Phone</string>
     <string name="email">Email</string>
+    <string name="administrative_number">Administrative number</string>
     <string name="online">Online</string>
     <string name="offline">Offline</string>
     <string name="snackbar_close">Dismiss</string>
