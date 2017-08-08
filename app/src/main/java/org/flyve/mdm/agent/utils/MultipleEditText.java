@@ -53,6 +53,7 @@ public class MultipleEditText {
     private String hint;
     private int inputType;
     private int limit = 0;
+    private ArrayAdapter<CharSequence> adapter = null;
 
     public MultipleEditText(Context context, ViewGroup container, String hint) {
         this.context = context;
@@ -69,6 +70,12 @@ public class MultipleEditText {
         inputType = type;
     }
 
+    public void setSpinnerArray(int array) {
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        adapter = ArrayAdapter.createFromResource(context,
+                array, android.R.layout.simple_spinner_item);
+    }
+
     public List<EditText> getEditList() {
         return editList;
     }
@@ -81,11 +88,11 @@ public class MultipleEditText {
         int id = ++index;
 
         // if limit is mayor of id return null
-        if(limit < id) {
+        if(limit < id && limit > 0) {
             return new LinearLayout(context);
         }
 
-        LinearLayout llv = new LinearLayout(context);
+        final LinearLayout llv = new LinearLayout(context);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
                 (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(0,0,0,0);
@@ -95,7 +102,7 @@ public class MultipleEditText {
         // -------------------
         // LinearLayout HORIZONTAL
         // -------------------
-        final LinearLayout ll = new LinearLayout(context);
+        LinearLayout ll = new LinearLayout(context);
         ll.setLayoutParams(params);
         ll.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -141,7 +148,7 @@ public class MultipleEditText {
             @Override
             public void onClick(View v) {
                 if(editList.size()>=2) {
-                    container.removeView(ll);
+                    container.removeView(llv);
                     editList.remove(editText);
                 } else {
                     editText.setText("");
@@ -162,20 +169,18 @@ public class MultipleEditText {
         // -----------------
         // Add spinner
         // -----------------
-        Spinner spinner = new Spinner(context);
+        if(adapter != null) {
+            Spinner spinner = new Spinner(context);
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
-                R.array.email_array, android.R.layout.simple_spinner_item);
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            spinner.setAdapter(adapter);
+            spinnList.add(spinner);
 
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-        spinnList.add(spinner);
-
-        llv.addView(spinner);
+            llv.addView(spinner);
+        }
 
         return llv;
     }

@@ -34,6 +34,17 @@
         <item>other</item>
     </string-array>
 
+    <string-array name="phone_array">
+        <item>mobile</item>
+        <item>home</item>
+        <item>work</item>
+        <item>main</item>
+        <item>home fax</item>
+        <item>work fax</item>
+        <item>pager</item>
+        <item>other</item>
+    </string-array>
+
     <string name="MQTT_ERROR_CONNECTION">Please check your connectivity</string>
     <string name="ERROR_INTERNAL">Internal Error, please try again</string>
     <string name="ERROR_DEEP_LINK">Problems with deep link</string>
