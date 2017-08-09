@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -13,7 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.core.user.UserController;
+import org.flyve.mdm.agent.core.user.UserModel;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.InputValidatorHelper;
 import org.flyve.mdm.agent.utils.MultipleEditText;
@@ -50,7 +53,7 @@ public class EditUserActivity extends AppCompatActivity {
     private EditText editName;
     private EditText editLastName;
     private EditText editAdministrative;
-    private DataStorage cache;
+    private UserModel user;
 
 
     @Override
@@ -58,7 +61,7 @@ public class EditUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_form);
 
-        cache = new DataStorage(EditUserActivity.this);
+        user = new UserController(EditUserActivity.this).getCache();
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -79,22 +82,10 @@ public class EditUserActivity extends AppCompatActivity {
         txtMessage = (TextView) findViewById(R.id.txtMessage);
 
         editName = (EditText) findViewById(R.id.editName);
-        editName.setText( cache.getUserFirstName() );
+        editName.setText( user.getFirstName() );
 
         editLastName = (EditText) findViewById(R.id.editLastName);
-        editLastName.setText( cache.getUserLastName() );
-
-//        editPhone.setImeOptions(EditorInfo.IME_ACTION_DONE);
-//        editPhone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                    validateForm();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
+        editLastName.setText( user.getLastName() );
 
         // Multiples Emails
         LinearLayout lnEmails = (LinearLayout) findViewById(R.id.lnEmails);
@@ -125,6 +116,17 @@ public class EditUserActivity extends AppCompatActivity {
         spinnerLanguage.setAdapter(adapter);
 
         editAdministrative = (EditText) findViewById(R.id.editAdministrative);
+        editAdministrative.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        editAdministrative.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    validateForm();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         // Button Register
         ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);
@@ -140,8 +142,13 @@ public class EditUserActivity extends AppCompatActivity {
      * Storage information
      */
     private void save() {
-        cache.setUserFirstName( editName.getText().toString() );
-        cache.setUserLastName( editLastName.getText().toString() );
+        UserModel userModel = new UserModel();
+
+        userModel.setFirstName( editName.getText().toString() );
+        userModel.setLastName( editLastName.getText().toString() );
+
+        UserController userController = new UserController(EditUserActivity.this);
+        userController.save(userModel);
 
         Helpers.snack( EditUserActivity.this, "Saved" );
     }

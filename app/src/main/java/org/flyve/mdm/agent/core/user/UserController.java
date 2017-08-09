@@ -2,8 +2,6 @@ package org.flyve.mdm.agent.core.user;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.utils.FlyveLog;
-
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
@@ -38,16 +36,9 @@ public class UserController {
         this.context = context;
     }
 
-    public void getUser(getUserCallback callback) {
-        try {
-            UserStorage cache = new UserStorage(context);
-            UserModel user = cache.getUser();
-
-            callback.onResponse( user );
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-            callback.onFailure("Fail retrieving user information");
-        }
+    public UserModel getCache() {
+        UserStorage cache = new UserStorage(context);
+        return cache.getUser();
     }
 
     public boolean save(UserModel user) {
@@ -58,10 +49,5 @@ public class UserController {
         } catch (Exception ex) {
             return false;
         }
-    }
-
-    public interface getUserCallback {
-        void onResponse(UserModel response);
-        void onFailure(String error);
     }
 }

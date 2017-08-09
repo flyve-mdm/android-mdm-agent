@@ -117,47 +117,17 @@ public class FragmentInformation extends Fragment {
      * Load Supervisor information
      */
     private void loadSupervisor() {
-        SupervisorController supervisor = new SupervisorController(FragmentInformation.this.getActivity());
-        supervisor.getSupervisor(new SupervisorController.getUserCallback() {
-            @Override
-            public void onResponse(SupervisorModel response) {
-                txtNameSupervisor.setText(response.getName());
-                txtDescriptionSupervisor.setText(response.getEmail());
-            }
-
-            @Override
-            public void onFailure(String error) {
-                Helpers.snack(FragmentInformation.this.getActivity(), error, "close", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                    }
-                });
-            }
-        });
-
+        SupervisorModel supervisor = new SupervisorController(FragmentInformation.this.getActivity()).getCache();
+        txtNameSupervisor.setText(supervisor.getName());
+        txtDescriptionSupervisor.setText(supervisor.getEmail());
     }
 
     /**
      * Load Client information
      */
     private void loadClientInfo() {
-        UserController user = new UserController(FragmentInformation.this.getActivity());
-        user.getUser(new UserController.getUserCallback() {
-            @Override
-            public void onResponse(UserModel response) {
-                txtNameUser.setText(response.getFirstName() + " " + response.getLastName());
-            }
-
-            @Override
-            public void onFailure(String error) {
-                Helpers.snack(FragmentInformation.this.getActivity(), error, "close", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                    }
-                });
-            }
-        });
-
+        UserModel user = new UserController(FragmentInformation.this.getActivity()).getCache();
+        txtNameUser.setText(user.getFirstName() + " " + user.getLastName());
     }
 
     private void statusMQTT(Boolean bval) {

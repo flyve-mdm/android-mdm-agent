@@ -2,8 +2,6 @@ package org.flyve.mdm.agent.core.supervisor;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.utils.FlyveLog;
-
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
@@ -38,16 +36,9 @@ public class SupervisorController {
         this.context = context;
     }
 
-    public void getSupervisor(getUserCallback callback) {
-        try {
-            SupervisorStorage cache = new SupervisorStorage(context);
-            SupervisorModel user = cache.getSupervisor();
-
-            callback.onResponse( user );
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-            callback.onFailure("Fail retrieving supervisor information");
-        }
+    public SupervisorModel getCache() {
+        SupervisorStorage cache = new SupervisorStorage(context);
+        return cache.getSupervisor();
     }
 
     public boolean save(SupervisorModel supervisor) {
@@ -58,10 +49,5 @@ public class SupervisorController {
         } catch (Exception ex) {
             return false;
         }
-    }
-
-    public interface getUserCallback {
-        void onResponse(SupervisorModel response);
-        void onFailure(String error);
     }
 }
