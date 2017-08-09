@@ -30,32 +30,30 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class User {
+public class UserController {
 
-    public User() {
+    private Context context;
+
+    public UserController(Context context) {
+        this.context = context;
     }
 
-    public void getUser(Context context, getUserCallback callback) {
+    public void getUser(getUserCallback callback) {
         try {
             UserStorage cache = new UserStorage(context);
-            UserData user = new UserData();
-            user.setFirstName(cache.getFirstName());
-            user.setLastName(cache.getLastName());
+            UserModel user = cache.getUser();
 
             callback.onResponse( user );
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-            callback.onFailure( ex.getMessage() );
+            callback.onFailure("Fail retrieving user information");
         }
     }
 
-    public boolean save(Context context, UserData user) {
+    public boolean save(UserModel user) {
         try {
             UserStorage cache = new UserStorage(context);
-
-            cache.setFirstName(user.getFirstName());
-            cache.setLastName(user.getLastName());
-
+            cache.setUser(user);
             return true;
         } catch (Exception ex) {
             return false;
@@ -63,7 +61,7 @@ public class User {
     }
 
     public interface getUserCallback {
-        void onResponse(UserData response);
+        void onResponse(UserModel response);
         void onFailure(String error);
     }
 }

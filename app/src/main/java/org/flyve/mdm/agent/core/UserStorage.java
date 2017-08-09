@@ -2,6 +2,8 @@ package org.flyve.mdm.agent.core;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+
 import org.flyve.mdm.agent.data.LocalStorage;
 
 /*
@@ -32,6 +34,8 @@ import org.flyve.mdm.agent.data.LocalStorage;
  */
 public class UserStorage extends LocalStorage {
 
+    private static final String USER_LOCAL_STORAGE = "userObject";
+
     /**
      * Constructor
      *
@@ -41,27 +45,20 @@ public class UserStorage extends LocalStorage {
         super(context);
     }
 
-    public String getFirstName() {
-        return getData("userFirstName");
-    }
-    public void setFirstName(String firstName) {
-        setData("userFirstName", firstName);
-    }
-
-    public String getLastName() {
-        return getData("userLastName");
-    }
-    public void setLastName(String lastName) {
-        setData("userLastName", lastName);
+    public UserModel getUser() {
+        String json = getData(USER_LOCAL_STORAGE);
+        Gson gson = new Gson();
+        return gson.fromJson(json, UserModel.class);
     }
 
-    public String getEmail() { return getData("userEmail");}
-    public void setEmail(String email) { setData("userEmail", email); }
+    public void setUser(UserModel user) {
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        setData(USER_LOCAL_STORAGE, json);
+    }
 
-    public String getPhone() {
-        return getData("userPhone");
+    public void deleteUser() {
+        deleteKeyCache(USER_LOCAL_STORAGE);
     }
-    public void setPhone(String userPhone) {
-        setData("userPhone", userPhone);
-    }
+
 }
