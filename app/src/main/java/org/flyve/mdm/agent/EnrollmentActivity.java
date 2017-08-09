@@ -32,11 +32,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.flyvemdm.inventory.categories.Hardware;
@@ -51,9 +57,14 @@ import org.flyve.mdm.agent.utils.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.InputValidatorHelper;
+import org.flyve.mdm.agent.utils.MultipleEditText;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.flyve.mdm.agent.R.string.email;
 
 
 /**
@@ -68,8 +79,11 @@ public class EnrollmentActivity extends AppCompatActivity {
     private TextView txtMessage;
     private EditText editName;
     private EditText editLastName;
-    private EditText editEmail;
-    private EditText editPhone;
+    private EditText editAdministrative;
+    private UserModel user;
+    private MultipleEditText editEmail;
+    private MultipleEditText editPhone;
+    private Spinner spinnerLanguage;
     private ImageView btnRegister;
     private boolean sendEnrollment = false;
 
@@ -79,6 +93,8 @@ public class EnrollmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_form);
+
+        user = new UserController(EnrollmentActivity.this).getCache();
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -102,7 +118,47 @@ public class EnrollmentActivity extends AppCompatActivity {
 
         editName = (EditText) findViewById(R.id.editName);
         editLastName = (EditText) findViewById(R.id.editLastName);
-        editEmail = (EditText) findViewById(R.id.editEmail);
+
+        // Multiples Emails
+        LinearLayout lnEmails = (LinearLayout) findViewById(R.id.lnEmails);
+        editEmail = new MultipleEditText(this, lnEmails, getResources().getString(email));
+        editEmail.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        editEmail.setSpinnerArray(R.array.email_array);
+        lnEmails.addView( editEmail.createEditText() );
+
+        // 3 Phones
+        LinearLayout lnPhones = (LinearLayout) findViewById(R.id.lnPhones);
+        editPhone = new MultipleEditText(this, lnPhones, getResources().getString(R.string.phone));
+        editPhone.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_PHONE);
+        editPhone.setLimit(3);
+        editPhone.setSpinnerArray(R.array.phone_array);
+        lnPhones.addView( editPhone.createEditText() );
+
+        // Language
+        spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.language_array, android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        spinnerLanguage.setAdapter(adapter);
+
+        editAdministrative = (EditText) findViewById(R.id.editAdministrative);
+        editAdministrative.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        editAdministrative.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    validateForm();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         btnRegister = (ImageView) findViewById(R.id.btnSave);
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -156,25 +212,24 @@ public class EnrollmentActivity extends AppCompatActivity {
         //Validate and Save
         boolean allowSave = true;
 
-        String email = editEmail.getText().toString().trim();
         String name = editName.getText().toString().trim();
         String lastName = editLastName.getText().toString().trim();
 
-        // Email
+        // First name
         if (InputValidatorHelper.isNullOrEmpty(name)) {
             errMsg.append("- First name should not be empty.\n");
             allowSave = false;
         }
 
-        // First name
+        // Last name
         if (InputValidatorHelper.isNullOrEmpty(lastName)) {
             errMsg.append("- Last name should not be empty.\n");
             allowSave = false;
         }
 
-        // Last name
-        if (email.equals("") || !InputValidatorHelper.isValidEmail(email)) {
-            errMsg.append("- Invalid email address.\n");
+        // Email
+        if (editEmail.getEditList().isEmpty()) {
+            errMsg.append("- Please add at least one email.\n");
             allowSave = false;
         }
 
@@ -200,14 +255,16 @@ public class EnrollmentActivity extends AppCompatActivity {
 
             JSONObject payload = new JSONObject();
 
-            payload.put("_email", editEmail.getText().toString());
+            payload.put("_email", editEmail.getEditList().get(0).getText().toString());
             payload.put("_invitation_token", cache.getInvitationToken());
             payload.put("_serial", Helpers.getDeviceSerial());
             payload.put("_uuid", new Hardware(EnrollmentActivity.this).getUUID());
             payload.put("csr", requestCSR);
             payload.put("firstname", editName.getText().toString());
             payload.put("lastname", editLastName.getText().toString());
-            payload.put("phone", editPhone.getText().toString());
+            if(!editPhone.getEditList().isEmpty()) {
+                payload.put("phone", editPhone.getEditList().get(0).getText().toString());
+            }
             payload.put("version", BuildConfig.VERSION_NAME);
 
             enroll.enrollment(payload, new EnrollmentHelper.enrollCallBack() {
@@ -215,21 +272,70 @@ public class EnrollmentActivity extends AppCompatActivity {
                 public void onSuccess(String data) {
                     pd.dismiss();
 
+                    ArrayList<UserModel.EmailsData> arrEmails = new ArrayList<>();
+                    UserModel.EmailsData emails = new UserModel().new EmailsData();
+
+                    List<EditText> emailEdit = editEmail.getEditList();
+                    List<Spinner> emailTypeEdit = editEmail.getSpinnList();
+
+                    for (int i=0; i<emailEdit.size(); i++) {
+                        EditText editText = emailEdit.get(i);
+                        Spinner spinner = emailTypeEdit.get(i);
+
+                        if(!editText.getText().toString().equals("")) {
+                            emails.setEmail(editText.getText().toString());
+                            emails.setType(spinner.getSelectedItem().toString());
+                        }
+
+                        arrEmails.add(emails);
+                    }
+
+                    // -------------------------------
                     // Store user information
-                    UserModel uModel = new UserModel();
-                    uModel.setFirstName(editName.getText().toString());
-                    uModel.setLastName(editLastName.getText().toString());
-                    //uModel.setUserEmail(editEmail.getText().toString());
-                    //uModel.setUserPhone(editPhone.getText().toString());
-                    new UserController(EnrollmentActivity.this).save(uModel);
+                    // -------------------------------
+                    UserModel userModel = new UserModel();
+                    userModel.setFirstName(editName.getText().toString());
+                    userModel.setLastName(editLastName.getText().toString());
+                    userModel.setEmails(arrEmails);
 
+                    // Mobile Phone
+                    if(!editPhone.getEditList().isEmpty()) {
+                        String mobilePhone = editPhone.getEditList().get(0).getText().toString();
+                        if (!mobilePhone.equals("")) {
+                            user.setMobilePhone(mobilePhone);
+                        }
+                    }
+
+                    // Phone
+                    if(editPhone.getEditList().size() > 1) {
+                        String phone = editPhone.getEditList().get(1).getText().toString();
+                        if (!phone.equals("")) {
+                            user.setPhone(phone);
+                        }
+                    }
+
+                    // Phone 2
+                    if(editPhone.getEditList().size() > 2) {
+                        String phone2 = editPhone.getEditList().get(2).getText().toString();
+                        if (!phone2.equals("")) {
+                            user.setPhone(phone2);
+                        }
+                    }
+
+                    user.setLanguage( spinnerLanguage.getSelectedItem().toString() );
+                    user.setAdministrativeNumber( editAdministrative.getText().toString() );
+
+                    new UserController(EnrollmentActivity.this).save(userModel);
+
+                    // -------------------------------
                     // Store supervisor information
-                    SupervisorModel sModel = new SupervisorModel();
+                    // -------------------------------
+                    SupervisorModel supervisorModel = new SupervisorModel();
 
-                    sModel.setName("Teclib Spain SL");
-                    sModel.setEmail("sales@teclib.com");
+                    supervisorModel.setName("Teclib Spain SL");
+                    supervisorModel.setEmail("sales@teclib.com");
 
-                    new SupervisorController(EnrollmentActivity.this).save(sModel);
+                    new SupervisorController(EnrollmentActivity.this).save(supervisorModel);
 
                     openMain();
                 }

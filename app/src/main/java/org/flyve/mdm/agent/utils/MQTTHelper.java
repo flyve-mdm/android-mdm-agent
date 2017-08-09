@@ -151,7 +151,7 @@ public class MQTTHelper {
 
             @Override
             public void onTaskError(Throwable error) {
-                FlyveLog.e(error.getCause().toString());
+                FlyveLog.e(error.getMessage());
                 //send broadcast
                 broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on createInventory", error.getMessage()));
             }

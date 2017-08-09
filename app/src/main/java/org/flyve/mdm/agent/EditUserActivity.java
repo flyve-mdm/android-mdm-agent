@@ -24,8 +24,6 @@ import org.flyve.mdm.agent.utils.MultipleEditText;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.flyve.mdm.agent.R.string.phone;
-
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
@@ -85,7 +83,7 @@ public class EditUserActivity extends AppCompatActivity {
         }
 
         TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
-        txtTitle.setText( "" );
+        txtTitle.setText("");
 
         txtMessage = (TextView) findViewById(R.id.txtMessage);
 
@@ -104,7 +102,7 @@ public class EditUserActivity extends AppCompatActivity {
 
         // 3 Phones
         LinearLayout lnPhones = (LinearLayout) findViewById(R.id.lnPhones);
-        editPhone = new MultipleEditText(this, lnPhones, getResources().getString(phone));
+        editPhone = new MultipleEditText(this, lnPhones, getResources().getString(R.string.phone));
         editPhone.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_PHONE);
         editPhone.setLimit(3);
         editPhone.setSpinnerArray(R.array.phone_array);
@@ -124,6 +122,7 @@ public class EditUserActivity extends AppCompatActivity {
         spinnerLanguage.setAdapter(adapter);
 
         editAdministrative = (EditText) findViewById(R.id.editAdministrative);
+        editAdministrative.setText(user.getAdministrativeNumber());
         editAdministrative.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editAdministrative.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -164,8 +163,10 @@ public class EditUserActivity extends AppCompatActivity {
             EditText editText = emailEdit.get(i);
             Spinner spinner = emailTypeEdit.get(i);
 
-            emails.setEmail( editText.getText().toString() );
-            emails.setType( spinner.getSelectedItem().toString() );
+            if(!editText.getText().toString().equals("")) {
+                emails.setEmail(editText.getText().toString());
+                emails.setType(spinner.getSelectedItem().toString());
+            }
 
             arrEmails.add(emails);
         }
@@ -206,8 +207,7 @@ public class EditUserActivity extends AppCompatActivity {
         user.setLanguage( spinnerLanguage.getSelectedItem().toString() );
         user.setAdministrativeNumber( editAdministrative.getText().toString() );
 
-        UserController userController = new UserController(EditUserActivity.this);
-        userController.save(user);
+        new UserController(EditUserActivity.this).save(user);
 
         Helpers.snack( EditUserActivity.this, "Saved" );
     }
