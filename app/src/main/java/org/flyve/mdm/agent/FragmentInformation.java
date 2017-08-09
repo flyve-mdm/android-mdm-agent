@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.flyve.mdm.agent.core.supervisor.SupervisorController;
+import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
 import org.flyve.mdm.agent.core.user.UserController;
 import org.flyve.mdm.agent.core.user.UserModel;
 import org.flyve.mdm.agent.data.DataStorage;
@@ -115,8 +117,24 @@ public class FragmentInformation extends Fragment {
      * Load Supervisor information
      */
     private void loadSupervisor() {
-        txtNameSupervisor.setText(cache.getSupervisorName());
-        txtDescriptionSupervisor.setText(cache.getSupervisorEmail());
+        SupervisorController supervisor = new SupervisorController(FragmentInformation.this.getActivity());
+        supervisor.getSupervisor(new SupervisorController.getUserCallback() {
+            @Override
+            public void onResponse(SupervisorModel response) {
+                txtNameSupervisor.setText(response.getName());
+                txtDescriptionSupervisor.setText(response.getEmail());
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Helpers.snack(FragmentInformation.this.getActivity(), error, "close", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+            }
+        });
+
     }
 
     /**
