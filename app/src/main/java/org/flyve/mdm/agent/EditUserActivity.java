@@ -49,7 +49,9 @@ public class EditUserActivity extends AppCompatActivity {
     private TextView txtMessage;
     private EditText editName;
     private EditText editLastName;
+    private EditText editAdministrative;
     private DataStorage cache;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +123,8 @@ public class EditUserActivity extends AppCompatActivity {
 
         // Apply the adapter to the spinner
         spinnerLanguage.setAdapter(adapter);
+
+        editAdministrative = (EditText) findViewById(R.id.editAdministrative);
 
         // Button Register
         ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);
