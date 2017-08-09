@@ -2,7 +2,7 @@ package org.flyve.mdm.agent.core;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.data.LocalStorage;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -30,40 +30,38 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class User {
+public class UserStorage extends LocalStorage {
 
-    public User() {
+    /**
+     * Constructor
+     *
+     * @param context
+     */
+    public UserStorage(Context context) {
+        super(context);
     }
 
-    public void getUser(Context context, getUserCallback callback) {
-        try {
-            UserStorage cache = new UserStorage(context);
-            UserData user = new UserData();
-            user.setFirstName(cache.getFirstName());
-            user.setLastName(cache.getLastName());
-
-            callback.onResponse( user );
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-            callback.onFailure( ex.getMessage() );
-        }
+    public String getFirstName() {
+        return getData("userFirstName");
+    }
+    public void setFirstName(String firstName) {
+        setData("userFirstName", firstName);
     }
 
-    public boolean save(Context context, UserData user) {
-        try {
-            UserStorage cache = new UserStorage(context);
-
-            cache.setFirstName(user.getFirstName());
-            cache.setLastName(user.getLastName());
-
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
+    public String getLastName() {
+        return getData("userLastName");
+    }
+    public void setLastName(String lastName) {
+        setData("userLastName", lastName);
     }
 
-    public interface getUserCallback {
-        void onResponse(UserData response);
-        void onFailure(String error);
+    public String getEmail() { return getData("userEmail");}
+    public void setEmail(String email) { setData("userEmail", email); }
+
+    public String getPhone() {
+        return getData("userPhone");
+    }
+    public void setPhone(String userPhone) {
+        setData("userPhone", userPhone);
     }
 }
