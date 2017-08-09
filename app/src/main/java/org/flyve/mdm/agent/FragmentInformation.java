@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.flyve.mdm.agent.core.UserController;
+import org.flyve.mdm.agent.core.UserModel;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -120,8 +123,23 @@ public class FragmentInformation extends Fragment {
      * Load Client information
      */
     private void loadClientInfo() {
-        txtNameUser.setText(cache.getUserFirstName() + " " + cache.getUserLastName());
-        txtEmailUser.setText(cache.getUserEmail());
+        UserController user = new UserController(FragmentInformation.this.getActivity());
+        user.getUser(new UserController.getUserCallback() {
+            @Override
+            public void onResponse(UserModel response) {
+                txtNameUser.setText(response.getFirstName() + " " + response.getLastName());
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Helpers.snack(FragmentInformation.this.getActivity(), error, "close", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+            }
+        });
+
     }
 
     private void statusMQTT(Boolean bval) {

@@ -28,130 +28,130 @@ import java.util.List;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class UserData {
+public class UserModel {
 
-    private String FirstName;
-    private String LastName;
-    private String Language;
-    private String Phone;
-    private String MobilePhone;
-    private String Phone2;
-    private String AdministrativeNumber;
-    private String Picture;
-    private List<UserData.EmailsData> Emails;
+    private String firstName;
+    private String lastName;
+    private String language;
+    private String phone;
+    private String mobilePhone;
+    private String phone2;
+    private String administrativeNumber;
+    private String picture;
+    private List<UserModel.EmailsData> emails;
 
-    public UserData() {
+    public UserModel() {
 
     }
 
-    public UserData(String firstName, String lastName, String language, String phone, String mobilePhone, String phone2, String administrativeNumber, String picture, List<EmailsData> emails) {
-        FirstName = firstName;
-        LastName = lastName;
-        Language = language;
-        Phone = phone;
-        MobilePhone = mobilePhone;
-        Phone2 = phone2;
-        AdministrativeNumber = administrativeNumber;
-        Picture = picture;
-        Emails = emails;
+    public UserModel(String firstName, String lastName, String language, String phone, String mobilePhone, String phone2, String administrativeNumber, String picture, List<EmailsData> emails) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.language = language;
+        this.phone = phone;
+        this.mobilePhone = mobilePhone;
+        this.phone2 = phone2;
+        this.administrativeNumber = administrativeNumber;
+        this.picture = picture;
+        this.emails = emails;
     }
 
     public String getFirstName() {
-        return FirstName;
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
-        FirstName = firstName;
+        this.firstName = firstName;
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        LastName = lastName;
+        this.lastName = lastName;
     }
 
     public String getLanguage() {
-        return Language;
+        return language;
     }
 
     public void setLanguage(String language) {
-        Language = language;
+        this.language = language;
     }
 
     public String getPhone() {
-        return Phone;
+        return phone;
     }
 
     public void setPhone(String phone) {
-        Phone = phone;
+        this.phone = phone;
     }
 
     public String getMobilePhone() {
-        return MobilePhone;
+        return mobilePhone;
     }
 
     public void setMobilePhone(String mobilePhone) {
-        MobilePhone = mobilePhone;
+        this.mobilePhone = mobilePhone;
     }
 
     public String getPhone2() {
-        return Phone2;
+        return phone2;
     }
 
     public void setPhone2(String phone2) {
-        Phone2 = phone2;
+        this.phone2 = phone2;
     }
 
     public String getAdministrativeNumber() {
-        return AdministrativeNumber;
+        return administrativeNumber;
     }
 
     public void setAdministrativeNumber(String administrativeNumber) {
-        AdministrativeNumber = administrativeNumber;
+        this.administrativeNumber = administrativeNumber;
     }
 
     public String getPicture() {
-        return Picture;
+        return picture;
     }
 
     public void setPicture(String picture) {
-        Picture = picture;
+        this.picture = picture;
     }
 
     public List<EmailsData> getEmails() {
-        return Emails;
+        return emails;
     }
 
     public void setEmails(List<EmailsData> emails) {
-        Emails = emails;
+        this.emails = emails;
     }
 
     public class EmailsData {
 
-        private String Email;
-        private String Type;
+        private String email;
+        private String type;
 
         public EmailsData(String email, String type) {
-            Email = email;
-            Type = type;
+            this.email = email;
+            this.type = type;
         }
 
         public String getEmail() {
-            return Email;
+            return email;
         }
 
         public void setEmail(String email) {
-            Email = email;
+            this.email = email;
         }
 
         public String getType() {
-            return Type;
+            return type;
         }
 
         public void setType(String type) {
-            Type = type;
+            this.type = type;
         }
     }
 
