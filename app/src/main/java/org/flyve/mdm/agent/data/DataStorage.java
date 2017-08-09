@@ -69,20 +69,6 @@ public class DataStorage {
 		setData("manifestVersion", version);
 	}
 
-	public String getSupervisorName() {
-		return getData("supervisorName");
-	}
-	public void setSupervisorName(String name) {
-		setData("supervisorName", name);
-	}
-
-	public String getSupervisorEmail() {
-		return getData("supervisorEmail");
-	}
-	public void setSupervisorEmail(String email) {
-		setData("supervisorEmail", email);
-	}
-
 	public String getUrl() {
 		return getData("url");
 	}
