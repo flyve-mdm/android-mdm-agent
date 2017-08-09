@@ -1,10 +1,8 @@
-package org.flyve.mdm.agent.core;
+package org.flyve.mdm.agent.core.supervisor;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-
-import org.flyve.mdm.agent.data.LocalStorage;
+import org.flyve.mdm.agent.utils.FlyveLog;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -32,33 +30,38 @@ import org.flyve.mdm.agent.data.LocalStorage;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class UserStorage extends LocalStorage {
+public class SupervisorController {
 
-    private static final String USER_LOCAL_STORAGE = "userObject";
+    private Context context;
 
-    /**
-     * Constructor
-     *
-     * @param context
-     */
-    public UserStorage(Context context) {
-        super(context);
+    public SupervisorController(Context context) {
+        this.context = context;
     }
 
-    public UserModel getUser() {
-        String json = getData(USER_LOCAL_STORAGE);
-        Gson gson = new Gson();
-        return gson.fromJson(json, UserModel.class);
+    public void getSupervisor(getUserCallback callback) {
+        try {
+            SupervisorStorage cache = new SupervisorStorage(context);
+            SupervisorModel user = cache.getSupervisor();
+
+            callback.onResponse( user );
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+            callback.onFailure("Fail retrieving supervisor information");
+        }
     }
 
-    public void setUser(UserModel user) {
-        Gson gson = new Gson();
-        String json = gson.toJson(user);
-        setData(USER_LOCAL_STORAGE, json);
+    public boolean save(SupervisorModel supervisor) {
+        try {
+            SupervisorStorage cache = new SupervisorStorage(context);
+            cache.setSupervisor(supervisor);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
-    public void deleteUser() {
-        deleteKeyCache(USER_LOCAL_STORAGE);
+    public interface getUserCallback {
+        void onResponse(SupervisorModel response);
+        void onFailure(String error);
     }
-
 }

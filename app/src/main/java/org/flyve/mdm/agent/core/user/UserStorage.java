@@ -1,8 +1,10 @@
-package org.flyve.mdm.agent.core;
+package org.flyve.mdm.agent.core.user;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.utils.FlyveLog;
+import com.google.gson.Gson;
+
+import org.flyve.mdm.agent.data.LocalStorage;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -30,38 +32,33 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class UserController {
+public class UserStorage extends LocalStorage {
 
-    private Context context;
+    private static final String LOCAL_STORAGE = "userObject";
 
-    public UserController(Context context) {
-        this.context = context;
+    /**
+     * Constructor
+     *
+     * @param context
+     */
+    public UserStorage(Context context) {
+        super(context);
     }
 
-    public void getUser(getUserCallback callback) {
-        try {
-            UserStorage cache = new UserStorage(context);
-            UserModel user = cache.getUser();
-
-            callback.onResponse( user );
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-            callback.onFailure("Fail retrieving user information");
-        }
+    public UserModel getUser() {
+        String json = getData(LOCAL_STORAGE);
+        Gson gson = new Gson();
+        return gson.fromJson(json, UserModel.class);
     }
 
-    public boolean save(UserModel user) {
-        try {
-            UserStorage cache = new UserStorage(context);
-            cache.setUser(user);
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
+    public void setUser(UserModel user) {
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        setData(LOCAL_STORAGE, json);
     }
 
-    public interface getUserCallback {
-        void onResponse(UserModel response);
-        void onFailure(String error);
+    public void deleteUser() {
+        deleteKeyCache(LOCAL_STORAGE);
     }
+
 }
