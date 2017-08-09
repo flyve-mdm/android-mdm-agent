@@ -41,6 +41,10 @@ import android.widget.TextView;
 
 import com.flyvemdm.inventory.categories.Hardware;
 
+import org.flyve.mdm.agent.core.supervisor.SupervisorController;
+import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
+import org.flyve.mdm.agent.core.user.UserController;
+import org.flyve.mdm.agent.core.user.UserModel;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.EnrollmentHelper;
@@ -212,14 +216,20 @@ public class EnrollmentActivity extends AppCompatActivity {
                     pd.dismiss();
 
                     // Store user information
-                    cache.setUserFirstName(editName.getText().toString());
-                    cache.setUserLastName(editLastName.getText().toString());
-                    cache.setUserEmail(editEmail.getText().toString());
-                    cache.setUserPhone(editPhone.getText().toString());
+                    UserModel uModel = new UserModel();
+                    uModel.setFirstName(editName.getText().toString());
+                    uModel.setLastName(editLastName.getText().toString());
+                    //uModel.setUserEmail(editEmail.getText().toString());
+                    //uModel.setUserPhone(editPhone.getText().toString());
+                    new UserController(EnrollmentActivity.this).save(uModel);
 
                     // Store supervisor information
-                    cache.setSupervisorName("Teclib Spain SL");
-                    cache.setSupervisorEmail("sales@teclib.com");
+                    SupervisorModel sModel = new SupervisorModel();
+
+                    sModel.setName("Teclib Spain SL");
+                    sModel.setEmail("sales@teclib.com");
+
+                    new SupervisorController(EnrollmentActivity.this).save(sModel);
 
                     openMain();
                 }

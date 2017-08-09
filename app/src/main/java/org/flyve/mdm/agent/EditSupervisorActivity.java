@@ -11,7 +11,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.core.supervisor.SupervisorController;
+import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.InputValidatorHelper;
 
@@ -46,14 +47,14 @@ public class EditSupervisorActivity extends AppCompatActivity {
     private TextView txtMessage;
     private EditText editName;
     private EditText editEmail;
-    private DataStorage cache;
+    private SupervisorModel supervisor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_supervisor);
 
-        cache = new DataStorage(EditSupervisorActivity.this);
+        supervisor = new SupervisorController(EditSupervisorActivity.this).getCache();
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -74,11 +75,11 @@ public class EditSupervisorActivity extends AppCompatActivity {
         txtMessage = (TextView) findViewById(R.id.txtMessage);
 
         editName = (EditText) findViewById(R.id.editName);
-        editName.setText( cache.getSupervisorName() );
+        editName.setText( supervisor.getName() );
 
         editEmail = (EditText) findViewById(R.id.editEmail);
         editEmail.setEnabled(false);
-        editEmail.setText( cache.getSupervisorEmail() );
+        editEmail.setText( supervisor.getEmail() );
         editEmail.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -105,8 +106,15 @@ public class EditSupervisorActivity extends AppCompatActivity {
      * Storage information
      */
     private void save() {
-        cache.setSupervisorName( editName.getText().toString() );
-        cache.setSupervisorEmail( editEmail.getText().toString() );
+
+        SupervisorModel model = new SupervisorModel();
+        SupervisorController controller = new SupervisorController(EditSupervisorActivity.this);
+
+        model.setName( editName.getText().toString() );
+        model.setEmail( editEmail.getText().toString() );
+
+        controller.save(model);
+
         Helpers.snack( EditSupervisorActivity.this, "Saved" );
     }
 
