@@ -21,6 +21,11 @@ import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.InputValidatorHelper;
 import org.flyve.mdm.agent.utils.MultipleEditText;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.flyve.mdm.agent.R.string.phone;
+
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
@@ -54,6 +59,9 @@ public class EditUserActivity extends AppCompatActivity {
     private EditText editLastName;
     private EditText editAdministrative;
     private UserModel user;
+    private MultipleEditText editEmail;
+    private MultipleEditText editPhone;
+    private Spinner spinnerLanguage;
 
 
     @Override
@@ -89,21 +97,21 @@ public class EditUserActivity extends AppCompatActivity {
 
         // Multiples Emails
         LinearLayout lnEmails = (LinearLayout) findViewById(R.id.lnEmails);
-        MultipleEditText editEmail = new MultipleEditText(this, lnEmails, getResources().getString(R.string.email));
+        editEmail = new MultipleEditText(this, lnEmails, getResources().getString(R.string.email));
         editEmail.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         editEmail.setSpinnerArray(R.array.email_array);
         lnEmails.addView( editEmail.createEditText() );
 
         // 3 Phones
         LinearLayout lnPhones = (LinearLayout) findViewById(R.id.lnPhones);
-        MultipleEditText editPhone = new MultipleEditText(this, lnPhones, getResources().getString(R.string.phone));
+        editPhone = new MultipleEditText(this, lnPhones, getResources().getString(phone));
         editPhone.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_PHONE);
         editPhone.setLimit(3);
         editPhone.setSpinnerArray(R.array.phone_array);
         lnPhones.addView( editPhone.createEditText() );
 
         // Language
-        Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
+        spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -142,13 +150,64 @@ public class EditUserActivity extends AppCompatActivity {
      * Storage information
      */
     private void save() {
-        UserModel userModel = new UserModel();
 
-        userModel.setFirstName( editName.getText().toString() );
-        userModel.setLastName( editLastName.getText().toString() );
+        // -------------
+        // Emails
+        // -------------
+        ArrayList<UserModel.EmailsData> arrEmails = new ArrayList<>();
+        UserModel.EmailsData emails = new UserModel().new EmailsData();
+
+        List<EditText> emailEdit = editEmail.getEditList();
+        List<Spinner> emailTypeEdit = editEmail.getSpinnList();
+
+        for (int i=0; i<emailEdit.size(); i++) {
+            EditText editText = emailEdit.get(i);
+            Spinner spinner = emailTypeEdit.get(i);
+
+            emails.setEmail( editText.getText().toString() );
+            emails.setType( spinner.getSelectedItem().toString() );
+
+            arrEmails.add(emails);
+        }
+
+        // -------------
+        // USER
+        // -------------
+        user = new UserModel();
+
+        user.setFirstName( editName.getText().toString() );
+        user.setLastName( editLastName.getText().toString() );
+        user.setEmails(arrEmails);
+
+        // Mobile Phone
+        if(!editPhone.getEditList().isEmpty()) {
+            String mobilePhone = editPhone.getEditList().get(0).getText().toString();
+            if (!mobilePhone.equals("")) {
+                user.setMobilePhone(mobilePhone);
+            }
+        }
+
+        // Phone
+        if(editPhone.getEditList().size() > 1) {
+            String phone = editPhone.getEditList().get(1).getText().toString();
+            if (!phone.equals("")) {
+                user.setPhone(phone);
+            }
+        }
+
+        // Phone 2
+        if(editPhone.getEditList().size() > 2) {
+            String phone2 = editPhone.getEditList().get(2).getText().toString();
+            if (!phone2.equals("")) {
+                user.setPhone(phone2);
+            }
+        }
+
+        user.setLanguage( spinnerLanguage.getSelectedItem().toString() );
+        user.setAdministrativeNumber( editAdministrative.getText().toString() );
 
         UserController userController = new UserController(EditUserActivity.this);
-        userController.save(userModel);
+        userController.save(user);
 
         Helpers.snack( EditUserActivity.this, "Saved" );
     }
@@ -182,6 +241,11 @@ public class EditUserActivity extends AppCompatActivity {
         // Last name
         if (InputValidatorHelper.isNullOrEmpty(lastName)) {
             errMsg.append("- Last name should not be empty.\n");
+            allowSave = false;
+        }
+
+        if(editEmail.getEditList().isEmpty()) {
+            errMsg.append("- Please add one email at least.\n");
             allowSave = false;
         }
 

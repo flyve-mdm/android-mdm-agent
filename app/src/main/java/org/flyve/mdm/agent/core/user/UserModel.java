@@ -133,11 +133,6 @@ public class UserModel {
         private String email;
         private String type;
 
-        public EmailsData(String email, String type) {
-            this.email = email;
-            this.type = type;
-        }
-
         public String getEmail() {
             return email;
         }
