@@ -44,8 +44,8 @@ public class DataStorage {
 	}
 
 	/**
-	 * Obtiene las preferencias del setting
-	 * @return tipo de datos SharedPreferences
+	 * Get preference from setting
+	 * @return SharedPreferences
 	 */
 	private SharedPreferences getSettings(){
 		if (mContext != null) {
@@ -81,30 +81,6 @@ public class DataStorage {
 	}
 	public void setSupervisorEmail(String email) {
 		setData("supervisorEmail", email);
-	}
-
-	public String getUserFirstName() {
-		return getData("userFirstName");
-	}
-	public void setUserFirstName(String firstName) {
-		setData("userFirstName", firstName);
-	}
-
-	public String getUserLastName() {
-		return getData("userLastName");
-	}
-	public void setUserLastName(String lastName) {
-		setData("userLastName", lastName);
-	}
-
-	public String getUserEmail() { return getData("userEmail");}
-	public void setUserEmail(String email) { setData("userEmail", email); }
-
-	public String getUserPhone() {
-		return getData("userPhone");
-	}
-	public void setUserPhone(String userPhone) {
-		setData("userPhone", userPhone);
 	}
 
 	public String getUrl() {

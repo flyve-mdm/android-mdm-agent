@@ -40,6 +40,10 @@ public class UserData {
     private String Picture;
     private List<UserData.EmailsData> Emails;
 
+    public UserData() {
+
+    }
+
     public UserData(String firstName, String lastName, String language, String phone, String mobilePhone, String phone2, String administrativeNumber, String picture, List<EmailsData> emails) {
         FirstName = firstName;
         LastName = lastName;
