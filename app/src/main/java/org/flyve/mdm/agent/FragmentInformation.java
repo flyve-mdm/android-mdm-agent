@@ -15,8 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.flyve.mdm.agent.core.UserController;
-import org.flyve.mdm.agent.core.UserModel;
+import org.flyve.mdm.agent.core.user.UserController;
+import org.flyve.mdm.agent.core.user.UserModel;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;

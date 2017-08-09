@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent.core;
+package org.flyve.mdm.agent.core.user;
 
 import java.util.List;
 
