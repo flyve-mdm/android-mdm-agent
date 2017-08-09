@@ -107,7 +107,7 @@ public class FragmentInformation extends Fragment {
         imgOnline = (ImageView) v.findViewById(R.id.imgOnline);
 
         statusMQTT(cache.getOnlineStatus());
-        loadSupervisor();
+        //loadSupervisor();
         loadClientInfo();
 
         return v;
