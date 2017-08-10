@@ -30,6 +30,8 @@ package org.flyve.mdm.agent.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
@@ -40,6 +42,7 @@ import android.view.View;
 import org.flyve.mdm.agent.R;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -190,5 +193,28 @@ public class Helpers {
 		in.setAction(action);
 		in.putExtra("message", Boolean.toString( message ) );
 		LocalBroadcastManager.getInstance(context).sendBroadcast(in);
+	}
+
+	public static String BitmapToString(Bitmap bitmap){
+		ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+		byte [] b=baos.toByteArray();
+		String temp=Base64.encodeToString(b, Base64.DEFAULT);
+		return temp;
+	}
+
+	/**
+	 * @param encodedString
+	 * @return bitmap (from given string)
+	 */
+	public static Bitmap StringToBitmap(String encodedString){
+		try {
+			byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+			Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+			return bitmap;
+		} catch(Exception e) {
+			FlyveLog.e(e.getMessage());
+			return null;
+		}
 	}
 }
