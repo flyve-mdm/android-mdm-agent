@@ -99,15 +99,16 @@ public class EditUserActivity extends AppCompatActivity {
         editEmail.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         editEmail.setSpinnerArray(R.array.email_array);
 
+        // load store values
         List<String> arrEmails = new ArrayList<>();
-        List<String> arrType = new ArrayList<>();
+        List<String> arrEmailTypes = new ArrayList<>();
 
         for(int i = 0; i < user.getEmails().size(); i++) {
             arrEmails.add( user.getEmails().get(i).getEmail() );
-            arrType.add( user.getEmails().get(i).getType() );
+            arrEmailTypes.add( user.getEmails().get(i).getType() );
         }
 
-        editEmail.setValue( arrEmails, arrType );
+        editEmail.setValue( arrEmails, arrEmailTypes );
         lnEmails.addView( editEmail.createEditText() );
 
         // 3 Phones
@@ -116,6 +117,19 @@ public class EditUserActivity extends AppCompatActivity {
         editPhone.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_PHONE);
         editPhone.setLimit(3);
         editPhone.setSpinnerArray(R.array.phone_array);
+
+        // load store values
+        List<String> arrPhones = new ArrayList<>();
+        List<String> arrPhoneTypes = new ArrayList<>();
+
+        arrPhones.add( user.getMobilePhone() );
+        arrPhoneTypes.add("");
+        arrPhones.add( user.getPhone() );
+        arrPhoneTypes.add("");
+        arrPhones.add( user.getPhone2() );
+        arrPhoneTypes.add("");
+
+        editPhone.setValue( arrPhones, arrPhoneTypes );
         lnPhones.addView( editPhone.createEditText() );
 
         // Language
