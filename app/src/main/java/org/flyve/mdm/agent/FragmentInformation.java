@@ -107,7 +107,7 @@ public class FragmentInformation extends Fragment {
         imgOnline = (ImageView) v.findViewById(R.id.imgOnline);
 
         statusMQTT(cache.getOnlineStatus());
-        //loadSupervisor();
+        loadSupervisor();
         loadClientInfo();
 
         return v;
@@ -128,6 +128,7 @@ public class FragmentInformation extends Fragment {
     private void loadClientInfo() {
         UserModel user = new UserController(FragmentInformation.this.getActivity()).getCache();
         txtNameUser.setText(user.getFirstName() + " " + user.getLastName());
+        txtEmailUser.setText(user.getEmails().get(0).getEmail());
     }
 
     private void statusMQTT(Boolean bval) {
