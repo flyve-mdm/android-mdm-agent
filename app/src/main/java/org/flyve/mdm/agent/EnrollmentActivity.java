@@ -124,10 +124,6 @@ public class EnrollmentActivity extends AppCompatActivity {
         cache = new DataStorage(EnrollmentActivity.this);
 
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
-        UserModel user = new UserController(EnrollmentActivity.this).getCache();
-        if(!user.getPicture().equals("")) {
-            imgPhoto.setImageBitmap(Helpers.StringToBitmap(user.getPicture()));
-        }
 
         ImageView btnCamera = (ImageView) findViewById(R.id.btnCamera);
         btnCamera.setOnClickListener(new View.OnClickListener() {
