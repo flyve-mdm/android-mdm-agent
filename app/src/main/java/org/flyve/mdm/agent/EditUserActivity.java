@@ -74,7 +74,7 @@ public class EditUserActivity extends AppCompatActivity {
     private MultipleEditText editPhone;
     private Spinner spinnerLanguage;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    private String userChoosenTask;
+    private String strPicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +97,9 @@ public class EditUserActivity extends AppCompatActivity {
         }
 
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
+        if(!user.getPicture().equals("")) {
+            imgPhoto.setImageBitmap(Helpers.StringToBitmap(user.getPicture()));
+        }
 
         ImageView btnCamera = (ImageView) findViewById(R.id.btnCamera);
         btnCamera.setOnClickListener(new View.OnClickListener() {
@@ -263,6 +266,7 @@ public class EditUserActivity extends AppCompatActivity {
             }
         }
 
+        user.setPicture(strPicture);
         user.setLanguage( spinnerLanguage.getSelectedItem().toString() );
         user.setAdministrativeNumber( editAdministrative.getText().toString() );
 
@@ -282,11 +286,9 @@ public class EditUserActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (items[item].equals("Take Photo")) {
-                    userChoosenTask ="Take Photo";
                     cameraIntent();
 
                 } else if (items[item].equals("Choose from Library")) {
-                    userChoosenTask ="Choose from Library";
                     galleryIntent();
 
                 } else if (items[item].equals("Cancel")) {
@@ -347,6 +349,7 @@ public class EditUserActivity extends AppCompatActivity {
             }
         }
 
+        strPicture = Helpers.BitmapToString(thumbnail);
         imgPhoto.setImageBitmap(thumbnail);
     }
 
@@ -360,6 +363,7 @@ public class EditUserActivity extends AppCompatActivity {
             }
         }
 
+        strPicture = Helpers.BitmapToString(bm);
         imgPhoto.setImageBitmap(bm);
     }
 
