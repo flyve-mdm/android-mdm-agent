@@ -122,12 +122,20 @@ public class EditUserActivity extends AppCompatActivity {
         List<String> arrPhones = new ArrayList<>();
         List<String> arrPhoneTypes = new ArrayList<>();
 
-        arrPhones.add( user.getMobilePhone() );
-        arrPhoneTypes.add("");
-        arrPhones.add( user.getPhone() );
-        arrPhoneTypes.add("");
-        arrPhones.add( user.getPhone2() );
-        arrPhoneTypes.add("");
+        if(!user.getMobilePhone().equals("")) {
+            arrPhones.add(user.getMobilePhone());
+            arrPhoneTypes.add("");
+        }
+
+        if(!user.getPhone().equals("")) {
+            arrPhones.add(user.getPhone());
+            arrPhoneTypes.add("");
+        }
+
+        if(!user.getPhone2().equals("")) {
+            arrPhones.add(user.getPhone2());
+            arrPhoneTypes.add("");
+        }
 
         editPhone.setValue( arrPhones, arrPhoneTypes );
         lnPhones.addView( editPhone.createEditText() );
