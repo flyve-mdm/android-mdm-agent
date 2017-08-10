@@ -153,6 +153,10 @@ public class EditUserActivity extends AppCompatActivity {
         // Apply the adapter to the spinner
         spinnerLanguage.setAdapter(adapter);
 
+        // select language stored on cache
+        int spinnerPosition = adapter.getPosition(user.getLanguage());
+        spinnerLanguage.setSelection(spinnerPosition);
+
         editAdministrative = (EditText) findViewById(R.id.editAdministrative);
         editAdministrative.setText(user.getAdministrativeNumber());
         editAdministrative.setImeOptions(EditorInfo.IME_ACTION_DONE);
