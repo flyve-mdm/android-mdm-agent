@@ -27,15 +27,20 @@
 
 package org.flyve.mdm.agent;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -72,6 +77,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.flyve.mdm.agent.R.string.email;
@@ -97,7 +103,6 @@ public class EnrollmentActivity extends AppCompatActivity {
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String strPicture;
     private ImageView imgPhoto;
-
     private ProgressDialog pd;
 
     @Override
@@ -116,6 +121,14 @@ public class EnrollmentActivity extends AppCompatActivity {
                     onBackPressed();
                 }
             });
+        }
+
+        // Request all the permissions that the library need
+        int permissionAll = 1;
+        String[] permissions = { Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA };
+
+        if(!hasPermissions(this, permissions)){
+            ActivityCompat.requestPermissions(this, permissions, permissionAll);
         }
 
         pbx509 = (ProgressBar) findViewById(R.id.progressBarX509);
@@ -207,6 +220,23 @@ public class EnrollmentActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This function request the permission needed on Android 6.0 and above
+     * @param context The context of the app
+     * @param permissions The list of permissions needed
+     * @return true or false
+     */
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private void selectImage() {
         final CharSequence[] items = { "Take Photo", "Choose from Library",
                 "Cancel" };
@@ -243,6 +273,12 @@ public class EnrollmentActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_CAMERA);
     }
 
+    public Uri getImageUri() {
+        // Store image in dcim
+        File file = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "image" + new Date().getTime() + ".png");
+        return Uri.fromFile(file);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -250,7 +286,7 @@ public class EnrollmentActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_FILE)
                 onSelectFromGalleryResult(data);
-            else if (requestCode == REQUEST_CAMERA)
+            else if (requestCode == REQUEST_CAMERA && null != data)
                 onCaptureImageResult(data);
         }
     }
