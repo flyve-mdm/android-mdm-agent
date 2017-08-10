@@ -70,6 +70,12 @@ public class MultipleEditText {
         inputType = type;
     }
 
+    public void setValue(List<String> emails, List<String> types) {
+        for(int i=0; i<=emails.size();i++) {
+            createEditText(emails.get(0), types.get(0));
+        }
+    }
+
     public void setSpinnerArray(int array) {
         // Create an ArrayAdapter using the string array and a default spinner layout
         adapter = ArrayAdapter.createFromResource(context,
@@ -85,6 +91,10 @@ public class MultipleEditText {
     }
 
     public LinearLayout createEditText() {
+        return createEditText("","");
+    }
+
+    public LinearLayout createEditText(String editTextValue, String spinnerValue) {
         int id = ++index;
 
         // if limit is mayor of id return null
@@ -120,6 +130,7 @@ public class MultipleEditText {
         editText.setLayoutParams(paramsEdit);
         editText.setHint(hint);
         editText.setTag("");
+        editText.setText(editTextValue);
         editText.setInputType(inputType);
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -177,6 +188,11 @@ public class MultipleEditText {
 
             // Apply the adapter to the spinner
             spinner.setAdapter(adapter);
+
+            if(spinnerValue!=null && !spinnerValue.equals("")) {
+                int spinnerPosition = adapter.getPosition(spinnerValue);
+                spinner.setSelection(spinnerPosition);
+            }
             spinnList.add(spinner);
 
             llv.addView(spinner);
