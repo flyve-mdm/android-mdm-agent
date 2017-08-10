@@ -32,8 +32,10 @@ public class FragmentInformation extends Fragment {
     private DataStorage cache;
     private TextView txtNameUser;
     private TextView txtEmailUser;
+    private ImageView imgUser;
     private TextView txtNameSupervisor;
     private TextView txtDescriptionSupervisor;
+    private ImageView imgSupervisor;
 
     private int countEasterEgg;
 
@@ -83,9 +85,11 @@ public class FragmentInformation extends Fragment {
 
         txtNameUser = (TextView) v.findViewById(R.id.txtNameUser);
         txtEmailUser = (TextView) v.findViewById(R.id.txtDescriptionUser);
+        imgUser = (ImageView) v.findViewById(R.id.imgLogoUser);
 
         txtNameSupervisor = (TextView) v.findViewById(R.id.txtNameSupervisor);
         txtDescriptionSupervisor = (TextView) v.findViewById(R.id.txtDescriptionSupervisor);
+        imgSupervisor = (ImageView) v.findViewById(R.id.imgLogoSupervisor);
 
         RelativeLayout layoutSupervisor = (RelativeLayout) v.findViewById(R.id.rlSupervisor);
         layoutSupervisor.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +133,7 @@ public class FragmentInformation extends Fragment {
         UserModel user = new UserController(FragmentInformation.this.getActivity()).getCache();
         txtNameUser.setText(user.getFirstName() + " " + user.getLastName());
         txtEmailUser.setText(user.getEmails().get(0).getEmail());
+        imgUser.setImageBitmap( Helpers.StringToBitmap( user.getPicture() ));
     }
 
     private void statusMQTT(Boolean bval) {
