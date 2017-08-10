@@ -30,14 +30,14 @@ import java.util.List;
  */
 public class UserModel {
 
-    private String firstName;
-    private String lastName;
-    private String language;
-    private String phone;
-    private String mobilePhone;
-    private String phone2;
-    private String administrativeNumber;
-    private String picture;
+    private String firstName = "";
+    private String lastName = "";
+    private String language = "";
+    private String phone = "";
+    private String mobilePhone = "";
+    private String phone2 = "";
+    private String administrativeNumber = "";
+    private String picture = "";
     private List<UserModel.EmailsData> emails;
 
     public UserModel() {
