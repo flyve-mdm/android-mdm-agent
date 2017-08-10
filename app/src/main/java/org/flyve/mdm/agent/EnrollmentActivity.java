@@ -27,10 +27,16 @@
 
 package org.flyve.mdm.agent;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -60,6 +66,10 @@ import org.flyve.mdm.agent.utils.InputValidatorHelper;
 import org.flyve.mdm.agent.utils.MultipleEditText;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +85,6 @@ public class EnrollmentActivity extends AppCompatActivity {
     private ProgressBar pbx509;
     private DataStorage cache;
     private EnrollmentHelper enroll;
-
     private TextView txtMessage;
     private EditText editName;
     private EditText editLastName;
@@ -85,6 +94,9 @@ public class EnrollmentActivity extends AppCompatActivity {
     private Spinner spinnerLanguage;
     private ImageView btnRegister;
     private boolean sendEnrollment = false;
+    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+    private String strPicture;
+    private ImageView imgPhoto;
 
     private ProgressDialog pd;
 
@@ -110,6 +122,20 @@ public class EnrollmentActivity extends AppCompatActivity {
 
         enroll = new EnrollmentHelper(EnrollmentActivity.this);
         cache = new DataStorage(EnrollmentActivity.this);
+
+        imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
+        UserModel user = new UserController(EnrollmentActivity.this).getCache();
+        if(!user.getPicture().equals("")) {
+            imgPhoto.setImageBitmap(Helpers.StringToBitmap(user.getPicture()));
+        }
+
+        ImageView btnCamera = (ImageView) findViewById(R.id.btnCamera);
+        btnCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
 
         txtMessage = (TextView) findViewById(R.id.txtMessage);
 
@@ -183,6 +209,98 @@ public class EnrollmentActivity extends AppCompatActivity {
                 showError("Error creating certificate X509");
             }
         });
+    }
+
+    private void selectImage() {
+        final CharSequence[] items = { "Take Photo", "Choose from Library",
+                "Cancel" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(EnrollmentActivity.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (items[item].equals("Take Photo")) {
+                    cameraIntent();
+
+                } else if (items[item].equals("Choose from Library")) {
+                    galleryIntent();
+
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void galleryIntent() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);//
+        startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
+    }
+
+    private void cameraIntent() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_CAMERA);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == SELECT_FILE)
+                onSelectFromGalleryResult(data);
+            else if (requestCode == REQUEST_CAMERA)
+                onCaptureImageResult(data);
+        }
+    }
+
+    private void onCaptureImageResult(Intent data) {
+        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+
+        File destination = new File(Environment.getExternalStorageDirectory(),
+                System.currentTimeMillis() + ".jpg");
+
+        FileOutputStream fo = null;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (Exception e) {
+            FlyveLog.e(e.getMessage());
+        } finally {
+            if(fo!=null) {
+                try {
+                    fo.close();
+                } catch (Exception ex) {
+                    FlyveLog.d(ex.getMessage());
+                }
+            }
+        }
+
+        strPicture = Helpers.BitmapToString(thumbnail);
+        imgPhoto.setImageBitmap(thumbnail);
+    }
+
+    private void onSelectFromGalleryResult(Intent data) {
+        Bitmap bm=null;
+        if (data != null) {
+            try {
+                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+            } catch (IOException e) {
+                FlyveLog.e(e.getMessage());
+            }
+        }
+
+        strPicture = Helpers.BitmapToString(bm);
+        imgPhoto.setImageBitmap(bm);
     }
 
     /**
@@ -318,6 +436,7 @@ public class EnrollmentActivity extends AppCompatActivity {
                         }
                     }
 
+                    userModel.setPicture(strPicture);
                     userModel.setLanguage( spinnerLanguage.getSelectedItem().toString() );
                     userModel.setAdministrativeNumber( editAdministrative.getText().toString() );
 
