@@ -36,8 +36,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.flyve.mdm.agent.R.id.btnCamera;
-
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
