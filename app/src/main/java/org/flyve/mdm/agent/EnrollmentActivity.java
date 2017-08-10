@@ -80,7 +80,6 @@ public class EnrollmentActivity extends AppCompatActivity {
     private EditText editName;
     private EditText editLastName;
     private EditText editAdministrative;
-    private UserModel user;
     private MultipleEditText editEmail;
     private MultipleEditText editPhone;
     private Spinner spinnerLanguage;
@@ -93,8 +92,6 @@ public class EnrollmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_form);
-
-        user = new UserController(EnrollmentActivity.this).getCache();
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -302,7 +299,7 @@ public class EnrollmentActivity extends AppCompatActivity {
                     if(!editPhone.getEditList().isEmpty()) {
                         String mobilePhone = editPhone.getEditList().get(0).getText().toString();
                         if (!mobilePhone.equals("")) {
-                            user.setMobilePhone(mobilePhone);
+                            userModel.setMobilePhone(mobilePhone);
                         }
                     }
 
@@ -310,7 +307,7 @@ public class EnrollmentActivity extends AppCompatActivity {
                     if(editPhone.getEditList().size() > 1) {
                         String phone = editPhone.getEditList().get(1).getText().toString();
                         if (!phone.equals("")) {
-                            user.setPhone(phone);
+                            userModel.setPhone(phone);
                         }
                     }
 
@@ -318,12 +315,12 @@ public class EnrollmentActivity extends AppCompatActivity {
                     if(editPhone.getEditList().size() > 2) {
                         String phone2 = editPhone.getEditList().get(2).getText().toString();
                         if (!phone2.equals("")) {
-                            user.setPhone(phone2);
+                            userModel.setPhone(phone2);
                         }
                     }
 
-                    user.setLanguage( spinnerLanguage.getSelectedItem().toString() );
-                    user.setAdministrativeNumber( editAdministrative.getText().toString() );
+                    userModel.setLanguage( spinnerLanguage.getSelectedItem().toString() );
+                    userModel.setAdministrativeNumber( editAdministrative.getText().toString() );
 
                     new UserController(EnrollmentActivity.this).save(userModel);
 
