@@ -36,6 +36,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.flyve.mdm.agent.R.id.btnCamera;
+
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
@@ -68,7 +70,6 @@ public class EditUserActivity extends AppCompatActivity {
     private EditText editName;
     private EditText editLastName;
     private EditText editAdministrative;
-    private ImageView btnCamera;
     private ImageView imgPhoto;
     private UserModel user;
     private MultipleEditText editEmail;
@@ -99,7 +100,7 @@ public class EditUserActivity extends AppCompatActivity {
 
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
 
-        btnCamera = (ImageView) findViewById(R.id.btnCamera);
+        ImageView btnCamera = (ImageView) findViewById(R.id.btnCamera);
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -282,7 +283,6 @@ public class EditUserActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int item) {
 
-
                 if (items[item].equals("Take Photo")) {
                     userChoosenTask ="Take Photo";
                     cameraIntent();
@@ -299,16 +299,14 @@ public class EditUserActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private void galleryIntent()
-    {
+    private void galleryIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);//
         startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
     }
 
-    private void cameraIntent()
-    {
+    private void cameraIntent() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_CAMERA);
     }
@@ -363,6 +361,7 @@ public class EditUserActivity extends AppCompatActivity {
                 FlyveLog.e(e.getMessage());
             }
         }
+
         imgPhoto.setImageBitmap(bm);
     }
 
