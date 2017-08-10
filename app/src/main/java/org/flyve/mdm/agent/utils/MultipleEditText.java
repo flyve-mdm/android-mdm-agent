@@ -70,9 +70,9 @@ public class MultipleEditText {
         inputType = type;
     }
 
-    public void setValue(List<String> emails, List<String> types) {
-        for(int i=0; i<=emails.size();i++) {
-            createEditText(emails.get(0), types.get(0));
+    public void setValue(List<String> editValue, List<String> spinnerValue) {
+        for(int i=0; i<editValue.size(); i++) {
+            container.addView(createEditText(editValue.get(i), spinnerValue.get(i)));
         }
     }
 

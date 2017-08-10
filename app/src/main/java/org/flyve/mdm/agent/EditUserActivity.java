@@ -98,6 +98,16 @@ public class EditUserActivity extends AppCompatActivity {
         editEmail = new MultipleEditText(this, lnEmails, getResources().getString(R.string.email));
         editEmail.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         editEmail.setSpinnerArray(R.array.email_array);
+
+        List<String> arrEmails = new ArrayList<>();
+        List<String> arrType = new ArrayList<>();
+
+        for(int i = 0; i < user.getEmails().size(); i++) {
+            arrEmails.add( user.getEmails().get(i).getEmail() );
+            arrType.add( user.getEmails().get(i).getType() );
+        }
+
+        editEmail.setValue( arrEmails, arrType );
         lnEmails.addView( editEmail.createEditText() );
 
         // 3 Phones
@@ -166,9 +176,8 @@ public class EditUserActivity extends AppCompatActivity {
             if(!editText.getText().toString().equals("")) {
                 emails.setEmail(editText.getText().toString());
                 emails.setType(spinner.getSelectedItem().toString());
+                arrEmails.add(emails);
             }
-
-            arrEmails.add(emails);
         }
 
         // -------------

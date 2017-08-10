@@ -282,9 +282,8 @@ public class EnrollmentActivity extends AppCompatActivity {
                         if(!editText.getText().toString().equals("")) {
                             emails.setEmail(editText.getText().toString());
                             emails.setType(spinner.getSelectedItem().toString());
+                            arrEmails.add(emails);
                         }
-
-                        arrEmails.add(emails);
                     }
 
                     // -------------------------------
