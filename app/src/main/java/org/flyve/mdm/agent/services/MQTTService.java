@@ -118,10 +118,10 @@ public class MQTTService extends Service implements MqttCallback {
             return;
         }
 
-        broadcastReceivedLog(Helpers.broadCastMessage("MQTT Login", "Broker", mBroker));
-        broadcastReceivedLog(Helpers.broadCastMessage("MQTT Login", "Port", mPort));
-        broadcastReceivedLog(Helpers.broadCastMessage("MQTT Login", "User", mUser));
-        broadcastReceivedLog(Helpers.broadCastMessage("MQTT Login", "Topic", mTopic));
+        storeLog(Helpers.broadCastMessage("MQTT Login", "Broker", mBroker));
+        storeLog(Helpers.broadCastMessage("MQTT Login", "Port", mPort));
+        storeLog(Helpers.broadCastMessage("MQTT Login", "User", mUser));
+        storeLog(Helpers.broadCastMessage("MQTT Login", "Topic", mTopic));
 
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), "ssl://" + mBroker + ":" + mPort, clientId);
@@ -184,7 +184,7 @@ public class MQTTService extends Service implements MqttCallback {
                         errorCode = "0";
                     }
 
-                    broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on connect - client.connect", ex.getMessage()));
+                    storeLog(Helpers.broadCastMessage("ERROR", "Error on connect - client.connect", ex.getMessage()));
                     broadcastMessage(Helpers.broadCastMessage("ERROR", errorCode, ex.getMessage()));
                     broadcastServiceStatus(false);
                 }
@@ -193,11 +193,11 @@ public class MQTTService extends Service implements MqttCallback {
         catch (MqttException ex) {
             FlyveLog.e(TAG, ex.getMessage());
             broadcastMessage(Helpers.broadCastMessage("ERROR", String.valueOf(ex.getReasonCode()), ex.getMessage()));
-            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on connect", ex.getMessage()));
+            storeLog(Helpers.broadCastMessage("ERROR", "Error on connect", ex.getMessage()));
         } catch (Exception ex) {
             FlyveLog.e(TAG, ex.getMessage());
             broadcastMessage(Helpers.broadCastMessage("ERROR", "0", getApplicationContext().getResources().getString(R.string.MQTT_ERROR_CONNECTION)));
-            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on connect", ex.getMessage()));
+            storeLog(Helpers.broadCastMessage("ERROR", "Error on connect", ex.getMessage()));
         }
     }
 
@@ -209,7 +209,7 @@ public class MQTTService extends Service implements MqttCallback {
     public void connectionLost(Throwable cause) {
         // send to backend that agent lost connection
         broadcastServiceStatus(false);
-        broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error", cause.getMessage()));
+        storeLog(Helpers.broadCastMessage("ERROR", "Error", cause.getMessage()));
         FlyveLog.d(TAG, "Connection fail " + cause.getMessage());
     }
 
@@ -220,7 +220,7 @@ public class MQTTService extends Service implements MqttCallback {
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
         FlyveLog.d(TAG, "deliveryComplete: " + token.toString());
-        broadcastReceivedLog(Helpers.broadCastMessage("MQTT Delivery", "Response id", String.valueOf(token.getMessageId())));
+        storeLog(Helpers.broadCastMessage("MQTT Delivery", "Response id", String.valueOf(token.getMessageId())));
     }
 
     /**
@@ -236,7 +236,7 @@ public class MQTTService extends Service implements MqttCallback {
 
         String messageBody = new String(message.getPayload());
 
-        broadcastReceivedLog(Helpers.broadCastMessage("MQTT Message", "Body", messageBody));
+        storeLog(Helpers.broadCastMessage("MQTT Message", "Body", messageBody));
 
         try {
             JSONObject jsonObj = new JSONObject(messageBody);
@@ -342,7 +342,7 @@ public class MQTTService extends Service implements MqttCallback {
 
         } catch (Exception ex) {
             FlyveLog.e(TAG, ex.getMessage());
-            broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on messageArrived", ex.getMessage()));
+            storeLog(Helpers.broadCastMessage("ERROR", "Error on messageArrived", ex.getMessage()));
         }
     }
 
@@ -356,10 +356,10 @@ public class MQTTService extends Service implements MqttCallback {
     }
 
     /**
-     * Send broadcast for log messages from MQTT
+     * store log messages from MQTT
      * @param message String to send
      */
-    public void broadcastReceivedLog(String message) {
+    public void storeLog(String message) {
         // write log file
         FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);
     }
