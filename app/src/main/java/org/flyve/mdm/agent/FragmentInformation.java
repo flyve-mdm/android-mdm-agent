@@ -26,6 +26,8 @@ import org.json.JSONObject;
 
 public class FragmentInformation extends Fragment {
 
+    private static final int EDIT_USER = 100;
+
     private IntentFilter mIntent;
     private TextView txtOnline;
     private ImageView imgOnline;
@@ -117,6 +119,14 @@ public class FragmentInformation extends Fragment {
         return v;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == EDIT_USER) {
+            loadClientInfo();
+        }
+    }
     /**
      * Load Supervisor information
      */
@@ -219,7 +229,7 @@ public class FragmentInformation extends Fragment {
      */
     private void openEditUser() {
         Intent intent = new Intent(FragmentInformation.this.getActivity(), EditUserActivity.class);
-        FragmentInformation.this.getActivity().startActivity(intent);
+        FragmentInformation.this.startActivityForResult(intent, EDIT_USER);
     }
 
     /**
