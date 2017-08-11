@@ -75,7 +75,7 @@ public class EditUserActivity extends AppCompatActivity {
     private Spinner spinnerLanguage;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String strPicture;
-    private File filePhoto;
+    private String photoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -280,6 +280,8 @@ public class EditUserActivity extends AppCompatActivity {
         final CharSequence[] items = { "Take Photo", "Choose from Library",
                 "Cancel" };
 
+        hideKeyboard();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(EditUserActivity.this);
         builder.setTitle("Add Photo!");
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -317,7 +319,8 @@ public class EditUserActivity extends AppCompatActivity {
 
     public Uri getImageUri() {
         // Store image in dcim
-        filePhoto = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "flyveUser.jpg");
+        File filePhoto = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "flyveUser.jpg");
+        photoPath = filePhoto.getAbsolutePath();
         return Uri.fromFile(filePhoto);
     }
 
@@ -328,12 +331,12 @@ public class EditUserActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_FILE) {
                 onSelectFromGalleryResult(data);
-            } else if (requestCode == REQUEST_CAMERA && filePhoto.exists()) {
+            } else if (requestCode == REQUEST_CAMERA) {
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                Bitmap bitmap = BitmapFactory.decodeFile(filePhoto.getAbsolutePath(), options);
+                Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);
                 try {
-                    bitmap = Helpers.modifyOrientation(bitmap, filePhoto.getAbsolutePath());
+                    bitmap = Helpers.modifyOrientation(bitmap, photoPath);
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
                 }
@@ -357,6 +360,15 @@ public class EditUserActivity extends AppCompatActivity {
         imgPhoto.setImageBitmap(bm);
     }
 
+    public void hideKeyboard() {
+        // Hide keyboard
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     /**
      * Send information to validateForm
      */
@@ -364,15 +376,10 @@ public class EditUserActivity extends AppCompatActivity {
         StringBuilder errMsg = new StringBuilder("Please fix the following errors and try again.\n\n");
         txtMessage.setText("");
 
-        // Hide keyboard
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-
         //Validate and Save
         boolean allowSave = true;
+
+        hideKeyboard();
 
         String name = editName.getText().toString().trim();
         String lastName = editLastName.getText().toString().trim();

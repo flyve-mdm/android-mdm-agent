@@ -240,6 +240,8 @@ public class EnrollmentActivity extends AppCompatActivity {
         final CharSequence[] items = { "Take Photo", "Choose from Library",
                 "Cancel" };
 
+        hideKeyboard();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(EnrollmentActivity.this);
         builder.setTitle("Add Photo!");
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -317,6 +319,16 @@ public class EnrollmentActivity extends AppCompatActivity {
         imgPhoto.setImageBitmap(bm);
     }
 
+
+    public void hideKeyboard() {
+        // Hide keyboard
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     /**
      * Send information to validateForm
      */
@@ -325,11 +337,7 @@ public class EnrollmentActivity extends AppCompatActivity {
         txtMessage.setText("");
 
         // Hide keyboard
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+        hideKeyboard();
 
         // waiting for cert x509
         if(pbx509.getVisibility() == View.VISIBLE) {
