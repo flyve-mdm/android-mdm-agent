@@ -27,15 +27,21 @@
 
 package org.flyve.mdm.agent;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -66,9 +72,7 @@ import org.flyve.mdm.agent.utils.InputValidatorHelper;
 import org.flyve.mdm.agent.utils.MultipleEditText;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -97,8 +101,8 @@ public class EnrollmentActivity extends AppCompatActivity {
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String strPicture;
     private ImageView imgPhoto;
-
     private ProgressDialog pd;
+    private File filePhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,16 +122,20 @@ public class EnrollmentActivity extends AppCompatActivity {
             });
         }
 
+        // Request all the permissions that the library need
+        int permissionAll = 1;
+        String[] permissions = { Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA };
+
+        if(!hasPermissions(this, permissions)){
+            ActivityCompat.requestPermissions(this, permissions, permissionAll);
+        }
+
         pbx509 = (ProgressBar) findViewById(R.id.progressBarX509);
 
         enroll = new EnrollmentHelper(EnrollmentActivity.this);
         cache = new DataStorage(EnrollmentActivity.this);
 
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
-        UserModel user = new UserController(EnrollmentActivity.this).getCache();
-        if(!user.getPicture().equals("")) {
-            imgPhoto.setImageBitmap(Helpers.StringToBitmap(user.getPicture()));
-        }
 
         ImageView btnCamera = (ImageView) findViewById(R.id.btnCamera);
         btnCamera.setOnClickListener(new View.OnClickListener() {
@@ -211,9 +219,28 @@ public class EnrollmentActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This function request the permission needed on Android 6.0 and above
+     * @param context The context of the app
+     * @param permissions The list of permissions needed
+     * @return true or false
+     */
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private void selectImage() {
         final CharSequence[] items = { "Take Photo", "Choose from Library",
                 "Cancel" };
+
+        hideKeyboard();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(EnrollmentActivity.this);
         builder.setTitle("Add Photo!");
@@ -243,50 +270,39 @@ public class EnrollmentActivity extends AppCompatActivity {
     }
 
     private void cameraIntent() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_CAMERA);
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, getImageUri());
+            startActivityForResult(takePictureIntent, REQUEST_CAMERA);
+        }
+    }
+
+    public Uri getImageUri() {
+        // Store image in dcim
+        filePhoto = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "flyveUser.jpg");
+        return Uri.fromFile(filePhoto);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == SELECT_FILE)
+            if (requestCode == SELECT_FILE) {
                 onSelectFromGalleryResult(data);
-            else if (requestCode == REQUEST_CAMERA)
-                onCaptureImageResult(data);
-        }
-    }
-
-    private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
-
-        FileOutputStream fo = null;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (Exception e) {
-            FlyveLog.e(e.getMessage());
-        } finally {
-            if(fo!=null) {
+            } else if (requestCode == REQUEST_CAMERA && filePhoto.exists()) {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                Bitmap bitmap = BitmapFactory.decodeFile(filePhoto.getAbsolutePath(), options);
                 try {
-                    fo.close();
+                    bitmap = Helpers.modifyOrientation(bitmap, filePhoto.getAbsolutePath());
                 } catch (Exception ex) {
-                    FlyveLog.d(ex.getMessage());
+                    FlyveLog.e(ex.getMessage());
                 }
+
+                strPicture = Helpers.BitmapToString(bitmap);
+                imgPhoto.setImageBitmap(bitmap);
             }
         }
-
-        strPicture = Helpers.BitmapToString(thumbnail);
-        imgPhoto.setImageBitmap(thumbnail);
     }
 
     private void onSelectFromGalleryResult(Intent data) {
@@ -303,6 +319,16 @@ public class EnrollmentActivity extends AppCompatActivity {
         imgPhoto.setImageBitmap(bm);
     }
 
+
+    public void hideKeyboard() {
+        // Hide keyboard
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     /**
      * Send information to validateForm
      */
@@ -311,11 +337,7 @@ public class EnrollmentActivity extends AppCompatActivity {
         txtMessage.setText("");
 
         // Hide keyboard
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+        hideKeyboard();
 
         // waiting for cert x509
         if(pbx509.getVisibility() == View.VISIBLE) {
