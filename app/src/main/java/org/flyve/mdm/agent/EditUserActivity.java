@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +31,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.InputValidatorHelper;
 import org.flyve.mdm.agent.utils.MultipleEditText;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,7 @@ public class EditUserActivity extends AppCompatActivity {
     private Spinner spinnerLanguage;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String strPicture;
+    private File filePhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -306,8 +308,17 @@ public class EditUserActivity extends AppCompatActivity {
     }
 
     private void cameraIntent() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_CAMERA);
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, getImageUri());
+            startActivityForResult(takePictureIntent, REQUEST_CAMERA);
+        }
+    }
+
+    public Uri getImageUri() {
+        // Store image in dcim
+        filePhoto = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "flyveUser.jpg");
+        return Uri.fromFile(filePhoto);
     }
 
     @Override
@@ -315,32 +326,15 @@ public class EditUserActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == SELECT_FILE)
+            if (requestCode == SELECT_FILE) {
                 onSelectFromGalleryResult(data);
-            else if (requestCode == REQUEST_CAMERA && filePhoto.exists())
+            } else if (requestCode == REQUEST_CAMERA && filePhoto.exists()) {
                 BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Bitmap bitmap = BitmapFactory.decodeFile(filePhoto.getAbsolutePath(), options);
-            strPicture = Helpers.BitmapToString(bitmap);
-            imgPhoto.setImageBitmap(bitmap);
-        }
-    }
-
-    private void onCaptureImageResult(Intent data) {
-
-        Uri selectedImage = data.getData();
-        try {
-            Bitmap realImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            realImage.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-
-            FlyveLog.d(Helpers.getOrientation( EditUserActivity.this, selectedImage));
-            realImage = Helpers.rotate(realImage, 270);
-
-            strPicture = Helpers.BitmapToString(realImage);
-            imgPhoto.setImageBitmap(realImage);
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                Bitmap bitmap = BitmapFactory.decodeFile(filePhoto.getAbsolutePath(), options);
+                strPicture = Helpers.BitmapToString(bitmap);
+                imgPhoto.setImageBitmap(bitmap);
+            }
         }
     }
 
