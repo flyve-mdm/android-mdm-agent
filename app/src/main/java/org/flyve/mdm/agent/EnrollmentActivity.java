@@ -71,6 +71,7 @@ import org.flyve.mdm.agent.utils.InputValidatorHelper;
 import org.flyve.mdm.agent.utils.MultipleEditText;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -295,6 +296,8 @@ public class EnrollmentActivity extends AppCompatActivity {
         Uri selectedImage = data.getData();
         try {
             Bitmap realImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            realImage.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
 
             FlyveLog.d(Helpers.getOrientation( EnrollmentActivity.this, selectedImage));
             realImage = Helpers.rotate(realImage, 270);

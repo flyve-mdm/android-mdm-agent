@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,8 +30,6 @@ import org.flyve.mdm.agent.utils.InputValidatorHelper;
 import org.flyve.mdm.agent.utils.MultipleEditText;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -324,33 +322,21 @@ public class EditUserActivity extends AppCompatActivity {
     }
 
     private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
 
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
-
-        FileOutputStream fo = null;
+        Uri selectedImage = data.getData();
         try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (Exception e) {
-            FlyveLog.e(e.getMessage());
-        } finally {
-            if(fo!=null) {
-                try {
-                    fo.close();
-                } catch (Exception ex) {
-                    FlyveLog.d(ex.getMessage());
-                }
-            }
-        }
+            Bitmap realImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            realImage.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
 
-        strPicture = Helpers.BitmapToString(thumbnail);
-        imgPhoto.setImageBitmap(thumbnail);
+            FlyveLog.d(Helpers.getOrientation( EditUserActivity.this, selectedImage));
+            realImage = Helpers.rotate(realImage, 270);
+
+            strPicture = Helpers.BitmapToString(realImage);
+            imgPhoto.setImageBitmap(realImage);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
     }
 
     private void onSelectFromGalleryResult(Intent data) {
