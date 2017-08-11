@@ -5,8 +5,24 @@
 
   {% assign name = site.github.project_title | replace: "flyve-mdm-", "" %}   
   {% assign name = name | replace: "-", " " %}   
-  <title>{{ name }}</title>
+
+  {% if page.layout == 'post' %}
+    {% assign title = page.title %}
+    <meta property="og:type" content="article" />
+    <meta property="article:tag" content="{{ page.categories | join: ", " }}" />
+    {% else %}
+      {% assign title = name%}
+      <meta property="og:type" content="website" />
+  {% endif %}
+  
+  <title>{{ title }}</title>
+  <meta property="og:title" content="{{ title }}" />
+  <meta property="og:site_name" content="{{ name }}"/>
+
+  <meta property="og:image" content="{{ 'images/logo2.png' | relative_url }}" />
+
   <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+  <meta name="og:description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
 
   <link rel="stylesheet" href="{{ "/css/main.css" | relative_url }}">
   <link rel="stylesheet" href="{{ "/css/flyve-mdm.min.css" | relative_url }}">
@@ -15,6 +31,7 @@
   <link rel="stylesheet" href="{{ 'css/flyve-mdm-optional.min.css' | relative_url }}" />
   <link rel="stylesheet" href="{{ 'css/style.css' | relative_url }}" />
   <link rel="stylesheet" href="{{ 'css/coderay.css' | relative_url }}" /> 
+  <link rel="stylesheet" href="{{ 'css/syntax.css' | relative_url }}" /> 
   <link rel="icon" href="{{ "/images/favicon.png" | relative_url }}">
 
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
@@ -24,4 +41,5 @@
   {% include google-analytics.html %}
   {% endif %}
   <script src="{{ "/js/jquery.min.js" | relative_url }}"></script>
+  
 </head>
