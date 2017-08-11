@@ -71,9 +71,7 @@ import org.flyve.mdm.agent.utils.InputValidatorHelper;
 import org.flyve.mdm.agent.utils.MultipleEditText;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -269,8 +267,11 @@ public class EnrollmentActivity extends AppCompatActivity {
     }
 
     private void cameraIntent() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_CAMERA);
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, getImageUri());
+            startActivityForResult(takePictureIntent, REQUEST_CAMERA);
+        }
     }
 
     public Uri getImageUri() {
@@ -282,7 +283,6 @@ public class EnrollmentActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_FILE)
                 onSelectFromGalleryResult(data);
@@ -292,33 +292,18 @@ public class EnrollmentActivity extends AppCompatActivity {
     }
 
     private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
-
-        FileOutputStream fo = null;
+        Uri selectedImage = data.getData();
         try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (Exception e) {
-            FlyveLog.e(e.getMessage());
-        } finally {
-            if(fo!=null) {
-                try {
-                    fo.close();
-                } catch (Exception ex) {
-                    FlyveLog.d(ex.getMessage());
-                }
-            }
-        }
+            Bitmap realImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
 
-        strPicture = Helpers.BitmapToString(thumbnail);
-        imgPhoto.setImageBitmap(thumbnail);
+            FlyveLog.d(Helpers.getOrientation( EnrollmentActivity.this, selectedImage));
+            realImage = Helpers.rotate(realImage, 270);
+
+            strPicture = Helpers.BitmapToString(realImage);
+            imgPhoto.setImageBitmap(realImage);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
     }
 
     private void onSelectFromGalleryResult(Intent data) {
