@@ -30,10 +30,13 @@ package org.flyve.mdm.agent.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Base64;
@@ -216,5 +219,31 @@ public class Helpers {
 			FlyveLog.e(e.getMessage());
 			return null;
 		}
+	}
+
+	public static Bitmap rotate(Bitmap bitmap, int degree) {
+		int w = bitmap.getWidth();
+		int h = bitmap.getHeight();
+
+		Matrix mtx = new Matrix();
+		mtx.setRotate(degree);
+
+		return Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
+	}
+
+	public static int getOrientation(Context context, Uri photoUri) {
+    /* it's on the external media. */
+		Cursor cursor = context.getContentResolver().query(photoUri,
+				new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
+
+		int result = -1;
+		if (null != cursor) {
+			if (cursor.moveToFirst()) {
+				result = cursor.getInt(0);
+			}
+			cursor.close();
+		}
+
+		return result;
 	}
 }
