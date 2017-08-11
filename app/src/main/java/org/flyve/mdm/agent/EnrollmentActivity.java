@@ -291,6 +291,12 @@ public class EnrollmentActivity extends AppCompatActivity {
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                 Bitmap bitmap = BitmapFactory.decodeFile(filePhoto.getAbsolutePath(), options);
+                try {
+                    bitmap = Helpers.modifyOrientation(bitmap, filePhoto.getAbsolutePath());
+                } catch (Exception ex) {
+                    FlyveLog.e(ex.getMessage());
+                }
+
                 strPicture = Helpers.BitmapToString(bitmap);
                 imgPhoto.setImageBitmap(bitmap);
             }
