@@ -20,6 +20,11 @@
     <string name="device_supervised_by_title">DEVICE SUPERVISED BY</string>
     <string name="user_information_title">USER INFORMATION</string>
 
+    <string name="saved">Saved</string>
+    <string name="validate_error">Please fix the following errors and try again.\n\n</string>
+    <string name="validate_email">- Email should not be empty.\n</string>
+    <string name="validate_organization">- Organization should not be empty.\n</string>
+
     <string name="supervisor_information">Supervisor information</string>
     <string name="supervisor_name">Organization</string>
     <string name="supervisor_email">Email</string>
