@@ -75,10 +75,10 @@ public class FragmentInformation extends Fragment {
                 if(!cache.getEasterEgg()) {
                     countEasterEgg++;
                     if (countEasterEgg > 6 && countEasterEgg <= 10) {
-                        Toast.makeText(FragmentInformation.this.getActivity(), "You have " + countEasterEgg + " Attempts", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FragmentInformation.this.getActivity(), getResources().getQuantityString(R.plurals.easter_egg_attempts, countEasterEgg, countEasterEgg), Toast.LENGTH_SHORT).show();
                     }
                     if (countEasterEgg >= 10) {
-                        Toast.makeText(FragmentInformation.this.getActivity(), "Now you have log version agent", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FragmentInformation.this.getActivity(), getResources().getString(R.string.easter_egg_success), Toast.LENGTH_SHORT).show();
                         cache.setEasterEgg(true);
                     }
                 }
@@ -201,7 +201,7 @@ public class FragmentInformation extends Fragment {
 
                     if("ERROR".equalsIgnoreCase(type)) {
 
-                        Helpers.snack(FragmentInformation.this.getActivity(), body, "close", new View.OnClickListener() {
+                        Helpers.snack(FragmentInformation.this.getActivity(), body, getResources().getString(R.string.close), new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                             }

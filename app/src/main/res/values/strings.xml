@@ -40,6 +40,14 @@
     <string name="help">help</string>
     <string name="loading">Loading...</string>
 
+    <string name="easter_egg_success">Now you have log version agent</string>
+    <plurals name="easter_egg_attempts">
+        <item quantity="one">You have %d Attempt</item>
+        <item quantity="other">You have %d Attempts</item>
+    </plurals>
+
+    <string name="close">Close</string>
+
     <string name="supervisor_information">Supervisor information</string>
     <string name="supervisor_name">Organization</string>
     <string name="supervisor_email">Email</string>
