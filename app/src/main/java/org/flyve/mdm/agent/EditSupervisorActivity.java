@@ -115,14 +115,14 @@ public class EditSupervisorActivity extends AppCompatActivity {
 
         controller.save(model);
 
-        Helpers.snack( EditSupervisorActivity.this, "Saved" );
-    }
+        Helpers.snack( EditSupervisorActivity.this, getResources().getString(R.string.saved) );
+}
 
     /**
      * Send information to validateForm
      */
     private void validateForm() {
-        StringBuilder errMsg = new StringBuilder("Please fix the following errors and try again.\n\n");
+        StringBuilder errMsg = new StringBuilder(getResources().getString(R.string.validate_error));
         txtMessage.setText("");
 
         // Hide keyboard
@@ -140,13 +140,13 @@ public class EditSupervisorActivity extends AppCompatActivity {
 
         // Email
         if (InputValidatorHelper.isNullOrEmpty(email)) {
-            errMsg.append("- Email should not be empty.\n");
+            errMsg.append(getResources().getString(R.string.validate_email));
             allowSave = false;
         }
 
         // Organization
         if (InputValidatorHelper.isNullOrEmpty(name)) {
-            errMsg.append("- Organization should not be empty.\n");
+            errMsg.append(getResources().getString(R.string.validate_organization));
             allowSave = false;
         }
 
