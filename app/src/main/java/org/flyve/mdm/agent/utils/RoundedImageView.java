@@ -65,16 +65,20 @@ public class RoundedImageView extends ImageView {
         if (getWidth() == 0 || getHeight() == 0) {
             return;
         }
-        Bitmap b = ((BitmapDrawable) drawable).getBitmap();
-        Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);
 
-        int w = getWidth();
-        @SuppressWarnings("unused")
-        int h = getHeight();
+        try {
+            Bitmap b = ((BitmapDrawable) drawable).getBitmap();
+            Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);
 
-        Bitmap roundBitmap = getCroppedBitmap(bitmap, w);
-        canvas.drawBitmap(roundBitmap, 0, 0, null);
+            int w = getWidth();
+            @SuppressWarnings("unused")
+            int h = getHeight();
 
+            Bitmap roundBitmap = getCroppedBitmap(bitmap, w);
+            canvas.drawBitmap(roundBitmap, 0, 0, null);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
     }
 
     public static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {

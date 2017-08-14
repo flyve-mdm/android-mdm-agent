@@ -143,7 +143,17 @@ public class FragmentInformation extends Fragment {
         UserModel user = new UserController(FragmentInformation.this.getActivity()).getCache();
         txtNameUser.setText(user.getFirstName() + " " + user.getLastName());
         txtEmailUser.setText(user.getEmails().get(0).getEmail());
-        imgUser.setImageBitmap( Helpers.StringToBitmap( user.getPicture() ));
+
+        if(user.getPicture().equals("")) {
+            imgUser.setImageResource(R.drawable.ic_user_round);
+        } else {
+            try {
+                imgUser.setImageBitmap(Helpers.StringToBitmap(user.getPicture()));
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+                imgUser.setImageResource(R.drawable.ic_user_round);
+            }
+        }
     }
 
     private void statusMQTT(Boolean bval) {
