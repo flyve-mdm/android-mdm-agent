@@ -15,7 +15,7 @@
     <string name="online">Online</string>
     <string name="offline">Offline</string>
     <string name="snackbar_close">Dismiss</string>
-    <string name="loading">Enrollment in process</string>
+    <string name="enrollment_in_process">Enrollment in process</string>
     <string name="creating_certified_x509">Creating certified</string>
     <string name="device_supervised_by_title">DEVICE SUPERVISED BY</string>
     <string name="user_information_title">USER INFORMATION</string>
@@ -36,6 +36,9 @@
     <string name="add_photo">Add photo</string>
 
     <string name="select_file">Select File</string>
+
+    <string name="help">help</string>
+    <string name="loading">Loading...</string>
 
     <string name="supervisor_information">Supervisor information</string>
     <string name="supervisor_name">Organization</string>

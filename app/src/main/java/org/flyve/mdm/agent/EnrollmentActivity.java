@@ -385,7 +385,7 @@ public class EnrollmentActivity extends AppCompatActivity {
      */
     private void sendEnroll() {
         try {
-            pd = ProgressDialog.show(EnrollmentActivity.this, "", getResources().getString(R.string.loading));
+            pd = ProgressDialog.show(EnrollmentActivity.this, "", getResources().getString(R.string.enrollment_in_process));
 
             AndroidCryptoProvider csr = new AndroidCryptoProvider(EnrollmentActivity.this.getBaseContext());
             String requestCSR = "";
