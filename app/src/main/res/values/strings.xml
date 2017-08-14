@@ -28,6 +28,8 @@
     <string name="validate_last_name">- Last name should not be empty.\n</string>
     <string name="validate_organization">- Organization should not be empty.\n</string>
 
+    <string name="error_certified_x509">Error creating certificate X509</string>
+
     <string name="cancel">Cancel</string>
     <string name="take_photo">Take Photo</string>
     <string name="choose_from_library">Choose from Library</string>
