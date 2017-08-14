@@ -76,6 +76,10 @@ public class StartEnrollmentActivity extends Activity {
         String url;
         String userToken;
         String invitationToken;
+        String name;
+        String phone;
+        String website;
+        String email;
         String deepLinkErrorMessage = getResources().getString(R.string.ERROR_DEEP_LINK);
 
         try {
@@ -110,6 +114,26 @@ public class StartEnrollmentActivity extends Activity {
                     deepLinkErrorMessage = "TOKEN " + deepLinkErrorMessage;
                     showError( deepLinkErrorMessage );
                     return;
+                }
+
+                // name
+                if(csv.length > 3 && !csv[3].isEmpty()) {
+                    name = csv[3];
+                }
+
+                // phone
+                if(csv.length > 4 && !csv[4].isEmpty()) {
+                    phone = csv[4];
+                }
+
+                // website
+                if(csv.length > 5 && !csv[5].isEmpty()) {
+                    website = csv[5];
+                }
+
+                // email
+                if(csv.length > 6 && !csv[6].isEmpty()) {
+                    email = csv[6];
                 }
 
                 cache.setUrl(url);
@@ -153,7 +177,6 @@ public class StartEnrollmentActivity extends Activity {
                         showError( error );
                     }
                 });
-
             }
         });
     }
