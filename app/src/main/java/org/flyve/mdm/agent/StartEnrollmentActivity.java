@@ -41,7 +41,6 @@ import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.json.JSONObject;
 
 public class StartEnrollmentActivity extends Activity {
 
@@ -80,40 +79,50 @@ public class StartEnrollmentActivity extends Activity {
         String deepLinkErrorMessage = getResources().getString(R.string.ERROR_DEEP_LINK);
 
         try {
-            JSONObject jsonLink = new JSONObject(deepLinkData);
+            // CSV comma-separated values format
+            // url; user token; invitation token; support name; support phone, support website; support email
+            String[] csv = deepLinkData.split("\\\\;");
 
-            if(jsonLink.has("url")) {
-                url = jsonLink.getString("url");
+            if(csv.length >= 0) {
+
+                // url
+                if(!csv[0].isEmpty()) {
+                    url = csv[0];
+                } else {
+                    deepLinkErrorMessage = "URL " + deepLinkErrorMessage;
+                    showError( deepLinkErrorMessage );
+                    return;
+                }
+
+                // user token
+                if(!csv[1].isEmpty()) {
+                    userToken = csv[1];
+                } else {
+                    deepLinkErrorMessage = "USER " + deepLinkErrorMessage;
+                    showError( deepLinkErrorMessage );
+                    return;
+                }
+
+                // invitation token
+                if(!csv[2].isEmpty()) {
+                    invitationToken = csv[2];
+                } else {
+                    deepLinkErrorMessage = "TOKEN " + deepLinkErrorMessage;
+                    showError( deepLinkErrorMessage );
+                    return;
+                }
+
+                cache.setUrl(url);
+                cache.setUserToken(userToken);
+                cache.setInvitationToken(invitationToken);
+
             } else {
-                deepLinkErrorMessage = "URL " + deepLinkErrorMessage;
                 showError( deepLinkErrorMessage );
-                return;
             }
-
-            if(jsonLink.has("user_token")) {
-                userToken = jsonLink.getString("user_token");
-            } else {
-                deepLinkErrorMessage = "USER " + deepLinkErrorMessage;
-                showError( deepLinkErrorMessage );
-                return;
-            }
-
-            if(jsonLink.has("invitation_token")) {
-                invitationToken = jsonLink.getString("invitation_token");
-            } else {
-                deepLinkErrorMessage = "TOKEN " + deepLinkErrorMessage;
-                showError( deepLinkErrorMessage );
-                return;
-            }
-
-            cache.setUrl(url);
-            cache.setUserToken(userToken);
-            cache.setInvitationToken(invitationToken);
 
         } catch (Exception ex) {
-            FlyveLog.e( ex.getMessage() );
+            FlyveLog.e(ex.getMessage());
             showError( deepLinkErrorMessage );
-            return;
         }
 
         btnEnroll = (RelativeLayout) findViewById(R.id.btnEnroll);
