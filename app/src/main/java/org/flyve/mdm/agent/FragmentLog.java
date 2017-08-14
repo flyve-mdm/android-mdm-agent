@@ -110,7 +110,7 @@ public class FragmentLog extends Fragment  {
                 Collections.reverse(data);
                 arr_data = data;
                 if(arr_data.isEmpty()) {
-                    txtMessage.setText("Without data to show");
+                    txtMessage.setText(getResources().getString(R.string.without_data_to_show));
                 } else {
                     txtMessage.setText("");
                 }
@@ -122,7 +122,7 @@ public class FragmentLog extends Fragment  {
             @Override
             public void onError(String error) {
                 pb.setVisibility(View.GONE);
-                txtMessage.setText("We can't show the log data please delete and try again");
+                txtMessage.setText(getResources().getString(R.string.we_can_not_show_the_log));
             }
         });
     }
