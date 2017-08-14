@@ -273,28 +273,27 @@ public class EditUserActivity extends AppCompatActivity {
 
         new UserController(EditUserActivity.this).save(user);
 
-        Helpers.snack( EditUserActivity.this, "Saved" );
+        Helpers.snack( EditUserActivity.this, getResources().getString(R.string.saved) );
     }
 
     private void selectImage() {
-        final CharSequence[] items = { "Take Photo", "Choose from Library",
-                "Cancel" };
+        final CharSequence[] items = { getResources().getString(R.string.take_photo), getResources().getString(R.string.choose_from_library), getResources().getString(R.string.cancel) };
 
         hideKeyboard();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(EditUserActivity.this);
-        builder.setTitle("Add Photo!");
+        builder.setTitle(getResources().getString(R.string.add_photo));
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
 
-                if (items[item].equals("Take Photo")) {
+                if (items[item].equals(getResources().getString(R.string.take_photo))) {
                     cameraIntent();
 
-                } else if (items[item].equals("Choose from Library")) {
+                } else if (items[item].equals(getResources().getString(R.string.choose_from_library))) {
                     galleryIntent();
 
-                } else if (items[item].equals("Cancel")) {
+                } else if (items[item].equals(getResources().getString(R.string.cancel))) {
                     dialog.dismiss();
                 }
             }
@@ -306,7 +305,7 @@ public class EditUserActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);//
-        startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
+        startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.select_file)),SELECT_FILE);
     }
 
     private void cameraIntent() {
@@ -373,7 +372,7 @@ public class EditUserActivity extends AppCompatActivity {
      * Send information to validateForm
      */
     private void validateForm() {
-        StringBuilder errMsg = new StringBuilder("Please fix the following errors and try again.\n\n");
+        StringBuilder errMsg = new StringBuilder(getResources().getString(R.string.validate_error));
         txtMessage.setText("");
 
         //Validate and Save
@@ -386,18 +385,18 @@ public class EditUserActivity extends AppCompatActivity {
 
         // Name
         if (InputValidatorHelper.isNullOrEmpty(name)) {
-            errMsg.append("- First name should not be empty.\n");
+            errMsg.append(getResources().getString(R.string.validate_first_name));
             allowSave = false;
         }
 
         // Last name
         if (InputValidatorHelper.isNullOrEmpty(lastName)) {
-            errMsg.append("- Last name should not be empty.\n");
+            errMsg.append(getResources().getString(R.string.validate_last_name));
             allowSave = false;
         }
 
         if(editEmail.getEditList().isEmpty()) {
-            errMsg.append("- Please add one email at least.\n");
+            errMsg.append(getResources().getString(R.string.validate_email_at_least_one));
             allowSave = false;
         }
 

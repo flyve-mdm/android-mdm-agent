@@ -23,7 +23,17 @@
     <string name="saved">Saved</string>
     <string name="validate_error">Please fix the following errors and try again.\n\n</string>
     <string name="validate_email">- Email should not be empty.\n</string>
+    <string name="validate_email_at_least_one">- Please add one email at least.\n</string>
+    <string name="validate_first_name">- First name should not be empty.\n</string>
+    <string name="validate_last_name">- Last name should not be empty.\n</string>
     <string name="validate_organization">- Organization should not be empty.\n</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_library">Choose from Library</string>
+    <string name="add_photo">Add photo</string>
+
+    <string name="select_file">Select File</string>
 
     <string name="supervisor_information">Supervisor information</string>
     <string name="supervisor_name">Organization</string>
