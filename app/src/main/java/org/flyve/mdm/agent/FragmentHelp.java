@@ -58,7 +58,7 @@ public class FragmentHelp extends Fragment {
         settings.setJavaScriptEnabled(true);
         wv.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
 
-        progressBar = ProgressDialog.show(FragmentHelp.this.getActivity(), "Help", "Loading...");
+        progressBar = ProgressDialog.show(FragmentHelp.this.getActivity(), getResources().getString(R.string.help), getResources().getString(R.string.loading));
 
         wv.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
