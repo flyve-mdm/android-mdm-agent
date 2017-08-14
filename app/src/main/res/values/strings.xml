@@ -47,6 +47,8 @@
     </plurals>
 
     <string name="close">Close</string>
+    <string name="without_data_to_show">Without data to show</string>
+    <string name="we_can_not_show_the_log">We can\'t show the log data please delete and try again</string>
 
     <string name="supervisor_information">Supervisor information</string>
     <string name="supervisor_name">Organization</string>
