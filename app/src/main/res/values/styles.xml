@@ -44,6 +44,13 @@
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
+    <style name="titleTextWhite">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
     <style name="bigText">
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">35sp</item>
