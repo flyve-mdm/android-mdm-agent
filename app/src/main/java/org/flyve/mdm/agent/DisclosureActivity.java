@@ -1,9 +1,15 @@
 package org.flyve.mdm.agent;
 
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+
+import org.flyve.mdm.agent.security.FlyveAdminReceiver;
+import org.flyve.mdm.agent.utils.Helpers;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -31,7 +37,11 @@ import android.widget.Button;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
+
 public class DisclosureActivity extends AppCompatActivity {
+
+    private static final int REQUEST_CODE_ENABLE_ADMIN = 1;
+    private ComponentName mDeviceAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +49,18 @@ public class DisclosureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_disclosure);
 
         Button btnAccept = (Button) findViewById(R.id.btnAccept);
+        btnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Device Admin
+                mDeviceAdmin = new ComponentName(DisclosureActivity.this, FlyveAdminReceiver.class);
+
+                Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+                intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
+                intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "EXPLANATION");
+                startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
+            }
+        });
 
         Button btnCancel = (Button) findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -47,8 +69,24 @@ public class DisclosureActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_ENABLE_ADMIN && resultCode==RESULT_OK) {
+            nextStep();
+        } else {
+            Helpers.snack(DisclosureActivity.this, getResources().getString(R.string.disclosure_decline));
+        }
+    }
 
+    /**
+     * Open the next activity
+     */
+    private void nextStep() {
+        Intent intent = new Intent(DisclosureActivity.this, MainActivity.class);
+        DisclosureActivity.this.startActivity(intent);
+        DisclosureActivity.this.finish();
+    }
 }

@@ -28,8 +28,6 @@
 package org.flyve.mdm.agent;
 
 import android.app.ActivityManager;
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,7 +43,6 @@ import android.widget.TextView;
 
 import org.flyve.mdm.agent.adapter.DrawerAdapter;
 import org.flyve.mdm.agent.data.DataStorage;
-import org.flyve.mdm.agent.security.FlyveAdminReceiver;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
@@ -62,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtToolbarTitle;
 
     private Intent mServiceIntent;
-    private static final int REQUEST_CODE_ENABLE_ADMIN = 1;
-    private ComponentName mDeviceAdmin;
     private DataStorage cache;
 
     @Override
@@ -108,14 +103,6 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.syncState();
 
         loadListDrawer();
-
-        // Device Admin
-        mDeviceAdmin = new ComponentName(this, FlyveAdminReceiver.class);
-
-        Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
-        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "EXPLANATION");
-        startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
 
         // ------------------
         // MQTT SERVICE
