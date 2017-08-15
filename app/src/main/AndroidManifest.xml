@@ -34,11 +34,6 @@
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:theme="@style/NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
@@ -55,6 +50,15 @@
         <activity
             android:name=".EditSupervisorActivity"
             android:configChanges="orientation|screenSize">
+        </activity>
+        <activity
+            android:name=".DisclosureActivity"
+            android:configChanges="orientation|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".StartEnrollmentActivity"
