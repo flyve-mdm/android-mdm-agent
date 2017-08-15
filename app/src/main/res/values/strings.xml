@@ -3,7 +3,7 @@
     <string name="text_intro">Flyve MDM is a mobile device management software that enables you to secure and manage all the mobile devices of your business or family via web-based console</string>
     <string name="disclosure_permission">Flyve MDM is a mobile device management software that enables you to secure and manage all the mobile devices of your business or family via web-based console\n\n
 
-    This are our support features:\n\n
+    These are our support features:\n\n
 
         - Central Mobile Policy Management and Policy Inheritance\n\n
         - Lost Device Detection, Jail-broken phone Detection, including Lock, Wipe, and Encryption\n\n
@@ -12,10 +12,9 @@
         - App Distribution and Mobile App Management (MAM)\n\n
         - File Distribution\n\n
         - Role-Based Admin Management\n\n
-        - Multi-Tenant Architecture\n\n
         - Anytime Anywhere access though Cloud Console\n\n\n
 
-        Please be sure that you understand our policy\n\n
+        Accept our policy to continue
     </string>
     <string name="flyve_link">http://flyve-mdm.com</string>
     <string name="start_enroll">Enroll device</string>
@@ -39,6 +38,8 @@
     <string name="saved">Saved</string>
     <string name="accept">Accept</string>
     <string name="cancel">Cancel</string>
+
+    <string name="disclosure_title">Terms and Conditions</string>
 
     <string name="validate_error">Please fix the following errors and try again.\n\n</string>
     <string name="validate_email">- Email should not be empty.\n</string>
