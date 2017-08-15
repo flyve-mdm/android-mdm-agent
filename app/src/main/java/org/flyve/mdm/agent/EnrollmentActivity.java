@@ -477,7 +477,7 @@ public class EnrollmentActivity extends AppCompatActivity {
 
                     new SupervisorController(EnrollmentActivity.this).save(supervisorModel);
 
-                    openMain();
+                    nextStep();
                 }
 
                 @Override
@@ -502,10 +502,10 @@ public class EnrollmentActivity extends AppCompatActivity {
     }
 
     /**
-     * Open the main activity
+     * Open the next activity
      */
-    private void openMain() {
-        Intent intent = new Intent(EnrollmentActivity.this, MainActivity.class);
+    private void nextStep() {
+        Intent intent = new Intent(EnrollmentActivity.this, DisclosureActivity.class);
         EnrollmentActivity.this.startActivity(intent);
         setResult(RESULT_OK, null);
         EnrollmentActivity.this.finish();
