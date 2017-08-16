@@ -135,8 +135,13 @@ public class FragmentInformation extends Fragment {
      */
     private void loadSupervisor() {
         SupervisorModel supervisor = new SupervisorController(FragmentInformation.this.getActivity()).getCache();
-        txtNameSupervisor.setText(supervisor.getName());
-        txtDescriptionSupervisor.setText(supervisor.getEmail());
+
+        if(supervisor.getName() != null && !supervisor.getName().equals("")) {
+            txtNameSupervisor.setText(supervisor.getName());
+        }
+        if(supervisor.getEmail() != null && !supervisor.getEmail().equals("")) {
+            txtDescriptionSupervisor.setText(supervisor.getEmail());
+        }
     }
 
     /**
@@ -144,8 +149,14 @@ public class FragmentInformation extends Fragment {
      */
     private void loadClientInfo() {
         UserModel user = new UserController(FragmentInformation.this.getActivity()).getCache();
-        txtNameUser.setText(user.getFirstName() + " " + user.getLastName());
-        txtEmailUser.setText(user.getEmails().get(0).getEmail());
+
+        if(user.getFirstName() != null && !user.getFirstName().equals("")) {
+            txtNameUser.setText(user.getFirstName() + " " + user.getLastName());
+        }
+
+        if(user.getEmails().get(0).getEmail() != null && !user.getEmails().get(0).getEmail().equals("")) {
+            txtEmailUser.setText(user.getEmails().get(0).getEmail());
+        }
 
         if(user.getPicture().equals("")) {
             imgUser.setImageResource(R.drawable.ic_user_round);

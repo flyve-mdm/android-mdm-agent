@@ -57,6 +57,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_below="@+id/txtTitleSupervisor"
                 style="@style/titleText"
+                android:text="@string/not_available"
                 />
 
             <TextView
@@ -68,6 +69,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 style="@style/regularText"
+                android:text="@string/not_available"
                 />
 
         </RelativeLayout>
