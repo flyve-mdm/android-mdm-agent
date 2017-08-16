@@ -59,8 +59,6 @@ import android.widget.TextView;
 
 import com.flyvemdm.inventory.categories.Hardware;
 
-import org.flyve.mdm.agent.core.supervisor.SupervisorController;
-import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
 import org.flyve.mdm.agent.core.user.UserController;
 import org.flyve.mdm.agent.core.user.UserModel;
 import org.flyve.mdm.agent.data.DataStorage;
@@ -466,16 +464,6 @@ public class EnrollmentActivity extends AppCompatActivity {
                     userModel.setAdministrativeNumber( editAdministrative.getText().toString() );
 
                     new UserController(EnrollmentActivity.this).save(userModel);
-
-                    // -------------------------------
-                    // Store supervisor information
-                    // -------------------------------
-                    SupervisorModel supervisorModel = new SupervisorModel();
-
-                    supervisorModel.setName("Teclib Spain SL");
-                    supervisorModel.setEmail("sales@teclib.com");
-
-                    new SupervisorController(EnrollmentActivity.this).save(supervisorModel);
 
                     nextStep();
                 }
