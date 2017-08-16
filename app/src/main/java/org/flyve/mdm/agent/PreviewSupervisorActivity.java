@@ -3,10 +3,12 @@ package org.flyve.mdm.agent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.core.supervisor.SupervisorController;
 import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
+import org.flyve.mdm.agent.utils.Helpers;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -55,6 +57,11 @@ public class PreviewSupervisorActivity extends AppCompatActivity {
         }
 
         SupervisorModel supervisor = new SupervisorController(PreviewSupervisorActivity.this).getCache();
+
+        ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
+        if(supervisor.getPicture() != null && !supervisor.getPicture().equals("")) {
+            imgPhoto.setImageBitmap(Helpers.StringToBitmap(supervisor.getPicture()));
+        }
 
         TextView txtName = (TextView) findViewById(R.id.txtName);
         if(supervisor.getName() != null && !supervisor.getName().equals("")) {
