@@ -18,6 +18,14 @@
             android:layout_height="match_parent"
             >
 
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/user_information_enroll"
+                />
+
             <ImageView
                 android:id="@+id/btnEdit"
                 android:layout_width="wrap_content"
@@ -59,16 +67,6 @@
                     android:adjustViewBounds="true"
                     />
             </RelativeLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/user_information_enroll"
-                style="@style/titleText"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="20dp"
-                />
 
             <RelativeLayout
                 android:layout_width="match_parent"

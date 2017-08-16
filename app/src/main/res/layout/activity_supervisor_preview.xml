@@ -22,6 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:text="@string/supervisor_information"
                 />
 
         </RelativeLayout>
@@ -48,16 +49,6 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/supervisor_information"
-                style="@style/titleText"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
                 android:layout_marginBottom="20dp"
                 />
 
