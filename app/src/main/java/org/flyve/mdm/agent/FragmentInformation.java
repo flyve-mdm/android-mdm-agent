@@ -249,7 +249,7 @@ public class FragmentInformation extends Fragment {
      * Open Supervisor Activity
      */
     private void openSupervisorUser() {
-        Intent intent = new Intent(FragmentInformation.this.getActivity(), EditSupervisorActivity.class);
+        Intent intent = new Intent(FragmentInformation.this.getActivity(), PreviewSupervisorActivity.class);
         FragmentInformation.this.getActivity().startActivity(intent);
     }
 }

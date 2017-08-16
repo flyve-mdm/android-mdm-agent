@@ -53,7 +53,7 @@
             android:configChanges="orientation|screenSize">
         </activity>
         <activity
-            android:name=".EditSupervisorActivity"
+            android:name=".PreviewSupervisorActivity"
             android:configChanges="orientation|screenSize">
         </activity>
         <activity
