@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.core.user.UserController;
@@ -77,6 +78,16 @@ public class PreviewUserActivity extends AppCompatActivity {
             imgPhoto.setImageBitmap(Helpers.StringToBitmap(user.getPicture()));
         }
 
+        LinearLayout lnEmail = (LinearLayout) findViewById(R.id.lnEmails);
+        lnEmail.removeAllViews();
+
+        for(int i = 0; i < user.getEmails().size(); i++) {
+            TextView txtEmail = new TextView( PreviewUserActivity.this );
+            txtEmail.setText( user.getEmails().get(i).getEmail() );
+            lnEmail.addView(txtEmail);
+        }
+
+
         TextView txtFirstName = (TextView) findViewById(R.id.txtFirstName);
         txtFirstName.setText( user.getFirstName() );
 
@@ -84,13 +95,28 @@ public class PreviewUserActivity extends AppCompatActivity {
         txtLastName.setText( user.getLastName() );
 
         TextView txtPhone = (TextView) findViewById(R.id.txtPhone);
-        txtPhone.setText( user.getPhone() );
+        if(!user.getPhone().equals("")) {
+            txtPhone.setText(user.getPhone());
+            txtPhone.setVisibility(View.VISIBLE);
+        } else {
+            txtPhone.setVisibility(View.GONE);
+        }
 
         TextView txtPhoneMobile = (TextView) findViewById(R.id.txtPhoneMobile);
-        txtPhoneMobile.setText( user.getMobilePhone() );
+        if(!user.getMobilePhone().equals("")) {
+            txtPhoneMobile.setText(user.getMobilePhone());
+            txtPhoneMobile.setVisibility(View.VISIBLE);
+        } else {
+            txtPhoneMobile.setVisibility(View.GONE);
+        }
 
         TextView txtPhone2 = (TextView) findViewById(R.id.txtPhone2);
-        txtPhone2.setText( user.getPhone2() );
+        if(!user.getMobilePhone().equals("")) {
+            txtPhone2.setText(user.getPhone2());
+            txtPhone2.setVisibility(View.VISIBLE);
+        } else {
+            txtPhone2.setVisibility(View.GONE);
+        }
 
         TextView txtLanguage = (TextView) findViewById(R.id.txtLanguage);
         txtLanguage.setText( user.getLanguage() );
