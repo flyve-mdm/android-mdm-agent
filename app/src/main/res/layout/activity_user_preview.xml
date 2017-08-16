@@ -75,7 +75,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                >
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
                 <ImageView
                     android:id="@+id/icUser"
@@ -91,14 +92,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_toRightOf="@+id/icUser"
-                    >
+                    android:layout_marginLeft="25dp"
+                    android:layout_toRightOf="@+id/icUser">
 
                     <TextView
                         android:id="@+id/txtFirstName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/first_name"
+                        android:layout_marginBottom="5dp"
                         />
 
                     <TextView
@@ -111,12 +113,20 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="80dp"
+                android:background="@android:color/darker_gray"
+                />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                >
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
                 <ImageView
                     android:id="@+id/icEmail"
@@ -133,16 +143,26 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_toRightOf="@+id/icEmail"
+                    android:layout_marginLeft="25dp"
                     >
                 </LinearLayout>
 
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="80dp"
+                android:background="@android:color/darker_gray"
+                />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 >
 
                 <ImageView
@@ -160,31 +180,42 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_toRightOf="@+id/icPhone"
+                    android:layout_marginLeft="25dp"
                     >
-
-                    <TextView
-                        android:id="@+id/txtPhone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/phone"
-                        />
 
                     <TextView
                         android:id="@+id/txtPhoneMobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/phoneMobile"
+                        android:layout_marginBottom="5dp"
+                        android:visibility="gone"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:visibility="gone"
                         />
 
                     <TextView
                         android:id="@+id/txtPhone2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/phone2"
+                        android:layout_marginBottom="5dp"
+                        android:visibility="gone"
                         />
 
                 </LinearLayout>
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="80dp"
+                android:background="@android:color/darker_gray"
+                />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -192,7 +223,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="20dp"
-                android:layout_margin="20dp"
+                android:layout_marginTop="10dp"
                 >
 
                 <ImageView
@@ -210,16 +241,25 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/icLanguage"
                     android:layout_marginTop="10dp"
+                    android:layout_marginLeft="25dp"
                     >
                 </TextView>
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="80dp"
+                android:background="@android:color/darker_gray"
+                />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 >
 
                 <ImageView
@@ -238,6 +278,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/icAdministrative"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="25dp"
                     android:orientation="vertical" />
 
             </RelativeLayout>
