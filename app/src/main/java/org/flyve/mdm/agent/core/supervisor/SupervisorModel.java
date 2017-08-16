@@ -32,15 +32,17 @@ public class SupervisorModel {
     private String email;
     private String phone;
     private String website;
+    private String picture;
 
     public SupervisorModel() {
     }
 
-    public SupervisorModel(String name, String email, String phone, String website) {
+    public SupervisorModel(String name, String email, String phone, String website, String picture) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.website = website;
+        this.picture = picture;
     }
 
     public String getName() {
@@ -73,5 +75,13 @@ public class SupervisorModel {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }
