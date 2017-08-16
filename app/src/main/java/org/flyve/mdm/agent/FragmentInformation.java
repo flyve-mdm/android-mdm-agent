@@ -58,6 +58,9 @@ public class FragmentInformation extends Fragment {
         super.onResume();
         LocalBroadcastManager.getInstance(FragmentInformation.this.getActivity()).registerReceiver(broadcastServiceStatus, new IntentFilter("flyve.mqtt.status"));
         LocalBroadcastManager.getInstance(FragmentInformation.this.getActivity()).registerReceiver(broadcastMessage, new IntentFilter("flyve.mqtt.msg"));
+
+        loadClientInfo();
+        loadSupervisor();
     }
 
     @Override
@@ -105,7 +108,7 @@ public class FragmentInformation extends Fragment {
         layoutUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openEditUser();
+                openViewUser();
             }
         });
 
@@ -237,8 +240,8 @@ public class FragmentInformation extends Fragment {
     /**
      * Open Edit User Activity
      */
-    private void openEditUser() {
-        Intent intent = new Intent(FragmentInformation.this.getActivity(), EditUserActivity.class);
+    private void openViewUser() {
+        Intent intent = new Intent(FragmentInformation.this.getActivity(), PreviewUserActivity.class);
         FragmentInformation.this.startActivityForResult(intent, EDIT_USER);
     }
 

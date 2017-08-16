@@ -17,31 +17,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
-            <TextView
-                android:id="@+id/txtTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/enrollment"
-                android:layout_centerVertical="true"
-                />
-
-            <ProgressBar
-                android:id="@+id/progressBarX509"
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_gravity="center_vertical"
-                android:layout_centerVertical="true"
-                android:layout_alignLeft="@+id/btnSave"
-                android:layout_marginLeft="-30dp"
-                />
 
             <ImageView
-                android:id="@+id/btnSave"
+                android:id="@+id/btnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_check"
+                android:src="@drawable/ic_edit"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
@@ -77,16 +58,6 @@
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
                     />
-
-                <ImageView
-                    android:id="@+id/btnCamera"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/imgPhoto"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/ic_camera"
-                    />
             </RelativeLayout>
 
             <TextView
@@ -110,10 +81,11 @@
                     android:id="@+id/icUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_user"
-                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="false"
+                    android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
-                    />
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_user" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -122,20 +94,18 @@
                     android:layout_toRightOf="@+id/icUser"
                     >
 
-                    <EditText
-                        android:id="@+id/editName"
+                    <TextView
+                        android:id="@+id/txtFirstName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/first_name"
-                        android:inputType="textPersonName"
                         />
 
-                    <EditText
-                        android:id="@+id/editLastName"
+                    <TextView
+                        android:id="@+id/txtLastName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/last_name"
-                        android:inputType="textPersonName"
                         />
                 </LinearLayout>
 
@@ -152,10 +122,10 @@
                     android:id="@+id/icEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_mail"
+                    android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    />
+                    android:src="@drawable/ic_mail" />
 
                 <LinearLayout
                     android:id="@+id/lnEmails"
@@ -179,10 +149,10 @@
                     android:id="@+id/icPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_phone"
+                    android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    />
+                    android:src="@drawable/ic_phone" />
 
                 <LinearLayout
                     android:id="@+id/lnPhones"
@@ -191,6 +161,28 @@
                     android:orientation="vertical"
                     android:layout_toRightOf="@+id/icPhone"
                     >
+
+                    <TextView
+                        android:id="@+id/txtPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/phone"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtPhoneMobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/phoneMobile"
+                        />
+
+                    <TextView
+                        android:id="@+id/txtPhone2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/phone2"
+                        />
+
                 </LinearLayout>
             </RelativeLayout>
 
@@ -207,19 +199,19 @@
                     android:id="@+id/icLanguage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_language"
+                    android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    />
+                    android:src="@drawable/ic_language" />
 
-                <Spinner
-                    android:id="@+id/spinnerLanguage"
+                <TextView
+                    android:id="@+id/txtLanguage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/icLanguage"
                     android:layout_marginTop="10dp"
                     >
-                </Spinner>
+                </TextView>
             </RelativeLayout>
 
 
@@ -236,30 +228,19 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_administrative"
                     android:layout_marginRight="10dp"
+                    android:layout_centerVertical="true"
                     android:layout_marginTop="10dp"
                     />
 
-                <EditText
-                    android:id="@+id/editAdministrative"
+                <TextView
+                    android:id="@+id/txtAdministrativeNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:hint="@string/administrative_number"
                     android:layout_toRightOf="@+id/icAdministrative"
-                    />
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical" />
 
             </RelativeLayout>
-
-            <TextView
-                android:id="@+id/txtMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:layout_margin="20dp"
-                android:layout_gravity="center_horizontal"
-                style="@style/regularText"
-                />
-
 
         </LinearLayout>
     </ScrollView>

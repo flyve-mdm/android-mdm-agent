@@ -26,6 +26,8 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="phone">Phone</string>
+    <string name="phoneMobile">Phone mobile</string>
+    <string name="phone2">Phone 2</string>
     <string name="email">Email</string>
     <string name="administrative_number">Administrative number</string>
     <string name="online">Online</string>
