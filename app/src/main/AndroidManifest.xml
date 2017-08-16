@@ -61,6 +61,10 @@
             android:configChanges="orientation|screenSize">
         </activity>
         <activity
+            android:name=".PreviewUserActivity"
+            android:configChanges="orientation|screenSize">
+        </activity>
+        <activity
             android:name=".StartEnrollmentActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
