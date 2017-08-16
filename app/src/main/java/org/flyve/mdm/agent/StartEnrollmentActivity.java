@@ -37,6 +37,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.flyve.mdm.agent.core.supervisor.SupervisorController;
+import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -116,25 +118,34 @@ public class StartEnrollmentActivity extends Activity {
                     return;
                 }
 
+                SupervisorModel supervisorModel = new SupervisorModel();
+
                 // name
                 if(csv.length > 3 && !csv[3].isEmpty()) {
                     name = csv[3];
+                    supervisorModel.setName(name);
                 }
 
                 // phone
                 if(csv.length > 4 && !csv[4].isEmpty()) {
                     phone = csv[4];
+                    supervisorModel.setPhone(phone);
                 }
 
                 // website
                 if(csv.length > 5 && !csv[5].isEmpty()) {
                     website = csv[5];
+                    supervisorModel.setWebsite(website);
                 }
 
                 // email
                 if(csv.length > 6 && !csv[6].isEmpty()) {
                     email = csv[6];
+                    supervisorModel.setEmail(email);
                 }
+
+                // store supervisor information
+                new SupervisorController(StartEnrollmentActivity.this).save(supervisorModel);
 
                 cache.setUrl(url);
                 cache.setUserToken(userToken);
