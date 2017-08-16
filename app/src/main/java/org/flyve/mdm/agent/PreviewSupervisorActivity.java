@@ -42,7 +42,7 @@ import org.flyve.mdm.agent.utils.InputValidatorHelper;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class EditSupervisorActivity extends AppCompatActivity {
+public class PreviewSupervisorActivity extends AppCompatActivity {
 
     private TextView txtMessage;
     private EditText editName;
@@ -52,9 +52,9 @@ public class EditSupervisorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_supervisor);
+        setContentView(R.layout.activity_supervisor_preview);
 
-        supervisor = new SupervisorController(EditSupervisorActivity.this).getCache();
+        supervisor = new SupervisorController(PreviewSupervisorActivity.this).getCache();
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -108,14 +108,14 @@ public class EditSupervisorActivity extends AppCompatActivity {
     private void save() {
 
         SupervisorModel model = new SupervisorModel();
-        SupervisorController controller = new SupervisorController(EditSupervisorActivity.this);
+        SupervisorController controller = new SupervisorController(PreviewSupervisorActivity.this);
 
         model.setName( editName.getText().toString() );
         model.setEmail( editEmail.getText().toString() );
 
         controller.save(model);
 
-        Helpers.snack( EditSupervisorActivity.this, getResources().getString(R.string.saved) );
+        Helpers.snack( PreviewSupervisorActivity.this, getResources().getString(R.string.saved) );
 }
 
     /**
