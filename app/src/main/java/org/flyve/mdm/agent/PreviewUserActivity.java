@@ -100,12 +100,8 @@ public class PreviewUserActivity extends AppCompatActivity {
             lnEmail.addView(txtEmail);
         }
 
-
         TextView txtFirstName = (TextView) findViewById(R.id.txtFirstName);
-        txtFirstName.setText( user.getFirstName() );
-
-        TextView txtLastName = (TextView) findViewById(R.id.txtLastName);
-        txtLastName.setText( user.getLastName() );
+        txtFirstName.setText( user.getFirstName() + " " + user.getLastName() );
 
         TextView txtPhone = (TextView) findViewById(R.id.txtPhone);
         if(!user.getPhone().equals("")) {

@@ -89,24 +89,19 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_marginLeft="25dp"
                     android:layout_toRightOf="@+id/icUser">
 
                     <TextView
                         android:id="@+id/txtFirstName"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
                         android:hint="@string/first_name"
                         android:layout_marginBottom="5dp"
                         />
 
-                    <TextView
-                        android:id="@+id/txtLastName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/last_name"
-                        />
                 </LinearLayout>
 
             </RelativeLayout>
