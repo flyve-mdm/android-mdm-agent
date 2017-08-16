@@ -263,7 +263,7 @@ public class EditUserActivity extends AppCompatActivity {
         if(editPhone.getEditList().size() > 2) {
             String phone2 = editPhone.getEditList().get(2).getText().toString();
             if (!phone2.equals("")) {
-                user.setPhone(phone2);
+                user.setPhone2(phone2);
             }
         }
 
