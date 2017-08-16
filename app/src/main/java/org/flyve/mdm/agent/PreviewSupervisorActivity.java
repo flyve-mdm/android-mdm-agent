@@ -1,20 +1,12 @@
 package org.flyve.mdm.agent;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.core.supervisor.SupervisorController;
 import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
-import org.flyve.mdm.agent.utils.Helpers;
-import org.flyve.mdm.agent.utils.InputValidatorHelper;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -44,17 +36,10 @@ import org.flyve.mdm.agent.utils.InputValidatorHelper;
  */
 public class PreviewSupervisorActivity extends AppCompatActivity {
 
-    private TextView txtMessage;
-    private EditText editName;
-    private EditText editEmail;
-    private SupervisorModel supervisor;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_supervisor_preview);
-
-        supervisor = new SupervisorController(PreviewSupervisorActivity.this).getCache();
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -69,91 +54,27 @@ public class PreviewSupervisorActivity extends AppCompatActivity {
             });
         }
 
-        TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
-        txtTitle.setText( "" );
+        SupervisorModel supervisor = new SupervisorController(PreviewSupervisorActivity.this).getCache();
 
-        txtMessage = (TextView) findViewById(R.id.txtMessage);
-
-        editName = (EditText) findViewById(R.id.editName);
-        editName.setText( supervisor.getName() );
-
-        editEmail = (EditText) findViewById(R.id.editEmail);
-        editEmail.setEnabled(false);
-        editEmail.setText( supervisor.getEmail() );
-        editEmail.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        editEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    validateForm();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-
-        ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                validateForm();
-            }
-        });
-    }
-
-    /**
-     * Storage information
-     */
-    private void save() {
-
-        SupervisorModel model = new SupervisorModel();
-        SupervisorController controller = new SupervisorController(PreviewSupervisorActivity.this);
-
-        model.setName( editName.getText().toString() );
-        model.setEmail( editEmail.getText().toString() );
-
-        controller.save(model);
-
-        Helpers.snack( PreviewSupervisorActivity.this, getResources().getString(R.string.saved) );
-}
-
-    /**
-     * Send information to validateForm
-     */
-    private void validateForm() {
-        StringBuilder errMsg = new StringBuilder(getResources().getString(R.string.validate_error));
-        txtMessage.setText("");
-
-        // Hide keyboard
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        TextView txtName = (TextView) findViewById(R.id.txtName);
+        if(supervisor.getName() != null && !supervisor.getName().equals("")) {
+            txtName.setText(supervisor.getName());
         }
 
-        // Validate and Save
-        boolean allowSave = true;
-
-        String email = editEmail.getText().toString().trim();
-        String name = editName.getText().toString().trim();
-
-        // Email
-        if (InputValidatorHelper.isNullOrEmpty(email)) {
-            errMsg.append(getResources().getString(R.string.validate_email));
-            allowSave = false;
+        TextView txtEmail = (TextView) findViewById(R.id.txtEmail);
+        if(supervisor.getEmail() != null && !supervisor.getEmail().equals("")) {
+            txtEmail.setText(supervisor.getEmail());
         }
 
-        // Organization
-        if (InputValidatorHelper.isNullOrEmpty(name)) {
-            errMsg.append(getResources().getString(R.string.validate_organization));
-            allowSave = false;
+        TextView txtPhone = (TextView) findViewById(R.id.txtPhone);
+        if(supervisor.getPhone() != null && !supervisor.getPhone().equals("")) {
+            txtPhone.setText(supervisor.getPhone());
         }
 
-        if(allowSave){
-            save();
-        } else {
-            txtMessage.setText(errMsg);
+        TextView txtWebsite = (TextView) findViewById(R.id.txtWebsite);
+        if(supervisor.getWebsite() != null && !supervisor.getWebsite().equals("")) {
+            txtWebsite.setText(supervisor.getWebsite());
         }
+
     }
 }
