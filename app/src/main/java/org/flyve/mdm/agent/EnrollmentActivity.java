@@ -413,7 +413,6 @@ public class EnrollmentActivity extends AppCompatActivity {
                     pd.dismiss();
 
                     ArrayList<UserModel.EmailsData> arrEmails = new ArrayList<>();
-                    UserModel.EmailsData emails = new UserModel().new EmailsData();
 
                     List<EditText> emailEdit = editEmail.getEditList();
                     List<Spinner> emailTypeEdit = editEmail.getSpinnList();
@@ -423,6 +422,7 @@ public class EnrollmentActivity extends AppCompatActivity {
                         Spinner spinner = emailTypeEdit.get(i);
 
                         if(!editText.getText().toString().equals("")) {
+                            UserModel.EmailsData emails = new UserModel().new EmailsData();
                             emails.setEmail(editText.getText().toString());
                             emails.setType(spinner.getSelectedItem().toString());
                             arrEmails.add(emails);

@@ -218,12 +218,12 @@ public class EditUserActivity extends AppCompatActivity {
         // Emails
         // -------------
         ArrayList<UserModel.EmailsData> arrEmails = new ArrayList<>();
-        UserModel.EmailsData emails = new UserModel().new EmailsData();
 
         List<EditText> emailEdit = editEmail.getEditList();
         List<Spinner> emailTypeEdit = editEmail.getSpinnList();
 
         for (int i=0; i<emailEdit.size(); i++) {
+            UserModel.EmailsData emails = new UserModel().new EmailsData();
             EditText editText = emailEdit.get(i);
             Spinner spinner = emailTypeEdit.get(i);
 
