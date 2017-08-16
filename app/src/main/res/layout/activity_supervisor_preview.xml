@@ -24,16 +24,6 @@
                 android:layout_centerVertical="true"
                 />
 
-            <ImageView
-                android:id="@+id/btnSave"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_check"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                />
-
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
@@ -64,16 +54,6 @@
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
                     />
-
-                <ImageView
-                    android:id="@+id/btnCamera"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/imgPhoto"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/ic_camera"
-                    />
             </RelativeLayout>
 
             <TextView
@@ -86,35 +66,77 @@
                 android:layout_marginBottom="20dp"
                 />
 
-            <EditText
-                android:id="@+id/editName"
+            <TextView
+                android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/supervisor_name"
-                android:inputType="textCapWords"
                 android:drawableLeft="@drawable/ic_user"
-                style="@style/registerFormEditText"
+                android:layout_marginLeft="16dp"
+                android:drawablePadding="40dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/not_available"
+                android:gravity="center_vertical"
                 />
 
-            <EditText
-                android:id="@+id/editEmail"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/supervisor_email"
-                android:inputType="textEmailAddress"
-                android:drawableLeft="@drawable/ic_mail"
-                style="@style/registerFormEditText"
+                android:layout_height="1dp"
+                android:layout_marginLeft="80dp"
+                android:background="@android:color/darker_gray"
                 />
 
             <TextView
-                android:id="@+id/txtMessage"
-                android:layout_width="wrap_content"
+                android:id="@+id/txtEmail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:layout_margin="20dp"
-                android:layout_gravity="center_horizontal"
-                style="@style/regularText"
+                android:drawableLeft="@drawable/ic_mail"
+                android:drawablePadding="40dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/not_available"
+                android:gravity="center_vertical"
                 />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="80dp"
+                android:background="@android:color/darker_gray"
+                />
+
+            <TextView
+                android:id="@+id/txtPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_phone"
+                android:drawablePadding="40dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/not_available"
+                android:gravity="center_vertical"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="80dp"
+                android:background="@android:color/darker_gray"
+                />
+
+            <TextView
+                android:id="@+id/txtWebsite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_language"
+                android:drawablePadding="40dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/not_available"
+                android:gravity="center_vertical"
+                />
+
         </LinearLayout>
     </ScrollView>
 
