@@ -83,6 +83,7 @@ public class FragmentInformation extends Fragment {
                     if (countEasterEgg >= 10) {
                         Toast.makeText(FragmentInformation.this.getActivity(), getResources().getString(R.string.easter_egg_success), Toast.LENGTH_SHORT).show();
                         cache.setEasterEgg(true);
+                        ((MainActivity) FragmentInformation.this.getActivity()).loadListDrawer();
                     }
                 }
             }
