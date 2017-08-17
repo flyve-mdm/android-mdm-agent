@@ -1,49 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryDark"
+    >
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/imgBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:src="@drawable/bg_help"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        />
+
+    <ImageView
+        android:id="@+id/logoTeclib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logoteclib_white"
+        android:padding="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        />
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logoflyve"
+        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@+id/imgBackground"
+        android:paddingBottom="50dp"
+        />
+
+    <TextView
+        android:id="@+id/txtMessage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/text_intro"
+        android:gravity="center"
+        style="@style/regularText"
+        android:layout_below="@+id/imgBackground"
+        android:layout_above="@+id/sliders"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/white"
+        />
+
+
+    <LinearLayout
+        android:id="@+id/sliders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
         >
 
         <ImageView
-            android:id="@+id/imgLogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/logoflyve"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
+            android:src="@drawable/ic_dot_selected"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             />
 
-        <TextView
-            android:id="@+id/txtIntro"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_intro"
-            android:gravity="center"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="40dp"
-            android:layout_below="@+id/imgLogo"
-            style="@style/regularText"
+            android:src="@drawable/ic_dot"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             />
 
-        <TextView
-            android:id="@+id/txtLink"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/flyve_link"
-            android:gravity="center"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="50dp"
-            android:layout_below="@+id/txtIntro"
-            style="@style/linkText"
-            android:paddingBottom="20dp"
+            android:src="@drawable/ic_dot"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             />
-    </RelativeLayout>
 
-</ScrollView>
+    </LinearLayout>
+
+
+</RelativeLayout>
+
