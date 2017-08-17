@@ -41,8 +41,11 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
+import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
+
+import java.util.ArrayList;
 
 /**
  * This is the first screen of the app here you can get information about flyve-mdm-agent
@@ -53,10 +56,7 @@ public class SplashActivity extends FragmentActivity {
     private static final int TIME = 3000;
     private IntentFilter mIntent;
 
-    /**
-     * The number of pages (wizard steps) to show in this demo.
-     */
-    private static final int NUM_PAGES = 5;
+    private ArrayList<WalkthroughModel> walkthrough;
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -113,11 +113,15 @@ public class SplashActivity extends FragmentActivity {
         // if user is not enrolled show help
         setContentView(R.layout.activity_splash);
 
+        walkthrough = new ArrayList<>();
+        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_1), R.drawable.logoflyve));
+        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_2), R.drawable.ic_walkthroug_2));
+        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_3), R.drawable.ic_walkthroug_3));
+
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
-
     }
 
     /**
@@ -131,14 +135,14 @@ public class SplashActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            FragmentSlideHelp f = new FragmentSlideHelp();
-            f.config("test");
+            FragmentSlideWalkthrough f = new FragmentSlideWalkthrough();
+            f.config(walkthrough.get(position));
             return f;
         }
 
         @Override
         public int getCount() {
-            return NUM_PAGES;
+            return walkthrough.size();
         }
     }
 

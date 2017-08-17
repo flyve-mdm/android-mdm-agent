@@ -5,7 +5,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -33,12 +36,12 @@ import android.widget.TextView;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class FragmentSlideHelp extends Fragment {
+public class FragmentSlideWalkthrough extends Fragment {
 
-    private String data;
+    private WalkthroughModel walkthroughModel;
 
-    public void config(String data) {
-        this.data = data;
+    public void config(WalkthroughModel walkthroughModel) {
+        this.walkthroughModel = walkthroughModel;
     }
 
 
@@ -46,10 +49,13 @@ public class FragmentSlideHelp extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup v = (ViewGroup) inflater.inflate(
-                R.layout.fragment_help_step1, container, false);
+                R.layout.fragment_walkthrough_step, container, false);
 
         TextView txtMessage = (TextView) v.findViewById(R.id.txtMessage);
-        txtMessage.setText(data);
+        txtMessage.setText(walkthroughModel.getMessage());
+
+        ImageView imgStep = (ImageView) v.findViewById(R.id.imgStep);
+        imgStep.setImageResource(walkthroughModel.getImage());
 
         return v;
     }

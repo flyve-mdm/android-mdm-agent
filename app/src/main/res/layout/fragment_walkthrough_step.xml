@@ -10,7 +10,7 @@
         android:id="@+id/imgBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/bg_help"
+        android:src="@drawable/bg_walkthrough"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         />
@@ -26,7 +26,7 @@
         />
 
     <ImageView
-        android:id="@+id/imgLogo"
+        android:id="@+id/imgStep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/logoflyve"
@@ -39,7 +39,7 @@
         android:id="@+id/txtMessage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/text_intro"
+        android:text="@string/walkthrough_step_1"
         android:gravity="center"
         style="@style/regularText"
         android:layout_below="@+id/imgBackground"
