@@ -136,7 +136,7 @@ public class SplashActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int position) {
             FragmentSlideWalkthrough f = new FragmentSlideWalkthrough();
-            f.config(walkthrough.get(position));
+            f.config(walkthrough.get(position), walkthrough.size(), position);
             return f;
         }
 

@@ -2,10 +2,12 @@ package org.flyve.mdm.agent;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
@@ -13,9 +15,9 @@ import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
- *   This file is part of flyve-mdm-android
+ *   This file is part of flyve-mdm-android-agent
  *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -28,20 +30,24 @@ import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
- * @author    rafaelhernandez
+ * @author    Rafael Hernandez
  * @date      17/8/17
  * @copyright Copyright © 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
 public class FragmentSlideWalkthrough extends Fragment {
 
     private WalkthroughModel walkthroughModel;
+    private int slides;
+    private int position;
 
-    public void config(WalkthroughModel walkthroughModel) {
+    public void config(WalkthroughModel walkthroughModel, int slides, int position) {
         this.walkthroughModel = walkthroughModel;
+        this.slides = slides;
+        this.position = position;
     }
 
 
@@ -52,12 +58,32 @@ public class FragmentSlideWalkthrough extends Fragment {
                 R.layout.fragment_walkthrough_step, container, false);
 
         TextView txtMessage = (TextView) v.findViewById(R.id.txtMessage);
-        txtMessage.setText(walkthroughModel.getMessage());
+        txtMessage.setText(Html.fromHtml(walkthroughModel.getMessage()));
 
         ImageView imgStep = (ImageView) v.findViewById(R.id.imgStep);
         imgStep.setImageResource(walkthroughModel.getImage());
 
+        slideDots(v);
+
         return v;
+    }
+
+    private void slideDots(ViewGroup v) {
+
+        LinearLayout ln = (LinearLayout) v.findViewById(R.id.lnSliders);
+
+        for(int i=0; i<this.slides; i++) {
+
+            ImageView img = new ImageView(FragmentSlideWalkthrough.this.getContext());
+            img.setPadding(7,0,7,0);
+            if(i==this.position) {
+                img.setImageResource(R.drawable.ic_dot_selected);
+            } else {
+                img.setImageResource(R.drawable.ic_dot);
+            }
+            ln.addView(img);
+        }
+
     }
 
 
