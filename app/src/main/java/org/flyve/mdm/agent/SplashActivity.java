@@ -131,7 +131,9 @@ public class SplashActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return new FragmentSlideHelp();
+            FragmentSlideHelp f = new FragmentSlideHelp();
+            f.config("test");
+            return f;
         }
 
         @Override

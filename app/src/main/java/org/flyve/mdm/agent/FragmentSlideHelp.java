@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.flyve.mdm.agent.utils.Helpers;
-
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
@@ -37,23 +35,24 @@ import org.flyve.mdm.agent.utils.Helpers;
  */
 public class FragmentSlideHelp extends Fragment {
 
+    private String data;
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            ViewGroup rootView = (ViewGroup) inflater.inflate(
-                    R.layout.fragment_help_step1, container, false);
+    public void config(String data) {
+        this.data = data;
+    }
 
-            final TextView txtLink = (TextView) rootView.findViewById(R.id.txtLink);
-            txtLink.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Helpers.openURL( FragmentSlideHelp.this.getContext(), txtLink.getText().toString() );
-                }
-            });
 
-            return rootView;
-        }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        ViewGroup v = (ViewGroup) inflater.inflate(
+                R.layout.fragment_help_step1, container, false);
+
+        TextView txtMessage = (TextView) v.findViewById(R.id.txtMessage);
+        txtMessage.setText(data);
+
+        return v;
+    }
 
 
 }
