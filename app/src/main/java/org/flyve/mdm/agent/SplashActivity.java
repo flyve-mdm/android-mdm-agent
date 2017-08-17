@@ -27,29 +27,47 @@
 
 package org.flyve.mdm.agent;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
-import android.view.View;
-import android.widget.TextView;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
-import org.flyve.mdm.agent.utils.Helpers;
 
 /**
  * This is the first screen of the app here you can get information about flyve-mdm-agent
  * if you are not register
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends FragmentActivity {
 
     private static final int TIME = 3000;
     private IntentFilter mIntent;
+
+    /**
+     * The number of pages (wizard steps) to show in this demo.
+     */
+    private static final int NUM_PAGES = 5;
+
+    /**
+     * The pager widget, which handles animation and allows swiping horizontally to access previous
+     * and next wizard steps.
+     */
+    private ViewPager mPager;
+
+    /**
+     * The pager adapter, which provides the pages to the view pager widget.
+     */
+    private PagerAdapter mPagerAdapter;
 
     @Override
     public void onPause() {
@@ -95,13 +113,31 @@ public class SplashActivity extends Activity {
         // if user is not enrolled show help
         setContentView(R.layout.activity_splash);
 
-        final TextView txtLink = (TextView) findViewById(R.id.txtLink);
-        txtLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Helpers.openURL( SplashActivity.this, txtLink.getText().toString() );
-            }
-        });
+        // Instantiate a ViewPager and a PagerAdapter.
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+
+    }
+
+    /**
+     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
+     * sequence.
+     */
+    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+        public ScreenSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return new FragmentSlideHelp();
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_PAGES;
+        }
     }
 
     /**
