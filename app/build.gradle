@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '22.0.1'
+    buildToolsVersion '23.0.3'
     defaultConfig {
         applicationId "org.flyve.mdm.agent"
         minSdkVersion 16
@@ -13,6 +13,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    dexOptions {
+        preDexLibraries true
+        maxProcessCount 8
     }
 
     lintOptions {
