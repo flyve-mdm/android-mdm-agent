@@ -29,10 +29,12 @@ package org.flyve.mdm.agent.core.walkthrough;
 public class WalkthroughModel {
 
     private String message;
+    private String link;
     private int image;
 
-    public WalkthroughModel(String message, int image) {
+    public WalkthroughModel(String message, String link, int image) {
         this.message = message;
+        this.link = link;
         this.image = image;
     }
 
@@ -42,6 +44,14 @@ public class WalkthroughModel {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public int getImage() {

@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">MDM Agent</string>
 
-    <string name="walkthrough_step_1">Flyve MDM is a mobile device management software that enables you to secure and manage all the mobile devices of your business or family via web-based console</string>
-    <string name="walkthrough_step_2">The first step to start using this app and get a free trial by registering please go to &lt;a href=\"https://demo.flyve.org/#!/login/\"&gt; Administration Web Console&lt;/a&gt;</string>
+    <string name="walkthrough_step_1">&lt;a href="http://flyve-mdm.com"&gt; Flyve MDM &lt;/a&gt; is a mobile device management software that enables you to secure and manage all the mobile devices of your business or family via web-based console, click on link if you need more information</string>
+    <string name="walkthrough_step_link_1">http://flyve-mdm.com</string>
+    <string name="walkthrough_step_2">The first step to start using this app and get a free trial by registering please go to &lt;a href="https://demo.flyve.org/#!/login/"&gt; Administration Web Console&lt;/a&gt;</string>
+    <string name="walkthrough_step_link_2">https://demo.flyve.org/#!/login/</string>
     <string name="walkthrough_step_3">On your Administration Web Console add a new device with your email, in this email you are going to get a register link please click on it on the device and you can begin the enrollment process</string>
 
     <string name="disclosure_permission">Flyve MDM is a mobile device management software that enables you to secure and manage all the mobile devices of your business or family via web-based console\n\n

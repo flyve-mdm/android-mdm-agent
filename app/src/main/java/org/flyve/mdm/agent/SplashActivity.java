@@ -114,9 +114,9 @@ public class SplashActivity extends FragmentActivity {
         setContentView(R.layout.activity_splash);
 
         walkthrough = new ArrayList<>();
-        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_1), R.drawable.logoflyve));
-        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_2), R.drawable.ic_walkthroug_2));
-        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_3), R.drawable.ic_walkthroug_3));
+        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_1), getResources().getString(R.string.walkthrough_step_link_1), R.drawable.logoflyve));
+        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_2), getResources().getString(R.string.walkthrough_step_link_2), R.drawable.ic_walkthroug_2));
+        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_3), "", R.drawable.ic_walkthroug_3));
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.pager);
