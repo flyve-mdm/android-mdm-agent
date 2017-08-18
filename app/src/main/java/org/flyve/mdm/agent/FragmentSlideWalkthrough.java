@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
+import org.flyve.mdm.agent.utils.Helpers;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -58,6 +59,14 @@ public class FragmentSlideWalkthrough extends Fragment {
                 R.layout.fragment_walkthrough_step, container, false);
 
         TextView txtMessage = (TextView) v.findViewById(R.id.txtMessage);
+        if(!walkthroughModel.getLink().equals("")) {
+            txtMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Helpers.openURL(FragmentSlideWalkthrough.this.getContext(), walkthroughModel.getLink());
+                }
+            });
+        }
         txtMessage.setText(Html.fromHtml(walkthroughModel.getMessage()));
 
         ImageView imgStep = (ImageView) v.findViewById(R.id.imgStep);

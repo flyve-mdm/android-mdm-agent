@@ -41,14 +41,12 @@
         android:layout_height="match_parent"
         android:text="@string/walkthrough_step_1"
         android:gravity="center"
-        android:autoLink="web"
         style="@style/regularText"
         android:layout_below="@+id/imgBackground"
         android:layout_above="@+id/lnSliders"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:textColor="@color/white"
-        android:clickable="true"
         />
 
 
