@@ -5,15 +5,18 @@ layout: default
     <div class="container">
         <div class="row">
             <div class="col-xs-24 title-page">
-                {% assign name = site.github.project_title | replace: "flyve-mdm-", "" %}
-                {% assign name = name | replace: "-", " " %}
-                <span class="color-type-primary">{{ name }}</span> <span class="color-type-secondary"> {{ site.github.latest_release.tag_name }} </span>
+                {% if page.namePage != "products" %}
+                    {% assign name = site.github.project_title | replace: "flyve-mdm-", "" %}
+                    {% assign name = name | replace: "-", " " %}
+                    <span class="color-type-primary">{{ name }}</span> <span class="color-type-secondary"> {{ site.github.latest_release.tag_name }} </span>   
+                {% else %}
+                    <span class="color-type-primary">More products of Flyve-MDM</span> <span class="color-type-secondary"> {{ site.github.latest_release.tag_name }} </span>   
+                {% endif %}
+                
             </div>
         </div>
     </div>
 </div>
-<div class="container">
 
   {{ content }}
   
-</div>
