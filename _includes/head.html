@@ -24,22 +24,32 @@
   <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
   <meta name="og:description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
 
-  <link rel="stylesheet" href="{{ "/css/main.css" | relative_url }}">
+  <meta name="theme-color" content="#158784">
+
   <link rel="stylesheet" href="{{ "/css/flyve-mdm.min.css" | relative_url }}">
-  <link rel="stylesheet" href="{{ 'css/asciidoctor.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ 'css/flyve-mdm.min.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ 'css/flyve-mdm-optional.min.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ 'css/style.css' | relative_url }}" />
-  <link rel="stylesheet" href="{{ 'css/coderay.css' | relative_url }}" /> 
+  <link rel="stylesheet" href="{{ "/css/main.css" | relative_url }}">
   <link rel="stylesheet" href="{{ 'css/syntax.css' | relative_url }}" /> 
   <link rel="icon" href="{{ "/images/favicon.png" | relative_url }}">
 
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ "/feed.xml" | relative_url }}">
   
+  <link rel="manifest" href="{{ "/manifest.json" | relative_url }}">
+  
+  <Link rel = "apple-touch-icon" href = "{{ site.url }}{{ site.baseurl }}/apple-touch-icon.png">
+  <link rel="apple-touch-startup-image" href="{{ site.url }}{{ site.baseurl }}/images/logo2.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  {% assign name = name | replace: "android", " " %} 
+  {% assign name = name | replace: "ios", " " %} 
+  {% assign name = name | replace: "blackberry", " " %} 
+  {% assign name = name | replace: "windows", " " %} 
+
+  <meta name="apple-mobile-web-app-title" content="{{name}}">
+  
   {% if jekyll.environment == 'production' and site.google_analytics %}
   {% include google-analytics.html %}
   {% endif %}
-  <script src="{{ "/js/jquery.min.js" | relative_url }}"></script>
-  
+  <script src="{{ "/js/jquery.min.js" | relative_url }}"></script> 
 </head>
