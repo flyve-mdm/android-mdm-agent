@@ -58,6 +58,7 @@ dependencies {
 }
 
 import java.util.regex.Pattern
+import groovy.json.JsonSlurper
 
 task increaseVersionCode {
     doLast {
@@ -80,10 +81,11 @@ task incrementVersionName {
         def manifestText = manifestFile.getText()
         def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
         matcherVersionNumber.find()
-        def majorVersion = Integer.parseInt(matcherVersionNumber.group(1))
-        def minorVersion = Integer.parseInt(matcherVersionNumber.group(2))
-        def pointVersion = Integer.parseInt(matcherVersionNumber.group(3))
-        def mNextVersionName = majorVersion + "." + minorVersion + "." + (pointVersion + 1)
+
+        def inputFile = new File("package.json")
+        def json = new JsonSlurper().parseText(inputFile.text)
+        def mNextVersionName = json.version //This will return version number
+
         def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
         println "Version name: " + mNextVersionName
         manifestFile.write(manifestContent)
