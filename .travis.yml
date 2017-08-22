@@ -23,5 +23,3 @@ env:
 before_install:
 - openssl aes-256-cbc -K $encrypted_27dcfd0dda78_key -iv $encrypted_27dcfd0dda78_iv
   -in gplay.tar.gz.enc -out ci/gplay.tar.gz -d
-- openssl aes-256-cbc -K $encrypted_27dcfd0dda78_key -iv $encrypted_27dcfd0dda78_iv
-  -in google.tar.gz.enc -out ci/google.tar.gz -d
