@@ -1,0 +1,33 @@
+{
+  "name": "@teclib/flyve-mdm-android-agent",
+  "version": "2.0.0",
+  "description": "Flyve MDM Agent for Android",
+  "main": "index.js",
+  "scripts": {
+    "release": "standard-version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyve-mdm/flyve-mdm-android-agent.git"
+  },
+  "keywords": [
+    "Android",
+    "mdm",
+    "flyve",
+    "mqtt",
+    "agent",
+    "teclib"
+  ],
+  "author": "Rafael Hernandez <rhernandez@teclib.com> (https://flyve-mdm.com)",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/flyve-mdm/flyve-mdm-android-agent/issues"
+  },
+  "homepage": "https://github.com/flyve-mdm/flyve-mdm-android-agent#readme",
+  "devDependencies": {
+    "standard-version": "^4.0.0"
+  },
+  "dependencies": {
+    "conventional-github-releaser": "^1.1.10"
+  }
+}
