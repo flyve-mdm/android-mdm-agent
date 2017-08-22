@@ -33,4 +33,4 @@ deploy:
   skip_cleanup: true
   on:
     repo: flyve-mdm/flyve-mdm-android-agent
-    branch: feature/release
+    branch: feature/tag
