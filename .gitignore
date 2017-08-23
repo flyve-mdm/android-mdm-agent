@@ -71,6 +71,9 @@ node_modules
 /doc/
 local.properties
 build
+.env
+/ci/gplay.json
+/ci/gplay.tar.gz
 .idea/
 .gradle/
 gradle/
