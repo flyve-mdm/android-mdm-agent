@@ -17,10 +17,10 @@ echo $TRAVIS_BRANCH
     #git config --global user.name "Flyve MDM"
 
     #create a git tag
-    export GIT_TAG=$(jq -r ".version" package.json)
-    git tag $GIT_TAG -a -m "build(tag): Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
+    #export GIT_TAG=$(jq -r ".version" package.json)
+    #git tag $GIT_TAG -a -m "build(tag): Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
 
     #send tag to git hub
-    #git push -q https://$GH_USER:${GH_TOKEN}@github.com/flyve-mdm/flyve-mdm-android-agent.git --tags
-    conventional-github-releaser -t $GH_TOKEN -r 0
+    git push -q https://$GH_USER:${GH_TOKEN}@github.com/flyve-mdm/flyve-mdm-android-agent.git --tags
+    #conventional-github-releaser -t $GH_TOKEN -r 0
 #fi
