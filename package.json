@@ -4,7 +4,7 @@
   "description": "Flyve MDM Agent for Android",
   "main": "index.js",
   "scripts": {
-    "release": "standard-version"
+    "release": "standard-version -t ''"
   },
   "repository": {
     "type": "git",
