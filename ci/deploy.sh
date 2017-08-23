@@ -22,5 +22,5 @@ echo $TRAVIS_BRANCH
 
     #send tag to git hub
     #git push -q https://$GH_USER:${GH_TOKEN}@github.com/flyve-mdm/flyve-mdm-android-agent.git --tags
-    conventional-github-releaser -t $GH_TOKEN
+    conventional-github-releaser -t $GH_TOKEN -r 0
 #fi
