@@ -12,6 +12,7 @@ before_install:
 install:
   - rvm install 2.3.4
   - gem install fastlane
+  - npm install -g conventional-github-releaser
 after_success:
   - "./ci/deploy.sh"
 notifications:
