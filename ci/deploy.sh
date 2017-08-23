@@ -12,15 +12,23 @@ echo $TRAVIS_BRANCH
     # sign and deploy to store with fastlane
     fastlane android beta storepass:'$KEYSTORE' keypass:'$ALIAS'
 
-    # create a new release on git
-    #git config --global user.email $GH_EMAIL
-    #git config --global user.name "Flyve MDM"
+    # this conditional is to prevent loop
+    if [[ $TRAVIS_COMMIT_MESSAGE != *"**version**"* && $TRAVIS_COMMIT_MESSAGE != *"**CHANGELOG.md**"* ]]; then
+        # push tag to github
+        conventional-github-releaser -t $GH_TOKEN -r 0
 
-    #create a git tag
-    #export GIT_TAG=$(jq -r ".version" package.json)
-    #git tag $GIT_TAG -a -m "build(tag): Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
+        git checkout $TRAVIS_BRANCH -f
 
-    #send tag to git hub
-    #git push -q https://$GH_USER:${GH_TOKEN}@github.com/flyve-mdm/flyve-mdm-android-agent.git --tags
-    conventional-github-releaser -t $GH_TOKEN -r 0
+        # config git
+        git config --global user.email $GH_EMAIL
+        git config --global user.name "Flyve MDM"
+        git remote remove origin
+        git remote add origin https://$GH_USER:$GH_TOKEN@github.com/flyve-mdm/flyve-mdm-android-agent.git
+
+        git add -A
+        git commit -m "ci(build): increment **version** ${GIT_TAG}"
+
+        git push origin $TRAVIS_BRANCH
+    fi
+
 #fi
