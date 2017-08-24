@@ -10,6 +10,8 @@ before_install:
   - "./ci/before_install.sh"
 install:
   - "./ci/install.sh"
+script:
+  - "./ci/script.sh"
 after_success:
   - "./ci/deploy.sh"
 notifications:
