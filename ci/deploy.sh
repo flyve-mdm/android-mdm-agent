@@ -61,6 +61,7 @@ fi
 # - create a changelog
 # - add changes to repository
 # - commit and push
+# - send CHANGELOG.md to gh-pages branch
 #-----------------------------------------------------------------
 if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
     # this conditional is to prevent loop
@@ -71,7 +72,7 @@ if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
         cd ..
 
         # sign and deploy to store with fastlane
-        fastlane android beta storepass:'$KEYSTORE' keypass:'$ALIAS'
+        fastlane android playstore storepass:'$KEYSTORE' keypass:'$ALIAS'
 
         # push tag to github
         conventional-github-releaser -t $GH_TOKEN -r 0
@@ -82,19 +83,35 @@ if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
         git remote remove origin
         git remote add origin https://$GH_USER:$GH_TOKEN@github.com/flyve-mdm/flyve-mdm-android-agent.git
 
+        #------------------------ UPDATE CHANGES --------------------------
+
+        # move to branch
         git checkout $TRAVIS_BRANCH -f
 
+        # add all new files
         git add -A
+
+        # create commit
         git commit -m "ci(build): increment **version** ${GIT_TAG}"
 
+        # push to branch
         git push origin $TRAVIS_BRANCH
 
         #------------------------ GH-PAGES --------------------------
 
+        # move to gh-pages
         git checkout gh-pages
+
+        # get changelog from branch
         git checkout $TRAVIS_BRANCH CHANGELOG.md
-        git add -A
+
+        # remove all other files
+        git clean -fdx
+
+        # create commit
         git commit -m "docs(changelog): update changelog with version ${GIT_TAG}"
+
+        # push to branch
         git push origin gh-pages
     fi
 fi
