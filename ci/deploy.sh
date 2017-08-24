@@ -76,17 +76,25 @@ if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
         # push tag to github
         conventional-github-releaser -t $GH_TOKEN -r 0
 
-        git checkout $TRAVIS_BRANCH -f
-
         # config git
         git config --global user.email $GH_EMAIL
         git config --global user.name "Flyve MDM"
         git remote remove origin
         git remote add origin https://$GH_USER:$GH_TOKEN@github.com/flyve-mdm/flyve-mdm-android-agent.git
 
+        git checkout $TRAVIS_BRANCH -f
+
         git add -A
         git commit -m "ci(build): increment **version** ${GIT_TAG}"
 
         git push origin $TRAVIS_BRANCH
+
+        #------------------------ GH-PAGES --------------------------
+
+        git checkout gh-pages
+        git checkout $TRAVIS_BRANCH CHANGELOG.md
+        git add -A
+        git commit -m "docs(changelog): update changelog with version ${GIT_TAG}"
+        git push origin gh-pages
     fi
 fi
