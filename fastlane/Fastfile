@@ -18,28 +18,40 @@ default_platform :android
 
 platform :android do
 
-  desc "Beta release app. Deploy a new version to the Google Play Store - Beta channel"
-  lane :beta do |options|
-    #gradle(task: "clean")
+    desc "Beta release app. Deploy a new version to the Google Play Store - Beta channel"
+    lane :beta do |options|
+        sign_apk(
+            keystore_path: "ci/release.keystore",
+            alias: "mdmagent",
+            storepass: options[:storepass],
+            tsa: "http://timestamp.comodoca.com/rfc316",
+            keypass: options[:keypass]
+        )
 
-    #gradle(task: "assemble")
+        zipalign(apk_path: "#{lane_context[SharedValues::SIGNED_APK_PATH]}")
 
-    sign_apk(
-      keystore_path: "ci/release.keystore",
-      alias: "mdmagent",
-      storepass: options[:storepass],
-      tsa: "http://timestamp.comodoca.com/rfc316",
-      keypass: options[:keypass]
-    )
+        supply(
+            track: 'beta',
+            apk: "#{lane_context[SharedValues::SIGNED_APK_PATH]}"
+        )
+    end
+    lane :playstore do |options|
+        sign_apk(
+            keystore_path: "ci/release.keystore",
+            alias: "mdmagent",
+            storepass: options[:storepass],
+            tsa: "http://timestamp.comodoca.com/rfc316",
+            keypass: options[:keypass]
+        )
 
-    zipalign(apk_path: "#{lane_context[SharedValues::SIGNED_APK_PATH]}")
-    #gradle(task: "test")
+        zipalign(apk_path: "#{lane_context[SharedValues::SIGNED_APK_PATH]}")
 
-  supply(
-     track: 'beta',
-     apk: "#{lane_context[SharedValues::SIGNED_APK_PATH]}"
-  )
-  end
+        supply(
+            track: 'rollout',
+            apk: "#{lane_context[SharedValues::SIGNED_APK_PATH]}",
+            rollout: '1.0'
+        )
+    end
 end
 
 after_all do |lane|
