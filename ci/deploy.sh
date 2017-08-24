@@ -40,6 +40,19 @@ if [[ "$TRAVIS_BRANCH" == "develop" && "$TRAVIS_PULL_REQUEST" == "false" ]]; the
 
         # sign and deploy to store with fastlane
         fastlane android beta storepass:'$KEYSTORE' keypass:'$ALIAS'
+
+        git checkout $TRAVIS_BRANCH -f
+
+        # config git
+        git config --global user.email $GH_EMAIL
+        git config --global user.name "Flyve MDM"
+        git remote remove origin
+        git remote add origin https://$GH_USER:$GH_TOKEN@github.com/flyve-mdm/flyve-mdm-android-agent.git
+
+        git add -A
+        git commit -m "ci(build): increment **version code**"
+
+        git push origin $TRAVIS_BRANCH
 fi
 
 #-----------------------------------------------------------------
