@@ -4,12 +4,14 @@ android:
   - build-tools-$BUILD_TOOL
   - android-$ANDROID_API
   - extra-android-m2repository
-before_script:
-  - "./ci/before_script.sh"
 before_install:
+  - TRAVIS_BRANCH=develop
+  - TRAVIS_PULL_REQUEST=false
   - "./ci/before_install.sh"
 install:
   - "./ci/install.sh"
+before_script:
+  - "./ci/before_script.sh"
 script:
   - "./ci/script.sh"
 after_success:
