@@ -1,0 +1,16 @@
+footer {
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+    height: 72px;
+    text-align: right;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    h4 {
+        padding-top: 8px;
+        img {
+            width: 80px;
+        }
+    }
+}

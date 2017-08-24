@@ -1,0 +1,25 @@
+html {
+    position: relative; 
+    min-height: 100%;
+}
+
+body {
+    margin: 0 0 72px;
+}
+
+code {
+    white-space: pre !important;
+}
+
+hr {
+    margin: 20px 0 !important;
+}
+
+img {
+    max-width: 100% !important;
+}
+
+.jumbotron.theme-default, .theme-default.hero {
+    color: #3e3e3e;
+    background-color: #fff;
+}

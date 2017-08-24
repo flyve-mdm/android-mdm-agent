@@ -1,56 +1,18 @@
 ---
 ---
+@import
+  "404",
+  "contact",
+  "footer",
+  "general",
+  "header",
+  "home",
+  "post",
+  "products",
+  "screenshots"
+;
 
-html {
-    width: 100% !important;
-}
-.list-products {
-    font-size: 2rem;
-    p {
-        padding-left: 20px;
-        padding-top: 0px;
-        padding-bottom: 20px;
-    }
-}
-.navbar-nav {
-    img {
-        width: 50px;
-        vertical-align: middle;
-    }
-    .logo {
-        padding: 10px !important;
-    }
-}
-.title-page {
-    font-size: 2.5rem;
-    padding: 10px 0;
-    font-family: "Segoe UI Light","Segoe UI","Selawik Light",Tahoma,Verdana,Arial,sans-serif;
-}
 
-.Page-not-found {
-    text-align: center;
-    h1 {
-        font-size: 12rem;
-    }
-    p {
-        display: inline-block;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #eee;
-    }
-}
 
-.modal-body {
-    $size: 15px;
-    font-size: $size !important;
-    h1, h2, h3, h4, h5, h6 {
-        font-size: $size * 1.3;
-        padding: 10px 0;
-        font-weight: bold;
-    }
-    h1 {
-        font-size: $size * 1.8;
-    }
-}
-code {
-    white-space: pre !important;
-}
+
+
