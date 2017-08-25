@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent;
+package org.flyve.mdm.agent.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.user.UserController;
 import org.flyve.mdm.agent.core.user.UserModel;
 import org.flyve.mdm.agent.utils.Helpers;

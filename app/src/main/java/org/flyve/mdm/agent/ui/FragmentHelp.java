@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent;
+package org.flyve.mdm.agent.ui;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.utils.Helpers;
 
 /*

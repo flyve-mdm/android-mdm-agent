@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent;
+package org.flyve.mdm.agent.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
 import org.flyve.mdm.agent.utils.Helpers;
 

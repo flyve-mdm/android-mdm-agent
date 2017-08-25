@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent;
+package org.flyve.mdm.agent.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.user.UserController;
 import org.flyve.mdm.agent.core.user.UserModel;
 import org.flyve.mdm.agent.utils.FlyveLog;

@@ -29,7 +29,7 @@ import android.os.Environment;
 
 import com.orhanobut.logger.Logger;
 
-import org.flyve.mdm.agent.MDMAgent;
+import org.flyve.mdm.agent.ui.MDMAgent;
 
 import java.io.BufferedWriter;
 import java.io.File;

@@ -25,7 +25,7 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent;
+package org.flyve.mdm.agent.ui;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -41,6 +41,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.DrawerAdapter;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.services.MQTTService;
