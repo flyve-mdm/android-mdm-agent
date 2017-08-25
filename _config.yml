@@ -20,10 +20,24 @@ prose:
     - Gemfile.lock
     - _layouts
     - _includes
+    - _sass
     - fonts
     - css
     - images
     - js
+    - apple-touch-icon.png
+    - CHANGELOG.md
+    - 404.html
+    - index.html
+    - manifest.json
+    - news.html
+    - sw.js
+    - products.html
+    - assets
+    - apple-touch-icon.png
+    - README.md
+    - robots.txt
+    - contact.html
 
   media: "images"
 
