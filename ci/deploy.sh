@@ -88,8 +88,8 @@ if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
         # move to branch
         git checkout $TRAVIS_BRANCH -f
 
-        # add all new files
-        git add -A
+        # add modified and delete files
+        git add -u
 
         # create commit
         git commit -m "ci(build): increment **version** ${GIT_TAG}"
