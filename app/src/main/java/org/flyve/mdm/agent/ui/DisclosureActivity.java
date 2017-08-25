@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent;
+package org.flyve.mdm.agent.ui;
 
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.security.FlyveAdminReceiver;
 import org.flyve.mdm.agent.utils.Helpers;
 

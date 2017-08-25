@@ -25,7 +25,7 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent;
+package org.flyve.mdm.agent.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -38,6 +38,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.LogAdapter;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.LogFileReader;

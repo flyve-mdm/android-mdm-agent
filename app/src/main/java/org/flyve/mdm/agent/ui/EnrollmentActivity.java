@@ -25,7 +25,7 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent;
+package org.flyve.mdm.agent.ui;
 
 import android.Manifest;
 import android.app.Activity;
@@ -59,6 +59,8 @@ import android.widget.TextView;
 
 import com.flyvemdm.inventory.categories.Hardware;
 
+import org.flyve.mdm.agent.BuildConfig;
+import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.user.UserController;
 import org.flyve.mdm.agent.core.user.UserModel;
 import org.flyve.mdm.agent.data.DataStorage;
