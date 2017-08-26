@@ -33,6 +33,8 @@ echo $TRAVIS_BRANCH
 # - send to google play like beta
 #-----------------------------------------------------------------
 if [[ "$TRAVIS_BRANCH" == "develop" && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+    # this conditional is to prevent loop
+    if [[ $TRAVIS_COMMIT_MESSAGE != *"**version**"* && $TRAVIS_COMMIT_MESSAGE != *"**CHANGELOG.md**"* ]]; then
         # uncompress cert file
         cd ci
         tar -zxvf gplay.tar.gz
@@ -51,6 +53,7 @@ if [[ "$TRAVIS_BRANCH" == "develop" && "$TRAVIS_PULL_REQUEST" == "false" ]]; the
         git commit -m "ci(build): increment **version code**"
 
         git push origin $TRAVIS_BRANCH
+    fi
 fi
 
 #-----------------------------------------------------------------
