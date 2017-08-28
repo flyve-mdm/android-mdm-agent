@@ -97,19 +97,19 @@ if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
 
         #------------------------ GH-PAGES --------------------------
 
-        # move to gh-pages
-        git checkout gh-pages
-
-        # get changelog from branch
-        git checkout $TRAVIS_BRANCH CHANGELOG.md
-
-        # remove all other files
-        git clean -fdx
-
-        # create commit
-        git commit -m "docs(changelog): update changelog with version ${GIT_TAG}"
-
-        # push to branch
-        git push origin gh-pages
+#         # move to gh-pages
+#         git checkout gh-pages
+#
+#         # get changelog from branch
+#         git checkout $TRAVIS_BRANCH CHANGELOG.md
+#
+#         # remove all other files
+#         git clean -fdx
+#
+#         # create commit
+#         git commit -m "docs(changelog): update changelog with version ${GIT_TAG}"
+#
+#         # push to branch
+#         git push origin gh-pages
     fi
 fi
