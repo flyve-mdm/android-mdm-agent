@@ -25,91 +25,119 @@
 # @link      https://flyve-mdm.com
 # ------------------------------------------------------------------------------
 
-
-echo $TRAVIS_BRANCH
+# create enviroment vars to work with fastlane
+echo TELEGRAM_WEBHOOKS=$TELEGRAM_WEBHOOKS > .env
+echo GIT_REPO=$TRAVIS_REPO_SLUG >> .env
+echo GIT_BRANCH=$TRAVIS_BRANCH >> .env
 
 #-----------------------------------------------------------------
 # DEVELOP DEPLOY
 # - send to google play like beta
 #-----------------------------------------------------------------
-if [[ "$TRAVIS_BRANCH" == "develop" && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
-    # this conditional is to prevent loop
-    if [[ $TRAVIS_COMMIT_MESSAGE != *"**version**"* && $TRAVIS_COMMIT_MESSAGE != *"**CHANGELOG.md**"* ]]; then
-        # uncompress cert file
-        cd ci
-        tar -zxvf gplay.tar.gz
-        cd ..
+if [[ "$TRAVIS_BRANCH" == "develop" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_RUN" == "true" ]]; then
 
-        # sign and deploy to store with fastlane
-        fastlane android beta storepass:'$KEYSTORE' keypass:'$ALIAS'
+    # decrypt deploy on google play file
+    openssl aes-256-cbc -K $encrypted_27dcfd0dda78_key -iv $encrypted_27dcfd0dda78_iv -in gplay.tar.gz.enc -out ci/gplay.tar.gz -d
 
-        # config git
-        git config --global user.email $GH_EMAIL
-        git config --global user.name "Flyve MDM"
-        git remote remove origin
-        git remote add origin https://$GH_USER:$GH_TOKEN@github.com/flyve-mdm/flyve-mdm-android-agent.git
+    # uncompress cert file
+    tar -zxvf ci/gplay.tar.gz -C ci/
 
-        git add -u
-        git commit -m "ci(build): increment **version code**"
+    # sign and deploy to store with fastlane
+    fastlane android beta storepass:'$KEYSTORE' keypass:'$ALIAS'
 
-        git push origin $TRAVIS_BRANCH
-    fi
+    # config git
+    git config --global user.email $GH_EMAIL
+    git config --global user.name "Flyve MDM"
+    git remote remove origin
+    git remote add origin https://$GH_USER:$GH_TOKEN@github.com/flyve-mdm/flyve-mdm-android-agent.git
+
+    git add -u
+    git commit -m "ci(build): release **beta** for version $GIT_TAG-beta"
+
+    git push origin $TRAVIS_BRANCH
 fi
 
 #-----------------------------------------------------------------
 # MASTER DEPLOY
 # - send to google play like release
 # - create a changelog
-# - add changes to repository
-# - commit and push
+# - create a javadoc
+# - send javadoc to gh-pages branch
 # - send CHANGELOG.md to gh-pages branch
 #-----------------------------------------------------------------
-if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
-    # this conditional is to prevent loop
-    if [[ $TRAVIS_COMMIT_MESSAGE != *"**version**"* && $TRAVIS_COMMIT_MESSAGE != *"**CHANGELOG.md**"* ]]; then
-        # uncompress cert file
-        cd ci
-        tar -zxvf gplay.tar.gz
-        cd ..
+if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_RUN" == "true" ]]; then
 
-        # sign and deploy to store with fastlane
-        fastlane android playstore storepass:'$KEYSTORE' keypass:'$ALIAS'
+    # decrypt deploy on google play file
+    openssl aes-256-cbc -K $encrypted_27dcfd0dda78_key -iv $encrypted_27dcfd0dda78_iv -in gplay.tar.gz.enc -out ci/gplay.tar.gz -d
 
-        # push tag to github
-        conventional-github-releaser -t $GH_TOKEN -r 0
+    # uncompress cert file
+    tar -zxvf ci/gplay.tar.gz -C ci/
 
-        # config git
-        git config --global user.email $GH_EMAIL
-        git config --global user.name "Flyve MDM"
-        git remote remove origin
-        git remote add origin https://$GH_USER:$GH_TOKEN@github.com/flyve-mdm/flyve-mdm-android-agent.git
+    # sign and deploy to store with fastlane
+    fastlane android playstore storepass:'$KEYSTORE' keypass:'$ALIAS'
 
-        #------------------------ UPDATE CHANGES --------------------------
+    # push tag to github
+    conventional-github-releaser -t $GH_TOKEN -r 0
 
-        # add modified and delete files
-        git add -u
+    # config git
+    git config --global user.email $GH_EMAIL
+    git config --global user.name "Flyve MDM"
+    git remote remove origin
+    git remote add origin https://$GH_USER:$GH_TOKEN@github.com/flyve-mdm/flyve-mdm-android-agent.git
 
-        # create commit
-        git commit -m "ci(build): increment **version** ${GIT_TAG}"
+    #------------------------ UPDATE CHANGES --------------------------
+    git config --list
 
-        # push to branch
-        git push origin $TRAVIS_BRANCH
+    # add modified and delete files
+    git add -u
 
-        #------------------------ GH-PAGES --------------------------
+    # create commit
+    git commit -m "ci(build): release **version** ${GIT_TAG}"
 
-#         # move to gh-pages
-#         git checkout gh-pages
-#
-#         # get changelog from branch
-#         git checkout $TRAVIS_BRANCH CHANGELOG.md
-#
-#         # remove all other files
-#         git clean -fdx
-#
-#         # create commit
-#         git commit -m "docs(changelog): update changelog with version ${GIT_TAG}"
-#
-#         # push to branch
-#         git push origin gh-pages
-    fi
+    # push to branch
+    git push origin $TRAVIS_BRANCH
+
+    #------------------------ GH-PAGES --------------------------
+
+    # Generate javadoc this folder must be on .gitignore
+    javadoc -d ./javadoc -sourcepath ./app/src/main/java -subpackages .
+
+    # get
+    git fetch origin gh-pages
+
+    # move to gh-pages
+    git checkout gh-pages
+
+    # add javadoc folder
+    git add javadoc
+
+    # create commit
+    git commit -m "docs(javadoc): update javadoc with version ${GIT_TAG}"
+
+    # clean unstage file on gh-pages
+    git clean -fdx
+
+    # get changelog from branch
+    git checkout $TRAVIS_BRANCH CHANGELOG.md
+
+    # Create header content
+    HEADER="---"$'\r'"layout: modal"$'\r'"title: changelog"$'\r'"---"$'\r\r'
+
+    # Duplicate CHANGELOG.md
+    cp CHANGELOG.md CHANGELOG_COPY.md
+
+    # Add header to CHANGELOG.md
+    (echo $HEADER ; cat CHANGELOG_COPY.md) > CHANGELOG.md
+
+    # Remove CHANGELOG_COPY.md
+    rm CHANGELOG_COPY.md
+
+    # add
+    git add CHANGELOG.md
+
+    # create commit
+    git commit -m "docs(changelog): update changelog with version ${GIT_TAG}"
+
+    # push to branch
+    git push origin gh-pages --force
 fi
