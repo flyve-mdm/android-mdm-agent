@@ -25,10 +25,23 @@
 # @link      https://flyve-mdm.com
 # ------------------------------------------------------------------------------
 
+# Catch if last commit come from last travis build to prevent loop
+if [[ $TRAVIS_COMMIT_MESSAGE != *"**beta**"* && $TRAVIS_COMMIT_MESSAGE != *"**version**"* && $TRAVIS_COMMIT_MESSAGE != *"**CHANGELOG.md**"* ]]; then
+    export TRAVIS_RUN="true"
+else
+    export TRAVIS_RUN="false"
+fi
+
 #-----------------------------------------------------------------
 # DEVELOP MASTER and NOT PULLREQUEST
 #-----------------------------------------------------------------
-if [[ ("$TRAVIS_BRANCH" == "develop" ||  "$TRAVIS_BRANCH" == "master") && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+if [[ ("$TRAVIS_BRANCH" == "develop" ||  "$TRAVIS_BRANCH" == "master") && "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_RUN" == "true" ]]; then
+
+    # install node
+    . ~/.nvm/nvm.sh
+    nvm install stable
+    nvm use stable
+    npm cache clean --force
 
     # install ruby 2.3.4 to execute gems
     rvm install 2.3.4
@@ -41,5 +54,4 @@ if [[ ("$TRAVIS_BRANCH" == "develop" ||  "$TRAVIS_BRANCH" == "master") && "$TRAV
 
     # install node package available on package.json
     npm install
-
 fi
