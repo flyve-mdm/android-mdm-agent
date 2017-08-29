@@ -58,36 +58,40 @@ dependencies {
 }
 
 import java.util.regex.Pattern
-import groovy.json.JsonSlurper
 
-task increaseVersionCode {
+task updateVersionCode {
     doLast {
-        def manifestFile = file("src/main/AndroidManifest.xml")
-        def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
-        def manifestText = manifestFile.getText()
-        def matcher = pattern.matcher(manifestText)
-        matcher.find()
-        def versionCode = Integer.parseInt(matcher.group(1))
-        def manifestContent = matcher.replaceAll("versionCode=\"" + ++versionCode + "\"")
-        println "Version code: " + versionCode
-        manifestFile.write(manifestContent)
+        if (project.hasProperty("vCode")) {
+            def manifestFile = file("src/main/AndroidManifest.xml")
+            def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
+            def manifestText = manifestFile.getText()
+            def matcher = pattern.matcher(manifestText)
+            matcher.find()
+
+            def manifestContent = matcher.replaceAll("versionCode=\"" + vCode + "\"")
+            println "Version Code: " + vCode
+            manifestFile.write(manifestContent)
+        } else {
+            println "please run: updateVersionCode -P vCode="
+        }
     }
 }
 
-task incrementVersionName {
+task updateVersionName {
     doLast {
-        def manifestFile = file("src/main/AndroidManifest.xml")
-        def patternVersionNumber = Pattern.compile("versionName=\"(\\d+)\\.(\\d+)\\.(\\d+)\"")
-        def manifestText = manifestFile.getText()
-        def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
-        matcherVersionNumber.find()
+        if (project.hasProperty("vName")) {
+            def manifestFile = file("src/main/AndroidManifest.xml")
+            def patternVersionNumber = Pattern.compile("versionName=\"(\\d+)\\.(\\d+)\\.(\\d+)(?:\\S*)\"")
+            def manifestText = manifestFile.getText()
+            def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
+            matcherVersionNumber.find()
 
-        def inputFile = new File("package.json")
-        def json = new JsonSlurper().parseText(inputFile.text)
-        def mNextVersionName = json.version //This will return version number
+            def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + vName + "\"")
+            manifestFile.write(manifestContent)
 
-        def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
-        println "Version name: " + mNextVersionName
-        manifestFile.write(manifestContent)
+            println "Version name: " + vName
+        } else {
+            println "please run: updateVersionName -P vName="
+        }
     }
 }
