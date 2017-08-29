@@ -25,34 +25,47 @@
 # @link      https://flyve-mdm.com
 # ------------------------------------------------------------------------------
 
+# Move to local branch
+git checkout $TRAVIS_BRANCH -f
 
-# create enviroment vars to work with fastlane
-echo TELEGRAM_WEBHOOKS=$TELEGRAM_WEBHOOKS > .env
-echo GIT_REPO=$TRAVIS_REPO_SLUG >> .env
-echo GIT_BRANCH=$TRAVIS_BRANCH >> .env
-
-echo $TRAVIS_BRANCH
 #-----------------------------------------------------------------
-# DEVELOP DEPLOY
-# - increse version code
+# DEVELOP
+# - update version code get from travis build
+# - update version name -BETA
 #-----------------------------------------------------------------
-if [[ "$TRAVIS_BRANCH" == "develop" && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+if [[ "$TRAVIS_BRANCH" == "develop" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_RUN" == "true" ]]; then
     # increment version code, need to be unique to send to store
-    gradle increaseVersionCode
+    gradle updateVersionCode -P vCode=$TRAVIS_BUILD_NUMBER
+
+    # increment version on package.json, create tag and commit with changelog
+    npm run release
+
+    # Get version number from package.json
+    export GIT_TAG=$(jq -r ".version" package.json)
+
+    # Revert last commit
+    git reset --hard HEAD~1
+
+    # update version name generate on package json
+    gradle updateVersionName -P vName=$GIT_TAG-beta
 fi
 
 #-----------------------------------------------------------------
-# MASTER DEPLOY
-# - increse version code
+# MASTER
+# - update version code get from travis build
 # - run release to increment version name, create a tag and commit this this tag
-# - increment version name on manifest
+# - update version name on manifest
 #-----------------------------------------------------------------
-if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_RUN" == "true" ]]; then
     # increment version code, need to be unique to send to store
-    gradle increaseVersionCode
+    gradle updateVersionCode -P vCode=$TRAVIS_BUILD_NUMBER
 
     # increment version on package.json, create tag and commit with changelog
     npm run release -- -m "ci(release): generate **CHANGELOG.md** for version %s"
-    # increment version name generate on package json
-    gradle incrementVersionName
+
+    # Get version number from package.json
+    export GIT_TAG=$(jq -r ".version" package.json)
+
+    # update version name generate on package json
+    gradle updateVersionName -P vName=$GIT_TAG
 fi
