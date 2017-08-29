@@ -4,20 +4,14 @@ android:
   - build-tools-$BUILD_TOOL
   - android-$ANDROID_API
   - extra-android-m2repository
-before_install:
-  - . ~/.nvm/nvm.sh
-  - nvm install stable
-  - nvm use stable
-  - npm cache clean --force
-  - "./ci/before_install.sh"
 install:
-  - "./ci/install.sh"
+  - source ./ci/install.sh
 before_script:
-  - "./ci/before_script.sh"
+  - source ./ci/before_script.sh
 script:
-  - "./ci/script.sh"
+  - source ./ci/script.sh
 after_success:
-  - "./ci/deploy.sh"
+  - source ./ci/deploy.sh
 notifications:
   webhooks: https://fathomless-fjord-24024.herokuapp.com/notify
 env:
