@@ -23,6 +23,9 @@ img {
     color: #3e3e3e;
     background-color: #fff;
 }
-.jumbotron.theme-dark h3 {
-    padding: 30px 0;
+.jumbotron.theme-dark {
+    padding: 60px 0;
+    h3 {
+        padding-top: 0;
+    }
 }
