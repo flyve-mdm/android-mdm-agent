@@ -34,9 +34,6 @@ git checkout $TRAVIS_BRANCH -f
 # - update version name -BETA
 #-----------------------------------------------------------------
 if [[ "$TRAVIS_BRANCH" == "develop" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_RUN" == "true" ]]; then
-    # increment version code, need to be unique to send to store
-    gradle updateVersionCode -P vCode=$TRAVIS_BUILD_NUMBER
-
     # increment version on package.json, create tag and commit with changelog
     npm run release
 
@@ -45,6 +42,9 @@ if [[ "$TRAVIS_BRANCH" == "develop" && "$TRAVIS_PULL_REQUEST" == "false" && "$TR
 
     # Revert last commit
     git reset --hard HEAD~1
+
+    # increment version code, need to be unique to send to store
+    gradle updateVersionCode -P vCode=$TRAVIS_BUILD_NUMBER
 
     # update version name generate on package json
     gradle updateVersionName -P vName=$GIT_TAG-beta
