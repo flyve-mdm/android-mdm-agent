@@ -47,9 +47,8 @@ platform :android do
         zipalign(apk_path: "#{lane_context[SharedValues::SIGNED_APK_PATH]}")
 
         supply(
-            track: 'rollout',
-            apk: "#{lane_context[SharedValues::SIGNED_APK_PATH]}",
-            rollout: '1.0'
+            track: 'production',
+            apk: "#{lane_context[SharedValues::SIGNED_APK_PATH]}"
         )
     end
 end
