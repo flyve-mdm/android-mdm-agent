@@ -163,6 +163,10 @@ public class UserModel {
         return administrativeNumber;
     }
 
+    /**
+     * Set the administrative number of the user
+     * @param string administrativeNumber
+     */
     public void setAdministrativeNumber(String administrativeNumber) {
         this.administrativeNumber = administrativeNumber;
     }
