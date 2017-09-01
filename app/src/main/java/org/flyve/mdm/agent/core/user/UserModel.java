@@ -139,6 +139,10 @@ public class UserModel {
         this.mobilePhone = mobilePhone;
     }
 
+    /**
+     * Get a second phone of the user
+     * @return the second phone 
+     */
     public String getPhone2() {
         return phone2;
     }
