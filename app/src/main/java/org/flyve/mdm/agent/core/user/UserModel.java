@@ -75,6 +75,10 @@ public class UserModel {
         this.firstName = firstName;
     }
 
+    /**
+     * Get the last name of the user
+     * @return the last name
+     */
     public String getLastName() {
         return lastName;
     }
