@@ -40,6 +40,9 @@ public class UserModel {
     private String picture = "";
     private List<UserModel.EmailsData> emails;
 
+    /**
+     * Constructor
+     */
     public UserModel() {
 
     }
