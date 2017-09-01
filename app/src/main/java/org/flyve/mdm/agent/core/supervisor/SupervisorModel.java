@@ -109,6 +109,10 @@ public class SupervisorModel {
         this.website = website;
     }
 
+    /**
+     * Get the picture of the Supervisor Model
+     * @return string the picture
+     */
     public String getPicture() {
         return picture;
     }
