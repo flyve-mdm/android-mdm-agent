@@ -69,6 +69,10 @@ public class SupervisorModel {
         return email;
     }
 
+    /**
+     * Set the email of the Supervisor Model
+     * @param string the email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
