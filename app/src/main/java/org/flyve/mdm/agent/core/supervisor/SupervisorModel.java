@@ -40,6 +40,14 @@ public class SupervisorModel {
     public SupervisorModel() {
     }
 
+    /**
+     * Set the object's properties to equal the arguments given
+     * @param string the name
+     * @param string the email
+     * @param string the phone
+     * @param string the website
+     * @param string the picture
+     */
     public SupervisorModel(String name, String email, String phone, String website, String picture) {
         this.name = name;
         this.email = email;
