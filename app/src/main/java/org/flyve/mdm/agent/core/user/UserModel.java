@@ -115,6 +115,10 @@ public class UserModel {
         return phone;
     }
 
+    /**
+     * Set the phone of the user
+     * @param string the phone
+     */
     public void setPhone(String phone) {
         this.phone = phone;
     }
