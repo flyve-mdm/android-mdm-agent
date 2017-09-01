@@ -49,6 +49,11 @@ public class SupervisorController {
         return cache.getSupervisor();
     }
 
+    /**
+     * Save the local storage
+     * @param SupervisorModel supervisor
+     * @return boolean true if saved, else otherwise
+     */
     public boolean save(SupervisorModel supervisor) {
         try {
             SupervisorStorage cache = new SupervisorStorage(context);
