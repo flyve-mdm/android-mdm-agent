@@ -53,6 +53,10 @@ public class SupervisorModel {
         return name;
     }
 
+    /**
+     * Set the name of the Supervisor Model
+     * @param string the name
+     */
     public void setName(String name) {
         this.name = name;
     }
