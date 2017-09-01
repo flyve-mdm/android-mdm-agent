@@ -91,6 +91,10 @@ public class UserModel {
         this.lastName = lastName;
     }
 
+    /**
+     * Get the language of the user
+     * @return the language
+     */
     public String getLanguage() {
         return language;
     }
