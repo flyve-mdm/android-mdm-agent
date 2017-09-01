@@ -59,6 +59,10 @@ public class UserModel {
         this.emails = emails;
     }
 
+    /**
+     * Get the first name of the user
+     * @return the first name
+     */
     public String getFirstName() {
         return firstName;
     }
