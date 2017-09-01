@@ -55,6 +55,10 @@ public class UserStorage extends LocalStorage {
         return gson.fromJson(json, UserModel.class);
     }
 
+    /**
+     * Set the user local storage
+     * @param UserModel user
+     */
     public void setUser(UserModel user) {
         Gson gson = new Gson();
         String json = gson.toJson(user);
