@@ -45,6 +45,10 @@ public class SupervisorStorage extends LocalStorage {
         super(context);
     }
 
+    /**
+     * Get the supervisor storage
+     * @return string the local storage
+     */
     public SupervisorModel getSupervisor() {
         String json = getData(LOCAL_STORAGE);
         Gson gson = new Gson();
