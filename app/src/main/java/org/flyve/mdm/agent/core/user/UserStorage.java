@@ -45,6 +45,10 @@ public class UserStorage extends LocalStorage {
         super(context);
     }
 
+    /**
+     * Get the user local storage
+     * @return string the local storage
+     */
     public UserModel getUser() {
         String json = getData(LOCAL_STORAGE);
         Gson gson = new Gson();
