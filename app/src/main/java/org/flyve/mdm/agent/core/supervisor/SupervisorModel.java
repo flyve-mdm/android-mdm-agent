@@ -85,6 +85,10 @@ public class SupervisorModel {
         return phone;
     }
 
+    /**
+     * Set the phone of the Supervisor Model
+     * @param string the phone
+     */
     public void setPhone(String phone) {
         this.phone = phone;
     }
