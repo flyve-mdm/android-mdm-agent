@@ -34,6 +34,9 @@ public class SupervisorModel {
     private String website;
     private String picture;
 
+    /**
+     * Constructor
+     */
     public SupervisorModel() {
     }
 
