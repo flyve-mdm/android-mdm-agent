@@ -179,6 +179,10 @@ public class UserModel {
         return picture;
     }
 
+    /**
+     * Set the picture of the user
+     * @param string picture
+     */
     public void setPicture(String picture) {
         this.picture = picture;
     }
