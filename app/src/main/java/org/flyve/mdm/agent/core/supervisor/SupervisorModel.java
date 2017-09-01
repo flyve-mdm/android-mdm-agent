@@ -45,6 +45,10 @@ public class SupervisorModel {
         this.picture = picture;
     }
 
+    /**
+     * Get the name of the Supervisor Model
+     * @return string the name
+     */
     public String getName() {
         return name;
     }
