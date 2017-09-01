@@ -83,6 +83,10 @@ public class UserModel {
         return lastName;
     }
 
+    /**
+     * Set the last name of the user
+     * @param string the last name
+     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
