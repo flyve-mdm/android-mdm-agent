@@ -42,6 +42,22 @@ prose:
           element: "checkbox"
           label: "Published"
           value: false
+
+    _posts/static:
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "container"
+      - name: "title"
+        field:
+          element: "text"
+          label: "Title"
+          value: ""
+      - name: "permalink"
+        field:
+          element: "text"
+          label: "Permalink"
+          value: ""    
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
