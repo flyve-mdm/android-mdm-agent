@@ -93,6 +93,10 @@ public class SupervisorModel {
         this.phone = phone;
     }
 
+    /**
+     * Get the website of the Supervisor Model
+     * @return string the website
+     */
     public String getWebsite() {
         return website;
     }
