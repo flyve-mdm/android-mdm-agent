@@ -155,6 +155,10 @@ public class UserModel {
         this.phone2 = phone2;
     }
 
+    /**
+     * Get the administrative number of the user
+     * @return the administrative number
+     */
     public String getAdministrativeNumber() {
         return administrativeNumber;
     }
