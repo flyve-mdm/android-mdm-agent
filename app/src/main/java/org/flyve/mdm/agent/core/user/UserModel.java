@@ -107,6 +107,10 @@ public class UserModel {
         this.language = language;
     }
 
+    /**
+     * Get the phone of the user
+     * @return the phone
+     */
     public String getPhone() {
         return phone;
     }
