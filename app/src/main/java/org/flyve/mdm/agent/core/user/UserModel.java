@@ -99,6 +99,10 @@ public class UserModel {
         return language;
     }
 
+    /**
+     * Set the language of the user
+     * @param string the language
+     */
     public void setLanguage(String language) {
         this.language = language;
     }
