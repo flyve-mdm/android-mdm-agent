@@ -77,6 +77,10 @@ public class SupervisorModel {
         this.email = email;
     }
 
+    /**
+     * Get the phone of the Supervisor Model
+     * @return string the phone
+     */
     public String getPhone() {
         return phone;
     }
