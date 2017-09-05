@@ -84,6 +84,10 @@ public class WalkthroughModel {
         return image;
     }
 
+    /**
+     * Set the image of the Walkthrough
+     * @param int the image
+     */
     public void setImage(int image) {
         this.image = image;
     }
