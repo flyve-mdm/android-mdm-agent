@@ -68,6 +68,10 @@ public class WalkthroughModel {
         return link;
     }
 
+    /**
+     * Set the link of the Walkthrough
+     * @param string the link
+     */
     public void setLink(String link) {
         this.link = link;
     }
