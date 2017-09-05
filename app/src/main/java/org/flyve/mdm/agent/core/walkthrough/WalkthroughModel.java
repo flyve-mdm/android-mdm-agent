@@ -44,6 +44,10 @@ public class WalkthroughModel {
         this.image = image;
     }
 
+    /**
+     * Get the message of the Walkthrough
+     * @return string the message
+     */
     public String getMessage() {
         return message;
     }
