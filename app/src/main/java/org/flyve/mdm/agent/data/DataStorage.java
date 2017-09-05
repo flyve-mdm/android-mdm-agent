@@ -103,6 +103,10 @@ public class DataStorage {
 		setData("url", url);
 	}
 
+	/**
+	 * Get the token of the user
+	 * @return string the user token
+	 */
 	public String getUserToken() {
 		return getData("user_token");
 	}
