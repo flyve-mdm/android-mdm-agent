@@ -78,7 +78,7 @@ public class DataStorage {
 	public String getManifestVersion() {
 		return getData("manifestVersion");
 	}
-	
+
 	/**
 	 * Set the version of the Manifest
 	 * @param string the Manifest version
@@ -87,6 +87,10 @@ public class DataStorage {
 		setData("manifestVersion", version);
 	}
 
+	/**
+	 * Get the URL
+	 * @return string the URL
+	 */
 	public String getUrl() {
 		return getData("url");
 	}
