@@ -60,6 +60,10 @@ public class WalkthroughModel {
         this.message = message;
     }
 
+    /**
+     * Get the link of the Walkthrough
+     * @return string the link
+     */
     public String getLink() {
         return link;
     }
