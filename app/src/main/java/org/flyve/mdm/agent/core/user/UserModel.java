@@ -220,6 +220,10 @@ public class UserModel {
             return email;
         }
 
+        /**
+         * Set the email of the user
+         * @param string the email
+         */
         public void setEmail(String email) {
             this.email = email;
         }
