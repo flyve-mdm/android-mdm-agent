@@ -208,8 +208,8 @@ public class UserModel {
     }
 
     /**
-     * Set the emails of hte list
-     * @param EmailsData the emails
+     * Set the emails of the list
+     * @param ArrayList the emails
      */
     public void setEmails(List<EmailsData> emails) {
         this.emails = emails;
