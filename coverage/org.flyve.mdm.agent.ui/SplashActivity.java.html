@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SplashActivity.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">SplashActivity.java</span></div><h1>SplashActivity.java</h1><pre class="source lang-java linenums">/*
+ *   Copyright © 2017 Teclib. All rights reserved.
+ *
+ * This file is part of flyve-mdm-android-agent
+ *
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @date      02/06/2017
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+
+package org.flyve.mdm.agent.ui;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+
+import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
+import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.utils.FlyveLog;
+
+import java.util.ArrayList;
+
+/**
+ * This is the first screen of the app here you can get information about flyve-mdm-agent
+ * if you are not register
+ */
+<span class="nc" id="L55">public class SplashActivity extends FragmentActivity {</span>
+
+    private static final int TIME = 3000;
+    private IntentFilter mIntent;
+
+    private ArrayList&lt;WalkthroughModel&gt; walkthrough;
+
+    /**
+     * The pager widget, which handles animation and allows swiping horizontally to access previous
+     * and next wizard steps.
+     */
+    private ViewPager mPager;
+
+    /**
+     * The pager adapter, which provides the pages to the view pager widget.
+     */
+    private PagerAdapter mPagerAdapter;
+
+    @Override
+    public void onPause() {
+        // unregister the broadcast
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if(mIntent != null) {</span>
+<span class="nc" id="L77">            unregisterReceiver(broadcastMessage);</span>
+<span class="nc" id="L78">            mIntent = null;</span>
+        }
+<span class="nc" id="L80">        super.onPause();</span>
+<span class="nc" id="L81">    }</span>
+
+    @Override
+    public void onResume() {
+        // register the broadcast
+<span class="nc" id="L86">        super.onResume();</span>
+<span class="nc" id="L87">        LocalBroadcastManager.getInstance(SplashActivity.this).registerReceiver(broadcastMessage, new IntentFilter(&quot;flyve.ACTION_CLOSE&quot;));</span>
+<span class="nc" id="L88">    }</span>
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+<span class="nc" id="L93">        super.onCreate(savedInstanceState);</span>
+
+<span class="nc" id="L95">        DataStorage cache = new DataStorage( SplashActivity.this );</span>
+
+        // if broker is on cache open the main activity
+<span class="nc" id="L98">        String broker = cache.getBroker();</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if(broker != null) {</span>
+            // if user is enrolled show landing screen
+<span class="nc" id="L101">            FlyveLog.d(cache.getSessionToken());</span>
+
+<span class="nc" id="L103">            setContentView(R.layout.activity_splash_enrolled);</span>
+<span class="nc" id="L104">            new Handler().postDelayed(new Runnable() {</span>
+                @Override
+                public void run() {
+<span class="nc" id="L107">                    openMain();</span>
+<span class="nc" id="L108">                }</span>
+            }, TIME);
+
+<span class="nc" id="L111">            return;</span>
+        }
+
+        // if user is not enrolled show help
+<span class="nc" id="L115">        setContentView(R.layout.activity_splash);</span>
+
+<span class="nc" id="L117">        walkthrough = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L118">        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_1), getResources().getString(R.string.walkthrough_step_link_1), R.drawable.logoflyve));</span>
+<span class="nc" id="L119">        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_2), getResources().getString(R.string.walkthrough_step_link_2), R.drawable.ic_walkthroug_2));</span>
+<span class="nc" id="L120">        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_3), &quot;&quot;, R.drawable.ic_walkthroug_3));</span>
+
+        // Instantiate a ViewPager and a PagerAdapter.
+<span class="nc" id="L123">        mPager = (ViewPager) findViewById(R.id.pager);</span>
+<span class="nc" id="L124">        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());</span>
+<span class="nc" id="L125">        mPager.setAdapter(mPagerAdapter);</span>
+<span class="nc" id="L126">    }</span>
+
+    /**
+     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
+     * sequence.
+     */
+    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+<span class="nc" id="L133">        public ScreenSlidePagerAdapter(FragmentManager fm) {</span>
+<span class="nc" id="L134">            super(fm);</span>
+<span class="nc" id="L135">        }</span>
+
+        @Override
+        public Fragment getItem(int position) {
+<span class="nc" id="L139">            FragmentSlideWalkthrough f = new FragmentSlideWalkthrough();</span>
+<span class="nc" id="L140">            f.config(walkthrough.get(position), walkthrough.size(), position);</span>
+<span class="nc" id="L141">            return f;</span>
+        }
+
+        @Override
+        public int getCount() {
+<span class="nc" id="L146">            return walkthrough.size();</span>
+        }
+    }
+
+    /**
+     * Open the main activity
+     */
+    private void openMain() {
+<span class="nc" id="L154">        Intent miIntent = new Intent(SplashActivity.this, MainActivity.class);</span>
+<span class="nc" id="L155">        SplashActivity.this.startActivity(miIntent);</span>
+<span class="nc" id="L156">        SplashActivity.this.finish();</span>
+<span class="nc" id="L157">    }</span>
+
+<span class="nc" id="L159">    private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {</span>
+        @Override
+        public void onReceive(Context context, Intent intent) {
+<span class="nc" id="L162">            String action = intent.getAction();</span>
+
+            // Close this activity
+<span class="nc bnc" id="L165" title="All 2 branches missed.">            if(&quot;flyve.ACTION_CLOSE&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc" id="L166">                SplashActivity.this.finish();</span>
+            }
+<span class="nc" id="L168">        }</span>
+    };
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.2.0</div></body></html>

@@ -13,6 +13,16 @@ plugins:
 
 repository: flyve-mdm/flyve-mdm-android-agent
 
+defaults:
+    scope:
+      path: "" # an empty string here means all files in the project
+    values:
+      layout: "default"
+
+collections:
+  coverage:
+    output: true
+
 prose:
 
   rooturl: '_posts' 

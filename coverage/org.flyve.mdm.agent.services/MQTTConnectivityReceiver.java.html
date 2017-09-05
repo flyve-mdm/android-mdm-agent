@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MQTTConnectivityReceiver.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.services</a> &gt; <span class="el_source">MQTTConnectivityReceiver.java</span></div><h1>MQTTConnectivityReceiver.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2016-2017 Teclib'
+ *
+ * This file is part of Flyve MDM Android.
+ *
+ * Flyve MDM Android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM Android is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM Android is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Dorian LARGET
+ * @copyright Copyright (c) 2016 Flyve MDM
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyvemdm/flyvemdm-android
+ * @link      http://www.glpi-project.org/
+ * ------------------------------------------------------------------------------
+ */
+
+package org.flyve.mdm.agent.services;
+
+import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
+
+import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.utils.FlyveLog;
+
+/**
+ * Receive broadcast from android.net.wifi.STATE_CHANGE and android.bluetooth.adapter.action.STATE_CHANGED
+ * on AndroidManifest.xml
+ */
+<span class="nc" id="L43">public class MQTTConnectivityReceiver extends BroadcastReceiver {</span>
+
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+<span class="nc" id="L48">        final String action = intent.getAction();</span>
+<span class="nc" id="L49">        FlyveLog.d(&quot;Connectivity receiver: &quot; + action);</span>
+
+<span class="nc" id="L51">        DataStorage cache = new DataStorage(context);</span>
+
+        // Manage WIFI
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (&quot;android.net.wifi.STATE_CHANGE&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc" id="L55">            NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);</span>
+<span class="nc bnc" id="L56" title="All 4 branches missed.">            if (info != null &amp;&amp; info.isAvailable()) {</span>
+<span class="nc" id="L57">                boolean disable = cache.getConnectivityWifiDisable();</span>
+
+                // getApplicationContext is used to prevent memory leak
+<span class="nc" id="L60">                WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">                wifiManager.setWifiEnabled(!disable);</span>
+            }
+        }
+
+        // Manage Bluetooth
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {</span>
+<span class="nc" id="L67">            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();</span>
+<span class="nc bnc" id="L68" title="All 4 branches missed.">            if (bluetoothAdapter.isEnabled() &amp;&amp; cache.getConnectivityBluetoothDisable()) {</span>
+<span class="nc" id="L69">                bluetoothAdapter.disable();</span>
+            }
+        }
+
+        // Manage location
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if(&quot;android.location.PROVIDERS_CHANGED&quot;.equalsIgnoreCase(action)) {</span>
+            /*
+             * Turn off GPS need system app for any api Android under 23 and
+             * user app for API 23 or above
+             * check this https://developer.android.com/reference/android/Manifest.permission.html#WRITE_SETTINGS
+             * check if the app is installed on /system or /data to manage GPS settings
+             *
+             * “Write settings” permission not granted marshmallow android
+             *  https://stackoverflow.com/questions/39224303/write-settings-permission-not-granted-marshmallow-android/39224511#39224511
+             *
+             * Can't get WRITE_SETTINGS permission
+             * https://stackoverflow.com/questions/32083410/cant-get-write-settings-permission
+             */
+
+<span class="nc" id="L88">            boolean disable = cache.getConnectivityGPSDisable();</span>
+<span class="nc" id="L89">            FlyveLog.i(&quot;Location providers change: &quot; + disable);</span>
+        }
+<span class="nc" id="L91">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.2.0</div></body></html>

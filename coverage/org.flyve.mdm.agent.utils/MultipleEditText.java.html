@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MultipleEditText.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.utils</a> &gt; <span class="el_source">MultipleEditText.java</span></div><h1>MultipleEditText.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.utils;
+
+import android.content.Context;
+import android.text.InputType;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+
+import org.flyve.mdm.agent.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/*
+ *   Copyright © 2017 Teclib. All rights reserved.
+ *
+ *   This file is part of flyve-mdm-android-agent
+ *
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @date      8/8/17
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+public class MultipleEditText {
+
+<span class="nc" id="L48">    private List&lt;EditText&gt; editList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L49">    private List&lt;Spinner&gt; spinnList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L50">    private int index = 0;</span>
+    private Context context;
+    private ViewGroup container;
+    private String hint;
+    private int inputType;
+<span class="nc" id="L55">    private int limit = 0;</span>
+<span class="nc" id="L56">    private ArrayAdapter&lt;CharSequence&gt; adapter = null;</span>
+
+<span class="nc" id="L58">    public MultipleEditText(Context context, ViewGroup container, String hint) {</span>
+<span class="nc" id="L59">        this.context = context;</span>
+<span class="nc" id="L60">        this.container = container;</span>
+<span class="nc" id="L61">        this.hint = hint;</span>
+<span class="nc" id="L62">        this.inputType = InputType.TYPE_CLASS_TEXT;</span>
+<span class="nc" id="L63">    }</span>
+
+    public void setLimit(int size) {
+<span class="nc" id="L66">        this.limit = size;</span>
+<span class="nc" id="L67">    }</span>
+
+    public void setInputType(int type) {
+<span class="nc" id="L70">        inputType = type;</span>
+<span class="nc" id="L71">    }</span>
+
+    public void setValue(List&lt;String&gt; editValue, List&lt;String&gt; spinnerValue) {
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        for(int i=0; i&lt;editValue.size(); i++) {</span>
+<span class="nc" id="L75">            container.addView(createEditText(editValue.get(i), spinnerValue.get(i)));</span>
+        }
+<span class="nc" id="L77">    }</span>
+
+    public void setSpinnerArray(int array) {
+        // Create an ArrayAdapter using the string array and a default spinner layout
+<span class="nc" id="L81">        adapter = ArrayAdapter.createFromResource(context,</span>
+                array, android.R.layout.simple_spinner_item);
+<span class="nc" id="L83">    }</span>
+
+    public List&lt;EditText&gt; getEditList() {
+<span class="nc" id="L86">        return editList;</span>
+    }
+
+    public List&lt;Spinner&gt; getSpinnList() {
+<span class="nc" id="L90">        return spinnList;</span>
+    }
+
+    public LinearLayout createEditText() {
+<span class="nc" id="L94">        return createEditText(&quot;&quot;,&quot;&quot;);</span>
+    }
+
+    public LinearLayout createEditText(String editTextValue, String spinnerValue) {
+<span class="nc" id="L98">        int id = ++index;</span>
+
+        // if limit is mayor of id return null
+<span class="nc bnc" id="L101" title="All 4 branches missed.">        if(limit &lt; id &amp;&amp; limit &gt; 0) {</span>
+<span class="nc" id="L102">            return new LinearLayout(context);</span>
+        }
+
+<span class="nc" id="L105">        final LinearLayout llv = new LinearLayout(context);</span>
+<span class="nc" id="L106">        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams</span>
+                (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+<span class="nc" id="L108">        params.setMargins(0,0,0,0);</span>
+<span class="nc" id="L109">        llv.setLayoutParams(params);</span>
+<span class="nc" id="L110">        llv.setOrientation(LinearLayout.VERTICAL);</span>
+
+        // -------------------
+        // LinearLayout HORIZONTAL
+        // -------------------
+<span class="nc" id="L115">        LinearLayout ll = new LinearLayout(context);</span>
+<span class="nc" id="L116">        ll.setLayoutParams(params);</span>
+<span class="nc" id="L117">        ll.setOrientation(LinearLayout.HORIZONTAL);</span>
+
+        // -------------------
+        // Email Layout
+        // -------------------
+<span class="nc" id="L122">        LinearLayout.LayoutParams paramsEdit = new LinearLayout.LayoutParams</span>
+                (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
+
+        // -------------------
+        // Email EditText
+        // -------------------
+<span class="nc" id="L128">        final EditText editText = new EditText(context);</span>
+<span class="nc" id="L129">        editText.setId(id);</span>
+<span class="nc" id="L130">        editText.setLayoutParams(paramsEdit);</span>
+<span class="nc" id="L131">        editText.setHint(hint);</span>
+<span class="nc" id="L132">        editText.setTag(&quot;&quot;);</span>
+<span class="nc" id="L133">        editText.setText(editTextValue);</span>
+<span class="nc" id="L134">        editText.setInputType(inputType);</span>
+<span class="nc" id="L135">        editText.setOnKeyListener(new View.OnKeyListener() {</span>
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+<span class="nc bnc" id="L138" title="All 2 branches missed.">                if(!&quot;used&quot;.equalsIgnoreCase(v.getTag().toString())) {</span>
+<span class="nc" id="L139">                    v.setTag(&quot;used&quot;);</span>
+<span class="nc" id="L140">                    container.addView(createEditText());</span>
+                }
+<span class="nc" id="L142">                return false;</span>
+            }
+        });
+<span class="nc" id="L145">        ll.addView(editText);</span>
+
+        // -------------------
+        // Clear Button
+        // -------------------
+<span class="nc" id="L150">        LinearLayout.LayoutParams paramsImg = new LinearLayout.LayoutParams</span>
+                (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+<span class="nc" id="L152">        paramsImg.gravity= Gravity.CENTER;</span>
+
+<span class="nc" id="L154">        ImageView imgDelete = new ImageView(context);</span>
+<span class="nc" id="L155">        imgDelete.setId(id);</span>
+<span class="nc" id="L156">        imgDelete.setLayoutParams(paramsImg);</span>
+<span class="nc" id="L157">        imgDelete.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_clear));</span>
+<span class="nc" id="L158">        imgDelete.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View v) {
+<span class="nc bnc" id="L161" title="All 2 branches missed.">                if(editList.size()&gt;=2) {</span>
+<span class="nc" id="L162">                    container.removeView(llv);</span>
+<span class="nc" id="L163">                    editList.remove(editText);</span>
+                } else {
+<span class="nc" id="L165">                    editText.setText(&quot;&quot;);</span>
+<span class="nc" id="L166">                    editText.setTag(&quot;&quot;);</span>
+<span class="nc" id="L167">                    index = 0;</span>
+                }
+<span class="nc" id="L169">            }</span>
+        });
+<span class="nc" id="L171">        ll.addView(imgDelete);</span>
+
+        // -------------------
+        // Add email to list
+        // -------------------
+<span class="nc" id="L176">        editList.add(editText);</span>
+
+<span class="nc" id="L178">        llv.addView(ll);</span>
+
+        // -----------------
+        // Add spinner
+        // -----------------
+<span class="nc bnc" id="L183" title="All 2 branches missed.">        if(adapter != null) {</span>
+<span class="nc" id="L184">            Spinner spinner = new Spinner(context);</span>
+
+            // Specify the layout to use when the list of choices appears
+<span class="nc" id="L187">            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);</span>
+
+            // Apply the adapter to the spinner
+<span class="nc" id="L190">            spinner.setAdapter(adapter);</span>
+
+<span class="nc bnc" id="L192" title="All 4 branches missed.">            if(spinnerValue!=null &amp;&amp; !spinnerValue.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L193">                int spinnerPosition = adapter.getPosition(spinnerValue);</span>
+<span class="nc" id="L194">                spinner.setSelection(spinnerPosition);</span>
+            }
+<span class="nc" id="L196">            spinnList.add(spinner);</span>
+
+<span class="nc" id="L198">            llv.addView(spinner);</span>
+        }
+
+<span class="nc" id="L201">        return llv;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.2.0</div></body></html>
