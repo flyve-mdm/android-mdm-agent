@@ -62,6 +62,11 @@ public class DataStorage {
 	public boolean getOnlineStatus() {
 		return Boolean.valueOf(getData("onlineStatus"));
 	}
+
+	/**
+	 * Set the online status
+	 * @param boolean the status
+	 */
 	public void setOnlineStatus(boolean status) {
 		setData("onlineStatus", String.valueOf(status));
 	}
