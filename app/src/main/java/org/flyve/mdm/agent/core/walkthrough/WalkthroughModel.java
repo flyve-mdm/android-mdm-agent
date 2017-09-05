@@ -32,6 +32,12 @@ public class WalkthroughModel {
     private String link;
     private int image;
 
+    /**
+     * This constructor sets the properties to equal the given arguments
+     * @param string the message
+     * @param string the link
+     * @param int the image
+     */
     public WalkthroughModel(String message, String link, int image) {
         this.message = message;
         this.link = link;
