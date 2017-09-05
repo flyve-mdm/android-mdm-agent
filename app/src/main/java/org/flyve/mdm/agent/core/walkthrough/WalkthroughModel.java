@@ -52,6 +52,10 @@ public class WalkthroughModel {
         return message;
     }
 
+    /**
+     * Set the message of the Walkthrough
+     * @param string the message
+     */
     public void setMessage(String message) {
         this.message = message;
     }
