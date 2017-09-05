@@ -199,6 +199,10 @@ public class UserModel {
         this.picture = picture;
     }
 
+    /**
+     * Get the emails of the list
+     * @return the emails
+     */
     public List<EmailsData> getEmails() {
         return emails;
     }
