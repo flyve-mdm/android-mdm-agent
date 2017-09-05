@@ -36,6 +36,10 @@ public class UserController {
         this.context = context;
     }
 
+    /**
+     * Get the cache of the user storage
+     * @return the local storage
+     */
     public UserModel getCache() {
         UserStorage cache = new UserStorage(context);
         return cache.getUser();
