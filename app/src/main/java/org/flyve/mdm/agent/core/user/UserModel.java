@@ -212,6 +212,10 @@ public class UserModel {
         private String email;
         private String type;
 
+        /**
+         * Get the email of the user
+         * @return the email
+         */
         public String getEmail() {
             return email;
         }
