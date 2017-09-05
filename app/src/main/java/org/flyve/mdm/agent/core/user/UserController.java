@@ -45,6 +45,11 @@ public class UserController {
         return cache.getUser();
     }
 
+    /**
+     * Save the local storage of the user
+     * @param UserModel user
+     * @return boolean true if saved, false otherwise
+     */
     public boolean save(UserModel user) {
         try {
             UserStorage cache = new UserStorage(context);
