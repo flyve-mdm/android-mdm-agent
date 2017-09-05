@@ -207,6 +207,10 @@ public class UserModel {
         return emails;
     }
 
+    /**
+     * Set the emails of hte list
+     * @param EmailsData the emails
+     */
     public void setEmails(List<EmailsData> emails) {
         this.emails = emails;
     }
