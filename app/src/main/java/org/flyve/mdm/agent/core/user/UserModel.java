@@ -228,6 +228,10 @@ public class UserModel {
             this.email = email;
         }
 
+        /**
+         * Get the type of the email
+         * @return string the type
+         */
         public String getType() {
             return type;
         }
