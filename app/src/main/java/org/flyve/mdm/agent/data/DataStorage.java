@@ -78,6 +78,11 @@ public class DataStorage {
 	public String getManifestVersion() {
 		return getData("manifestVersion");
 	}
+	
+	/**
+	 * Set the version of the Manifest
+	 * @param string the Manifest version
+	 */
 	public void setManifestVersion(String version) {
 		setData("manifestVersion", version);
 	}
