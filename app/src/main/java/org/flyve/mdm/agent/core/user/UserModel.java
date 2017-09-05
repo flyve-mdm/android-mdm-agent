@@ -47,6 +47,18 @@ public class UserModel {
 
     }
 
+    /**
+     * Set the object's properties to equal the arguments given
+     * @param string firstName
+     * @param string lastName
+     * @param string language
+     * @param string phone
+     * @param string mobilePhone
+     * @param string phone2
+     * @param string the administrativeNumber
+     * @param string the picture
+     * @param string the emails
+     */
     public UserModel(String firstName, String lastName, String language, String phone, String mobilePhone, String phone2, String administrativeNumber, String picture, List<EmailsData> emails) {
         this.firstName = firstName;
         this.lastName = lastName;
