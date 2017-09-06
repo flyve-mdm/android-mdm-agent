@@ -335,6 +335,10 @@ public class DataStorage {
 		return getData("entities_id");
 	}
 
+	/**
+	 * Set the ID of the entities
+	 * @param string the entities ID
+	 */
 	public void setEntitiesId(String entitiesId) {
 		setData("entities_id", entitiesId);
 	}
