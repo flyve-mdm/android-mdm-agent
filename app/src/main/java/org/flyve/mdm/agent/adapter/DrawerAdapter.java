@@ -52,6 +52,10 @@ public class DrawerAdapter extends BaseAdapter {
 		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
+	/**
+	 * Get count of the data
+	 * @return int the data size 
+	 */
 	@Override
 	public int getCount() {
 		return this.data.size();
