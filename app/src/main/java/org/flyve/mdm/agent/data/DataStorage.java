@@ -199,6 +199,10 @@ public class DataStorage {
 		setData("broker", broker);
 	}
 
+	/**
+	 * Get the port
+	 * @return string the port
+	 */
 	public String getPort() {
 		return getData("port");
 	}
