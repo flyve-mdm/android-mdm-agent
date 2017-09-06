@@ -277,6 +277,11 @@ public class AndroidCryptoProvider {
         }
     }
 
+    /**
+     * Base64-encode the given data
+     * @param byte the data to encode
+     * @return string the resulting encoded data
+     */
     public String encodeBase64String(byte[] data) {
         return Base64.encodeToString(data, Base64.NO_WRAP);
     }
