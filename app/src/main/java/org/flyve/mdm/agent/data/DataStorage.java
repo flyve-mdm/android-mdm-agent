@@ -143,6 +143,10 @@ public class DataStorage {
 		return getData("session_token");
 	}
 
+	/**
+	 * Set the session token
+	 * @param string the session token
+	 */
 	public void setSessionToken(String sessionToken) {
 		setData("session_token", sessionToken);
 	}
