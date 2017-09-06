@@ -71,6 +71,11 @@ public class DrawerAdapter extends BaseAdapter {
 		return position;
 	}
 
+	/**
+	 * Get the row ID associated with the specified position
+	 * @param int the position of the item whose row ID we want
+	 * @return long the ID of the item at the specified position
+	 */
 	@Override
 	public long getItemId(int position) {
 		return position;
