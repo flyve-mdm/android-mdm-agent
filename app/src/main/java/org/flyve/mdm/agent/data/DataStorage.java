@@ -359,6 +359,10 @@ public class DataStorage {
 		setData("plugin_flyvemdm_fleets_id", pluginFlyvemdmFleetsId);
 	}
 
+	/**
+	 * Set the state of the Connectivity of the Wifi
+	 * @param boolean the state of the connectivity, true if disabled, false otherwise
+	 */
 	public void setConnectivityWifiDisable(boolean disable) {
 		setData("ConnectivityWifiDisable", String.valueOf(disable));
 	}
