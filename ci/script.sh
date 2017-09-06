@@ -30,7 +30,7 @@ gradle clean
 
 if [[ ("$TRAVIS_BRANCH" == "develop" ||  "$TRAVIS_BRANCH" == "master") && "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_RUN" == "true" ]]; then
     # Runs all device checks on currently connected devices.
-    gradle build connectedCheck
+    gradle build connectedDebugAndroidTest
 else
     if [[ "$TRAVIS_RUN" == "true" ]]; then
         # Assembles all variants of all applications and secondary packages.

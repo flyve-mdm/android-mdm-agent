@@ -25,8 +25,6 @@
 # @link      https://flyve-mdm.com
 # ------------------------------------------------------------------------------
 
-# Move to local branch
-git checkout $TRAVIS_BRANCH -f
 
 #-----------------------------------------------------------------
 # DEVELOP
@@ -34,14 +32,23 @@ git checkout $TRAVIS_BRANCH -f
 # - update version name -BETA
 #-----------------------------------------------------------------
 if [[ "$TRAVIS_BRANCH" == "develop" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_RUN" == "true" ]]; then
+    # Move to local branch
+    git checkout $TRAVIS_BRANCH -f
+
+    # get transifex status
+    tx status
+
+    # pull all the new language with 80% complete
+    tx pull -a
+
+    # push local files to transifex
+    tx push -s -t
+
     # increment version on package.json, create tag and commit with changelog
     npm run release
 
     # Get version number from package.json
     export GIT_TAG=$(jq -r ".version" package.json)
-
-    # Revert last commit
-    git reset --hard HEAD~1
 
     # increment version code, need to be unique to send to store
     gradle updateVersionCode -P vCode=$TRAVIS_BUILD_NUMBER
@@ -57,8 +64,8 @@ fi
 # - update version name on manifest
 #-----------------------------------------------------------------
 if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_RUN" == "true" ]]; then
-    # increment version code, need to be unique to send to store
-    gradle updateVersionCode -P vCode=$TRAVIS_BUILD_NUMBER
+    # Move to local branch
+    git checkout $TRAVIS_BRANCH -f
 
     # increment version on package.json, create tag and commit with changelog
     npm run release -- -m "ci(release): generate **CHANGELOG.md** for version %s"
@@ -66,6 +73,17 @@ if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRA
     # Get version number from package.json
     export GIT_TAG=$(jq -r ".version" package.json)
 
+    # increment version code, need to be unique to send to store
+    gradle updateVersionCode -P vCode=$TRAVIS_BUILD_NUMBER
+
     # update version name generate on package json
     gradle updateVersionName -P vName=$GIT_TAG
+fi
+
+if [[ ("$TRAVIS_BRANCH" == "master" || "$TRAVIS_BRANCH" == "develop") && "$TRAVIS_RUN" == "true" ]]; then
+    # run simulator
+    echo no | android create avd --force -n test -t android-$ANDROID_API_SIMULATOR --abi armeabi-v7a
+    emulator -avd test -no-audio -no-window &
+    android-wait-for-emulator
+    adb shell input keyevent 82 &
 fi
