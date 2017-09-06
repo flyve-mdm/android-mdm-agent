@@ -80,6 +80,12 @@ public class AndroidCryptoProvider {
         certFile = new File(dataPath + File.separator + "client.crt");
     }
 
+    /**
+     * Load the file  in bytes
+     * @param File the file to load in bytes
+     * @return byte the bytes of the file
+     * @throws IOException Error message 
+     */
     private byte[] loadFileToBytes(File f) {
         if (!f.exists()) {
             return new byte[0];
