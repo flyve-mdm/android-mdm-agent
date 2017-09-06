@@ -159,6 +159,10 @@ public class DataStorage {
 		return getData("profile_id");
 	}
 
+	/**
+	 * Set the ID of the profile
+	 * @param string the profile ID
+	 */
 	public void setProfileId(String profileId) {
 		setData("profile_id", profileId);
 	}
