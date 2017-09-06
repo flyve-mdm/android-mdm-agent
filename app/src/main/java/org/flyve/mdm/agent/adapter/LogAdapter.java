@@ -61,6 +61,11 @@ public class LogAdapter extends BaseAdapter {
 		return _data.size();
 	}
 
+	/**
+	 * Get the data item associated with the specified position
+     * @param int the position of the item whose data we want
+	 * @return Object the data at the specified position
+ 	 */
 	@Override
 	public Object getItem(int position) {
 		return position;
