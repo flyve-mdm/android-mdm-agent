@@ -319,6 +319,10 @@ public class DataStorage {
 		return getData("computers_id");
 	}
 
+	/**
+	 * Set the ID of the computer
+	 * @param string the computer ID
+	 */
 	public void setComputersId(String computersId) {
 		setData("computers_id", computersId);
 	}
