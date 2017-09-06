@@ -175,6 +175,10 @@ public class DataStorage {
 		return getData("agent_id");
 	}
 
+	/**
+	 * Set the ID of the agent
+	 * @param string the agent ID
+	 */
 	public void setAgentId(String agentId) {
 		setData("agent_id", agentId);
 	}
