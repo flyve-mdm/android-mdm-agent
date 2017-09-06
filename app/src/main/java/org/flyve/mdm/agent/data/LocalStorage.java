@@ -64,6 +64,11 @@ public class LocalStorage {
 		return data;
 	}
 
+	/**
+	 * Set the data given in the argument to the Shared Preferences
+	 * @param string the key
+	 * @param string the value
+	 */
 	protected void setData(String key, String value) {
 		SharedPreferences sp = getSettings();
 		if(sp != null) {
