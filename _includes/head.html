@@ -26,10 +26,15 @@
 
   <meta name="theme-color" content="#158784">
 
+  {% if page.layout == 'codeDocumentation' %}
+    <link rel="stylesheet" href="{{ 'css/codeDocumentation.css' | relative_url }}" />
+  {% endif %}
+  
   <link rel="stylesheet" href="{{ "/css/flyve-mdm.min.css" | relative_url }}">
   <link rel="stylesheet" href="{{ "/css/main.css" | relative_url }}">
   <link rel="stylesheet" href="{{ 'css/syntax.css' | relative_url }}" /> 
   <link rel="icon" href="{{ "/images/favicon.png" | relative_url }}">
+
 
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ "/feed.xml" | relative_url }}">
