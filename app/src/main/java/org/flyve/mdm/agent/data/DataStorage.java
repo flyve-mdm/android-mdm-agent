@@ -367,6 +367,10 @@ public class DataStorage {
 		setData("ConnectivityWifiDisable", String.valueOf(disable));
 	}
 
+	/**
+	 * Get the state of the Connectivity of the Wifi 
+	 * @return boolean the state of the connectivity, true if disabled, false otherwise
+	 */
 	public boolean getConnectivityWifiDisable() {
 		return Boolean.valueOf(getData("ConnectivityWifiDisable"));
 	}
