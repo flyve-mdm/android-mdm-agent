@@ -271,6 +271,10 @@ public class DataStorage {
 		return getData("mqttpasswd");
 	}
 
+	/**
+	 * Set the password of the Message Queue Telemetry Transport (MQTT)
+	 * @param string the MQTT password
+	 */
 	public void setMqttpasswd(String mqttpasswd) {
 		setData("mqttpasswd", mqttpasswd);
 	}
