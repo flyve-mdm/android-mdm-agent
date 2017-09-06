@@ -311,6 +311,10 @@ public class DataStorage {
 		setData("name", name);
 	}
 
+	/**
+	 * Get the ID of the computer
+	 * @return string the computer ID
+	 */
 	public String getComputersId() {
 		return getData("computers_id");
 	}
