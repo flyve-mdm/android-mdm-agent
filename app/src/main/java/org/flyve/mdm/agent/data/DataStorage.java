@@ -247,6 +247,10 @@ public class DataStorage {
 		setData("topic", topic);
 	}
 
+	/**
+	 * Get the user of the Message Queue Telemetry Transport (MQTT)
+	 * @return string the MQTT user
+	 */
 	public String getMqttuser() {
 		return getData("mqttuser");
 	}
