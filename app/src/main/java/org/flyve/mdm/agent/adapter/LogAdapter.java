@@ -81,6 +81,13 @@ public class LogAdapter extends BaseAdapter {
 		return position;
 	}
 
+	/**
+	 * Get a view that displays the data at the specified position
+	 * @param int the position of the item within the adapter's data set of the item whose view we want
+	 * @param View the old view to reuse, if possible
+	 * @param ViewGroup the parent that this view will eventually be attached to
+	 * @return View a view corresponding to the data at the specified position
+	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View vi = convertView;
