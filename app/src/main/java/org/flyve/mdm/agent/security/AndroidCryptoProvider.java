@@ -232,6 +232,10 @@ public class AndroidCryptoProvider {
         }
     }
 
+    /**
+     * Save the certificate key
+     * @param string the certificate
+     */
     public void saveCertKey(String certString) {
         FileOutputStream certOut = null;
 
