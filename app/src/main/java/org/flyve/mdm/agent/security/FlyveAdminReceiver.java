@@ -31,6 +31,13 @@ import android.content.Intent;
  * ------------------------------------------------------------------------------
  */
 public class FlyveAdminReceiver extends DeviceAdminReceiver {
+    
+    /**
+     * Called after the administrator is first enabled
+     * It calls the parent method
+     * @param Context the running context
+     * @param intent the received intent
+     */
     @Override
     public void onEnabled(Context context, Intent intent) {
         super.onEnabled(context, intent);
