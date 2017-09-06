@@ -151,6 +151,10 @@ public class DataStorage {
 		setData("session_token", sessionToken);
 	}
 
+	/**
+	 * Get the ID of the profile
+	 * @return string the profile ID
+	 */
 	public String getProfileId() {
 		return getData("profile_id");
 	}
