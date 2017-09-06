@@ -128,6 +128,10 @@ public class AndroidCryptoProvider {
         return strCsr;
     }
 
+    /**
+     * Load the Certificate Signing Request (CSR)
+     * @return boolean true if succeed, false otherwise
+     */
     public boolean loadCsr() {
         byte[] csrBytes = loadFileToBytes(csrFile);
         // If either file was missing, we definitely can't succeed
