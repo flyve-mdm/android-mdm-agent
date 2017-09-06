@@ -343,6 +343,10 @@ public class DataStorage {
 		setData("entities_id", entitiesId);
 	}
 
+	/**
+	 * Get the ID of the Fleets of the Flyve MDM plugin
+	 * @return string the Fleets ID
+	 */
 	public String getPluginFlyvemdmFleetsId() {
 		return getData("plugin_flyvemdm_fleets_id");
 	}
