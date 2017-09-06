@@ -167,6 +167,10 @@ public class DataStorage {
 		setData("profile_id", profileId);
 	}
 
+	/**
+	 * Get the ID of the agent
+	 * @return string the agent ID
+	 */
 	public String getAgentId() {
 		return getData("agent_id");
 	}
