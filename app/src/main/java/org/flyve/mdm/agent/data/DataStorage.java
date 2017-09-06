@@ -279,6 +279,10 @@ public class DataStorage {
 		setData("mqttpasswd", mqttpasswd);
 	}
 
+	/**
+	 * Get the Certificate
+	 * @return string the certificate
+	 */
 	public String getCertificate() {
 		return getData("certificate");
 	}
