@@ -191,6 +191,10 @@ public class DataStorage {
 		return getData("broker");
 	}
 
+	/**
+	 * Set the broker
+	 * @param string the broker
+	 */
 	public void setBroker(String broker) {
 		setData("broker", broker);
 	}
