@@ -113,6 +113,10 @@ public class AndroidCryptoProvider {
         }
     }
 
+    /**
+     * Construct a string by decoding the given bytes
+     * @return string the Certificate Signing Request (CSR)
+     */
     public String getlCsr() {
         byte[] csrBytes = loadFileToBytes(csrFile);
         String strCsr = new String(csrBytes);
