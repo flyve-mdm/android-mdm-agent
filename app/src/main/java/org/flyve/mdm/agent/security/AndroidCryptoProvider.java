@@ -184,6 +184,9 @@ public class AndroidCryptoProvider {
         callback.onGenerate(bvar);
     }
 
+    /**
+     * Save the Certificate Signing Request (CSR)
+     */
     private void saveCsrKey() {
         FileOutputStream csrOut = null;
         FileOutputStream keyOut = null;
