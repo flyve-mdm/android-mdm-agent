@@ -383,6 +383,10 @@ public class DataStorage {
 		setData("ConnectivityBluetoothDisable", String.valueOf(disable));
 	}
 
+	/**
+	 * Get the state of the Connectivity of the Bluetooth
+	 * @return boolean the state of the connectivity, true if disabled, false otherwise
+	 */
 	public boolean getConnectivityBluetoothDisable() {
 		return Boolean.valueOf(getData("ConnectivityBluetoothDisable"));
 	}
