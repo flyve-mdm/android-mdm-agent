@@ -30,6 +30,93 @@ echo TELEGRAM_WEBHOOKS=$TELEGRAM_WEBHOOKS > .env
 echo GIT_REPO=$TRAVIS_REPO_SLUG >> .env
 echo GIT_BRANCH=$TRAVIS_BRANCH >> .env
 
+# Store information on gh-pages branch
+# - Create documentation with javadoc
+# - Create Coverage Reporte
+# - Create Changelog
+# - Push this file to gh-pages branch
+updateGHPAGES() {
+    # Generate javadoc this folder must be on .gitignore
+    javadoc -d ./reports$1/javadoc -sourcepath ./app/src/main/java -subpackages .
+
+    # create code coverage report
+    gradle createDebugCoverageReport
+
+    # get gh-pages branch
+    git fetch origin gh-pages
+
+    # move to gh-pages
+    git checkout gh-pages
+
+    # add javadoc folder
+    git add reports$1/javadoc
+
+    # create commit for documentation
+    git commit -m "docs(javadoc): update javadoc with version ${GIT_TAG}"
+
+    # move code coverage
+    mv -v app/build/reports/coverage reports$1
+
+    #move Android test
+    mv -v app/build/reports/androidTests reports$1
+
+    # replace .resources with resource because github don't support folders with "_" or "." at the beginning
+    mv reports$1/coverage/debug/.resources reports$1/coverage/debug/resources
+
+    index=$(<reports$1/coverage/debug/index.html)
+    newindex="${index//.resources/resources}"
+    echo $newindex > reports$1/coverage/debug/index.html
+
+    # add code coverage
+    git add reports$1/coverage
+
+    # add Android Tests
+    git add reports$1/androidTests
+
+    # create commit
+    git commit -m "docs(coverage): update code coverage with version ${GIT_TAG}"
+
+    # clean unstage file on gh-pages to remove all others files gets on checkout
+    git clean -fdx
+
+    # remove CHANGELOG.md
+    rm CHANGELOG.md
+
+    # get changelog from branch
+    git checkout $TRAVIS_BRANCH CHANGELOG.md
+
+    # Create header content to work with gh-pages templates
+    HEADER="---"$'\r'"layout: modal"$'\r'"title: changelog"$'\r'"---"$'\r\r'
+
+    # Duplicate CHANGELOG.md
+    cp CHANGELOG.md CHANGELOG_COPY.md
+
+    # Add header to CHANGELOG.md
+    (echo $HEADER ; cat CHANGELOG_COPY.md) > CHANGELOG.md
+
+    # Remove CHANGELOG_COPY.md
+    rm CHANGELOG_COPY.md
+
+    # add
+    git add CHANGELOG.md
+
+    # create commit
+    git commit -m "docs(changelog): update changelog$1 with version ${GIT_TAG}"
+
+    # push to branch
+    git push origin gh-pages
+}
+
+# Configure git with Flyve bot user to make commits on repositories
+# and add new origin with Flyve bot credentials
+configGit() {
+    # config git
+    git config --global user.email $GH_EMAIL
+    git config --global user.name "Flyve MDM"
+    git remote remove origin
+    git remote add origin https://$GH_USER:$GH_TOKEN@github.com/$TRAVIS_REPO_SLUG.git
+}
+
 #-----------------------------------------------------------------
 # DEVELOP DEPLOY
 # - send to google play like beta
@@ -46,23 +133,25 @@ if [[ "$TRAVIS_BRANCH" == "develop" && "$TRAVIS_PULL_REQUEST" == "false" && "$TR
     fastlane android beta storepass:'$KEYSTORE' keypass:'$ALIAS'
 
     # config git
-    git config --global user.email $GH_EMAIL
-    git config --global user.name "Flyve MDM"
-    git remote remove origin
-    git remote add origin https://$GH_USER:$GH_TOKEN@github.com/flyve-mdm/flyve-mdm-android-agent.git
+    configGit
 
+    #------------------------ UPDATE CHANGES --------------------------
     git add -u
     git commit -m "ci(build): release **beta** for version $GIT_TAG-beta"
 
     git push origin $TRAVIS_BRANCH
+
+    #------------------------ GH-PAGES --------------------------
+
+    updateGHPAGES "-beta"
 fi
 
 #-----------------------------------------------------------------
 # MASTER DEPLOY
 # - send to google play like release
 # - create a changelog
-# - create a javadoc
-# - send javadoc to gh-pages branch
+# - add changes to repository
+# - commit and push
 # - send CHANGELOG.md to gh-pages branch
 #-----------------------------------------------------------------
 if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_RUN" == "true" ]]; then
@@ -80,13 +169,8 @@ if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRA
     conventional-github-releaser -t $GH_TOKEN -r 0
 
     # config git
-    git config --global user.email $GH_EMAIL
-    git config --global user.name "Flyve MDM"
-    git remote remove origin
-    git remote add origin https://$GH_USER:$GH_TOKEN@github.com/flyve-mdm/flyve-mdm-android-agent.git
-
+    configGit
     #------------------------ UPDATE CHANGES --------------------------
-    git config --list
 
     # add modified and delete files
     git add -u
@@ -99,45 +183,5 @@ if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRA
 
     #------------------------ GH-PAGES --------------------------
 
-    # Generate javadoc this folder must be on .gitignore
-    javadoc -d ./javadoc -sourcepath ./app/src/main/java -subpackages .
-
-    # get
-    git fetch origin gh-pages
-
-    # move to gh-pages
-    git checkout gh-pages
-
-    # add javadoc folder
-    git add javadoc
-
-    # create commit
-    git commit -m "docs(javadoc): update javadoc with version ${GIT_TAG}"
-
-    # clean unstage file on gh-pages
-    git clean -fdx
-
-    # get changelog from branch
-    git checkout $TRAVIS_BRANCH CHANGELOG.md
-
-    # Create header content
-    HEADER="---"$'\r'"layout: modal"$'\r'"title: changelog"$'\r'"---"$'\r\r'
-
-    # Duplicate CHANGELOG.md
-    cp CHANGELOG.md CHANGELOG_COPY.md
-
-    # Add header to CHANGELOG.md
-    (echo $HEADER ; cat CHANGELOG_COPY.md) > CHANGELOG.md
-
-    # Remove CHANGELOG_COPY.md
-    rm CHANGELOG_COPY.md
-
-    # add
-    git add CHANGELOG.md
-
-    # create commit
-    git commit -m "docs(changelog): update changelog with version ${GIT_TAG}"
-
-    # push to branch
-    git push origin gh-pages --force
+    updateGHPAGES
 fi
