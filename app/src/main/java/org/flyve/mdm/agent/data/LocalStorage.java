@@ -55,6 +55,11 @@ public class LocalStorage {
 		}
 	}
 
+	/**
+	 * Get the data matching the given argument
+	 * @param string the key
+	 * @return string the data
+	 */
 	protected String getData(String key){
 		String data = "";
 		SharedPreferences sp = getSettings();
