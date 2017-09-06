@@ -119,6 +119,10 @@ public class DataStorage {
 		setData("user_token", userToken);
 	}
 
+	/**
+	 * Get the invitation token
+	 * @return string the invitation token
+	 */
 	public String getInvitationToken() {
 		return getData("invitation_token");
 	}
