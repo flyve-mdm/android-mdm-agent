@@ -135,6 +135,10 @@ public class DataStorage {
 		setData("invitation_token", invitationToken);
 	}
 
+	/**
+	 * Get the session token
+	 * @return string the session token
+	 */
 	public String getSessionToken() {
 		return getData("session_token");
 	}
