@@ -255,6 +255,10 @@ public class DataStorage {
 		return getData("mqttuser");
 	}
 
+	/**
+	 * Set the user of the Message Queue Telemetry Transport (MQTT)
+	 * @param string the MQTT user
+	 */
 	public void setMqttuser(String mqttuser) {
 		setData("mqttuser", mqttuser);
 	}
