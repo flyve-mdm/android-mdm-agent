@@ -295,6 +295,10 @@ public class DataStorage {
 		setData("certificate", certificate);
 	}
 
+	/**
+	 * Get the name
+	 * @return string the name
+	 */
 	public String getName() {
 		return getData("name");
 	}
