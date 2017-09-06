@@ -68,6 +68,10 @@ public class AndroidCryptoProvider {
         Security.addProvider(new BouncyCastleProvider());
     }
 
+    /**
+     * This Constructor gets the absolute path to the directory where the files are stored
+     * @param Context the context
+     */
     public AndroidCryptoProvider(Context c) {
         String dataPath = c.getFilesDir().getAbsolutePath();
 
