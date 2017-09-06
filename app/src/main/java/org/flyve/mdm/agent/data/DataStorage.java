@@ -239,6 +239,10 @@ public class DataStorage {
 		return getData("topic");
 	}
 
+	/**
+	 * Set the topic 
+	 * @param string the topic
+	 */
 	public void setTopic(String topic) {
 		setData("topic", topic);
 	}
