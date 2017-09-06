@@ -407,6 +407,10 @@ public class DataStorage {
 		return Boolean.valueOf(getData("ConnectivityGPSDisable"));
 	}
 
+	/**
+	 * Set the state of the Easter Egg
+	 * @param boolean the state, true if enabled, false otherwise
+	 */
 	public void setEasterEgg(boolean enable) {
 		setData("easterEgg", String.valueOf(enable));
 	}
