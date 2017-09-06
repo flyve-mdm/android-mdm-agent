@@ -415,6 +415,10 @@ public class DataStorage {
 		setData("easterEgg", String.valueOf(enable));
 	}
 
+	/**
+	 * Get the state of the Easter Egg
+	 * @return boolean the state, true if enabled, false otherwise
+	 */
 	public boolean getEasterEgg() {
 		return Boolean.valueOf(getData("easterEgg"));
 	}
