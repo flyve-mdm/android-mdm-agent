@@ -84,5 +84,6 @@ gradlew.bat
 /fastlane/README.md
 /fastlane/report.xml
 
-#javadoc
-/javadoc
+#javadoc and reports
+/reports
+/reports-beta
