@@ -102,6 +102,11 @@ public class MQTTService extends Service implements MqttCallback {
         getApplicationContext().startService(new Intent(getApplicationContext(), MQTTService.class));
     }
 
+    /**
+     * Return the communication channel to the service
+     * @param Intent the intent that was used to bind to this service
+     * @return IBinder null if clients cannot bind to the service 
+     */
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
