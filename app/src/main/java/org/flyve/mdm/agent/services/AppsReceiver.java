@@ -31,6 +31,12 @@ import android.content.Intent;
  * ------------------------------------------------------------------------------
  */
 public class AppsReceiver extends BroadcastReceiver {
+    
+    /**
+     * It starts the MQTT service
+     * @param Context the context in which the receiver is running
+     * @param Intent the intent being received
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent mIntent = new Intent(MQTTService.ACTION_INVENTORY);
