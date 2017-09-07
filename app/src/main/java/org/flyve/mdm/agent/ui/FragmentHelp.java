@@ -46,6 +46,13 @@ public class FragmentHelp extends Fragment {
     private ProgressDialog progressBar;
     private static final String HELP_URL = "http://flyve-mdm.com";
 
+    /**
+     * Instantiate the user interface view
+     * @param LayoutInflater inflater the object that can be used to inflate any views in the fragment
+     * @param ViewGroup the parent view the fragment's UI should be attached to
+     * @param Bundle this fragment is being re-constructed from a previous saved state
+     * @return View the view for the fragment's UI
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
