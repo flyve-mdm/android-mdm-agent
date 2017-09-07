@@ -38,6 +38,11 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  */
 public class MQTTRestarterBroadcastReceiver extends BroadcastReceiver {
 
+    /**
+     * Re-starts the service if it stops
+     * @param Context the context in which the receiver is running
+     * @param Intent the intent being received
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
         FlyveLog.d(MQTTRestarterBroadcastReceiver.class.getSimpleName(), "Service Stops!");
