@@ -193,6 +193,10 @@ public class FragmentInformation extends Fragment {
         }
     }
 
+    /**
+     * Set the text and image source of the button according the status of the Message Queue Telemetry Transport (MQTT)
+     * @param Boolean the value, online if true, otherwise offline
+     */
     private void statusMQTT(Boolean bval) {
         if (bval) {
             txtOnline.setText(getResources().getString(R.string.online));
