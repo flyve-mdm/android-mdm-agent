@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PreviewUserActivity.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">PreviewUserActivity.java</span></div><h1>PreviewUserActivity.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.ui;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.core.user.UserController;
+import org.flyve.mdm.agent.core.user.UserModel;
+import org.flyve.mdm.agent.utils.Helpers;
+
+/*
+ *   Copyright © 2017 Teclib. All rights reserved.
+ *
+ *   This file is part of flyve-mdm-android-agent
+ *
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @date      16/8/17
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+
+<span class="nc" id="L43">public class PreviewUserActivity extends AppCompatActivity {</span>
+
+    private static final int EDIT_USER = 101;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+<span class="nc" id="L49">        super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L50">        setContentView(R.layout.activity_user_preview);</span>
+
+<span class="nc" id="L52">        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (toolbar != null) {</span>
+<span class="nc" id="L54">            setSupportActionBar(toolbar);</span>
+<span class="nc" id="L55">            getSupportActionBar().setDisplayHomeAsUpEnabled(true);</span>
+
+<span class="nc" id="L57">            toolbar.setNavigationOnClickListener(new View.OnClickListener() {</span>
+                @Override
+                public void onClick(View v) {
+<span class="nc" id="L60">                    onBackPressed();</span>
+<span class="nc" id="L61">                }</span>
+            });
+        }
+
+<span class="nc" id="L65">        loadData();</span>
+
+<span class="nc" id="L67">        ImageView btnEdit = (ImageView) findViewById(R.id.btnEdit);</span>
+<span class="nc" id="L68">        btnEdit.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View v) {
+<span class="nc" id="L71">                openEditUser();</span>
+<span class="nc" id="L72">            }</span>
+        });
+<span class="nc" id="L74">    }</span>
+
+    @Override
+    public void onResume() {
+<span class="nc" id="L78">        super.onResume();</span>
+
+<span class="nc" id="L80">        loadData();</span>
+<span class="nc" id="L81">    }</span>
+
+    private void loadData() {
+<span class="nc" id="L84">        UserModel user = new UserController(PreviewUserActivity.this).getCache();</span>
+
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if(user==null) {</span>
+<span class="nc" id="L87">            return;</span>
+        }
+
+<span class="nc" id="L90">        ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);</span>
+<span class="nc bnc" id="L91" title="All 4 branches missed.">        if(user.getPicture() != null &amp;&amp; !user.getPicture().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L92">            imgPhoto.setImageBitmap(Helpers.StringToBitmap(user.getPicture()));</span>
+        }
+
+<span class="nc" id="L95">        LinearLayout lnEmail = (LinearLayout) findViewById(R.id.lnEmails);</span>
+<span class="nc" id="L96">        lnEmail.removeAllViews();</span>
+
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        for(int i = 0; i &lt; user.getEmails().size(); i++) {</span>
+<span class="nc" id="L99">            TextView txtEmail = new TextView( PreviewUserActivity.this );</span>
+<span class="nc" id="L100">            txtEmail.setText( user.getEmails().get(i).getEmail() );</span>
+<span class="nc" id="L101">            lnEmail.addView(txtEmail);</span>
+        }
+
+<span class="nc" id="L104">        TextView txtFirstName = (TextView) findViewById(R.id.txtFirstName);</span>
+<span class="nc" id="L105">        txtFirstName.setText( user.getFirstName() + &quot; &quot; + user.getLastName() );</span>
+
+<span class="nc" id="L107">        TextView txtPhone = (TextView) findViewById(R.id.txtPhone);</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if(!user.getPhone().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L109">            txtPhone.setText(user.getPhone());</span>
+<span class="nc" id="L110">            txtPhone.setVisibility(View.VISIBLE);</span>
+        } else {
+<span class="nc" id="L112">            txtPhone.setVisibility(View.GONE);</span>
+        }
+
+<span class="nc" id="L115">        TextView txtPhoneMobile = (TextView) findViewById(R.id.txtPhoneMobile);</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if(!user.getMobilePhone().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L117">            txtPhoneMobile.setText(user.getMobilePhone());</span>
+<span class="nc" id="L118">            txtPhoneMobile.setVisibility(View.VISIBLE);</span>
+        } else {
+<span class="nc" id="L120">            txtPhoneMobile.setVisibility(View.GONE);</span>
+        }
+
+<span class="nc" id="L123">        TextView txtPhone2 = (TextView) findViewById(R.id.txtPhone2);</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        if(!user.getMobilePhone().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L125">            txtPhone2.setText(user.getPhone2());</span>
+<span class="nc" id="L126">            txtPhone2.setVisibility(View.VISIBLE);</span>
+        } else {
+<span class="nc" id="L128">            txtPhone2.setVisibility(View.GONE);</span>
+        }
+
+<span class="nc" id="L131">        TextView txtLanguage = (TextView) findViewById(R.id.txtLanguage);</span>
+<span class="nc" id="L132">        txtLanguage.setText( user.getLanguage() );</span>
+
+<span class="nc" id="L134">        TextView txtAdministrativeNumber = (TextView) findViewById(R.id.txtAdministrativeNumber);</span>
+<span class="nc" id="L135">        txtAdministrativeNumber.setText( user.getAdministrativeNumber() );</span>
+<span class="nc" id="L136">    }</span>
+
+    /**
+     * Open Edit User Activity
+     */
+    private void openEditUser() {
+<span class="nc" id="L142">        Intent intent = new Intent(PreviewUserActivity.this, EditUserActivity.class);</span>
+<span class="nc" id="L143">        PreviewUserActivity.this.startActivityForResult(intent, EDIT_USER);</span>
+<span class="nc" id="L144">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.2.0</div></body></html>

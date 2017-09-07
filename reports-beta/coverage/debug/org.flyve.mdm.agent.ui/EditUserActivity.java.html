@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>EditUserActivity.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">EditUserActivity.java</span></div><h1>EditUserActivity.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.ui;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.core.user.UserController;
+import org.flyve.mdm.agent.core.user.UserModel;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.mdm.agent.utils.InputValidatorHelper;
+import org.flyve.mdm.agent.utils.MultipleEditText;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+/*
+ *   Copyright © 2017 Teclib. All rights reserved.
+ *
+ *   This file is part of flyve-mdm-android-agent
+ *
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @date      31/7/17
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+<span class="nc" id="L66">public class EditUserActivity extends AppCompatActivity {</span>
+
+    private TextView txtMessage;
+    private EditText editName;
+    private EditText editLastName;
+    private EditText editAdministrative;
+    private ImageView imgPhoto;
+    private UserModel user;
+    private MultipleEditText editEmail;
+    private MultipleEditText editPhone;
+    private Spinner spinnerLanguage;
+<span class="nc" id="L77">    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;</span>
+    private String strPicture;
+    private String photoPath;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+<span class="nc" id="L83">        super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L84">        setContentView(R.layout.activity_user_form);</span>
+
+<span class="nc" id="L86">        user = new UserController(EditUserActivity.this).getCache();</span>
+
+<span class="nc" id="L88">        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (toolbar != null) {</span>
+<span class="nc" id="L90">            setSupportActionBar(toolbar);</span>
+<span class="nc" id="L91">            getSupportActionBar().setDisplayHomeAsUpEnabled(true);</span>
+
+<span class="nc" id="L93">            toolbar.setNavigationOnClickListener(new View.OnClickListener() {</span>
+                @Override
+                public void onClick(View v) {
+<span class="nc" id="L96">                    onBackPressed();</span>
+<span class="nc" id="L97">                }</span>
+            });
+        }
+
+<span class="nc" id="L101">        imgPhoto = (ImageView) findViewById(R.id.imgPhoto);</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if(!user.getPicture().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L103">            imgPhoto.setImageBitmap(Helpers.StringToBitmap(user.getPicture()));</span>
+        }
+
+<span class="nc" id="L106">        ImageView btnCamera = (ImageView) findViewById(R.id.btnCamera);</span>
+<span class="nc" id="L107">        btnCamera.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View v) {
+<span class="nc" id="L110">                selectImage();</span>
+<span class="nc" id="L111">            }</span>
+        });
+
+<span class="nc" id="L114">        TextView txtTitle = (TextView) findViewById(R.id.txtTitle);</span>
+<span class="nc" id="L115">        txtTitle.setText(&quot;&quot;);</span>
+
+<span class="nc" id="L117">        txtMessage = (TextView) findViewById(R.id.txtMessage);</span>
+
+<span class="nc" id="L119">        editName = (EditText) findViewById(R.id.editName);</span>
+<span class="nc" id="L120">        editName.setText( user.getFirstName() );</span>
+
+<span class="nc" id="L122">        editLastName = (EditText) findViewById(R.id.editLastName);</span>
+<span class="nc" id="L123">        editLastName.setText( user.getLastName() );</span>
+
+        // Multiples Emails
+<span class="nc" id="L126">        LinearLayout lnEmails = (LinearLayout) findViewById(R.id.lnEmails);</span>
+<span class="nc" id="L127">        editEmail = new MultipleEditText(this, lnEmails, getResources().getString(R.string.email));</span>
+<span class="nc" id="L128">        editEmail.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);</span>
+<span class="nc" id="L129">        editEmail.setSpinnerArray(R.array.email_array);</span>
+
+        // load store values
+<span class="nc" id="L132">        List&lt;String&gt; arrEmails = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L133">        List&lt;String&gt; arrEmailTypes = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        for(int i = 0; i &lt; user.getEmails().size(); i++) {</span>
+<span class="nc" id="L136">            arrEmails.add( user.getEmails().get(i).getEmail() );</span>
+<span class="nc" id="L137">            arrEmailTypes.add( user.getEmails().get(i).getType() );</span>
+        }
+
+<span class="nc" id="L140">        editEmail.setValue( arrEmails, arrEmailTypes );</span>
+<span class="nc" id="L141">        lnEmails.addView( editEmail.createEditText() );</span>
+
+        // 3 Phones
+<span class="nc" id="L144">        LinearLayout lnPhones = (LinearLayout) findViewById(R.id.lnPhones);</span>
+<span class="nc" id="L145">        editPhone = new MultipleEditText(this, lnPhones, getResources().getString(R.string.phone));</span>
+<span class="nc" id="L146">        editPhone.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_PHONE);</span>
+<span class="nc" id="L147">        editPhone.setLimit(3);</span>
+<span class="nc" id="L148">        editPhone.setSpinnerArray(R.array.phone_array);</span>
+
+        // load store values
+<span class="nc" id="L151">        List&lt;String&gt; arrPhones = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L152">        List&lt;String&gt; arrPhoneTypes = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if(!user.getMobilePhone().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L155">            arrPhones.add(user.getMobilePhone());</span>
+<span class="nc" id="L156">            arrPhoneTypes.add(&quot;&quot;);</span>
+        }
+
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        if(!user.getPhone().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L160">            arrPhones.add(user.getPhone());</span>
+<span class="nc" id="L161">            arrPhoneTypes.add(&quot;&quot;);</span>
+        }
+
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        if(!user.getPhone2().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L165">            arrPhones.add(user.getPhone2());</span>
+<span class="nc" id="L166">            arrPhoneTypes.add(&quot;&quot;);</span>
+        }
+
+<span class="nc" id="L169">        editPhone.setValue( arrPhones, arrPhoneTypes );</span>
+<span class="nc" id="L170">        lnPhones.addView( editPhone.createEditText() );</span>
+
+        // Language
+<span class="nc" id="L173">        spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);</span>
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+<span class="nc" id="L176">        ArrayAdapter&lt;CharSequence&gt; adapter = ArrayAdapter.createFromResource(this,</span>
+                R.array.language_array, android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+<span class="nc" id="L180">        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);</span>
+
+        // Apply the adapter to the spinner
+<span class="nc" id="L183">        spinnerLanguage.setAdapter(adapter);</span>
+
+        // select language stored on cache
+<span class="nc" id="L186">        int spinnerPosition = adapter.getPosition(user.getLanguage());</span>
+<span class="nc" id="L187">        spinnerLanguage.setSelection(spinnerPosition);</span>
+
+<span class="nc" id="L189">        editAdministrative = (EditText) findViewById(R.id.editAdministrative);</span>
+<span class="nc" id="L190">        editAdministrative.setText(user.getAdministrativeNumber());</span>
+<span class="nc" id="L191">        editAdministrative.setImeOptions(EditorInfo.IME_ACTION_DONE);</span>
+<span class="nc" id="L192">        editAdministrative.setOnEditorActionListener(new TextView.OnEditorActionListener() {</span>
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+<span class="nc bnc" id="L195" title="All 2 branches missed.">                if (actionId == EditorInfo.IME_ACTION_DONE) {</span>
+<span class="nc" id="L196">                    validateForm();</span>
+<span class="nc" id="L197">                    return true;</span>
+                }
+<span class="nc" id="L199">                return false;</span>
+            }
+        });
+
+        // Button Register
+<span class="nc" id="L204">        ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);</span>
+<span class="nc" id="L205">        btnRegister.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View v) {
+<span class="nc" id="L208">                validateForm();</span>
+<span class="nc" id="L209">            }</span>
+        });
+<span class="nc" id="L211">    }</span>
+
+    /**
+     * Storage information
+     */
+    private void save() {
+
+        // -------------
+        // Emails
+        // -------------
+<span class="nc" id="L221">        ArrayList&lt;UserModel.EmailsData&gt; arrEmails = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L223">        List&lt;EditText&gt; emailEdit = editEmail.getEditList();</span>
+<span class="nc" id="L224">        List&lt;Spinner&gt; emailTypeEdit = editEmail.getSpinnList();</span>
+
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        for (int i=0; i&lt;emailEdit.size(); i++) {</span>
+<span class="nc" id="L227">            UserModel.EmailsData emails = new UserModel().new EmailsData();</span>
+<span class="nc" id="L228">            EditText editText = emailEdit.get(i);</span>
+<span class="nc" id="L229">            Spinner spinner = emailTypeEdit.get(i);</span>
+
+<span class="nc bnc" id="L231" title="All 2 branches missed.">            if(!editText.getText().toString().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L232">                emails.setEmail(editText.getText().toString());</span>
+<span class="nc" id="L233">                emails.setType(spinner.getSelectedItem().toString());</span>
+<span class="nc" id="L234">                arrEmails.add(emails);</span>
+            }
+        }
+
+        // -------------
+        // USER
+        // -------------
+<span class="nc" id="L241">        user = new UserModel();</span>
+
+<span class="nc" id="L243">        user.setFirstName( editName.getText().toString() );</span>
+<span class="nc" id="L244">        user.setLastName( editLastName.getText().toString() );</span>
+<span class="nc" id="L245">        user.setEmails(arrEmails);</span>
+
+        // Mobile Phone
+<span class="nc bnc" id="L248" title="All 2 branches missed.">        if(!editPhone.getEditList().isEmpty()) {</span>
+<span class="nc" id="L249">            String mobilePhone = editPhone.getEditList().get(0).getText().toString();</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">            if (!mobilePhone.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L251">                user.setMobilePhone(mobilePhone);</span>
+            }
+        }
+
+        // Phone
+<span class="nc bnc" id="L256" title="All 2 branches missed.">        if(editPhone.getEditList().size() &gt; 1) {</span>
+<span class="nc" id="L257">            String phone = editPhone.getEditList().get(1).getText().toString();</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">            if (!phone.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L259">                user.setPhone(phone);</span>
+            }
+        }
+
+        // Phone 2
+<span class="nc bnc" id="L264" title="All 2 branches missed.">        if(editPhone.getEditList().size() &gt; 2) {</span>
+<span class="nc" id="L265">            String phone2 = editPhone.getEditList().get(2).getText().toString();</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">            if (!phone2.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L267">                user.setPhone2(phone2);</span>
+            }
+        }
+
+<span class="nc" id="L271">        user.setPicture(strPicture);</span>
+<span class="nc" id="L272">        user.setLanguage( spinnerLanguage.getSelectedItem().toString() );</span>
+<span class="nc" id="L273">        user.setAdministrativeNumber( editAdministrative.getText().toString() );</span>
+
+<span class="nc" id="L275">        new UserController(EditUserActivity.this).save(user);</span>
+
+<span class="nc" id="L277">        Helpers.snack( EditUserActivity.this, getResources().getString(R.string.saved) );</span>
+<span class="nc" id="L278">    }</span>
+
+    private void selectImage() {
+<span class="nc" id="L281">        final CharSequence[] items = { getResources().getString(R.string.take_photo), getResources().getString(R.string.choose_from_library), getResources().getString(R.string.cancel) };</span>
+
+<span class="nc" id="L283">        hideKeyboard();</span>
+
+<span class="nc" id="L285">        AlertDialog.Builder builder = new AlertDialog.Builder(EditUserActivity.this);</span>
+<span class="nc" id="L286">        builder.setTitle(getResources().getString(R.string.add_photo));</span>
+<span class="nc" id="L287">        builder.setItems(items, new DialogInterface.OnClickListener() {</span>
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+<span class="nc bnc" id="L291" title="All 2 branches missed.">                if (items[item].equals(getResources().getString(R.string.take_photo))) {</span>
+<span class="nc" id="L292">                    cameraIntent();</span>
+
+<span class="nc bnc" id="L294" title="All 2 branches missed.">                } else if (items[item].equals(getResources().getString(R.string.choose_from_library))) {</span>
+<span class="nc" id="L295">                    galleryIntent();</span>
+
+<span class="nc bnc" id="L297" title="All 2 branches missed.">                } else if (items[item].equals(getResources().getString(R.string.cancel))) {</span>
+<span class="nc" id="L298">                    dialog.dismiss();</span>
+                }
+<span class="nc" id="L300">            }</span>
+        });
+<span class="nc" id="L302">        builder.show();</span>
+<span class="nc" id="L303">    }</span>
+
+    private void galleryIntent() {
+<span class="nc" id="L306">        Intent intent = new Intent();</span>
+<span class="nc" id="L307">        intent.setType(&quot;image/*&quot;);</span>
+<span class="nc" id="L308">        intent.setAction(Intent.ACTION_GET_CONTENT);//</span>
+<span class="nc" id="L309">        startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.select_file)),SELECT_FILE);</span>
+<span class="nc" id="L310">    }</span>
+
+    private void cameraIntent() {
+<span class="nc" id="L313">        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {</span>
+<span class="nc" id="L315">            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, getImageUri());</span>
+<span class="nc" id="L316">            startActivityForResult(takePictureIntent, REQUEST_CAMERA);</span>
+        }
+<span class="nc" id="L318">    }</span>
+
+    public Uri getImageUri() {
+        // Store image in dcim
+<span class="nc" id="L322">        File filePhoto = new File(Environment.getExternalStorageDirectory() + &quot;/DCIM/&quot;, &quot;flyveUser.jpg&quot;);</span>
+<span class="nc" id="L323">        photoPath = filePhoto.getAbsolutePath();</span>
+<span class="nc" id="L324">        return Uri.fromFile(filePhoto);</span>
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+<span class="nc" id="L329">        super.onActivityResult(requestCode, resultCode, data);</span>
+
+<span class="nc bnc" id="L331" title="All 2 branches missed.">        if (resultCode == Activity.RESULT_OK) {</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">            if (requestCode == SELECT_FILE) {</span>
+<span class="nc" id="L333">                onSelectFromGalleryResult(data);</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">            } else if (requestCode == REQUEST_CAMERA) {</span>
+<span class="nc" id="L335">                BitmapFactory.Options options = new BitmapFactory.Options();</span>
+<span class="nc" id="L336">                options.inPreferredConfig = Bitmap.Config.ARGB_8888;</span>
+<span class="nc" id="L337">                Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);</span>
+                try {
+<span class="nc" id="L339">                    bitmap = Helpers.modifyOrientation(bitmap, photoPath);</span>
+<span class="nc" id="L340">                } catch (Exception ex) {</span>
+<span class="nc" id="L341">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L342">                }</span>
+<span class="nc" id="L343">                strPicture = Helpers.BitmapToString(bitmap);</span>
+<span class="nc" id="L344">                imgPhoto.setImageBitmap(bitmap);</span>
+            }
+        }
+<span class="nc" id="L347">    }</span>
+
+    private void onSelectFromGalleryResult(Intent data) {
+<span class="nc" id="L350">        Bitmap bm=null;</span>
+<span class="nc bnc" id="L351" title="All 2 branches missed.">        if (data != null) {</span>
+            try {
+<span class="nc" id="L353">                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());</span>
+<span class="nc" id="L354">            } catch (IOException e) {</span>
+<span class="nc" id="L355">                FlyveLog.e(e.getMessage());</span>
+<span class="nc" id="L356">            }</span>
+        }
+
+<span class="nc" id="L359">        strPicture = Helpers.BitmapToString(bm);</span>
+<span class="nc" id="L360">        imgPhoto.setImageBitmap(bm);</span>
+<span class="nc" id="L361">    }</span>
+
+    public void hideKeyboard() {
+        // Hide keyboard
+<span class="nc" id="L365">        View view = this.getCurrentFocus();</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">        if (view != null) {</span>
+<span class="nc" id="L367">            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);</span>
+<span class="nc" id="L368">            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);</span>
+        }
+<span class="nc" id="L370">    }</span>
+
+    /**
+     * Send information to validateForm
+     */
+    private void validateForm() {
+<span class="nc" id="L376">        StringBuilder errMsg = new StringBuilder(getResources().getString(R.string.validate_error));</span>
+<span class="nc" id="L377">        txtMessage.setText(&quot;&quot;);</span>
+
+        //Validate and Save
+<span class="nc" id="L380">        boolean allowSave = true;</span>
+
+<span class="nc" id="L382">        hideKeyboard();</span>
+
+<span class="nc" id="L384">        String name = editName.getText().toString().trim();</span>
+<span class="nc" id="L385">        String lastName = editLastName.getText().toString().trim();</span>
+
+        // Name
+<span class="nc bnc" id="L388" title="All 2 branches missed.">        if (InputValidatorHelper.isNullOrEmpty(name)) {</span>
+<span class="nc" id="L389">            errMsg.append(getResources().getString(R.string.validate_first_name));</span>
+<span class="nc" id="L390">            allowSave = false;</span>
+        }
+
+        // Last name
+<span class="nc bnc" id="L394" title="All 2 branches missed.">        if (InputValidatorHelper.isNullOrEmpty(lastName)) {</span>
+<span class="nc" id="L395">            errMsg.append(getResources().getString(R.string.validate_last_name));</span>
+<span class="nc" id="L396">            allowSave = false;</span>
+        }
+
+<span class="nc bnc" id="L399" title="All 2 branches missed.">        if(editEmail.getEditList().isEmpty()) {</span>
+<span class="nc" id="L400">            errMsg.append(getResources().getString(R.string.validate_email_at_least_one));</span>
+<span class="nc" id="L401">            allowSave = false;</span>
+        }
+
+<span class="nc bnc" id="L404" title="All 2 branches missed.">        if(allowSave){</span>
+<span class="nc" id="L405">            save();</span>
+        } else {
+<span class="nc" id="L407">            txtMessage.setText(errMsg);</span>
+        }
+<span class="nc" id="L409">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.2.0</div></body></html>
