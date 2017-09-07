@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.1"></a>
+## 2.0.1 (2017-09-07)
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/flyve-mdm/flyve-mdm-android-agent/compare/v0.99.45...v2.0.0) (2017-08-22)
 
