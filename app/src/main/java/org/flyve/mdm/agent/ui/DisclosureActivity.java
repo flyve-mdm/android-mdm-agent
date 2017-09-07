@@ -44,6 +44,11 @@ public class DisclosureActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_ENABLE_ADMIN = 1;
     private ComponentName mDeviceAdmin;
 
+    /**
+     * This method is called when the activity is starting
+     * @param Bundle if the activity is re-initialized, it contains the data it most recently supplied, otherwise null
+     * @see https://developer.android.com/reference/android/app/Activity.html#onCreate(android.os.Bundle) Documentation of the method
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
