@@ -56,6 +56,10 @@ public class FragmentInformation extends Fragment {
         super.onPause();
     }
 
+    /**
+     * Called when the fragment is visible to the user and actively running
+     * Load the client and supervisor information
+     */
     @Override
     public void onResume() {
         // register the broadcast
