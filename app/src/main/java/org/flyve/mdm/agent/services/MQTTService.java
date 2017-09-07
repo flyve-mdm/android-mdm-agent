@@ -70,6 +70,14 @@ public class MQTTService extends Service implements MqttCallback {
     public MQTTService() {
     }
 
+    /**
+     * Called by the system every time a client explicitly starts the service by calling the method startService(Intent)
+     * @param Intent the intent supplied to start the service
+     * @param int flags the additional data about this start request
+     * @param int startID a unique integer representing this specific request to start
+     * @return constant START_STICKY
+     * @see https://developer.android.com/reference/android/app/Service.html#START_STICKY Documentation of the Constant
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
