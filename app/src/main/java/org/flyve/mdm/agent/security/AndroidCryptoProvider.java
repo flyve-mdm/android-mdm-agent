@@ -142,7 +142,10 @@ public class AndroidCryptoProvider {
         return true;
     }
 
-
+    /**
+     * Generate the certificated Key pair
+     * @param generateCallback callback
+     */
     public void generateRequest(generateCallback callback) {
         byte[] snBytes = new byte[8];
         new SecureRandom().nextBytes(snBytes);
