@@ -138,6 +138,12 @@ public class FragmentInformation extends Fragment {
         return v;
     }
 
+    /**
+     * Receive the result from a previous call to startActivityForResult(Intent, int)
+     * @param int the integer request code, it allows to identify who this result came from
+     * @param int the result code returned by the child activity
+     * @param Intent the intent data, which can return result data to the caller 
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -146,6 +152,7 @@ public class FragmentInformation extends Fragment {
             loadClientInfo();
         }
     }
+
     /**
      * Load Supervisor information
      */
