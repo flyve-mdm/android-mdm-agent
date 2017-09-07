@@ -77,6 +77,12 @@ public class DisclosureActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Called when a launched activity exits, giving the requestCode it started with, the resultCode it returned, and any additional data from it
+     * @param int integer request code, it allows to identify who this result came from
+     * @param int the integer result code returned by the child activity
+     * @param Intent the intent data , wich can return result data to the caller
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
