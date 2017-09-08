@@ -140,6 +140,10 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Loads the Fragment
+     * @param Hashmap item
+     */
     private void loadFragment(HashMap<String, String> item) {
 
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
