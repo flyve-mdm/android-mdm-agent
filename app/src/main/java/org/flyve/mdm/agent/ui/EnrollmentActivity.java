@@ -513,6 +513,10 @@ public class EnrollmentActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Shows an error message
+     * @param string the message
+     */
     private void showError(String message) {
         Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
             @Override
