@@ -46,6 +46,12 @@ public class FragmentSlideWalkthrough extends Fragment {
     private int slides;
     private int position;
 
+    /**
+     * Set the properties to equal the given arguments
+     * @param WalkthroughModel the walkthroug model class
+     * @param int the number of slides the walkthrough has
+     * @param int the position the user is currently on
+     */
     public void config(WalkthroughModel walkthroughModel, int slides, int position) {
         this.walkthroughModel = walkthroughModel;
         this.slides = slides;
