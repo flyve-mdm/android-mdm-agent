@@ -283,6 +283,9 @@ public class EnrollmentActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.select_file) ),SELECT_FILE);
     }
 
+    /**
+     * If the user selects the image with the option take photo
+     */
     private void cameraIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
