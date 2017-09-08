@@ -282,6 +282,9 @@ public class EditUserActivity extends AppCompatActivity {
         Helpers.snack( EditUserActivity.this, getResources().getString(R.string.saved) );
     }
 
+    /**
+     * It displays the options to select the image of the user
+     */
     private void selectImage() {
         final CharSequence[] items = { getResources().getString(R.string.take_photo), getResources().getString(R.string.choose_from_library), getResources().getString(R.string.cancel) };
 
