@@ -78,6 +78,10 @@ public class FragmentSlideWalkthrough extends Fragment {
         return v;
     }
 
+    /**
+     * Shows the slide dots of the screen
+     * @param ViewGroup the view
+     */
     private void slideDots(ViewGroup v) {
 
         LinearLayout ln = (LinearLayout) v.findViewById(R.id.lnSliders);
