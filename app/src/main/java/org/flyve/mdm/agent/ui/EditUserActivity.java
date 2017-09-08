@@ -331,6 +331,10 @@ public class EditUserActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Get the URI of the image
+     * @return the URI 
+     */
     public Uri getImageUri() {
         // Store image in dcim
         File filePhoto = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "flyveUser.jpg");
