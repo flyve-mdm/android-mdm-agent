@@ -367,6 +367,11 @@ public class EditUserActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Retrieves the selected image from the gallery
+     * @param Intent the data of the image
+     * @throws IOException error message
+     */
     private void onSelectFromGalleryResult(Intent data) {
         Bitmap bm=null;
         if (data != null) {
