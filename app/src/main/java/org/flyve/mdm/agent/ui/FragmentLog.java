@@ -59,6 +59,13 @@ public class FragmentLog extends Fragment  {
     private ListView lst;
     private ProgressBar pb;
 
+    /**
+     * Called to have the fragments instantiate its user interface view
+     * @param LayoutInflater the object that can be used to inflate any views
+     * @param ViewGroup the parent view
+     * @param Bundle if non-null, this fragment is being reconstructed from a previous saved state
+     * @return View the fragment's UI
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
