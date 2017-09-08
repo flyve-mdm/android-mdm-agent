@@ -241,6 +241,9 @@ public class EnrollmentActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * It displays the options to select the image of the user
+     */
     private void selectImage() {
         final CharSequence[] items = {
                 getResources().getString(R.string.take_photo),
