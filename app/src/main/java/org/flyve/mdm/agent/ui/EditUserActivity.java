@@ -343,7 +343,7 @@ public class EditUserActivity extends AppCompatActivity {
     }
 
     /**
-     * Called when a launched activity exits, giving the requestCode it started with, the resultCode it returned, and any additional data from it
+     * Called when a launched activity exits
      * It proccesses the information from galleryIntent and cameraIntent
      * @param int the request code originally supplied, allowing to identify who this result came from
      * @param int the integer result code returned
