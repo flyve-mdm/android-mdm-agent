@@ -231,6 +231,12 @@ public class StartEnrollmentActivity extends Activity {
         StartEnrollmentActivity.this.finish();
     }
 
+    /**
+     * Called when the launched activity exits
+     * @param int the request code originally supplied, it identifies who this result came from
+     * @param int the result code returned
+     * @param Intent an intent which can return result data to the caller
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_EXIT && resultCode == RESULT_OK) {
