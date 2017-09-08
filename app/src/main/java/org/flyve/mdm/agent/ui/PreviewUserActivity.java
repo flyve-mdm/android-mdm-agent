@@ -80,6 +80,9 @@ public class PreviewUserActivity extends AppCompatActivity {
         loadData();
     }
 
+    /**
+     * Loads the information of the User
+     */
     private void loadData() {
         UserModel user = new UserController(PreviewUserActivity.this).getCache();
 
