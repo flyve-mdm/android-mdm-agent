@@ -193,6 +193,9 @@ public class StartEnrollmentActivity extends Activity {
         });
     }
 
+    /**
+     * Send a Broadcast with the Close Action
+     */
     public void broadcastClose() {
         //send broadcast
         Intent in = new Intent();
