@@ -199,7 +199,11 @@ public class StartEnrollmentActivity extends Activity {
         in.setAction("flyve.ACTION_CLOSE");
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
     }
-
+    
+    /**
+     * Shows an error message
+     * @param string the message
+     */
     private void showError(String message) {
         txtTitle.setText(getResources().getString(R.string.fail_enroll));
 
