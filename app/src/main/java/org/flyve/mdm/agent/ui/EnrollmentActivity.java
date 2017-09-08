@@ -304,6 +304,13 @@ public class EnrollmentActivity extends AppCompatActivity {
         return Uri.fromFile(filePhoto);
     }
 
+    /**
+     * Called when a launched activity exits
+     * It proccesses the information from galleryIntent and cameraIntent
+     * @param int the request code originally supplied, allowing to identify who this result came from
+     * @param int the integer result code returned
+     * @param Intent an Intent, which can return result data to the caller
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
