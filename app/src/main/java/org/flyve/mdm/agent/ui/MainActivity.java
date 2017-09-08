@@ -62,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
     private Intent mServiceIntent;
     private DataStorage cache;
 
+    /**
+     * Perform the final clenup before the activity is destroyed
+     */
     @Override
     public void onDestroy() {
         // stop the service
