@@ -104,6 +104,11 @@ public class EnrollmentActivity extends AppCompatActivity {
     private ProgressDialog pd;
     private File filePhoto;
 
+    /**
+     * Called when the activity is starting
+     * It displays the UI to enroll the user information
+     * @param Bundle if the activity is re-initialized, it contains the data it most recently supplied
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
