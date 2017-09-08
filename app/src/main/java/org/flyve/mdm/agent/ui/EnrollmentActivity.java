@@ -273,6 +273,9 @@ public class EnrollmentActivity extends AppCompatActivity {
         builder.show();
     }
 
+    /**
+     * If the user selects the image with the option from the gallery
+     */
     private void galleryIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
