@@ -78,6 +78,11 @@ public class EditUserActivity extends AppCompatActivity {
     private String strPicture;
     private String photoPath;
 
+    /**
+     * Called when the activity is starting
+     * It display the UI to edit the user information
+     * @param Bundle if the activity is re-initialized, it contains the data it most recently supplied
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
