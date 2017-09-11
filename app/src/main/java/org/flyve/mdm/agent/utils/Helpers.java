@@ -198,6 +198,11 @@ public class Helpers {
 		LocalBroadcastManager.getInstance(context).sendBroadcast(in);
 	}
 
+	/**
+	 * Convert the Bitmap to string
+	 * @param Bitmap the image to convert
+	 * @return string the image Bitmap
+	 */
 	public static String BitmapToString(Bitmap bitmap){
 		ByteArrayOutputStream baos=new  ByteArrayOutputStream();
 		bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
