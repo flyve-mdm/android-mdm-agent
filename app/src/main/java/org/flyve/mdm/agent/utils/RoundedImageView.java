@@ -53,6 +53,10 @@ public class RoundedImageView extends ImageView {
         super(context, attrs, defStyle);
     }
 
+    /**
+     * It is implemented to do the drawing
+     * @param Canvas the canvas on which the background will be drawn
+     */
     @Override
     protected void onDraw(Canvas canvas) {
 
