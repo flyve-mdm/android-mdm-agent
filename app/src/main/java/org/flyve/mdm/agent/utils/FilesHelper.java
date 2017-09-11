@@ -64,6 +64,11 @@ public class FilesHelper {
         return System.getenv("EXTERNAL_STORAGE") + "/apk/";
     }
 
+    /**
+     * Get the directory of the Secure Digital card
+     * @return string the SD card directory
+     * @throws Exception
+     */
     private static String getSDcardDir() throws Exception {
         FlyveLog.d(System.getenv("EXTERNAL_STORAGE"));
         return System.getenv("EXTERNAL_STORAGE");
