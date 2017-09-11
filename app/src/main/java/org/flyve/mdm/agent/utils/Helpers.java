@@ -138,6 +138,13 @@ public class Helpers {
 		context.startActivity(browserIntent);
 	}
 
+	/**
+	 * Generates a JSONOBject with the message
+	 * @param string the type of the message
+	 * @param string the title of the message
+	 * @param string the body of the message
+	 * @return string the message to broadcast
+	 */
 	public static String broadCastMessage(String type, String title, String body) {
 		try {
 			JSONObject json = new JSONObject();
