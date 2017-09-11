@@ -175,6 +175,13 @@ public class Helpers {
 				.show();
 	}
 
+	/**
+	 * Generate a snackbar with the given arguments
+	 * @param Activity the view to show
+	 * @param string the message to display
+	 * @param string the text to display for the action
+	 * @param View.OnClickListener the callback to be invoked when the action is clicked
+	 */
 	public static void snack(Activity activity, String message, String action,  View.OnClickListener callback) {
 		Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
 				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))
