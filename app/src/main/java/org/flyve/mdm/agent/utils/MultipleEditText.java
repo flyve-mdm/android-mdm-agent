@@ -84,6 +84,10 @@ public class MultipleEditText {
         }
     }
 
+    /**
+     * Set the spinner array
+     * @param int the array
+     */
     public void setSpinnerArray(int array) {
         // Create an ArrayAdapter using the string array and a default spinner layout
         adapter = ArrayAdapter.createFromResource(context,
