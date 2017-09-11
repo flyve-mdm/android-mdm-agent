@@ -54,6 +54,11 @@ public class LogFileReader {
     private LogFileReader() {
     }
 
+    /**
+     * Add a new line
+     * @param string the line to add
+     * @throws Exception an error message
+     */
     private static void addLine(String line) {
         try {
             HashMap<String, String> map = new HashMap<>();
