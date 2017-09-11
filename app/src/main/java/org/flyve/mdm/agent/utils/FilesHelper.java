@@ -74,6 +74,11 @@ public class FilesHelper {
         return System.getenv("EXTERNAL_STORAGE") + "/.fdroid/";
     }
 
+    /**
+     * Get the directory of the pictures
+     * @return string the pictures directory
+     * @throws Exception
+     */
     private static String getPicturesDir() throws Exception {
         FlyveLog.d(System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_DCIM);
         return System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_DCIM;
