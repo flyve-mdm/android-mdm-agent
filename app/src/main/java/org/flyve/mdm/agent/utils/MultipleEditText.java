@@ -115,6 +115,9 @@ public class MultipleEditText {
         return spinnList;
     }
 
+    /**
+     * Returns the created layout to edit the text
+     */
     public LinearLayout createEditText() {
         return createEditText("","");
     }
