@@ -76,6 +76,12 @@ public class LogFileReader {
         }
     }
 
+    /**
+     * Load the log of the file reader
+     * @param string the file name
+     * @param LogFileCallback callback
+     * @throws Exception an error message
+     */
     public static void loadLog(final String fileName, final LogFileCallback callback) {
         arrData = new ArrayList<>();
 
