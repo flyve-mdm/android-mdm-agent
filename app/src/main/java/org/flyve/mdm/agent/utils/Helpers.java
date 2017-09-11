@@ -221,6 +221,12 @@ public class Helpers {
 		}
 	}
 
+	/**
+	 * Modify the orientation according the rotation selected
+	 * @param Bitmap the bitmap
+	 * @param string the path to the image
+	 * @return Bitmap the modificated image
+	 */
 	public static Bitmap modifyOrientation(Bitmap bitmap, String image_absolute_path) throws IOException {
 		ExifInterface ei = new ExifInterface(image_absolute_path);
 		int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
