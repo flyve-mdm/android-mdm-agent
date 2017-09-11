@@ -54,6 +54,11 @@ public class FilesHelper {
         routes = new Routes(context);
     }
 
+    /**
+     * Get the directory of the apk
+     * @return string the apk directory
+     * @throws Exception
+     */
     private static String getApkDir() throws Exception {
         FlyveLog.d(System.getenv("EXTERNAL_STORAGE") + "/apk/");
         return System.getenv("EXTERNAL_STORAGE") + "/apk/";
