@@ -52,6 +52,11 @@ public class InputValidatorHelper {
         return matcher.matches();
     }
 
+    /**
+     * Checks if it is null or empty
+     * @param string the string to check
+     * @return boolean true if it is null or empty, false otherwise
+     */
     public static boolean isNullOrEmpty(String string){
         return TextUtils.isEmpty(string);
     }
