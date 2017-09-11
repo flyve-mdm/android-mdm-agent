@@ -109,6 +109,12 @@ public class FilesHelper {
         return System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_MUSIC;
     }
 
+    /**
+     * Convert the path according to the given arguments
+     * @param string the received path
+     * @return string the converted path
+     * @throws Exception
+     */
     private String convertPath(String receivePath) throws Exception {
 
         String sreturn = receivePath;
@@ -123,6 +129,7 @@ public class FilesHelper {
         Matcher mmusic = music.matcher(receivePath);
         Matcher mphoto = photo.matcher(receivePath);
 
+        //Find the sequence that matches the pattern
         if (msdcard.find()) {
             sreturn = receivePath;
             sreturn = sreturn.replace("%SDCARD%", getSDcardDir());
@@ -145,7 +152,6 @@ public class FilesHelper {
         FlyveLog.d("convertPath return = " + sreturn);
         return sreturn;
     }
-
 
     /**
      * Download and save file from Id to path
