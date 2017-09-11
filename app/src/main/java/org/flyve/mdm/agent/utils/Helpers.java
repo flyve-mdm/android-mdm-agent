@@ -257,6 +257,12 @@ public class Helpers {
 		}
 	}
 
+	/**
+	 * Rotate the Bitmap according the degrees
+	 * @param Bitmap the image to rotate
+	 * @param float the degrees to rotate
+	 * @return Bitmap the image rotated
+	 */
 	public static Bitmap rotate(Bitmap bitmap, float degrees) {
 		Matrix matrix = new Matrix();
 		matrix.postRotate(degrees);
