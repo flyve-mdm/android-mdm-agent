@@ -279,6 +279,13 @@ public class FilesHelper {
         }
     }
 
+    /**
+     * Uninstall the Android Package
+     * @param Context the context
+     * @param string the package to uninstall
+     * @return int if it succeed 1, otherwise 0
+     * @throws ActivityNotFoundException it's thrown when a call to startActivity(Intent) fails because an Activity could not be found to execute the given intent
+     */
     public static int removeApk(Context context, String mPackage){
         Uri packageUri = Uri.parse("package:"+mPackage);
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
