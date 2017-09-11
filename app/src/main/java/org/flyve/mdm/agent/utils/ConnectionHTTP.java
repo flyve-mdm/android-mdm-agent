@@ -123,6 +123,12 @@ public class ConnectionHTTP {
 		t.start();
 	}
 
+	/**
+	 * Get the data in a synchronous way
+	 * @param string the url
+	 * @param string HTPP methods
+	 * @param Map string header
+	 */
 	public static String getSyncWebData(String url, String method, Map<String, String> header)
 	{
 		try
