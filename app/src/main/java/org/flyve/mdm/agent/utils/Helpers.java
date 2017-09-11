@@ -163,6 +163,12 @@ public class Helpers {
 		}
 	}
 
+	/**
+	 * Generate a snackbar with the given arguments
+	 * @param Activity the view to show
+	 * @param string the message to display
+	 * @see https://developer.android.com/reference/android/support/design/widget/Snackbar.html Documentation of the Sanackbars
+	 */
 	public static void snack(Activity activity, String message) {
 		Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
 				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))
