@@ -264,6 +264,11 @@ public class MQTTHelper {
 
     }
 
+    /**
+     * Check if the App is to be installed or uninstalled
+     * @param JSONArray if the object has remove or deploy app
+     * @param string the session token
+     */
     public void appWork(JSONArray checkInstall, String sessionToken) throws Exception {
         AppInfo appInfo = new AppInfo(this.context);
         FilesHelper filesHelper = new FilesHelper(this.context);
