@@ -151,6 +151,11 @@ public class FlyveLog {
         }
     }
 
+    /**
+     * Logs the message in a directory
+     * @param string the message
+     * @param string the filename
+     */
     public static void f(String message, String filename) {
         String state = Environment.getExternalStorageState();
 
