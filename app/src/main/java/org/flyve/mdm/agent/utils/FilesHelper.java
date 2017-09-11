@@ -89,6 +89,11 @@ public class FilesHelper {
         return System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_DCIM;
     }
 
+    /**
+     * Get the directory of the documents
+     * @return string the documents directory
+     * @throws Exception
+     */
     private static String getDocumentsDir() throws Exception {
         FlyveLog.d(System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_DOWNLOADS);
         return System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_DOWNLOADS;
