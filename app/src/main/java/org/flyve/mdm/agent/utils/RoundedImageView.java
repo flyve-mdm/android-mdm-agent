@@ -81,6 +81,12 @@ public class RoundedImageView extends ImageView {
         }
     }
 
+    /**
+     * Convert the Bitmap into a rounded image
+     * @param Bitmap the image to round
+     * @param int the radius of the image
+     * @return Bitmap the rounded image
+     */
     public static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {
         Bitmap sbmp;
 
