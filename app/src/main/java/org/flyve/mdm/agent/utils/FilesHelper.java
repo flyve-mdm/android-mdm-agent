@@ -44,6 +44,10 @@ public class FilesHelper {
     private DataStorage cache;
     private Routes routes;
 
+    /**
+     * This constructor loads the context of the current class
+     * @param Context the context of the class
+     */
     public FilesHelper(Context context) {
         this.context = context;
         cache = new DataStorage(context);
