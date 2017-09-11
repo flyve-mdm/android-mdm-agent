@@ -119,6 +119,12 @@ public class MultipleEditText {
         return createEditText("","");
     }
 
+    /**
+     * Set the layout to edit text
+     * @param string the text value to edit
+     * @param string the spinner value to edit
+     * @return the Linear Layout View
+     */
     public LinearLayout createEditText(String editTextValue, String spinnerValue) {
         int id = ++index;
 
