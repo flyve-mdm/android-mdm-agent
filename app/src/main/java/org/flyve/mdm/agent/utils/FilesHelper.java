@@ -286,6 +286,10 @@ public class FilesHelper {
         return 1;
     }
 
+    /**
+     * Install the Android Package
+     * @param string the file to install
+     */
     public void installApk(String file) {
         FlyveLog.d(file);
         Intent intent = new Intent();
