@@ -61,6 +61,11 @@ public class InputValidatorHelper {
         return TextUtils.isEmpty(string);
     }
 
+    /**
+     * Checks if it contains only digits
+     * @param string the string to check
+     * @return boolean true if it is only digits, false otherwise
+     */
     public static boolean isNumeric(String string){
         return TextUtils.isDigitsOnly(string);
     }
