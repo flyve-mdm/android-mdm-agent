@@ -74,6 +74,11 @@ public class FilesHelper {
         return System.getenv("EXTERNAL_STORAGE");
     }
 
+    /**
+     * Get the directory of the UPK
+     * @return string the UPK directory
+     * @throws Exception
+     */
     private static String getUpkDir() throws Exception {
         FlyveLog.d(System.getenv("EXTERNAL_STORAGE") + "/.fdroid/");
         return System.getenv("EXTERNAL_STORAGE") + "/.fdroid/";
