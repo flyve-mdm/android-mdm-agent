@@ -256,6 +256,12 @@ public class FilesHelper {
         return "";
     }
 
+    /**
+     * Remove the file according to the given path
+     * @param string the file path
+     * @return boolean true if file deleted, false otherwise
+     * @throws Exception an error message
+     */
     public boolean removeFile(String filePath) {
         try {
             String realPath = convertPath(filePath);
