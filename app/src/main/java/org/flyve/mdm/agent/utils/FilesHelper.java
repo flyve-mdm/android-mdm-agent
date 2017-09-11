@@ -99,6 +99,11 @@ public class FilesHelper {
         return System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_DOWNLOADS;
     }
 
+    /**
+     * Get the directory of the music
+     * @return string the music directory
+     * @throws Exception
+     */
     private static String getMusicsDir() throws Exception {
         FlyveLog.d(System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_MUSIC);
         return System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_MUSIC;
