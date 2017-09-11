@@ -269,6 +269,13 @@ public class Helpers {
 		return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 	}
 
+	/**
+	 * Flip the Bitmap according the given arguments
+	 * @param Bitmap the image to flip
+	 * @param boolean true for the x-axis, false for the y-axis
+	 * @param boolean true for the y-axis, false for the x-axis
+	 * @return Bitmap the flipped image
+	 */
 	public static Bitmap flip(Bitmap bitmap, boolean horizontal, boolean vertical) {
 		Matrix matrix = new Matrix();
 		matrix.preScale(horizontal ? -1 : 1, vertical ? -1 : 1);
