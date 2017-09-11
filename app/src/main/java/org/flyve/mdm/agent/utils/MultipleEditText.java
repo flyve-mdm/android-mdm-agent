@@ -62,6 +62,10 @@ public class MultipleEditText {
         this.inputType = InputType.TYPE_CLASS_TEXT;
     }
 
+    /**
+     * Set the limit size
+     * @param int the size
+     */
     public void setLimit(int size) {
         this.limit = size;
     }
