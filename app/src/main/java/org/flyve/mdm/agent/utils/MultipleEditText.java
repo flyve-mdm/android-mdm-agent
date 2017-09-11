@@ -86,6 +86,10 @@ public class MultipleEditText {
                 array, android.R.layout.simple_spinner_item);
     }
 
+    /**
+     * Get the edit list
+     * @return List the edit list
+     */
     public List<EditText> getEditList() {
         return editList;
     }
