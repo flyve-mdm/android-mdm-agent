@@ -169,6 +169,13 @@ public class ConnectionHTTP {
 		}
 	}
 
+	/**
+	 * Get the data in a synchronous way
+	 * @param url the url
+	 * @param JSONObject the data
+	 * @param string HTPP methods
+	 * @param Map string header
+	 */
 	public static String getSyncWebData(final String url, final JSONObject data, final Map<String, String> header) {
 		try
 		{
