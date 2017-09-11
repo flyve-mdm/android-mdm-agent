@@ -33,6 +33,9 @@ import java.util.regex.Pattern;
  */
 public class InputValidatorHelper {
 
+    /**
+     * Constructor
+     */
     private InputValidatorHelper() {
 
     }
