@@ -78,6 +78,11 @@ public class MultipleEditText {
         inputType = type;
     }
 
+    /**
+     * Set the values of the Spinner and Edit Text lists
+     * @param string the edit value
+     * @param string the spinner value
+     */
     public void setValue(List<String> editValue, List<String> spinnerValue) {
         for(int i=0; i<editValue.size(); i++) {
             container.addView(createEditText(editValue.get(i), spinnerValue.get(i)));
