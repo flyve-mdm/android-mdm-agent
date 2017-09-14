@@ -2,4 +2,4 @@ Branch created with the intention of functioning as an introduction web site of 
 
 Here you can find code examples and generated files, detailed information about the project, an installation guide, screen captures, a blog with the latest news and links to the documentation and contact information.
 
-Link to the web site: https://flyve-mdm.github.io/flyve-mdm-android-agent/
+Link to the web site: http://flyve.org/flyve-mdm-android-agent/
