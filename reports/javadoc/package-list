@@ -1,0 +1,9 @@
+org.flyve.mdm.agent.adapter
+org.flyve.mdm.agent.core.supervisor
+org.flyve.mdm.agent.core.user
+org.flyve.mdm.agent.core.walkthrough
+org.flyve.mdm.agent.data
+org.flyve.mdm.agent.security
+org.flyve.mdm.agent.services
+org.flyve.mdm.agent.ui
+org.flyve.mdm.agent.utils
