@@ -75,10 +75,10 @@ build
 /ci/gplay.json
 /ci/gplay.tar.gz
 .idea/
-.gradle/
-gradle/
-gradlew
-gradlew.bat
+#.gradle/
+#gradle/
+#gradlew
+#gradlew.bat
 
 #fastlane
 /fastlane/README.md
