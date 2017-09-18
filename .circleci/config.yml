@@ -1,0 +1,222 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/flyve_mdm
+    docker:
+      # Android the primary container
+      - image: circleci/android:api-26-alpha
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+  test_api_version_25:
+    working_directory: ~/flyve_mdm
+    docker:
+        - image: circleci/android:api-26-alpha
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - run:
+          name: Setup emulator
+          command: sdkmanager "system-images;android-25;google_apis;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-25;google_apis;armeabi-v7a"
+      - run:
+          name: Launch emulator
+          command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
+          background: true
+      - run:
+          name: Wait emulator
+          command: |
+            # wait for it to have booted
+            circle-android wait-for-boot
+            # unlock the emulator screen
+            sleep 30
+            adb shell input keyevent 82
+      - run:
+          name: Run Tests
+          command: ./gradlew connectedAndroidTest
+      - store_artifacts:
+          path: app/build/reports
+          destination: reports
+      - store_test_results:
+          path: app/build/test-results
+  test_api_version_16:
+      working_directory: ~/flyve_mdm
+      docker:
+          - image: circleci/android:api-26-alpha
+      environment:
+        JVM_OPTS: -Xmx3200m
+      steps:
+        - checkout
+        - run:
+            name: Setup emulator
+            command: sdkmanager "system-images;android-16;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-16;default;armeabi-v7a"
+        - run:
+            name: Launch emulator
+            command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
+            background: true
+        - run:
+            name: Wait emulator
+            command: |
+              # wait for it to have booted
+              circle-android wait-for-boot
+              # unlock the emulator screen
+              sleep 30
+              adb shell input keyevent 82
+        - run:
+            name: Run Tests
+            command: ./gradlew connectedAndroidTest
+        - store_artifacts:
+            path: app/build/reports
+            destination: reports
+        - store_test_results:
+            path: app/build/test-results
+  deploy_beta:
+    working_directory: ~/flyve_mdm
+    docker:
+      # Android the primary container
+      - image: circleci/android:api-26-alpha
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Setup environment
+          command: source ci/scripts/ci_setup.sh
+      - run:
+          name: Update version and code
+          command: source ci/scripts/ci_updateversion.sh
+      - run:
+          name: Transifex
+          command: source ci/scripts/ci_transifex.sh
+      - run:
+          name: Create apk
+          command: ./gradlew assemble
+      - run:
+          name: Deploy to Google Play
+          command: source ci/scripts/ci_fastlane.sh "beta"
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+  deploy_production:
+      working_directory: ~/flyve_mdm
+      docker:
+        # Android the primary container
+        - image: circleci/android:api-26-alpha
+      environment:
+        JVM_OPTS: -Xmx3200m
+      steps:
+        - checkout
+        - restore_cache:
+            key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+        - run:
+            name: Setup environment
+            command: source ci/scripts/ci_setup.sh
+        - run:
+            name: Update version and code
+            command: source ci/scripts/ci_updateversion.sh
+        - run:
+            name: Create apk
+            command: ./gradlew assemble
+        - run:
+            name: Deploy to Google Play
+            command: source ci/scripts/ci_fastlane.sh "playstore"
+        - run:
+            name: Create a github release
+            command: source ci/scripts/ci_github_release.sh
+        - save_cache:
+            paths:
+              - ~/.gradle
+            key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+  documentation:
+      working_directory: ~/flyve_mdm
+      docker:
+        # Android the primary container
+        - image: circleci/android:api-26-alpha
+      environment:
+        JVM_OPTS: -Xmx3200m
+      steps:
+        - checkout
+        - restore_cache:
+            key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+        - run:
+            name: Setup environment
+            command: source ci/scripts/ci_setup.sh
+        - run:
+            name: Setup emulator
+            command: sdkmanager "system-images;android-16;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-16;default;armeabi-v7a"
+        - run:
+            name: Launch emulator
+            command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
+            background: true
+        - run:
+            name: Wait emulator
+            command: |
+              # wait for it to have booted
+              circle-android wait-for-boot
+              # unlock the emulator screen
+              sleep 30
+              adb shell input keyevent 82
+        - run:
+            name: Coverage
+            command: source ci/scripts/ci_coverage.sh
+        - run:
+            name: Javadoc
+            command: source ci/scripts/ci_javadoc.sh
+        - save_cache:
+            paths:
+              - ~/.gradle
+            key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+
+workflows:
+  version: 2
+  build_test_and_deploy:
+    jobs:
+      - build
+      - test_api_version_16:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - develop
+      - test_api_version_25:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - develop
+      - deploy_beta:
+          requires:
+            - test_api_version_16
+            - test_api_version_25
+          filters:
+            branches:
+              only:
+                - develop
+      - documentation:
+          requires:
+            - test_api_version_16
+            - test_api_version_25
+          filters:
+            branches:
+              only:
+                - develop
+      - deploy_production:
+          filters:
+            branches:
+              only:
+                - master
