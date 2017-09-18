@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>UserModel.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.core.user</a> &gt; <span class="el_source">UserModel.java</span></div><h1>UserModel.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.core.user;
+
+import java.util.List;
+
+/*
+ *   Copyright © 2017 Teclib. All rights reserved.
+ *
+ *   This file is part of flyve-mdm-android-agent
+ *
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @date      9/8/17
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+public class UserModel {
+
+<span class="nc" id="L33">    private String firstName = &quot;&quot;;</span>
+<span class="nc" id="L34">    private String lastName = &quot;&quot;;</span>
+<span class="nc" id="L35">    private String language = &quot;&quot;;</span>
+<span class="nc" id="L36">    private String phone = &quot;&quot;;</span>
+<span class="nc" id="L37">    private String mobilePhone = &quot;&quot;;</span>
+<span class="nc" id="L38">    private String phone2 = &quot;&quot;;</span>
+<span class="nc" id="L39">    private String administrativeNumber = &quot;&quot;;</span>
+<span class="nc" id="L40">    private String picture = &quot;&quot;;</span>
+    private List&lt;UserModel.EmailsData&gt; emails;
+
+    /**
+     * Constructor
+     */
+<span class="nc" id="L46">    public UserModel() {</span>
+
+<span class="nc" id="L48">    }</span>
+
+    /**
+     * Set the object's properties to equal the arguments given
+     * @param string firstName
+     * @param string lastName
+     * @param string language
+     * @param string phone
+     * @param string mobilePhone
+     * @param string phone2
+     * @param string the administrativeNumber
+     * @param string the picture
+     * @param ArrayList the emails
+     */
+<span class="nc" id="L62">    public UserModel(String firstName, String lastName, String language, String phone, String mobilePhone, String phone2, String administrativeNumber, String picture, List&lt;EmailsData&gt; emails) {</span>
+<span class="nc" id="L63">        this.firstName = firstName;</span>
+<span class="nc" id="L64">        this.lastName = lastName;</span>
+<span class="nc" id="L65">        this.language = language;</span>
+<span class="nc" id="L66">        this.phone = phone;</span>
+<span class="nc" id="L67">        this.mobilePhone = mobilePhone;</span>
+<span class="nc" id="L68">        this.phone2 = phone2;</span>
+<span class="nc" id="L69">        this.administrativeNumber = administrativeNumber;</span>
+<span class="nc" id="L70">        this.picture = picture;</span>
+<span class="nc" id="L71">        this.emails = emails;</span>
+<span class="nc" id="L72">    }</span>
+
+    /**
+     * Get the first name of the user
+     * @return the first name
+     */
+    public String getFirstName() {
+<span class="nc" id="L79">        return firstName;</span>
+    }
+
+    /**
+     * Set the first name of the user
+     * @param string the first name
+     */
+    public void setFirstName(String firstName) {
+<span class="nc" id="L87">        this.firstName = firstName;</span>
+<span class="nc" id="L88">    }</span>
+
+    /**
+     * Get the last name of the user
+     * @return the last name
+     */
+    public String getLastName() {
+<span class="nc" id="L95">        return lastName;</span>
+    }
+
+    /**
+     * Set the last name of the user
+     * @param string the last name
+     */
+    public void setLastName(String lastName) {
+<span class="nc" id="L103">        this.lastName = lastName;</span>
+<span class="nc" id="L104">    }</span>
+
+    /**
+     * Get the language of the user
+     * @return the language
+     */
+    public String getLanguage() {
+<span class="nc" id="L111">        return language;</span>
+    }
+
+    /**
+     * Set the language of the user
+     * @param string the language
+     */
+    public void setLanguage(String language) {
+<span class="nc" id="L119">        this.language = language;</span>
+<span class="nc" id="L120">    }</span>
+
+    /**
+     * Get the phone of the user
+     * @return the phone
+     */
+    public String getPhone() {
+<span class="nc" id="L127">        return phone;</span>
+    }
+
+    /**
+     * Set the phone of the user
+     * @param string the phone
+     */
+    public void setPhone(String phone) {
+<span class="nc" id="L135">        this.phone = phone;</span>
+<span class="nc" id="L136">    }</span>
+
+    /**
+     * Get the mobile phone of the user
+     * @return the mobile phone
+     */
+    public String getMobilePhone() {
+<span class="nc" id="L143">        return mobilePhone;</span>
+    }
+
+    /**
+     * Set the mobile phone of the user
+     * @param string the mobile phone
+     */
+    public void setMobilePhone(String mobilePhone) {
+<span class="nc" id="L151">        this.mobilePhone = mobilePhone;</span>
+<span class="nc" id="L152">    }</span>
+
+    /**
+     * Get a second phone of the user
+     * @return the second phone 
+     */
+    public String getPhone2() {
+<span class="nc" id="L159">        return phone2;</span>
+    }
+
+    /**
+     * Set the second phone of the user
+     * @param string phone2
+     */
+    public void setPhone2(String phone2) {
+<span class="nc" id="L167">        this.phone2 = phone2;</span>
+<span class="nc" id="L168">    }</span>
+
+    /**
+     * Get the administrative number of the user
+     * @return the administrative number
+     */
+    public String getAdministrativeNumber() {
+<span class="nc" id="L175">        return administrativeNumber;</span>
+    }
+
+    /**
+     * Set the administrative number of the user
+     * @param string administrativeNumber
+     */
+    public void setAdministrativeNumber(String administrativeNumber) {
+<span class="nc" id="L183">        this.administrativeNumber = administrativeNumber;</span>
+<span class="nc" id="L184">    }</span>
+
+    /**
+     * Get the picture of the user
+     * @return the picture
+     */
+    public String getPicture() {
+<span class="nc" id="L191">        return picture;</span>
+    }
+
+    /**
+     * Set the picture of the user
+     * @param string picture
+     */
+    public void setPicture(String picture) {
+<span class="nc" id="L199">        this.picture = picture;</span>
+<span class="nc" id="L200">    }</span>
+
+    /**
+     * Get the emails of the list
+     * @return the emails
+     */
+    public List&lt;EmailsData&gt; getEmails() {
+<span class="nc" id="L207">        return emails;</span>
+    }
+
+    /**
+     * Set the emails of the list
+     * @param ArrayList the emails
+     */
+    public void setEmails(List&lt;EmailsData&gt; emails) {
+<span class="nc" id="L215">        this.emails = emails;</span>
+<span class="nc" id="L216">    }</span>
+
+<span class="nc" id="L218">    public class EmailsData {</span>
+
+        private String email;
+        private String type;
+
+        /**
+         * Get the email of the user
+         * @return the email
+         */
+        public String getEmail() {
+<span class="nc" id="L228">            return email;</span>
+        }
+
+        /**
+         * Set the email of the user
+         * @param string the email
+         */
+        public void setEmail(String email) {
+<span class="nc" id="L236">            this.email = email;</span>
+<span class="nc" id="L237">        }</span>
+
+        /**
+         * Get the type of the email
+         * @return string the type
+         */
+        public String getType() {
+<span class="nc" id="L244">            return type;</span>
+        }
+
+        /**
+         * Set the type of the email
+         * @param string the type
+         */
+        public void setType(String type) {
+<span class="nc" id="L252">            this.type = type;</span>
+<span class="nc" id="L253">        }</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.2.0</div></body></html>

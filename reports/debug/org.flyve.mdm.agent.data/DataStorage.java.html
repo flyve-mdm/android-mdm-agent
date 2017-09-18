@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DataStorage.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.data</a> &gt; <span class="el_source">DataStorage.java</span></div><h1>DataStorage.java</h1><pre class="source lang-java linenums">/*
+ *   Copyright © 2017 Teclib. All rights reserved.
+ *
+ * This file is part of flyve-mdm-android-agent
+ *
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @date      02/06/2017
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+
+package org.flyve.mdm.agent.data;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+public class DataStorage {
+
+	private static final String SHARED_PREFS_FILE = &quot;FlyveHMPrefs&quot;;
+	private Context mContext;
+
+	/**
+	 * Constructor 
+	 * @param context
+	 */
+<span class="fc" id="L42">	public DataStorage(Context context){</span>
+<span class="fc" id="L43">		mContext = context;</span>
+<span class="fc" id="L44">	}</span>
+
+	/**
+	 * Get preference from setting
+	 * @return SharedPreferences
+	 */
+	private SharedPreferences getSettings(){
+<span class="nc bnc" id="L51" title="All 2 branches missed.">		if (mContext != null) {</span>
+<span class="nc" id="L52">		return mContext.getSharedPreferences(SHARED_PREFS_FILE, 0);</span>
+		} else {
+<span class="nc" id="L54">			return null;</span>
+		}
+	}
+
+	/**
+	 * Get the online status
+	 * @return boolean the value represented by the string
+	 */
+	public boolean getOnlineStatus() {
+<span class="nc" id="L63">		return Boolean.valueOf(getData(&quot;onlineStatus&quot;));</span>
+	}
+
+	/**
+	 * Set the online status
+	 * @param boolean the status
+	 */
+	public void setOnlineStatus(boolean status) {
+<span class="nc" id="L71">		setData(&quot;onlineStatus&quot;, String.valueOf(status));</span>
+<span class="nc" id="L72">	}</span>
+
+	/**
+	 * Get the version of the Manifest
+	 * @return string the Manifest version
+	 */
+	public String getManifestVersion() {
+<span class="nc" id="L79">		return getData(&quot;manifestVersion&quot;);</span>
+	}
+
+	/**
+	 * Set the version of the Manifest
+	 * @param string the Manifest version
+	 */
+	public void setManifestVersion(String version) {
+<span class="nc" id="L87">		setData(&quot;manifestVersion&quot;, version);</span>
+<span class="nc" id="L88">	}</span>
+
+	/**
+	 * Get the URL
+	 * @return string the URL
+	 */
+	public String getUrl() {
+<span class="nc" id="L95">		return getData(&quot;url&quot;);</span>
+	}
+
+	/**
+	 * Set the URL
+	 * @param string the url
+	 */
+	public void setUrl(String url) {
+<span class="nc" id="L103">		setData(&quot;url&quot;, url);</span>
+<span class="nc" id="L104">	}</span>
+
+	/**
+	 * Get the token of the user
+	 * @return string the user token
+	 */
+	public String getUserToken() {
+<span class="nc" id="L111">		return getData(&quot;user_token&quot;);</span>
+	}
+
+	/**
+	 * Set the token of the user
+	 * @param string the user token
+	 */
+	public void setUserToken(String userToken) {
+<span class="nc" id="L119">		setData(&quot;user_token&quot;, userToken);</span>
+<span class="nc" id="L120">	}</span>
+
+	/**
+	 * Get the invitation token
+	 * @return string the invitation token
+	 */
+	public String getInvitationToken() {
+<span class="nc" id="L127">		return getData(&quot;invitation_token&quot;);</span>
+	}
+
+	/**
+	 * Set the invitation token
+	 * @param string the invitation token
+	 */
+	public void setInvitationToken(String invitationToken) {
+<span class="nc" id="L135">		setData(&quot;invitation_token&quot;, invitationToken);</span>
+<span class="nc" id="L136">	}</span>
+
+	/**
+	 * Get the session token
+	 * @return string the session token
+	 */
+	public String getSessionToken() {
+<span class="nc" id="L143">		return getData(&quot;session_token&quot;);</span>
+	}
+
+	/**
+	 * Set the session token
+	 * @param string the session token
+	 */
+	public void setSessionToken(String sessionToken) {
+<span class="nc" id="L151">		setData(&quot;session_token&quot;, sessionToken);</span>
+<span class="nc" id="L152">	}</span>
+
+	/**
+	 * Get the ID of the profile
+	 * @return string the profile ID
+	 */
+	public String getProfileId() {
+<span class="nc" id="L159">		return getData(&quot;profile_id&quot;);</span>
+	}
+
+	/**
+	 * Set the ID of the profile
+	 * @param string the profile ID
+	 */
+	public void setProfileId(String profileId) {
+<span class="nc" id="L167">		setData(&quot;profile_id&quot;, profileId);</span>
+<span class="nc" id="L168">	}</span>
+
+	/**
+	 * Get the ID of the agent
+	 * @return string the agent ID
+	 */
+	public String getAgentId() {
+<span class="nc" id="L175">		return getData(&quot;agent_id&quot;);</span>
+	}
+
+	/**
+	 * Set the ID of the agent
+	 * @param string the agent ID
+	 */
+	public void setAgentId(String agentId) {
+<span class="nc" id="L183">		setData(&quot;agent_id&quot;, agentId);</span>
+<span class="nc" id="L184">	}</span>
+
+	/**
+	 * Get the broker
+	 * @return string the broker
+	 */
+	public String getBroker() {
+<span class="nc" id="L191">		return getData(&quot;broker&quot;);</span>
+	}
+
+	/**
+	 * Set the broker
+	 * @param string the broker
+	 */
+	public void setBroker(String broker) {
+<span class="nc" id="L199">		setData(&quot;broker&quot;, broker);</span>
+<span class="nc" id="L200">	}</span>
+
+	/**
+	 * Get the port
+	 * @return string the port
+	 */
+	public String getPort() {
+<span class="nc" id="L207">		return getData(&quot;port&quot;);</span>
+	}
+
+	/**
+	 * Set the port
+	 * @param string the port
+	 */
+	public void setPort(String port) {
+<span class="nc" id="L215">		setData(&quot;port&quot;, port);</span>
+<span class="nc" id="L216">	}</span>
+
+	/**
+	 * Get the Transport Layer Security (TLS)
+	 * @return string the TLS
+	 */
+	public String getTls() {
+<span class="nc" id="L223">		return getData(&quot;tls&quot;);</span>
+	}
+
+	/**
+	 * Set the Transport Layer Security (TLS)
+	 * @param string the TLS
+	 */
+	public void setTls(String tls) {
+<span class="nc" id="L231">		setData(&quot;tls&quot;, tls);</span>
+<span class="nc" id="L232">	}</span>
+
+	/**
+	 * Get the topic
+	 * @return string the topic
+	 */
+	public String getTopic() {
+<span class="nc" id="L239">		return getData(&quot;topic&quot;);</span>
+	}
+
+	/**
+	 * Set the topic 
+	 * @param string the topic
+	 */
+	public void setTopic(String topic) {
+<span class="nc" id="L247">		setData(&quot;topic&quot;, topic);</span>
+<span class="nc" id="L248">	}</span>
+
+	/**
+	 * Get the user of the Message Queue Telemetry Transport (MQTT)
+	 * @return string the MQTT user
+	 */
+	public String getMqttuser() {
+<span class="nc" id="L255">		return getData(&quot;mqttuser&quot;);</span>
+	}
+
+	/**
+	 * Set the user of the Message Queue Telemetry Transport (MQTT)
+	 * @param string the MQTT user
+	 */
+	public void setMqttuser(String mqttuser) {
+<span class="nc" id="L263">		setData(&quot;mqttuser&quot;, mqttuser);</span>
+<span class="nc" id="L264">	}</span>
+
+	/**
+	 * Get the password of the Message Queue Telemetry Transport (MQTT)
+	 * @return the MQTT password
+	 */
+	public String getMqttpasswd() {
+<span class="nc" id="L271">		return getData(&quot;mqttpasswd&quot;);</span>
+	}
+
+	/**
+	 * Set the password of the Message Queue Telemetry Transport (MQTT)
+	 * @param string the MQTT password
+	 */
+	public void setMqttpasswd(String mqttpasswd) {
+<span class="nc" id="L279">		setData(&quot;mqttpasswd&quot;, mqttpasswd);</span>
+<span class="nc" id="L280">	}</span>
+
+	/**
+	 * Get the Certificate
+	 * @return string the certificate
+	 */
+	public String getCertificate() {
+<span class="nc" id="L287">		return getData(&quot;certificate&quot;);</span>
+	}
+
+	/**
+	 * Set the Certificate
+	 * @param string the certificate
+	 */
+	public void setCertificate(String certificate) {
+<span class="nc" id="L295">		setData(&quot;certificate&quot;, certificate);</span>
+<span class="nc" id="L296">	}</span>
+
+	/**
+	 * Get the name
+	 * @return string the name
+	 */
+	public String getName() {
+<span class="nc" id="L303">		return getData(&quot;name&quot;);</span>
+	}
+
+	/**
+	 * Set the name
+	 * @param string the name
+	 */
+	public void setName(String name) {
+<span class="nc" id="L311">		setData(&quot;name&quot;, name);</span>
+<span class="nc" id="L312">	}</span>
+
+	/**
+	 * Get the ID of the computer
+	 * @return string the computer ID
+	 */
+	public String getComputersId() {
+<span class="nc" id="L319">		return getData(&quot;computers_id&quot;);</span>
+	}
+
+	/**
+	 * Set the ID of the computer
+	 * @param string the computer ID
+	 */
+	public void setComputersId(String computersId) {
+<span class="nc" id="L327">		setData(&quot;computers_id&quot;, computersId);</span>
+<span class="nc" id="L328">	}</span>
+
+	/**
+	 * Get the ID of the entities
+	 * @return string the entities ID
+	 */
+	public String getEntitiesId() {
+<span class="nc" id="L335">		return getData(&quot;entities_id&quot;);</span>
+	}
+
+	/**
+	 * Set the ID of the entities
+	 * @param string the entities ID
+	 */
+	public void setEntitiesId(String entitiesId) {
+<span class="nc" id="L343">		setData(&quot;entities_id&quot;, entitiesId);</span>
+<span class="nc" id="L344">	}</span>
+
+	/**
+	 * Get the ID of the Fleets of the Flyve MDM plugin
+	 * @return string the Fleets ID
+	 */
+	public String getPluginFlyvemdmFleetsId() {
+<span class="nc" id="L351">		return getData(&quot;plugin_flyvemdm_fleets_id&quot;);</span>
+	}
+
+	/**
+	 * Set the ID of the Fleets of the Flyve MDM plugin
+	 * @param string the Fleets ID
+	 */
+	public void setPluginFlyvemdmFleetsId(String pluginFlyvemdmFleetsId) {
+<span class="nc" id="L359">		setData(&quot;plugin_flyvemdm_fleets_id&quot;, pluginFlyvemdmFleetsId);</span>
+<span class="nc" id="L360">	}</span>
+
+	/**
+	 * Set the state of the Connectivity of the Wifi
+	 * @param boolean the state of the connectivity, true if disabled, false otherwise
+	 */
+	public void setConnectivityWifiDisable(boolean disable) {
+<span class="nc" id="L367">		setData(&quot;ConnectivityWifiDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L368">	}</span>
+
+	/**
+	 * Get the state of the Connectivity of the Wifi 
+	 * @return boolean the state of the connectivity, true if disabled, false otherwise
+	 */
+	public boolean getConnectivityWifiDisable() {
+<span class="nc" id="L375">		return Boolean.valueOf(getData(&quot;ConnectivityWifiDisable&quot;));</span>
+	}
+
+	/**
+	 * Set the state of the Connectivity of the Bluetooth
+	 * @param boolean the state of the connectivity, true if disabled, false otherwise
+	 */
+	public void setConnectivityBluetoothDisable(boolean disable) {
+<span class="nc" id="L383">		setData(&quot;ConnectivityBluetoothDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L384">	}</span>
+
+	/**
+	 * Get the state of the Connectivity of the Bluetooth
+	 * @return boolean the state of the connectivity, true if disabled, false otherwise
+	 */
+	public boolean getConnectivityBluetoothDisable() {
+<span class="nc" id="L391">		return Boolean.valueOf(getData(&quot;ConnectivityBluetoothDisable&quot;));</span>
+	}
+
+	/**
+	 * Set the state of the Connectivity of the GPS
+	 * @param boolean the state of the connectivity, true if disabled, false otherwise
+	 */
+	public void setConnectivityGPSDisable(boolean disable) {
+<span class="nc" id="L399">		setData(&quot;ConnectivityGPSDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L400">	}</span>
+
+	/**
+	 * Get the state of the Connectivity of the GPS
+	 * @return boolean the state of the connectivity, true if disabled, false otherwise
+	 */
+	public boolean getConnectivityGPSDisable() {
+<span class="nc" id="L407">		return Boolean.valueOf(getData(&quot;ConnectivityGPSDisable&quot;));</span>
+	}
+
+	/**
+	 * Set the state of the Easter Egg
+	 * @param boolean the state, true if enabled, false otherwise
+	 */
+	public void setEasterEgg(boolean enable) {
+<span class="nc" id="L415">		setData(&quot;easterEgg&quot;, String.valueOf(enable));</span>
+<span class="nc" id="L416">	}</span>
+
+	/**
+	 * Get the state of the Easter Egg
+	 * @return boolean the state, true if enabled, false otherwise
+	 */
+	public boolean getEasterEgg() {
+<span class="nc" id="L423">		return Boolean.valueOf(getData(&quot;easterEgg&quot;));</span>
+	}
+
+	/**
+	 * Get the data matching the given argument
+	 * @param string the key
+	 * @return string the data
+	 */
+	private String getData(String key){
+<span class="nc" id="L432">		String data = &quot;&quot;;</span>
+<span class="nc" id="L433">		SharedPreferences sp = getSettings();</span>
+<span class="nc bnc" id="L434" title="All 2 branches missed.">		if(sp != null) {</span>
+<span class="nc" id="L435">			data = sp.getString(key, null);</span>
+		}
+<span class="nc" id="L437">		return data;</span>
+	}
+
+	/**
+	 * Set the data given in the argument to the Shared Preferences
+	 * @param string the key
+	 * @param string the value
+	 */
+	private void setData(String key, String value) {
+<span class="nc" id="L446">		SharedPreferences sp = getSettings();</span>
+<span class="nc bnc" id="L447" title="All 2 branches missed.">		if(sp != null) {</span>
+<span class="nc" id="L448">			SharedPreferences.Editor editor = sp.edit();</span>
+<span class="nc" id="L449">			editor.putString(key, value );</span>
+<span class="nc" id="L450">			editor.apply();</span>
+		}
+<span class="nc" id="L452">	}</span>
+
+	/**
+	 * Removes all the values from the preferences
+	 */
+	public void clearSettings(){
+<span class="nc" id="L458">		SharedPreferences sp = getSettings();</span>
+<span class="nc bnc" id="L459" title="All 2 branches missed.">		if(sp != null) {</span>
+<span class="nc" id="L460">			SharedPreferences.Editor editor = sp.edit();</span>
+<span class="nc" id="L461">			editor.clear();</span>
+<span class="nc" id="L462">			editor.apply();</span>
+		}
+<span class="nc" id="L464">	}</span>
+
+	/**
+	 * Remove the key cache
+	 * @param string the key value to remove
+	 */
+	public void deleteKeyCache(String llave){
+<span class="nc" id="L471">		SharedPreferences sp = getSettings();</span>
+<span class="nc bnc" id="L472" title="All 2 branches missed.">		if(sp != null) {</span>
+<span class="nc" id="L473">			SharedPreferences.Editor editor = sp.edit();</span>
+<span class="nc" id="L474">			editor.remove(llave);</span>
+<span class="nc" id="L475">			editor.apply();</span>
+		}
+<span class="nc" id="L477">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.2.0</div></body></html>

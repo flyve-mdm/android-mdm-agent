@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AndroidCryptoProvider.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.security</a> &gt; <span class="el_source">AndroidCryptoProvider.java</span></div><h1>AndroidCryptoProvider.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2016 Teclib'
+ *
+ * This file is part of Flyve MDM Android Agent.
+ *
+ * Flyve MDM Android Agent is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM Android is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM Android is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Dorian LARGET
+ * @copyright Copyright (c) 2016 Flyve MDM
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyvemdm/flyvemdm-android-agent
+ * @link      http://www.glpi-project.org/
+ * ------------------------------------------------------------------------------
+ */
+
+package org.flyve.mdm.agent.security;
+
+import android.content.Context;
+import android.util.Base64;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+import org.spongycastle.openssl.jcajce.JcaPEMWriter;
+import org.spongycastle.operator.ContentSigner;
+import org.spongycastle.operator.jcajce.JcaContentSignerBuilder;
+import org.spongycastle.pkcs.PKCS10CertificationRequest;
+import org.spongycastle.pkcs.PKCS10CertificationRequestBuilder;
+import org.spongycastle.pkcs.jcajce.JcaPKCS10CertificationRequestBuilder;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.SecureRandom;
+import java.security.Security;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.security.interfaces.RSAPrivateKey;
+import javax.security.auth.x500.X500Principal;
+
+public class AndroidCryptoProvider {
+
+    private final File csrFile;
+    private final File certFile;
+    private final File keyFile;
+    private X509Certificate cert;
+    private PKCS10CertificationRequest csr;
+    private RSAPrivateKey key;
+    private byte[] pemCsrBytes;
+<span class="nc" id="L65">    private static final Object globalCryptoLock = new Object();</span>
+
+    static {
+<span class="nc" id="L68">        Security.addProvider(new BouncyCastleProvider());</span>
+<span class="nc" id="L69">    }</span>
+
+    /**
+     * This Constructor gets the absolute path to the directory where the files are stored
+     * @param Context the context
+     */
+<span class="nc" id="L75">    public AndroidCryptoProvider(Context c) {</span>
+<span class="nc" id="L76">        String dataPath = c.getFilesDir().getAbsolutePath();</span>
+
+<span class="nc" id="L78">        csrFile = new File(dataPath + File.separator + &quot;client.csr&quot;);</span>
+<span class="nc" id="L79">        keyFile = new File(dataPath + File.separator + &quot;client.key&quot;);</span>
+<span class="nc" id="L80">        certFile = new File(dataPath + File.separator + &quot;client.crt&quot;);</span>
+<span class="nc" id="L81">    }</span>
+
+    /**
+     * Load the file  in bytes
+     * @param File the file to load in bytes
+     * @return byte the bytes of the file
+     * @throws IOException Error message 
+     */
+    private byte[] loadFileToBytes(File f) {
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (!f.exists()) {</span>
+<span class="nc" id="L91">            return new byte[0];</span>
+        }
+<span class="nc" id="L93">        FileInputStream fin = null;</span>
+        try {
+<span class="nc" id="L95">            fin = new FileInputStream(f);</span>
+<span class="nc" id="L96">            byte[] fileData = new byte[(int) f.length()];</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (fin.read(fileData) != f.length()) {</span>
+                // Failed to read
+<span class="nc" id="L99">                fileData = null;</span>
+            }
+<span class="nc" id="L101">            return fileData;</span>
+<span class="nc" id="L102">        } catch (IOException e) {</span>
+<span class="nc" id="L103">            FlyveLog.e(&quot;loadFileToBytes IOException&quot;,e);</span>
+<span class="nc" id="L104">            return new byte[0];</span>
+        } finally {
+<span class="nc" id="L106">            try {</span>
+<span class="nc bnc" id="L107" title="All 6 branches missed.">                if(fin!=null) {</span>
+<span class="nc" id="L108">                    fin.close();</span>
+                }
+<span class="nc" id="L110">            } catch (Exception e) {</span>
+<span class="nc" id="L111">                FlyveLog.e(&quot;close FileInputStream, IO exception&quot;, e);</span>
+<span class="nc" id="L112">            }</span>
+        }
+    }
+
+    /**
+     * Construct a string by decoding the given bytes
+     * @return string the Certificate Signing Request (CSR)
+     */
+    public String getlCsr() {
+<span class="nc" id="L121">        byte[] csrBytes = loadFileToBytes(csrFile);</span>
+<span class="nc" id="L122">        String strCsr = new String(csrBytes);</span>
+        // If either file was missing, we definitely can't succeed
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        if (csrBytes == new byte[0]) {</span>
+<span class="nc" id="L125">            FlyveLog.i(&quot;loadCsr: Missing csr need to generate a new one&quot;);</span>
+<span class="nc" id="L126">            return &quot;&quot;;</span>
+        }
+<span class="nc" id="L128">        return strCsr;</span>
+    }
+
+    /**
+     * Load the Certificate Signing Request (CSR)
+     * @return boolean true if succeed, false otherwise
+     */
+    public boolean loadCsr() {
+<span class="nc" id="L136">        byte[] csrBytes = loadFileToBytes(csrFile);</span>
+        // If either file was missing, we definitely can't succeed
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (csrBytes == new byte[0]) {</span>
+<span class="nc" id="L139">            FlyveLog.i(&quot;loadCsr: Missing csr need to generate a new one&quot;);</span>
+<span class="nc" id="L140">            return false;</span>
+        }
+<span class="nc" id="L142">        return true;</span>
+    }
+
+    /**
+     * Generate the certificated Key pair
+     * @param generateCallback callback
+     */
+    public void generateRequest(generateCallback callback) {
+<span class="nc" id="L150">        byte[] snBytes = new byte[8];</span>
+<span class="nc" id="L151">        new SecureRandom().nextBytes(snBytes);</span>
+
+<span class="nc" id="L153">        KeyPair keyPair = null;</span>
+        try {
+<span class="nc" id="L155">            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(&quot;RSA&quot;, &quot;BC&quot;);</span>
+<span class="nc" id="L156">            keyPairGenerator.initialize(4096);</span>
+<span class="nc" id="L157">            keyPair = keyPairGenerator.generateKeyPair();</span>
+<span class="nc" id="L158">        } catch (Exception ex) {</span>
+<span class="nc" id="L159">            FlyveLog.wtf(&quot;generateRequest&quot;, ex);</span>
+<span class="nc" id="L160">            callback.onGenerate(false);</span>
+<span class="nc" id="L161">        }</span>
+
+<span class="nc" id="L163">        X500Principal subjectName = new X500Principal(&quot;CN=mydevice.stork-mdm.com&quot;);</span>
+
+<span class="nc" id="L165">        ContentSigner signGen = null;</span>
+        try {
+<span class="nc" id="L167">            signGen = new JcaContentSignerBuilder(&quot;SHA1withRSA&quot;).build(keyPair.getPrivate());</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">            if(signGen == null) {</span>
+<span class="nc" id="L169">                callback.onGenerate(false);</span>
+            }
+<span class="nc" id="L171">        } catch (Exception ex) {</span>
+<span class="nc" id="L172">            FlyveLog.e(&quot;generateRequest&quot;,ex);</span>
+<span class="nc" id="L173">            callback.onGenerate(false);</span>
+<span class="nc" id="L174">        }</span>
+
+<span class="nc" id="L176">        PKCS10CertificationRequestBuilder builder = new JcaPKCS10CertificationRequestBuilder(subjectName, keyPair.getPublic());</span>
+<span class="nc" id="L177">        csr = builder.build(signGen);</span>
+
+        try {
+<span class="nc" id="L180">            key = (RSAPrivateKey) keyPair.getPrivate();</span>
+<span class="nc" id="L181">        } catch (Exception ex) {</span>
+<span class="nc" id="L182">            FlyveLog.wtf(&quot;generateRequest&quot;,ex);</span>
+<span class="nc" id="L183">            callback.onGenerate(false);</span>
+<span class="nc" id="L184">        }</span>
+
+        // Save the resulting pair
+<span class="nc" id="L187">        saveCsrKey();</span>
+
+        // true or false
+<span class="nc" id="L190">        boolean bvar = loadCsr();</span>
+<span class="nc" id="L191">        callback.onGenerate(bvar);</span>
+<span class="nc" id="L192">    }</span>
+
+    /**
+     * Save the Certificate Signing Request (CSR)
+     */
+    private void saveCsrKey() {
+<span class="nc" id="L198">        FileOutputStream csrOut = null;</span>
+<span class="nc" id="L199">        FileOutputStream keyOut = null;</span>
+        try {
+<span class="nc" id="L201">            csrOut = new FileOutputStream(csrFile);</span>
+<span class="nc" id="L202">            keyOut = new FileOutputStream(keyFile);</span>
+
+            // Write the certificate in OpenSSL PEM format (important for the server)
+<span class="nc" id="L205">            StringWriter strWriter = new StringWriter();</span>
+<span class="nc" id="L206">            JcaPEMWriter pemWriter = new JcaPEMWriter(strWriter);</span>
+<span class="nc" id="L207">            pemWriter.writeObject(csr);</span>
+<span class="nc" id="L208">            pemWriter.close();</span>
+
+            // Line endings MUST be UNIX for the PC to accept the cert properly
+<span class="nc" id="L211">            OutputStreamWriter csrWriter = new OutputStreamWriter(csrOut);</span>
+<span class="nc" id="L212">            String pemStr = strWriter.getBuffer().toString();</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">            for (int i = 0; i &lt; pemStr.length(); i++) {</span>
+<span class="nc" id="L214">                char c = pemStr.charAt(i);</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                if (c != '\r')</span>
+<span class="nc" id="L216">                    csrWriter.append(c);</span>
+            }
+<span class="nc" id="L218">            csrWriter.close();</span>
+
+            // Write the private out in PKCS8 format
+<span class="nc" id="L221">            keyOut.write(key.getEncoded());</span>
+<span class="nc" id="L222">        } catch (IOException e) {</span>
+<span class="nc" id="L223">            FlyveLog.e(&quot;saveCsrKey&quot;,e);</span>
+        } finally {
+<span class="nc" id="L225">            try {</span>
+<span class="nc bnc" id="L226" title="All 6 branches missed.">                if(keyOut!=null) {</span>
+<span class="nc" id="L227">                    keyOut.close();</span>
+                }
+<span class="nc bnc" id="L229" title="All 6 branches missed.">                if(csrOut!=null) {</span>
+<span class="nc" id="L230">                    csrOut.close();</span>
+                }
+<span class="nc" id="L232">            } catch (IOException e){</span>
+<span class="nc" id="L233">                FlyveLog.e(&quot;saveCsrKey, IOException&quot;, e);</span>
+<span class="nc" id="L234">            }</span>
+<span class="nc" id="L235">        }</span>
+<span class="nc" id="L236">    }</span>
+
+    /**
+     * Save the certificate key
+     * @param string the certificate
+     */
+    public void saveCertKey(String certString) {
+<span class="nc" id="L243">        FileOutputStream certOut = null;</span>
+
+        try {
+<span class="nc" id="L246">            certOut = new FileOutputStream(certFile);</span>
+
+<span class="nc" id="L248">            byte[] certBytes = certString.getBytes();</span>
+
+<span class="nc" id="L250">            CertificateFactory certFactory = null;</span>
+<span class="nc" id="L251">            certFactory = CertificateFactory.getInstance(&quot;X.509&quot;, &quot;BC&quot;);</span>
+<span class="nc" id="L252">            cert = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(certBytes));</span>
+
+            // Write the certificate in OpenSSL PEM format (important for the server)
+<span class="nc" id="L255">            StringWriter strWriter = new StringWriter();</span>
+<span class="nc" id="L256">            JcaPEMWriter pemWriter = new JcaPEMWriter(strWriter);</span>
+<span class="nc" id="L257">            pemWriter.writeObject(cert);</span>
+<span class="nc" id="L258">            pemWriter.close();</span>
+
+            // Line endings MUST be UNIX for the PC to accept the cert properly
+<span class="nc" id="L261">            OutputStreamWriter certWriter = new OutputStreamWriter(certOut);</span>
+<span class="nc" id="L262">            String pemStr = strWriter.getBuffer().toString();</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">            for (int i = 0; i &lt; pemStr.length(); i++) {</span>
+<span class="nc" id="L264">                char c = pemStr.charAt(i);</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">                if (c != '\r')</span>
+<span class="nc" id="L266">                    certWriter.append(c);</span>
+            }
+<span class="nc" id="L268">            certWriter.close();</span>
+
+<span class="nc" id="L270">        } catch (Exception e) {</span>
+<span class="nc" id="L271">            FlyveLog.e(&quot;saveCertKey&quot;,e);</span>
+        } finally {
+<span class="nc" id="L273">            try {</span>
+<span class="nc bnc" id="L274" title="All 6 branches missed.">                if(certOut!=null) {</span>
+<span class="nc" id="L275">                    certOut.close();</span>
+                }
+<span class="nc" id="L277">            } catch (Exception e){</span>
+<span class="nc" id="L278">                FlyveLog.e(&quot;saveCertKey, IOException&quot;, e);</span>
+<span class="nc" id="L279">            }</span>
+<span class="nc" id="L280">        }</span>
+<span class="nc" id="L281">    }</span>
+
+    /**
+     * Base64-encode the given data
+     * @param byte the data to encode
+     * @return string the resulting encoded data
+     */
+    public String encodeBase64String(byte[] data) {
+<span class="nc" id="L289">        return Base64.encodeToString(data, Base64.NO_WRAP);</span>
+    }
+
+    public interface generateCallback {
+        void onGenerate(boolean work);
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.2.0</div></body></html>

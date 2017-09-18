@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>EnrollmentHelper.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.utils</a> &gt; <span class="el_source">EnrollmentHelper.java</span></div><h1>EnrollmentHelper.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.utils;
+
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+
+import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.security.AndroidCryptoProvider;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
+import static org.flyve.mdm.agent.utils.ConnectionHTTP.getSyncWebData;
+
+/*
+ *   Copyright © 2017 Teclib. All rights reserved.
+ *
+ *   This file is part of flyve-mdm-android-agent
+ *
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @date      12/7/17
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+public class EnrollmentHelper {
+
+    private static Handler uiHandler;
+
+    static {
+<span class="nc" id="L48">        uiHandler = new Handler(Looper.getMainLooper());</span>
+<span class="nc" id="L49">    }</span>
+
+    private static void runOnUI(Runnable runnable) {
+<span class="nc" id="L52">        uiHandler.post(runnable);</span>
+<span class="nc" id="L53">    }</span>
+
+    private Context context;
+    private DataStorage cache;
+    private Routes routes;
+
+    /**
+     * This constructor loads the context of the current class
+     * @param Context the context of the class
+     */
+<span class="nc" id="L63">    public EnrollmentHelper(Context context) {</span>
+<span class="nc" id="L64">        this.context = context;</span>
+<span class="nc" id="L65">        cache = new DataStorage(context);</span>
+<span class="nc" id="L66">        routes = new Routes(context);</span>
+<span class="nc" id="L67">    }</span>
+
+    /**
+     * Manage the errors 
+     * @param string the error
+     * @return string the message of the error
+     */
+    private String manageError(String error) {
+<span class="nc" id="L75">        String errorMessage = &quot;&quot;;</span>
+
+<span class="nc bnc" id="L77" title="All 4 branches missed.">        if(error.contains(&quot;EXCEPTION_HTTP&quot;) || error.contains(&quot;ERROR&quot;)) {</span>
+<span class="nc" id="L78">            FlyveLog.e(error);</span>
+
+<span class="nc" id="L80">            errorMessage = context.getResources().getString(R.string.ERROR_INTERNAL);</span>
+
+<span class="nc bnc" id="L82" title="All 2 branches missed.">            if(error.contains(&quot;EXCEPTION_HTTP&quot;)) {</span>
+<span class="nc" id="L83">                return errorMessage;</span>
+            }
+
+            // Manage error from backend
+            // Example: [&quot;ERROR_SESSION_TOKEN_MISSING&quot;,&quot;parameter session_token is missing or empty; view documentation in your browser at https://dev.flyve.org/glpi/apirest.php/#ERROR_SESSION_TOKEN_MISSING&quot;]
+            try {
+<span class="nc" id="L89">                JSONArray jError = new JSONArray(error);</span>
+<span class="nc" id="L90">                errorMessage = jError.getString(1);</span>
+
+<span class="nc" id="L92">                String[] errorArray = errorMessage.split(&quot;;&quot;);</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">                if(errorArray.length &gt; 0) {</span>
+<span class="nc" id="L94">                    errorMessage = errorArray[0];</span>
+                }
+<span class="nc" id="L96">            } catch (Exception ex) {</span>
+<span class="nc" id="L97">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L98">            }</span>
+
+<span class="nc" id="L100">            return errorMessage;</span>
+        }
+
+<span class="nc" id="L103">        return errorMessage;</span>
+    }
+
+    /**
+     * Get session token
+     */
+    public void getActiveSessionToken(final enrollCallBack callback) {
+
+<span class="nc" id="L111">        Thread t = new Thread(new Runnable()</span>
+<span class="nc" id="L112">        {</span>
+            public void run()
+            {
+                try {
+                    // STEP 1 get session token
+<span class="nc" id="L117">                    final String data = getSyncWebData(routes.initSession(cache.getUserToken()), &quot;GET&quot;, null);</span>
+
+<span class="nc" id="L119">                    final String errorMessage = manageError(data);</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">                    if(!errorMessage.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L121">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
+                            public void run() {
+<span class="nc" id="L123">                                callback.onError(errorMessage);</span>
+<span class="nc" id="L124">                            }</span>
+                        });
+<span class="nc" id="L126">                        return;</span>
+                    }
+
+<span class="nc" id="L129">                    JSONObject jsonSession = new JSONObject(data);</span>
+<span class="nc" id="L130">                    cache.setSessionToken(jsonSession.getString(&quot;session_token&quot;));</span>
+
+                    // STEP 2 get full session information
+<span class="nc" id="L133">                    HashMap&lt;String, String&gt; header = new HashMap();</span>
+<span class="nc" id="L134">                    header.put(&quot;Session-Token&quot;,cache.getSessionToken());</span>
+<span class="nc" id="L135">                    header.put(&quot;Accept&quot;,&quot;application/json&quot;);</span>
+<span class="nc" id="L136">                    header.put(&quot;Content-Type&quot;,&quot;application/json; charset=UTF-8&quot;);</span>
+<span class="nc" id="L137">                    header.put(&quot;User-Agent&quot;,&quot;Flyve MDM&quot;);</span>
+<span class="nc" id="L138">                    header.put(&quot;Referer&quot;,routes.getFullSession());</span>
+
+<span class="nc" id="L140">                    final String dataFullSession = getSyncWebData(routes.getFullSession(), &quot;GET&quot;, header);</span>
+<span class="nc" id="L141">                    final String errorMessageFullSession = manageError(dataFullSession);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                    if(!errorMessageFullSession.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L143">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
+                            public void run() {
+<span class="nc" id="L145">                                callback.onError(errorMessageFullSession);</span>
+<span class="nc" id="L146">                            }</span>
+                        });
+<span class="nc" id="L148">                        return;</span>
+                    }
+
+<span class="nc" id="L151">                    JSONObject jsonFullSession = new JSONObject(dataFullSession);</span>
+<span class="nc" id="L152">                    jsonSession = jsonFullSession.getJSONObject(&quot;session&quot;);</span>
+<span class="nc" id="L153">                    String profileId = jsonSession.getString(&quot;plugin_flyvemdm_guest_profiles_id&quot;);</span>
+
+<span class="nc" id="L155">                    cache.setProfileId( profileId );</span>
+
+                    // STEP 3 Activated the profile
+<span class="nc" id="L158">                    final String dataActiveProfile = getSyncWebData(routes.changeActiveProfile(cache.getProfileId()), &quot;POST&quot;, header);</span>
+<span class="nc" id="L159">                    final String errorActiveProfile = manageError(dataActiveProfile);</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">                    if(!errorActiveProfile.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L161">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
+                            public void run() {
+<span class="nc" id="L163">                                callback.onError(errorActiveProfile);</span>
+<span class="nc" id="L164">                            }</span>
+                        });
+                    } else {
+                        // Success
+<span class="nc" id="L168">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
+                            public void run() {
+<span class="nc" id="L170">                                callback.onSuccess(cache.getSessionToken());</span>
+<span class="nc" id="L171">                            }</span>
+                        });
+                    }
+<span class="nc" id="L174">                } catch (final Exception ex) {</span>
+<span class="nc" id="L175">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L176">                    EnrollmentHelper.runOnUI(new Runnable() {</span>
+                        public void run() {
+<span class="nc" id="L178">                            callback.onError(context.getResources().getString(R.string.ERROR_INTERNAL));</span>
+<span class="nc" id="L179">                        }</span>
+                    });
+<span class="nc" id="L181">                }</span>
+<span class="nc" id="L182">            }</span>
+        });
+<span class="nc" id="L184">        t.start();</span>
+<span class="nc" id="L185">    }</span>
+
+    /**
+     * Get the information to enroll
+     * @param JSONObject the information of the phone
+     * @param enrollCallback the callback
+     */
+    public void enrollment(final JSONObject payload, final enrollCallBack callback) {
+<span class="nc" id="L193">        Thread t = new Thread(new Runnable()</span>
+<span class="nc" id="L194">        {</span>
+            public void run()
+            {
+                try {
+<span class="nc" id="L198">                    HashMap&lt;String, String&gt; header = new HashMap();</span>
+<span class="nc" id="L199">                    header.put(&quot;Session-Token&quot;,cache.getSessionToken());</span>
+
+<span class="nc" id="L201">                    header.put(&quot;Accept&quot;,&quot;application/json&quot;);</span>
+<span class="nc" id="L202">                    header.put(&quot;Content-Type&quot;,&quot;application/json; charset=UTF-8&quot;);</span>
+
+<span class="nc" id="L204">                    JSONObject input = new JSONObject();</span>
+<span class="nc" id="L205">                    input.put(&quot;input&quot;, payload);</span>
+
+<span class="nc" id="L207">                    String data = getSyncWebData(routes.pluginFlyvemdmAgent(), input, header);</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">                    if(data.contains(&quot;ERROR&quot;)){</span>
+<span class="nc" id="L209">                        JSONArray jsonArr = new JSONArray(data);</span>
+<span class="nc" id="L210">                        final String msgError = jsonArr.get(1).toString();</span>
+<span class="nc" id="L211">                        FlyveLog.e(msgError);</span>
+
+<span class="nc" id="L213">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
+                            public void run() {
+<span class="nc" id="L215">                                callback.onError(msgError);</span>
+<span class="nc" id="L216">                            }</span>
+                        });
+<span class="nc" id="L218">                    } else {</span>
+<span class="nc" id="L219">                        JSONObject jsonAgent = new JSONObject(data);</span>
+<span class="nc" id="L220">                        cache.setAgentId(jsonAgent.getString(&quot;id&quot;));</span>
+
+<span class="nc" id="L222">                        header = new HashMap();</span>
+<span class="nc" id="L223">                        header.put(&quot;Session-Token&quot;,cache.getSessionToken());</span>
+<span class="nc" id="L224">                        header.put(&quot;Accept&quot;,&quot;application/json&quot;);</span>
+<span class="nc" id="L225">                        header.put(&quot;Content-Type&quot;,&quot;application/json; charset=UTF-8&quot;);</span>
+<span class="nc" id="L226">                        header.put(&quot;User-Agent&quot;,&quot;Flyve MDM&quot;);</span>
+<span class="nc" id="L227">                        header.put(&quot;Referer&quot;,routes.pluginFlyvemdmAgent());</span>
+
+<span class="nc" id="L229">                        String dataAgent = ConnectionHTTP.getSyncWebData(routes.pluginFlyvemdmAgent(cache.getAgentId()), &quot;GET&quot;, header);</span>
+
+<span class="nc" id="L231">                        JSONObject jsonObject = new JSONObject(dataAgent);</span>
+
+<span class="nc" id="L233">                        String mbroker = jsonObject.getString(&quot;broker&quot;);</span>
+<span class="nc" id="L234">                        String mport = jsonObject.getString(&quot;port&quot;);</span>
+<span class="nc" id="L235">                        String mssl = jsonObject.getString(&quot;tls&quot;);</span>
+<span class="nc" id="L236">                        String mtopic = jsonObject.getString(&quot;topic&quot;);</span>
+<span class="nc" id="L237">                        String mpassword = jsonObject.getString(&quot;mqttpasswd&quot;);</span>
+<span class="nc" id="L238">                        String mcert = jsonObject.getString(&quot;certificate&quot;);</span>
+<span class="nc" id="L239">                        String mNameEmail = jsonObject.getString(&quot;name&quot;);</span>
+<span class="nc" id="L240">                        int mComputersId = jsonObject.getInt(&quot;computers_id&quot;);</span>
+<span class="nc" id="L241">                        int mId = jsonObject.getInt(&quot;id&quot;);</span>
+<span class="nc" id="L242">                        int mEntitiesId = jsonObject.getInt(&quot;entities_id&quot;);</span>
+<span class="nc" id="L243">                        int mFleetId = jsonObject.getInt(&quot;plugin_flyvemdm_fleets_id&quot;);</span>
+
+                        // Agent information
+<span class="nc" id="L246">                        cache.setBroker( mbroker );</span>
+<span class="nc" id="L247">                        cache.setPort( mport );</span>
+<span class="nc" id="L248">                        cache.setTls( mssl );</span>
+<span class="nc" id="L249">                        cache.setTopic( mtopic );</span>
+<span class="nc" id="L250">                        cache.setMqttuser( Helpers.getDeviceSerial() );</span>
+<span class="nc" id="L251">                        cache.setMqttpasswd( mpassword );</span>
+<span class="nc" id="L252">                        cache.setCertificate( mcert );</span>
+<span class="nc" id="L253">                        cache.setName( mNameEmail );</span>
+<span class="nc" id="L254">                        cache.setComputersId( String.valueOf(mComputersId) );</span>
+<span class="nc" id="L255">                        cache.setEntitiesId( String.valueOf(mEntitiesId) );</span>
+<span class="nc" id="L256">                        cache.setPluginFlyvemdmFleetsId( String.valueOf(mFleetId) );</span>
+
+<span class="nc" id="L258">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
+                            public void run() {
+<span class="nc" id="L260">                                callback.onSuccess(&quot;success&quot;);</span>
+<span class="nc" id="L261">                            }</span>
+                        });
+                    }
+
+<span class="nc" id="L265">                } catch (Exception ex) {</span>
+<span class="nc" id="L266">                    final String error  = ex.getMessage();</span>
+<span class="nc" id="L267">                    FlyveLog.e(error);</span>
+<span class="nc" id="L268">                    EnrollmentHelper.runOnUI(new Runnable() {</span>
+                        public void run() {
+<span class="nc" id="L270">                            callback.onError(context.getResources().getString(R.string.ERROR_INTERNAL));</span>
+<span class="nc" id="L271">                        }</span>
+                    });
+<span class="nc" id="L273">                }</span>
+<span class="nc" id="L274">            }</span>
+        });
+<span class="nc" id="L276">        t.start();</span>
+<span class="nc" id="L277">    }</span>
+
+    /**
+     * Create X509 certificate
+     */
+    public void createX509cert(final enrollCallBack callback) {
+<span class="nc" id="L283">        new Thread(new Runnable() {</span>
+            public void run() {
+                try {
+<span class="nc" id="L286">                    AndroidCryptoProvider createCertificate = new AndroidCryptoProvider(context);</span>
+<span class="nc" id="L287">                    createCertificate.generateRequest(new AndroidCryptoProvider.generateCallback() {</span>
+                        @Override
+                        public void onGenerate(final boolean work) {
+<span class="nc" id="L290">                            EnrollmentHelper.runOnUI(new Runnable() {</span>
+                                public void run() {
+<span class="nc bnc" id="L292" title="All 2 branches missed.">                                    if(work) {</span>
+<span class="nc" id="L293">                                        callback.onSuccess(&quot;true&quot;);</span>
+                                    }
+<span class="nc" id="L295">                                }</span>
+                            });
+<span class="nc" id="L297">                        }</span>
+                    });
+<span class="nc" id="L299">                } catch (Exception ex) {</span>
+<span class="nc" id="L300">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L301">                    EnrollmentHelper.runOnUI(new Runnable() {</span>
+                        public void run() {
+<span class="nc" id="L303">                            callback.onError(&quot;false&quot;);</span>
+<span class="nc" id="L304">                        }</span>
+                    });
+<span class="nc" id="L306">                }</span>
+<span class="nc" id="L307">            }</span>
+<span class="nc" id="L308">        }).start();</span>
+<span class="nc" id="L309">    }</span>
+
+    public interface enrollCallBack {
+        void onSuccess(String data);
+        void onError(String error);
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.2.0</div></body></html>

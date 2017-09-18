@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PreviewSupervisorActivity.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">PreviewSupervisorActivity.java</span></div><h1>PreviewSupervisorActivity.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.ui;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.core.supervisor.SupervisorController;
+import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
+import org.flyve.mdm.agent.utils.Helpers;
+
+/*
+ *   Copyright © 2017 Teclib. All rights reserved.
+ *
+ *   This file is part of flyve-mdm-android-agent
+ *
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @date      31/7/17
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+<span class="nc" id="L40">public class PreviewSupervisorActivity extends AppCompatActivity {</span>
+
+    /**
+     * Called when the activity is starting
+     * It shows the UI with the Supervisor information
+     * @param Bundle if the activity is being re-initialized, it contains the data it most recently supplied
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+<span class="nc" id="L49">        super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L50">        setContentView(R.layout.activity_supervisor_preview);</span>
+
+<span class="nc" id="L52">        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (toolbar != null) {</span>
+<span class="nc" id="L54">            setSupportActionBar(toolbar);</span>
+<span class="nc" id="L55">            getSupportActionBar().setDisplayHomeAsUpEnabled(true);</span>
+
+<span class="nc" id="L57">            toolbar.setNavigationOnClickListener(new View.OnClickListener() {</span>
+                @Override
+                public void onClick(View v) {
+<span class="nc" id="L60">                    onBackPressed();</span>
+<span class="nc" id="L61">                }</span>
+            });
+        }
+
+<span class="nc" id="L65">        SupervisorModel supervisor = new SupervisorController(PreviewSupervisorActivity.this).getCache();</span>
+
+<span class="nc" id="L67">        ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);</span>
+<span class="nc bnc" id="L68" title="All 4 branches missed.">        if(supervisor.getPicture() != null &amp;&amp; !supervisor.getPicture().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L69">            imgPhoto.setImageBitmap(Helpers.StringToBitmap(supervisor.getPicture()));</span>
+        }
+
+<span class="nc" id="L72">        TextView txtName = (TextView) findViewById(R.id.txtName);</span>
+<span class="nc bnc" id="L73" title="All 4 branches missed.">        if(supervisor.getName() != null &amp;&amp; !supervisor.getName().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L74">            txtName.setText(supervisor.getName());</span>
+        }
+
+<span class="nc" id="L77">        TextView txtEmail = (TextView) findViewById(R.id.txtEmail);</span>
+<span class="nc bnc" id="L78" title="All 4 branches missed.">        if(supervisor.getEmail() != null &amp;&amp; !supervisor.getEmail().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L79">            txtEmail.setText(supervisor.getEmail());</span>
+        }
+
+<span class="nc" id="L82">        TextView txtPhone = (TextView) findViewById(R.id.txtPhone);</span>
+<span class="nc bnc" id="L83" title="All 4 branches missed.">        if(supervisor.getPhone() != null &amp;&amp; !supervisor.getPhone().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L84">            txtPhone.setText(supervisor.getPhone());</span>
+        }
+
+<span class="nc" id="L87">        TextView txtWebsite = (TextView) findViewById(R.id.txtWebsite);</span>
+<span class="nc bnc" id="L88" title="All 4 branches missed.">        if(supervisor.getWebsite() != null &amp;&amp; !supervisor.getWebsite().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L89">            txtWebsite.setText(supervisor.getWebsite());</span>
+        }
+
+<span class="nc" id="L92">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.2.0</div></body></html>
