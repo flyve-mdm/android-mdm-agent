@@ -4,8 +4,17 @@ header {
             width: 50px;
             vertical-align: middle;
         }
+    }
+    @media (max-width: 1084px) { 
         .logo {
-            padding: 10px !important;
+            height: 30px;
+            margin-top: -1.5px;
+        }
+    }
+    @media (min-width: 1084px) { 
+        .logo {
+            height: 50px;
+            margin-top: -11px;
         }
     }
 }

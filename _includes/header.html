@@ -21,16 +21,13 @@
                         <span class="sr-only">Toggle navigation</span>
                         <i class="glyph glyph-hamburger"></i>
                     </button>
+                    <a href="{{ '/' | relative_url }}" class="navbar-brand">
+                        <img src="images/logo.png" alt="Home" class="logo"/>
+                    </a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                     <ul class="nav navbar-nav">
-
-                        <li>
-                            <a class="color-type-secondary logo" href="{{ '/' | relative_url }}">
-                                <img src="{{ 'images/logo.png' | relative_url }}">
-                            </a>
-                        </li>
-
+                        
                         <li>
                             <a class="color-type-secondary" href="{{ '/news' | relative_url }}">News</a>
                         </li>
