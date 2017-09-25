@@ -11,7 +11,7 @@ layout: page
           <span class="post-meta">{{ post.date | date: date_format }}</span>
 
           <h2>
-            <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+            <a class="post-link" href="{{ post.url | absolute_url }}">{{ post.title | escape }}</a>
           </h2>
         </li>
       {% endfor %}
