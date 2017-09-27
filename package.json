@@ -8,7 +8,7 @@
   },
   "sasslintConfig": ".sass-lint.yml",
   "scripts": {
-    "test-sass": "./node_modules/.bin/sass-lint -c app/config/.sass-lint.yml 'css/**/*.scss, _sass/**/*.scss' -v -q",
+    "test-sass": "./node_modules/.bin/sass-lint --config .sass-lint.yml '**/*.scss' --verbose --no-exit",
     "test-js": "./node_modules/.bin/eslint js/*.js",
     "test-yaml": "ci/yamllint.sh",
     "test-site": "ci/tets-jekyll.sh",
