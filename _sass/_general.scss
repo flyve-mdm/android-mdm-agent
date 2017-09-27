@@ -19,14 +19,11 @@ img {
   max-width: 100% !important;
 }
 
-.jumbotron .theme-default,
-.theme-default .hero {
-  background-color: #fff;
-  color: #3e3e3e;
+.jumbotron.theme-default {
+    background-color: #fff;
 }
-
-.jumbotron .theme-dark {
-  h3 {
-    padding-top: 0;
-  }
+.jumbotron.theme-dark {
+    h3 {
+        padding-top: 0;
+    }
 }
