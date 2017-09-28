@@ -52,6 +52,14 @@ prose:
           element: "checkbox"
           label: "Published"
           value: false
+      - name: "hackerNewsURL"
+        field:
+          element: "text"
+          value: ""
+      - name: "redditURL"
+        field:
+          element: "text"
+          value: ""
 
     _posts/static:
       - name: "layout"

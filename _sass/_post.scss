@@ -1,0 +1,11 @@
+.social-networks {
+    float: right;
+    .reddit { 
+        display: inline-block
+    }
+
+    .hacker-news {
+        display: inline-block;
+        top: 0
+    }
+}

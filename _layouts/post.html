@@ -14,6 +14,8 @@ layout: default
 </div>
 <article class="post container" itemscope itemtype="http://schema.org/BlogPosting">
 
+
+
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">{{ page.title | escape }}</h1>
     <p class="post-meta">
@@ -26,11 +28,32 @@ layout: default
       {% endif %}</p>
   </header>
 
+  <div class="social-networks">
+
+    <div class="reddit">
+      <script type="text/javascript">
+        reddit_url = "{{page.redditURL}}"
+      </script>
+      <script type="text/javascript" src="//www.redditstatic.com/button/button1.js"></script>
+    </div>
+
+{% capture url %}
+{{ site.url }}{{ site.baseurl }}{{ page.url }}
+{% endcapture %}
+    <div class="hacker-news">
+      <a 
+        href="http://news.ycombinator.com/submit" 
+        class="hn-share-button" 
+        data-title="{{page.title}}"
+        data-url="{{ page.hackerNewsURL | default: url }}"> Vote on HN </a>
+      <script src="//hnbutton.appspot.com/static/hn.min.js"></script>
+    </div>
+
+  </div>
+
   <div class="post-content" itemprop="articleBody">
     {{ content }}
   </div>
 
-  {% if site.disqus.shortname %}
-    {% include disqus_comments.html %}
-  {% endif %}
+
 </article>
