@@ -55,10 +55,12 @@ prose:
       - name: "hackerNewsURL"
         field:
           element: "text"
+          label: Hacker News URL
           value: ""
       - name: "redditURL"
         field:
-          element: "text"
+          element: "text" 
+          label: Reddit URL
           value: ""
 
     _posts/static:
