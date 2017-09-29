@@ -15,6 +15,10 @@
       <meta property="og:type" content="website" />
   {% endif %}
   
+  {% if page.namePage == 'screenshots' %}
+    <link rel="stylesheet" href="{{ "/css/screenshots.css" | absolute_url }}">
+  {% endif %}
+  
   <title>{{ title }}</title>
   <meta property="og:title" content="{{ title }}" />
   <meta property="og:site_name" content="{{ name }}"/>
