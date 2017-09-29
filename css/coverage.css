@@ -205,3 +205,15 @@ table.coverage tfoot td.ctr2 {
 .right {
   float:right;
 }
+
+.bar > img[src="resources/redbar.gif"] {
+  height: 0;
+  padding: 2px;
+  background: #EC2730;
+}
+
+.bar > img[src="resources/greenbar.gif"] {
+  height: 0;
+  padding: 2px;
+  background: #158784;
+}

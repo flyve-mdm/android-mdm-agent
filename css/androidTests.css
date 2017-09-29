@@ -184,6 +184,8 @@ span.code pre {
     padding-top: 15px;
     padding-bottom: 15px;
     text-align: center;
+    border: 1px solid;
+    margin: 5px;
 }
 
 .infoBox p {
