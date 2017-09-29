@@ -572,3 +572,7 @@ div.block div.block span.interfaceName {
 div.contentContainer ul.blockList li.blockList h2{
     padding-bottom:0px;
 }
+
+code {
+    white-space: normal !important;
+}
