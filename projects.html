@@ -5,7 +5,7 @@ namePage: projects
 
     {% assign my_counter = 0 %} 
     {% for repositorie in site.github.public_repositories %}
-        {% if repositorie.name != "flyve-mdm.github.io" repositorie.name != "armadito-glpi-plugin" %}
+        {% if repositorie.name != "flyve-mdm.github.io" %}
             {% if repositorie.name != "armadito-glpi-plugin" %}
                 {% capture url_repositorie %}https://{{repositorie.owner.login}}.github.io/{{repositorie.name}}/{% endcapture %}            
                 {% assign modulo = my_counter | modulo: 2 %}
