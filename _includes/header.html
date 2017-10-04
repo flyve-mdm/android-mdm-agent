@@ -46,11 +46,15 @@
                             </ul>
                         </li>
 
-                        {% if site.github.wiki_url %}
+                        <li>
+                            <a class="color-type-secondary" href="{{ '/wiki' | absolute_url }}">Wiki</a>
+                        </li>
+
+                        {% comment %} {% if site.github.wiki_url %}
                             <li>
                                 <a class="color-type-secondary" href="{{ site.github.wiki_url }}">Wiki</a>
                             </li>
-                        {% endif %}
+                        {% endif %} {% endcomment %}
 
                         <li>
                             <a class="color-type-secondary" href="{{ '/projects' | absolute_url }}">Projects</a>

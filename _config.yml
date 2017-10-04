@@ -77,7 +77,27 @@ prose:
         field:
           element: "text"
           label: "Permalink"
-          value: ""    
+          value: ""
+      - name: "wiki"
+        field:
+          element: "checkbox"
+          label: "wiki"
+          value: false
+      - name: "description"
+        field:
+          element: "textarea"
+          label: "Description"
+      - name: "hackerNewsURL"
+        field:
+          element: "text"
+          label: Hacker News URL
+          value: ""
+      - name: "redditURL"
+        field:
+          element: "text" 
+          label: Reddit URL
+          value: ""
+
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
