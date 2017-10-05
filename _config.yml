@@ -1,6 +1,9 @@
+title: android agent
 email: ml-flyvemdm@teclib.com
-baseurl: "/flyve-mdm-android-agent" 
-url: "http://flyve.org" 
+twitter: flyvemdm
+baseurl: "/flyve-mdm-android-agent"
+url: "http://flyve.org"   
+image: http://flyve.org/flyve-mdm-android-agent/images/logo2.png
   
 
 # Build settings
