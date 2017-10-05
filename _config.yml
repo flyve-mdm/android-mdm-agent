@@ -83,6 +83,11 @@ prose:
           element: "checkbox"
           label: "wiki"
           value: false
+      - name: "published"
+        field:
+          element: "checkbox"
+          label: "Published"
+          value: false
       - name: "description"
         field:
           element: "textarea"
