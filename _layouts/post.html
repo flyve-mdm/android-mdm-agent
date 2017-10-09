@@ -12,6 +12,17 @@ layout: default
         </div>
     </div>
 </div>
+
+<p class="goHome container">
+  {% if page.wiki %}
+    <a href="{{ "wiki/" | absolute_url }}">
+  {% else %}
+    <a href="{{ "news/" | absolute_url }}">
+  {% endif %}
+      <span class="glyph glyph-back" aria-hidden="true"></span> &nbsp; Back to index
+  </a>
+</p>
+
 <article class="post container" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
