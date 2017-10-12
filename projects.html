@@ -19,12 +19,8 @@ namePage: projects
             {% assign name = name | replace: "-", " " %} 
             <h2>{{ name }}</h2>
             <p>{{ repositorie.description }}</p>
-            {% if repositorie.name != 'glpi-library-js' and repositorie.name != 'flyve-mdm-docker' and repositorie.name != 'glpi-library-android' and repositorie.name != 'flyve-mdm.github.io' and repositorie.name != 'armadito-glpi-plugin' %}
-                <a class="btn btn-lg btn-primary" href="{{ url_repositorie }}" role="button">Visit website</a>
-                <a class="btn btn-lg btn-secondary" href="{{ repositorie.html_url }}" role="button">View on GitHub</a>
-            {% else %}
-                <a class="btn btn-lg btn-primary" href="{{ repositorie.html_url }}" role="button">View on GitHub</a>
-            {% endif %}
+            <a class="btn btn-lg btn-primary" href="{{ url_repositorie }}" role="button">Visit website</a>
+            <a class="btn btn-lg btn-secondary" href="{{ repositorie.html_url }}" role="button">View on GitHub</a>
         </div>
     </div>
 {% endfor %}
