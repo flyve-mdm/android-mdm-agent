@@ -28,9 +28,6 @@ self.addEventListener('install', function(e) {
         '{{ "/css/main.css" | absolute_url }}',
         '{{ "/css/syntax.css" | absolute_url }}',
         '{{ "/images/typo.png" | absolute_url }}',
-        '{{ "/images/ipodTouch.png" | absolute_url }}',
-        '{{ "/images/ipad.png" | absolute_url }}',
-        '{{ "/images/IPhone6.png" | absolute_url }}',
         '{{ "/images/logo.png" | absolute_url }}',
         '{{ "/js/app.js" | absolute_url }}',
         '{{ "/js/jquery.min.js" | absolute_url }}',
@@ -38,6 +35,8 @@ self.addEventListener('install', function(e) {
         '{{ "/manifest.json" | absolute_url }}',
         '{{ "/fonts/glyphs/winjs-symbols.ttf" | absolute_url }}',
         '{{ "/fonts/selawk.ttf" | absolute_url }}',
+        '{{ "/fonts/selawkl.ttf" | absolute_url }}',
+        '{{ "/fonts/selawksl.ttf" | absolute_url }}'
       ])
     })
   )
