@@ -50,31 +50,15 @@
                             <a class="color-type-secondary" href="{{ '/wiki' | absolute_url }}">Wiki</a>
                         </li>
 
-                        {% comment %} {% if site.github.wiki_url %}
-                            <li>
-                                <a class="color-type-secondary" href="{{ site.github.wiki_url }}">Wiki</a>
-                            </li>
-                        {% endif %} {% endcomment %}
-
                         <li>
                             <a class="color-type-secondary" href="{{ '/projects' | absolute_url }}">Projects</a>
                         </li>
 
-                        {% if page.title != 404 %}
-                            {% for page in site.pages %}
-                                {% if page.title == 'changelog' %}
-
-                                <li>
-                                    <a type="button" class="color-type-secondary" data-toggle="modal" data-target="#myModal" href="#" >
-                                        {{ page.title | capitalize }}
-                                    </a>
-                                </li>
-                                
-                                {% assign changelog = page %}
-
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
+                        <li>
+                            <a type="button" class="color-type-secondary" data-toggle="modal" data-target="#myModal" href="#" >
+                                Changelog
+                            </a>
+                        </li>
                         
                         <li>
                             <a class="color-type-secondary" href="{{ '/contact' | absolute_url }}">Contact</a>
@@ -100,7 +84,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                {{ changelog.content }}
+                             		{% capture my_include %}{% include CHANGELOG.md %}{% endcapture %}
+                		{{ my_include | markdownify }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary"
