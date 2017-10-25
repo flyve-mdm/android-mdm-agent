@@ -77,8 +77,10 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="register"
-                    android:scheme="flyve" />
+                    android:scheme="http"
+                    android:host="flyve.org"
+                    android:pathPrefix="/flyve-mdm-deeplink"
+                     />
             </intent-filter>
         </activity>
 
