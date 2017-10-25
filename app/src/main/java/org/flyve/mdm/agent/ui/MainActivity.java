@@ -218,6 +218,13 @@ public class MainActivity extends AppCompatActivity {
         map.put("img", "ic_help");
         arrDrawer.add(map);
 
+        // About
+        map = new HashMap<>();
+        map.put("id", "5");
+        map.put("name", getResources().getString(R.string.drawer_about));
+        map.put("img", "ic_about");
+        arrDrawer.add(map);
+
         try {
             // lad adapter
             DrawerAdapter adapter = new DrawerAdapter(this, arrDrawer);
