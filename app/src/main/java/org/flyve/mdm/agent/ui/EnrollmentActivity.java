@@ -436,6 +436,7 @@ public class EnrollmentActivity extends AppCompatActivity {
                 payload.put("phone", editPhone.getEditList().get(0).getText().toString());
             }
             payload.put("version", BuildConfig.VERSION_NAME);
+            payload.put("type", "android");
 
             enroll.enrollment(payload, new EnrollmentHelper.enrollCallBack() {
                 @Override
