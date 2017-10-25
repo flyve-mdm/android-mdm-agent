@@ -98,6 +98,9 @@ jobs:
           name: Update version and code
           command: source ci/scripts/ci_updateversion.sh
       - run:
+          name: Update about information
+          command: source ci/scripts/ci_about.sh
+      - run:
           name: Transifex
           command: source ci/scripts/ci_transifex.sh
       - run:
@@ -127,6 +130,9 @@ jobs:
         - run:
             name: Update version and code
             command: source ci/scripts/ci_updateversion.sh
+        - run:
+            name: Update about information
+            command: source ci/scripts/ci_about.sh
         - run:
             name: Create apk
             command: ./gradlew assemble
