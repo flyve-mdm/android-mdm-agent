@@ -33,6 +33,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -45,6 +46,8 @@ import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
+
+import static org.flyve.mdm.agent.R.id.txtAbout;
 
 public class StartEnrollmentActivity extends Activity {
 
@@ -75,6 +78,7 @@ public class StartEnrollmentActivity extends Activity {
 
         TextView txtIntro = (TextView) findViewById(R.id.txtIntro);
         txtIntro.setText( Html.fromHtml(StartEnrollmentActivity.this.getResources().getString(R.string.walkthrough_step_1)) );
+        txtIntro.setMovementMethod(LinkMovementMethod.getInstance());
 
         txtMessage = (TextView) findViewById(R.id.txtMessage);
         txtTitle = (TextView) findViewById(R.id.txtTitle);
