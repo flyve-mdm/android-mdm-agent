@@ -175,6 +175,12 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.replace(R.id.containerView, f).commit();
             return;
         }
+
+        // About
+        if (item.get("id").equals("5")) {
+            FragmentAbout f = new FragmentAbout();
+            fragmentTransaction.replace(R.id.containerView, f).commit();
+        }
     }
 
     /**
