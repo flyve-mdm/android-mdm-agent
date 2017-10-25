@@ -23,7 +23,6 @@
             android:id="@+id/txtIntro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/walkthrough_step_1"
             android:gravity="center"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
