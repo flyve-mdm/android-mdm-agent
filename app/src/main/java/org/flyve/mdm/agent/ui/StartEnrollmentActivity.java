@@ -32,6 +32,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Html;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -71,6 +72,9 @@ public class StartEnrollmentActivity extends Activity {
         if(broker != null) {
             openMain();
         }
+
+        TextView txtIntro = (TextView) findViewById(R.id.txtIntro);
+        txtIntro.setText( Html.fromHtml(StartEnrollmentActivity.this.getResources().getString(R.string.walkthrough_step_1)) );
 
         txtMessage = (TextView) findViewById(R.id.txtMessage);
         txtTitle = (TextView) findViewById(R.id.txtTitle);
