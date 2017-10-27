@@ -175,60 +175,73 @@ import java.util.HashMap;
 <span class="nc" id="L175">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
 <span class="nc" id="L176">            return;</span>
         }
-<span class="nc" id="L178">    }</span>
+
+        // About
+<span class="nc bnc" id="L180" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;5&quot;)) {</span>
+<span class="nc" id="L181">            FragmentAbout f = new FragmentAbout();</span>
+<span class="nc" id="L182">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
+        }
+<span class="nc" id="L184">    }</span>
 
     /**
      * Load the list drawer
      */
     public void loadListDrawer() {
 
-<span class="nc" id="L185">        arrDrawer = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L191">        arrDrawer = new ArrayList&lt;&gt;();</span>
 
         // Information
-<span class="nc" id="L188">        HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L189">        map.put(&quot;id&quot;, &quot;1&quot;);</span>
-<span class="nc" id="L190">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_information));</span>
-<span class="nc" id="L191">        map.put(&quot;img&quot;, &quot;ic_info&quot;);</span>
-<span class="nc" id="L192">        arrDrawer.add(map);</span>
+<span class="nc" id="L194">        HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L195">        map.put(&quot;id&quot;, &quot;1&quot;);</span>
+<span class="nc" id="L196">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_information));</span>
+<span class="nc" id="L197">        map.put(&quot;img&quot;, &quot;ic_info&quot;);</span>
+<span class="nc" id="L198">        arrDrawer.add(map);</span>
 
         // if easterEgg is active
-<span class="nc bnc" id="L195" title="All 2 branches missed.">        if(cache.getEasterEgg()) {</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">        if(cache.getEasterEgg()) {</span>
 
             // Log
-<span class="nc" id="L198">            map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L199">            map.put(&quot;id&quot;, &quot;2&quot;);</span>
-<span class="nc" id="L200">            map.put(&quot;name&quot;, getResources().getString(R.string.drawer_log));</span>
-<span class="nc" id="L201">            map.put(&quot;img&quot;, &quot;ic_log&quot;);</span>
-<span class="nc" id="L202">            arrDrawer.add(map);</span>
+<span class="nc" id="L204">            map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L205">            map.put(&quot;id&quot;, &quot;2&quot;);</span>
+<span class="nc" id="L206">            map.put(&quot;name&quot;, getResources().getString(R.string.drawer_log));</span>
+<span class="nc" id="L207">            map.put(&quot;img&quot;, &quot;ic_log&quot;);</span>
+<span class="nc" id="L208">            arrDrawer.add(map);</span>
 
         }
 
         // Feedback
-<span class="nc" id="L207">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L208">        map.put(&quot;id&quot;, &quot;3&quot;);</span>
-<span class="nc" id="L209">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_feedback));</span>
-<span class="nc" id="L210">        map.put(&quot;img&quot;, &quot;ic_feedback&quot;);</span>
-<span class="nc" id="L211">        map.put(&quot;separator&quot;, &quot;true&quot;);</span>
-<span class="nc" id="L212">        arrDrawer.add(map);</span>
+<span class="nc" id="L213">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L214">        map.put(&quot;id&quot;, &quot;3&quot;);</span>
+<span class="nc" id="L215">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_feedback));</span>
+<span class="nc" id="L216">        map.put(&quot;img&quot;, &quot;ic_feedback&quot;);</span>
+<span class="nc" id="L217">        map.put(&quot;separator&quot;, &quot;true&quot;);</span>
+<span class="nc" id="L218">        arrDrawer.add(map);</span>
 
         // Help
-<span class="nc" id="L215">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L216">        map.put(&quot;id&quot;, &quot;4&quot;);</span>
-<span class="nc" id="L217">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_help));</span>
-<span class="nc" id="L218">        map.put(&quot;img&quot;, &quot;ic_help&quot;);</span>
-<span class="nc" id="L219">        arrDrawer.add(map);</span>
+<span class="nc" id="L221">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L222">        map.put(&quot;id&quot;, &quot;4&quot;);</span>
+<span class="nc" id="L223">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_help));</span>
+<span class="nc" id="L224">        map.put(&quot;img&quot;, &quot;ic_help&quot;);</span>
+<span class="nc" id="L225">        arrDrawer.add(map);</span>
+
+        // About
+<span class="nc" id="L228">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L229">        map.put(&quot;id&quot;, &quot;5&quot;);</span>
+<span class="nc" id="L230">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_about));</span>
+<span class="nc" id="L231">        map.put(&quot;img&quot;, &quot;ic_about&quot;);</span>
+<span class="nc" id="L232">        arrDrawer.add(map);</span>
 
         try {
             // lad adapter
-<span class="nc" id="L223">            DrawerAdapter adapter = new DrawerAdapter(this, arrDrawer);</span>
-<span class="nc" id="L224">            lstDrawer.setAdapter(adapter);</span>
+<span class="nc" id="L236">            DrawerAdapter adapter = new DrawerAdapter(this, arrDrawer);</span>
+<span class="nc" id="L237">            lstDrawer.setAdapter(adapter);</span>
 
             // Select Information on load //
-<span class="nc" id="L227">            selectedItem = arrDrawer.get(0);</span>
-<span class="nc" id="L228">            loadFragment(selectedItem);</span>
-<span class="nc" id="L229">        } catch(Exception ex) {</span>
-<span class="nc" id="L230">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L231">        }</span>
-<span class="nc" id="L232">    }</span>
+<span class="nc" id="L240">            selectedItem = arrDrawer.get(0);</span>
+<span class="nc" id="L241">            loadFragment(selectedItem);</span>
+<span class="nc" id="L242">        } catch(Exception ex) {</span>
+<span class="nc" id="L243">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L244">        }</span>
+<span class="nc" id="L245">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.2.0</div></body></html>

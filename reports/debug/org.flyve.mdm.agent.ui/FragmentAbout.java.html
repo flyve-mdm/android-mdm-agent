@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FragmentAbout.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">FragmentAbout.java</span></div><h1>FragmentAbout.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2017 Teclib'
+ *
+ * This file is part of Flyve MDM Inventory Agent Android.
+ *
+ * Flyve MDM Inventory Agent Android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM Android is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM Inventory Agent Android is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez - rafaelje
+ * @copyright Copyright (c) 2017 Flyve MDM
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-inventory-agent/
+ * @link      http://www.glpi-project.org/
+ * @link      https://flyve-mdm.com/
+ * ------------------------------------------------------------------------------
+ */
+package org.flyve.mdm.agent.ui;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.utils.EnvironmentInfo;
+
+<span class="nc" id="L40">public class FragmentAbout extends Fragment {</span>
+
+    private int countEasterEgg;
+
+    /**
+     * Called when the activity is starting, inflates the activity's UI
+     * @param Bundle savedInstanceState if the activity is re-initialized, it contains the data it most recently supplied
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        // Inflate the layout for this fragment
+<span class="nc" id="L53">        View v =  inflater.inflate(R.layout.activity_about, container, false);</span>
+
+<span class="nc" id="L55">        TextView txtAbout = (TextView) v.findViewById(R.id.txtAbout);</span>
+
+<span class="nc" id="L57">        EnvironmentInfo enviromentInfo = new EnvironmentInfo(FragmentAbout.this.getContext());</span>
+
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        if(enviromentInfo.getIsLoaded()) {</span>
+<span class="nc" id="L60">            txtAbout.setText(Html.fromHtml(aboutStr(enviromentInfo.getVersion(), enviromentInfo.getBuild(), enviromentInfo.getDate(), enviromentInfo.getCommit(), enviromentInfo.getCommitFull(), enviromentInfo.getGithub())));</span>
+<span class="nc" id="L61">            txtAbout.setMovementMethod(LinkMovementMethod.getInstance());</span>
+        } else {
+<span class="nc" id="L63">            txtAbout.setVisibility(View.GONE);</span>
+        }
+
+<span class="nc" id="L66">        return v;</span>
+    }
+
+    private String aboutStr(String version, String build, String date, String commit, String commitFull, String github) {
+<span class="nc" id="L70">        String str = &quot;Flyve MDM Agent, version &quot;+ version +&quot;, build &quot;+ build +&quot;.&lt;br /&gt;&quot;;</span>
+<span class="nc" id="L71">        str += &quot;Built on &quot;+ date +&quot;. Last commit &lt;a href='&quot;+github+&quot;/commit/&quot;+commitFull+&quot;'&gt;&quot;+ commit +&quot;&lt;/a&gt;.&lt;br /&gt;&quot;;</span>
+<span class="nc" id="L72">        str += &quot;© &lt;a href='http://teclib-edition.com/'&gt;Teclib'&lt;/a&gt; 2017. Licensed under &lt;a href='https://www.gnu.org/licenses/gpl-3.0.en.html'&gt;GPLv3&lt;/a&gt;. &lt;a href='https://flyve-mdm.com/'&gt;Flyve MDM&lt;/a&gt;®&quot;;</span>
+
+<span class="nc" id="L74">        return str;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.2.0</div></body></html>
