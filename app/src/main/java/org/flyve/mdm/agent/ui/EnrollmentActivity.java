@@ -56,9 +56,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.flyvemdm.inventory.categories.Hardware;
-
+import org.flyve.inventory.categories.Hardware;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.user.UserController;
@@ -71,13 +69,11 @@ import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.InputValidatorHelper;
 import org.flyve.mdm.agent.utils.MultipleEditText;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.flyve.mdm.agent.R.string.email;
 
 
