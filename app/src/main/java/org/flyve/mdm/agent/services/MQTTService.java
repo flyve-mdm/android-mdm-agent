@@ -28,6 +28,7 @@
 package org.flyve.mdm.agent.services;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -64,6 +65,16 @@ public class MQTTService extends Service implements MqttCallback {
     private Boolean connected = false;
     private MQTTHelper mqttHelper;
 
+    public static void start(Context context) {
+        MQTTService mMQTTService = new MQTTService();
+        Intent mServiceIntent = new Intent(context.getApplicationContext(), mMQTTService.getClass());
+
+        // Start the service
+        //if (!Helpers.isMyServiceRunning(mMQTTService.getClass(), context.getApplicationContext())) {
+        context.startService(mServiceIntent);
+        //}
+    }
+
     /**
      * Constructor
      */
@@ -87,7 +98,7 @@ public class MQTTService extends Service implements MqttCallback {
             action = intent.getAction();
         }
 
-        FlyveLog.i(TAG, "SERVICE MQTT: " + action);
+        FlyveLog.i(TAG, "Start MQTT Service: with parameter: " + action);
 
         if(!connected) {
             connect();
@@ -125,7 +136,9 @@ public class MQTTService extends Service implements MqttCallback {
      * This function connect the agent with MQTT server
      */
     public void connect() {
-        DataStorage cache = new DataStorage(this.getApplicationContext());
+        Context mContext = this.getApplicationContext();
+
+        DataStorage cache = new DataStorage(mContext);
 
         final String mBroker = cache.getBroker();
         final String mPort = cache.getPort();
@@ -144,7 +157,7 @@ public class MQTTService extends Service implements MqttCallback {
         storeLog(Helpers.broadCastMessage("MQTT Login", "Topic", mTopic));
 
         String clientId = MqttClient.generateClientId();
-        client = new MqttAndroidClient(this.getApplicationContext(), "ssl://" + mBroker + ":" + mPort, clientId);
+        client = new MqttAndroidClient(mContext, "ssl://" + mBroker + ":" + mPort, clientId);
 
         client.setCallback( this );
 
@@ -195,7 +208,13 @@ public class MQTTService extends Service implements MqttCallback {
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable ex) {
                     // Something went wrong e.g. connection timeout or firewall problems
-                    FlyveLog.e(TAG, "onFailure:" + ex.getMessage());
+
+                    String errorMessage = "";
+                    if(ex.getMessage().equalsIgnoreCase("MqttException")) {
+                        errorMessage = ((MqttException)ex).toString();
+                    }
+
+                    FlyveLog.e(TAG, "Connection fail: " + errorMessage);
                     String errorCode;
 
                     try {
@@ -204,8 +223,8 @@ public class MQTTService extends Service implements MqttCallback {
                         errorCode = "0";
                     }
 
-                    storeLog(Helpers.broadCastMessage("ERROR", "Error on connect - client.connect", ex.getMessage()));
-                    broadcastMessage(Helpers.broadCastMessage("ERROR", errorCode, ex.getMessage()));
+                    storeLog(Helpers.broadCastMessage("ERROR", "Error on connect - client.connect", errorMessage));
+                    broadcastMessage(Helpers.broadCastMessage("ERROR", errorCode, errorMessage));
                     broadcastServiceStatus(false);
                 }
             });
@@ -216,7 +235,7 @@ public class MQTTService extends Service implements MqttCallback {
             storeLog(Helpers.broadCastMessage("ERROR", "Error on connect", ex.getMessage()));
         } catch (Exception ex) {
             FlyveLog.e(TAG, ex.getMessage());
-            broadcastMessage(Helpers.broadCastMessage("ERROR", "0", getApplicationContext().getResources().getString(R.string.MQTT_ERROR_CONNECTION)));
+            broadcastMessage(Helpers.broadCastMessage("ERROR", "0", mContext.getResources().getString(R.string.MQTT_ERROR_CONNECTION)));
             storeLog(Helpers.broadCastMessage("ERROR", "Error on connect", ex.getMessage()));
         }
     }
