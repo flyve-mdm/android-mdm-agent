@@ -30,11 +30,13 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 
 /**
  * Receive broadcast from android.net.wifi.STATE_CHANGE and android.bluetooth.adapter.action.STATE_CHANGED
@@ -54,8 +56,14 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
         DataStorage cache = new DataStorage(context);
 
+        if("android.net.conn.CONNECTIVITY_CHANGE".equalsIgnoreCase(action)) {
+            if(isOnline(context)) {
+                MQTTService.start( context );
+            }
+        }
+
         // Manage WIFI
-        if ("android.net.wifi.STATE_CHANGE".equalsIgnoreCase(action)) {
+        if ("android.net.wifi.STATE_CHANGE".equalsIgnoreCase(action) || "android.net.wifi.WIFI_STATE_CHANGED".equalsIgnoreCase(action)) {
             NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
             if (info != null && info.isAvailable()) {
                 boolean disable = cache.getConnectivityWifiDisable();
@@ -63,6 +71,8 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
                 // getApplicationContext is used to prevent memory leak
                 WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                 wifiManager.setWifiEnabled(!disable);
+
+                MQTTService.start( context );
             }
         }
 
@@ -91,6 +101,17 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
             boolean disable = cache.getConnectivityGPSDisable();
             FlyveLog.i("Location providers change: " + disable);
+        }
+    }
+
+    public boolean isOnline(Context context) {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cm.getActiveNetworkInfo();
+            //should check null because in airplane mode it will be null
+            return (netInfo != null && netInfo.isConnected());
+        } catch (Exception ex) {
+            return false;
         }
     }
 }

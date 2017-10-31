@@ -105,6 +105,8 @@ public class MQTTHelper {
             Qos[k] = 0;
         }
 
+        FlyveLog.i("Topics: " + topics.length + " Qos: " + Qos.length);
+
         try {
             IMqttToken subToken = client.subscribe(topics, Qos);
             subToken.setActionCallback(new IMqttActionListener() {
@@ -120,8 +122,12 @@ public class MQTTHelper {
                                       Throwable exception) {
                     // The subscription could not be performed, maybe the user was not
                     // authorized to subscribe on the specified topic e.g. using wildcards
-                    FlyveLog.e("ERROR: " + exception.getCause().getMessage());
-                    broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on subscribe", exception.getMessage()));
+                    String errorMessage = "";
+                    if(exception.getMessage() != null) {
+                        errorMessage = exception.getMessage();
+                    }
+                    FlyveLog.e("ERROR on subscribe: " + errorMessage);
+                    broadcastReceivedLog(Helpers.broadCastMessage("ERROR", "Error on subscribe", errorMessage));
                 }
             });
         } catch (MqttException ex) {

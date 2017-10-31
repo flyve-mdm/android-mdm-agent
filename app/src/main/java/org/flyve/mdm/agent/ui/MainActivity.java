@@ -46,6 +46,7 @@ import org.flyve.mdm.agent.adapter.DrawerAdapter;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,29 +116,7 @@ public class MainActivity extends AppCompatActivity {
         // ------------------
         // MQTT SERVICE
         // ------------------
-        mMQTTService = new MQTTService();
-        mServiceIntent = new Intent(this, mMQTTService.getClass());
-        // Start the service
-        if (!isMyServiceRunning(mMQTTService.getClass())) {
-            startService(mServiceIntent);
-        }
-    }
-
-    /**
-     * Check if the service is running
-     * @param serviceClass Class
-     * @return boolean
-     */
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                FlyveLog.i ("isMyServiceRunning? %s", Boolean.toString( true ));
-                return true;
-            }
-        }
-        FlyveLog.i ("isMyServiceRunning? %s", Boolean.toString( false ));
-        return false;
+        MQTTService.start( this.getApplicationContext() );
     }
 
     /**

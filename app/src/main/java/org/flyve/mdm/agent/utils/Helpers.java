@@ -28,6 +28,7 @@
 package org.flyve.mdm.agent.utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -64,6 +65,23 @@ public class Helpers {
 	 * private construtor
 	 */
 	private Helpers() {
+	}
+
+	/**
+	 * Check if the service is running
+	 * @param serviceClass Class
+	 * @return boolean
+	 */
+	public static boolean isMyServiceRunning(Class<?> serviceClass, Context context) {
+		ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+			if (serviceClass.getName().equals(service.service.getClassName())) {
+				FlyveLog.i ("isMyServiceRunning? %s", Boolean.toString( true ));
+				return true;
+			}
+		}
+		FlyveLog.i ("isMyServiceRunning? %s", Boolean.toString( false ));
+		return false;
 	}
 
 	/**
