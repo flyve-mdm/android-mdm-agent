@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, String>> arrDrawer;
     private HashMap<String, String> selectedItem;
     private TextView txtToolbarTitle;
-
+    public MQTTService mMQTTService;
     private Intent mServiceIntent;
     private DataStorage cache;
 
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         // ------------------
         // MQTT SERVICE
         // ------------------
-        MQTTService mMQTTService = new MQTTService();
+        mMQTTService = new MQTTService();
         mServiceIntent = new Intent(this, mMQTTService.getClass());
         // Start the service
         if (!isMyServiceRunning(mMQTTService.getClass())) {
@@ -132,11 +132,11 @@ public class MainActivity extends AppCompatActivity {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                FlyveLog.i ("isMyServiceRunning?", Boolean.toString( true ));
+                FlyveLog.i ("isMyServiceRunning? %s", Boolean.toString( true ));
                 return true;
             }
         }
-        FlyveLog.i ("isMyServiceRunning?", Boolean.toString( false ));
+        FlyveLog.i ("isMyServiceRunning? %s", Boolean.toString( false ));
         return false;
     }
 

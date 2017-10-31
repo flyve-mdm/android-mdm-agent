@@ -59,8 +59,8 @@ public class MQTTService extends Service implements MqttCallback {
     public static final String ACTION_START = "org.flyve.mdm.agent.ACTION_START";
     public static final String ACTION_INVENTORY = "org.flyve.mdm.agent.ACTION_INVENTORY";
 
-    private static final String TAG = "MQTT";
-    private MqttAndroidClient client;
+    private static final String TAG = "MQTT - %s";
+    public MqttAndroidClient client;
     private Boolean connected = false;
     private MQTTHelper mqttHelper;
 
