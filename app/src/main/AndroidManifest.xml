@@ -5,6 +5,7 @@
     android:versionName="2.0.1-beta">
 
     <!-- For writing logfiles -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
