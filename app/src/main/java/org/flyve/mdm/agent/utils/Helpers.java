@@ -35,6 +35,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
@@ -65,6 +67,17 @@ public class Helpers {
 	 * private construtor
 	 */
 	private Helpers() {
+	}
+
+	public static boolean isOnline(Context context) {
+		try {
+			ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo netInfo = cm.getActiveNetworkInfo();
+			//should check null because in airplane mode it will be null
+			return (netInfo != null && netInfo.isConnected());
+		} catch (Exception ex) {
+			return false;
+		}
 	}
 
 	/**
