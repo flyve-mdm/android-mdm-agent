@@ -219,76 +219,84 @@ import org.json.JSONObject;
             // status ONLINE / OFFLINE
 <span class="nc bnc" id="L220" title="All 2 branches missed.">            if(&quot;flyve.mqtt.status&quot;.equalsIgnoreCase(action)) {</span>
                 try {
-<span class="nc" id="L222">                    statusMQTT(Boolean.parseBoolean(msg));</span>
-<span class="nc" id="L223">                } catch (Exception ex) {</span>
-<span class="nc" id="L224">                    FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L225">                }</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">                    if(isAdded()) {</span>
+<span class="nc" id="L223">                        statusMQTT(Boolean.parseBoolean(msg));</span>
+                    }
+<span class="nc" id="L225">                } catch (Exception ex) {</span>
+<span class="nc" id="L226">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L227">                }</span>
             }
-<span class="nc" id="L227">        }</span>
+<span class="nc" id="L229">        }</span>
     };
 
     /**
      * Instance that receive message from mqtt service
      */
-<span class="nc" id="L233">    private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {</span>
+<span class="nc" id="L235">    private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {</span>
         @Override
         public void onReceive(Context context, Intent intent) {
-<span class="nc" id="L236">            String action = intent.getAction();</span>
-<span class="nc" id="L237">            String msg = intent.getStringExtra(&quot;message&quot;);</span>
+
+            // exit if not attached to an activity
+<span class="nc bnc" id="L240" title="All 2 branches missed.">            if(!isAdded()) {</span>
+<span class="nc" id="L241">                return;</span>
+            }
+
+<span class="nc" id="L244">            String action = intent.getAction();</span>
+<span class="nc" id="L245">            String msg = intent.getStringExtra(&quot;message&quot;);</span>
 
             // Message from service
-<span class="nc bnc" id="L240" title="All 2 branches missed.">            if(&quot;flyve.mqtt.msg&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">            if(&quot;flyve.mqtt.msg&quot;.equalsIgnoreCase(action)) {</span>
 
                 try {
-<span class="nc" id="L243">                    JSONObject json = new JSONObject(msg);</span>
+<span class="nc" id="L251">                    JSONObject json = new JSONObject(msg);</span>
 
-<span class="nc" id="L245">                    String type = json.getString(&quot;type&quot;);</span>
-<span class="nc" id="L246">                    String title = json.getString(&quot;title&quot;);</span>
-<span class="nc" id="L247">                    String body = json.getString(&quot;body&quot;);</span>
+<span class="nc" id="L253">                    String type = json.getString(&quot;type&quot;);</span>
+<span class="nc" id="L254">                    String title = json.getString(&quot;title&quot;);</span>
+<span class="nc" id="L255">                    String body = json.getString(&quot;body&quot;);</span>
 
-<span class="nc bnc" id="L249" title="All 6 branches missed.">                    if(&quot;action&quot;.equalsIgnoreCase(type) &amp;&amp; &quot;open&quot;.equalsIgnoreCase(title) &amp;&amp; &quot;splash&quot;.equalsIgnoreCase(body)) {</span>
-<span class="nc" id="L250">                        openSplash();</span>
+<span class="nc bnc" id="L257" title="All 6 branches missed.">                    if(&quot;action&quot;.equalsIgnoreCase(type) &amp;&amp; &quot;open&quot;.equalsIgnoreCase(title) &amp;&amp; &quot;splash&quot;.equalsIgnoreCase(body)) {</span>
+<span class="nc" id="L258">                        openSplash();</span>
                     }
 
-<span class="nc bnc" id="L253" title="All 2 branches missed.">                    if(&quot;ERROR&quot;.equalsIgnoreCase(type)) {</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">                    if(&quot;ERROR&quot;.equalsIgnoreCase(type)) {</span>
 
-<span class="nc" id="L255">                        Helpers.snack(FragmentInformation.this.getActivity(), body, getResources().getString(R.string.close), new View.OnClickListener() {</span>
+<span class="nc" id="L263">                        Helpers.snack(FragmentInformation.this.getActivity(), body, getResources().getString(R.string.close), new View.OnClickListener() {</span>
                             @Override
                             public void onClick(View v) {
-<span class="nc" id="L258">                            }</span>
+<span class="nc" id="L266">                            }</span>
                         });
                     }
 
-<span class="nc" id="L262">                } catch (Exception ex) {</span>
-<span class="nc" id="L263">                    FlyveLog.d(&quot;ERROR&quot; + ex.getMessage());</span>
-<span class="nc" id="L264">                }</span>
+<span class="nc" id="L270">                } catch (Exception ex) {</span>
+<span class="nc" id="L271">                    FlyveLog.d(&quot;ERROR&quot; + ex.getMessage());</span>
+<span class="nc" id="L272">                }</span>
             }
-<span class="nc" id="L266">        }</span>
+<span class="nc" id="L274">        }</span>
     };
 
     /**
      * Open Splash Activity
      */
     private void openSplash() {
-<span class="nc" id="L273">        Intent intent = new Intent(FragmentInformation.this.getActivity(), SplashActivity.class);</span>
-<span class="nc" id="L274">        FragmentInformation.this.getActivity().startActivity(intent);</span>
-<span class="nc" id="L275">        FragmentInformation.this.getActivity().finish();</span>
-<span class="nc" id="L276">    }</span>
+<span class="nc" id="L281">        Intent intent = new Intent(FragmentInformation.this.getActivity(), SplashActivity.class);</span>
+<span class="nc" id="L282">        FragmentInformation.this.getActivity().startActivity(intent);</span>
+<span class="nc" id="L283">        FragmentInformation.this.getActivity().finish();</span>
+<span class="nc" id="L284">    }</span>
 
     /**
      * Open Edit User Activity
      */
     private void openViewUser() {
-<span class="nc" id="L282">        Intent intent = new Intent(FragmentInformation.this.getActivity(), PreviewUserActivity.class);</span>
-<span class="nc" id="L283">        FragmentInformation.this.startActivityForResult(intent, EDIT_USER);</span>
-<span class="nc" id="L284">    }</span>
+<span class="nc" id="L290">        Intent intent = new Intent(FragmentInformation.this.getActivity(), PreviewUserActivity.class);</span>
+<span class="nc" id="L291">        FragmentInformation.this.startActivityForResult(intent, EDIT_USER);</span>
+<span class="nc" id="L292">    }</span>
 
     /**
      * Open Supervisor Activity
      */
     private void openSupervisorUser() {
-<span class="nc" id="L290">        Intent intent = new Intent(FragmentInformation.this.getActivity(), PreviewSupervisorActivity.class);</span>
-<span class="nc" id="L291">        FragmentInformation.this.getActivity().startActivity(intent);</span>
-<span class="nc" id="L292">    }</span>
+<span class="nc" id="L298">        Intent intent = new Intent(FragmentInformation.this.getActivity(), PreviewSupervisorActivity.class);</span>
+<span class="nc" id="L299">        FragmentInformation.this.getActivity().startActivity(intent);</span>
+<span class="nc" id="L300">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.2.0</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FragmentMQTTConfig.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">FragmentMQTTConfig.java</span></div><h1>FragmentMQTTConfig.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.ui;
+
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+
+import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.utils.Helpers;
+
+/*
+ *   Copyright © 2017 Teclib. All rights reserved.
+ *
+ *   This file is part of flyve-mdm-android-agent
+ *
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @date      31/7/17
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+<span class="nc" id="L41">public class FragmentMQTTConfig extends Fragment {</span>
+
+    private DataStorage cache;
+
+    /**
+     * Instantiate the user interface view
+     * @param LayoutInflater inflater the object that can be used to inflate any views in the fragment
+     * @param ViewGroup the parent view the fragment's UI should be attached to
+     * @param Bundle this fragment is being re-constructed from a previous saved state
+     * @return View the view for the fragment's UI
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        // Inflate the layout for this fragment
+<span class="nc" id="L57">        View v =  inflater.inflate(R.layout.fragment_mqtt_configuration, container, false);</span>
+
+<span class="nc" id="L59">        cache = new DataStorage(FragmentMQTTConfig.this.getContext());</span>
+
+<span class="nc" id="L61">        final String mBroker = cache.getBroker();</span>
+<span class="nc" id="L62">        final String mPort = cache.getPort();</span>
+<span class="nc" id="L63">        final String mUser = cache.getMqttuser();</span>
+<span class="nc" id="L64">        final String mPassword = cache.getMqttpasswd();</span>
+<span class="nc" id="L65">        final String mTopic = cache.getTopic();</span>
+
+<span class="nc" id="L67">        final EditText editBroker = (EditText) v.findViewById(R.id.editBroker);</span>
+<span class="nc" id="L68">        editBroker.setText( mBroker );</span>
+
+<span class="nc" id="L70">        final EditText editPort = (EditText) v.findViewById(R.id.editPort);</span>
+<span class="nc" id="L71">        editPort.setText( mPort );</span>
+
+<span class="nc" id="L73">        final EditText editUser = (EditText) v.findViewById(R.id.editUser);</span>
+<span class="nc" id="L74">        editUser.setText( mUser );</span>
+
+<span class="nc" id="L76">        final EditText editPassword = (EditText) v.findViewById(R.id.editPassword);</span>
+<span class="nc" id="L77">        editPassword.setText( mPassword );</span>
+
+<span class="nc" id="L79">        final EditText editTopic = (EditText) v.findViewById(R.id.editTopic);</span>
+<span class="nc" id="L80">        editTopic.setText( mTopic );</span>
+
+<span class="nc" id="L82">        FloatingActionButton btnSave = (FloatingActionButton) v.findViewById(R.id.btnSave);</span>
+<span class="nc" id="L83">        btnSave.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View v) {
+
+<span class="nc" id="L87">                cache.setBroker( editBroker.getText().toString() );</span>
+<span class="nc" id="L88">                cache.setPort( editPort.getText().toString() );</span>
+<span class="nc" id="L89">                cache.setMqttuser( editUser.getText().toString() );</span>
+<span class="nc" id="L90">                cache.setMqttpasswd( editPassword.getText().toString() );</span>
+<span class="nc" id="L91">                cache.setTopic( editTopic.getText().toString() );</span>
+
+                // restart MQTT connection with this new parameters
+<span class="nc" id="L94">                ((MainActivity)FragmentMQTTConfig.this.getActivity()).globalStartMQTT();</span>
+
+<span class="nc" id="L96">                Helpers.snack(FragmentMQTTConfig.this.getActivity(), getString(R.string.mqtt_save_message));</span>
+<span class="nc" id="L97">            }</span>
+        });
+
+<span class="nc" id="L100">        return v;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>
