@@ -122,8 +122,8 @@ public class MQTTHelper {
                                       Throwable exception) {
                     // The subscription could not be performed, maybe the user was not
                     // authorized to subscribe on the specified topic e.g. using wildcards
-                    String errorMessage = "";
-                    if(exception.getMessage() != null) {
+                    String errorMessage = " unknown";
+                    if(exception != null) {
                         errorMessage = exception.getMessage();
                     }
                     FlyveLog.e("ERROR on subscribe: " + errorMessage);
