@@ -83,6 +83,7 @@ build
 #fastlane
 /fastlane/README.md
 /fastlane/report.xml
+/fastlane/metadata
 
 #javadoc and reports
 /reports
