@@ -1,17 +1,15 @@
 package org.flyve.mdm.agent.ui;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.EditText;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.Helpers;
 
 /*
@@ -40,11 +38,9 @@ import org.flyve.mdm.agent.utils.Helpers;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class FragmentHelp extends Fragment {
+public class FragmentMQTTConfig extends Fragment {
 
-    private static final String TAG = "Help";
-    private ProgressDialog progressBar;
-    private static final String HELP_URL = "http://flyve-mdm.com";
+    private DataStorage cache;
 
     /**
      * Instantiate the user interface view
@@ -58,37 +54,48 @@ public class FragmentHelp extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_help, container, false);
+        View v =  inflater.inflate(R.layout.fragment_mqtt_configuration, container, false);
 
-        WebView wv = (WebView) v.findViewById(R.id.webview);
+        cache = new DataStorage(FragmentMQTTConfig.this.getContext());
 
-        WebSettings settings = wv.getSettings();
-        settings.setJavaScriptEnabled(true);
-        wv.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        final String mBroker = cache.getBroker();
+        final String mPort = cache.getPort();
+        final String mUser = cache.getMqttuser();
+        final String mPassword = cache.getMqttpasswd();
+        final String mTopic = cache.getTopic();
 
-        progressBar = ProgressDialog.show(FragmentHelp.this.getActivity(), getResources().getString(R.string.help), getResources().getString(R.string.loading));
+        final EditText editBroker = (EditText) v.findViewById(R.id.editBroker);
+        editBroker.setText( mBroker );
 
-        wv.setWebViewClient(new WebViewClient() {
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.i(TAG, "Processing webview url click...");
-                view.loadUrl(url);
-                return true;
-            }
+        final EditText editPort = (EditText) v.findViewById(R.id.editPort);
+        editPort.setText( mPort );
 
-            public void onPageFinished(WebView view, String url) {
-                Log.i(TAG, "Finished loading URL: " +url);
-                if (progressBar.isShowing()) {
-                    progressBar.dismiss();
-                }
-            }
+        final EditText editUser = (EditText) v.findViewById(R.id.editUser);
+        editUser.setText( mUser );
 
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                Log.e(TAG, "Error: " + description);
-                Helpers.snack(FragmentHelp.this.getActivity(), description);
+        final EditText editPassword = (EditText) v.findViewById(R.id.editPassword);
+        editPassword.setText( mPassword );
+
+        final EditText editTopic = (EditText) v.findViewById(R.id.editTopic);
+        editTopic.setText( mTopic );
+
+        FloatingActionButton btnSave = (FloatingActionButton) v.findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                cache.setBroker( editBroker.getText().toString() );
+                cache.setPort( editPort.getText().toString() );
+                cache.setMqttuser( editUser.getText().toString() );
+                cache.setMqttpasswd( editPassword.getText().toString() );
+                cache.setTopic( editTopic.getText().toString() );
+
+                // restart MQTT connection with this new parameters
+                ((MainActivity)FragmentMQTTConfig.this.getActivity()).globalStartMQTT();
+
+                Helpers.snack(FragmentMQTTConfig.this.getActivity(), getString(R.string.mqtt_save_message));
             }
         });
-
-        wv.loadUrl(HELP_URL);
 
         return v;
     }

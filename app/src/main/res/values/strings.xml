@@ -44,6 +44,14 @@
     <string name="device_supervised_by_title">DEVICE SUPERVISED BY</string>
     <string name="user_information_title">USER INFORMATION</string>
 
+    <string name="mqtt_configuration_title">Warning: just edit this text if you know what are you doing, edit this information maybe cause your app lose connection with the server</string>
+    <string name="mqtt_broker">Broker</string>
+    <string name="mqtt_port">Port</string>
+    <string name="mqtt_user">User</string>
+    <string name="mqtt_password">Password</string>
+    <string name="mqtt_initital_topic">Initial Topic</string>
+    <string name="mqtt_save_message">Saved</string>
+
     <string name="saved">Saved</string>
     <string name="accept">Accept</string>
     <string name="cancel">Cancel</string>
@@ -86,7 +94,7 @@
 
     <string name="drawer_information">Information</string>
     <string name="drawer_log">Log</string>
-    <string name="drawer_feedback">Feedback</string>
+    <string name="drawer_mqtt_config">MQTT Configuration</string>
     <string name="drawer_help">Help</string>
     <string name="drawer_about">About</string>
 
