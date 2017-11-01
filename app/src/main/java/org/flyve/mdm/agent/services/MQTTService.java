@@ -65,14 +65,14 @@ public class MQTTService extends Service implements MqttCallback {
     private Boolean connected = false;
     private MQTTHelper mqttHelper;
 
-    public static void start(Context context) {
+    public static Intent start(Context context) {
         MQTTService mMQTTService = new MQTTService();
         Intent mServiceIntent = new Intent(context.getApplicationContext(), mMQTTService.getClass());
 
         // Start the service
-        //if (!Helpers.isMyServiceRunning(mMQTTService.getClass(), context.getApplicationContext())) {
         context.startService(mServiceIntent);
-        //}
+
+        return mServiceIntent;
     }
 
     /**
