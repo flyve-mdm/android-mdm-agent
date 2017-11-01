@@ -1,4 +1,4 @@
-package org.flyve.inventory.agent;
+package org.flyve.mdm.agent;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
