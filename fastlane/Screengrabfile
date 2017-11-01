@@ -1,0 +1,15 @@
+# remove the leading '#' to uncomment lines
+
+app_package_name 'org.flyve.inventory.agent'
+use_tests_in_packages ['org.flyve.inventory.agent']
+
+app_apk_path 'app/build/outputs/apk/app-debug.apk'
+tests_apk_path 'app/build/outputs/apk/app-debug-androidTest.apk'
+
+locales ['en-US', 'en-GB', 'fr-FR', 'es-ES', 'ko-KR', 'ru-RU']
+
+# clear all previously generated screenshots in your local output directory before creating new ones
+clear_previous_screenshots true
+
+# For more information about all available options run
+#   fastlane screengrab --help
