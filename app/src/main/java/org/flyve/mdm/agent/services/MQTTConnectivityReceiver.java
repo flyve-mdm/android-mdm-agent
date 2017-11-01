@@ -57,21 +57,16 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         DataStorage cache = new DataStorage(context);
 
         if("android.net.conn.CONNECTIVITY_CHANGE".equalsIgnoreCase(action)) {
-            if(isOnline(context)) {
+            FlyveLog.i("is Online: %s", Helpers.isOnline(context));
+            if(Helpers.isOnline(context)) {
                 MQTTService.start( context );
             }
         }
 
         // Manage WIFI
         if ("android.net.wifi.STATE_CHANGE".equalsIgnoreCase(action) || "android.net.wifi.WIFI_STATE_CHANGED".equalsIgnoreCase(action)) {
-            NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-            if (info != null && info.isAvailable()) {
-                boolean disable = cache.getConnectivityWifiDisable();
-
-                // getApplicationContext is used to prevent memory leak
-                WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                wifiManager.setWifiEnabled(!disable);
-
+            FlyveLog.i("is Online: %s", Helpers.isOnline(context));
+            if(Helpers.isOnline(context)) {
                 MQTTService.start( context );
             }
         }
@@ -101,17 +96,6 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
             boolean disable = cache.getConnectivityGPSDisable();
             FlyveLog.i("Location providers change: " + disable);
-        }
-    }
-
-    public boolean isOnline(Context context) {
-        try {
-            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo netInfo = cm.getActiveNetworkInfo();
-            //should check null because in airplane mode it will be null
-            return (netInfo != null && netInfo.isConnected());
-        } catch (Exception ex) {
-            return false;
         }
     }
 }
