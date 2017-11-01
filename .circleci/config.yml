@@ -80,6 +80,56 @@ jobs:
             destination: reports
         - store_test_results:
             path: app/build/test-results
+  screenshot_api_16:
+      working_directory: ~/flyve_mdm
+      docker:
+          - image: circleci/android:api-26-alpha
+      environment:
+        JVM_OPTS: -Xmx3200m
+      steps:
+        - checkout
+        - restore_cache:
+            key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+        - run:
+            name: Setup environment
+            command: source ci/scripts/ci_setup.sh
+        - run:
+            name: Update version and code
+            command: source ci/scripts/ci_updateversion.sh
+        - run:
+            name: Update about information
+            command: source ci/scripts/ci_about.sh
+        - run:
+            name: Setup emulator
+            command: sdkmanager "system-images;android-16;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-16;default;armeabi-v7a"
+        - run:
+            name: Launch emulator
+            command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
+            background: true
+        - run:
+            name: Wait emulator
+            command: |
+              # wait for it to have booted
+              circle-android wait-for-boot
+              # unlock the emulator screen
+              sleep 30
+              adb shell input keyevent 82
+        - run:
+            name: Assemble Android Tests
+            command: ./gradlew assembleDebug assembleAndroidTest
+        - run:
+            name: Run Fastlane Screengrab
+            command: fastlane screengrab
+        - run:
+            name: send screenshot to gh-pages
+            command: source ci/scripts/ci_push_screenshot.sh
+        - store_artifacts:
+            path: fastlane/metadata
+            destination: screenshot
+        - save_cache:
+            paths:
+              - ~/.gradle
+            key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
   deploy_beta:
     working_directory: ~/flyve_mdm
     docker:
@@ -217,6 +267,14 @@ workflows:
           requires:
             - test_api_version_16
             - test_api_version_25
+          filters:
+            branches:
+              only:
+                - develop
+      - screenshot_api_16:
+          requires:
+            - test_api_v16
+            - test_api_v25
           filters:
             branches:
               only:
