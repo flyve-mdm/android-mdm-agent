@@ -4,9 +4,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    <WebView
-        android:id="@+id/webview"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </WebView>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        >
+
+       <TextView
+           android:id="@+id/txtTitle"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/mqtt_configuration_title"
+           android:layout_margin="20dp"
+           />
+
+       <EditText
+           android:id="@+id/editBroker"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:hint="@string/mqtt_broker"
+           />
+
+        <EditText
+            android:id="@+id/editPort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/mqtt_port"
+            />
+
+        <EditText
+            android:id="@+id/editUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/mqtt_user"
+            />
+
+        <EditText
+            android:id="@+id/editPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/mqtt_password"
+            />
+
+        <EditText
+            android:id="@+id/editTopic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/mqtt_initital_topic"
+            />
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:src="@drawable/ic_save"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        />
+
 </RelativeLayout>
