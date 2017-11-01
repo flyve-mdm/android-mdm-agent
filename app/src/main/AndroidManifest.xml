@@ -6,7 +6,9 @@
 
     <!-- For writing logfiles -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
+
+    <!-- Allows for storing and retrieving screenshots -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- For restart service -->
@@ -24,6 +26,11 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <!-- Allows unlocking your device and activating its screen so UI tests can succeed -->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+
+    <!-- Allows changing locales -->
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     <application
         android:name=".ui.MDMAgent"
         android:allowBackup="true"
