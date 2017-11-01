@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, String>> arrDrawer;
     private HashMap<String, String> selectedItem;
     private TextView txtToolbarTitle;
-    public MQTTService mMQTTService;
     private Intent mServiceIntent;
     private DataStorage cache;
 
@@ -113,10 +112,16 @@ public class MainActivity extends AppCompatActivity {
 
         loadListDrawer();
 
+    }
+
+    /**
+     * if you need restart MQTT connection you need call this method
+     */
+    public void globalStartMQTT() {
         // ------------------
         // MQTT SERVICE
         // ------------------
-        MQTTService.start( this.getApplicationContext() );
+        mServiceIntent = MQTTService.start( this.getApplicationContext() );
     }
 
     /**
@@ -143,8 +148,10 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Feedback
+        // MQTT Configuration
         if (item.get("id").equals("3")) {
+            FragmentMQTTConfig f = new FragmentMQTTConfig();
+            fragmentTransaction.replace(R.id.containerView, f).commit();
             return;
         }
 
@@ -179,20 +186,20 @@ public class MainActivity extends AppCompatActivity {
         // if easterEgg is active
         if(cache.getEasterEgg()) {
 
-            // Log
+            // MQTT Configuration
             map = new HashMap<>();
-            map.put("id", "2");
-            map.put("name", getResources().getString(R.string.drawer_log));
-            map.put("img", "ic_log");
+            map.put("id", "3");
+            map.put("name", getResources().getString(R.string.drawer_mqtt_config));
+            map.put("img", "ic_config");
             arrDrawer.add(map);
 
         }
 
-        // Feedback
+        // Log
         map = new HashMap<>();
-        map.put("id", "3");
-        map.put("name", getResources().getString(R.string.drawer_feedback));
-        map.put("img", "ic_feedback");
+        map.put("id", "2");
+        map.put("name", getResources().getString(R.string.drawer_log));
+        map.put("img", "ic_log");
         map.put("separator", "true");
         arrDrawer.add(map);
 
