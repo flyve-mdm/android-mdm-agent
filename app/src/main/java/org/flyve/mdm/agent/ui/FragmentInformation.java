@@ -219,7 +219,9 @@ public class FragmentInformation extends Fragment {
             // status ONLINE / OFFLINE
             if("flyve.mqtt.status".equalsIgnoreCase(action)) {
                 try {
-                    statusMQTT(Boolean.parseBoolean(msg));
+                    if(isAdded()) {
+                        statusMQTT(Boolean.parseBoolean(msg));
+                    }
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
                 }
@@ -233,6 +235,12 @@ public class FragmentInformation extends Fragment {
     private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
+            // exit if not attached to an activity
+            if(!isAdded()) {
+                return;
+            }
+
             String action = intent.getAction();
             String msg = intent.getStringExtra("message");
 
