@@ -145,6 +145,7 @@ public class MQTTService extends Service implements MqttCallback {
         final String mUser = cache.getMqttuser();
         final String mPassword = cache.getMqttpasswd();
         final String mTopic = cache.getTopic();
+        final String mTLS = cache.getTls();
 
         if(mPassword==null) {
             FlyveLog.d(TAG, "Password can't be null");
@@ -156,8 +157,16 @@ public class MQTTService extends Service implements MqttCallback {
         storeLog(Helpers.broadCastMessage("MQTT Login", "User", mUser));
         storeLog(Helpers.broadCastMessage("MQTT Login", "Topic", mTopic));
 
+        FlyveLog.i("is TLS (0=false;1=true): %s", mTLS);
+
+        String protocol = "tcp";
+        // TLS is active change protocol
+        if(mTLS.equals("1")) {
+            protocol = "ssl";
+        }
+
         String clientId = MqttClient.generateClientId();
-        client = new MqttAndroidClient(mContext, "ssl://" + mBroker + ":" + mPort, clientId);
+        client = new MqttAndroidClient(mContext, protocol + "://" + mBroker + ":" + mPort, clientId);
 
         client.setCallback( this );
 
@@ -174,10 +183,13 @@ public class MQTTService extends Service implements MqttCallback {
             String will = "{ online: false }";
             options.setWill("/Status/Online", will.getBytes(), 0, false);
 
-            // SSL
-            SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
-            sslContext.init(null, null, null);
-            options.setSocketFactory(sslContext.getSocketFactory());
+            // If TLS is active needs ssl connection option
+            if(mTLS.equals("1")) {
+                // SSL
+                SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+                sslContext.init(null, null, null);
+                options.setSocketFactory(sslContext.getSocketFactory());
+            }
 
             IMqttToken token = client.connect(options);
             token.setActionCallback(new IMqttActionListener() {
@@ -212,6 +224,8 @@ public class MQTTService extends Service implements MqttCallback {
                     String errorMessage = "";
                     if(ex.getMessage().equalsIgnoreCase("MqttException")) {
                         errorMessage = ((MqttException)ex).toString();
+                    } else {
+                        errorMessage = ex.getMessage();
                     }
 
                     FlyveLog.e(TAG, "Connection fail: " + errorMessage);
