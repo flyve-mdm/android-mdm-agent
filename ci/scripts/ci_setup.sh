@@ -25,10 +25,14 @@
 #  @link      https://flyve-mdm.com/
 #  ------------------------------------------------------------------------------
 #
-# create enviroment vars to work with fastlane telegram
+
+# create environment vars to work with fastlane telegram
 echo TELEGRAM_WEBHOOKS=$TELEGRAM_WEBHOOKS > .env
 echo GIT_REPO=$CIRCLE_REPOSITORY_URL >> .env
 echo GIT_BRANCH=$CIRCLE_BRANCH >> .env
+
+# create a setup environment
+echo "setup.admin_web_console=$ADMIN_WEB_CONSOLE" > app/src/main/assets/setup.properties
 
 # decrypt deploy on google play file
 openssl aes-256-cbc -d -out ci/gplay.json -in ci/gplay.json.enc -k $ENCRYPTED_KEY
