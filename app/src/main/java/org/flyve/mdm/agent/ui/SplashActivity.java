@@ -44,6 +44,7 @@ import android.support.v4.view.ViewPager;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
 import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.utils.EnvInfoSetup;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.util.ArrayList;
@@ -118,9 +119,11 @@ public class SplashActivity extends FragmentActivity {
         // if user is not enrolled show help
         setContentView(R.layout.activity_splash);
 
+        EnvInfoSetup setup = new EnvInfoSetup(SplashActivity.this);
+
         walkthrough = new ArrayList<>();
         walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_1), getResources().getString(R.string.walkthrough_step_link_1), R.drawable.logoflyve));
-        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_2), getResources().getString(R.string.walkthrough_step_link_2), R.drawable.ic_walkthroug_2));
+        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_2), setup.getAdminWebConsole(), R.drawable.ic_walkthroug_2));
         walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_3), "", R.drawable.ic_walkthroug_3));
 
         // Instantiate a ViewPager and a PagerAdapter.

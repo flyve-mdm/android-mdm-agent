@@ -35,7 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.utils.EnvironmentInfo;
+import org.flyve.mdm.agent.utils.EnvInfoAbout;
 
 public class FragmentAbout extends Fragment {
 
@@ -54,7 +54,7 @@ public class FragmentAbout extends Fragment {
 
         TextView txtAbout = (TextView) v.findViewById(R.id.txtAbout);
 
-        EnvironmentInfo enviromentInfo = new EnvironmentInfo(FragmentAbout.this.getContext());
+        EnvInfoAbout enviromentInfo = new EnvInfoAbout(FragmentAbout.this.getContext());
 
         if(enviromentInfo.getIsLoaded()) {
             txtAbout.setText(Html.fromHtml(aboutStr(enviromentInfo.getVersion(), enviromentInfo.getBuild(), enviromentInfo.getDate(), enviromentInfo.getCommit(), enviromentInfo.getCommitFull(), enviromentInfo.getGithub())));
