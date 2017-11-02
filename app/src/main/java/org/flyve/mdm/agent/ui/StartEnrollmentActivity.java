@@ -87,7 +87,16 @@ public class StartEnrollmentActivity extends Activity {
         Intent intent = getIntent();
         Uri data = intent.getData();
 
-        String deepLinkData = Helpers.base64decode(data.getQueryParameter("data"));
+        String deepLinkErrorMessage = getResources().getString(R.string.ERROR_DEEP_LINK);
+        String deepLinkData;
+
+        try {
+            deepLinkData = Helpers.base64decode(data.getQueryParameter("data"));
+        } catch(Exception ex) {
+            showError( deepLinkErrorMessage );
+            FlyveLog.e(deepLinkErrorMessage + " - " + ex.getMessage());
+            return;
+        }
 
         String url;
         String userToken;
@@ -96,7 +105,6 @@ public class StartEnrollmentActivity extends Activity {
         String phone;
         String website;
         String email;
-        String deepLinkErrorMessage = getResources().getString(R.string.ERROR_DEEP_LINK);
 
         try {
             // CSV comma-separated values format
