@@ -16,16 +16,6 @@
         />
 
     <ImageView
-        android:id="@+id/logoTeclib"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logoteclib_white"
-        android:padding="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        />
-
-    <ImageView
         android:id="@+id/imgStep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
