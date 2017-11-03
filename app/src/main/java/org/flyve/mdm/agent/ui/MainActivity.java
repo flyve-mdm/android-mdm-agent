@@ -68,7 +68,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         // stop the service
-        stopService(mServiceIntent);
+        if(mServiceIntent!=null) {
+            stopService(mServiceIntent);
+        }
+
         FlyveLog.i("onDestroy!");
 
         super.onDestroy();
