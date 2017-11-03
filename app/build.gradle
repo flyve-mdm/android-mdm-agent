@@ -42,6 +42,12 @@ repositories {
     }
 }
 
+sonarqube {
+    properties {
+        property "sonar.sourceEncoding", "UTF-8"
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
