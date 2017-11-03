@@ -38,7 +38,6 @@ public class FragmentInformation extends Fragment {
     private ImageView imgUser;
     private TextView txtNameSupervisor;
     private TextView txtDescriptionSupervisor;
-    private ImageView imgSupervisor;
 
     private int countEasterEgg;
 
@@ -110,7 +109,6 @@ public class FragmentInformation extends Fragment {
 
         txtNameSupervisor = (TextView) v.findViewById(R.id.txtNameSupervisor);
         txtDescriptionSupervisor = (TextView) v.findViewById(R.id.txtDescriptionSupervisor);
-        imgSupervisor = (ImageView) v.findViewById(R.id.imgLogoSupervisor);
 
         RelativeLayout layoutSupervisor = (RelativeLayout) v.findViewById(R.id.rlSupervisor);
         layoutSupervisor.setOnClickListener(new View.OnClickListener() {
@@ -185,7 +183,7 @@ public class FragmentInformation extends Fragment {
             imgUser.setImageResource(R.drawable.ic_user_round);
         } else {
             try {
-                imgUser.setImageBitmap(Helpers.StringToBitmap(user.getPicture()));
+                imgUser.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
                 imgUser.setImageResource(R.drawable.ic_user_round);
@@ -233,6 +231,17 @@ public class FragmentInformation extends Fragment {
      * Instance that receive message from mqtt service
      */
     private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {
+
+        /**
+         * Open Splash Activity
+         */
+        private void openSplash() {
+            Intent intent = new Intent(FragmentInformation.this.getActivity(), SplashActivity.class);
+            FragmentInformation.this.getActivity().startActivity(intent);
+            FragmentInformation.this.getActivity().finish();
+        }
+
+
         @Override
         public void onReceive(Context context, Intent intent) {
 
@@ -274,14 +283,6 @@ public class FragmentInformation extends Fragment {
         }
     };
 
-    /**
-     * Open Splash Activity
-     */
-    private void openSplash() {
-        Intent intent = new Intent(FragmentInformation.this.getActivity(), SplashActivity.class);
-        FragmentInformation.this.getActivity().startActivity(intent);
-        FragmentInformation.this.getActivity().finish();
-    }
 
     /**
      * Open Edit User Activity

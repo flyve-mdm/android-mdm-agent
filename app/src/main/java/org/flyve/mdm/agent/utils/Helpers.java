@@ -140,7 +140,7 @@ public class Helpers {
 	public static String getDeviceSerial() {
 		String serial;
 		if(Build.SERIAL.equalsIgnoreCase("unknown")) {
-			serial = "ABCEDFF012345678";//"sim" + GetUnixTime();
+			serial = "ABCEDFF012345678";
 		} else {
 			serial = Build.SERIAL;
 		}
@@ -152,7 +152,7 @@ public class Helpers {
 	 * get Unix time
 	 * @return int unix time
 	 */
-	public static int GetUnixTime() {
+	public static int getUnixTime() {
 		Calendar calendar = Calendar.getInstance();
 		long now = calendar.getTimeInMillis();
 		int utc = (int) (now / 1000);
@@ -254,23 +254,21 @@ public class Helpers {
 	 * @param Bitmap the image to convert
 	 * @return string the image Bitmap
 	 */
-	public static String BitmapToString(Bitmap bitmap){
+	public static String bitmapToString(Bitmap bitmap){
 		ByteArrayOutputStream baos=new  ByteArrayOutputStream();
 		bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
 		byte [] b=baos.toByteArray();
-		String temp=Base64.encodeToString(b, Base64.DEFAULT);
-		return temp;
+		return Base64.encodeToString(b, Base64.DEFAULT);
 	}
 
 	/**
 	 * @param encodedString
 	 * @return bitmap (from given string)
 	 */
-	public static Bitmap StringToBitmap(String encodedString){
+	public static Bitmap stringToBitmap(String encodedString){
 		try {
 			byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-			Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-			return bitmap;
+			return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
 		} catch(Exception e) {
 			FlyveLog.e(e.getMessage());
 			return null;
@@ -283,8 +281,8 @@ public class Helpers {
 	 * @param string the path to the image
 	 * @return Bitmap the modificated image
 	 */
-	public static Bitmap modifyOrientation(Bitmap bitmap, String image_absolute_path) throws IOException {
-		ExifInterface ei = new ExifInterface(image_absolute_path);
+	public static Bitmap modifyOrientation(Bitmap bitmap, String imageAbsolutePath) throws IOException {
+		ExifInterface ei = new ExifInterface(imageAbsolutePath);
 		int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
 
 		switch (orientation) {

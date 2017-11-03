@@ -44,6 +44,7 @@ public class FlyveLog {
 
     private static final String FILE_NAME_FEEDBACK = "FlyveMDMFeedback.txt";
     public static final String FILE_NAME_LOG = "FlyveMDMLog.txt";
+    public static final String FLYVE_PATH = Environment.getExternalStorageDirectory().getPath() + "/FlyveMDM";
 
     /**
      * private constructor to prevent instances of this class
@@ -159,19 +160,19 @@ public class FlyveLog {
     public static void f(String message, String filename) {
         String state = Environment.getExternalStorageState();
 
-        File dir = new File("/sdcard/FlyveMDM");
+        File dir = new File(FLYVE_PATH);
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             if(!dir.exists()) {
-                FlyveLog.d("Dir created ", "Dir created ");
+                FlyveLog.d("Create directory on f");
                 dir.mkdirs();
             }
 
-            File logFile = new File("/sdcard/FlyveMDM/" + filename);
+            File logFile = new File(FLYVE_PATH + filename);
 
             if (!logFile.exists())  {
                 try  {
-                    FlyveLog.d("File created ", "File created ");
-                    logFile.createNewFile();
+                    Boolean log = logFile.createNewFile();
+                    FlyveLog.d("Create File on f %s", log);
                 } catch (IOException ex) {
                     FlyveLog.e(ex.getMessage());
                 }
@@ -212,14 +213,14 @@ public class FlyveLog {
     public static void clearLog(String filename) {
         String state = Environment.getExternalStorageState();
 
-        File dir = new File("/sdcard/FlyveMDM");
+        File dir = new File(FLYVE_PATH);
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             if (!dir.exists()) {
-                FlyveLog.d("Dir created ", "Dir created ");
+                FlyveLog.d("Created Directory on clearLog ");
                 dir.mkdirs();
             }
 
-            File logFile = new File("/sdcard/FlyveMDM/" + filename);
+            File logFile = new File(FLYVE_PATH + filename);
 
             FileWriter fw = null;
             try {

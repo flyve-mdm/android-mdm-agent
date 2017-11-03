@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -87,17 +88,19 @@ public class LogFileReader {
 
         Thread t = new Thread(new Runnable() {
             public void run() {
-                File file = new File("/sdcard/FlyveMDM/" + fileName);
                 FileReader fr = null;
-
                 try {
+                    File file = new File("/sdcard/FlyveMDM/" + fileName);
                     fr = new FileReader(file);
                     BufferedReader br = new BufferedReader(fr);
+
                     String line;
                     while ((line = br.readLine()) != null) {
                         addLine(line);
                     }
+
                     br.close();
+                    fr.close();
 
                     LogFileReader.runOnUI(new Runnable() {
                         public void run() {
@@ -112,17 +115,13 @@ public class LogFileReader {
                             callback.onError(ex.getMessage());
                         }
                     });
-                } finally {
-                    if (fr != null) {
+                }
+                finally {
+                    if(fr!=null) {
                         try {
                             fr.close();
-                        } catch (final Exception ex) {
+                        } catch (Exception ex) {
                             FlyveLog.e(ex.getMessage());
-                            LogFileReader.runOnUI(new Runnable() {
-                                public void run() {
-                                    callback.onError(ex.getMessage());
-                                }
-                            });
                         }
                     }
                 }
@@ -135,7 +134,7 @@ public class LogFileReader {
      * This is the return data interface
      */
     public interface LogFileCallback {
-        void onSuccess(ArrayList<HashMap<String, String>> data);
+        void onSuccess(List<HashMap<String, String>> data);
         void onError(String error);
     }
 }

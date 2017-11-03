@@ -39,8 +39,6 @@ import org.flyve.mdm.agent.utils.EnvInfoAbout;
 
 public class FragmentAbout extends Fragment {
 
-    private int countEasterEgg;
-
     /**
      * Called when the activity is starting, inflates the activity's UI
      * @param Bundle savedInstanceState if the activity is re-initialized, it contains the data it most recently supplied

@@ -38,6 +38,9 @@ import android.os.Bundle;
  * Get location fast and easy way
  */
 public class FastLocationProvider {
+
+    private FastLocationProvider() {}
+
     public static interface LocationCallback {
         public void onNewLocationAvailable(Location location);
     }

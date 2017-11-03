@@ -54,6 +54,7 @@ public class ConnectionHTTP {
 
 	private static int timeout = 18000;
 	private static int readtimeout = 6000;
+	private static final String EXCEPTION_HTTP = "EXCEPTION_HTTP_";
 
 	private static void runOnUI(Runnable runnable) {
 		uiHandler.post(runnable);
@@ -74,7 +75,7 @@ public class ConnectionHTTP {
 				try
 				{
 					URL dataURL = new URL(url);
-					FlyveLog.d("Method: " + method + " - URL = " + url);
+					FlyveLog.d(method + " " + url);
 					HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 					conn.setConnectTimeout(timeout);
@@ -98,7 +99,7 @@ public class ConnectionHTTP {
 					InputStream is = conn.getInputStream();
 
 					final String result = inputStreamToString(is);
-					FlyveLog.d("GetRequest input stream = " + result);
+					FlyveLog.d("Request" + result);
 
 					ConnectionHTTP.runOnUI(new Runnable() {
 						public void run() {
@@ -113,7 +114,7 @@ public class ConnectionHTTP {
 					{
 						public void run()
 						{
-						callback.callback("EXCEPTION_HTTP_" + ex.getMessage());
+						callback.callback(ex.getMessage());
 						FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
 						}
 					});
@@ -151,8 +152,7 @@ public class ConnectionHTTP {
 
 			if(conn.getResponseCode() >= 400) {
 				InputStream is = conn.getErrorStream();
-				final String result = inputStreamToString(is);
-				return result;
+				return inputStreamToString(is);
 			}
 
 			InputStream is = conn.getInputStream();
@@ -165,7 +165,7 @@ public class ConnectionHTTP {
 		catch (final Exception ex)
 		{
 			FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
-			return "EXCEPTION_HTTP_" + ex.getMessage();
+			return EXCEPTION_HTTP + ex.getMessage();
 		}
 	}
 
@@ -180,7 +180,7 @@ public class ConnectionHTTP {
 		try
 		{
 			URL dataURL = new URL(url);
-			FlyveLog.i("Method: POST - URL = " + url);
+			FlyveLog.i("getSyncWebData: " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 			conn.setRequestMethod("POST");
@@ -211,7 +211,7 @@ public class ConnectionHTTP {
 		}
 		catch (final Exception ex)
 		{
-			String error = "EXCEPTION_HTTP_" + ex.getMessage();
+			String error = EXCEPTION_HTTP + ex.getMessage();
 			FlyveLog.e(error);
 			return error;
 		}
@@ -224,9 +224,12 @@ public class ConnectionHTTP {
 	 * @return Boolean if file is write
 	 */
 	public static Boolean getSyncFile(final String url, final String pathFile) {
+
+		OutputStream output = null;
+
 		try {
 			URL dataURL = new URL(url);
-			FlyveLog.d("Method: " + " - URL = " + url);
+			FlyveLog.d("getSyncFile: " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 			conn.setConnectTimeout(timeout);
@@ -245,9 +248,9 @@ public class ConnectionHTTP {
 			int fileLength = conn.getContentLength();
 
 			InputStream input = conn.getInputStream();
-			OutputStream output = new FileOutputStream(pathFile);
+			output = new FileOutputStream(pathFile);
 
-			byte data[] = new byte[4096];
+			byte[] data = new byte[4096];
 			long total = 0;
 			int count;
 
@@ -264,6 +267,15 @@ public class ConnectionHTTP {
 		catch (final Exception ex) {
 			FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
 			return false;
+		}
+		finally {
+			if(output!=null){
+				try {
+					output.close();
+				} catch (Exception ex) {
+					FlyveLog.e(ex.getMessage());
+				}
+			}
 		}
 	}
 
@@ -283,7 +295,7 @@ public class ConnectionHTTP {
 				try
 				{
 					URL dataURL = new URL(url);
-					FlyveLog.i("Method: " + method + " - URL = " + url);
+					FlyveLog.i(method + " " + url);
 					HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 					conn.setConnectTimeout(timeout);
@@ -328,7 +340,7 @@ public class ConnectionHTTP {
 					{
 						public void run()
 						{
-						callback.callback("EXCEPTION_HTTP_" + ex.getMessage());
+						callback.callback(EXCEPTION_HTTP + ex.getMessage());
 						FlyveLog.e(ex.getClass() + " : " + ex.getMessage());
 						}
 					});
@@ -404,7 +416,7 @@ public class ConnectionHTTP {
 				{
 					public void run()
 					{
-						callback.callback("EXCEPTION_HTTP_" + ex.getMessage());
+						callback.callback(EXCEPTION_HTTP + ex.getMessage());
 						FlyveLog.e(ex.getClass() + " : " + ex.getMessage());
 					}
 				});

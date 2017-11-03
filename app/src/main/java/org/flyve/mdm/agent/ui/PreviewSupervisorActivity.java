@@ -66,7 +66,7 @@ public class PreviewSupervisorActivity extends AppCompatActivity {
 
         ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
         if(supervisor.getPicture() != null && !supervisor.getPicture().equals("")) {
-            imgPhoto.setImageBitmap(Helpers.StringToBitmap(supervisor.getPicture()));
+            imgPhoto.setImageBitmap(Helpers.stringToBitmap(supervisor.getPicture()));
         }
 
         TextView txtName = (TextView) findViewById(R.id.txtName);

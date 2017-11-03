@@ -46,6 +46,7 @@ import org.flyve.mdm.agent.utils.LogFileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -54,8 +55,7 @@ import java.util.HashMap;
 public class FragmentLog extends Fragment  {
 
     private TextView txtMessage;
-    private TextView txtTitle;
-    private ArrayList<HashMap<String, String>> arr_data;
+    private List<HashMap<String, String>> arrData;
     private ListView lst;
     private ProgressBar pb;
 
@@ -72,7 +72,6 @@ public class FragmentLog extends Fragment  {
         View v = inflater.inflate(R.layout.fragment_log, container, false);
 
         txtMessage = (TextView) v.findViewById(R.id.txtMessage);
-        txtTitle = (TextView) v.findViewById(R.id.txtTitle);
         pb = (ProgressBar) v.findViewById(R.id.progressBar);
 
         FloatingActionButton btnDelete = (FloatingActionButton) v.findViewById(R.id.btnDelete);
@@ -80,19 +79,19 @@ public class FragmentLog extends Fragment  {
             @Override
             public void onClick(View v) {
                 FlyveLog.clearLog( FlyveLog.FILE_NAME_LOG );
-                arr_data.clear();
+                arrData.clear();
                 loadLogFile();
             }
         });
 
-        arr_data = new ArrayList<>();
+        arrData = new ArrayList<>();
 
         final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 swipeLayout.setRefreshing(false);
-                arr_data.clear();
+                arrData.clear();
                 loadLogFile();
             }
         });
@@ -111,19 +110,19 @@ public class FragmentLog extends Fragment  {
 
         LogFileReader.loadLog(FlyveLog.FILE_NAME_LOG, new LogFileReader.LogFileCallback() {
             @Override
-            public void onSuccess(ArrayList<HashMap<String, String>> data) {
+            public void onSuccess(List<HashMap<String, String>> data) {
                 pb.setVisibility(View.GONE);
 
                 // order data last first
                 Collections.reverse(data);
-                arr_data = data;
-                if(arr_data.isEmpty()) {
+                arrData = data;
+                if(arrData.isEmpty()) {
                     txtMessage.setText(getResources().getString(R.string.without_data_to_show));
                 } else {
                     txtMessage.setText("");
                 }
 
-                LogAdapter mAdapter = new LogAdapter(FragmentLog.this.getActivity(), arr_data);
+                LogAdapter mAdapter = new LogAdapter(FragmentLog.this.getActivity(), arrData);
                 lst.setAdapter(mAdapter);
             }
 
