@@ -107,7 +107,7 @@ public class Routes {
      * @param fileId String file id
      * @return String url
      */
-    public String PluginFlyvemdmFile(String fileId, String sessionToken) {
+    public String pluginFlyvemdmFile(String fileId, String sessionToken) {
         String str = url + "/PluginFlyvemdmFile/" + fileId + "?session_token=" + sessionToken;
         FlyveLog.d("PluginFlyvemdmFile: ",  str);
         return str;
@@ -118,7 +118,7 @@ public class Routes {
      * @param fileId String file id
      * @return String url
      */
-    public String PluginFlyvemdmPackage(String fileId, String sessionToken) {
+    public String pluginFlyvemdmPackage(String fileId, String sessionToken) {
         String str = url + "/PluginFlyvemdmPackage/" + fileId + "?session_token=" + sessionToken;
         FlyveLog.d("PluginFlyvemdmPackage: ",  str);
         return str;

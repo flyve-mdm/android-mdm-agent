@@ -58,11 +58,8 @@ public class AndroidCryptoProvider {
     private final File csrFile;
     private final File certFile;
     private final File keyFile;
-    private X509Certificate cert;
     private PKCS10CertificationRequest csr;
     private RSAPrivateKey key;
-    private byte[] pemCsrBytes;
-    private static final Object globalCryptoLock = new Object();
 
     static {
         Security.addProvider(new BouncyCastleProvider());
@@ -146,7 +143,7 @@ public class AndroidCryptoProvider {
      * Generate the certificated Key pair
      * @param generateCallback callback
      */
-    public void generateRequest(generateCallback callback) {
+    public void generateRequest(GenerateCallback callback) {
         byte[] snBytes = new byte[8];
         new SecureRandom().nextBytes(snBytes);
 
@@ -155,22 +152,29 @@ public class AndroidCryptoProvider {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA", "BC");
             keyPairGenerator.initialize(4096);
             keyPair = keyPairGenerator.generateKeyPair();
+            if(keyPair==null) {
+                callback.onGenerate(false);
+                return;
+            }
         } catch (Exception ex) {
-            FlyveLog.wtf("generateRequest", ex);
+            FlyveLog.wtf("KeyPairGenerator fail: %s", ex.getMessage());
             callback.onGenerate(false);
+            return;
         }
 
         X500Principal subjectName = new X500Principal("CN=mydevice.stork-mdm.com");
 
-        ContentSigner signGen = null;
+        ContentSigner signGen;
         try {
             signGen = new JcaContentSignerBuilder("SHA1withRSA").build(keyPair.getPrivate());
-            if(signGen == null) {
+            if (signGen == null) {
                 callback.onGenerate(false);
+                return;
             }
         } catch (Exception ex) {
             FlyveLog.e("generateRequest",ex);
             callback.onGenerate(false);
+            return;
         }
 
         PKCS10CertificationRequestBuilder builder = new JcaPKCS10CertificationRequestBuilder(subjectName, keyPair.getPublic());
@@ -181,6 +185,7 @@ public class AndroidCryptoProvider {
         } catch (Exception ex) {
             FlyveLog.wtf("generateRequest",ex);
             callback.onGenerate(false);
+            return;
         }
 
         // Save the resulting pair
@@ -220,18 +225,25 @@ public class AndroidCryptoProvider {
             // Write the private out in PKCS8 format
             keyOut.write(key.getEncoded());
         } catch (IOException e) {
-            FlyveLog.e("saveCsrKey",e);
+            FlyveLog.e("saveCsrKey: %s", e.getMessage());
         } finally {
-            try {
-                if(keyOut!=null) {
+
+            if(keyOut!=null) {
+                try {
                     keyOut.close();
+                } catch (IOException e){
+                    FlyveLog.e("keyOut: %s", e.getMessage());
                 }
-                if(csrOut!=null) {
-                    csrOut.close();
-                }
-            } catch (IOException e){
-                FlyveLog.e("saveCsrKey, IOException", e);
             }
+
+            if(csrOut!=null) {
+                try {
+                    csrOut.close();
+                } catch (IOException e){
+                    FlyveLog.e("csrOut: %s", e.getMessage());
+                }
+            }
+
         }
     }
 
@@ -249,7 +261,7 @@ public class AndroidCryptoProvider {
 
             CertificateFactory certFactory = null;
             certFactory = CertificateFactory.getInstance("X.509", "BC");
-            cert = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(certBytes));
+            X509Certificate cert = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(certBytes));
 
             // Write the certificate in OpenSSL PEM format (important for the server)
             StringWriter strWriter = new StringWriter();
@@ -289,7 +301,7 @@ public class AndroidCryptoProvider {
         return Base64.encodeToString(data, Base64.NO_WRAP);
     }
 
-    public interface generateCallback {
+    public interface GenerateCallback {
         void onGenerate(boolean work);
     }
 }

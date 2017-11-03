@@ -65,11 +65,9 @@ public class AppInfo {
             String name = info.packageName;
             int version = info.versionCode;
 
-            if(packageName.equals(name)) {
-                if(version == Integer.parseInt(versionCode)) {
-                    FlyveLog.d("isInstall: return true");
-                    return true;
-                }
+            if(packageName.equals(name) && version == Integer.parseInt(versionCode)) {
+                FlyveLog.d("isInstall: return true");
+                return true;
             }
         }
         return false;

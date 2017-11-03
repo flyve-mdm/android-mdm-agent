@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.PowerManager;
-import org.flyve.mdm.agent.data.DataStorage;
 import org.json.JSONObject;
 import java.io.File;
 import java.util.regex.Matcher;
@@ -40,8 +39,8 @@ import java.util.regex.Pattern;
  */
 public class FilesHelper {
 
+    private static final String EXTERNAL_STORAGE = "EXTERNAL_STORAGE"; 
     private Context context;
-    private DataStorage cache;
     private Routes routes;
 
     /**
@@ -50,7 +49,6 @@ public class FilesHelper {
      */
     public FilesHelper(Context context) {
         this.context = context;
-        cache = new DataStorage(context);
         routes = new Routes(context);
     }
 
@@ -59,9 +57,9 @@ public class FilesHelper {
      * @return string the apk directory
      * @throws Exception
      */
-    private static String getApkDir() throws Exception {
-        FlyveLog.d(System.getenv("EXTERNAL_STORAGE") + "/apk/");
-        return System.getenv("EXTERNAL_STORAGE") + "/apk/";
+    private static String getApkDir() {
+        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + "/apk/");
+        return System.getenv(EXTERNAL_STORAGE) + "/apk/";
     }
 
     /**
@@ -69,9 +67,9 @@ public class FilesHelper {
      * @return string the SD card directory
      * @throws Exception
      */
-    private static String getSDcardDir() throws Exception {
-        FlyveLog.d(System.getenv("EXTERNAL_STORAGE"));
-        return System.getenv("EXTERNAL_STORAGE");
+    private static String getSDcardDir() {
+        FlyveLog.d(System.getenv(EXTERNAL_STORAGE));
+        return System.getenv(EXTERNAL_STORAGE);
     }
 
     /**
@@ -79,9 +77,9 @@ public class FilesHelper {
      * @return string the UPK directory
      * @throws Exception
      */
-    private static String getUpkDir() throws Exception {
-        FlyveLog.d(System.getenv("EXTERNAL_STORAGE") + "/.fdroid/");
-        return System.getenv("EXTERNAL_STORAGE") + "/.fdroid/";
+    private static String getUpkDir() {
+        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + "/.fdroid/");
+        return System.getenv(EXTERNAL_STORAGE) + "/.fdroid/";
     }
 
     /**
@@ -89,9 +87,9 @@ public class FilesHelper {
      * @return string the pictures directory
      * @throws Exception
      */
-    private static String getPicturesDir() throws Exception {
-        FlyveLog.d(System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_DCIM);
-        return System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_DCIM;
+    private static String getPicturesDir() {
+        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + "/" + Environment.DIRECTORY_DCIM);
+        return System.getenv(EXTERNAL_STORAGE) + "/" + Environment.DIRECTORY_DCIM;
     }
 
     /**
@@ -99,9 +97,9 @@ public class FilesHelper {
      * @return string the documents directory
      * @throws Exception
      */
-    private static String getDocumentsDir() throws Exception {
-        FlyveLog.d(System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_DOWNLOADS);
-        return System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_DOWNLOADS;
+    private static String getDocumentsDir() {
+        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + "/" + Environment.DIRECTORY_DOWNLOADS);
+        return System.getenv(EXTERNAL_STORAGE) + "/" + Environment.DIRECTORY_DOWNLOADS;
     }
 
     /**
@@ -109,9 +107,9 @@ public class FilesHelper {
      * @return string the music directory
      * @throws Exception
      */
-    private static String getMusicsDir() throws Exception {
-        FlyveLog.d(System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_MUSIC);
-        return System.getenv("EXTERNAL_STORAGE") + "/" + Environment.DIRECTORY_MUSIC;
+    private static String getMusicsDir() {
+        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + "/" + Environment.DIRECTORY_MUSIC);
+        return System.getenv(EXTERNAL_STORAGE) + "/" + Environment.DIRECTORY_MUSIC;
     }
 
     /**
@@ -120,7 +118,7 @@ public class FilesHelper {
      * @return string the converted path
      * @throws Exception
      */
-    private String convertPath(String receivePath) throws Exception {
+    private String convertPath(String receivePath) {
 
         String sreturn = receivePath;
 
@@ -177,7 +175,7 @@ public class FilesHelper {
             FlyveLog.e(ex.getMessage());
         }
 
-        final String url = routes.PluginFlyvemdmFile(id, sessionToken);
+        final String url = routes.pluginFlyvemdmFile(id, sessionToken);
         String completeFilePath = download(url, filePath);
 
         return(completeFilePath.equalsIgnoreCase(""));
@@ -189,6 +187,8 @@ public class FilesHelper {
      * @param id String Id from
      */
     public Boolean downloadApk(String packageFile, String id, String sessionToken) {
+
+        FlyveLog.d("packageFile: " + packageFile);
 
         //prevent CPU from going off if the user presses the power button during download
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -202,7 +202,7 @@ public class FilesHelper {
             FlyveLog.e(ex.getMessage());
         }
 
-        final String url = routes.PluginFlyvemdmPackage(id, sessionToken);
+        final String url = routes.pluginFlyvemdmPackage(id, sessionToken);
         String completeFilePath = download(url, filePath);
         if(completeFilePath.equalsIgnoreCase("")) {
             return false;

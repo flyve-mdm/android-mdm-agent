@@ -34,21 +34,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.utils.FlyveLog;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class LogAdapter extends BaseAdapter {
 
-	private Activity _activity;
-	private ArrayList<HashMap<String, String>> _data;
-	private static LayoutInflater inflater = null;
+	private List<HashMap<String, String>> data;
+	private LayoutInflater inflater = null;
 
-	public LogAdapter(Activity activity, ArrayList<HashMap<String, String>> data) {
-		this._data = data;
-		this._activity = activity;
+	public LogAdapter(Activity activity, List<HashMap<String, String>> data) {
+		FlyveLog.d(activity.getLocalClassName());
+
+		this.data = data;
 		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -58,7 +58,7 @@ public class LogAdapter extends BaseAdapter {
 	 */
 	@Override
 	public int getCount() {
-		return _data.size();
+		return data.size();
 	}
 
 	/**
@@ -90,11 +90,10 @@ public class LogAdapter extends BaseAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View vi = convertView;
 
-		HashMap<String, String> hashdata = _data.get(position);
+		HashMap<String, String> hashdata = data.get(position);
 
-		vi = inflater.inflate(R.layout.listitem_main, null);
+		View vi = inflater.inflate(R.layout.listitem_main, null);
 
 		TextView txtType = (TextView) vi.findViewById(R.id.txtType);
 		txtType.setText(hashdata.get("type"));

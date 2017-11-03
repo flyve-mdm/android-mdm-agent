@@ -45,7 +45,7 @@ import java.util.List;
 public class DrawerAdapter extends BaseAdapter {
 
 	private List<HashMap<String, String>> data;
-	private static LayoutInflater inflater = null;
+	private LayoutInflater inflater = null;
 
 	public DrawerAdapter(Activity activity, List<HashMap<String, String>> data) {
 		this.data = data;

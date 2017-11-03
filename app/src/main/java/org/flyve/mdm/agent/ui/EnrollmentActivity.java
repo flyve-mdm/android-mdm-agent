@@ -92,9 +92,9 @@ public class EnrollmentActivity extends AppCompatActivity {
     private MultipleEditText editEmail;
     private MultipleEditText editPhone;
     private Spinner spinnerLanguage;
-    private ImageView btnRegister;
     private boolean sendEnrollment = false;
-    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+    private static final int REQUEST_CAMERA = 0;
+    private static final int SELECT_FILE = 1;
     private String strPicture;
     private ImageView imgPhoto;
     private ProgressDialog pd;
@@ -192,7 +192,7 @@ public class EnrollmentActivity extends AppCompatActivity {
             }
         });
 
-        btnRegister = (ImageView) findViewById(R.id.btnSave);
+        ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,7 +202,7 @@ public class EnrollmentActivity extends AppCompatActivity {
 
         // start creating a certificated
         pbx509.setVisibility(View.VISIBLE);
-        enroll.createX509cert(new EnrollmentHelper.enrollCallBack() {
+        enroll.createX509cert(new EnrollmentHelper.EnrollCallBack() {
             @Override
             public void onSuccess(String data) {
                 pbx509.setVisibility(View.GONE);
@@ -323,7 +323,7 @@ public class EnrollmentActivity extends AppCompatActivity {
                     FlyveLog.e(ex.getMessage());
                 }
 
-                strPicture = Helpers.BitmapToString(bitmap);
+                strPicture = Helpers.bitmapToString(bitmap);
                 imgPhoto.setImageBitmap(bitmap);
             }
         }
@@ -344,7 +344,7 @@ public class EnrollmentActivity extends AppCompatActivity {
             }
         }
 
-        strPicture = Helpers.BitmapToString(bm);
+        strPicture = Helpers.bitmapToString(bm);
         imgPhoto.setImageBitmap(bm);
     }
 
@@ -434,7 +434,7 @@ public class EnrollmentActivity extends AppCompatActivity {
             payload.put("version", BuildConfig.VERSION_NAME);
             payload.put("type", "android");
 
-            enroll.enrollment(payload, new EnrollmentHelper.enrollCallBack() {
+            enroll.enrollment(payload, new EnrollmentHelper.EnrollCallBack() {
                 @Override
                 public void onSuccess(String data) {
                     pd.dismiss();

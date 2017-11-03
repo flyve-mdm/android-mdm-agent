@@ -74,7 +74,8 @@ public class EditUserActivity extends AppCompatActivity {
     private MultipleEditText editEmail;
     private MultipleEditText editPhone;
     private Spinner spinnerLanguage;
-    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+    private static final int REQUEST_CAMERA = 0;
+    private static final int SELECT_FILE = 1;
     private String strPicture;
     private String photoPath;
 
@@ -105,7 +106,7 @@ public class EditUserActivity extends AppCompatActivity {
 
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
         if(!user.getPicture().equals("")) {
-            imgPhoto.setImageBitmap(Helpers.StringToBitmap(user.getPicture()));
+            imgPhoto.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));
         }
 
         ImageView btnCamera = (ImageView) findViewById(R.id.btnCamera);
@@ -365,7 +366,7 @@ public class EditUserActivity extends AppCompatActivity {
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
                 }
-                strPicture = Helpers.BitmapToString(bitmap);
+                strPicture = Helpers.bitmapToString(bitmap);
                 imgPhoto.setImageBitmap(bitmap);
             }
         }
@@ -386,7 +387,7 @@ public class EditUserActivity extends AppCompatActivity {
             }
         }
 
-        strPicture = Helpers.BitmapToString(bm);
+        strPicture = Helpers.bitmapToString(bm);
         imgPhoto.setImageBitmap(bm);
     }
 

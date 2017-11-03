@@ -43,6 +43,15 @@ import static org.flyve.mdm.agent.utils.ConnectionHTTP.getSyncWebData;
 public class EnrollmentHelper {
 
     private static Handler uiHandler;
+    
+    private static final String SESSION_TOKEN = "Session-Token";
+    private static final String ACCEPT = "Accept";
+    private static final String APPLICATION_JSON = "application/json";
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String CHARSET = "charset=UTF-8";
+    private static final String USER_AGENT = "User-Agent";
+    private static final String FLYVE_MDM = "Flyve MDM";
+    private static final String REFERER = "Referer";
 
     static {
         uiHandler = new Handler(Looper.getMainLooper());
@@ -106,7 +115,7 @@ public class EnrollmentHelper {
     /**
      * Get session token
      */
-    public void getActiveSessionToken(final enrollCallBack callback) {
+    public void getActiveSessionToken(final EnrollCallBack callback) {
 
         Thread t = new Thread(new Runnable()
         {
@@ -131,11 +140,11 @@ public class EnrollmentHelper {
 
                     // STEP 2 get full session information
                     HashMap<String, String> header = new HashMap();
-                    header.put("Session-Token",cache.getSessionToken());
-                    header.put("Accept","application/json");
-                    header.put("Content-Type","application/json; charset=UTF-8");
-                    header.put("User-Agent","Flyve MDM");
-                    header.put("Referer",routes.getFullSession());
+                    header.put(SESSION_TOKEN,cache.getSessionToken());
+                    header.put(ACCEPT,APPLICATION_JSON);
+                    header.put(CONTENT_TYPE,APPLICATION_JSON + ";" + CHARSET);
+                    header.put(USER_AGENT,FLYVE_MDM);
+                    header.put(REFERER,routes.getFullSession());
 
                     final String dataFullSession = getSyncWebData(routes.getFullSession(), "GET", header);
                     final String errorMessageFullSession = manageError(dataFullSession);
@@ -189,17 +198,17 @@ public class EnrollmentHelper {
      * @param JSONObject the information of the phone
      * @param enrollCallback the callback
      */
-    public void enrollment(final JSONObject payload, final enrollCallBack callback) {
+    public void enrollment(final JSONObject payload, final EnrollCallBack callback) {
         Thread t = new Thread(new Runnable()
         {
             public void run()
             {
                 try {
                     HashMap<String, String> header = new HashMap();
-                    header.put("Session-Token",cache.getSessionToken());
+                    header.put(SESSION_TOKEN,cache.getSessionToken());
 
-                    header.put("Accept","application/json");
-                    header.put("Content-Type","application/json; charset=UTF-8");
+                    header.put(ACCEPT,APPLICATION_JSON);
+                    header.put(CONTENT_TYPE,APPLICATION_JSON + ";" + CHARSET);
 
                     JSONObject input = new JSONObject();
                     input.put("input", payload);
@@ -220,11 +229,11 @@ public class EnrollmentHelper {
                         cache.setAgentId(jsonAgent.getString("id"));
 
                         header = new HashMap();
-                        header.put("Session-Token",cache.getSessionToken());
-                        header.put("Accept","application/json");
-                        header.put("Content-Type","application/json; charset=UTF-8");
-                        header.put("User-Agent","Flyve MDM");
-                        header.put("Referer",routes.pluginFlyvemdmAgent());
+                        header.put(SESSION_TOKEN,cache.getSessionToken());
+                        header.put(ACCEPT,APPLICATION_JSON);
+                        header.put(CONTENT_TYPE,APPLICATION_JSON + ";" + CHARSET);
+                        header.put(USER_AGENT,FLYVE_MDM);
+                        header.put(REFERER,routes.pluginFlyvemdmAgent());
 
                         String dataAgent = ConnectionHTTP.getSyncWebData(routes.pluginFlyvemdmAgent(cache.getAgentId()), "GET", header);
 
@@ -239,6 +248,7 @@ public class EnrollmentHelper {
                         String mNameEmail = jsonObject.getString("name");
                         int mComputersId = jsonObject.getInt("computers_id");
                         int mId = jsonObject.getInt("id");
+                        FlyveLog.d("Id: " + mId);
                         int mEntitiesId = jsonObject.getInt("entities_id");
                         int mFleetId = jsonObject.getInt("plugin_flyvemdm_fleets_id");
 
@@ -279,12 +289,12 @@ public class EnrollmentHelper {
     /**
      * Create X509 certificate
      */
-    public void createX509cert(final enrollCallBack callback) {
+    public void createX509cert(final EnrollCallBack callback) {
         new Thread(new Runnable() {
             public void run() {
                 try {
                     AndroidCryptoProvider createCertificate = new AndroidCryptoProvider(context);
-                    createCertificate.generateRequest(new AndroidCryptoProvider.generateCallback() {
+                    createCertificate.generateRequest(new AndroidCryptoProvider.GenerateCallback() {
                         @Override
                         public void onGenerate(final boolean work) {
                             EnrollmentHelper.runOnUI(new Runnable() {
@@ -308,7 +318,7 @@ public class EnrollmentHelper {
         }).start();
     }
 
-    public interface enrollCallBack {
+    public interface EnrollCallBack {
         void onSuccess(String data);
         void onError(String error);
     }

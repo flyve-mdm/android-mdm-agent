@@ -57,19 +57,8 @@ public class SplashActivity extends FragmentActivity {
 
     private static final int TIME = 3000;
     private IntentFilter mIntent;
-
     private ArrayList<WalkthroughModel> walkthrough;
 
-    /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
-     */
-    private ViewPager mPager;
-
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
-    private PagerAdapter mPagerAdapter;
 
     @Override
     public void onPause() {
@@ -127,8 +116,8 @@ public class SplashActivity extends FragmentActivity {
         walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_3), "", R.drawable.ic_walkthroug_3));
 
         // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        ViewPager mPager = (ViewPager) findViewById(R.id.pager);
+        PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
     }
 

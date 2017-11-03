@@ -100,7 +100,7 @@ public class PreviewUserActivity extends AppCompatActivity {
 
         ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
         if(user.getPicture() != null && !user.getPicture().equals("")) {
-            imgPhoto.setImageBitmap(Helpers.StringToBitmap(user.getPicture()));
+            imgPhoto.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));
         }
 
         LinearLayout lnEmail = (LinearLayout) findViewById(R.id.lnEmails);

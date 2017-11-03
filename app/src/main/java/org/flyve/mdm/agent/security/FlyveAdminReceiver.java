@@ -4,6 +4,8 @@ import android.app.admin.DeviceAdminReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import org.flyve.mdm.agent.utils.FlyveLog;
+
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
  *
@@ -40,6 +42,7 @@ public class FlyveAdminReceiver extends DeviceAdminReceiver {
      */
     @Override
     public void onEnabled(Context context, Intent intent) {
+        FlyveLog.d(intent.getAction());
         super.onEnabled(context, intent);
     }
 }

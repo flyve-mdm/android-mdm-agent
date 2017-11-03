@@ -47,8 +47,6 @@ import org.flyve.mdm.agent.utils.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
-import static org.flyve.mdm.agent.R.id.txtAbout;
-
 public class StartEnrollmentActivity extends Activity {
 
     private RelativeLayout btnEnroll;
@@ -191,7 +189,7 @@ public class StartEnrollmentActivity extends Activity {
                 pb.setVisibility(View.VISIBLE);
 
                 EnrollmentHelper sessionToken = new EnrollmentHelper(StartEnrollmentActivity.this);
-                sessionToken.getActiveSessionToken(new EnrollmentHelper.enrollCallBack() {
+                sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
                     @Override
                     public void onSuccess(String data) {
                         btnEnroll.setVisibility(View.VISIBLE);
