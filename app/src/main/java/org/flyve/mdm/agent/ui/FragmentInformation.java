@@ -22,8 +22,10 @@ import org.flyve.mdm.agent.core.user.UserController;
 import org.flyve.mdm.agent.core.user.UserModel;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.GpsHelper;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 public class FragmentInformation extends Fragment {
 
@@ -38,7 +40,6 @@ public class FragmentInformation extends Fragment {
     private ImageView imgUser;
     private TextView txtNameSupervisor;
     private TextView txtDescriptionSupervisor;
-
     private int countEasterEgg;
 
     /**
@@ -132,6 +133,22 @@ public class FragmentInformation extends Fragment {
         statusMQTT(cache.getOnlineStatus());
         loadSupervisor();
         loadClientInfo();
+
+        TextView gpsON = (TextView) v.findViewById(R.id.gpsON);
+        gpsON.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new GpsHelper().turnGpsOn( FragmentInformation.this.getContext() );
+            }
+        });
+
+        TextView gpsOFF = (TextView) v.findViewById(R.id.gpsOFF);
+        gpsOFF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new GpsHelper().turnGpsOff( FragmentInformation.this.getContext() );
+            }
+        });
 
         return v;
     }
