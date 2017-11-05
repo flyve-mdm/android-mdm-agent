@@ -1,5 +1,6 @@
 package org.flyve.mdm.agent.utils;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -90,7 +91,7 @@ public class LogFileReader {
             public void run() {
                 FileReader fr = null;
                 try {
-                    File file = new File("/sdcard/FlyveMDM/" + fileName);
+                    File file = new File(Environment.getExternalStorageDirectory().getPath() + "/FlyveMDM/" + fileName);
                     fr = new FileReader(file);
                     BufferedReader br = new BufferedReader(fr);
 
