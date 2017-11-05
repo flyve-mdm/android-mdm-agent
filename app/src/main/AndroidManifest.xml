@@ -31,6 +31,12 @@
 
     <!-- Allows changing locales -->
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+
+    <!-- works on ROOTED phones if the app is moved to /system/app -->
+    <!--This permission are required to enable GPS-->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
+
     <application
         android:name=".ui.MDMAgent"
         android:allowBackup="true"

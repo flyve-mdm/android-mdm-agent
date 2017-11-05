@@ -165,6 +165,25 @@
                 android:layout_marginLeft="10dp"
                 style="@style/regularText"
                 />
+
+            <TextView
+                android:id="@+id/gpsON"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GPS ON"
+                android:layout_marginLeft="10dp"
+                style="@style/regularText"
+                />
+
+            <TextView
+                android:id="@+id/gpsOFF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GPS OFF"
+                android:layout_marginLeft="10dp"
+                style="@style/regularText"
+                />
+
         </LinearLayout>
 
     </LinearLayout>
