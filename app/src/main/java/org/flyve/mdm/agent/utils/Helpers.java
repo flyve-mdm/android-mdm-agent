@@ -53,6 +53,8 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * This class content some helpers function
@@ -153,10 +155,12 @@ public class Helpers {
 	 * @return int unix time
 	 */
 	public static int getUnixTime() {
-		Calendar calendar = Calendar.getInstance();
-		long now = calendar.getTimeInMillis();
-		int utc = (int) (now / 1000);
-		return (utc);
+		TimeZone timeZone = TimeZone.getTimeZone("UTC");
+		Calendar calendar = Calendar.getInstance(timeZone);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
+		simpleDateFormat.setTimeZone(timeZone);
+
+		return ((int) (calendar.getTimeInMillis() / 1000));
 	}
 
 	/**
