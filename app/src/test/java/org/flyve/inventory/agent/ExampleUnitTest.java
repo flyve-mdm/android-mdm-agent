@@ -1,7 +1,5 @@
 package org.flyve.inventory.agent;
 
-import org.flyve.mdm.agent.utils.FlyveLog;
-import org.flyve.mdm.agent.utils.Helpers;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -16,13 +14,4 @@ public class ExampleUnitTest {
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
     }
-
-    @Test
-    public void getUTCTime() throws Exception {
-
-        FlyveLog.d(Helpers.getUnixTime());
-
-        assertEquals(true, true);
-    }
-
 }
