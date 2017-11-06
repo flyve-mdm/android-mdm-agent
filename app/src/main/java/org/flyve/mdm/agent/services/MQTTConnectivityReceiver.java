@@ -32,6 +32,7 @@ import android.content.Context;
 import android.content.Intent;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.GpsHelper;
 import org.flyve.mdm.agent.utils.Helpers;
 
 /**
@@ -78,19 +79,35 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         // Manage location
         if("android.location.PROVIDERS_CHANGED".equalsIgnoreCase(action)) {
             /*
-             * Turn off GPS need system app for any api Android under 23 and
-             * user app for API 23 or above
-             * check this https://developer.android.com/reference/android/Manifest.permission.html#WRITE_SETTINGS
-             * check if the app is installed on /system or /data to manage GPS settings
+             *  Turn off GPS need system app
+             *  To install apk on system/app with adb on root device
              *
-             * “Write settings” permission not granted marshmallow android
-             *  https://stackoverflow.com/questions/39224303/write-settings-permission-not-granted-marshmallow-android/39224511#39224511
+             *   -------------------------------------------
+             *   $adb shell
+             *   $su
+             *   $mount -o rw,remount /system
+             *   -------------------------------------------
              *
-             * Can't get WRITE_SETTINGS permission
-             * https://stackoverflow.com/questions/32083410/cant-get-write-settings-permission
+             *   If apk is on external sdcard
+             *
+             *   # for Android 4.3 or newest
+             *   # move the apk to /system/priv-app
+             *   mv /storage/sdcard1/file.apk /system/priv-app
+             *
+             *   # older Android devices
+             *   # move apk to /system/app
+             *   mv /storage/sdcard1/file.apk /system/app
+             *
+             *   # change file permission to execute
+             *   chmod 644 file.apk
+             *
+             *   # exit and reboot the device to take change
+             *   adb reboot
              */
 
             boolean disable = cache.getConnectivityGPSDisable();
+            GpsHelper.disableGps(disable);
+
             FlyveLog.i("Location providers change: " + disable);
         }
     }
