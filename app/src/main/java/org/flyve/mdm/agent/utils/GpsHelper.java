@@ -1,8 +1,7 @@
 package org.flyve.mdm.agent.utils;
 
-import android.content.Context;
-import android.location.LocationManager;
-import android.provider.Settings;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -32,61 +31,28 @@ import android.provider.Settings;
  */
 public class GpsHelper {
 
-    private String beforeEnable;
-    private static final String ERROR_TAG = "GPS Error: ";
+    public void enableGps(boolean enable) {
 
-
-    public void turnGpsOn (Context context) {
-
-        FlyveLog.d("GPS enable");
-
-        beforeEnable = Settings.Secure.getString (context.getContentResolver(),
-                Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-        String newSet = String.format ("%s,%s",
-                beforeEnable,
-                LocationManager.GPS_PROVIDER);
-        try {
-            Settings.Secure.putString (context.getContentResolver(),
-                    Settings.Secure.LOCATION_PROVIDERS_ALLOWED,
-                    newSet);
-        } catch(Exception ex) {
-            FlyveLog.e(ERROR_TAG + ex.getMessage());
+        String gps = "+gps";
+        if(!enable) {
+            gps = "-gps";
         }
-    }
 
+        String[] cmds = {"cd /system/bin" ,"settings put secure location_providers_allowed " + gps};
 
-    public void turnGpsOff (Context context) {
-
-        FlyveLog.d("GPS disable");
-
-        if (null == beforeEnable) {
-            String str = Settings.Secure.getString (context.getContentResolver(),
-                    Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-            if (null == str) {
-                str = "";
-            } else {
-                String[] list = str.split (",");
-                str = "";
-                int j = 0;
-                for (int i = 0; i < list.length; i++) {
-                    if (!list[i].equals (LocationManager.GPS_PROVIDER)) {
-                        if (j > 0) {
-                            str += ",";
-                        }
-                        str += list[i];
-                        j++;
-                    }
-                }
-                beforeEnable = str;
+        try {
+            Process p = Runtime.getRuntime().exec("su");
+            DataOutputStream os = new DataOutputStream(p.getOutputStream());
+            for (String tmpCmd : cmds) {
+                os.writeBytes(tmpCmd + "\n");
             }
+            os.writeBytes("exit\n");
+            os.flush();
         }
-        try {
-            Settings.Secure.putString (context.getContentResolver(),
-                    Settings.Secure.LOCATION_PROVIDERS_ALLOWED,
-                    beforeEnable);
-        } catch(Exception ex) {
-            FlyveLog.e(ERROR_TAG + ex.getMessage());
+        catch (IOException ex){
+            FlyveLog.d(ex.getMessage());
         }
+
     }
 
 
