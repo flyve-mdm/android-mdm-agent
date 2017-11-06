@@ -134,22 +134,6 @@ public class FragmentInformation extends Fragment {
         loadSupervisor();
         loadClientInfo();
 
-        TextView gpsON = (TextView) v.findViewById(R.id.gpsON);
-        gpsON.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new GpsHelper().turnGpsOn( FragmentInformation.this.getContext() );
-            }
-        });
-
-        TextView gpsOFF = (TextView) v.findViewById(R.id.gpsOFF);
-        gpsOFF.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new GpsHelper().turnGpsOff( FragmentInformation.this.getContext() );
-            }
-        });
-
         return v;
     }
 

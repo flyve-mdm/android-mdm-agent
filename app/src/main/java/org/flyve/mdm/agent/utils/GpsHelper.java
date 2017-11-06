@@ -31,10 +31,12 @@ import java.io.IOException;
  */
 public class GpsHelper {
 
-    public void enableGps(boolean enable) {
+    private GpsHelper() {}
+
+    public static void disableGps(boolean disable) {
 
         String gps = "+gps";
-        if(!enable) {
+        if(disable) {
             gps = "-gps";
         }
 
