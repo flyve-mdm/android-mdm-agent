@@ -400,11 +400,91 @@ public class DataStorage {
 	}
 
 	/**
+	 * Set the state of the Roaming enable / disable
+	 * @param boolean
+	 */
+	public void setConnectivityRoamingDisable(boolean disable) {
+		setData("ConnectivityRoamingDisable", String.valueOf(disable));
+	}
+
+	/**
+	 * Set the state of the Radio FM enable / disable
+	 * @param boolean
+	 */
+	public void setConnectivityRadioFMDisable(boolean disable) {
+		setData("ConnectivityRadioFMDisable", String.valueOf(disable));
+	}
+
+	/**
+	 * Set the state of the Mobile Line enable / disable
+	 * @param boolean
+	 */
+	public void setConnectivityMobileLineDisable(boolean disable) {
+		setData("ConnectivityMobileLineDisable", String.valueOf(disable));
+	}
+
+	/**
+	 * Set the state of the NFC enable / disable
+	 * @param boolean
+	 */
+	public void setConnectivityNFCDisable(boolean disable) {
+		setData("ConnectivityNFCDisable", String.valueOf(disable));
+	}
+
+	/**
+	 * Set the state of the Hostpot Tethering  enable / disable
+	 * @param boolean
+	 */
+	public void setConnectivityHostpotTetheringDisable(boolean disable) {
+		setData("ConnectivityHostpotTetheringDisable", String.valueOf(disable));
+	}
+
+	/**
 	 * Get the state of the Connectivity of the GPS
 	 * @return boolean the state of the connectivity, true if disabled, false otherwise
 	 */
 	public boolean getConnectivityGPSDisable() {
 		return Boolean.valueOf(getData("ConnectivityGPSDisable"));
+	}
+
+	/**
+	 * Get the state of the Roaming enable / disable
+	 * @param boolean
+	 */
+	public boolean getConnectivityRoamingDisable(boolean disable) {
+		return Boolean.valueOf(getData("ConnectivityRoamingDisable"));
+	}
+
+	/**
+	 * Get the state of the Radio FM enable / disable
+	 * @param boolean
+	 */
+	public boolean getConnectivityRadioFMDisable(boolean disable) {
+		return Boolean.valueOf(getData("ConnectivityRadioFMDisable"));
+	}
+
+	/**
+	 * Get the state of the Mobile Line enable / disable
+	 * @param boolean
+	 */
+	public boolean getConnectivityMobileLineDisable(boolean disable) {
+		return Boolean.valueOf(getData("ConnectivityMobileLineDisable"));
+	}
+
+	/**
+	 * Get the state of the NFC enable / disable
+	 * @param boolean
+	 */
+	public boolean getConnectivityNFCDisable(boolean disable) {
+		return Boolean.valueOf(getData("ConnectivityNFCDisable"));
+	}
+
+	/**
+	 * Get the state of the Hostpot Tethering  enable / disable
+	 * @param boolean
+	 */
+	public boolean getConnectivityHostpotTetheringDisable(boolean disable) {
+		return Boolean.valueOf(getData("ConnectivityHostpotTetheringDisable"));
 	}
 
 	/**

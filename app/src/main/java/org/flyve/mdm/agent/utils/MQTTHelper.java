@@ -246,6 +246,12 @@ public class MQTTHelper {
                     cache.setConnectivityGPSDisable(disable);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "GPS", "GPS is disable: " + disable));
                 }
+
+                if (jsonConnectivity.has("disableRoaming")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableRoaming");
+                    cache.setConnectivityRoamingDisable(disable);
+                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "ROAMING", "ROAMING is disable: " + disable));
+                }
             }
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on disableConnectivity", ex.getMessage()));
@@ -669,6 +675,16 @@ public class MQTTHelper {
         if(!isNetworkEnabled) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error GPS", "Network fail"));
         }
+    }
+
+    /**
+     * Require root or system install
+     * Disable Roaming
+     */
+    public void disableRoaming() {
+
+
+
     }
 
     /**
