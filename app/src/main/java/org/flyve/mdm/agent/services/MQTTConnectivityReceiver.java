@@ -34,6 +34,7 @@ import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.GpsHelper;
 import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.mdm.agent.utils.SystemHelper;
 
 /**
  * Receive broadcast from android.net.wifi.STATE_CHANGE and android.bluetooth.adapter.action.STATE_CHANGED
@@ -58,6 +59,11 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             if(Helpers.isOnline(context)) {
                 MQTTService.start( context );
             }
+
+            if(!cache.getRoaming().equals("")) {
+                SystemHelper.disableRoaming(cache.getConnectivityRoamingDisable());
+            }
+
         }
 
         // Manage WIFI
