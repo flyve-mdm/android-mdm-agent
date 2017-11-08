@@ -31,6 +31,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -69,6 +70,24 @@ public class Helpers {
 	 * private construtor
 	 */
 	private Helpers() {
+	}
+
+	public static String isSystemApp(Context context) {
+
+		try {
+			ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getApplicationContext().getPackageName(), 0);
+
+			if (appInfo.sourceDir.startsWith("/data/app/")) {
+				//Non-system app
+				return "0";
+			} else {
+				//System app
+				return "1";
+			}
+		} catch (Exception ex) {
+			FlyveLog.e(ex.getMessage());
+			return "0";
+		}
 	}
 
 	public static boolean isOnline(Context context) {
