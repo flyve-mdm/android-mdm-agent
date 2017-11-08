@@ -433,6 +433,7 @@ public class EnrollmentActivity extends AppCompatActivity {
             }
             payload.put("version", BuildConfig.VERSION_NAME);
             payload.put("type", "android");
+            payload.put("has_system_permission", Helpers.isSystemApp(EnrollmentActivity.this));
 
             enroll.enrollment(payload, new EnrollmentHelper.EnrollCallBack() {
                 @Override
