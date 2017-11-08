@@ -447,11 +447,15 @@ public class DataStorage {
 		return Boolean.valueOf(getData("ConnectivityGPSDisable"));
 	}
 
+	public String getRoaming() {
+		return getData("ConnectivityRoamingDisable");
+	}
+
 	/**
 	 * Get the state of the Roaming enable / disable
 	 * @param boolean
 	 */
-	public boolean getConnectivityRoamingDisable(boolean disable) {
+	public boolean getConnectivityRoamingDisable() {
 		return Boolean.valueOf(getData("ConnectivityRoamingDisable"));
 	}
 
@@ -459,7 +463,7 @@ public class DataStorage {
 	 * Get the state of the Radio FM enable / disable
 	 * @param boolean
 	 */
-	public boolean getConnectivityRadioFMDisable(boolean disable) {
+	public boolean getConnectivityRadioFMDisable() {
 		return Boolean.valueOf(getData("ConnectivityRadioFMDisable"));
 	}
 
@@ -467,7 +471,7 @@ public class DataStorage {
 	 * Get the state of the Mobile Line enable / disable
 	 * @param boolean
 	 */
-	public boolean getConnectivityMobileLineDisable(boolean disable) {
+	public boolean getConnectivityMobileLineDisable() {
 		return Boolean.valueOf(getData("ConnectivityMobileLineDisable"));
 	}
 
@@ -475,7 +479,7 @@ public class DataStorage {
 	 * Get the state of the NFC enable / disable
 	 * @param boolean
 	 */
-	public boolean getConnectivityNFCDisable(boolean disable) {
+	public boolean getConnectivityNFCDisable() {
 		return Boolean.valueOf(getData("ConnectivityNFCDisable"));
 	}
 
@@ -483,7 +487,7 @@ public class DataStorage {
 	 * Get the state of the Hostpot Tethering  enable / disable
 	 * @param boolean
 	 */
-	public boolean getConnectivityHostpotTetheringDisable(boolean disable) {
+	public boolean getConnectivityHostpotTetheringDisable() {
 		return Boolean.valueOf(getData("ConnectivityHostpotTetheringDisable"));
 	}
 
