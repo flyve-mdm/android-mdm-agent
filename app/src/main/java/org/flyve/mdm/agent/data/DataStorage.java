@@ -451,6 +451,11 @@ public class DataStorage {
 		return getData("ConnectivityRoamingDisable");
 	}
 
+	public String getNFC() {
+		return getData("ConnectivityNFCDisable");
+	}
+
+
 	/**
 	 * Get the state of the Roaming enable / disable
 	 * @param boolean
