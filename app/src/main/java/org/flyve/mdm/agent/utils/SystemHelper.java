@@ -1,7 +1,11 @@
 package org.flyve.mdm.agent.utils;
 
+import android.content.Context;
+import android.nfc.NfcAdapter;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -59,5 +63,23 @@ public class SystemHelper {
         executecmd(cmds);
     }
 
+    public static void disableNFC(boolean disable, Context context) {
+        boolean success = false;
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(context);
 
+        if (nfcAdapter != null) {
+            Class nfcManagerClass;
+            Method setNfcEnabled;
+            try {
+                nfcManagerClass = Class.forName(nfcAdapter.getClass().getName());
+                setNfcEnabled = nfcManagerClass.getDeclaredMethod(disable ? "disable" : "enable");
+                setNfcEnabled.setAccessible(true);
+                success = (Boolean) setNfcEnabled.invoke(nfcAdapter);
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
+        FlyveLog.d("disableNFC: " + success);
+    }
 }

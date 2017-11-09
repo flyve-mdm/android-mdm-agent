@@ -19,6 +19,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.nfc" android:required="false" />
 
     <!-- for location information -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -36,6 +38,8 @@
     <!--This permission are required to enable GPS-->
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
+
+
 
     <application
         android:name=".ui.MDMAgent"
@@ -144,6 +148,7 @@
                 <action android:name="android.app.action.ACTION_PASSWORD_EXPIRING" />
                 <action android:name="android.app.action.ACTION_PASSWORD_FAILED" />
                 <action android:name="android.app.action.ACTION_PASSWORD_SUCCEEDED" />
+                <action android:name="android.nfc.extra.ADAPTER_STATE" />
             </intent-filter>
         </receiver>
 

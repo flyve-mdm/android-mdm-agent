@@ -75,11 +75,16 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         }
 
         // Manage Bluetooth
-        if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+        if ("android.bluetooth.adapter.action.STATE_CHANGED".equalsIgnoreCase(action)) {
             BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             if (bluetoothAdapter.isEnabled() && cache.getConnectivityBluetoothDisable()) {
                 bluetoothAdapter.disable();
             }
+        }
+
+        // Manage NFC
+        if("android.nfc.extra.ADAPTER_STATE".equalsIgnoreCase(action) && !cache.getNFC().equals("")) {
+            SystemHelper.disableNFC(cache.getConnectivityNFCDisable(), context);
         }
 
         // Manage location
