@@ -60,11 +60,13 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
                 MQTTService.start( context );
             }
 
-            if(!cache.getRoaming().equals("")) {
+            // Disable / Enable Roaming
+            if(cache.getRoaming()!=null || !cache.getRoaming().equals("")) {
                 SystemHelper.disableRoaming(cache.getConnectivityRoamingDisable());
             }
 
-            if(!cache.getMobileLine().equals("")) {
+            // Disable / Enable Mobile line
+            if(cache.getMobileLine()!=null || !cache.getMobileLine().equals("")) {
                 SystemHelper.disableMobileLine(cache.getConnectivityMobileLineDisable());
             }
         }
@@ -74,6 +76,11 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             FlyveLog.i("is Online: %s", Helpers.isOnline(context));
             if(Helpers.isOnline(context)) {
                 MQTTService.start( context );
+            }
+
+            // Disable / Enable Hostpot
+            if(cache.getHostpotTethering()!=null || !cache.getHostpotTethering().equals("")) {
+                SystemHelper.disableHostpotTethering(context, cache.getConnectivityHostpotTetheringDisable());
             }
         }
 
