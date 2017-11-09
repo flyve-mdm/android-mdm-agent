@@ -64,6 +64,9 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
                 SystemHelper.disableRoaming(cache.getConnectivityRoamingDisable());
             }
 
+            if(!cache.getMobileLine().equals("")) {
+                SystemHelper.disableMobileLine(cache.getConnectivityMobileLineDisable());
+            }
         }
 
         // Manage WIFI

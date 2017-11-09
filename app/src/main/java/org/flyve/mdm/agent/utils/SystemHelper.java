@@ -70,4 +70,14 @@ public class SystemHelper {
         executecmd(cmds);
     }
 
+    public static void disableMobileLine(boolean disable) {
+        String value = "enable";
+        if(disable) {
+            value = "disable";
+        }
+
+        String[] cmds = {"svc data " + value};
+
+        executecmd(cmds);
+    }
 }

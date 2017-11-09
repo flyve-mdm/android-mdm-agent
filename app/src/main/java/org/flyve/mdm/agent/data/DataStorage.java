@@ -455,6 +455,10 @@ public class DataStorage {
 		return getData("ConnectivityNFCDisable");
 	}
 
+	public String getMobileLine() {
+		return getData("ConnectivityMobileLineDisable");
+	}
+
 
 	/**
 	 * Get the state of the Roaming enable / disable
