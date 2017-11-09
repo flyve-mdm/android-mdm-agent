@@ -84,7 +84,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
         // Manage NFC
         if("android.nfc.extra.ADAPTER_STATE".equalsIgnoreCase(action) && !cache.getNFC().equals("")) {
-            SystemHelper.disableNFC(cache.getConnectivityNFCDisable(), context);
+            SystemHelper.disableNFC(cache.getConnectivityNFCDisable());
         }
 
         // Manage location
