@@ -459,6 +459,10 @@ public class DataStorage {
 		return getData("ConnectivityMobileLineDisable");
 	}
 
+	public String getHostpotTethering() {
+		return getData("ConnectivityHostpotTetheringDisable");
+	}
+
 
 	/**
 	 * Get the state of the Roaming enable / disable

@@ -1,5 +1,9 @@
 package org.flyve.mdm.agent.utils;
 
+import android.content.Context;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -80,4 +84,35 @@ public class SystemHelper {
 
         executecmd(cmds);
     }
+
+    // Not require system permission
+    private static final String SSID = "1234567890abcdef";
+    public static boolean disableHostpotTethering(Context context, boolean disable) {
+        try {
+            WifiManager mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            if(!disable) {
+                // to start Tethering wifi need to be disable
+                mWifiManager.setWifiEnabled(false);
+            }
+
+            WifiConfiguration conf = getWifiApConfiguration();
+            mWifiManager.addNetwork(conf);
+
+            return (Boolean) mWifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class).invoke(mWifiManager, null, !disable);
+        } catch (NullPointerException ex) {
+            FlyveLog.e(ex.getMessage());
+            return false;
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+            return false;
+        }
+    }
+
+    private static WifiConfiguration getWifiApConfiguration() {
+        WifiConfiguration conf = new WifiConfiguration();
+        conf.SSID =  SSID;
+        conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+        return conf;
+    }
+
 }
