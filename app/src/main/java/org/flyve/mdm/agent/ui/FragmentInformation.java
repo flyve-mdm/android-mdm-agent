@@ -22,10 +22,8 @@ import org.flyve.mdm.agent.core.user.UserController;
 import org.flyve.mdm.agent.core.user.UserModel;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
-import org.flyve.mdm.agent.utils.GpsHelper;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 public class FragmentInformation extends Fragment {
 

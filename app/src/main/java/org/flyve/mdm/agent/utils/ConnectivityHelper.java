@@ -33,9 +33,9 @@ import java.io.IOException;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class SystemHelper {
+public class ConnectivityHelper {
 
-    private SystemHelper() {}
+    private ConnectivityHelper() {}
 
     private static void executecmd(String[] cmds) {
         try {
@@ -50,6 +50,17 @@ public class SystemHelper {
         catch (IOException ex){
             FlyveLog.d(ex.getMessage());
         }
+    }
+
+    public static void disableGps(boolean disable) {
+        String gps = "+gps";
+        if(disable) {
+            gps = "-gps";
+        }
+
+        String[] cmds = {"cd /system/bin" ,"settings put secure location_providers_allowed " + gps};
+
+        executecmd(cmds);
     }
 
     public static void disableRoaming(boolean disable){

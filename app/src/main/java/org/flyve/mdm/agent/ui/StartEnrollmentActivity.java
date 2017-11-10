@@ -46,7 +46,6 @@ import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.flyve.mdm.agent.utils.SystemHelper;
 
 public class StartEnrollmentActivity extends Activity {
 
@@ -186,34 +185,30 @@ public class StartEnrollmentActivity extends Activity {
         btnEnroll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SystemHelper.disableHostpotTethering( StartEnrollmentActivity.this, status );
+                btnEnroll.setVisibility(View.GONE);
+                txtMessage.setText(getResources().getString(R.string.please_wait));
+                pb.setVisibility(View.VISIBLE);
 
-                status = !status;
+                EnrollmentHelper sessionToken = new EnrollmentHelper(StartEnrollmentActivity.this);
+                sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
+                    @Override
+                    public void onSuccess(String data) {
+                        btnEnroll.setVisibility(View.VISIBLE);
+                        pb.setVisibility(View.GONE);
+                        txtMessage.setText("");
+                        txtTitle.setText(getResources().getString(R.string.start_enroll));
 
-//                btnEnroll.setVisibility(View.GONE);
-//                txtMessage.setText(getResources().getString(R.string.please_wait));
-//                pb.setVisibility(View.VISIBLE);
-//
-//                EnrollmentHelper sessionToken = new EnrollmentHelper(StartEnrollmentActivity.this);
-//                sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
-//                    @Override
-//                    public void onSuccess(String data) {
-//                        btnEnroll.setVisibility(View.VISIBLE);
-//                        pb.setVisibility(View.GONE);
-//                        txtMessage.setText("");
-//                        txtTitle.setText(getResources().getString(R.string.start_enroll));
-//
-//                        // Active EnrollmentHelper Token is stored on cache
-//                        openActivity();
-//                    }
-//
-//                    @Override
-//                    public void onError(String error) {
-//                        btnEnroll.setVisibility(View.VISIBLE);
-//                        pb.setVisibility(View.GONE);
-//                        showError( error );
-//                    }
-//                });
+                        // Active EnrollmentHelper Token is stored on cache
+                        openActivity();
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        btnEnroll.setVisibility(View.VISIBLE);
+                        pb.setVisibility(View.GONE);
+                        showError( error );
+                    }
+                });
             }
         });
     }
