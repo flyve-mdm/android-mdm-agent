@@ -68,12 +68,12 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             }
 
             // Disable / Enable Roaming
-            if(cache.getRoaming()!=null || !cache.getRoaming().equals("")) {
+            if(cache.getRoaming()!=null && !cache.getRoaming().equals("")) {
                 ConnectivityHelper.disableRoaming(cache.getConnectivityRoamingDisable());
             }
 
             // Disable / Enable Mobile line
-            if(cache.getMobileLine()!=null || !cache.getMobileLine().equals("")) {
+            if(cache.getMobileLine()!=null && !cache.getMobileLine().equals("")) {
                 ConnectivityHelper.disableMobileLine(cache.getConnectivityMobileLineDisable());
             }
         }
@@ -86,7 +86,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             }
 
             // Disable / Enable Hostpot
-            if(cache.getHostpotTethering()!=null || !cache.getHostpotTethering().equals("")) {
+            if(cache.getHostpotTethering()!=null && !cache.getHostpotTethering().equals("")) {
                 ConnectivityHelper.disableHostpotTethering(context, cache.getConnectivityHostpotTetheringDisable());
             }
         }
