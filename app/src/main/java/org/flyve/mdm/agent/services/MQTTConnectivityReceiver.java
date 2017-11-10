@@ -54,6 +54,14 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
         DataStorage cache = new DataStorage(context);
 
+        if("android.hardware.usb.action.USB_DEVICE_ATTACHED".equalsIgnoreCase(action)) {
+            FlyveLog.d("USB Device Attached");
+            if(cache.getUsbFileTransferProtocols()!=null && !cache.getUsbFileTransferProtocols().equals("")) {
+                SystemHelper.disableUsbFileTransferProtocols( cache.getConnectivityUsbFileTransferProtocolsDisable() );
+            }
+
+        }
+
         if("android.net.conn.CONNECTIVITY_CHANGE".equalsIgnoreCase(action)) {
             FlyveLog.i("is Online: %s", Helpers.isOnline(context));
             if(Helpers.isOnline(context)) {
@@ -93,8 +101,11 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         }
 
         // Manage NFC
-        if("android.nfc.extra.ADAPTER_STATE".equalsIgnoreCase(action) && !cache.getNFC().equals("")) {
-            SystemHelper.disableNFC(cache.getConnectivityNFCDisable());
+        if("android.nfc.extra.ADAPTER_STATE".equalsIgnoreCase(action)) {
+            FlyveLog.d("ADAPTER STATE Change");
+            if(cache.getNFC()!=null || !cache.getNFC().equals("")) {
+                SystemHelper.disableNFC(cache.getConnectivityNFCDisable());
+            }
         }
 
         // Manage location

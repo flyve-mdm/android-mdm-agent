@@ -115,4 +115,15 @@ public class SystemHelper {
         return conf;
     }
 
+    public static void disableUsbFileTransferProtocols(boolean disable) {
+        String value = "mtp,ptp,adb";
+        if(disable) {
+            value = "none";
+        }
+
+        String[] cmds = {"setprop persist.sys.usb.config " + value};
+
+        executecmd(cmds);
+    }
+
 }

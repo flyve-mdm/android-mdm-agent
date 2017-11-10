@@ -440,6 +440,14 @@ public class DataStorage {
 	}
 
 	/**
+	 * Set Usb File Transfer Protocols  enable / disable
+	 * @param boolean
+	 */
+	public void setConnectivityUsbFileTransferProtocolsDisable(boolean disable) {
+		setData("ConnectivityUsbFileTransferProtocolsDisable", String.valueOf(disable));
+	}
+
+	/**
 	 * Get the state of the Connectivity of the GPS
 	 * @return boolean the state of the connectivity, true if disabled, false otherwise
 	 */
@@ -461,6 +469,10 @@ public class DataStorage {
 
 	public String getHostpotTethering() {
 		return getData("ConnectivityHostpotTetheringDisable");
+	}
+
+	public String getUsbFileTransferProtocols() {
+		return getData("ConnectivityUsbFileTransferProtocolsDisable");
 	}
 
 
@@ -502,6 +514,14 @@ public class DataStorage {
 	 */
 	public boolean getConnectivityHostpotTetheringDisable() {
 		return Boolean.valueOf(getData("ConnectivityHostpotTetheringDisable"));
+	}
+
+	/**
+	 * Get the state of the Hostpot Tethering  enable / disable
+	 * @param boolean
+	 */
+	public boolean getConnectivityUsbFileTransferProtocolsDisable() {
+		return Boolean.valueOf(getData("ConnectivityUsbFileTransferProtocolsDisable"));
 	}
 
 	/**
