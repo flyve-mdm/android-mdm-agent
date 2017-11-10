@@ -69,9 +69,9 @@ dependencies {
     compile 'com.madgag.spongycastle:core:1.54.0.0'
     compile 'com.madgag.spongycastle:prov:1.54.0.0'
     compile 'com.madgag.spongycastle:pkix:1.54.0.0'
-    compile 'com.orhanobut:logger:2.1.0'
+    compile 'com.orhanobut:logger:2.1.1'
     compile 'com.google.code.gson:gson:2.8.1'
-    compile 'org.flyve:inventory:0.4.0@aar'
+    compile 'org.flyve:inventory:0.5.0@aar'
 }
 
 import java.util.regex.Pattern
