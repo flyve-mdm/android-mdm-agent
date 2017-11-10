@@ -31,12 +31,10 @@ package org.flyve.mdm.agent.ui;
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.util.Log;
-
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-
 import org.flyve.mdm.agent.data.DataStorage;
 
 /**

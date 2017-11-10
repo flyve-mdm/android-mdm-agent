@@ -32,9 +32,8 @@ import android.content.Context;
 import android.content.Intent;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
-import org.flyve.mdm.agent.utils.GpsHelper;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.flyve.mdm.agent.utils.SystemHelper;
+import org.flyve.mdm.agent.utils.ConnectivityHelper;
 
 /**
  * Receive broadcast from android.net.wifi.STATE_CHANGE and android.bluetooth.adapter.action.STATE_CHANGED
@@ -57,7 +56,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         if("android.hardware.usb.action.USB_DEVICE_ATTACHED".equalsIgnoreCase(action)) {
             FlyveLog.d("USB Device Attached");
             if(cache.getUsbFileTransferProtocols()!=null && !cache.getUsbFileTransferProtocols().equals("")) {
-                SystemHelper.disableUsbFileTransferProtocols( cache.getConnectivityUsbFileTransferProtocolsDisable() );
+                ConnectivityHelper.disableUsbFileTransferProtocols( cache.getConnectivityUsbFileTransferProtocolsDisable() );
             }
 
         }
@@ -70,12 +69,12 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
             // Disable / Enable Roaming
             if(cache.getRoaming()!=null || !cache.getRoaming().equals("")) {
-                SystemHelper.disableRoaming(cache.getConnectivityRoamingDisable());
+                ConnectivityHelper.disableRoaming(cache.getConnectivityRoamingDisable());
             }
 
             // Disable / Enable Mobile line
             if(cache.getMobileLine()!=null || !cache.getMobileLine().equals("")) {
-                SystemHelper.disableMobileLine(cache.getConnectivityMobileLineDisable());
+                ConnectivityHelper.disableMobileLine(cache.getConnectivityMobileLineDisable());
             }
         }
 
@@ -88,7 +87,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
             // Disable / Enable Hostpot
             if(cache.getHostpotTethering()!=null || !cache.getHostpotTethering().equals("")) {
-                SystemHelper.disableHostpotTethering(context, cache.getConnectivityHostpotTetheringDisable());
+                ConnectivityHelper.disableHostpotTethering(context, cache.getConnectivityHostpotTetheringDisable());
             }
         }
 
@@ -104,7 +103,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         if("android.nfc.extra.ADAPTER_STATE".equalsIgnoreCase(action)) {
             FlyveLog.d("ADAPTER STATE Change");
             if(cache.getNFC()!=null || !cache.getNFC().equals("")) {
-                SystemHelper.disableNFC(cache.getConnectivityNFCDisable());
+                ConnectivityHelper.disableNFC(cache.getConnectivityNFCDisable());
             }
         }
 
@@ -138,7 +137,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
              */
 
             boolean disable = cache.getConnectivityGPSDisable();
-            GpsHelper.disableGps(disable);
+            ConnectivityHelper.disableGps(disable);
 
             FlyveLog.i("Location providers change: " + disable);
         }
