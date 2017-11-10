@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
+import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
 /*
@@ -46,6 +47,11 @@ public class FragmentSlideWalkthrough extends Fragment {
     private int slides;
     private int position;
 
+    private String mLink = "";
+    private String mMessage = "";
+    private int mImage = 0;
+
+
     /**
      * Set the properties to equal the given arguments
      * @param WalkthroughModel the walkthroug model class
@@ -72,19 +78,32 @@ public class FragmentSlideWalkthrough extends Fragment {
         ViewGroup v = (ViewGroup) inflater.inflate(
                 R.layout.fragment_walkthrough_step, container, false);
 
+        try {
+            mLink = walkthroughModel.getLink();
+            mMessage = walkthroughModel.getMessage();
+            mImage = walkthroughModel.getImage();
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+
         TextView txtMessage = (TextView) v.findViewById(R.id.txtMessage);
-        if(!walkthroughModel.getLink().equals("")) {
+        if (!mLink.equals("")) {
             txtMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Helpers.openURL(FragmentSlideWalkthrough.this.getContext(), walkthroughModel.getLink());
+                    Helpers.openURL(FragmentSlideWalkthrough.this.getContext(), mLink);
                 }
             });
         }
-        txtMessage.setText(Html.fromHtml(walkthroughModel.getMessage()));
+
+        if (!mMessage.equals("")) {
+            txtMessage.setText(Html.fromHtml(mMessage));
+        }
 
         ImageView imgStep = (ImageView) v.findViewById(R.id.imgStep);
-        imgStep.setImageResource(walkthroughModel.getImage());
+        if (mImage>0) {
+            imgStep.setImageResource(mImage);
+        }
 
         slideDots(v);
 
