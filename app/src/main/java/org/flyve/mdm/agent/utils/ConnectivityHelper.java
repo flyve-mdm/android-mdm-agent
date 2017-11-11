@@ -137,4 +137,10 @@ public class ConnectivityHelper {
         executecmd(cmds);
     }
 
+    public static void disableSMS(boolean disable) {
+
+
+
+    }
+
 }
