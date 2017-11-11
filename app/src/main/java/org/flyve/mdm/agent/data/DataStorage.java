@@ -440,6 +440,14 @@ public class DataStorage {
 	}
 
 	/**
+	 * Set SMS / MMS  enable / disable
+	 * @param boolean
+	 */
+	public void setConnectivitySmsMmsDisable(boolean disable) {
+		setData("ConnectivitySmsMmsDisable", String.valueOf(disable));
+	}
+
+	/**
 	 * Set Usb File Transfer Protocols  enable / disable
 	 * @param boolean
 	 */
@@ -475,6 +483,9 @@ public class DataStorage {
 		return getData("ConnectivityUsbFileTransferProtocolsDisable");
 	}
 
+	public String getSmsMms() {
+		return getData("ConnectivitySmsMmsDisable");
+	}
 
 	/**
 	 * Get the state of the Roaming enable / disable
@@ -522,6 +533,14 @@ public class DataStorage {
 	 */
 	public boolean getConnectivityUsbFileTransferProtocolsDisable() {
 		return Boolean.valueOf(getData("ConnectivityUsbFileTransferProtocolsDisable"));
+	}
+
+	/**
+	 * Get the state of SMS / MMS  enable / disable
+	 * @param boolean
+	 */
+	public boolean getConnectivitySmsMmsDisable() {
+		return Boolean.valueOf(getData("ConnectivitySmsMmsDisable"));
 	}
 
 	/**
