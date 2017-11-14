@@ -2,6 +2,7 @@ package org.flyve.mdm.agent.ui;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +17,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.user.UserController;
@@ -26,9 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LockActivity extends Activity {
-
-    // Max number of times the launcher pick dialog toast should show
-    private int launcherPickToast = 2;
 
     private WindowManager wm;
     private PackageManager packageManager;
@@ -43,6 +40,9 @@ public class LockActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        IntentFilter filter = new IntentFilter("org.flyve.mdm.agent.unlock");
+        this.registerReceiver(new Receiver(), filter);
 
         // Activity window flags
         flags = WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
@@ -108,15 +108,6 @@ public class LockActivity extends Activity {
             launcherPicker.setAction(Intent.ACTION_MAIN);
             launcherPicker.addCategory(Intent.CATEGORY_HOME);
             startActivity(launcherPicker);
-
-            if (launcherPickToast > 0) {
-                launcherPickToast -= 1;
-
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "toast message",
-                        Toast.LENGTH_LONG);
-                toast.show();
-            }
         }
     }
 
@@ -152,8 +143,12 @@ public class LockActivity extends Activity {
         UserModel user = new UserController(LockActivity.this).getCache();
 
         if(editEmail.getText().toString().equals(user.getEmails().get(0).getEmail())) {
-            android.os.Process.killProcess(android.os.Process.myPid());
+            closeLock();
         }
+    }
+
+    private void closeLock() {
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     @Override
@@ -173,16 +168,12 @@ public class LockActivity extends Activity {
         if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
                 || (keyCode == KeyEvent.KEYCODE_POWER)
                 || (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
-                || (keyCode == KeyEvent.KEYCODE_CAMERA)) {
-            return true;
-        }
-        if ((keyCode == KeyEvent.KEYCODE_HOME)) {
-
+                || (keyCode == KeyEvent.KEYCODE_CAMERA)
+                || (keyCode == KeyEvent.KEYCODE_HOME)) {
             return true;
         }
 
         return false;
-
     }
 
     // handle the key press events here itself
@@ -191,11 +182,19 @@ public class LockActivity extends Activity {
                 || (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)
                 || (event.getKeyCode() == KeyEvent.KEYCODE_POWER)) {
             return false;
-        }
-        if ((event.getKeyCode() == KeyEvent.KEYCODE_HOME)) {
-
+        } else if ((event.getKeyCode() == KeyEvent.KEYCODE_HOME)) {
             return true;
         }
         return false;
+    }
+
+    private class Receiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if("unlock".equalsIgnoreCase(action)) {
+                closeLock();
+            }
+        }
     }
 }

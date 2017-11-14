@@ -182,20 +182,21 @@ public class MQTTHelper {
 
     /**
      * Lock Device
-     * Example { "lock": [ { "locknow" : "true|false"} ] }
+     * Example {"lock":"now|unlock"}
      */
     public void lockDevice(ContextWrapper context, JSONObject json) {
         try {
             FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.context);
 
-            JSONObject jsonLock = json.getJSONArray("lock").getJSONObject(0);
-            boolean lock = jsonLock.getBoolean("locknow");
-            if(lock) {
+            String lock = json.getString("lock");
+            if(lock.equalsIgnoreCase("now")) {
                 // Start lock screen service
                 context.getBaseContext().startService(new Intent(context, LockScreenService.class));
 
                 mdm.lockDevice();
                 broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Lock", "Device Lock"));
+            } else {
+                Helpers.sendBroadcast("unlock", "org.flyve.mdm.agent.unlock", context);
             }
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on lockDevice", ex.getMessage()));

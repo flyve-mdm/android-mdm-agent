@@ -62,6 +62,9 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             >
+            <intent-filter>
+                <action android:name="org.flyve.mdm.agent.unlock" />
+            </intent-filter>
         </activity>
 
         <activity-alias
