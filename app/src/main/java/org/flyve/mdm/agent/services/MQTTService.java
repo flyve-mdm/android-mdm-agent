@@ -355,7 +355,7 @@ public class MQTTService extends Service implements MqttCallback {
 
             // Lock
             if(jsonObj.has("lock")) {
-                mqttHelper.lockDevice(jsonObj);
+                mqttHelper.lockDevice(MQTTService.this, jsonObj);
                 return;
             }
 
