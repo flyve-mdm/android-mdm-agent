@@ -43,12 +43,41 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.BROADCAST_SMS" />
 
+    <!-- Lock screen -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+
     <application
         android:name=".ui.MDMAgent"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".ui.LockActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+
+        <activity-alias
+            android:name=".LockHome"
+            android:enabled="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:targetActivity=".ui.LockActivity"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity-alias>
+
         <activity
             android:name=".ui.SplashActivity"
             android:configChanges="orientation|screenSize"
@@ -57,7 +86,6 @@
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -177,6 +205,16 @@
                 <action android:name="android.intent.action.ACTION_PACKAGE_REMOVED" />
                 <action android:name="android.intent.action.ACTION_PACKAGE_REPLACED" />
                 <data android:scheme="package"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- Lock Screen services -->
+        <service android:name=".services.LockScreenService" />
+        <receiver
+            android:name=".services.LockScreenReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
     </application>
