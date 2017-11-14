@@ -1,4 +1,4 @@
-package org.example.lockscreen;
+package org.flyve.mdm.agent.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
