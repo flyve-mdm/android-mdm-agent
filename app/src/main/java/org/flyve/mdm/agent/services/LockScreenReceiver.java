@@ -1,9 +1,11 @@
-package org.example.lockscreen;
+package org.flyve.mdm.agent.services;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+
+import org.flyve.mdm.agent.ui.MainActivity;
 
 public class LockScreenReceiver extends BroadcastReceiver {
     @Override
