@@ -28,7 +28,10 @@ package org.flyve.mdm.agent.utils;
  */
 
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.Intent;
 import android.location.Location;
+
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -39,6 +42,7 @@ import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
+import org.flyve.mdm.agent.services.LockScreenService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -180,13 +184,16 @@ public class MQTTHelper {
      * Lock Device
      * Example { "lock": [ { "locknow" : "true|false"} ] }
      */
-    public void lockDevice(JSONObject json) {
+    public void lockDevice(ContextWrapper context, JSONObject json) {
         try {
             FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.context);
 
             JSONObject jsonLock = json.getJSONArray("lock").getJSONObject(0);
             boolean lock = jsonLock.getBoolean("locknow");
             if(lock) {
+                // Start lock screen service
+                context.getBaseContext().startService(new Intent(context, LockScreenService.class));
+
                 mdm.lockDevice();
                 broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Lock", "Device Lock"));
             }
