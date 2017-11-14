@@ -1,16 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LockActivity">
+    android:background="@color/white"
+    >
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logoflyve"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        />
+
+    <TextView
+        android:id="@+id/txtMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lock_message"
+        android:layout_below="@+id/logo"
+        android:layout_margin="30dp"
+        />
+
+    <EditText
+        android:id="@+id/editEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:layout_below="@+id/txtMessage"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/lock_email"
+        />
+
+    <org.flyve.mdm.agent.utils.RoundedImageView
+        android:id="@+id/imgLogoSupervisor"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_teclib"
+        android:layout_below="@+id/editEmail"
+        android:layout_marginLeft="30dp"
+        />
+
+    <TextView
+        android:id="@+id/txtTitleSupervisor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/device_supervised_by_title"
+        android:layout_toRightOf="@id/imgLogoSupervisor"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@+id/editEmail"
+        style="@style/regularText"
+        />
+
+    <TextView
+        android:id="@+id/txtNameSupervisor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imgLogoSupervisor"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/txtTitleSupervisor"
+        style="@style/titleText"
+        android:text="@string/not_available"
+        />
+
+    <TextView
+        android:id="@+id/txtDescriptionSupervisor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imgLogoSupervisor"
+        android:layout_below="@+id/txtNameSupervisor"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        style="@style/regularText"
+        android:text="@string/not_available"
+        />
 
     <Button
         android:onClick="unlockScreen"
-        android:text="UNLOCK"
+        android:text="@string/lock_unlock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
         />
 
 </RelativeLayout>
