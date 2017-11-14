@@ -1,4 +1,4 @@
-package org.example.lockscreen;
+package org.flyve.mdm.agent.ui;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -15,7 +15,12 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.core.user.UserController;
+import org.flyve.mdm.agent.core.user.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +30,6 @@ public class LockActivity extends Activity {
     // Max number of times the launcher pick dialog toast should show
     private int launcherPickToast = 2;
 
-    // Member variables
-    private LockscreenUtils mLockscreenUtils;
-
     private WindowManager wm;
     private PackageManager packageManager;
     private int flags; // Window flags
@@ -36,12 +38,11 @@ public class LockActivity extends Activity {
     // Components for home launcher activity
     private ComponentName cnHome;
     private int componentEnabled;
+    private EditText editEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mLockscreenUtils = new LockscreenUtils();
 
         // Activity window flags
         flags = WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
@@ -71,7 +72,7 @@ public class LockActivity extends Activity {
         packageManager = getPackageManager();
         componentEnabled = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
 
-        cnHome = new ComponentName(this, "org.example.lockscreen.LockHome");
+        cnHome = new ComponentName(this, "org.flyve.mdm.agent.LockHome");
 
         // Enable home launcher activity component
         packageManager.setComponentEnabledSetting(cnHome, componentEnabled, PackageManager.DONT_KILL_APP);
@@ -94,9 +95,9 @@ public class LockActivity extends Activity {
             }
         });
 
-        startService(new Intent(this,LockScreenService.class));
+        setContentView(R.layout.activity_lock);
 
-        setContentView(R.layout.activity_main);
+        editEmail = (EditText) findViewById(R.id.editEmail);
 
         // Check default launcher, if current package isn't the default one
         // Open the 'Select home app' dialog for user to pick default home launcher
@@ -130,7 +131,7 @@ public class LockActivity extends Activity {
         final String myPackageName = getPackageName();
         List<ComponentName> activities = new ArrayList<ComponentName>();
 
-        packageManager.getPreferredActivities(filters, activities, "org.example.lockscreen");
+        packageManager.getPreferredActivities(filters, activities, "org.flyve.mdm.agent");
 
         for (ComponentName activity : activities) {
             if (myPackageName.equals(activity.getPackageName())) {
@@ -141,23 +142,6 @@ public class LockActivity extends Activity {
         return false;
     }
 
-
-    // Lock home button
-    public void lockHomeButton() {
-        mLockscreenUtils.lock(LockActivity.this);
-    }
-
-    /**
-     * A simple method that sets the screen to fullscreen.  It removes the Notifications bar,
-     *   the Actionbar and the virtual keys (if they are on the phone)
-     */
-    public void makeFullScreen() {
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON|
-                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|
-                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|
-                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-    }
-
     @Override
     public void onBackPressed() {
         return; //Do nothing!
@@ -165,7 +149,11 @@ public class LockActivity extends Activity {
 
     public void unlockScreen(View view) {
         //Instead of using finish(), this totally destroys the process
-        android.os.Process.killProcess(android.os.Process.myPid());
+        UserModel user = new UserController(LockActivity.this).getCache();
+
+        if(editEmail.getText().toString().equals(user.getEmails().get(0).getEmail())) {
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
     }
 
     @Override
