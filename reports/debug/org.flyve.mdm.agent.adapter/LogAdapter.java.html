@@ -36,21 +36,20 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.utils.FlyveLog;
-
 import java.util.HashMap;
 import java.util.List;
 
 public class LogAdapter extends BaseAdapter {
 
 	private List&lt;HashMap&lt;String, String&gt;&gt; data;
-<span class="nc" id="L46">	private LayoutInflater inflater = null;</span>
+<span class="nc" id="L45">	private LayoutInflater inflater = null;</span>
 
-<span class="nc" id="L48">	public LogAdapter(Activity activity, List&lt;HashMap&lt;String, String&gt;&gt; data) {</span>
-<span class="nc" id="L49">		FlyveLog.d(activity.getLocalClassName());</span>
+<span class="nc" id="L47">	public LogAdapter(Activity activity, List&lt;HashMap&lt;String, String&gt;&gt; data) {</span>
+<span class="nc" id="L48">		FlyveLog.d(activity.getLocalClassName());</span>
 
-<span class="nc" id="L51">		this.data = data;</span>
-<span class="nc" id="L52">		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);</span>
-<span class="nc" id="L53">	}</span>
+<span class="nc" id="L50">		this.data = data;</span>
+<span class="nc" id="L51">		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);</span>
+<span class="nc" id="L52">	}</span>
 
 	/**
 	 * Get how many items are in the data
@@ -58,7 +57,7 @@ public class LogAdapter extends BaseAdapter {
 	 */
 	@Override
 	public int getCount() {
-<span class="nc" id="L61">		return data.size();</span>
+<span class="nc" id="L60">		return data.size();</span>
 	}
 
 	/**
@@ -68,7 +67,7 @@ public class LogAdapter extends BaseAdapter {
  	 */
 	@Override
 	public Object getItem(int position) {
-<span class="nc" id="L71">		return position;</span>
+<span class="nc" id="L70">		return position;</span>
 	}
 
 	/**
@@ -78,7 +77,7 @@ public class LogAdapter extends BaseAdapter {
 	 */
 	@Override
 	public long getItemId(int position) {
-<span class="nc" id="L81">		return position;</span>
+<span class="nc" id="L80">		return position;</span>
 	}
 
 	/**
@@ -91,23 +90,23 @@ public class LogAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-<span class="nc" id="L94">		HashMap&lt;String, String&gt; hashdata = data.get(position);</span>
+<span class="nc" id="L93">		HashMap&lt;String, String&gt; hashdata = data.get(position);</span>
 
-<span class="nc" id="L96">		View vi = inflater.inflate(R.layout.listitem_main, null);</span>
+<span class="nc" id="L95">		View vi = inflater.inflate(R.layout.listitem_main, null);</span>
 
-<span class="nc" id="L98">		TextView txtType = (TextView) vi.findViewById(R.id.txtType);</span>
-<span class="nc" id="L99">		txtType.setText(hashdata.get(&quot;type&quot;));</span>
+<span class="nc" id="L97">		TextView txtType = (TextView) vi.findViewById(R.id.txtType);</span>
+<span class="nc" id="L98">		txtType.setText(hashdata.get(&quot;type&quot;));</span>
 
-<span class="nc" id="L101">		TextView txtDate = (TextView) vi.findViewById(R.id.txtDate);</span>
-<span class="nc" id="L102">		txtDate.setText(hashdata.get(&quot;date&quot;));</span>
+<span class="nc" id="L100">		TextView txtDate = (TextView) vi.findViewById(R.id.txtDate);</span>
+<span class="nc" id="L101">		txtDate.setText(hashdata.get(&quot;date&quot;));</span>
 
-<span class="nc" id="L104">		TextView txtTitle = (TextView) vi.findViewById(R.id.txtTitle);</span>
-<span class="nc" id="L105">		txtTitle.setText(hashdata.get(&quot;title&quot;));</span>
+<span class="nc" id="L103">		TextView txtTitle = (TextView) vi.findViewById(R.id.txtTitle);</span>
+<span class="nc" id="L104">		txtTitle.setText(hashdata.get(&quot;title&quot;));</span>
 
-<span class="nc" id="L107">		TextView txtBody = (TextView) vi.findViewById(R.id.txtBody);</span>
-<span class="nc" id="L108">		txtBody.setText(hashdata.get(&quot;body&quot;));</span>
+<span class="nc" id="L106">		TextView txtBody = (TextView) vi.findViewById(R.id.txtBody);</span>
+<span class="nc" id="L107">		txtBody.setText(hashdata.get(&quot;body&quot;));</span>
 
-<span class="nc" id="L110">		return vi;</span>
+<span class="nc" id="L109">		return vi;</span>
 
 	}
 

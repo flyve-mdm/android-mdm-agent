@@ -2,22 +2,64 @@
 
 import android.content.Context;
 
+/*
+ *   Copyright (C) 2017 Teclib. All rights reserved.
+ *
+ *   This file is part of flyve-mdm-android-agent
+ *
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @date      9/8/17
+ * @copyright Copyright (C) 2017 Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+
 public class SupervisorController {
 
     private SupervisorStorage cache;
 
-<span class="nc" id="L9">    public SupervisorController(Context context) {</span>
-<span class="nc" id="L10">        cache = new SupervisorStorage(context);</span>
-<span class="nc" id="L11">    }</span>
+    /**
+     * Constructor
+     * @param context
+     */
+<span class="nc" id="L40">    public SupervisorController(Context context) {</span>
+<span class="nc" id="L41">        cache = new SupervisorStorage(context);</span>
+<span class="nc" id="L42">    }</span>
 
-<span class="nc" id="L13">    public SupervisorModel getCache() { return cache.getSupervisor(); }</span>
+    /**
+     * Get the cache
+     * @return the local storage
+     */
+    public SupervisorModel getCache() {
+<span class="nc" id="L49">        return cache.getSupervisor();</span>
+    }
 
+    /**
+     * Save the local storage
+     * @param supervisor
+     * @return boolean true if saved, else otherwise
+     */
     public boolean save(SupervisorModel supervisor) {
         try {
-<span class="nc" id="L17">            cache.setSupervisor(supervisor);</span>
-<span class="nc" id="L18">            return true;</span>
-<span class="nc" id="L19">        } catch (Exception ex) {</span>
-<span class="nc" id="L20">            return false;</span>
+<span class="nc" id="L59">            cache.setSupervisor(supervisor);</span>
+<span class="nc" id="L60">            return true;</span>
+<span class="nc" id="L61">        } catch (Exception ex) {</span>
+<span class="nc" id="L62">            return false;</span>
         }
     }
 }
