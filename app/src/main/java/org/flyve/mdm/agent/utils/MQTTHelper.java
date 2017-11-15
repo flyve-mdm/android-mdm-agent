@@ -287,8 +287,14 @@ public class MQTTHelper {
 
                 if (jsonConnectivity.has("disableSmsMms")) {
                     boolean disable = jsonConnectivity.getBoolean("disableSmsMms");
-                    cache.setConnectivityHostpotTetheringDisable(disable);
+                    cache.setConnectivitySmsMmsDisable(disable);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "SmsMms", "SmsMms is disable: " + disable));
+                }
+
+                if (jsonConnectivity.has("disableUsbFileTransferProtocols")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableUsbFileTransferProtocols");
+                    cache.setConnectivityUsbFileTransferProtocolsDisable(disable);
+                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols", "UsbFileTransferProtocols is disable: " + disable));
                 }
 
             }
