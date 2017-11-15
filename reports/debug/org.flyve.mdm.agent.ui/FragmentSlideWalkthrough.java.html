@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
+import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
 /*
@@ -40,11 +41,16 @@ import org.flyve.mdm.agent.utils.Helpers;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-<span class="fc" id="L43">public class FragmentSlideWalkthrough extends Fragment {</span>
+<span class="fc" id="L44">public class FragmentSlideWalkthrough extends Fragment {</span>
 
     private WalkthroughModel walkthroughModel;
     private int slides;
     private int position;
+
+<span class="fc" id="L50">    private String mLink = &quot;&quot;;</span>
+<span class="fc" id="L51">    private String mMessage = &quot;&quot;;</span>
+<span class="fc" id="L52">    private int mImage = 0;</span>
+
 
     /**
      * Set the properties to equal the given arguments
@@ -53,10 +59,10 @@ import org.flyve.mdm.agent.utils.Helpers;
      * @param int the position the user is currently on
      */
     public void config(WalkthroughModel walkthroughModel, int slides, int position) {
-<span class="fc" id="L56">        this.walkthroughModel = walkthroughModel;</span>
-<span class="fc" id="L57">        this.slides = slides;</span>
-<span class="fc" id="L58">        this.position = position;</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L62">        this.walkthroughModel = walkthroughModel;</span>
+<span class="fc" id="L63">        this.slides = slides;</span>
+<span class="fc" id="L64">        this.position = position;</span>
+<span class="fc" id="L65">    }</span>
 
     /**
      * Called to have the fragments instantiate its user interface view
@@ -69,26 +75,39 @@ import org.flyve.mdm.agent.utils.Helpers;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-<span class="fc" id="L72">        ViewGroup v = (ViewGroup) inflater.inflate(</span>
+<span class="fc" id="L78">        ViewGroup v = (ViewGroup) inflater.inflate(</span>
                 R.layout.fragment_walkthrough_step, container, false);
 
-<span class="fc" id="L75">        TextView txtMessage = (TextView) v.findViewById(R.id.txtMessage);</span>
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if(!walkthroughModel.getLink().equals(&quot;&quot;)) {</span>
-<span class="fc" id="L77">            txtMessage.setOnClickListener(new View.OnClickListener() {</span>
+        try {
+<span class="fc" id="L82">            mLink = walkthroughModel.getLink();</span>
+<span class="fc" id="L83">            mMessage = walkthroughModel.getMessage();</span>
+<span class="fc" id="L84">            mImage = walkthroughModel.getImage();</span>
+<span class="nc" id="L85">        } catch (Exception ex) {</span>
+<span class="nc" id="L86">            FlyveLog.e(ex.getMessage());</span>
+<span class="fc" id="L87">        }</span>
+
+<span class="fc" id="L89">        TextView txtMessage = (TextView) v.findViewById(R.id.txtMessage);</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if (!mLink.equals(&quot;&quot;)) {</span>
+<span class="fc" id="L91">            txtMessage.setOnClickListener(new View.OnClickListener() {</span>
                 @Override
                 public void onClick(View v) {
-<span class="nc" id="L80">                    Helpers.openURL(FragmentSlideWalkthrough.this.getContext(), walkthroughModel.getLink());</span>
-<span class="nc" id="L81">                }</span>
+<span class="nc" id="L94">                    Helpers.openURL(FragmentSlideWalkthrough.this.getContext(), mLink);</span>
+<span class="nc" id="L95">                }</span>
             });
         }
-<span class="fc" id="L84">        txtMessage.setText(Html.fromHtml(walkthroughModel.getMessage()));</span>
 
-<span class="fc" id="L86">        ImageView imgStep = (ImageView) v.findViewById(R.id.imgStep);</span>
-<span class="fc" id="L87">        imgStep.setImageResource(walkthroughModel.getImage());</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (!mMessage.equals(&quot;&quot;)) {</span>
+<span class="fc" id="L100">            txtMessage.setText(Html.fromHtml(mMessage));</span>
+        }
 
-<span class="fc" id="L89">        slideDots(v);</span>
+<span class="fc" id="L103">        ImageView imgStep = (ImageView) v.findViewById(R.id.imgStep);</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">        if (mImage&gt;0) {</span>
+<span class="fc" id="L105">            imgStep.setImageResource(mImage);</span>
+        }
 
-<span class="fc" id="L91">        return v;</span>
+<span class="fc" id="L108">        slideDots(v);</span>
+
+<span class="fc" id="L110">        return v;</span>
     }
 
     /**
@@ -97,21 +116,21 @@ import org.flyve.mdm.agent.utils.Helpers;
      */
     private void slideDots(ViewGroup v) {
 
-<span class="fc" id="L100">        LinearLayout ln = (LinearLayout) v.findViewById(R.id.lnSliders);</span>
+<span class="fc" id="L119">        LinearLayout ln = (LinearLayout) v.findViewById(R.id.lnSliders);</span>
 
-<span class="fc bfc" id="L102" title="All 2 branches covered.">        for(int i=0; i&lt;this.slides; i++) {</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        for(int i=0; i&lt;this.slides; i++) {</span>
 
-<span class="fc" id="L104">            ImageView img = new ImageView(FragmentSlideWalkthrough.this.getContext());</span>
-<span class="fc" id="L105">            img.setPadding(7,0,7,0);</span>
-<span class="fc bfc" id="L106" title="All 2 branches covered.">            if(i==this.position) {</span>
-<span class="fc" id="L107">                img.setImageResource(R.drawable.ic_dot_selected);</span>
+<span class="fc" id="L123">            ImageView img = new ImageView(FragmentSlideWalkthrough.this.getContext());</span>
+<span class="fc" id="L124">            img.setPadding(7,0,7,0);</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">            if(i==this.position) {</span>
+<span class="fc" id="L126">                img.setImageResource(R.drawable.ic_dot_selected);</span>
             } else {
-<span class="fc" id="L109">                img.setImageResource(R.drawable.ic_dot);</span>
+<span class="fc" id="L128">                img.setImageResource(R.drawable.ic_dot);</span>
             }
-<span class="fc" id="L111">            ln.addView(img);</span>
+<span class="fc" id="L130">            ln.addView(img);</span>
         }
 
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L133">    }</span>
 
 
 }

@@ -38,8 +38,6 @@ import org.json.JSONObject;
     private ImageView imgUser;
     private TextView txtNameSupervisor;
     private TextView txtDescriptionSupervisor;
-    private ImageView imgSupervisor;
-
     private int countEasterEgg;
 
     /**
@@ -48,13 +46,13 @@ import org.json.JSONObject;
     @Override
     public void onPause() {
         // unregister the broadcast
-<span class="nc bnc" id="L51" title="All 2 branches missed.">        if(mIntent != null) {</span>
-<span class="nc" id="L52">            getActivity().unregisterReceiver(broadcastServiceStatus);</span>
-<span class="nc" id="L53">            getActivity().unregisterReceiver(broadcastMessage);</span>
-<span class="nc" id="L54">            mIntent = null;</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if(mIntent != null) {</span>
+<span class="nc" id="L50">            getActivity().unregisterReceiver(broadcastServiceStatus);</span>
+<span class="nc" id="L51">            getActivity().unregisterReceiver(broadcastMessage);</span>
+<span class="nc" id="L52">            mIntent = null;</span>
         }
-<span class="nc" id="L56">        super.onPause();</span>
-<span class="nc" id="L57">    }</span>
+<span class="nc" id="L54">        super.onPause();</span>
+<span class="nc" id="L55">    }</span>
 
     /**
      * Called when the fragment is visible to the user and actively running
@@ -63,13 +61,13 @@ import org.json.JSONObject;
     @Override
     public void onResume() {
         // register the broadcast
-<span class="nc" id="L66">        super.onResume();</span>
-<span class="nc" id="L67">        LocalBroadcastManager.getInstance(FragmentInformation.this.getActivity()).registerReceiver(broadcastServiceStatus, new IntentFilter(&quot;flyve.mqtt.status&quot;));</span>
-<span class="nc" id="L68">        LocalBroadcastManager.getInstance(FragmentInformation.this.getActivity()).registerReceiver(broadcastMessage, new IntentFilter(&quot;flyve.mqtt.msg&quot;));</span>
+<span class="nc" id="L64">        super.onResume();</span>
+<span class="nc" id="L65">        LocalBroadcastManager.getInstance(FragmentInformation.this.getActivity()).registerReceiver(broadcastServiceStatus, new IntentFilter(&quot;flyve.mqtt.status&quot;));</span>
+<span class="nc" id="L66">        LocalBroadcastManager.getInstance(FragmentInformation.this.getActivity()).registerReceiver(broadcastMessage, new IntentFilter(&quot;flyve.mqtt.msg&quot;));</span>
 
-<span class="nc" id="L70">        loadClientInfo();</span>
-<span class="nc" id="L71">        loadSupervisor();</span>
-<span class="nc" id="L72">    }</span>
+<span class="nc" id="L68">        loadClientInfo();</span>
+<span class="nc" id="L69">        loadSupervisor();</span>
+<span class="nc" id="L70">    }</span>
 
     /**
      * Instantiate the user interface view
@@ -82,60 +80,59 @@ import org.json.JSONObject;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-<span class="nc" id="L85">        View v =  inflater.inflate(R.layout.fragment_information, container, false);</span>
+<span class="nc" id="L83">        View v =  inflater.inflate(R.layout.fragment_information, container, false);</span>
 
-<span class="nc" id="L87">        cache = new DataStorage(FragmentInformation.this.getActivity());</span>
+<span class="nc" id="L85">        cache = new DataStorage(FragmentInformation.this.getActivity());</span>
 
-<span class="nc" id="L89">        ImageView imgLogo = (ImageView) v.findViewById(R.id.imgLogo);</span>
-<span class="nc" id="L90">        imgLogo.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L87">        ImageView imgLogo = (ImageView) v.findViewById(R.id.imgLogo);</span>
+<span class="nc" id="L88">        imgLogo.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc bnc" id="L93" title="All 2 branches missed.">                if(!cache.getEasterEgg()) {</span>
-<span class="nc" id="L94">                    countEasterEgg++;</span>
-<span class="nc bnc" id="L95" title="All 4 branches missed.">                    if (countEasterEgg &gt; 6 &amp;&amp; countEasterEgg &lt;= 10) {</span>
-<span class="nc" id="L96">                        Toast.makeText(FragmentInformation.this.getActivity(), getResources().getQuantityString(R.plurals.easter_egg_attempts, countEasterEgg, countEasterEgg), Toast.LENGTH_SHORT).show();</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">                if(!cache.getEasterEgg()) {</span>
+<span class="nc" id="L92">                    countEasterEgg++;</span>
+<span class="nc bnc" id="L93" title="All 4 branches missed.">                    if (countEasterEgg &gt; 6 &amp;&amp; countEasterEgg &lt;= 10) {</span>
+<span class="nc" id="L94">                        Toast.makeText(FragmentInformation.this.getActivity(), getResources().getQuantityString(R.plurals.easter_egg_attempts, countEasterEgg, countEasterEgg), Toast.LENGTH_SHORT).show();</span>
                     }
-<span class="nc bnc" id="L98" title="All 2 branches missed.">                    if (countEasterEgg &gt;= 10) {</span>
-<span class="nc" id="L99">                        Toast.makeText(FragmentInformation.this.getActivity(), getResources().getString(R.string.easter_egg_success), Toast.LENGTH_SHORT).show();</span>
-<span class="nc" id="L100">                        cache.setEasterEgg(true);</span>
-<span class="nc" id="L101">                        ((MainActivity) FragmentInformation.this.getActivity()).loadListDrawer();</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                    if (countEasterEgg &gt;= 10) {</span>
+<span class="nc" id="L97">                        Toast.makeText(FragmentInformation.this.getActivity(), getResources().getString(R.string.easter_egg_success), Toast.LENGTH_SHORT).show();</span>
+<span class="nc" id="L98">                        cache.setEasterEgg(true);</span>
+<span class="nc" id="L99">                        ((MainActivity) FragmentInformation.this.getActivity()).loadListDrawer();</span>
                     }
                 }
-<span class="nc" id="L104">            }</span>
+<span class="nc" id="L102">            }</span>
         });
 
-<span class="nc" id="L107">        txtNameUser = (TextView) v.findViewById(R.id.txtNameUser);</span>
-<span class="nc" id="L108">        txtEmailUser = (TextView) v.findViewById(R.id.txtDescriptionUser);</span>
-<span class="nc" id="L109">        imgUser = (ImageView) v.findViewById(R.id.imgLogoUser);</span>
+<span class="nc" id="L105">        txtNameUser = (TextView) v.findViewById(R.id.txtNameUser);</span>
+<span class="nc" id="L106">        txtEmailUser = (TextView) v.findViewById(R.id.txtDescriptionUser);</span>
+<span class="nc" id="L107">        imgUser = (ImageView) v.findViewById(R.id.imgLogoUser);</span>
 
-<span class="nc" id="L111">        txtNameSupervisor = (TextView) v.findViewById(R.id.txtNameSupervisor);</span>
-<span class="nc" id="L112">        txtDescriptionSupervisor = (TextView) v.findViewById(R.id.txtDescriptionSupervisor);</span>
-<span class="nc" id="L113">        imgSupervisor = (ImageView) v.findViewById(R.id.imgLogoSupervisor);</span>
+<span class="nc" id="L109">        txtNameSupervisor = (TextView) v.findViewById(R.id.txtNameSupervisor);</span>
+<span class="nc" id="L110">        txtDescriptionSupervisor = (TextView) v.findViewById(R.id.txtDescriptionSupervisor);</span>
 
-<span class="nc" id="L115">        RelativeLayout layoutSupervisor = (RelativeLayout) v.findViewById(R.id.rlSupervisor);</span>
-<span class="nc" id="L116">        layoutSupervisor.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L112">        RelativeLayout layoutSupervisor = (RelativeLayout) v.findViewById(R.id.rlSupervisor);</span>
+<span class="nc" id="L113">        layoutSupervisor.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L119">                openSupervisorUser();</span>
-<span class="nc" id="L120">            }</span>
+<span class="nc" id="L116">                openSupervisorUser();</span>
+<span class="nc" id="L117">            }</span>
         });
 
-<span class="nc" id="L123">        RelativeLayout layoutUser = (RelativeLayout) v.findViewById(R.id.rlUser);</span>
-<span class="nc" id="L124">        layoutUser.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L120">        RelativeLayout layoutUser = (RelativeLayout) v.findViewById(R.id.rlUser);</span>
+<span class="nc" id="L121">        layoutUser.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L127">                openViewUser();</span>
-<span class="nc" id="L128">            }</span>
+<span class="nc" id="L124">                openViewUser();</span>
+<span class="nc" id="L125">            }</span>
         });
 
-<span class="nc" id="L131">        txtOnline = (TextView) v.findViewById(R.id.txtOnline);</span>
-<span class="nc" id="L132">        imgOnline = (ImageView) v.findViewById(R.id.imgOnline);</span>
+<span class="nc" id="L128">        txtOnline = (TextView) v.findViewById(R.id.txtOnline);</span>
+<span class="nc" id="L129">        imgOnline = (ImageView) v.findViewById(R.id.imgOnline);</span>
 
-<span class="nc" id="L134">        statusMQTT(cache.getOnlineStatus());</span>
-<span class="nc" id="L135">        loadSupervisor();</span>
-<span class="nc" id="L136">        loadClientInfo();</span>
+<span class="nc" id="L131">        statusMQTT(cache.getOnlineStatus());</span>
+<span class="nc" id="L132">        loadSupervisor();</span>
+<span class="nc" id="L133">        loadClientInfo();</span>
 
-<span class="nc" id="L138">        return v;</span>
+<span class="nc" id="L135">        return v;</span>
     }
 
     /**
@@ -146,142 +143,145 @@ import org.json.JSONObject;
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-<span class="nc" id="L149">        super.onActivityResult(requestCode, resultCode, data);</span>
+<span class="nc" id="L146">        super.onActivityResult(requestCode, resultCode, data);</span>
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (requestCode == EDIT_USER) {</span>
-<span class="nc" id="L152">            loadClientInfo();</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (requestCode == EDIT_USER) {</span>
+<span class="nc" id="L149">            loadClientInfo();</span>
         }
-<span class="nc" id="L154">    }</span>
+<span class="nc" id="L151">    }</span>
 
     /**
      * Load Supervisor information
      */
     private void loadSupervisor() {
-<span class="nc" id="L160">        SupervisorModel supervisor = new SupervisorController(FragmentInformation.this.getActivity()).getCache();</span>
+<span class="nc" id="L157">        SupervisorModel supervisor = new SupervisorController(FragmentInformation.this.getActivity()).getCache();</span>
 
-<span class="nc bnc" id="L162" title="All 4 branches missed.">        if(supervisor.getName() != null &amp;&amp; !supervisor.getName().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L163">            txtNameSupervisor.setText(supervisor.getName());</span>
+<span class="nc bnc" id="L159" title="All 4 branches missed.">        if(supervisor.getName() != null &amp;&amp; !supervisor.getName().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L160">            txtNameSupervisor.setText(supervisor.getName());</span>
         }
-<span class="nc bnc" id="L165" title="All 4 branches missed.">        if(supervisor.getEmail() != null &amp;&amp; !supervisor.getEmail().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L166">            txtDescriptionSupervisor.setText(supervisor.getEmail());</span>
+<span class="nc bnc" id="L162" title="All 4 branches missed.">        if(supervisor.getEmail() != null &amp;&amp; !supervisor.getEmail().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L163">            txtDescriptionSupervisor.setText(supervisor.getEmail());</span>
         }
-<span class="nc" id="L168">    }</span>
+<span class="nc" id="L165">    }</span>
 
     /**
      * Load Client information
      */
     private void loadClientInfo() {
-<span class="nc" id="L174">        UserModel user = new UserController(FragmentInformation.this.getActivity()).getCache();</span>
+<span class="nc" id="L171">        UserModel user = new UserController(FragmentInformation.this.getActivity()).getCache();</span>
 
-<span class="nc bnc" id="L176" title="All 4 branches missed.">        if(user.getFirstName() != null &amp;&amp; !user.getFirstName().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L177">            txtNameUser.setText(user.getFirstName() + &quot; &quot; + user.getLastName());</span>
+<span class="nc bnc" id="L173" title="All 4 branches missed.">        if(user.getFirstName() != null &amp;&amp; !user.getFirstName().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L174">            txtNameUser.setText(user.getFirstName() + &quot; &quot; + user.getLastName());</span>
         }
 
-<span class="nc bnc" id="L180" title="All 4 branches missed.">        if(user.getEmails().get(0).getEmail() != null &amp;&amp; !user.getEmails().get(0).getEmail().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L181">            txtEmailUser.setText(user.getEmails().get(0).getEmail());</span>
+<span class="nc bnc" id="L177" title="All 4 branches missed.">        if(user.getEmails().get(0).getEmail() != null &amp;&amp; !user.getEmails().get(0).getEmail().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L178">            txtEmailUser.setText(user.getEmails().get(0).getEmail());</span>
         }
 
-<span class="nc bnc" id="L184" title="All 2 branches missed.">        if(user.getPicture().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L185">            imgUser.setImageResource(R.drawable.ic_user_round);</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">        if(user.getPicture().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L182">            imgUser.setImageResource(R.drawable.ic_user_round);</span>
         } else {
             try {
-<span class="nc" id="L188">                imgUser.setImageBitmap(Helpers.StringToBitmap(user.getPicture()));</span>
-<span class="nc" id="L189">            } catch (Exception ex) {</span>
-<span class="nc" id="L190">                FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L191">                imgUser.setImageResource(R.drawable.ic_user_round);</span>
-<span class="nc" id="L192">            }</span>
+<span class="nc" id="L185">                imgUser.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));</span>
+<span class="nc" id="L186">            } catch (Exception ex) {</span>
+<span class="nc" id="L187">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L188">                imgUser.setImageResource(R.drawable.ic_user_round);</span>
+<span class="nc" id="L189">            }</span>
         }
-<span class="nc" id="L194">    }</span>
+<span class="nc" id="L191">    }</span>
 
     /**
      * Set the text and image source of the button according the status of the Message Queue Telemetry Transport (MQTT)
      * @param Boolean the value, online if true, otherwise offline
      */
     private void statusMQTT(Boolean bval) {
-<span class="nc bnc" id="L201" title="All 2 branches missed.">        if (bval) {</span>
-<span class="nc" id="L202">            txtOnline.setText(getResources().getString(R.string.online));</span>
-<span class="nc" id="L203">            imgOnline.setImageResource(R.drawable.ic_online);</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        if (bval) {</span>
+<span class="nc" id="L199">            txtOnline.setText(getResources().getString(R.string.online));</span>
+<span class="nc" id="L200">            imgOnline.setImageResource(R.drawable.ic_online);</span>
         } else {
-<span class="nc" id="L205">            txtOnline.setText(getResources().getString(R.string.offline));</span>
-<span class="nc" id="L206">            imgOnline.setImageResource(R.drawable.ic_offline);</span>
+<span class="nc" id="L202">            txtOnline.setText(getResources().getString(R.string.offline));</span>
+<span class="nc" id="L203">            imgOnline.setImageResource(R.drawable.ic_offline);</span>
         }
-<span class="nc" id="L208">    }</span>
+<span class="nc" id="L205">    }</span>
 
     /**
      * broadcastServiceStatus instance that receive service status from MQTTService
      */
-<span class="nc" id="L213">    private BroadcastReceiver broadcastServiceStatus = new BroadcastReceiver() {</span>
+<span class="nc" id="L210">    private BroadcastReceiver broadcastServiceStatus = new BroadcastReceiver() {</span>
         @Override
         public void onReceive(Context context, Intent intent) {
-<span class="nc" id="L216">            String action = intent.getAction();</span>
-<span class="nc" id="L217">            String msg = intent.getStringExtra(&quot;message&quot;);</span>
+<span class="nc" id="L213">            String action = intent.getAction();</span>
+<span class="nc" id="L214">            String msg = intent.getStringExtra(&quot;message&quot;);</span>
 
             // status ONLINE / OFFLINE
-<span class="nc bnc" id="L220" title="All 2 branches missed.">            if(&quot;flyve.mqtt.status&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">            if(&quot;flyve.mqtt.status&quot;.equalsIgnoreCase(action)) {</span>
                 try {
-<span class="nc bnc" id="L222" title="All 2 branches missed.">                    if(isAdded()) {</span>
-<span class="nc" id="L223">                        statusMQTT(Boolean.parseBoolean(msg));</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">                    if(isAdded()) {</span>
+<span class="nc" id="L220">                        statusMQTT(Boolean.parseBoolean(msg));</span>
                     }
-<span class="nc" id="L225">                } catch (Exception ex) {</span>
-<span class="nc" id="L226">                    FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L227">                }</span>
+<span class="nc" id="L222">                } catch (Exception ex) {</span>
+<span class="nc" id="L223">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L224">                }</span>
             }
-<span class="nc" id="L229">        }</span>
+<span class="nc" id="L226">        }</span>
     };
 
     /**
      * Instance that receive message from mqtt service
      */
-<span class="nc" id="L235">    private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {</span>
+<span class="nc" id="L232">    private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {</span>
+
+        /**
+         * Open Splash Activity
+         */
+        private void openSplash() {
+<span class="nc" id="L238">            Intent intent = new Intent(FragmentInformation.this.getActivity(), SplashActivity.class);</span>
+<span class="nc" id="L239">            FragmentInformation.this.getActivity().startActivity(intent);</span>
+<span class="nc" id="L240">            FragmentInformation.this.getActivity().finish();</span>
+<span class="nc" id="L241">        }</span>
+
+
         @Override
         public void onReceive(Context context, Intent intent) {
 
             // exit if not attached to an activity
-<span class="nc bnc" id="L240" title="All 2 branches missed.">            if(!isAdded()) {</span>
-<span class="nc" id="L241">                return;</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">            if(!isAdded()) {</span>
+<span class="nc" id="L249">                return;</span>
             }
 
-<span class="nc" id="L244">            String action = intent.getAction();</span>
-<span class="nc" id="L245">            String msg = intent.getStringExtra(&quot;message&quot;);</span>
+<span class="nc" id="L252">            String action = intent.getAction();</span>
+<span class="nc" id="L253">            String msg = intent.getStringExtra(&quot;message&quot;);</span>
 
             // Message from service
-<span class="nc bnc" id="L248" title="All 2 branches missed.">            if(&quot;flyve.mqtt.msg&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">            if(&quot;flyve.mqtt.msg&quot;.equalsIgnoreCase(action)) {</span>
 
                 try {
-<span class="nc" id="L251">                    JSONObject json = new JSONObject(msg);</span>
+<span class="nc" id="L259">                    JSONObject json = new JSONObject(msg);</span>
 
-<span class="nc" id="L253">                    String type = json.getString(&quot;type&quot;);</span>
-<span class="nc" id="L254">                    String title = json.getString(&quot;title&quot;);</span>
-<span class="nc" id="L255">                    String body = json.getString(&quot;body&quot;);</span>
+<span class="nc" id="L261">                    String type = json.getString(&quot;type&quot;);</span>
+<span class="nc" id="L262">                    String title = json.getString(&quot;title&quot;);</span>
+<span class="nc" id="L263">                    String body = json.getString(&quot;body&quot;);</span>
 
-<span class="nc bnc" id="L257" title="All 6 branches missed.">                    if(&quot;action&quot;.equalsIgnoreCase(type) &amp;&amp; &quot;open&quot;.equalsIgnoreCase(title) &amp;&amp; &quot;splash&quot;.equalsIgnoreCase(body)) {</span>
-<span class="nc" id="L258">                        openSplash();</span>
+<span class="nc bnc" id="L265" title="All 6 branches missed.">                    if(&quot;action&quot;.equalsIgnoreCase(type) &amp;&amp; &quot;open&quot;.equalsIgnoreCase(title) &amp;&amp; &quot;splash&quot;.equalsIgnoreCase(body)) {</span>
+<span class="nc" id="L266">                        openSplash();</span>
                     }
 
-<span class="nc bnc" id="L261" title="All 2 branches missed.">                    if(&quot;ERROR&quot;.equalsIgnoreCase(type)) {</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">                    if(&quot;ERROR&quot;.equalsIgnoreCase(type)) {</span>
 
-<span class="nc" id="L263">                        Helpers.snack(FragmentInformation.this.getActivity(), body, getResources().getString(R.string.close), new View.OnClickListener() {</span>
+<span class="nc" id="L271">                        Helpers.snack(FragmentInformation.this.getActivity(), body, getResources().getString(R.string.close), new View.OnClickListener() {</span>
                             @Override
                             public void onClick(View v) {
-<span class="nc" id="L266">                            }</span>
+<span class="nc" id="L274">                            }</span>
                         });
                     }
 
-<span class="nc" id="L270">                } catch (Exception ex) {</span>
-<span class="nc" id="L271">                    FlyveLog.d(&quot;ERROR&quot; + ex.getMessage());</span>
-<span class="nc" id="L272">                }</span>
+<span class="nc" id="L278">                } catch (Exception ex) {</span>
+<span class="nc" id="L279">                    FlyveLog.d(&quot;ERROR&quot; + ex.getMessage());</span>
+<span class="nc" id="L280">                }</span>
             }
-<span class="nc" id="L274">        }</span>
+<span class="nc" id="L282">        }</span>
     };
 
-    /**
-     * Open Splash Activity
-     */
-    private void openSplash() {
-<span class="nc" id="L281">        Intent intent = new Intent(FragmentInformation.this.getActivity(), SplashActivity.class);</span>
-<span class="nc" id="L282">        FragmentInformation.this.getActivity().startActivity(intent);</span>
-<span class="nc" id="L283">        FragmentInformation.this.getActivity().finish();</span>
-<span class="nc" id="L284">    }</span>
 
     /**
      * Open Edit User Activity

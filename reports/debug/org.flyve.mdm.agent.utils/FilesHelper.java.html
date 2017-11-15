@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.PowerManager;
-import org.flyve.mdm.agent.data.DataStorage;
 import org.json.JSONObject;
 import java.io.File;
 import java.util.regex.Matcher;
@@ -40,28 +39,27 @@ import java.util.regex.Pattern;
  */
 public class FilesHelper {
 
+    private static final String EXTERNAL_STORAGE = &quot;EXTERNAL_STORAGE&quot;; 
     private Context context;
-    private DataStorage cache;
     private Routes routes;
 
     /**
      * This constructor loads the context of the current class
      * @param Context the context of the class
      */
-<span class="nc" id="L51">    public FilesHelper(Context context) {</span>
-<span class="nc" id="L52">        this.context = context;</span>
-<span class="nc" id="L53">        cache = new DataStorage(context);</span>
-<span class="nc" id="L54">        routes = new Routes(context);</span>
-<span class="nc" id="L55">    }</span>
+<span class="nc" id="L50">    public FilesHelper(Context context) {</span>
+<span class="nc" id="L51">        this.context = context;</span>
+<span class="nc" id="L52">        routes = new Routes(context);</span>
+<span class="nc" id="L53">    }</span>
 
     /**
      * Get the directory of the apk
      * @return string the apk directory
      * @throws Exception
      */
-    private static String getApkDir() throws Exception {
-<span class="nc" id="L63">        FlyveLog.d(System.getenv(&quot;EXTERNAL_STORAGE&quot;) + &quot;/apk/&quot;);</span>
-<span class="nc" id="L64">        return System.getenv(&quot;EXTERNAL_STORAGE&quot;) + &quot;/apk/&quot;;</span>
+    private static String getApkDir() {
+<span class="nc" id="L61">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/apk/&quot;);</span>
+<span class="nc" id="L62">        return System.getenv(EXTERNAL_STORAGE) + &quot;/apk/&quot;;</span>
     }
 
     /**
@@ -69,9 +67,9 @@ public class FilesHelper {
      * @return string the SD card directory
      * @throws Exception
      */
-    private static String getSDcardDir() throws Exception {
-<span class="nc" id="L73">        FlyveLog.d(System.getenv(&quot;EXTERNAL_STORAGE&quot;));</span>
-<span class="nc" id="L74">        return System.getenv(&quot;EXTERNAL_STORAGE&quot;);</span>
+    private static String getSDcardDir() {
+<span class="nc" id="L71">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE));</span>
+<span class="nc" id="L72">        return System.getenv(EXTERNAL_STORAGE);</span>
     }
 
     /**
@@ -79,9 +77,9 @@ public class FilesHelper {
      * @return string the UPK directory
      * @throws Exception
      */
-    private static String getUpkDir() throws Exception {
-<span class="nc" id="L83">        FlyveLog.d(System.getenv(&quot;EXTERNAL_STORAGE&quot;) + &quot;/.fdroid/&quot;);</span>
-<span class="nc" id="L84">        return System.getenv(&quot;EXTERNAL_STORAGE&quot;) + &quot;/.fdroid/&quot;;</span>
+    private static String getUpkDir() {
+<span class="nc" id="L81">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/.fdroid/&quot;);</span>
+<span class="nc" id="L82">        return System.getenv(EXTERNAL_STORAGE) + &quot;/.fdroid/&quot;;</span>
     }
 
     /**
@@ -89,9 +87,9 @@ public class FilesHelper {
      * @return string the pictures directory
      * @throws Exception
      */
-    private static String getPicturesDir() throws Exception {
-<span class="nc" id="L93">        FlyveLog.d(System.getenv(&quot;EXTERNAL_STORAGE&quot;) + &quot;/&quot; + Environment.DIRECTORY_DCIM);</span>
-<span class="nc" id="L94">        return System.getenv(&quot;EXTERNAL_STORAGE&quot;) + &quot;/&quot; + Environment.DIRECTORY_DCIM;</span>
+    private static String getPicturesDir() {
+<span class="nc" id="L91">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_DCIM);</span>
+<span class="nc" id="L92">        return System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_DCIM;</span>
     }
 
     /**
@@ -99,9 +97,9 @@ public class FilesHelper {
      * @return string the documents directory
      * @throws Exception
      */
-    private static String getDocumentsDir() throws Exception {
-<span class="nc" id="L103">        FlyveLog.d(System.getenv(&quot;EXTERNAL_STORAGE&quot;) + &quot;/&quot; + Environment.DIRECTORY_DOWNLOADS);</span>
-<span class="nc" id="L104">        return System.getenv(&quot;EXTERNAL_STORAGE&quot;) + &quot;/&quot; + Environment.DIRECTORY_DOWNLOADS;</span>
+    private static String getDocumentsDir() {
+<span class="nc" id="L101">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_DOWNLOADS);</span>
+<span class="nc" id="L102">        return System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_DOWNLOADS;</span>
     }
 
     /**
@@ -109,9 +107,9 @@ public class FilesHelper {
      * @return string the music directory
      * @throws Exception
      */
-    private static String getMusicsDir() throws Exception {
-<span class="nc" id="L113">        FlyveLog.d(System.getenv(&quot;EXTERNAL_STORAGE&quot;) + &quot;/&quot; + Environment.DIRECTORY_MUSIC);</span>
-<span class="nc" id="L114">        return System.getenv(&quot;EXTERNAL_STORAGE&quot;) + &quot;/&quot; + Environment.DIRECTORY_MUSIC;</span>
+    private static String getMusicsDir() {
+<span class="nc" id="L111">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_MUSIC);</span>
+<span class="nc" id="L112">        return System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_MUSIC;</span>
     }
 
     /**
@@ -120,42 +118,42 @@ public class FilesHelper {
      * @return string the converted path
      * @throws Exception
      */
-    private String convertPath(String receivePath) throws Exception {
+    private String convertPath(String receivePath) {
 
-<span class="nc" id="L125">        String sreturn = receivePath;</span>
+<span class="nc" id="L123">        String sreturn = receivePath;</span>
 
-<span class="nc" id="L127">        Pattern sdcard = Pattern.compile(&quot;%SDCARD%&quot;);</span>
-<span class="nc" id="L128">        Pattern document = Pattern.compile(&quot;%DOCUMENTS%&quot;);</span>
-<span class="nc" id="L129">        Pattern music = Pattern.compile(&quot;%MUSIC%&quot;);</span>
-<span class="nc" id="L130">        Pattern photo = Pattern.compile(&quot;%PHOTOS%&quot;);</span>
+<span class="nc" id="L125">        Pattern sdcard = Pattern.compile(&quot;%SDCARD%&quot;);</span>
+<span class="nc" id="L126">        Pattern document = Pattern.compile(&quot;%DOCUMENTS%&quot;);</span>
+<span class="nc" id="L127">        Pattern music = Pattern.compile(&quot;%MUSIC%&quot;);</span>
+<span class="nc" id="L128">        Pattern photo = Pattern.compile(&quot;%PHOTOS%&quot;);</span>
 
-<span class="nc" id="L132">        Matcher msdcard = sdcard.matcher(receivePath);</span>
-<span class="nc" id="L133">        Matcher mdocument = document.matcher(receivePath);</span>
-<span class="nc" id="L134">        Matcher mmusic = music.matcher(receivePath);</span>
-<span class="nc" id="L135">        Matcher mphoto = photo.matcher(receivePath);</span>
+<span class="nc" id="L130">        Matcher msdcard = sdcard.matcher(receivePath);</span>
+<span class="nc" id="L131">        Matcher mdocument = document.matcher(receivePath);</span>
+<span class="nc" id="L132">        Matcher mmusic = music.matcher(receivePath);</span>
+<span class="nc" id="L133">        Matcher mphoto = photo.matcher(receivePath);</span>
 
         //Find the sequence that matches the pattern
-<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (msdcard.find()) {</span>
-<span class="nc" id="L139">            sreturn = receivePath;</span>
-<span class="nc" id="L140">            sreturn = sreturn.replace(&quot;%SDCARD%&quot;, getSDcardDir());</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (msdcard.find()) {</span>
+<span class="nc" id="L137">            sreturn = receivePath;</span>
+<span class="nc" id="L138">            sreturn = sreturn.replace(&quot;%SDCARD%&quot;, getSDcardDir());</span>
         }
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">        if (mdocument.find()) {</span>
-<span class="nc" id="L144">            sreturn = receivePath;</span>
-<span class="nc" id="L145">            sreturn = sreturn.replace(&quot;%DOCUMENTS%&quot;, getDocumentsDir());</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (mdocument.find()) {</span>
+<span class="nc" id="L142">            sreturn = receivePath;</span>
+<span class="nc" id="L143">            sreturn = sreturn.replace(&quot;%DOCUMENTS%&quot;, getDocumentsDir());</span>
         }
 
-<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (mmusic.find()) {</span>
-<span class="nc" id="L149">            sreturn = receivePath;</span>
-<span class="nc" id="L150">            sreturn = sreturn.replace(&quot;%MUSIC%&quot;, getMusicsDir());</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        if (mmusic.find()) {</span>
+<span class="nc" id="L147">            sreturn = receivePath;</span>
+<span class="nc" id="L148">            sreturn = sreturn.replace(&quot;%MUSIC%&quot;, getMusicsDir());</span>
         }
 
-<span class="nc bnc" id="L153" title="All 2 branches missed.">        if (mphoto.find()) {</span>
-<span class="nc" id="L154">            sreturn = receivePath;</span>
-<span class="nc" id="L155">            sreturn = sreturn.replace(&quot;%PHOTOS%&quot;, getPicturesDir());</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (mphoto.find()) {</span>
+<span class="nc" id="L152">            sreturn = receivePath;</span>
+<span class="nc" id="L153">            sreturn = sreturn.replace(&quot;%PHOTOS%&quot;, getPicturesDir());</span>
         }
-<span class="nc" id="L157">        FlyveLog.d(&quot;convertPath return = &quot; + sreturn);</span>
-<span class="nc" id="L158">        return sreturn;</span>
+<span class="nc" id="L155">        FlyveLog.d(&quot;convertPath return = &quot; + sreturn);</span>
+<span class="nc" id="L156">        return sreturn;</span>
     }
 
     /**
@@ -166,21 +164,21 @@ public class FilesHelper {
     public Boolean downloadFile(String path, String id, String sessionToken) {
 
         //prevent CPU from going off if the user presses the power button during download
-<span class="nc" id="L169">        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);</span>
-<span class="nc" id="L170">        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());</span>
-<span class="nc" id="L171">        wl.acquire();</span>
+<span class="nc" id="L167">        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);</span>
+<span class="nc" id="L168">        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());</span>
+<span class="nc" id="L169">        wl.acquire();</span>
 
-<span class="nc" id="L173">        String filePath = &quot;&quot;;</span>
+<span class="nc" id="L171">        String filePath = &quot;&quot;;</span>
         try {
-<span class="nc" id="L175">            filePath = convertPath(path);</span>
-<span class="nc" id="L176">        } catch (Exception ex) {</span>
-<span class="nc" id="L177">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L178">        }</span>
+<span class="nc" id="L173">            filePath = convertPath(path);</span>
+<span class="nc" id="L174">        } catch (Exception ex) {</span>
+<span class="nc" id="L175">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L176">        }</span>
 
-<span class="nc" id="L180">        final String url = routes.PluginFlyvemdmFile(id, sessionToken);</span>
-<span class="nc" id="L181">        String completeFilePath = download(url, filePath);</span>
+<span class="nc" id="L178">        final String url = routes.pluginFlyvemdmFile(id, sessionToken);</span>
+<span class="nc" id="L179">        String completeFilePath = download(url, filePath);</span>
 
-<span class="nc" id="L183">        return(completeFilePath.equalsIgnoreCase(&quot;&quot;));</span>
+<span class="nc" id="L181">        return(completeFilePath.equalsIgnoreCase(&quot;&quot;));</span>
     }
 
     /**
@@ -189,6 +187,8 @@ public class FilesHelper {
      * @param id String Id from
      */
     public Boolean downloadApk(String packageFile, String id, String sessionToken) {
+
+<span class="nc" id="L191">        FlyveLog.d(&quot;packageFile: &quot; + packageFile);</span>
 
         //prevent CPU from going off if the user presses the power button during download
 <span class="nc" id="L194">        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);</span>
@@ -202,7 +202,7 @@ public class FilesHelper {
 <span class="nc" id="L202">            FlyveLog.e(ex.getMessage());</span>
 <span class="nc" id="L203">        }</span>
 
-<span class="nc" id="L205">        final String url = routes.PluginFlyvemdmPackage(id, sessionToken);</span>
+<span class="nc" id="L205">        final String url = routes.pluginFlyvemdmPackage(id, sessionToken);</span>
 <span class="nc" id="L206">        String completeFilePath = download(url, filePath);</span>
 <span class="nc bnc" id="L207" title="All 2 branches missed.">        if(completeFilePath.equalsIgnoreCase(&quot;&quot;)) {</span>
 <span class="nc" id="L208">            return false;</span>

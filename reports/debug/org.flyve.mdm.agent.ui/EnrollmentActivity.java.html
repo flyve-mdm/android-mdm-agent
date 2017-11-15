@@ -92,9 +92,9 @@ import static org.flyve.mdm.agent.R.string.email;
     private MultipleEditText editEmail;
     private MultipleEditText editPhone;
     private Spinner spinnerLanguage;
-    private ImageView btnRegister;
-<span class="nc" id="L96">    private boolean sendEnrollment = false;</span>
-<span class="nc" id="L97">    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;</span>
+<span class="nc" id="L95">    private boolean sendEnrollment = false;</span>
+    private static final int REQUEST_CAMERA = 0;
+    private static final int SELECT_FILE = 1;
     private String strPicture;
     private ImageView imgPhoto;
     private ProgressDialog pd;
@@ -192,7 +192,7 @@ import static org.flyve.mdm.agent.R.string.email;
             }
         });
 
-<span class="nc" id="L195">        btnRegister = (ImageView) findViewById(R.id.btnSave);</span>
+<span class="nc" id="L195">        ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);</span>
 <span class="nc" id="L196">        btnRegister.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
@@ -202,7 +202,7 @@ import static org.flyve.mdm.agent.R.string.email;
 
         // start creating a certificated
 <span class="nc" id="L204">        pbx509.setVisibility(View.VISIBLE);</span>
-<span class="nc" id="L205">        enroll.createX509cert(new EnrollmentHelper.enrollCallBack() {</span>
+<span class="nc" id="L205">        enroll.createX509cert(new EnrollmentHelper.EnrollCallBack() {</span>
             @Override
             public void onSuccess(String data) {
 <span class="nc" id="L208">                pbx509.setVisibility(View.GONE);</span>
@@ -323,7 +323,7 @@ import static org.flyve.mdm.agent.R.string.email;
 <span class="nc" id="L323">                    FlyveLog.e(ex.getMessage());</span>
 <span class="nc" id="L324">                }</span>
 
-<span class="nc" id="L326">                strPicture = Helpers.BitmapToString(bitmap);</span>
+<span class="nc" id="L326">                strPicture = Helpers.bitmapToString(bitmap);</span>
 <span class="nc" id="L327">                imgPhoto.setImageBitmap(bitmap);</span>
             }
         }
@@ -344,7 +344,7 @@ import static org.flyve.mdm.agent.R.string.email;
 <span class="nc" id="L344">            }</span>
         }
 
-<span class="nc" id="L347">        strPicture = Helpers.BitmapToString(bm);</span>
+<span class="nc" id="L347">        strPicture = Helpers.bitmapToString(bm);</span>
 <span class="nc" id="L348">        imgPhoto.setImageBitmap(bm);</span>
 <span class="nc" id="L349">    }</span>
 
@@ -433,103 +433,104 @@ import static org.flyve.mdm.agent.R.string.email;
             }
 <span class="nc" id="L434">            payload.put(&quot;version&quot;, BuildConfig.VERSION_NAME);</span>
 <span class="nc" id="L435">            payload.put(&quot;type&quot;, &quot;android&quot;);</span>
+<span class="nc" id="L436">            payload.put(&quot;has_system_permission&quot;, Helpers.isSystemApp(EnrollmentActivity.this));</span>
 
-<span class="nc" id="L437">            enroll.enrollment(payload, new EnrollmentHelper.enrollCallBack() {</span>
+<span class="nc" id="L438">            enroll.enrollment(payload, new EnrollmentHelper.EnrollCallBack() {</span>
                 @Override
                 public void onSuccess(String data) {
-<span class="nc" id="L440">                    pd.dismiss();</span>
+<span class="nc" id="L441">                    pd.dismiss();</span>
 
-<span class="nc" id="L442">                    ArrayList&lt;UserModel.EmailsData&gt; arrEmails = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L443">                    ArrayList&lt;UserModel.EmailsData&gt; arrEmails = new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L444">                    List&lt;EditText&gt; emailEdit = editEmail.getEditList();</span>
-<span class="nc" id="L445">                    List&lt;Spinner&gt; emailTypeEdit = editEmail.getSpinnList();</span>
+<span class="nc" id="L445">                    List&lt;EditText&gt; emailEdit = editEmail.getEditList();</span>
+<span class="nc" id="L446">                    List&lt;Spinner&gt; emailTypeEdit = editEmail.getSpinnList();</span>
 
-<span class="nc bnc" id="L447" title="All 2 branches missed.">                    for (int i=0; i&lt;emailEdit.size(); i++) {</span>
-<span class="nc" id="L448">                        EditText editText = emailEdit.get(i);</span>
-<span class="nc" id="L449">                        Spinner spinner = emailTypeEdit.get(i);</span>
+<span class="nc bnc" id="L448" title="All 2 branches missed.">                    for (int i=0; i&lt;emailEdit.size(); i++) {</span>
+<span class="nc" id="L449">                        EditText editText = emailEdit.get(i);</span>
+<span class="nc" id="L450">                        Spinner spinner = emailTypeEdit.get(i);</span>
 
-<span class="nc bnc" id="L451" title="All 2 branches missed.">                        if(!editText.getText().toString().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L452">                            UserModel.EmailsData emails = new UserModel().new EmailsData();</span>
-<span class="nc" id="L453">                            emails.setEmail(editText.getText().toString());</span>
-<span class="nc" id="L454">                            emails.setType(spinner.getSelectedItem().toString());</span>
-<span class="nc" id="L455">                            arrEmails.add(emails);</span>
+<span class="nc bnc" id="L452" title="All 2 branches missed.">                        if(!editText.getText().toString().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L453">                            UserModel.EmailsData emails = new UserModel().new EmailsData();</span>
+<span class="nc" id="L454">                            emails.setEmail(editText.getText().toString());</span>
+<span class="nc" id="L455">                            emails.setType(spinner.getSelectedItem().toString());</span>
+<span class="nc" id="L456">                            arrEmails.add(emails);</span>
                         }
                     }
 
                     // -------------------------------
                     // Store user information
                     // -------------------------------
-<span class="nc" id="L462">                    UserModel userModel = new UserModel();</span>
-<span class="nc" id="L463">                    userModel.setFirstName(editName.getText().toString());</span>
-<span class="nc" id="L464">                    userModel.setLastName(editLastName.getText().toString());</span>
-<span class="nc" id="L465">                    userModel.setEmails(arrEmails);</span>
+<span class="nc" id="L463">                    UserModel userModel = new UserModel();</span>
+<span class="nc" id="L464">                    userModel.setFirstName(editName.getText().toString());</span>
+<span class="nc" id="L465">                    userModel.setLastName(editLastName.getText().toString());</span>
+<span class="nc" id="L466">                    userModel.setEmails(arrEmails);</span>
 
                     // Mobile Phone
-<span class="nc bnc" id="L468" title="All 2 branches missed.">                    if(!editPhone.getEditList().isEmpty()) {</span>
-<span class="nc" id="L469">                        String mobilePhone = editPhone.getEditList().get(0).getText().toString();</span>
-<span class="nc bnc" id="L470" title="All 2 branches missed.">                        if (!mobilePhone.equals(&quot;&quot;)) {</span>
-<span class="nc" id="L471">                            userModel.setMobilePhone(mobilePhone);</span>
+<span class="nc bnc" id="L469" title="All 2 branches missed.">                    if(!editPhone.getEditList().isEmpty()) {</span>
+<span class="nc" id="L470">                        String mobilePhone = editPhone.getEditList().get(0).getText().toString();</span>
+<span class="nc bnc" id="L471" title="All 2 branches missed.">                        if (!mobilePhone.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L472">                            userModel.setMobilePhone(mobilePhone);</span>
                         }
                     }
 
                     // Phone
-<span class="nc bnc" id="L476" title="All 2 branches missed.">                    if(editPhone.getEditList().size() &gt; 1) {</span>
-<span class="nc" id="L477">                        String phone = editPhone.getEditList().get(1).getText().toString();</span>
-<span class="nc bnc" id="L478" title="All 2 branches missed.">                        if (!phone.equals(&quot;&quot;)) {</span>
-<span class="nc" id="L479">                            userModel.setPhone(phone);</span>
+<span class="nc bnc" id="L477" title="All 2 branches missed.">                    if(editPhone.getEditList().size() &gt; 1) {</span>
+<span class="nc" id="L478">                        String phone = editPhone.getEditList().get(1).getText().toString();</span>
+<span class="nc bnc" id="L479" title="All 2 branches missed.">                        if (!phone.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L480">                            userModel.setPhone(phone);</span>
                         }
                     }
 
                     // Phone 2
-<span class="nc bnc" id="L484" title="All 2 branches missed.">                    if(editPhone.getEditList().size() &gt; 2) {</span>
-<span class="nc" id="L485">                        String phone2 = editPhone.getEditList().get(2).getText().toString();</span>
-<span class="nc bnc" id="L486" title="All 2 branches missed.">                        if (!phone2.equals(&quot;&quot;)) {</span>
-<span class="nc" id="L487">                            userModel.setPhone2(phone2);</span>
+<span class="nc bnc" id="L485" title="All 2 branches missed.">                    if(editPhone.getEditList().size() &gt; 2) {</span>
+<span class="nc" id="L486">                        String phone2 = editPhone.getEditList().get(2).getText().toString();</span>
+<span class="nc bnc" id="L487" title="All 2 branches missed.">                        if (!phone2.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L488">                            userModel.setPhone2(phone2);</span>
                         }
                     }
 
-<span class="nc" id="L491">                    userModel.setPicture(strPicture);</span>
-<span class="nc" id="L492">                    userModel.setLanguage( spinnerLanguage.getSelectedItem().toString() );</span>
-<span class="nc" id="L493">                    userModel.setAdministrativeNumber( editAdministrative.getText().toString() );</span>
+<span class="nc" id="L492">                    userModel.setPicture(strPicture);</span>
+<span class="nc" id="L493">                    userModel.setLanguage( spinnerLanguage.getSelectedItem().toString() );</span>
+<span class="nc" id="L494">                    userModel.setAdministrativeNumber( editAdministrative.getText().toString() );</span>
 
-<span class="nc" id="L495">                    new UserController(EnrollmentActivity.this).save(userModel);</span>
+<span class="nc" id="L496">                    new UserController(EnrollmentActivity.this).save(userModel);</span>
 
-<span class="nc" id="L497">                    nextStep();</span>
-<span class="nc" id="L498">                }</span>
+<span class="nc" id="L498">                    nextStep();</span>
+<span class="nc" id="L499">                }</span>
 
                 @Override
                 public void onError(String error) {
-<span class="nc" id="L502">                    pd.dismiss();</span>
-<span class="nc" id="L503">                    showError(error);</span>
-<span class="nc" id="L504">                }</span>
+<span class="nc" id="L503">                    pd.dismiss();</span>
+<span class="nc" id="L504">                    showError(error);</span>
+<span class="nc" id="L505">                }</span>
             });
-<span class="nc" id="L506">        } catch (Exception ex) {</span>
-<span class="nc" id="L507">            pd.dismiss();</span>
-<span class="nc" id="L508">            showError( ex.getMessage() );</span>
-<span class="nc" id="L509">            FlyveLog.e( ex.getMessage() );</span>
-<span class="nc" id="L510">        }</span>
-<span class="nc" id="L511">    }</span>
+<span class="nc" id="L507">        } catch (Exception ex) {</span>
+<span class="nc" id="L508">            pd.dismiss();</span>
+<span class="nc" id="L509">            showError( ex.getMessage() );</span>
+<span class="nc" id="L510">            FlyveLog.e( ex.getMessage() );</span>
+<span class="nc" id="L511">        }</span>
+<span class="nc" id="L512">    }</span>
 
     /**
      * Shows an error message
      * @param string the message
      */
     private void showError(String message) {
-<span class="nc" id="L518">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
+<span class="nc" id="L519">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L521">            }</span>
+<span class="nc" id="L522">            }</span>
         });
-<span class="nc" id="L523">    }</span>
+<span class="nc" id="L524">    }</span>
 
     /**
      * Open the next activity
      */
     private void nextStep() {
-<span class="nc" id="L529">        Intent intent = new Intent(EnrollmentActivity.this, DisclosureActivity.class);</span>
-<span class="nc" id="L530">        EnrollmentActivity.this.startActivity(intent);</span>
-<span class="nc" id="L531">        setResult(RESULT_OK, null);</span>
-<span class="nc" id="L532">        EnrollmentActivity.this.finish();</span>
-<span class="nc" id="L533">    }</span>
+<span class="nc" id="L530">        Intent intent = new Intent(EnrollmentActivity.this, DisclosureActivity.class);</span>
+<span class="nc" id="L531">        EnrollmentActivity.this.startActivity(intent);</span>
+<span class="nc" id="L532">        setResult(RESULT_OK, null);</span>
+<span class="nc" id="L533">        EnrollmentActivity.this.finish();</span>
+<span class="nc" id="L534">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

@@ -44,6 +44,7 @@ import android.support.v4.view.ViewPager;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
 import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.utils.EnvInfoSetup;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.util.ArrayList;
@@ -52,40 +53,29 @@ import java.util.ArrayList;
  * This is the first screen of the app here you can get information about flyve-mdm-agent
  * if you are not register
  */
-<span class="fc" id="L55">public class SplashActivity extends FragmentActivity {</span>
+<span class="fc" id="L56">public class SplashActivity extends FragmentActivity {</span>
 
     private static final int TIME = 3000;
     private IntentFilter mIntent;
-
     private ArrayList&lt;WalkthroughModel&gt; walkthrough;
 
-    /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
-     */
-    private ViewPager mPager;
-
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
-    private PagerAdapter mPagerAdapter;
 
     @Override
     public void onPause() {
         // unregister the broadcast
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if(mIntent != null) {</span>
-<span class="nc" id="L77">            unregisterReceiver(broadcastMessage);</span>
-<span class="nc" id="L78">            mIntent = null;</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if(mIntent != null) {</span>
+<span class="nc" id="L67">            unregisterReceiver(broadcastMessage);</span>
+<span class="nc" id="L68">            mIntent = null;</span>
         }
-<span class="fc" id="L80">        super.onPause();</span>
-<span class="fc" id="L81">    }</span>
+<span class="fc" id="L70">        super.onPause();</span>
+<span class="fc" id="L71">    }</span>
 
     @Override
     public void onResume() {
         // register the broadcast
-<span class="fc" id="L86">        super.onResume();</span>
-<span class="fc" id="L87">        LocalBroadcastManager.getInstance(SplashActivity.this).registerReceiver(broadcastMessage, new IntentFilter(&quot;flyve.ACTION_CLOSE&quot;));</span>
-<span class="fc" id="L88">    }</span>
+<span class="fc" id="L76">        super.onResume();</span>
+<span class="fc" id="L77">        LocalBroadcastManager.getInstance(SplashActivity.this).registerReceiver(broadcastMessage, new IntentFilter(&quot;flyve.ACTION_CLOSE&quot;));</span>
+<span class="fc" id="L78">    }</span>
 
     /**
      * Called when the activity is starting
@@ -94,60 +84,62 @@ import java.util.ArrayList;
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-<span class="fc" id="L97">        super.onCreate(savedInstanceState);</span>
+<span class="fc" id="L87">        super.onCreate(savedInstanceState);</span>
 
-<span class="fc" id="L99">        DataStorage cache = new DataStorage( SplashActivity.this );</span>
+<span class="fc" id="L89">        DataStorage cache = new DataStorage( SplashActivity.this );</span>
 
         // if broker is on cache open the main activity
-<span class="fc" id="L102">        String broker = cache.getBroker();</span>
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if(broker != null) {</span>
+<span class="fc" id="L92">        String broker = cache.getBroker();</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if(broker != null) {</span>
             // if user is enrolled show landing screen
-<span class="nc" id="L105">            FlyveLog.d(cache.getSessionToken());</span>
+<span class="nc" id="L95">            FlyveLog.d(cache.getSessionToken());</span>
 
-<span class="nc" id="L107">            setContentView(R.layout.activity_splash_enrolled);</span>
-<span class="nc" id="L108">            new Handler().postDelayed(new Runnable() {</span>
+<span class="nc" id="L97">            setContentView(R.layout.activity_splash_enrolled);</span>
+<span class="nc" id="L98">            new Handler().postDelayed(new Runnable() {</span>
                 @Override
                 public void run() {
-<span class="nc" id="L111">                    openMain();</span>
-<span class="nc" id="L112">                }</span>
+<span class="nc" id="L101">                    openMain();</span>
+<span class="nc" id="L102">                }</span>
             }, TIME);
 
-<span class="nc" id="L115">            return;</span>
+<span class="nc" id="L105">            return;</span>
         }
 
         // if user is not enrolled show help
-<span class="fc" id="L119">        setContentView(R.layout.activity_splash);</span>
+<span class="fc" id="L109">        setContentView(R.layout.activity_splash);</span>
 
-<span class="fc" id="L121">        walkthrough = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L122">        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_1), getResources().getString(R.string.walkthrough_step_link_1), R.drawable.logoflyve));</span>
-<span class="fc" id="L123">        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_2), getResources().getString(R.string.walkthrough_step_link_2), R.drawable.ic_walkthroug_2));</span>
-<span class="fc" id="L124">        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_3), &quot;&quot;, R.drawable.ic_walkthroug_3));</span>
+<span class="fc" id="L111">        EnvInfoSetup setup = new EnvInfoSetup(SplashActivity.this);</span>
+
+<span class="fc" id="L113">        walkthrough = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L114">        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_1), getResources().getString(R.string.walkthrough_step_link_1), R.drawable.logoflyve));</span>
+<span class="fc" id="L115">        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_2), setup.getAdminWebConsole(), R.drawable.ic_walkthroug_2));</span>
+<span class="fc" id="L116">        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_3), &quot;&quot;, R.drawable.ic_walkthroug_3));</span>
 
         // Instantiate a ViewPager and a PagerAdapter.
-<span class="fc" id="L127">        mPager = (ViewPager) findViewById(R.id.pager);</span>
-<span class="fc" id="L128">        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());</span>
-<span class="fc" id="L129">        mPager.setAdapter(mPagerAdapter);</span>
-<span class="fc" id="L130">    }</span>
+<span class="fc" id="L119">        ViewPager mPager = (ViewPager) findViewById(R.id.pager);</span>
+<span class="fc" id="L120">        PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());</span>
+<span class="fc" id="L121">        mPager.setAdapter(mPagerAdapter);</span>
+<span class="fc" id="L122">    }</span>
 
     /**
      * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
      * sequence.
      */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-<span class="fc" id="L137">        public ScreenSlidePagerAdapter(FragmentManager fm) {</span>
-<span class="fc" id="L138">            super(fm);</span>
-<span class="fc" id="L139">        }</span>
+<span class="fc" id="L129">        public ScreenSlidePagerAdapter(FragmentManager fm) {</span>
+<span class="fc" id="L130">            super(fm);</span>
+<span class="fc" id="L131">        }</span>
 
         @Override
         public Fragment getItem(int position) {
-<span class="fc" id="L143">            FragmentSlideWalkthrough f = new FragmentSlideWalkthrough();</span>
-<span class="fc" id="L144">            f.config(walkthrough.get(position), walkthrough.size(), position);</span>
-<span class="fc" id="L145">            return f;</span>
+<span class="fc" id="L135">            FragmentSlideWalkthrough f = new FragmentSlideWalkthrough();</span>
+<span class="fc" id="L136">            f.config(walkthrough.get(position), walkthrough.size(), position);</span>
+<span class="fc" id="L137">            return f;</span>
         }
 
         @Override
         public int getCount() {
-<span class="fc" id="L150">            return walkthrough.size();</span>
+<span class="fc" id="L142">            return walkthrough.size();</span>
         }
     }
 
@@ -155,21 +147,21 @@ import java.util.ArrayList;
      * Open the main activity
      */
     private void openMain() {
-<span class="nc" id="L158">        Intent miIntent = new Intent(SplashActivity.this, MainActivity.class);</span>
-<span class="nc" id="L159">        SplashActivity.this.startActivity(miIntent);</span>
-<span class="nc" id="L160">        SplashActivity.this.finish();</span>
-<span class="nc" id="L161">    }</span>
+<span class="nc" id="L150">        Intent miIntent = new Intent(SplashActivity.this, MainActivity.class);</span>
+<span class="nc" id="L151">        SplashActivity.this.startActivity(miIntent);</span>
+<span class="nc" id="L152">        SplashActivity.this.finish();</span>
+<span class="nc" id="L153">    }</span>
 
-<span class="fc" id="L163">    private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {</span>
+<span class="fc" id="L155">    private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {</span>
         @Override
         public void onReceive(Context context, Intent intent) {
-<span class="nc" id="L166">            String action = intent.getAction();</span>
+<span class="nc" id="L158">            String action = intent.getAction();</span>
 
             // Close this activity
-<span class="nc bnc" id="L169" title="All 2 branches missed.">            if(&quot;flyve.ACTION_CLOSE&quot;.equalsIgnoreCase(action)) {</span>
-<span class="nc" id="L170">                SplashActivity.this.finish();</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">            if(&quot;flyve.ACTION_CLOSE&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc" id="L162">                SplashActivity.this.finish();</span>
             }
-<span class="nc" id="L172">        }</span>
+<span class="nc" id="L164">        }</span>
     };
 
 

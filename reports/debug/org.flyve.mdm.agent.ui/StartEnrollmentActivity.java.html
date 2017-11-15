@@ -47,15 +47,14 @@ import org.flyve.mdm.agent.utils.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
-import static org.flyve.mdm.agent.R.id.txtAbout;
-
-<span class="nc" id="L52">public class StartEnrollmentActivity extends Activity {</span>
+<span class="nc" id="L50">public class StartEnrollmentActivity extends Activity {</span>
 
     private RelativeLayout btnEnroll;
     private TextView txtMessage;
     private TextView txtTitle;
     private ProgressBar pb;
     private static final int REQUEST_EXIT = 1;
+<span class="nc" id="L57">    private boolean status = true;</span>
 
     /**
      * Called when the activity is starting
@@ -64,30 +63,39 @@ import static org.flyve.mdm.agent.R.id.txtAbout;
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-<span class="nc" id="L67">        super.onCreate(savedInstanceState);</span>
-<span class="nc" id="L68">        setContentView(R.layout.activity_start_enrollment);</span>
+<span class="nc" id="L66">        super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L67">        setContentView(R.layout.activity_start_enrollment);</span>
 
-<span class="nc" id="L70">        broadcastClose();</span>
+<span class="nc" id="L69">        broadcastClose();</span>
 
-<span class="nc" id="L72">        DataStorage cache = new DataStorage( StartEnrollmentActivity.this );</span>
+<span class="nc" id="L71">        DataStorage cache = new DataStorage( StartEnrollmentActivity.this );</span>
         // if broker is on cache open the main activity
-<span class="nc" id="L74">        String broker = cache.getBroker();</span>
-<span class="nc bnc" id="L75" title="All 2 branches missed.">        if(broker != null) {</span>
-<span class="nc" id="L76">            openMain();</span>
+<span class="nc" id="L73">        String broker = cache.getBroker();</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if(broker != null) {</span>
+<span class="nc" id="L75">            openMain();</span>
         }
 
-<span class="nc" id="L79">        TextView txtIntro = (TextView) findViewById(R.id.txtIntro);</span>
-<span class="nc" id="L80">        txtIntro.setText( Html.fromHtml(StartEnrollmentActivity.this.getResources().getString(R.string.walkthrough_step_1)) );</span>
-<span class="nc" id="L81">        txtIntro.setMovementMethod(LinkMovementMethod.getInstance());</span>
+<span class="nc" id="L78">        TextView txtIntro = (TextView) findViewById(R.id.txtIntro);</span>
+<span class="nc" id="L79">        txtIntro.setText( Html.fromHtml(StartEnrollmentActivity.this.getResources().getString(R.string.walkthrough_step_1)) );</span>
+<span class="nc" id="L80">        txtIntro.setMovementMethod(LinkMovementMethod.getInstance());</span>
 
-<span class="nc" id="L83">        txtMessage = (TextView) findViewById(R.id.txtMessage);</span>
-<span class="nc" id="L84">        txtTitle = (TextView) findViewById(R.id.txtTitle);</span>
-<span class="nc" id="L85">        pb = (ProgressBar) findViewById(R.id.progressBar);</span>
+<span class="nc" id="L82">        txtMessage = (TextView) findViewById(R.id.txtMessage);</span>
+<span class="nc" id="L83">        txtTitle = (TextView) findViewById(R.id.txtTitle);</span>
+<span class="nc" id="L84">        pb = (ProgressBar) findViewById(R.id.progressBar);</span>
 
-<span class="nc" id="L87">        Intent intent = getIntent();</span>
-<span class="nc" id="L88">        Uri data = intent.getData();</span>
+<span class="nc" id="L86">        Intent intent = getIntent();</span>
+<span class="nc" id="L87">        Uri data = intent.getData();</span>
 
-<span class="nc" id="L90">        String deepLinkData = Helpers.base64decode(data.getQueryParameter(&quot;data&quot;));</span>
+<span class="nc" id="L89">        String deepLinkErrorMessage = getResources().getString(R.string.ERROR_DEEP_LINK);</span>
+        String deepLinkData;
+
+        try {
+<span class="nc" id="L93">            deepLinkData = Helpers.base64decode(data.getQueryParameter(&quot;data&quot;));</span>
+<span class="nc" id="L94">        } catch(Exception ex) {</span>
+<span class="nc" id="L95">            showError( deepLinkErrorMessage );</span>
+<span class="nc" id="L96">            FlyveLog.e(deepLinkErrorMessage + &quot; - &quot; + ex.getMessage());</span>
+<span class="nc" id="L97">            return;</span>
+<span class="nc" id="L98">        }</span>
 
         String url;
         String userToken;
@@ -96,156 +104,155 @@ import static org.flyve.mdm.agent.R.id.txtAbout;
         String phone;
         String website;
         String email;
-<span class="nc" id="L99">        String deepLinkErrorMessage = getResources().getString(R.string.ERROR_DEEP_LINK);</span>
 
         try {
             // CSV comma-separated values format
             // url; user token; invitation token; support name; support phone, support website; support email
-<span class="nc" id="L104">            String[] csv = deepLinkData.split(&quot;\\\\;&quot;);</span>
+<span class="nc" id="L111">            String[] csv = deepLinkData.split(&quot;\\\\;&quot;);</span>
 
-<span class="nc bnc" id="L106" title="All 2 branches missed.">            if(csv.length &gt;= 0) {</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            if(csv.length &gt;= 0) {</span>
 
                 // url
-<span class="nc bnc" id="L109" title="All 2 branches missed.">                if(!csv[0].isEmpty()) {</span>
-<span class="nc" id="L110">                    url = csv[0];</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">                if(!csv[0].isEmpty()) {</span>
+<span class="nc" id="L117">                    url = csv[0];</span>
                 } else {
-<span class="nc" id="L112">                    deepLinkErrorMessage = &quot;URL &quot; + deepLinkErrorMessage;</span>
-<span class="nc" id="L113">                    showError( deepLinkErrorMessage );</span>
-<span class="nc" id="L114">                    return;</span>
+<span class="nc" id="L119">                    deepLinkErrorMessage = &quot;URL &quot; + deepLinkErrorMessage;</span>
+<span class="nc" id="L120">                    showError( deepLinkErrorMessage );</span>
+<span class="nc" id="L121">                    return;</span>
                 }
 
                 // user token
-<span class="nc bnc" id="L118" title="All 2 branches missed.">                if(!csv[1].isEmpty()) {</span>
-<span class="nc" id="L119">                    userToken = csv[1];</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">                if(!csv[1].isEmpty()) {</span>
+<span class="nc" id="L126">                    userToken = csv[1];</span>
                 } else {
-<span class="nc" id="L121">                    deepLinkErrorMessage = &quot;USER &quot; + deepLinkErrorMessage;</span>
-<span class="nc" id="L122">                    showError( deepLinkErrorMessage );</span>
-<span class="nc" id="L123">                    return;</span>
+<span class="nc" id="L128">                    deepLinkErrorMessage = &quot;USER &quot; + deepLinkErrorMessage;</span>
+<span class="nc" id="L129">                    showError( deepLinkErrorMessage );</span>
+<span class="nc" id="L130">                    return;</span>
                 }
 
                 // invitation token
-<span class="nc bnc" id="L127" title="All 2 branches missed.">                if(!csv[2].isEmpty()) {</span>
-<span class="nc" id="L128">                    invitationToken = csv[2];</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">                if(!csv[2].isEmpty()) {</span>
+<span class="nc" id="L135">                    invitationToken = csv[2];</span>
                 } else {
-<span class="nc" id="L130">                    deepLinkErrorMessage = &quot;TOKEN &quot; + deepLinkErrorMessage;</span>
-<span class="nc" id="L131">                    showError( deepLinkErrorMessage );</span>
-<span class="nc" id="L132">                    return;</span>
+<span class="nc" id="L137">                    deepLinkErrorMessage = &quot;TOKEN &quot; + deepLinkErrorMessage;</span>
+<span class="nc" id="L138">                    showError( deepLinkErrorMessage );</span>
+<span class="nc" id="L139">                    return;</span>
                 }
 
-<span class="nc" id="L135">                SupervisorModel supervisorModel = new SupervisorModel();</span>
+<span class="nc" id="L142">                SupervisorModel supervisorModel = new SupervisorModel();</span>
 
                 // name
-<span class="nc bnc" id="L138" title="All 4 branches missed.">                if(csv.length &gt; 3 &amp;&amp; !csv[3].isEmpty()) {</span>
-<span class="nc" id="L139">                    name = csv[3];</span>
-<span class="nc" id="L140">                    supervisorModel.setName(name);</span>
+<span class="nc bnc" id="L145" title="All 4 branches missed.">                if(csv.length &gt; 3 &amp;&amp; !csv[3].isEmpty()) {</span>
+<span class="nc" id="L146">                    name = csv[3];</span>
+<span class="nc" id="L147">                    supervisorModel.setName(name);</span>
                 }
 
                 // phone
-<span class="nc bnc" id="L144" title="All 4 branches missed.">                if(csv.length &gt; 4 &amp;&amp; !csv[4].isEmpty()) {</span>
-<span class="nc" id="L145">                    phone = csv[4];</span>
-<span class="nc" id="L146">                    supervisorModel.setPhone(phone);</span>
+<span class="nc bnc" id="L151" title="All 4 branches missed.">                if(csv.length &gt; 4 &amp;&amp; !csv[4].isEmpty()) {</span>
+<span class="nc" id="L152">                    phone = csv[4];</span>
+<span class="nc" id="L153">                    supervisorModel.setPhone(phone);</span>
                 }
 
                 // website
-<span class="nc bnc" id="L150" title="All 4 branches missed.">                if(csv.length &gt; 5 &amp;&amp; !csv[5].isEmpty()) {</span>
-<span class="nc" id="L151">                    website = csv[5];</span>
-<span class="nc" id="L152">                    supervisorModel.setWebsite(website);</span>
+<span class="nc bnc" id="L157" title="All 4 branches missed.">                if(csv.length &gt; 5 &amp;&amp; !csv[5].isEmpty()) {</span>
+<span class="nc" id="L158">                    website = csv[5];</span>
+<span class="nc" id="L159">                    supervisorModel.setWebsite(website);</span>
                 }
 
                 // email
-<span class="nc bnc" id="L156" title="All 4 branches missed.">                if(csv.length &gt; 6 &amp;&amp; !csv[6].isEmpty()) {</span>
-<span class="nc" id="L157">                    email = csv[6];</span>
-<span class="nc" id="L158">                    supervisorModel.setEmail(email);</span>
+<span class="nc bnc" id="L163" title="All 4 branches missed.">                if(csv.length &gt; 6 &amp;&amp; !csv[6].isEmpty()) {</span>
+<span class="nc" id="L164">                    email = csv[6];</span>
+<span class="nc" id="L165">                    supervisorModel.setEmail(email);</span>
                 }
 
                 // store supervisor information
-<span class="nc" id="L162">                new SupervisorController(StartEnrollmentActivity.this).save(supervisorModel);</span>
+<span class="nc" id="L169">                new SupervisorController(StartEnrollmentActivity.this).save(supervisorModel);</span>
 
-<span class="nc" id="L164">                cache.setUrl(url);</span>
-<span class="nc" id="L165">                cache.setUserToken(userToken);</span>
-<span class="nc" id="L166">                cache.setInvitationToken(invitationToken);</span>
+<span class="nc" id="L171">                cache.setUrl(url);</span>
+<span class="nc" id="L172">                cache.setUserToken(userToken);</span>
+<span class="nc" id="L173">                cache.setInvitationToken(invitationToken);</span>
 
-<span class="nc" id="L168">            } else {</span>
-<span class="nc" id="L169">                showError( deepLinkErrorMessage );</span>
+<span class="nc" id="L175">            } else {</span>
+<span class="nc" id="L176">                showError( deepLinkErrorMessage );</span>
             }
 
-<span class="nc" id="L172">        } catch (Exception ex) {</span>
-<span class="nc" id="L173">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L174">            showError( deepLinkErrorMessage );</span>
-<span class="nc" id="L175">        }</span>
+<span class="nc" id="L179">        } catch (Exception ex) {</span>
+<span class="nc" id="L180">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L181">            showError( deepLinkErrorMessage );</span>
+<span class="nc" id="L182">        }</span>
 
-<span class="nc" id="L177">        btnEnroll = (RelativeLayout) findViewById(R.id.btnEnroll);</span>
-<span class="nc" id="L178">        btnEnroll.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L184">        btnEnroll = (RelativeLayout) findViewById(R.id.btnEnroll);</span>
+<span class="nc" id="L185">        btnEnroll.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L181">                btnEnroll.setVisibility(View.GONE);</span>
-<span class="nc" id="L182">                txtMessage.setText(getResources().getString(R.string.please_wait));</span>
-<span class="nc" id="L183">                pb.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L188">                btnEnroll.setVisibility(View.GONE);</span>
+<span class="nc" id="L189">                txtMessage.setText(getResources().getString(R.string.please_wait));</span>
+<span class="nc" id="L190">                pb.setVisibility(View.VISIBLE);</span>
 
-<span class="nc" id="L185">                EnrollmentHelper sessionToken = new EnrollmentHelper(StartEnrollmentActivity.this);</span>
-<span class="nc" id="L186">                sessionToken.getActiveSessionToken(new EnrollmentHelper.enrollCallBack() {</span>
+<span class="nc" id="L192">                EnrollmentHelper sessionToken = new EnrollmentHelper(StartEnrollmentActivity.this);</span>
+<span class="nc" id="L193">                sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {</span>
                     @Override
                     public void onSuccess(String data) {
-<span class="nc" id="L189">                        btnEnroll.setVisibility(View.VISIBLE);</span>
-<span class="nc" id="L190">                        pb.setVisibility(View.GONE);</span>
-<span class="nc" id="L191">                        txtMessage.setText(&quot;&quot;);</span>
-<span class="nc" id="L192">                        txtTitle.setText(getResources().getString(R.string.start_enroll));</span>
+<span class="nc" id="L196">                        btnEnroll.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L197">                        pb.setVisibility(View.GONE);</span>
+<span class="nc" id="L198">                        txtMessage.setText(&quot;&quot;);</span>
+<span class="nc" id="L199">                        txtTitle.setText(getResources().getString(R.string.start_enroll));</span>
 
                         // Active EnrollmentHelper Token is stored on cache
-<span class="nc" id="L195">                        openActivity();</span>
-<span class="nc" id="L196">                    }</span>
+<span class="nc" id="L202">                        openActivity();</span>
+<span class="nc" id="L203">                    }</span>
 
                     @Override
                     public void onError(String error) {
-<span class="nc" id="L200">                        btnEnroll.setVisibility(View.VISIBLE);</span>
-<span class="nc" id="L201">                        pb.setVisibility(View.GONE);</span>
-<span class="nc" id="L202">                        showError( error );</span>
-<span class="nc" id="L203">                    }</span>
+<span class="nc" id="L207">                        btnEnroll.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L208">                        pb.setVisibility(View.GONE);</span>
+<span class="nc" id="L209">                        showError( error );</span>
+<span class="nc" id="L210">                    }</span>
                 });
-<span class="nc" id="L205">            }</span>
+<span class="nc" id="L212">            }</span>
         });
-<span class="nc" id="L207">    }</span>
+<span class="nc" id="L214">    }</span>
 
     /**
      * Send a Broadcast with the Close Action
      */
     public void broadcastClose() {
         //send broadcast
-<span class="nc" id="L214">        Intent in = new Intent();</span>
-<span class="nc" id="L215">        in.setAction(&quot;flyve.ACTION_CLOSE&quot;);</span>
-<span class="nc" id="L216">        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);</span>
-<span class="nc" id="L217">    }</span>
+<span class="nc" id="L221">        Intent in = new Intent();</span>
+<span class="nc" id="L222">        in.setAction(&quot;flyve.ACTION_CLOSE&quot;);</span>
+<span class="nc" id="L223">        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);</span>
+<span class="nc" id="L224">    }</span>
     
     /**
      * Shows an error message
      * @param string the message
      */
     private void showError(String message) {
-<span class="nc" id="L224">        txtTitle.setText(getResources().getString(R.string.fail_enroll));</span>
+<span class="nc" id="L231">        txtTitle.setText(getResources().getString(R.string.fail_enroll));</span>
 
-<span class="nc" id="L226">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
+<span class="nc" id="L233">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L229">            }</span>
+<span class="nc" id="L236">            }</span>
         });
-<span class="nc" id="L231">    }</span>
+<span class="nc" id="L238">    }</span>
 
     /**
      * Open activity
      */
     private void openActivity() {
-<span class="nc" id="L237">        Intent miIntent = new Intent(StartEnrollmentActivity.this, EnrollmentActivity.class);</span>
-<span class="nc" id="L238">        StartEnrollmentActivity.this.startActivityForResult(miIntent, REQUEST_EXIT);</span>
-<span class="nc" id="L239">    }</span>
+<span class="nc" id="L244">        Intent miIntent = new Intent(StartEnrollmentActivity.this, EnrollmentActivity.class);</span>
+<span class="nc" id="L245">        StartEnrollmentActivity.this.startActivityForResult(miIntent, REQUEST_EXIT);</span>
+<span class="nc" id="L246">    }</span>
 
     /**
      * Open the main activity
      */
     private void openMain() {
-<span class="nc" id="L245">        Intent intent = new Intent(StartEnrollmentActivity.this, MainActivity.class);</span>
-<span class="nc" id="L246">        StartEnrollmentActivity.this.startActivity(intent);</span>
-<span class="nc" id="L247">        StartEnrollmentActivity.this.finish();</span>
-<span class="nc" id="L248">    }</span>
+<span class="nc" id="L252">        Intent intent = new Intent(StartEnrollmentActivity.this, MainActivity.class);</span>
+<span class="nc" id="L253">        StartEnrollmentActivity.this.startActivity(intent);</span>
+<span class="nc" id="L254">        StartEnrollmentActivity.this.finish();</span>
+<span class="nc" id="L255">    }</span>
 
     /**
      * Called when the launched activity exits
@@ -255,9 +262,9 @@ import static org.flyve.mdm.agent.R.id.txtAbout;
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-<span class="nc bnc" id="L258" title="All 4 branches missed.">        if (requestCode == REQUEST_EXIT &amp;&amp; resultCode == RESULT_OK) {</span>
-<span class="nc" id="L259">            this.finish();</span>
+<span class="nc bnc" id="L265" title="All 4 branches missed.">        if (requestCode == REQUEST_EXIT &amp;&amp; resultCode == RESULT_OK) {</span>
+<span class="nc" id="L266">            this.finish();</span>
         }
-<span class="nc" id="L261">    }</span>
+<span class="nc" id="L268">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

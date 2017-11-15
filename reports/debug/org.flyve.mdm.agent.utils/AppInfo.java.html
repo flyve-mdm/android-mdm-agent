@@ -65,14 +65,12 @@ public class AppInfo {
 <span class="nc" id="L65">            String name = info.packageName;</span>
 <span class="nc" id="L66">            int version = info.versionCode;</span>
 
-<span class="nc bnc" id="L68" title="All 2 branches missed.">            if(packageName.equals(name)) {</span>
-<span class="nc bnc" id="L69" title="All 2 branches missed.">                if(version == Integer.parseInt(versionCode)) {</span>
-<span class="nc" id="L70">                    FlyveLog.d(&quot;isInstall: return true&quot;);</span>
-<span class="nc" id="L71">                    return true;</span>
-                }
+<span class="nc bnc" id="L68" title="All 4 branches missed.">            if(packageName.equals(name) &amp;&amp; version == Integer.parseInt(versionCode)) {</span>
+<span class="nc" id="L69">                FlyveLog.d(&quot;isInstall: return true&quot;);</span>
+<span class="nc" id="L70">                return true;</span>
             }
-<span class="nc" id="L74">        }</span>
-<span class="nc" id="L75">        return false;</span>
+<span class="nc" id="L72">        }</span>
+<span class="nc" id="L73">        return false;</span>
     }
 
     /**
@@ -83,21 +81,21 @@ public class AppInfo {
      */
     public boolean isInstall(String packageName) {
 
-<span class="nc" id="L86">        final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);</span>
-<span class="nc" id="L87">        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);</span>
+<span class="nc" id="L84">        final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);</span>
+<span class="nc" id="L85">        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);</span>
 
-<span class="nc" id="L89">        List&lt;PackageInfo&gt; applications = mContext.getPackageManager()</span>
-<span class="nc" id="L90">                .getInstalledPackages(0);</span>
-<span class="nc bnc" id="L91" title="All 2 branches missed.">        for(PackageInfo info : applications) {</span>
+<span class="nc" id="L87">        List&lt;PackageInfo&gt; applications = mContext.getPackageManager()</span>
+<span class="nc" id="L88">                .getInstalledPackages(0);</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        for(PackageInfo info : applications) {</span>
 
-<span class="nc" id="L93">            String name = info.packageName;</span>
+<span class="nc" id="L91">            String name = info.packageName;</span>
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">            if(packageName.equals(name)) {</span>
-<span class="nc" id="L96">                FlyveLog.d(&quot;isInstall: return true&quot;);</span>
-<span class="nc" id="L97">                return true;</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            if(packageName.equals(name)) {</span>
+<span class="nc" id="L94">                FlyveLog.d(&quot;isInstall: return true&quot;);</span>
+<span class="nc" id="L95">                return true;</span>
             }
-<span class="nc" id="L99">        }</span>
-<span class="nc" id="L100">        return false;</span>
+<span class="nc" id="L97">        }</span>
+<span class="nc" id="L98">        return false;</span>
     }
 
 

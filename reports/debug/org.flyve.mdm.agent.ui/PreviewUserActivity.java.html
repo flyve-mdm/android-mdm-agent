@@ -100,7 +100,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 
 <span class="nc" id="L101">        ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);</span>
 <span class="nc bnc" id="L102" title="All 4 branches missed.">        if(user.getPicture() != null &amp;&amp; !user.getPicture().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L103">            imgPhoto.setImageBitmap(Helpers.StringToBitmap(user.getPicture()));</span>
+<span class="nc" id="L103">            imgPhoto.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));</span>
         }
 
 <span class="nc" id="L106">        LinearLayout lnEmail = (LinearLayout) findViewById(R.id.lnEmails);</span>

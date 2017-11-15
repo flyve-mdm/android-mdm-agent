@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ConnectivityHelper.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.utils</a> &gt; <span class="el_source">ConnectivityHelper.java</span></div><h1>ConnectivityHelper.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.utils;
+
+import android.content.Context;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
+
+/*
+ *   Copyright © 2017 Teclib. All rights reserved.
+ *
+ *   This file is part of flyve-mdm-android
+ *
+ * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @date      8/11/17
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+public class ConnectivityHelper {
+
+<span class="nc" id="L38">    private ConnectivityHelper() {}</span>
+
+    private static void executecmd(String[] cmds) {
+        try {
+<span class="nc" id="L42">            Process p = Runtime.getRuntime().exec(&quot;su&quot;);</span>
+<span class="nc" id="L43">            DataOutputStream os = new DataOutputStream(p.getOutputStream());</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">            for (String tmpCmd : cmds) {</span>
+<span class="nc" id="L45">                os.writeBytes(tmpCmd + &quot;\n&quot;);</span>
+            }
+<span class="nc" id="L47">            os.writeBytes(&quot;exit\n&quot;);</span>
+<span class="nc" id="L48">            os.flush();</span>
+        }
+<span class="nc" id="L50">        catch (IOException ex){</span>
+<span class="nc" id="L51">            FlyveLog.d(ex.getMessage());</span>
+<span class="nc" id="L52">        }</span>
+<span class="nc" id="L53">    }</span>
+
+    public static void disableGps(boolean disable) {
+<span class="nc" id="L56">        String gps = &quot;+gps&quot;;</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if(disable) {</span>
+<span class="nc" id="L58">            gps = &quot;-gps&quot;;</span>
+        }
+
+<span class="nc" id="L61">        String[] cmds = {&quot;cd /system/bin&quot; ,&quot;settings put secure location_providers_allowed &quot; + gps};</span>
+
+<span class="nc" id="L63">        executecmd(cmds);</span>
+<span class="nc" id="L64">    }</span>
+
+    public static void disableRoaming(boolean disable){
+<span class="nc" id="L67">        String value = &quot;1&quot;;</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if(disable) {</span>
+<span class="nc" id="L69">            value = &quot;0&quot;;</span>
+        }
+
+<span class="nc" id="L72">        String[] cmds = {&quot;cd /system/bin&quot; ,&quot;settings put global data_roaming0 &quot; + value};</span>
+
+<span class="nc" id="L74">        executecmd(cmds);</span>
+<span class="nc" id="L75">    }</span>
+
+    public static void disableNFC(boolean disable) {
+<span class="nc" id="L78">        String value = &quot;enable&quot;;</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        if(disable) {</span>
+<span class="nc" id="L80">            value = &quot;disable&quot;;</span>
+        }
+
+<span class="nc" id="L83">        String[] cmds = {&quot;svc nfc &quot; + value};</span>
+
+<span class="nc" id="L85">        executecmd(cmds);</span>
+<span class="nc" id="L86">    }</span>
+
+    public static void disableMobileLine(boolean disable) {
+<span class="nc" id="L89">        String value = &quot;enable&quot;;</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if(disable) {</span>
+<span class="nc" id="L91">            value = &quot;disable&quot;;</span>
+        }
+
+<span class="nc" id="L94">        String[] cmds = {&quot;svc data &quot; + value};</span>
+
+<span class="nc" id="L96">        executecmd(cmds);</span>
+<span class="nc" id="L97">    }</span>
+
+    public static void disableAirplaneMode(boolean disable) {
+<span class="nc" id="L100">        String value = &quot;1&quot;; // enable</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if(disable) {</span>
+<span class="nc" id="L102">            value = &quot;0&quot;; // disable</span>
+        }
+
+<span class="nc" id="L105">        String[] cmds = {&quot;settings put global airplane_mode_on &quot; + value};</span>
+
+<span class="nc" id="L107">        executecmd(cmds);</span>
+<span class="nc" id="L108">    }</span>
+
+    // Not require system permission
+    private static final String SSID = &quot;1234567890abcdef&quot;;
+    public static boolean disableHostpotTethering(Context context, boolean disable) {
+        try {
+<span class="nc" id="L114">            WifiManager mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">            if(!disable) {</span>
+                // to start Tethering wifi need to be disable
+<span class="nc" id="L117">                mWifiManager.setWifiEnabled(false);</span>
+            }
+
+<span class="nc" id="L120">            WifiConfiguration conf = getWifiApConfiguration();</span>
+<span class="nc" id="L121">            mWifiManager.addNetwork(conf);</span>
+
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            return (Boolean) mWifiManager.getClass().getMethod(&quot;setWifiApEnabled&quot;, WifiConfiguration.class, boolean.class).invoke(mWifiManager, null, !disable);</span>
+<span class="nc" id="L124">        } catch (NullPointerException ex) {</span>
+<span class="nc" id="L125">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L126">            return false;</span>
+<span class="nc" id="L127">        } catch (Exception ex) {</span>
+<span class="nc" id="L128">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L129">            return false;</span>
+        }
+    }
+
+    private static WifiConfiguration getWifiApConfiguration() {
+<span class="nc" id="L134">        WifiConfiguration conf = new WifiConfiguration();</span>
+<span class="nc" id="L135">        conf.SSID =  SSID;</span>
+<span class="nc" id="L136">        conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);</span>
+<span class="nc" id="L137">        return conf;</span>
+    }
+
+    public static void disableUsbFileTransferProtocols(boolean disable) {
+<span class="nc" id="L141">        String value = &quot;mtp,ptp,adb&quot;;</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        if(disable) {</span>
+<span class="nc" id="L143">            value = &quot;none&quot;;</span>
+        }
+
+<span class="nc" id="L146">        String[] cmds = {&quot;setprop persist.sys.usb.config &quot; + value};</span>
+
+<span class="nc" id="L148">        executecmd(cmds);</span>
+<span class="nc" id="L149">    }</span>
+
+    public static void disableSMS(boolean disable) {
+
+
+
+<span class="nc" id="L155">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>
