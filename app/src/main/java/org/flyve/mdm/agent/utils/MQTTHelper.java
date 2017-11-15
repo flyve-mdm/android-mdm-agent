@@ -273,6 +273,12 @@ public class MQTTHelper {
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MOBILE_LINE", "MOBILE_LINE is disable: " + disable));
                 }
 
+                if (jsonConnectivity.has("disableNFC")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableNFC");
+                    cache.setConnectivityNFCDisable(disable);
+                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "NFC", "NFC is disable: " + disable));
+                }
+
             }
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on disableConnectivity", ex.getMessage()));
