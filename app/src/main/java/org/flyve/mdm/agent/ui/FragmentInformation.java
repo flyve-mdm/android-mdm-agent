@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.supervisor.SupervisorController;
 import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
@@ -71,9 +70,9 @@ public class FragmentInformation extends Fragment {
 
     /**
      * Instantiate the user interface view
-     * @param LayoutInflater inflater the object that can be used to inflate any views in the fragment
-     * @param ViewGroup the parent view the fragment's UI should be attached to
-     * @param Bundle this fragment is being re-constructed from a previous saved state
+     * @param inflater the object that can be used to inflate any views in the fragment
+     * @param container the parent view the fragment's UI should be attached to
+     * @param savedInstanceState this fragment is being re-constructed from a previous saved state
      * @return View the view for the fragment's UI
      */
     @Override
@@ -137,9 +136,9 @@ public class FragmentInformation extends Fragment {
 
     /**
      * Receive the result from a previous call to startActivityForResult(Intent, int)
-     * @param int the integer request code, it allows to identify who this result came from
-     * @param int the result code returned by the child activity
-     * @param Intent the intent data, which can return result data to the caller 
+     * @param requestCode the integer request code, it allows to identify who this result came from
+     * @param resultCode the result code returned by the child activity
+     * @param data the intent data, which can return result data to the caller
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -192,7 +191,7 @@ public class FragmentInformation extends Fragment {
 
     /**
      * Set the text and image source of the button according the status of the Message Queue Telemetry Transport (MQTT)
-     * @param Boolean the value, online if true, otherwise offline
+     * @param bval the value, online if true, otherwise offline
      */
     private void statusMQTT(Boolean bval) {
         if (bval) {

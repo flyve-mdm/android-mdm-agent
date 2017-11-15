@@ -40,8 +40,8 @@ public class MQTTRestarterBroadcastReceiver extends BroadcastReceiver {
 
     /**
      * Re-starts the service if it stops
-     * @param Context the context in which the receiver is running
-     * @param Intent the intent being received
+     * @param context in which the receiver is running
+     * @param intent being received
      */
     @Override
     public void onReceive(Context context, Intent intent) {

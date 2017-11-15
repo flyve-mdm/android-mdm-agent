@@ -42,11 +42,11 @@ public class SupervisorModel {
 
     /**
      * Set the object's properties to equal the arguments given
-     * @param string the name
-     * @param string the email
-     * @param string the phone
-     * @param string the website
-     * @param string the picture
+     * @param name
+     * @param email
+     * @param phone
+     * @param website
+     * @param picture
      */
     public SupervisorModel(String name, String email, String phone, String website, String picture) {
         this.name = name;
@@ -66,7 +66,7 @@ public class SupervisorModel {
 
     /**
      * Set the name of the Supervisor Model
-     * @param string the name
+     * @param name
      */
     public void setName(String name) {
         this.name = name;
@@ -82,7 +82,7 @@ public class SupervisorModel {
 
     /**
      * Set the email of the Supervisor Model
-     * @param string the email
+     * @param email
      */
     public void setEmail(String email) {
         this.email = email;
@@ -98,7 +98,7 @@ public class SupervisorModel {
 
     /**
      * Set the phone of the Supervisor Model
-     * @param string the phone
+     * @param phone
      */
     public void setPhone(String phone) {
         this.phone = phone;
@@ -114,7 +114,7 @@ public class SupervisorModel {
 
     /**
      * Set the website of the Supervisor Model
-     * @param string the website
+     * @param website
      */
     public void setWebsite(String website) {
         this.website = website;
@@ -130,7 +130,7 @@ public class SupervisorModel {
 
     /**
      * Set the picture of the Supervisor Model
-     * @param string the picture
+     * @param picture
      */
     public void setPicture(String picture) {
         this.picture = picture;

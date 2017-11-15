@@ -34,8 +34,8 @@ public class AppsReceiver extends BroadcastReceiver {
     
     /**
      * It starts the MQTT service
-     * @param Context the context in which the receiver is running
-     * @param Intent the intent being received
+     * @param context in which the receiver is running
+     * @param intent being received
      */
     @Override
     public void onReceive(Context context, Intent intent) {

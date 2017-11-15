@@ -57,7 +57,7 @@ public class SupervisorStorage extends LocalStorage {
 
     /**
      * Set the supervisor local storage
-     * @param SupervisorModel supervisor
+     * @param supervisor
      */
     public void setSupervisor(SupervisorModel supervisor) {
         Gson gson = new Gson();

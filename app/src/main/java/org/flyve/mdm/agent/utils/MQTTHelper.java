@@ -335,8 +335,8 @@ public class MQTTHelper {
 
     /**
      * Check if the App is to be installed or uninstalled
-     * @param JSONArray if the object has remove or deploy app
-     * @param string the session token
+     * @param checkInstall if the object has remove or deploy app
+     * @param sessionToken the session token
      */
     public void appWork(JSONArray checkInstall, String sessionToken) throws Exception {
         AppInfo appInfo = new AppInfo(this.context);
@@ -407,8 +407,8 @@ public class MQTTHelper {
 
     /**
      * Check if the file is to be removed or downloaded
-     * @param JSONArray if the object has remove or deploy file
-     * @param string the session token
+     * @param jsonFiles if the object has remove or deploy file
+     * @param sessionToken the session token
      */
     public void filesWork(JSONArray jsonFiles, String sessionToken) throws Exception {
 
@@ -734,7 +734,7 @@ public class MQTTHelper {
 
     /**
      * Broadcast the received log
-     * @param string the message
+     * @param message
      */
     private void broadcastReceivedLog(String message){
         // write log file

@@ -64,7 +64,7 @@ public class MultipleEditText {
 
     /**
      * Set the limit size
-     * @param int the size
+     * @param size
      */
     public void setLimit(int size) {
         this.limit = size;
@@ -72,7 +72,7 @@ public class MultipleEditText {
 
     /**
      * Set the input type
-     * @param int the type
+     * @param type
      */
     public void setInputType(int type) {
         inputType = type;
@@ -80,8 +80,8 @@ public class MultipleEditText {
 
     /**
      * Set the values of the Spinner and Edit Text lists
-     * @param string the edit value
-     * @param string the spinner value
+     * @param editValue the edit value
+     * @param spinnerValue the spinner value
      */
     public void setValue(List<String> editValue, List<String> spinnerValue) {
         for(int i=0; i<editValue.size(); i++) {
@@ -91,7 +91,7 @@ public class MultipleEditText {
 
     /**
      * Set the spinner array
-     * @param int the array
+     * @param array
      */
     public void setSpinnerArray(int array) {
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -124,8 +124,8 @@ public class MultipleEditText {
 
     /**
      * Set the layout to edit text
-     * @param string the text value to edit
-     * @param string the spinner value to edit
+     * @param editTextValue the text value to edit
+     * @param spinnerValue the spinner value to edit
      * @return the Linear Layout View
      */
     public LinearLayout createEditText(String editTextValue, String spinnerValue) {

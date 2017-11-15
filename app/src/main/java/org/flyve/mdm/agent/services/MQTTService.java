@@ -88,11 +88,12 @@ public class MQTTService extends Service implements MqttCallback {
 
     /**
      * Called by the system every time a client explicitly starts the service by calling the method startService(Intent)
-     * @param Intent the intent supplied to start the service
-     * @param int flags the additional data about this start request
-     * @param int startID a unique integer representing this specific request to start
+     * https://developer.android.com/reference/android/app/Service.html#START_STICKY Documentation of the Constant
+     *
+     * @param intent supplied to start the service
+     * @param flags the additional data about this start request
+     * @param startId a unique integer representing this specific request to start
      * @return constant START_STICKY
-     * @see https://developer.android.com/reference/android/app/Service.html#START_STICKY Documentation of the Constant
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -128,7 +129,7 @@ public class MQTTService extends Service implements MqttCallback {
 
     /**
      * Return the communication channel to the service
-     * @param Intent the intent that was used to bind to this service
+     * @param intent that was used to bind to this service
      * @return IBinder null if clients cannot bind to the service 
      */
     @Nullable

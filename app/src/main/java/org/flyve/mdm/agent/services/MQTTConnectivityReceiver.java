@@ -43,8 +43,8 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
     /**
      * It is called when it receives information about the state of the connectivity of the WIFI, Bluetooth and GPS
-     * @param Context the context in which the receiver is running
-     * @param Intent the intent being received
+     * @param context in which the receiver is running
+     * @param intent being received
      */
     @Override
     public void onReceive(Context context, Intent intent) {

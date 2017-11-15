@@ -126,9 +126,9 @@ public class ConnectionHTTP {
 
 	/**
 	 * Get the data in a synchronous way
-	 * @param string the url
-	 * @param string HTPP methods
-	 * @param Map string header
+	 * @param url
+	 * @param method
+	 * @param header
 	 */
 	public static String getSyncWebData(String url, String method, Map<String, String> header)
 	{
@@ -172,9 +172,8 @@ public class ConnectionHTTP {
 	/**
 	 * Get the data in a synchronous way
 	 * @param url the url
-	 * @param JSONObject the data
-	 * @param string HTPP methods
-	 * @param Map string header
+	 * @param data
+	 * @param header
 	 */
 	public static String getSyncWebData(final String url, final JSONObject data, final Map<String, String> header) {
 		try

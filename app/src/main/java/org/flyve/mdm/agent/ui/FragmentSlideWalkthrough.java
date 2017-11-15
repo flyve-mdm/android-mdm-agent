@@ -54,9 +54,9 @@ public class FragmentSlideWalkthrough extends Fragment {
 
     /**
      * Set the properties to equal the given arguments
-     * @param WalkthroughModel the walkthroug model class
-     * @param int the number of slides the walkthrough has
-     * @param int the position the user is currently on
+     * @param walkthroughModel the walkthroug model class
+     * @param slides the number of slides the walkthrough has
+     * @param position the user is currently on
      */
     public void config(WalkthroughModel walkthroughModel, int slides, int position) {
         this.walkthroughModel = walkthroughModel;
@@ -67,9 +67,9 @@ public class FragmentSlideWalkthrough extends Fragment {
     /**
      * Called to have the fragments instantiate its user interface view
      * It displays the view for the Walkthrough
-     * @param LayoutInflater the object that can be used to inflate any views
-     * @param ViewGroup the parent view
-     * @param Bundle if non-null, this fragment is being reconstructed from a previous saved state
+     * @param inflater the object that can be used to inflate any views
+     * @param container the parent view
+     * @param savedInstanceState if non-null, this fragment is being reconstructed from a previous saved state
      * @return View the fragment's UI
      */
     @Override
@@ -112,7 +112,7 @@ public class FragmentSlideWalkthrough extends Fragment {
 
     /**
      * Shows the slide dots of the screen
-     * @param ViewGroup the view
+     * @param v the view
      */
     private void slideDots(ViewGroup v) {
 

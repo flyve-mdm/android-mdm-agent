@@ -34,7 +34,7 @@ public class UserController {
 
     /**
      * This constructor loads the context of the current class
-     * @param Context the context
+     * @param context
      */
     public UserController(Context context) {
         this.context = context;
@@ -51,7 +51,7 @@ public class UserController {
 
     /**
      * Save the local storage of the user
-     * @param UserModel user
+     * @param user
      * @return boolean true if saved, false otherwise
      */
     public boolean save(UserModel user) {

@@ -11,7 +11,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 /*
  *   Copyright (C) 2017 Teclib. All rights reserved.
@@ -39,7 +38,7 @@ import android.widget.ImageView;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class RoundedImageView extends ImageView {
+public class RoundedImageView extends android.support.v7.widget.AppCompatImageView {
 
     public RoundedImageView(Context context) {
         super(context);
@@ -55,7 +54,7 @@ public class RoundedImageView extends ImageView {
 
     /**
      * It is implemented to do the drawing
-     * @param Canvas the canvas on which the background will be drawn
+     * @param canvas on which the background will be drawn
      */
     @Override
     protected void onDraw(Canvas canvas) {
@@ -85,8 +84,8 @@ public class RoundedImageView extends ImageView {
 
     /**
      * Convert the Bitmap into a rounded image
-     * @param Bitmap the image to round
-     * @param int the radius of the image
+     * @param bmp the image to round
+     * @param radius of the image
      * @return Bitmap the rounded image
      */
     public static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {

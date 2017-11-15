@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Called when the activity is starting 
-     * @param Bundle if the activity is being re-initialized, it contains the data it most recently supplied
+     * @param savedInstanceState if the activity is being re-initialized, it contains the data it most recently supplied
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Loads the Fragment
-     * @param Hashmap item
+     * @param item
      */
     private void loadFragment(HashMap<String, String> item) {
 
