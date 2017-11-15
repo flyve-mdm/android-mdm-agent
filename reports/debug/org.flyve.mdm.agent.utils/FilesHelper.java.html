@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /*
- *   Copyright © 2017 Teclib. All rights reserved.
+ *   Copyright (C) 2017 Teclib. All rights reserved.
  *
  *   This file is part of flyve-mdm-android-agent
  *
@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      10/7/17
- * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @copyright Copyright (C) 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
@@ -45,7 +45,7 @@ public class FilesHelper {
 
     /**
      * This constructor loads the context of the current class
-     * @param Context the context of the class
+     * @param context of the class
      */
 <span class="nc" id="L50">    public FilesHelper(Context context) {</span>
 <span class="nc" id="L51">        this.context = context;</span>
@@ -55,51 +55,46 @@ public class FilesHelper {
     /**
      * Get the directory of the apk
      * @return string the apk directory
-     * @throws Exception
      */
     private static String getApkDir() {
-<span class="nc" id="L61">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/apk/&quot;);</span>
-<span class="nc" id="L62">        return System.getenv(EXTERNAL_STORAGE) + &quot;/apk/&quot;;</span>
+<span class="nc" id="L60">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/apk/&quot;);</span>
+<span class="nc" id="L61">        return System.getenv(EXTERNAL_STORAGE) + &quot;/apk/&quot;;</span>
     }
 
     /**
      * Get the directory of the Secure Digital card
      * @return string the SD card directory
-     * @throws Exception
      */
     private static String getSDcardDir() {
-<span class="nc" id="L71">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE));</span>
-<span class="nc" id="L72">        return System.getenv(EXTERNAL_STORAGE);</span>
+<span class="nc" id="L69">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE));</span>
+<span class="nc" id="L70">        return System.getenv(EXTERNAL_STORAGE);</span>
     }
 
     /**
      * Get the directory of the UPK
      * @return string the UPK directory
-     * @throws Exception
      */
     private static String getUpkDir() {
-<span class="nc" id="L81">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/.fdroid/&quot;);</span>
-<span class="nc" id="L82">        return System.getenv(EXTERNAL_STORAGE) + &quot;/.fdroid/&quot;;</span>
+<span class="nc" id="L78">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/.fdroid/&quot;);</span>
+<span class="nc" id="L79">        return System.getenv(EXTERNAL_STORAGE) + &quot;/.fdroid/&quot;;</span>
     }
 
     /**
      * Get the directory of the pictures
      * @return string the pictures directory
-     * @throws Exception
      */
     private static String getPicturesDir() {
-<span class="nc" id="L91">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_DCIM);</span>
-<span class="nc" id="L92">        return System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_DCIM;</span>
+<span class="nc" id="L87">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_DCIM);</span>
+<span class="nc" id="L88">        return System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_DCIM;</span>
     }
 
     /**
      * Get the directory of the documents
      * @return string the documents directory
-     * @throws Exception
      */
     private static String getDocumentsDir() {
-<span class="nc" id="L101">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_DOWNLOADS);</span>
-<span class="nc" id="L102">        return System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_DOWNLOADS;</span>
+<span class="nc" id="L96">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_DOWNLOADS);</span>
+<span class="nc" id="L97">        return System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_DOWNLOADS;</span>
     }
 
     /**
@@ -108,107 +103,108 @@ public class FilesHelper {
      * @throws Exception
      */
     private static String getMusicsDir() {
-<span class="nc" id="L111">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_MUSIC);</span>
-<span class="nc" id="L112">        return System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_MUSIC;</span>
+<span class="nc" id="L106">        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_MUSIC);</span>
+<span class="nc" id="L107">        return System.getenv(EXTERNAL_STORAGE) + &quot;/&quot; + Environment.DIRECTORY_MUSIC;</span>
     }
 
     /**
      * Convert the path according to the given arguments
-     * @param string the received path
+     * @param receivePath
      * @return string the converted path
-     * @throws Exception
      */
     private String convertPath(String receivePath) {
 
-<span class="nc" id="L123">        String sreturn = receivePath;</span>
+<span class="nc" id="L117">        String sreturn = receivePath;</span>
 
-<span class="nc" id="L125">        Pattern sdcard = Pattern.compile(&quot;%SDCARD%&quot;);</span>
-<span class="nc" id="L126">        Pattern document = Pattern.compile(&quot;%DOCUMENTS%&quot;);</span>
-<span class="nc" id="L127">        Pattern music = Pattern.compile(&quot;%MUSIC%&quot;);</span>
-<span class="nc" id="L128">        Pattern photo = Pattern.compile(&quot;%PHOTOS%&quot;);</span>
+<span class="nc" id="L119">        Pattern sdcard = Pattern.compile(&quot;%SDCARD%&quot;);</span>
+<span class="nc" id="L120">        Pattern document = Pattern.compile(&quot;%DOCUMENTS%&quot;);</span>
+<span class="nc" id="L121">        Pattern music = Pattern.compile(&quot;%MUSIC%&quot;);</span>
+<span class="nc" id="L122">        Pattern photo = Pattern.compile(&quot;%PHOTOS%&quot;);</span>
 
-<span class="nc" id="L130">        Matcher msdcard = sdcard.matcher(receivePath);</span>
-<span class="nc" id="L131">        Matcher mdocument = document.matcher(receivePath);</span>
-<span class="nc" id="L132">        Matcher mmusic = music.matcher(receivePath);</span>
-<span class="nc" id="L133">        Matcher mphoto = photo.matcher(receivePath);</span>
+<span class="nc" id="L124">        Matcher msdcard = sdcard.matcher(receivePath);</span>
+<span class="nc" id="L125">        Matcher mdocument = document.matcher(receivePath);</span>
+<span class="nc" id="L126">        Matcher mmusic = music.matcher(receivePath);</span>
+<span class="nc" id="L127">        Matcher mphoto = photo.matcher(receivePath);</span>
 
         //Find the sequence that matches the pattern
-<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (msdcard.find()) {</span>
-<span class="nc" id="L137">            sreturn = receivePath;</span>
-<span class="nc" id="L138">            sreturn = sreturn.replace(&quot;%SDCARD%&quot;, getSDcardDir());</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        if (msdcard.find()) {</span>
+<span class="nc" id="L131">            sreturn = receivePath;</span>
+<span class="nc" id="L132">            sreturn = sreturn.replace(&quot;%SDCARD%&quot;, getSDcardDir());</span>
         }
 
-<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (mdocument.find()) {</span>
-<span class="nc" id="L142">            sreturn = receivePath;</span>
-<span class="nc" id="L143">            sreturn = sreturn.replace(&quot;%DOCUMENTS%&quot;, getDocumentsDir());</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (mdocument.find()) {</span>
+<span class="nc" id="L136">            sreturn = receivePath;</span>
+<span class="nc" id="L137">            sreturn = sreturn.replace(&quot;%DOCUMENTS%&quot;, getDocumentsDir());</span>
         }
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">        if (mmusic.find()) {</span>
-<span class="nc" id="L147">            sreturn = receivePath;</span>
-<span class="nc" id="L148">            sreturn = sreturn.replace(&quot;%MUSIC%&quot;, getMusicsDir());</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        if (mmusic.find()) {</span>
+<span class="nc" id="L141">            sreturn = receivePath;</span>
+<span class="nc" id="L142">            sreturn = sreturn.replace(&quot;%MUSIC%&quot;, getMusicsDir());</span>
         }
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (mphoto.find()) {</span>
-<span class="nc" id="L152">            sreturn = receivePath;</span>
-<span class="nc" id="L153">            sreturn = sreturn.replace(&quot;%PHOTOS%&quot;, getPicturesDir());</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (mphoto.find()) {</span>
+<span class="nc" id="L146">            sreturn = receivePath;</span>
+<span class="nc" id="L147">            sreturn = sreturn.replace(&quot;%PHOTOS%&quot;, getPicturesDir());</span>
         }
-<span class="nc" id="L155">        FlyveLog.d(&quot;convertPath return = &quot; + sreturn);</span>
-<span class="nc" id="L156">        return sreturn;</span>
+<span class="nc" id="L149">        FlyveLog.d(&quot;convertPath return = &quot; + sreturn);</span>
+<span class="nc" id="L150">        return sreturn;</span>
     }
 
     /**
      * Download and save file from Id to path
      * @param path String path to save the file on device
      * @param id String Id from
+     * @param sessionToken
      */
     public Boolean downloadFile(String path, String id, String sessionToken) {
 
         //prevent CPU from going off if the user presses the power button during download
-<span class="nc" id="L167">        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);</span>
-<span class="nc" id="L168">        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());</span>
-<span class="nc" id="L169">        wl.acquire();</span>
+<span class="nc" id="L162">        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);</span>
+<span class="nc" id="L163">        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());</span>
+<span class="nc" id="L164">        wl.acquire();</span>
 
-<span class="nc" id="L171">        String filePath = &quot;&quot;;</span>
+<span class="nc" id="L166">        String filePath = &quot;&quot;;</span>
         try {
-<span class="nc" id="L173">            filePath = convertPath(path);</span>
-<span class="nc" id="L174">        } catch (Exception ex) {</span>
-<span class="nc" id="L175">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L176">        }</span>
+<span class="nc" id="L168">            filePath = convertPath(path);</span>
+<span class="nc" id="L169">        } catch (Exception ex) {</span>
+<span class="nc" id="L170">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L171">        }</span>
 
-<span class="nc" id="L178">        final String url = routes.pluginFlyvemdmFile(id, sessionToken);</span>
-<span class="nc" id="L179">        String completeFilePath = download(url, filePath);</span>
+<span class="nc" id="L173">        final String url = routes.pluginFlyvemdmFile(id, sessionToken);</span>
+<span class="nc" id="L174">        String completeFilePath = download(url, filePath);</span>
 
-<span class="nc" id="L181">        return(completeFilePath.equalsIgnoreCase(&quot;&quot;));</span>
+<span class="nc" id="L176">        return(completeFilePath.equalsIgnoreCase(&quot;&quot;));</span>
     }
 
     /**
      * Download, save and install app
      * @param packageFile String package of the app
      * @param id String Id from
+     * @param sessionToken
      */
     public Boolean downloadApk(String packageFile, String id, String sessionToken) {
 
-<span class="nc" id="L191">        FlyveLog.d(&quot;packageFile: &quot; + packageFile);</span>
+<span class="nc" id="L187">        FlyveLog.d(&quot;packageFile: &quot; + packageFile);</span>
 
         //prevent CPU from going off if the user presses the power button during download
-<span class="nc" id="L194">        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);</span>
-<span class="nc" id="L195">        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());</span>
-<span class="nc" id="L196">        wl.acquire();</span>
+<span class="nc" id="L190">        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);</span>
+<span class="nc" id="L191">        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());</span>
+<span class="nc" id="L192">        wl.acquire();</span>
 
-<span class="nc" id="L198">        String filePath = &quot;&quot;;</span>
+<span class="nc" id="L194">        String filePath = &quot;&quot;;</span>
         try {
-<span class="nc" id="L200">            filePath = getApkDir();</span>
-<span class="nc" id="L201">        } catch (Exception ex) {</span>
-<span class="nc" id="L202">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L203">        }</span>
+<span class="nc" id="L196">            filePath = getApkDir();</span>
+<span class="nc" id="L197">        } catch (Exception ex) {</span>
+<span class="nc" id="L198">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L199">        }</span>
 
-<span class="nc" id="L205">        final String url = routes.pluginFlyvemdmPackage(id, sessionToken);</span>
-<span class="nc" id="L206">        String completeFilePath = download(url, filePath);</span>
-<span class="nc bnc" id="L207" title="All 2 branches missed.">        if(completeFilePath.equalsIgnoreCase(&quot;&quot;)) {</span>
-<span class="nc" id="L208">            return false;</span>
+<span class="nc" id="L201">        final String url = routes.pluginFlyvemdmPackage(id, sessionToken);</span>
+<span class="nc" id="L202">        String completeFilePath = download(url, filePath);</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">        if(completeFilePath.equalsIgnoreCase(&quot;&quot;)) {</span>
+<span class="nc" id="L204">            return false;</span>
         } else {
-<span class="nc" id="L210">            installApk(completeFilePath);</span>
-<span class="nc" id="L211">            return true;</span>
+<span class="nc" id="L206">            installApk(completeFilePath);</span>
+<span class="nc" id="L207">            return true;</span>
         }
     }
 
@@ -220,106 +216,104 @@ public class FilesHelper {
      */
     private String download(final String url, final String path) {
 
-<span class="nc" id="L223">        String data = ConnectionHTTP.getSyncWebData(url, &quot;GET&quot;,null);</span>
+<span class="nc" id="L219">        String data = ConnectionHTTP.getSyncWebData(url, &quot;GET&quot;,null);</span>
 
-<span class="nc bnc" id="L225" title="All 2 branches missed.">        if(!data.contains(&quot;Exception&quot;)) {</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">        if(!data.contains(&quot;Exception&quot;)) {</span>
             try {
-<span class="nc" id="L227">                JSONObject jsonObjDownload = new JSONObject(data);</span>
+<span class="nc" id="L223">                JSONObject jsonObjDownload = new JSONObject(data);</span>
 
-<span class="nc" id="L229">                String fileName = &quot;&quot;;</span>
+<span class="nc" id="L225">                String fileName = &quot;&quot;;</span>
 
                 // Both has name
-<span class="nc bnc" id="L232" title="All 2 branches missed.">                if (jsonObjDownload.has(&quot;name&quot;)) {</span>
-<span class="nc" id="L233">                    fileName = jsonObjDownload.getString(&quot;name&quot;);</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">                if (jsonObjDownload.has(&quot;name&quot;)) {</span>
+<span class="nc" id="L229">                    fileName = jsonObjDownload.getString(&quot;name&quot;);</span>
                 }
 
                 // is APK
-<span class="nc bnc" id="L237" title="All 2 branches missed.">                if(jsonObjDownload.has(&quot;dl_filename&quot;)) {</span>
-<span class="nc" id="L238">                    fileName = jsonObjDownload.getString(&quot;dl_filename&quot;);</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">                if(jsonObjDownload.has(&quot;dl_filename&quot;)) {</span>
+<span class="nc" id="L234">                    fileName = jsonObjDownload.getString(&quot;dl_filename&quot;);</span>
                 }
 
                 // validating if folder exists or create
-<span class="nc" id="L242">                new File(path).mkdirs();</span>
+<span class="nc" id="L238">                new File(path).mkdirs();</span>
 
                 // validating if file exists
-<span class="nc" id="L245">                String filePath = path + fileName;</span>
-<span class="nc" id="L246">                File file = new File(filePath);</span>
-<span class="nc bnc" id="L247" title="All 2 branches missed.">                if(file.exists()) {</span>
-<span class="nc" id="L248">                    FlyveLog.d(&quot;File exists&quot;);</span>
-<span class="nc" id="L249">                    return &quot;&quot;;</span>
+<span class="nc" id="L241">                String filePath = path + fileName;</span>
+<span class="nc" id="L242">                File file = new File(filePath);</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">                if(file.exists()) {</span>
+<span class="nc" id="L244">                    FlyveLog.d(&quot;File exists&quot;);</span>
+<span class="nc" id="L245">                    return &quot;&quot;;</span>
                 }
 
-<span class="nc" id="L252">                Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath);</span>
-<span class="nc bnc" id="L253" title="All 2 branches missed.">                if(isSave) {</span>
-<span class="nc" id="L254">                    FlyveLog.d(&quot;Download ready&quot;);</span>
-<span class="nc" id="L255">                    return filePath;</span>
+<span class="nc" id="L248">                Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath);</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">                if(isSave) {</span>
+<span class="nc" id="L250">                    FlyveLog.d(&quot;Download ready&quot;);</span>
+<span class="nc" id="L251">                    return filePath;</span>
                 } else {
-<span class="nc" id="L257">                    FlyveLog.e(&quot;Download fail: &quot; + data);</span>
-<span class="nc" id="L258">                    return &quot;&quot;;</span>
+<span class="nc" id="L253">                    FlyveLog.e(&quot;Download fail: &quot; + data);</span>
+<span class="nc" id="L254">                    return &quot;&quot;;</span>
                 }
-<span class="nc" id="L260">            } catch (Exception ex) {</span>
-<span class="nc" id="L261">                FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L262">                return &quot;&quot;;</span>
+<span class="nc" id="L256">            } catch (Exception ex) {</span>
+<span class="nc" id="L257">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L258">                return &quot;&quot;;</span>
             }
         } // endif Exception
 
-<span class="nc" id="L266">        FlyveLog.e(data);</span>
-<span class="nc" id="L267">        return &quot;&quot;;</span>
+<span class="nc" id="L262">        FlyveLog.e(data);</span>
+<span class="nc" id="L263">        return &quot;&quot;;</span>
     }
 
     /**
      * Remove the file according to the given path
-     * @param string the file path
+     * @param filePath
      * @return boolean true if file deleted, false otherwise
-     * @throws Exception an error message
      */
     public boolean removeFile(String filePath) {
         try {
-<span class="nc" id="L278">            String realPath = convertPath(filePath);</span>
-<span class="nc" id="L279">            File file = new File(realPath);</span>
-<span class="nc" id="L280">            return file.delete();</span>
-<span class="nc" id="L281">        } catch (Exception ex) {</span>
-<span class="nc" id="L282">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L283">            return false;</span>
+<span class="nc" id="L273">            String realPath = convertPath(filePath);</span>
+<span class="nc" id="L274">            File file = new File(realPath);</span>
+<span class="nc" id="L275">            return file.delete();</span>
+<span class="nc" id="L276">        } catch (Exception ex) {</span>
+<span class="nc" id="L277">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L278">            return false;</span>
         }
     }
 
     /**
      * Uninstall the Android Package
-     * @param Context the context
-     * @param string the package to uninstall
+     * @param context
+     * @param mPackage to uninstall
      * @return int if it succeed 1, otherwise 0
-     * @throws ActivityNotFoundException it's thrown when a call to startActivity(Intent) fails because an Activity could not be found to execute the given intent
      */
     public static int removeApk(Context context, String mPackage){
-<span class="nc" id="L295">        Uri packageUri = Uri.parse(&quot;package:&quot;+mPackage);</span>
-<span class="nc" id="L296">        Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);</span>
-<span class="nc" id="L297">        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
+<span class="nc" id="L289">        Uri packageUri = Uri.parse(&quot;package:&quot;+mPackage);</span>
+<span class="nc" id="L290">        Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);</span>
+<span class="nc" id="L291">        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
         try {
-<span class="nc" id="L299">            context.startActivity(intent);</span>
-<span class="nc" id="L300">        } catch (ActivityNotFoundException e) {</span>
-<span class="nc" id="L301">            FlyveLog.e(e.getMessage());</span>
-<span class="nc" id="L302">            return 0;</span>
-<span class="nc" id="L303">        }</span>
-<span class="nc" id="L304">        return 1;</span>
+<span class="nc" id="L293">            context.startActivity(intent);</span>
+<span class="nc" id="L294">        } catch (ActivityNotFoundException e) {</span>
+<span class="nc" id="L295">            FlyveLog.e(e.getMessage());</span>
+<span class="nc" id="L296">            return 0;</span>
+<span class="nc" id="L297">        }</span>
+<span class="nc" id="L298">        return 1;</span>
     }
 
     /**
      * Install the Android Package
-     * @param string the file to install
+     * @param file to install
      */
     public void installApk(String file) {
-<span class="nc" id="L312">        FlyveLog.d(file);</span>
-<span class="nc" id="L313">        Intent intent = new Intent();</span>
-<span class="nc" id="L314">        intent.setAction(Intent.ACTION_INSTALL_PACKAGE);</span>
-<span class="nc" id="L315">        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
-<span class="nc" id="L316">        intent.setDataAndType(Uri.parse(&quot;file://&quot; + file), &quot;application/vnd.android.package-archive&quot;);</span>
-<span class="nc" id="L317">        intent.putExtra(&quot;isFromMDM&quot;, true);</span>
-<span class="nc" id="L318">        intent.putExtra(&quot;UPKFilePath&quot;, file);</span>
-<span class="nc" id="L319">        intent.putExtra(&quot;repoaddress&quot;, &quot;&quot;);</span>
-<span class="nc" id="L320">        intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);</span>
-<span class="nc" id="L321">        intent.putExtra(&quot;token_id&quot;, 1);</span>
-<span class="nc" id="L322">        context.startActivity(intent);</span>
-<span class="nc" id="L323">    }</span>
+<span class="nc" id="L306">        FlyveLog.d(file);</span>
+<span class="nc" id="L307">        Intent intent = new Intent();</span>
+<span class="nc" id="L308">        intent.setAction(Intent.ACTION_INSTALL_PACKAGE);</span>
+<span class="nc" id="L309">        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
+<span class="nc" id="L310">        intent.setDataAndType(Uri.parse(&quot;file://&quot; + file), &quot;application/vnd.android.package-archive&quot;);</span>
+<span class="nc" id="L311">        intent.putExtra(&quot;isFromMDM&quot;, true);</span>
+<span class="nc" id="L312">        intent.putExtra(&quot;UPKFilePath&quot;, file);</span>
+<span class="nc" id="L313">        intent.putExtra(&quot;repoaddress&quot;, &quot;&quot;);</span>
+<span class="nc" id="L314">        intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);</span>
+<span class="nc" id="L315">        intent.putExtra(&quot;token_id&quot;, 1);</span>
+<span class="nc" id="L316">        context.startActivity(intent);</span>
+<span class="nc" id="L317">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

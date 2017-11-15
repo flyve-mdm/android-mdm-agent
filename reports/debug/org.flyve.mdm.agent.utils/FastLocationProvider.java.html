@@ -8,7 +8,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 /*
- *   Copyright © 2017 Teclib. All rights reserved.
+ *   Copyright (C) 2017 Teclib. All rights reserved.
  *
  *   This file is part of flyve-mdm-android-agent
  *
@@ -27,7 +27,7 @@ import android.os.Bundle;
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      6/7/17
- * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @copyright Copyright (C) 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>StartEnrollmentActivity.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">StartEnrollmentActivity.java</span></div><h1>StartEnrollmentActivity.java</h1><pre class="source lang-java linenums">/*
- *   Copyright © 2017 Teclib. All rights reserved.
+ *   Copyright (C) 2017 Teclib. All rights reserved.
  *
  * This file is part of flyve-mdm-android-agent
  *
@@ -18,7 +18,7 @@
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      02/06/2017
- * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @copyright Copyright (C) 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
@@ -59,7 +59,7 @@ import org.flyve.mdm.agent.utils.Helpers;
     /**
      * Called when the activity is starting
      * It shows the UI to start the enrollment
-     * @param Bundle if the activity is being re-initialized, it contains the data it most recently supplied
+     * @param savedInstanceState if the activity is being re-initialized, it contains the data it most recently supplied
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,7 +225,7 @@ import org.flyve.mdm.agent.utils.Helpers;
     
     /**
      * Shows an error message
-     * @param string the message
+     * @param message
      */
     private void showError(String message) {
 <span class="nc" id="L231">        txtTitle.setText(getResources().getString(R.string.fail_enroll));</span>
@@ -256,9 +256,9 @@ import org.flyve.mdm.agent.utils.Helpers;
 
     /**
      * Called when the launched activity exits
-     * @param int the request code originally supplied, it identifies who this result came from
-     * @param int the result code returned
-     * @param Intent an intent which can return result data to the caller
+     * @param requestCode the request code originally supplied, it identifies who this result came from
+     * @param resultCode the result code returned
+     * @param data an intent which can return result data to the caller
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

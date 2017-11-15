@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /*
- *   Copyright © 2017 Teclib. All rights reserved.
+ *   Copyright (C) 2017 Teclib. All rights reserved.
  *
  *   This file is part of flyve-mdm-android-agent
  *
@@ -26,7 +26,7 @@ import java.util.Properties;
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      2/10/17
- * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @copyright Copyright (C) 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com

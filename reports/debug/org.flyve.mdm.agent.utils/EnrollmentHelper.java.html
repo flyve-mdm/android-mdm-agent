@@ -15,7 +15,7 @@ import java.util.HashMap;
 import static org.flyve.mdm.agent.utils.ConnectionHTTP.getSyncWebData;
 
 /*
- *   Copyright © 2017 Teclib. All rights reserved.
+ *   Copyright (C) 2017 Teclib. All rights reserved.
  *
  *   This file is part of flyve-mdm-android-agent
  *
@@ -34,7 +34,7 @@ import static org.flyve.mdm.agent.utils.ConnectionHTTP.getSyncWebData;
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      12/7/17
- * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @copyright Copyright (C) 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
@@ -67,7 +67,7 @@ public class EnrollmentHelper {
 
     /**
      * This constructor loads the context of the current class
-     * @param Context the context of the class
+     * @param context of the class
      */
 <span class="nc" id="L72">    public EnrollmentHelper(Context context) {</span>
 <span class="nc" id="L73">        this.context = context;</span>
@@ -77,7 +77,7 @@ public class EnrollmentHelper {
 
     /**
      * Manage the errors 
-     * @param string the error
+     * @param error
      * @return string the message of the error
      */
     private String manageError(String error) {
@@ -195,8 +195,8 @@ public class EnrollmentHelper {
 
     /**
      * Get the information to enroll
-     * @param JSONObject the information of the phone
-     * @param enrollCallback the callback
+     * @param payload the information of the phone
+     * @param callback
      */
     public void enrollment(final JSONObject payload, final EnrollCallBack callback) {
 <span class="nc" id="L202">        Thread t = new Thread(new Runnable()</span>

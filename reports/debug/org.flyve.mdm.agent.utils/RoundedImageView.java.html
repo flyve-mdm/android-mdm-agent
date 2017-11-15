@@ -11,10 +11,9 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 /*
- *   Copyright © 2017 Teclib. All rights reserved.
+ *   Copyright (C) 2017 Teclib. All rights reserved.
  *
  *   This file is part of flyve-mdm-android-agent
  *
@@ -33,93 +32,93 @@ import android.widget.ImageView;
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      10/8/17
- * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @copyright Copyright (C) 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class RoundedImageView extends ImageView {
+public class RoundedImageView extends android.support.v7.widget.AppCompatImageView {
 
     public RoundedImageView(Context context) {
-<span class="nc" id="L45">        super(context);</span>
-<span class="nc" id="L46">    }</span>
+<span class="nc" id="L44">        super(context);</span>
+<span class="nc" id="L45">    }</span>
 
     public RoundedImageView(Context context, AttributeSet attrs) {
-<span class="nc" id="L49">        super(context, attrs);</span>
-<span class="nc" id="L50">    }</span>
+<span class="nc" id="L48">        super(context, attrs);</span>
+<span class="nc" id="L49">    }</span>
 
     public RoundedImageView(Context context, AttributeSet attrs, int defStyle) {
-<span class="nc" id="L53">        super(context, attrs, defStyle);</span>
-<span class="nc" id="L54">    }</span>
+<span class="nc" id="L52">        super(context, attrs, defStyle);</span>
+<span class="nc" id="L53">    }</span>
 
     /**
      * It is implemented to do the drawing
-     * @param Canvas the canvas on which the background will be drawn
+     * @param canvas on which the background will be drawn
      */
     @Override
     protected void onDraw(Canvas canvas) {
 
-<span class="nc" id="L63">        Drawable drawable = getDrawable();</span>
+<span class="nc" id="L62">        Drawable drawable = getDrawable();</span>
 
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (drawable == null) {</span>
-<span class="nc" id="L66">            return;</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (drawable == null) {</span>
+<span class="nc" id="L65">            return;</span>
         }
 
-<span class="nc bnc" id="L69" title="All 4 branches missed.">        if (getWidth() == 0 || getHeight() == 0) {</span>
-<span class="nc" id="L70">            return;</span>
+<span class="nc bnc" id="L68" title="All 4 branches missed.">        if (getWidth() == 0 || getHeight() == 0) {</span>
+<span class="nc" id="L69">            return;</span>
         }
 
         try {
-<span class="nc" id="L74">            Bitmap b = ((BitmapDrawable) drawable).getBitmap();</span>
-<span class="nc" id="L75">            Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);</span>
+<span class="nc" id="L73">            Bitmap b = ((BitmapDrawable) drawable).getBitmap();</span>
+<span class="nc" id="L74">            Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);</span>
 
-<span class="nc" id="L77">            int w = getWidth();</span>
+<span class="nc" id="L76">            int w = getWidth();</span>
 
-<span class="nc" id="L79">            Bitmap roundBitmap = getCroppedBitmap(bitmap, w);</span>
-<span class="nc" id="L80">            canvas.drawBitmap(roundBitmap, 0, 0, null);</span>
-<span class="nc" id="L81">        } catch (Exception ex) {</span>
-<span class="nc" id="L82">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L83">        }</span>
-<span class="nc" id="L84">    }</span>
+<span class="nc" id="L78">            Bitmap roundBitmap = getCroppedBitmap(bitmap, w);</span>
+<span class="nc" id="L79">            canvas.drawBitmap(roundBitmap, 0, 0, null);</span>
+<span class="nc" id="L80">        } catch (Exception ex) {</span>
+<span class="nc" id="L81">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L82">        }</span>
+<span class="nc" id="L83">    }</span>
 
     /**
      * Convert the Bitmap into a rounded image
-     * @param Bitmap the image to round
-     * @param int the radius of the image
+     * @param bmp the image to round
+     * @param radius of the image
      * @return Bitmap the rounded image
      */
     public static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {
         Bitmap sbmp;
 
-<span class="nc bnc" id="L95" title="All 4 branches missed.">        if (bmp.getWidth() != radius || bmp.getHeight() != radius) {</span>
-<span class="nc" id="L96">            float smallest = Math.min(bmp.getWidth(), bmp.getHeight());</span>
-<span class="nc" id="L97">            float factor = smallest / radius;</span>
-<span class="nc" id="L98">            sbmp = Bitmap.createScaledBitmap(bmp,</span>
-<span class="nc" id="L99">                    (int) (bmp.getWidth() / factor),</span>
-<span class="nc" id="L100">                    (int) (bmp.getHeight() / factor), false);</span>
-<span class="nc" id="L101">        } else {</span>
-<span class="nc" id="L102">            sbmp = bmp;</span>
+<span class="nc bnc" id="L94" title="All 4 branches missed.">        if (bmp.getWidth() != radius || bmp.getHeight() != radius) {</span>
+<span class="nc" id="L95">            float smallest = Math.min(bmp.getWidth(), bmp.getHeight());</span>
+<span class="nc" id="L96">            float factor = smallest / radius;</span>
+<span class="nc" id="L97">            sbmp = Bitmap.createScaledBitmap(bmp,</span>
+<span class="nc" id="L98">                    (int) (bmp.getWidth() / factor),</span>
+<span class="nc" id="L99">                    (int) (bmp.getHeight() / factor), false);</span>
+<span class="nc" id="L100">        } else {</span>
+<span class="nc" id="L101">            sbmp = bmp;</span>
         }
 
-<span class="nc" id="L105">        Bitmap output = Bitmap.createBitmap(radius, radius, Bitmap.Config.ARGB_8888);</span>
-<span class="nc" id="L106">        Canvas canvas = new Canvas(output);</span>
+<span class="nc" id="L104">        Bitmap output = Bitmap.createBitmap(radius, radius, Bitmap.Config.ARGB_8888);</span>
+<span class="nc" id="L105">        Canvas canvas = new Canvas(output);</span>
 
-<span class="nc" id="L108">        final String color = &quot;#BAB399&quot;;</span>
-<span class="nc" id="L109">        final Paint paint = new Paint();</span>
-<span class="nc" id="L110">        final Rect rect = new Rect(0, 0, radius, radius);</span>
+<span class="nc" id="L107">        final String color = &quot;#BAB399&quot;;</span>
+<span class="nc" id="L108">        final Paint paint = new Paint();</span>
+<span class="nc" id="L109">        final Rect rect = new Rect(0, 0, radius, radius);</span>
 
-<span class="nc" id="L112">        paint.setAntiAlias(true);</span>
-<span class="nc" id="L113">        paint.setFilterBitmap(true);</span>
-<span class="nc" id="L114">        paint.setDither(true);</span>
-<span class="nc" id="L115">        canvas.drawARGB(0, 0, 0, 0);</span>
-<span class="nc" id="L116">        paint.setColor(Color.parseColor(color));</span>
-<span class="nc" id="L117">        canvas.drawCircle(radius / 2 + 0.7f, radius / 2 + 0.7f,</span>
+<span class="nc" id="L111">        paint.setAntiAlias(true);</span>
+<span class="nc" id="L112">        paint.setFilterBitmap(true);</span>
+<span class="nc" id="L113">        paint.setDither(true);</span>
+<span class="nc" id="L114">        canvas.drawARGB(0, 0, 0, 0);</span>
+<span class="nc" id="L115">        paint.setColor(Color.parseColor(color));</span>
+<span class="nc" id="L116">        canvas.drawCircle(radius / 2 + 0.7f, radius / 2 + 0.7f,</span>
                 radius / 2 + 0.1f, paint);
-<span class="nc" id="L119">        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));</span>
-<span class="nc" id="L120">        canvas.drawBitmap(sbmp, rect, rect, paint);</span>
+<span class="nc" id="L118">        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));</span>
+<span class="nc" id="L119">        canvas.drawBitmap(sbmp, rect, rect, paint);</span>
 
-<span class="nc" id="L122">        return output;</span>
+<span class="nc" id="L121">        return output;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

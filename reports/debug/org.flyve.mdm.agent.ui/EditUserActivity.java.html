@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- *   Copyright © 2017 Teclib. All rights reserved.
+ *   Copyright (C) 2017 Teclib. All rights reserved.
  *
  *   This file is part of flyve-mdm-android-agent
  *
@@ -57,7 +57,7 @@ import java.util.List;
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      31/7/17
- * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @copyright Copyright (C) 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
@@ -82,7 +82,7 @@ import java.util.List;
     /**
      * Called when the activity is starting
      * It display the UI to edit the user information
-     * @param Bundle if the activity is re-initialized, it contains the data it most recently supplied
+     * @param savedInstanceState if the activity is re-initialized, it contains the data it most recently supplied
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -346,9 +346,9 @@ import java.util.List;
     /**
      * Called when a launched activity exits
      * It proccesses the information from galleryIntent and cameraIntent
-     * @param int the request code originally supplied, allowing to identify who this result came from
-     * @param int the integer result code returned
-     * @param Intent an Intent, which can return result data to the caller
+     * @param requestCode the request code originally supplied, allowing to identify who this result came from
+     * @param resultCode the integer result code returned
+     * @param data an Intent, which can return result data to the caller
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -374,7 +374,7 @@ import java.util.List;
 
     /**
      * Retrieves the selected image from the gallery
-     * @param Intent the data of the image
+     * @param data of the image
      * @throws IOException error message
      */
     private void onSelectFromGalleryResult(Intent data) {

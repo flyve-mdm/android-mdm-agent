@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MQTTHelper.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.utils</a> &gt; <span class="el_source">MQTTHelper.java</span></div><h1>MQTTHelper.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.utils;
 
 /*
- *   Copyright © 2017 Teclib. All rights reserved.
+ *   Copyright (C) 2017 Teclib. All rights reserved.
  *
  *   This file is part of flyve-mdm-android-agent
  *
@@ -20,7 +20,7 @@
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      27/7/17
- * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @copyright Copyright (C) 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
@@ -335,8 +335,8 @@ public class MQTTHelper {
 
     /**
      * Check if the App is to be installed or uninstalled
-     * @param JSONArray if the object has remove or deploy app
-     * @param string the session token
+     * @param checkInstall if the object has remove or deploy app
+     * @param sessionToken the session token
      */
     public void appWork(JSONArray checkInstall, String sessionToken) throws Exception {
 <span class="nc" id="L342">        AppInfo appInfo = new AppInfo(this.context);</span>
@@ -407,8 +407,8 @@ public class MQTTHelper {
 
     /**
      * Check if the file is to be removed or downloaded
-     * @param JSONArray if the object has remove or deploy file
-     * @param string the session token
+     * @param jsonFiles if the object has remove or deploy file
+     * @param sessionToken the session token
      */
     public void filesWork(JSONArray jsonFiles, String sessionToken) throws Exception {
 
@@ -734,7 +734,7 @@ public class MQTTHelper {
 
     /**
      * Broadcast the received log
-     * @param string the message
+     * @param message
      */
     private void broadcastReceivedLog(String message){
         // write log file

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DataStorage.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.data</a> &gt; <span class="el_source">DataStorage.java</span></div><h1>DataStorage.java</h1><pre class="source lang-java linenums">/*
- *   Copyright © 2017 Teclib. All rights reserved.
+ *   Copyright (C) 2017 Teclib. All rights reserved.
  *
  * This file is part of flyve-mdm-android-agent
  *
@@ -18,7 +18,7 @@
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      02/06/2017
- * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @copyright Copyright (C) 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
@@ -65,7 +65,7 @@ public class DataStorage {
 
 	/**
 	 * Set the online status
-	 * @param boolean the status
+	 * @param status enable / disable
 	 */
 	public void setOnlineStatus(boolean status) {
 <span class="nc" id="L71">		setData(&quot;onlineStatus&quot;, String.valueOf(status));</span>
@@ -81,7 +81,7 @@ public class DataStorage {
 
 	/**
 	 * Set the version of the Manifest
-	 * @param string the Manifest version
+	 * @param version number of the version
 	 */
 	public void setManifestVersion(String version) {
 <span class="nc" id="L87">		setData(&quot;manifestVersion&quot;, version);</span>
@@ -97,7 +97,7 @@ public class DataStorage {
 
 	/**
 	 * Set the URL
-	 * @param string the url
+	 * @param url
 	 */
 	public void setUrl(String url) {
 <span class="nc" id="L103">		setData(&quot;url&quot;, url);</span>
@@ -113,7 +113,7 @@ public class DataStorage {
 
 	/**
 	 * Set the token of the user
-	 * @param string the user token
+	 * @param userToken
 	 */
 	public void setUserToken(String userToken) {
 <span class="nc" id="L119">		setData(&quot;user_token&quot;, userToken);</span>
@@ -129,7 +129,7 @@ public class DataStorage {
 
 	/**
 	 * Set the invitation token
-	 * @param string the invitation token
+	 * @param invitationToken
 	 */
 	public void setInvitationToken(String invitationToken) {
 <span class="nc" id="L135">		setData(&quot;invitation_token&quot;, invitationToken);</span>
@@ -145,7 +145,7 @@ public class DataStorage {
 
 	/**
 	 * Set the session token
-	 * @param string the session token
+	 * @param sessionToken
 	 */
 	public void setSessionToken(String sessionToken) {
 <span class="nc" id="L151">		setData(&quot;session_token&quot;, sessionToken);</span>
@@ -161,7 +161,7 @@ public class DataStorage {
 
 	/**
 	 * Set the ID of the profile
-	 * @param string the profile ID
+	 * @param profileId
 	 */
 	public void setProfileId(String profileId) {
 <span class="nc" id="L167">		setData(&quot;profile_id&quot;, profileId);</span>
@@ -177,7 +177,7 @@ public class DataStorage {
 
 	/**
 	 * Set the ID of the agent
-	 * @param string the agent ID
+	 * @param agentId
 	 */
 	public void setAgentId(String agentId) {
 <span class="nc" id="L183">		setData(&quot;agent_id&quot;, agentId);</span>
@@ -193,7 +193,7 @@ public class DataStorage {
 
 	/**
 	 * Set the broker
-	 * @param string the broker
+	 * @param broker
 	 */
 	public void setBroker(String broker) {
 <span class="nc" id="L199">		setData(&quot;broker&quot;, broker);</span>
@@ -209,7 +209,7 @@ public class DataStorage {
 
 	/**
 	 * Set the port
-	 * @param string the port
+	 * @param port
 	 */
 	public void setPort(String port) {
 <span class="nc" id="L215">		setData(&quot;port&quot;, port);</span>
@@ -225,7 +225,7 @@ public class DataStorage {
 
 	/**
 	 * Set the Transport Layer Security (TLS)
-	 * @param string the TLS
+	 * @param tls
 	 */
 	public void setTls(String tls) {
 <span class="nc" id="L231">		setData(&quot;tls&quot;, tls);</span>
@@ -241,7 +241,7 @@ public class DataStorage {
 
 	/**
 	 * Set the topic 
-	 * @param string the topic
+	 * @param topic
 	 */
 	public void setTopic(String topic) {
 <span class="nc" id="L247">		setData(&quot;topic&quot;, topic);</span>
@@ -257,7 +257,7 @@ public class DataStorage {
 
 	/**
 	 * Set the user of the Message Queue Telemetry Transport (MQTT)
-	 * @param string the MQTT user
+	 * @param mqttuser
 	 */
 	public void setMqttuser(String mqttuser) {
 <span class="nc" id="L263">		setData(&quot;mqttuser&quot;, mqttuser);</span>
@@ -273,7 +273,7 @@ public class DataStorage {
 
 	/**
 	 * Set the password of the Message Queue Telemetry Transport (MQTT)
-	 * @param string the MQTT password
+	 * @param mqttpasswd
 	 */
 	public void setMqttpasswd(String mqttpasswd) {
 <span class="nc" id="L279">		setData(&quot;mqttpasswd&quot;, mqttpasswd);</span>
@@ -289,7 +289,7 @@ public class DataStorage {
 
 	/**
 	 * Set the Certificate
-	 * @param string the certificate
+	 * @param certificate
 	 */
 	public void setCertificate(String certificate) {
 <span class="nc" id="L295">		setData(&quot;certificate&quot;, certificate);</span>
@@ -305,7 +305,7 @@ public class DataStorage {
 
 	/**
 	 * Set the name
-	 * @param string the name
+	 * @param name
 	 */
 	public void setName(String name) {
 <span class="nc" id="L311">		setData(&quot;name&quot;, name);</span>
@@ -321,7 +321,7 @@ public class DataStorage {
 
 	/**
 	 * Set the ID of the computer
-	 * @param string the computer ID
+	 * @param computersId
 	 */
 	public void setComputersId(String computersId) {
 <span class="nc" id="L327">		setData(&quot;computers_id&quot;, computersId);</span>
@@ -337,7 +337,7 @@ public class DataStorage {
 
 	/**
 	 * Set the ID of the entities
-	 * @param string the entities ID
+	 * @param entitiesId
 	 */
 	public void setEntitiesId(String entitiesId) {
 <span class="nc" id="L343">		setData(&quot;entities_id&quot;, entitiesId);</span>
@@ -353,7 +353,7 @@ public class DataStorage {
 
 	/**
 	 * Set the ID of the Fleets of the Flyve MDM plugin
-	 * @param string the Fleets ID
+	 * @param pluginFlyvemdmFleetsId
 	 */
 	public void setPluginFlyvemdmFleetsId(String pluginFlyvemdmFleetsId) {
 <span class="nc" id="L359">		setData(&quot;plugin_flyvemdm_fleets_id&quot;, pluginFlyvemdmFleetsId);</span>
@@ -361,7 +361,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Connectivity of the Wifi
-	 * @param boolean the state of the connectivity, true if disabled, false otherwise
+	 * @param disable the state of the connectivity, true if disabled, false otherwise
 	 */
 	public void setConnectivityWifiDisable(boolean disable) {
 <span class="nc" id="L367">		setData(&quot;ConnectivityWifiDisable&quot;, String.valueOf(disable));</span>
@@ -377,7 +377,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Connectivity of the Bluetooth
-	 * @param boolean the state of the connectivity, true if disabled, false otherwise
+	 * @param disable the state of the connectivity, true if disabled, false otherwise
 	 */
 	public void setConnectivityBluetoothDisable(boolean disable) {
 <span class="nc" id="L383">		setData(&quot;ConnectivityBluetoothDisable&quot;, String.valueOf(disable));</span>
@@ -393,7 +393,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Connectivity of the GPS
-	 * @param boolean the state of the connectivity, true if disabled, false otherwise
+	 * @param disable the state of the connectivity, true if disabled, false otherwise
 	 */
 	public void setConnectivityGPSDisable(boolean disable) {
 <span class="nc" id="L399">		setData(&quot;ConnectivityGPSDisable&quot;, String.valueOf(disable));</span>
@@ -401,7 +401,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Roaming enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivityRoamingDisable(boolean disable) {
 <span class="nc" id="L407">		setData(&quot;ConnectivityRoamingDisable&quot;, String.valueOf(disable));</span>
@@ -409,7 +409,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Airplane mode enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivityAirplaneModeDisable(boolean disable) {
 <span class="nc" id="L415">		setData(&quot;ConnectivityAirplaneModeDisable&quot;, String.valueOf(disable));</span>
@@ -417,7 +417,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Radio FM enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivityRadioFMDisable(boolean disable) {
 <span class="nc" id="L423">		setData(&quot;ConnectivityRadioFMDisable&quot;, String.valueOf(disable));</span>
@@ -425,7 +425,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Mobile Line enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivityMobileLineDisable(boolean disable) {
 <span class="nc" id="L431">		setData(&quot;ConnectivityMobileLineDisable&quot;, String.valueOf(disable));</span>
@@ -433,7 +433,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the NFC enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivityNFCDisable(boolean disable) {
 <span class="nc" id="L439">		setData(&quot;ConnectivityNFCDisable&quot;, String.valueOf(disable));</span>
@@ -441,7 +441,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Hostpot Tethering  enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivityHostpotTetheringDisable(boolean disable) {
 <span class="nc" id="L447">		setData(&quot;ConnectivityHostpotTetheringDisable&quot;, String.valueOf(disable));</span>
@@ -449,7 +449,7 @@ public class DataStorage {
 
 	/**
 	 * Set SMS / MMS  enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivitySmsMmsDisable(boolean disable) {
 <span class="nc" id="L455">		setData(&quot;ConnectivitySmsMmsDisable&quot;, String.valueOf(disable));</span>
@@ -457,7 +457,7 @@ public class DataStorage {
 
 	/**
 	 * Set Usb File Transfer Protocols  enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivityUsbFileTransferProtocolsDisable(boolean disable) {
 <span class="nc" id="L463">		setData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;, String.valueOf(disable));</span>
@@ -500,135 +500,127 @@ public class DataStorage {
 
 	/**
 	 * Get the state of the Roaming enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivityRoamingDisable() {
-<span class="nc" id="L506">		return Boolean.valueOf(getData(&quot;ConnectivityRoamingDisable&quot;));</span>
+<span class="nc" id="L505">		return Boolean.valueOf(getData(&quot;ConnectivityRoamingDisable&quot;));</span>
 	}
 
 	/**
 	 * Get the state of the Radio FM enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivityRadioFMDisable() {
-<span class="nc" id="L514">		return Boolean.valueOf(getData(&quot;ConnectivityRadioFMDisable&quot;));</span>
+<span class="nc" id="L512">		return Boolean.valueOf(getData(&quot;ConnectivityRadioFMDisable&quot;));</span>
 	}
 
 	/**
 	 * Get the state of the Mobile Line enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivityMobileLineDisable() {
-<span class="nc" id="L522">		return Boolean.valueOf(getData(&quot;ConnectivityMobileLineDisable&quot;));</span>
+<span class="nc" id="L519">		return Boolean.valueOf(getData(&quot;ConnectivityMobileLineDisable&quot;));</span>
 	}
 
 	/**
 	 * Get the state of the NFC enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivityNFCDisable() {
-<span class="nc" id="L530">		return Boolean.valueOf(getData(&quot;ConnectivityNFCDisable&quot;));</span>
+<span class="nc" id="L526">		return Boolean.valueOf(getData(&quot;ConnectivityNFCDisable&quot;));</span>
 	}
 
 	/**
 	 * Get the state of the Hostpot Tethering  enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivityHostpotTetheringDisable() {
-<span class="nc" id="L538">		return Boolean.valueOf(getData(&quot;ConnectivityHostpotTetheringDisable&quot;));</span>
+<span class="nc" id="L533">		return Boolean.valueOf(getData(&quot;ConnectivityHostpotTetheringDisable&quot;));</span>
 	}
 
 	/**
 	 * Get the state of the Hostpot Tethering  enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivityUsbFileTransferProtocolsDisable() {
-<span class="nc" id="L546">		return Boolean.valueOf(getData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;));</span>
+<span class="nc" id="L540">		return Boolean.valueOf(getData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;));</span>
 	}
 
 	/**
 	 * Get the state of the Airplane Mode  enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivityAirplaneModeDisable() {
-<span class="nc" id="L554">		return Boolean.valueOf(getData(&quot;ConnectivityAirplaneModeDisable&quot;));</span>
+<span class="nc" id="L547">		return Boolean.valueOf(getData(&quot;ConnectivityAirplaneModeDisable&quot;));</span>
 	}
 
 	/**
 	 * Get the state of SMS / MMS  enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivitySmsMmsDisable() {
-<span class="nc" id="L562">		return Boolean.valueOf(getData(&quot;ConnectivitySmsMmsDisable&quot;));</span>
+<span class="nc" id="L554">		return Boolean.valueOf(getData(&quot;ConnectivitySmsMmsDisable&quot;));</span>
 	}
 
 	/**
 	 * Set the state of the Easter Egg
-	 * @param boolean the state, true if enabled, false otherwise
+	 * @param enable the state, true if enabled, false otherwise
 	 */
 	public void setEasterEgg(boolean enable) {
-<span class="nc" id="L570">		setData(&quot;easterEgg&quot;, String.valueOf(enable));</span>
-<span class="nc" id="L571">	}</span>
+<span class="nc" id="L562">		setData(&quot;easterEgg&quot;, String.valueOf(enable));</span>
+<span class="nc" id="L563">	}</span>
 
 	/**
 	 * Get the state of the Easter Egg
 	 * @return boolean the state, true if enabled, false otherwise
 	 */
 	public boolean getEasterEgg() {
-<span class="nc" id="L578">		return Boolean.valueOf(getData(&quot;easterEgg&quot;));</span>
+<span class="nc" id="L570">		return Boolean.valueOf(getData(&quot;easterEgg&quot;));</span>
 	}
 
 	/**
 	 * Get the data matching the given argument
-	 * @param string the key
+	 * @param key
 	 * @return string the data
 	 */
 	private String getData(String key){
-<span class="fc" id="L587">		String data = &quot;&quot;;</span>
-<span class="fc" id="L588">		SharedPreferences sp = getSettings();</span>
-<span class="pc bpc" id="L589" title="1 of 2 branches missed.">		if(sp != null) {</span>
-<span class="fc" id="L590">			data = sp.getString(key, null);</span>
+<span class="fc" id="L579">		String data = &quot;&quot;;</span>
+<span class="fc" id="L580">		SharedPreferences sp = getSettings();</span>
+<span class="pc bpc" id="L581" title="1 of 2 branches missed.">		if(sp != null) {</span>
+<span class="fc" id="L582">			data = sp.getString(key, null);</span>
 		}
-<span class="fc" id="L592">		return data;</span>
+<span class="fc" id="L584">		return data;</span>
 	}
 
 	/**
 	 * Set the data given in the argument to the Shared Preferences
-	 * @param string the key
-	 * @param string the value
+	 * @param key
+	 * @param value
 	 */
 	private void setData(String key, String value) {
-<span class="nc" id="L601">		SharedPreferences sp = getSettings();</span>
-<span class="nc bnc" id="L602" title="All 2 branches missed.">		if(sp != null) {</span>
-<span class="nc" id="L603">			SharedPreferences.Editor editor = sp.edit();</span>
-<span class="nc" id="L604">			editor.putString(key, value );</span>
-<span class="nc" id="L605">			editor.apply();</span>
+<span class="nc" id="L593">		SharedPreferences sp = getSettings();</span>
+<span class="nc bnc" id="L594" title="All 2 branches missed.">		if(sp != null) {</span>
+<span class="nc" id="L595">			SharedPreferences.Editor editor = sp.edit();</span>
+<span class="nc" id="L596">			editor.putString(key, value );</span>
+<span class="nc" id="L597">			editor.apply();</span>
 		}
-<span class="nc" id="L607">	}</span>
+<span class="nc" id="L599">	}</span>
 
 	/**
 	 * Removes all the values from the preferences
 	 */
 	public void clearSettings(){
-<span class="nc" id="L613">		SharedPreferences sp = getSettings();</span>
-<span class="nc bnc" id="L614" title="All 2 branches missed.">		if(sp != null) {</span>
-<span class="nc" id="L615">			SharedPreferences.Editor editor = sp.edit();</span>
-<span class="nc" id="L616">			editor.clear();</span>
-<span class="nc" id="L617">			editor.apply();</span>
+<span class="nc" id="L605">		SharedPreferences sp = getSettings();</span>
+<span class="nc bnc" id="L606" title="All 2 branches missed.">		if(sp != null) {</span>
+<span class="nc" id="L607">			SharedPreferences.Editor editor = sp.edit();</span>
+<span class="nc" id="L608">			editor.clear();</span>
+<span class="nc" id="L609">			editor.apply();</span>
 		}
-<span class="nc" id="L619">	}</span>
+<span class="nc" id="L611">	}</span>
 
 	/**
 	 * Remove the key cache
-	 * @param string the key value to remove
+	 * @param key value to remove
 	 */
-	public void deleteKeyCache(String llave){
-<span class="nc" id="L626">		SharedPreferences sp = getSettings();</span>
-<span class="nc bnc" id="L627" title="All 2 branches missed.">		if(sp != null) {</span>
-<span class="nc" id="L628">			SharedPreferences.Editor editor = sp.edit();</span>
-<span class="nc" id="L629">			editor.remove(llave);</span>
-<span class="nc" id="L630">			editor.apply();</span>
+	public void deleteKeyCache(String key){
+<span class="nc" id="L618">		SharedPreferences sp = getSettings();</span>
+<span class="nc bnc" id="L619" title="All 2 branches missed.">		if(sp != null) {</span>
+<span class="nc" id="L620">			SharedPreferences.Editor editor = sp.edit();</span>
+<span class="nc" id="L621">			editor.remove(key);</span>
+<span class="nc" id="L622">			editor.apply();</span>
 		}
-<span class="nc" id="L632">	}</span>
+<span class="nc" id="L624">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

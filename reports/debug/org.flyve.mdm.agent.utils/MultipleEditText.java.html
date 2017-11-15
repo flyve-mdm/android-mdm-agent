@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- *   Copyright © 2017 Teclib. All rights reserved.
+ *   Copyright (C) 2017 Teclib. All rights reserved.
  *
  *   This file is part of flyve-mdm-android-agent
  *
@@ -37,7 +37,7 @@ import java.util.List;
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      8/8/17
- * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @copyright Copyright (C) 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
@@ -64,7 +64,7 @@ public class MultipleEditText {
 
     /**
      * Set the limit size
-     * @param int the size
+     * @param size
      */
     public void setLimit(int size) {
 <span class="nc" id="L70">        this.limit = size;</span>
@@ -72,7 +72,7 @@ public class MultipleEditText {
 
     /**
      * Set the input type
-     * @param int the type
+     * @param type
      */
     public void setInputType(int type) {
 <span class="nc" id="L78">        inputType = type;</span>
@@ -80,8 +80,8 @@ public class MultipleEditText {
 
     /**
      * Set the values of the Spinner and Edit Text lists
-     * @param string the edit value
-     * @param string the spinner value
+     * @param editValue the edit value
+     * @param spinnerValue the spinner value
      */
     public void setValue(List&lt;String&gt; editValue, List&lt;String&gt; spinnerValue) {
 <span class="nc bnc" id="L87" title="All 2 branches missed.">        for(int i=0; i&lt;editValue.size(); i++) {</span>
@@ -91,7 +91,7 @@ public class MultipleEditText {
 
     /**
      * Set the spinner array
-     * @param int the array
+     * @param array
      */
     public void setSpinnerArray(int array) {
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -124,8 +124,8 @@ public class MultipleEditText {
 
     /**
      * Set the layout to edit text
-     * @param string the text value to edit
-     * @param string the spinner value to edit
+     * @param editTextValue the text value to edit
+     * @param spinnerValue the spinner value to edit
      * @return the Linear Layout View
      */
     public LinearLayout createEditText(String editTextValue, String spinnerValue) {
