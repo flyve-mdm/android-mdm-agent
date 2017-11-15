@@ -26,7 +26,7 @@
 #  ------------------------------------------------------------------------------
 #
 # Generate javadoc this folder must be on .gitignore
-javadoc -d ./reports$1/javadoc -sourcepath ./app/src/main/java -subpackages .
+javadoc -d ./reports$1/javadoc -sourcepath ./app/src/main/java -subpackages . -bootclasspath $ANDROID_HOME/platforms/android-26/android.jar
 
 # add reports
 git add reports$1 -f
