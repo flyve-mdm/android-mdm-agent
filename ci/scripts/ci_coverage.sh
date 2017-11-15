@@ -51,6 +51,9 @@ git commit -m "tmp reports"
 # get gh-pages branch
 git fetch origin gh-pages
 
+# clean
+rm app/src/main/assets/setup.properties
+
 # move to gh-pages
 git checkout gh-pages
 
