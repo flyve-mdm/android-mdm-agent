@@ -12,7 +12,7 @@ import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
 import org.flyve.mdm.agent.utils.Helpers;
 
 /*
- *   Copyright © 2017 Teclib. All rights reserved.
+ *   Copyright (C) 2017 Teclib. All rights reserved.
  *
  *   This file is part of flyve-mdm-android-agent
  *
@@ -31,7 +31,7 @@ import org.flyve.mdm.agent.utils.Helpers;
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      31/7/17
- * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @copyright Copyright (C) 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
