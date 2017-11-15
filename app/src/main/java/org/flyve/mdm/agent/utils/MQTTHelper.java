@@ -279,6 +279,12 @@ public class MQTTHelper {
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "NFC", "NFC is disable: " + disable));
                 }
 
+                if (jsonConnectivity.has("disableHostpotTethering")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableHostpotTethering");
+                    cache.setConnectivityHostpotTetheringDisable(disable);
+                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "HostpotTethering", "HostpotTethering is disable: " + disable));
+                }
+
             }
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on disableConnectivity", ex.getMessage()));
