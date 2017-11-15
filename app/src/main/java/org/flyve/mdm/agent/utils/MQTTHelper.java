@@ -285,6 +285,12 @@ public class MQTTHelper {
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "HostpotTethering", "HostpotTethering is disable: " + disable));
                 }
 
+                if (jsonConnectivity.has("disableSmsMms")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableSmsMms");
+                    cache.setConnectivityHostpotTetheringDisable(disable);
+                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "SmsMms", "SmsMms is disable: " + disable));
+                }
+
             }
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on disableConnectivity", ex.getMessage()));
