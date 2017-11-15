@@ -67,7 +67,7 @@ public class AndroidCryptoProvider {
 
     /**
      * This Constructor gets the absolute path to the directory where the files are stored
-     * @param Context the context
+     * @param c
      */
     public AndroidCryptoProvider(Context c) {
         String dataPath = c.getFilesDir().getAbsolutePath();
@@ -79,7 +79,7 @@ public class AndroidCryptoProvider {
 
     /**
      * Load the file  in bytes
-     * @param File the file to load in bytes
+     * @param f the file to load in bytes
      * @return byte the bytes of the file
      * @throws IOException Error message 
      */
@@ -141,7 +141,7 @@ public class AndroidCryptoProvider {
 
     /**
      * Generate the certificated Key pair
-     * @param generateCallback callback
+     * @param callback
      */
     public void generateRequest(GenerateCallback callback) {
         byte[] snBytes = new byte[8];
@@ -249,7 +249,7 @@ public class AndroidCryptoProvider {
 
     /**
      * Save the certificate key
-     * @param string the certificate
+     * @param certString the certificate
      */
     public void saveCertKey(String certString) {
         FileOutputStream certOut = null;
@@ -294,7 +294,7 @@ public class AndroidCryptoProvider {
 
     /**
      * Base64-encode the given data
-     * @param byte the data to encode
+     * @param data the data to encode
      * @return string the resulting encoded data
      */
     public String encodeBase64String(byte[] data) {

@@ -65,7 +65,7 @@ public class DataStorage {
 
 	/**
 	 * Set the online status
-	 * @param boolean the status
+	 * @param status enable / disable
 	 */
 	public void setOnlineStatus(boolean status) {
 		setData("onlineStatus", String.valueOf(status));
@@ -81,7 +81,7 @@ public class DataStorage {
 
 	/**
 	 * Set the version of the Manifest
-	 * @param string the Manifest version
+	 * @param version number of the version
 	 */
 	public void setManifestVersion(String version) {
 		setData("manifestVersion", version);
@@ -97,7 +97,7 @@ public class DataStorage {
 
 	/**
 	 * Set the URL
-	 * @param string the url
+	 * @param url
 	 */
 	public void setUrl(String url) {
 		setData("url", url);
@@ -113,7 +113,7 @@ public class DataStorage {
 
 	/**
 	 * Set the token of the user
-	 * @param string the user token
+	 * @param userToken
 	 */
 	public void setUserToken(String userToken) {
 		setData("user_token", userToken);
@@ -129,7 +129,7 @@ public class DataStorage {
 
 	/**
 	 * Set the invitation token
-	 * @param string the invitation token
+	 * @param invitationToken
 	 */
 	public void setInvitationToken(String invitationToken) {
 		setData("invitation_token", invitationToken);
@@ -145,7 +145,7 @@ public class DataStorage {
 
 	/**
 	 * Set the session token
-	 * @param string the session token
+	 * @param sessionToken
 	 */
 	public void setSessionToken(String sessionToken) {
 		setData("session_token", sessionToken);
@@ -161,7 +161,7 @@ public class DataStorage {
 
 	/**
 	 * Set the ID of the profile
-	 * @param string the profile ID
+	 * @param profileId
 	 */
 	public void setProfileId(String profileId) {
 		setData("profile_id", profileId);
@@ -177,7 +177,7 @@ public class DataStorage {
 
 	/**
 	 * Set the ID of the agent
-	 * @param string the agent ID
+	 * @param agentId
 	 */
 	public void setAgentId(String agentId) {
 		setData("agent_id", agentId);
@@ -193,7 +193,7 @@ public class DataStorage {
 
 	/**
 	 * Set the broker
-	 * @param string the broker
+	 * @param broker
 	 */
 	public void setBroker(String broker) {
 		setData("broker", broker);
@@ -209,7 +209,7 @@ public class DataStorage {
 
 	/**
 	 * Set the port
-	 * @param string the port
+	 * @param port
 	 */
 	public void setPort(String port) {
 		setData("port", port);
@@ -225,7 +225,7 @@ public class DataStorage {
 
 	/**
 	 * Set the Transport Layer Security (TLS)
-	 * @param string the TLS
+	 * @param tls
 	 */
 	public void setTls(String tls) {
 		setData("tls", tls);
@@ -241,7 +241,7 @@ public class DataStorage {
 
 	/**
 	 * Set the topic 
-	 * @param string the topic
+	 * @param topic
 	 */
 	public void setTopic(String topic) {
 		setData("topic", topic);
@@ -257,7 +257,7 @@ public class DataStorage {
 
 	/**
 	 * Set the user of the Message Queue Telemetry Transport (MQTT)
-	 * @param string the MQTT user
+	 * @param mqttuser
 	 */
 	public void setMqttuser(String mqttuser) {
 		setData("mqttuser", mqttuser);
@@ -273,7 +273,7 @@ public class DataStorage {
 
 	/**
 	 * Set the password of the Message Queue Telemetry Transport (MQTT)
-	 * @param string the MQTT password
+	 * @param mqttpasswd
 	 */
 	public void setMqttpasswd(String mqttpasswd) {
 		setData("mqttpasswd", mqttpasswd);
@@ -289,7 +289,7 @@ public class DataStorage {
 
 	/**
 	 * Set the Certificate
-	 * @param string the certificate
+	 * @param certificate
 	 */
 	public void setCertificate(String certificate) {
 		setData("certificate", certificate);
@@ -305,7 +305,7 @@ public class DataStorage {
 
 	/**
 	 * Set the name
-	 * @param string the name
+	 * @param name
 	 */
 	public void setName(String name) {
 		setData("name", name);
@@ -321,7 +321,7 @@ public class DataStorage {
 
 	/**
 	 * Set the ID of the computer
-	 * @param string the computer ID
+	 * @param computersId
 	 */
 	public void setComputersId(String computersId) {
 		setData("computers_id", computersId);
@@ -337,7 +337,7 @@ public class DataStorage {
 
 	/**
 	 * Set the ID of the entities
-	 * @param string the entities ID
+	 * @param entitiesId
 	 */
 	public void setEntitiesId(String entitiesId) {
 		setData("entities_id", entitiesId);
@@ -353,7 +353,7 @@ public class DataStorage {
 
 	/**
 	 * Set the ID of the Fleets of the Flyve MDM plugin
-	 * @param string the Fleets ID
+	 * @param pluginFlyvemdmFleetsId
 	 */
 	public void setPluginFlyvemdmFleetsId(String pluginFlyvemdmFleetsId) {
 		setData("plugin_flyvemdm_fleets_id", pluginFlyvemdmFleetsId);
@@ -361,7 +361,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Connectivity of the Wifi
-	 * @param boolean the state of the connectivity, true if disabled, false otherwise
+	 * @param disable the state of the connectivity, true if disabled, false otherwise
 	 */
 	public void setConnectivityWifiDisable(boolean disable) {
 		setData("ConnectivityWifiDisable", String.valueOf(disable));
@@ -377,7 +377,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Connectivity of the Bluetooth
-	 * @param boolean the state of the connectivity, true if disabled, false otherwise
+	 * @param disable the state of the connectivity, true if disabled, false otherwise
 	 */
 	public void setConnectivityBluetoothDisable(boolean disable) {
 		setData("ConnectivityBluetoothDisable", String.valueOf(disable));
@@ -393,7 +393,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Connectivity of the GPS
-	 * @param boolean the state of the connectivity, true if disabled, false otherwise
+	 * @param disable the state of the connectivity, true if disabled, false otherwise
 	 */
 	public void setConnectivityGPSDisable(boolean disable) {
 		setData("ConnectivityGPSDisable", String.valueOf(disable));
@@ -401,7 +401,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Roaming enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivityRoamingDisable(boolean disable) {
 		setData("ConnectivityRoamingDisable", String.valueOf(disable));
@@ -409,7 +409,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Airplane mode enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivityAirplaneModeDisable(boolean disable) {
 		setData("ConnectivityAirplaneModeDisable", String.valueOf(disable));
@@ -417,7 +417,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Radio FM enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivityRadioFMDisable(boolean disable) {
 		setData("ConnectivityRadioFMDisable", String.valueOf(disable));
@@ -425,7 +425,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Mobile Line enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivityMobileLineDisable(boolean disable) {
 		setData("ConnectivityMobileLineDisable", String.valueOf(disable));
@@ -433,7 +433,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the NFC enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivityNFCDisable(boolean disable) {
 		setData("ConnectivityNFCDisable", String.valueOf(disable));
@@ -441,7 +441,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Hostpot Tethering  enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivityHostpotTetheringDisable(boolean disable) {
 		setData("ConnectivityHostpotTetheringDisable", String.valueOf(disable));
@@ -449,7 +449,7 @@ public class DataStorage {
 
 	/**
 	 * Set SMS / MMS  enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivitySmsMmsDisable(boolean disable) {
 		setData("ConnectivitySmsMmsDisable", String.valueOf(disable));
@@ -457,7 +457,7 @@ public class DataStorage {
 
 	/**
 	 * Set Usb File Transfer Protocols  enable / disable
-	 * @param boolean
+	 * @param disable
 	 */
 	public void setConnectivityUsbFileTransferProtocolsDisable(boolean disable) {
 		setData("ConnectivityUsbFileTransferProtocolsDisable", String.valueOf(disable));
@@ -500,7 +500,6 @@ public class DataStorage {
 
 	/**
 	 * Get the state of the Roaming enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivityRoamingDisable() {
 		return Boolean.valueOf(getData("ConnectivityRoamingDisable"));
@@ -508,7 +507,6 @@ public class DataStorage {
 
 	/**
 	 * Get the state of the Radio FM enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivityRadioFMDisable() {
 		return Boolean.valueOf(getData("ConnectivityRadioFMDisable"));
@@ -516,7 +514,6 @@ public class DataStorage {
 
 	/**
 	 * Get the state of the Mobile Line enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivityMobileLineDisable() {
 		return Boolean.valueOf(getData("ConnectivityMobileLineDisable"));
@@ -524,7 +521,6 @@ public class DataStorage {
 
 	/**
 	 * Get the state of the NFC enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivityNFCDisable() {
 		return Boolean.valueOf(getData("ConnectivityNFCDisable"));
@@ -532,7 +528,6 @@ public class DataStorage {
 
 	/**
 	 * Get the state of the Hostpot Tethering  enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivityHostpotTetheringDisable() {
 		return Boolean.valueOf(getData("ConnectivityHostpotTetheringDisable"));
@@ -540,7 +535,6 @@ public class DataStorage {
 
 	/**
 	 * Get the state of the Hostpot Tethering  enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivityUsbFileTransferProtocolsDisable() {
 		return Boolean.valueOf(getData("ConnectivityUsbFileTransferProtocolsDisable"));
@@ -548,7 +542,6 @@ public class DataStorage {
 
 	/**
 	 * Get the state of the Airplane Mode  enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivityAirplaneModeDisable() {
 		return Boolean.valueOf(getData("ConnectivityAirplaneModeDisable"));
@@ -556,7 +549,6 @@ public class DataStorage {
 
 	/**
 	 * Get the state of SMS / MMS  enable / disable
-	 * @param boolean
 	 */
 	public boolean getConnectivitySmsMmsDisable() {
 		return Boolean.valueOf(getData("ConnectivitySmsMmsDisable"));
@@ -564,7 +556,7 @@ public class DataStorage {
 
 	/**
 	 * Set the state of the Easter Egg
-	 * @param boolean the state, true if enabled, false otherwise
+	 * @param enable the state, true if enabled, false otherwise
 	 */
 	public void setEasterEgg(boolean enable) {
 		setData("easterEgg", String.valueOf(enable));
@@ -580,7 +572,7 @@ public class DataStorage {
 
 	/**
 	 * Get the data matching the given argument
-	 * @param string the key
+	 * @param key
 	 * @return string the data
 	 */
 	private String getData(String key){
@@ -594,8 +586,8 @@ public class DataStorage {
 
 	/**
 	 * Set the data given in the argument to the Shared Preferences
-	 * @param string the key
-	 * @param string the value
+	 * @param key
+	 * @param value
 	 */
 	private void setData(String key, String value) {
 		SharedPreferences sp = getSettings();
@@ -620,13 +612,13 @@ public class DataStorage {
 
 	/**
 	 * Remove the key cache
-	 * @param string the key value to remove
+	 * @param key value to remove
 	 */
-	public void deleteKeyCache(String llave){
+	public void deleteKeyCache(String key){
 		SharedPreferences sp = getSettings();
 		if(sp != null) {
 			SharedPreferences.Editor editor = sp.edit();
-			editor.remove(llave);
+			editor.remove(key);
 			editor.apply();
 		}
 	}

@@ -28,16 +28,17 @@ import android.content.Context;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
+
 public class SupervisorController {
 
-    private Context context;
+    private SupervisorStorage cache;
 
     /**
      * Constructor
-     * @param Context context
+     * @param context
      */
     public SupervisorController(Context context) {
-        this.context = context;
+        cache = new SupervisorStorage(context);
     }
 
     /**
@@ -45,18 +46,16 @@ public class SupervisorController {
      * @return the local storage
      */
     public SupervisorModel getCache() {
-        SupervisorStorage cache = new SupervisorStorage(context);
         return cache.getSupervisor();
     }
 
     /**
      * Save the local storage
-     * @param SupervisorModel supervisor
+     * @param supervisor
      * @return boolean true if saved, else otherwise
      */
     public boolean save(SupervisorModel supervisor) {
         try {
-            SupervisorStorage cache = new SupervisorStorage(context);
             cache.setSupervisor(supervisor);
             return true;
         } catch (Exception ex) {

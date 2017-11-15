@@ -58,7 +58,7 @@ public class LogFileReader {
 
     /**
      * Add a new line
-     * @param string the line to add
+     * @param line to add
      * @throws Exception an error message
      */
     private static void addLine(String line) {
@@ -80,9 +80,8 @@ public class LogFileReader {
 
     /**
      * Load the log of the file reader
-     * @param string the file name
-     * @param LogFileCallback callback
-     * @throws Exception an error message
+     * @param fileName
+     * @param callback
      */
     public static void loadLog(final String fileName, final LogFileCallback callback) {
         arrData = new ArrayList<>();

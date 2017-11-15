@@ -80,7 +80,7 @@ public class SplashActivity extends FragmentActivity {
     /**
      * Called when the activity is starting
      * It shows the UI with the Splash screen
-     * @param Bundle if the activity is being re-initialized, it contains the data it most recently supplied
+     * @param savedInstanceState if the activity is being re-initialized, it contains the data it most recently supplied
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {

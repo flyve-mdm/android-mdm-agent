@@ -35,12 +35,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import org.flyve.mdm.agent.R;
-
 import java.util.HashMap;
 import java.util.List;
-
 
 public class DrawerAdapter extends BaseAdapter {
 
@@ -63,7 +60,7 @@ public class DrawerAdapter extends BaseAdapter {
 
 	/**
 	 * Get the data item associated with the specified position
-     * @param int the position of the item whose data we want
+     * @param position of the item whose data we want
 	 * @return Object the data at the specified position
  	 */
 	@Override
@@ -73,7 +70,7 @@ public class DrawerAdapter extends BaseAdapter {
 
 	/**
 	 * Get the row ID associated with the specified position
-	 * @param int the position of the item whose row ID we want
+	 * @param position of the item whose row ID we want
 	 * @return long the ID of the item at the specified position
 	 */
 	@Override
@@ -83,9 +80,9 @@ public class DrawerAdapter extends BaseAdapter {
 
 	/**
 	 * Get a view that displays the data at the specified position
-	 * @param int the position of the item within the adapter's data set of the item whose view we want
-	 * @param View the old view to reuse, if possible
-	 * @param ViewGroup the parent that this view will eventually be attached to
+	 * @param position of the item within the adapter's data set of the item whose view we want
+	 * @param convertView the old view to reuse, if possible
+	 * @param parent the parent that this view will eventually be attached to
 	 * @return View a view corresponding to the data at the specified position
 	 */
 	@Override

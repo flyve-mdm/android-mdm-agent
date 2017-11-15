@@ -104,6 +104,7 @@ public class Helpers {
 	/**
 	 * Check if the service is running
 	 * @param serviceClass Class
+	 * @param context
 	 * @return boolean
 	 */
 	public static boolean isMyServiceRunning(Class<?> serviceClass, Context context) {
@@ -194,9 +195,9 @@ public class Helpers {
 
 	/**
 	 * Generates a JSONOBject with the message
-	 * @param string the type of the message
-	 * @param string the title of the message
-	 * @param string the body of the message
+	 * @param type of the message
+	 * @param title of the message
+	 * @param body of the message
 	 * @return string the message to broadcast
 	 */
 	public static String broadCastMessage(String type, String title, String body) {
@@ -219,9 +220,9 @@ public class Helpers {
 
 	/**
 	 * Generate a snackbar with the given arguments
-	 * @param Activity the view to show
-	 * @param string the message to display
-	 * @see https://developer.android.com/reference/android/support/design/widget/Snackbar.html Documentation of the Sanackbars
+	 * https://developer.android.com/reference/android/support/design/widget/Snackbar.html Documentation of the Sanackbars
+	 * @param activity the view to show
+	 * @param message to display
 	 */
 	public static void snack(Activity activity, String message) {
 		Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
@@ -231,10 +232,10 @@ public class Helpers {
 
 	/**
 	 * Generate a snackbar with the given arguments
-	 * @param Activity the view to show
-	 * @param string the message to display
-	 * @param string the text to display for the action
-	 * @param View.OnClickListener the callback to be invoked when the action is clicked
+	 * @param activity the view to show
+	 * @param message to display
+	 * @param action the text to display for the action
+	 * @param callback to be invoked when the action is clicked
 	 */
 	public static void snack(Activity activity, String message, String action,  View.OnClickListener callback) {
 		Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
@@ -274,7 +275,7 @@ public class Helpers {
 
 	/**
 	 * Convert the Bitmap to string
-	 * @param Bitmap the image to convert
+	 * @param bitmap the image to convert
 	 * @return string the image Bitmap
 	 */
 	public static String bitmapToString(Bitmap bitmap){
@@ -300,8 +301,8 @@ public class Helpers {
 
 	/**
 	 * Modify the orientation according the rotation selected
-	 * @param Bitmap the bitmap
-	 * @param string the path to the image
+	 * @param bitmap
+	 * @param imageAbsolutePath the path to the image
 	 * @return Bitmap the modificated image
 	 */
 	public static Bitmap modifyOrientation(Bitmap bitmap, String imageAbsolutePath) throws IOException {
@@ -331,8 +332,8 @@ public class Helpers {
 
 	/**
 	 * Rotate the Bitmap according the degrees
-	 * @param Bitmap the image to rotate
-	 * @param float the degrees to rotate
+	 * @param bitmap the image to rotate
+	 * @param degrees to rotate
 	 * @return Bitmap the image rotated
 	 */
 	public static Bitmap rotate(Bitmap bitmap, float degrees) {
@@ -343,9 +344,9 @@ public class Helpers {
 
 	/**
 	 * Flip the Bitmap according the given arguments
-	 * @param Bitmap the image to flip
-	 * @param boolean true for the x-axis, false for the y-axis
-	 * @param boolean true for the y-axis, false for the x-axis
+	 * @param bitmap the image to flip
+	 * @param horizontal true for the x-axis, false for the y-axis
+	 * @param vertical true for the y-axis, false for the x-axis
 	 * @return Bitmap the flipped image
 	 */
 	public static Bitmap flip(Bitmap bitmap, boolean horizontal, boolean vertical) {

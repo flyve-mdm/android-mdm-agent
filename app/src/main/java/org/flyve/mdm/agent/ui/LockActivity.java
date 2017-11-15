@@ -17,11 +17,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.user.UserController;
 import org.flyve.mdm.agent.core.user.UserModel;
-
 import java.util.ArrayList;
 import java.util.List;
 

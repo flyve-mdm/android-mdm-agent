@@ -57,7 +57,7 @@ public class UserStorage extends LocalStorage {
 
     /**
      * Set the user local storage
-     * @param UserModel user
+     * @param user
      */
     public void setUser(UserModel user) {
         Gson gson = new Gson();

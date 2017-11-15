@@ -45,7 +45,7 @@ public class FilesHelper {
 
     /**
      * This constructor loads the context of the current class
-     * @param Context the context of the class
+     * @param context of the class
      */
     public FilesHelper(Context context) {
         this.context = context;
@@ -55,7 +55,6 @@ public class FilesHelper {
     /**
      * Get the directory of the apk
      * @return string the apk directory
-     * @throws Exception
      */
     private static String getApkDir() {
         FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + "/apk/");
@@ -65,7 +64,6 @@ public class FilesHelper {
     /**
      * Get the directory of the Secure Digital card
      * @return string the SD card directory
-     * @throws Exception
      */
     private static String getSDcardDir() {
         FlyveLog.d(System.getenv(EXTERNAL_STORAGE));
@@ -75,7 +73,6 @@ public class FilesHelper {
     /**
      * Get the directory of the UPK
      * @return string the UPK directory
-     * @throws Exception
      */
     private static String getUpkDir() {
         FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + "/.fdroid/");
@@ -85,7 +82,6 @@ public class FilesHelper {
     /**
      * Get the directory of the pictures
      * @return string the pictures directory
-     * @throws Exception
      */
     private static String getPicturesDir() {
         FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + "/" + Environment.DIRECTORY_DCIM);
@@ -95,7 +91,6 @@ public class FilesHelper {
     /**
      * Get the directory of the documents
      * @return string the documents directory
-     * @throws Exception
      */
     private static String getDocumentsDir() {
         FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + "/" + Environment.DIRECTORY_DOWNLOADS);
@@ -114,9 +109,8 @@ public class FilesHelper {
 
     /**
      * Convert the path according to the given arguments
-     * @param string the received path
+     * @param receivePath
      * @return string the converted path
-     * @throws Exception
      */
     private String convertPath(String receivePath) {
 
@@ -160,6 +154,7 @@ public class FilesHelper {
      * Download and save file from Id to path
      * @param path String path to save the file on device
      * @param id String Id from
+     * @param sessionToken
      */
     public Boolean downloadFile(String path, String id, String sessionToken) {
 
@@ -185,6 +180,7 @@ public class FilesHelper {
      * Download, save and install app
      * @param packageFile String package of the app
      * @param id String Id from
+     * @param sessionToken
      */
     public Boolean downloadApk(String packageFile, String id, String sessionToken) {
 
@@ -269,9 +265,8 @@ public class FilesHelper {
 
     /**
      * Remove the file according to the given path
-     * @param string the file path
+     * @param filePath
      * @return boolean true if file deleted, false otherwise
-     * @throws Exception an error message
      */
     public boolean removeFile(String filePath) {
         try {
@@ -286,10 +281,9 @@ public class FilesHelper {
 
     /**
      * Uninstall the Android Package
-     * @param Context the context
-     * @param string the package to uninstall
+     * @param context
+     * @param mPackage to uninstall
      * @return int if it succeed 1, otherwise 0
-     * @throws ActivityNotFoundException it's thrown when a call to startActivity(Intent) fails because an Activity could not be found to execute the given intent
      */
     public static int removeApk(Context context, String mPackage){
         Uri packageUri = Uri.parse("package:"+mPackage);
@@ -306,7 +300,7 @@ public class FilesHelper {
 
     /**
      * Install the Android Package
-     * @param string the file to install
+     * @param file to install
      */
     public void installApk(String file) {
         FlyveLog.d(file);

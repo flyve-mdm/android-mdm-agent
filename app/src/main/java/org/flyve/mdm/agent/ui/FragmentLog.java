@@ -61,9 +61,9 @@ public class FragmentLog extends Fragment  {
 
     /**
      * Called to have the fragments instantiate its user interface view
-     * @param LayoutInflater the object that can be used to inflate any views
-     * @param ViewGroup the parent view
-     * @param Bundle if non-null, this fragment is being reconstructed from a previous saved state
+     * @param inflater the object that can be used to inflate any views
+     * @param container the parent view
+     * @param savedInstanceState if non-null, this fragment is being reconstructed from a previous saved state
      * @return View the fragment's UI
      */
     @Override

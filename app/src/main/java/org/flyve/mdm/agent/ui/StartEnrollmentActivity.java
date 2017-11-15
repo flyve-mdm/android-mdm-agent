@@ -59,7 +59,7 @@ public class StartEnrollmentActivity extends Activity {
     /**
      * Called when the activity is starting
      * It shows the UI to start the enrollment
-     * @param Bundle if the activity is being re-initialized, it contains the data it most recently supplied
+     * @param savedInstanceState if the activity is being re-initialized, it contains the data it most recently supplied
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,7 +225,7 @@ public class StartEnrollmentActivity extends Activity {
     
     /**
      * Shows an error message
-     * @param string the message
+     * @param message
      */
     private void showError(String message) {
         txtTitle.setText(getResources().getString(R.string.fail_enroll));
@@ -256,9 +256,9 @@ public class StartEnrollmentActivity extends Activity {
 
     /**
      * Called when the launched activity exits
-     * @param int the request code originally supplied, it identifies who this result came from
-     * @param int the result code returned
-     * @param Intent an intent which can return result data to the caller
+     * @param requestCode the request code originally supplied, it identifies who this result came from
+     * @param resultCode the result code returned
+     * @param data an intent which can return result data to the caller
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

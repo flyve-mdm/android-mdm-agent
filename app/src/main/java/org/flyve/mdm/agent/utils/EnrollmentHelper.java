@@ -67,7 +67,7 @@ public class EnrollmentHelper {
 
     /**
      * This constructor loads the context of the current class
-     * @param Context the context of the class
+     * @param context of the class
      */
     public EnrollmentHelper(Context context) {
         this.context = context;
@@ -77,7 +77,7 @@ public class EnrollmentHelper {
 
     /**
      * Manage the errors 
-     * @param string the error
+     * @param error
      * @return string the message of the error
      */
     private String manageError(String error) {
@@ -195,8 +195,8 @@ public class EnrollmentHelper {
 
     /**
      * Get the information to enroll
-     * @param JSONObject the information of the phone
-     * @param enrollCallback the callback
+     * @param payload the information of the phone
+     * @param callback
      */
     public void enrollment(final JSONObject payload, final EnrollCallBack callback) {
         Thread t = new Thread(new Runnable()

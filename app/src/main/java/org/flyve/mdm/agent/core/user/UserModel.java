@@ -49,15 +49,15 @@ public class UserModel {
 
     /**
      * Set the object's properties to equal the arguments given
-     * @param string firstName
-     * @param string lastName
-     * @param string language
-     * @param string phone
-     * @param string mobilePhone
-     * @param string phone2
-     * @param string the administrativeNumber
-     * @param string the picture
-     * @param ArrayList the emails
+     * @param firstName
+     * @param lastName
+     * @param language
+     * @param phone
+     * @param mobilePhone
+     * @param phone2
+     * @param administrativeNumber
+     * @param picture
+     * @param emails
      */
     public UserModel(String firstName, String lastName, String language, String phone, String mobilePhone, String phone2, String administrativeNumber, String picture, List<EmailsData> emails) {
         this.firstName = firstName;
@@ -81,7 +81,7 @@ public class UserModel {
 
     /**
      * Set the first name of the user
-     * @param string the first name
+     * @param firstName the first name
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -97,7 +97,7 @@ public class UserModel {
 
     /**
      * Set the last name of the user
-     * @param string the last name
+     * @param lastName the last name
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
@@ -113,7 +113,7 @@ public class UserModel {
 
     /**
      * Set the language of the user
-     * @param string the language
+     * @param language
      */
     public void setLanguage(String language) {
         this.language = language;
@@ -129,7 +129,7 @@ public class UserModel {
 
     /**
      * Set the phone of the user
-     * @param string the phone
+     * @param phone
      */
     public void setPhone(String phone) {
         this.phone = phone;
@@ -145,7 +145,7 @@ public class UserModel {
 
     /**
      * Set the mobile phone of the user
-     * @param string the mobile phone
+     * @param mobilePhone
      */
     public void setMobilePhone(String mobilePhone) {
         this.mobilePhone = mobilePhone;
@@ -161,7 +161,7 @@ public class UserModel {
 
     /**
      * Set the second phone of the user
-     * @param string phone2
+     * @param phone2
      */
     public void setPhone2(String phone2) {
         this.phone2 = phone2;
@@ -177,7 +177,7 @@ public class UserModel {
 
     /**
      * Set the administrative number of the user
-     * @param string administrativeNumber
+     * @param administrativeNumber
      */
     public void setAdministrativeNumber(String administrativeNumber) {
         this.administrativeNumber = administrativeNumber;
@@ -193,7 +193,7 @@ public class UserModel {
 
     /**
      * Set the picture of the user
-     * @param string picture
+     * @param picture
      */
     public void setPicture(String picture) {
         this.picture = picture;
@@ -209,7 +209,7 @@ public class UserModel {
 
     /**
      * Set the emails of the list
-     * @param ArrayList the emails
+     * @param emails
      */
     public void setEmails(List<EmailsData> emails) {
         this.emails = emails;
@@ -230,7 +230,7 @@ public class UserModel {
 
         /**
          * Set the email of the user
-         * @param string the email
+         * @param email
          */
         public void setEmail(String email) {
             this.email = email;
@@ -246,7 +246,7 @@ public class UserModel {
 
         /**
          * Set the type of the email
-         * @param string the type
+         * @param type
          */
         public void setType(String type) {
             this.type = type;

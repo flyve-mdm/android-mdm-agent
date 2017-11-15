@@ -41,7 +41,9 @@ public class FragmentAbout extends Fragment {
 
     /**
      * Called when the activity is starting, inflates the activity's UI
-     * @param Bundle savedInstanceState if the activity is re-initialized, it contains the data it most recently supplied
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

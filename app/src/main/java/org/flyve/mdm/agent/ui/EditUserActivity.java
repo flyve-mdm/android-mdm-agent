@@ -82,7 +82,7 @@ public class EditUserActivity extends AppCompatActivity {
     /**
      * Called when the activity is starting
      * It display the UI to edit the user information
-     * @param Bundle if the activity is re-initialized, it contains the data it most recently supplied
+     * @param savedInstanceState if the activity is re-initialized, it contains the data it most recently supplied
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -346,9 +346,9 @@ public class EditUserActivity extends AppCompatActivity {
     /**
      * Called when a launched activity exits
      * It proccesses the information from galleryIntent and cameraIntent
-     * @param int the request code originally supplied, allowing to identify who this result came from
-     * @param int the integer result code returned
-     * @param Intent an Intent, which can return result data to the caller
+     * @param requestCode the request code originally supplied, allowing to identify who this result came from
+     * @param resultCode the integer result code returned
+     * @param data an Intent, which can return result data to the caller
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -374,7 +374,7 @@ public class EditUserActivity extends AppCompatActivity {
 
     /**
      * Retrieves the selected image from the gallery
-     * @param Intent the data of the image
+     * @param data of the image
      * @throws IOException error message
      */
     private void onSelectFromGalleryResult(Intent data) {
