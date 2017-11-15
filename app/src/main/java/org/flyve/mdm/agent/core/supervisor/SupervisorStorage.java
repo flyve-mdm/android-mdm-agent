@@ -1,9 +1,7 @@
 package org.flyve.mdm.agent.core.supervisor;
 
 import android.content.Context;
-
 import com.google.gson.Gson;
-
 import org.flyve.mdm.agent.data.LocalStorage;
 
 /*

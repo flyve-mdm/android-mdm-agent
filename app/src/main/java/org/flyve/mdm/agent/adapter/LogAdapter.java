@@ -36,7 +36,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.utils.FlyveLog;
-
 import java.util.HashMap;
 import java.util.List;
 

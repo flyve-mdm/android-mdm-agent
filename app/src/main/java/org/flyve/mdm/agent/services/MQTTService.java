@@ -32,7 +32,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -49,7 +48,6 @@ import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.MQTTHelper;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import javax.net.ssl.SSLContext;
 
 /**
