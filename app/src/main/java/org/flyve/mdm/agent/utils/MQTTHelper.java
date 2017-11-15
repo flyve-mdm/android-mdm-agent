@@ -260,6 +260,12 @@ public class MQTTHelper {
                     cache.setConnectivityRoamingDisable(disable);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "ROAMING", "ROAMING is disable: " + disable));
                 }
+
+                if (jsonConnectivity.has("disableAirplaneMode")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableAirplaneMode");
+                    cache.setConnectivityAirplaneModeDisable(disable);
+                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "AIRPLANEMODE", "AIRPLANEMODE is disable: " + disable));
+                }
             }
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on disableConnectivity", ex.getMessage()));

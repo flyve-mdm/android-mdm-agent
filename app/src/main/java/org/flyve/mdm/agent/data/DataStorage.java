@@ -408,6 +408,14 @@ public class DataStorage {
 	}
 
 	/**
+	 * Set the state of the Airplane mode enable / disable
+	 * @param boolean
+	 */
+	public void setConnectivityAirplaneModeDisable(boolean disable) {
+		setData("ConnectivityAirplaneModeDisable", String.valueOf(disable));
+	}
+
+	/**
 	 * Set the state of the Radio FM enable / disable
 	 * @param boolean
 	 */
@@ -486,6 +494,9 @@ public class DataStorage {
 	public String getSmsMms() {
 		return getData("ConnectivitySmsMmsDisable");
 	}
+	public String getAirplaneMode() {
+		return getData("ConnectivityAirplaneModeDisable");
+	}
 
 	/**
 	 * Get the state of the Roaming enable / disable
@@ -533,6 +544,14 @@ public class DataStorage {
 	 */
 	public boolean getConnectivityUsbFileTransferProtocolsDisable() {
 		return Boolean.valueOf(getData("ConnectivityUsbFileTransferProtocolsDisable"));
+	}
+
+	/**
+	 * Get the state of the Airplane Mode  enable / disable
+	 * @param boolean
+	 */
+	public boolean getConnectivityAirplaneModeDisable() {
+		return Boolean.valueOf(getData("ConnectivityAirplaneModeDisable"));
 	}
 
 	/**

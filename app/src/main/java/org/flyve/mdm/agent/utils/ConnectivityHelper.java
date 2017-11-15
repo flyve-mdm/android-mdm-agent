@@ -96,6 +96,17 @@ public class ConnectivityHelper {
         executecmd(cmds);
     }
 
+    public static void disableAirplaneMode(boolean disable) {
+        String value = "1"; // enable
+        if(disable) {
+            value = "0"; // disable
+        }
+
+        String[] cmds = {"settings put global airplane_mode_on " + value};
+
+        executecmd(cmds);
+    }
+
     // Not require system permission
     private static final String SSID = "1234567890abcdef";
     public static boolean disableHostpotTethering(Context context, boolean disable) {

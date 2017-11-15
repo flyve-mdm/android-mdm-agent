@@ -83,6 +83,11 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             if(cache.getMobileLine()!=null && !cache.getMobileLine().equals("")) {
                 ConnectivityHelper.disableMobileLine(cache.getConnectivityMobileLineDisable());
             }
+
+            // Disable / Enable Airplane Mode
+            if(cache.getAirplaneMode()!=null && !cache.getAirplaneMode().equals("")) {
+                ConnectivityHelper.disableAirplaneMode(cache.getConnectivityAirplaneModeDisable());
+            }
         }
 
         // Manage WIFI
