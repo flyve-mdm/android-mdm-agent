@@ -8,7 +8,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /*
- *   Copyright © 2017 Teclib. All rights reserved.
+ *   Copyright (C) 2017 Teclib. All rights reserved.
  *
  *   This file is part of flyve-mdm-android
  *
@@ -27,7 +27,7 @@ import java.io.IOException;
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
  * @date      8/11/17
- * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @copyright Copyright (C) 2017 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android
  * @link      https://flyve-mdm.com
