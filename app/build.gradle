@@ -33,15 +33,6 @@ android {
     }
 }
 
-repositories {
-    maven {
-        url "https://repo.eclipse.org/content/repositories/paho-releases/"
-    }
-    maven {
-        url 'https://dl.bintray.com/flyve-mdm/inventory'
-    }
-}
-
 sonarqube {
     properties {
         property "sonar.sourceEncoding", "UTF-8"
@@ -62,7 +53,7 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
 
-    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1'
+    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:support-v4:23.1.1'
