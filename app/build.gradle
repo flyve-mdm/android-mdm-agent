@@ -64,6 +64,7 @@ dependencies {
     compile 'com.orhanobut:logger:2.1.1'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'org.flyve:inventory:0.5.0@aar'
+    compile 'com.bugsnag:bugsnag-android:4.1.3'
 
 }
 
