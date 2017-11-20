@@ -57,4 +57,8 @@ public class EnvInfoSetup {
         return properties.getProperty("setup.admin_web_console");
     }
 
+    public String getThestralbot() {
+        return properties.getProperty("setup.thestralbot");
+    }
+
 }
