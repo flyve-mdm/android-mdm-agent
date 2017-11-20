@@ -170,7 +170,7 @@ public class FlyveLog {
 
             logFile = new File(FLYVE_PATH + filename);
         } else {
-            logFile = new File(MDMAgent.getInstance().getFilesDir(),  filename);
+            logFile = new File(MDMAgent.getInstance().getCacheDir(),  filename);
         }
 
         if (!logFile.exists()) {
@@ -227,7 +227,7 @@ public class FlyveLog {
 
             logFile = new File(FLYVE_PATH + filename);
         } else {
-            logFile = new File(MDMAgent.getInstance().getFilesDir(),  filename);
+            logFile = new File(MDMAgent.getInstance().getCacheDir(),  filename);
         }
 
         FileWriter fw = null;

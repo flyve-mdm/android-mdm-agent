@@ -93,7 +93,7 @@ public class LogFileReader {
                 try {
                     File file = new File(Environment.getExternalStorageDirectory().getPath() + "/FlyveMDM/" + fileName);
                     if(!file.exists()) {
-                        file = new File(MDMAgent.getInstance().getFilesDir(), fileName);
+                        file = new File(MDMAgent.getInstance().getExternalFilesDir(null), fileName);
                     }
 
                     fr = new FileReader(file);
