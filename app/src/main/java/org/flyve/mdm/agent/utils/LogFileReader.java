@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 
+import org.flyve.mdm.agent.ui.MDMAgent;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -91,6 +92,10 @@ public class LogFileReader {
                 FileReader fr = null;
                 try {
                     File file = new File(Environment.getExternalStorageDirectory().getPath() + "/FlyveMDM/" + fileName);
+                    if(!file.exists()) {
+                        file = new File(MDMAgent.getInstance().getFilesDir(), fileName);
+                    }
+
                     fr = new FileReader(file);
                     BufferedReader br = new BufferedReader(fr);
 
