@@ -26,8 +26,11 @@
 package org.flyve.mdm.agent.utils;
 
 import android.os.Environment;
+
 import com.orhanobut.logger.Logger;
+
 import org.flyve.mdm.agent.ui.MDMAgent;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -41,7 +44,7 @@ public class FlyveLog {
 
     private static final String FILE_NAME_FEEDBACK = "FlyveMDMFeedback.txt";
     public static final String FILE_NAME_LOG = "FlyveMDMLog.txt";
-    public static final String FLYVE_PATH = Environment.getExternalStorageDirectory().getPath() + "/FlyveMDM";
+    public static final String FLYVE_PATH = Environment.getExternalStorageDirectory().getPath() + "/FlyveMDM/";
 
     /**
      * private constructor to prevent instances of this class
@@ -156,50 +159,55 @@ public class FlyveLog {
      */
     public static void f(String message, String filename) {
         String state = Environment.getExternalStorageState();
+        File logFile;
 
-        File dir = new File(FLYVE_PATH);
         if (Environment.MEDIA_MOUNTED.equals(state)) {
-            if(!dir.exists()) {
-                FlyveLog.d("Create directory on f");
+            File dir = new File(FLYVE_PATH);
+            if (!dir.exists()) {
+                FlyveLog.d("Create directory");
                 dir.mkdirs();
             }
 
-            File logFile = new File(FLYVE_PATH + filename);
+            logFile = new File(FLYVE_PATH + filename);
+        } else {
+            logFile = new File(MDMAgent.getInstance().getFilesDir(),  filename);
+        }
 
-            if (!logFile.exists())  {
-                try  {
-                    Boolean log = logFile.createNewFile();
-                    FlyveLog.d("Create File on f %s", log);
-                } catch (IOException ex) {
+        if (!logFile.exists()) {
+            try {
+                Boolean log = logFile.createNewFile();
+                FlyveLog.d("Create File on f %s", log);
+            } catch (IOException ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
+        FileWriter fw = null;
+
+        try {
+            //BufferedWriter for performance, true to set append to file flag
+            fw = new FileWriter(logFile, true);
+            BufferedWriter buf = new BufferedWriter(fw);
+
+            buf.write(message);
+            buf.newLine();
+            buf.flush();
+            buf.close();
+            fw.close();
+        }
+        catch (IOException ex) {
+            e(ex.getMessage());
+        }
+        finally {
+            if(fw!=null) {
+                try {
+                    fw.close();
+                } catch(Exception ex) {
                     FlyveLog.e(ex.getMessage());
                 }
             }
-
-            FileWriter fw = null;
-            try {
-                //BufferedWriter for performance, true to set append to file flag
-                fw = new FileWriter(logFile, true);
-                BufferedWriter buf = new BufferedWriter(fw);
-
-                buf.write(message);
-                buf.newLine();
-                buf.flush();
-                buf.close();
-                fw.close();
-            }
-            catch (IOException ex) {
-                e(ex.getMessage());
-            }
-            finally {
-                if(fw!=null) {
-                    try {
-                        fw.close();
-                    } catch(Exception ex) {
-                        FlyveLog.e(ex.getMessage());
-                    }
-                }
-            }
         }
+
     }
 
     /**
@@ -208,37 +216,39 @@ public class FlyveLog {
      */
     public static void clearLog(String filename) {
         String state = Environment.getExternalStorageState();
+        File logFile;
 
-        File dir = new File(FLYVE_PATH);
         if (Environment.MEDIA_MOUNTED.equals(state)) {
+            File dir = new File(FLYVE_PATH);
             if (!dir.exists()) {
-                FlyveLog.d("Created Directory on clearLog ");
+                FlyveLog.d("Created Directory");
                 dir.mkdirs();
             }
 
-            File logFile = new File(FLYVE_PATH + filename);
+            logFile = new File(FLYVE_PATH + filename);
+        } else {
+            logFile = new File(MDMAgent.getInstance().getFilesDir(),  filename);
+        }
 
-            FileWriter fw = null;
-            try {
-                //BufferedWriter for performance, true to set append to file flag
-                fw = new FileWriter(logFile, false);
-                PrintWriter pwOb = new PrintWriter(fw, false);
-                pwOb.flush();
-                pwOb.close();
-            }
-            catch (IOException ex) {
-                e(ex.getMessage());
-            }
-            finally {
-                if(fw!=null) {
-                    try {
-                        fw.close();
-                    } catch(Exception ex) {
-                        FlyveLog.e(ex.getMessage());
-                    }
+        FileWriter fw = null;
+        try {
+            //BufferedWriter for performance, true to set append to file flag
+            fw = new FileWriter(logFile, false);
+            PrintWriter pwOb = new PrintWriter(fw, false);
+            pwOb.flush();
+            pwOb.close();
+        }
+        catch (IOException ex) {
+            e(ex.getMessage());
+        }
+        finally {
+            if(fw!=null) {
+                try {
+                    fw.close();
+                } catch(Exception ex) {
+                    FlyveLog.e(ex.getMessage());
                 }
             }
-
         }
     }
 
