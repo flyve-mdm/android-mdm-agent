@@ -153,13 +153,18 @@ public class FragmentInformation extends Fragment {
      * Load Supervisor information
      */
     private void loadSupervisor() {
-        SupervisorModel supervisor = new SupervisorController(FragmentInformation.this.getActivity()).getCache();
 
-        if(supervisor.getName() != null && !supervisor.getName().equals("")) {
-            txtNameSupervisor.setText(supervisor.getName());
-        }
-        if(supervisor.getEmail() != null && !supervisor.getEmail().equals("")) {
-            txtDescriptionSupervisor.setText(supervisor.getEmail());
+        try {
+            SupervisorModel supervisor = new SupervisorController(FragmentInformation.this.getActivity()).getCache();
+
+            if (supervisor.getName() != null && !supervisor.getName().equals("")) {
+                txtNameSupervisor.setText(supervisor.getName());
+            }
+            if (supervisor.getEmail() != null && !supervisor.getEmail().equals("")) {
+                txtDescriptionSupervisor.setText(supervisor.getEmail());
+            }
+        } catch(Exception ex) {
+            FlyveLog.e(ex.getMessage());
         }
     }
 
@@ -167,25 +172,30 @@ public class FragmentInformation extends Fragment {
      * Load Client information
      */
     private void loadClientInfo() {
-        UserModel user = new UserController(FragmentInformation.this.getActivity()).getCache();
 
-        if(user.getFirstName() != null && !user.getFirstName().equals("")) {
-            txtNameUser.setText(user.getFirstName() + " " + user.getLastName());
-        }
+        try {
+            UserModel user = new UserController(FragmentInformation.this.getActivity()).getCache();
 
-        if(user.getEmails().get(0).getEmail() != null && !user.getEmails().get(0).getEmail().equals("")) {
-            txtEmailUser.setText(user.getEmails().get(0).getEmail());
-        }
-
-        if(user.getPicture().equals("")) {
-            imgUser.setImageResource(R.drawable.ic_user_round);
-        } else {
-            try {
-                imgUser.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-                imgUser.setImageResource(R.drawable.ic_user_round);
+            if (user.getFirstName() != null && !user.getFirstName().equals("")) {
+                txtNameUser.setText(user.getFirstName() + " " + user.getLastName());
             }
+
+            if (user.getEmails().get(0).getEmail() != null && !user.getEmails().get(0).getEmail().equals("")) {
+                txtEmailUser.setText(user.getEmails().get(0).getEmail());
+            }
+
+            if (user.getPicture().equals("")) {
+                imgUser.setImageResource(R.drawable.ic_user_round);
+            } else {
+                try {
+                    imgUser.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));
+                } catch (Exception ex) {
+                    FlyveLog.e(ex.getMessage());
+                    imgUser.setImageResource(R.drawable.ic_user_round);
+                }
+            }
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
         }
     }
 

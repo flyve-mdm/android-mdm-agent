@@ -217,7 +217,7 @@ public class EnrollmentHelper {
                     if(data.contains("ERROR")){
                         JSONArray jsonArr = new JSONArray(data);
                         final String msgError = jsonArr.get(1).toString();
-                        FlyveLog.e(msgError);
+                        FlyveLog.e(msgError + " - Device serial: " + Helpers.getDeviceSerial());
 
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
