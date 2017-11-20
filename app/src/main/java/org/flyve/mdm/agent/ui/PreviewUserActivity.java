@@ -11,6 +11,7 @@ import android.widget.TextView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.user.UserController;
 import org.flyve.mdm.agent.core.user.UserModel;
+import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
 /*
@@ -92,58 +93,63 @@ public class PreviewUserActivity extends AppCompatActivity {
      * Loads the information of the User
      */
     private void loadData() {
-        UserModel user = new UserController(PreviewUserActivity.this).getCache();
 
-        if(user==null) {
-            return;
+        try {
+            UserModel user = new UserController(PreviewUserActivity.this).getCache();
+
+            if (user == null) {
+                return;
+            }
+
+            ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
+            if (user.getPicture() != null && !user.getPicture().equals("")) {
+                imgPhoto.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));
+            }
+
+            LinearLayout lnEmail = (LinearLayout) findViewById(R.id.lnEmails);
+            lnEmail.removeAllViews();
+
+            for (int i = 0; i < user.getEmails().size(); i++) {
+                TextView txtEmail = new TextView(PreviewUserActivity.this);
+                txtEmail.setText(user.getEmails().get(i).getEmail());
+                lnEmail.addView(txtEmail);
+            }
+
+            TextView txtFirstName = (TextView) findViewById(R.id.txtFirstName);
+            txtFirstName.setText(user.getFirstName() + " " + user.getLastName());
+
+            TextView txtPhone = (TextView) findViewById(R.id.txtPhone);
+            if (!user.getPhone().equals("")) {
+                txtPhone.setText(user.getPhone());
+                txtPhone.setVisibility(View.VISIBLE);
+            } else {
+                txtPhone.setVisibility(View.GONE);
+            }
+
+            TextView txtPhoneMobile = (TextView) findViewById(R.id.txtPhoneMobile);
+            if (!user.getMobilePhone().equals("")) {
+                txtPhoneMobile.setText(user.getMobilePhone());
+                txtPhoneMobile.setVisibility(View.VISIBLE);
+            } else {
+                txtPhoneMobile.setVisibility(View.GONE);
+            }
+
+            TextView txtPhone2 = (TextView) findViewById(R.id.txtPhone2);
+            if (!user.getMobilePhone().equals("")) {
+                txtPhone2.setText(user.getPhone2());
+                txtPhone2.setVisibility(View.VISIBLE);
+            } else {
+                txtPhone2.setVisibility(View.GONE);
+            }
+
+            TextView txtLanguage = (TextView) findViewById(R.id.txtLanguage);
+            txtLanguage.setText(user.getLanguage());
+
+            TextView txtAdministrativeNumber = (TextView) findViewById(R.id.txtAdministrativeNumber);
+            txtAdministrativeNumber.setText(user.getAdministrativeNumber());
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
         }
-
-        ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
-        if(user.getPicture() != null && !user.getPicture().equals("")) {
-            imgPhoto.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));
-        }
-
-        LinearLayout lnEmail = (LinearLayout) findViewById(R.id.lnEmails);
-        lnEmail.removeAllViews();
-
-        for(int i = 0; i < user.getEmails().size(); i++) {
-            TextView txtEmail = new TextView( PreviewUserActivity.this );
-            txtEmail.setText( user.getEmails().get(i).getEmail() );
-            lnEmail.addView(txtEmail);
-        }
-
-        TextView txtFirstName = (TextView) findViewById(R.id.txtFirstName);
-        txtFirstName.setText( user.getFirstName() + " " + user.getLastName() );
-
-        TextView txtPhone = (TextView) findViewById(R.id.txtPhone);
-        if(!user.getPhone().equals("")) {
-            txtPhone.setText(user.getPhone());
-            txtPhone.setVisibility(View.VISIBLE);
-        } else {
-            txtPhone.setVisibility(View.GONE);
-        }
-
-        TextView txtPhoneMobile = (TextView) findViewById(R.id.txtPhoneMobile);
-        if(!user.getMobilePhone().equals("")) {
-            txtPhoneMobile.setText(user.getMobilePhone());
-            txtPhoneMobile.setVisibility(View.VISIBLE);
-        } else {
-            txtPhoneMobile.setVisibility(View.GONE);
-        }
-
-        TextView txtPhone2 = (TextView) findViewById(R.id.txtPhone2);
-        if(!user.getMobilePhone().equals("")) {
-            txtPhone2.setText(user.getPhone2());
-            txtPhone2.setVisibility(View.VISIBLE);
-        } else {
-            txtPhone2.setVisibility(View.GONE);
-        }
-
-        TextView txtLanguage = (TextView) findViewById(R.id.txtLanguage);
-        txtLanguage.setText( user.getLanguage() );
-
-        TextView txtAdministrativeNumber = (TextView) findViewById(R.id.txtAdministrativeNumber);
-        txtAdministrativeNumber.setText( user.getAdministrativeNumber() );
     }
 
     /**
