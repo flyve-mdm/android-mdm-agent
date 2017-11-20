@@ -32,7 +32,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.support.multidex.MultiDex;
-import android.util.Log;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
@@ -40,6 +39,7 @@ import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
 
 import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.utils.UtilsCrash;
 
 /**
  * All the application configuration
@@ -64,13 +64,20 @@ public class MDMAgent extends Application {
         cache = new DataStorage(this);
 
         instance = this;
-        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
-                .tag(getPackageName())   // (Optional) Global tag for every log.
-                .build();
 
-        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
+        UtilsCrash.configCrash(this, true);
+
+        try {
+            FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                    .tag(getPackageName())   // (Optional) Global tag for every log.
+                    .build();
+            Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
+        } catch (Exception ex) {
+            ex.getStackTrace();
+        }
+
         isDebuggable =  ( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
-        Log.d("test", "is debug: " + isDebuggable );
+
     }
 
     /**
