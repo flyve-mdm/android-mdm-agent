@@ -9,6 +9,7 @@ import android.widget.TextView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.supervisor.SupervisorController;
 import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
+import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
 /*
@@ -62,31 +63,35 @@ public class PreviewSupervisorActivity extends AppCompatActivity {
             });
         }
 
-        SupervisorModel supervisor = new SupervisorController(PreviewSupervisorActivity.this).getCache();
+        try {
+            SupervisorModel supervisor = new SupervisorController(PreviewSupervisorActivity.this).getCache();
 
-        ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
-        if(supervisor.getPicture() != null && !supervisor.getPicture().equals("")) {
-            imgPhoto.setImageBitmap(Helpers.stringToBitmap(supervisor.getPicture()));
-        }
+            ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
+            if (supervisor.getPicture() != null && !supervisor.getPicture().equals("")) {
+                imgPhoto.setImageBitmap(Helpers.stringToBitmap(supervisor.getPicture()));
+            }
 
-        TextView txtName = (TextView) findViewById(R.id.txtName);
-        if(supervisor.getName() != null && !supervisor.getName().equals("")) {
-            txtName.setText(supervisor.getName());
-        }
+            TextView txtName = (TextView) findViewById(R.id.txtName);
+            if (supervisor.getName() != null && !supervisor.getName().equals("")) {
+                txtName.setText(supervisor.getName());
+            }
 
-        TextView txtEmail = (TextView) findViewById(R.id.txtEmail);
-        if(supervisor.getEmail() != null && !supervisor.getEmail().equals("")) {
-            txtEmail.setText(supervisor.getEmail());
-        }
+            TextView txtEmail = (TextView) findViewById(R.id.txtEmail);
+            if (supervisor.getEmail() != null && !supervisor.getEmail().equals("")) {
+                txtEmail.setText(supervisor.getEmail());
+            }
 
-        TextView txtPhone = (TextView) findViewById(R.id.txtPhone);
-        if(supervisor.getPhone() != null && !supervisor.getPhone().equals("")) {
-            txtPhone.setText(supervisor.getPhone());
-        }
+            TextView txtPhone = (TextView) findViewById(R.id.txtPhone);
+            if (supervisor.getPhone() != null && !supervisor.getPhone().equals("")) {
+                txtPhone.setText(supervisor.getPhone());
+            }
 
-        TextView txtWebsite = (TextView) findViewById(R.id.txtWebsite);
-        if(supervisor.getWebsite() != null && !supervisor.getWebsite().equals("")) {
-            txtWebsite.setText(supervisor.getWebsite());
+            TextView txtWebsite = (TextView) findViewById(R.id.txtWebsite);
+            if (supervisor.getWebsite() != null && !supervisor.getWebsite().equals("")) {
+                txtWebsite.setText(supervisor.getWebsite());
+            }
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
         }
 
     }
