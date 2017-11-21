@@ -153,132 +153,142 @@ import org.json.JSONObject;
      * Load Supervisor information
      */
     private void loadSupervisor() {
-<span class="nc" id="L156">        SupervisorModel supervisor = new SupervisorController(FragmentInformation.this.getActivity()).getCache();</span>
 
-<span class="nc bnc" id="L158" title="All 4 branches missed.">        if(supervisor.getName() != null &amp;&amp; !supervisor.getName().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L159">            txtNameSupervisor.setText(supervisor.getName());</span>
-        }
-<span class="nc bnc" id="L161" title="All 4 branches missed.">        if(supervisor.getEmail() != null &amp;&amp; !supervisor.getEmail().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L162">            txtDescriptionSupervisor.setText(supervisor.getEmail());</span>
-        }
-<span class="nc" id="L164">    }</span>
+        try {
+<span class="nc" id="L158">            SupervisorModel supervisor = new SupervisorController(FragmentInformation.this.getActivity()).getCache();</span>
+
+<span class="nc bnc" id="L160" title="All 4 branches missed.">            if (supervisor.getName() != null &amp;&amp; !supervisor.getName().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L161">                txtNameSupervisor.setText(supervisor.getName());</span>
+            }
+<span class="nc bnc" id="L163" title="All 4 branches missed.">            if (supervisor.getEmail() != null &amp;&amp; !supervisor.getEmail().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L164">                txtDescriptionSupervisor.setText(supervisor.getEmail());</span>
+            }
+<span class="nc" id="L166">        } catch(Exception ex) {</span>
+<span class="nc" id="L167">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L168">        }</span>
+<span class="nc" id="L169">    }</span>
 
     /**
      * Load Client information
      */
     private void loadClientInfo() {
-<span class="nc" id="L170">        UserModel user = new UserController(FragmentInformation.this.getActivity()).getCache();</span>
 
-<span class="nc bnc" id="L172" title="All 4 branches missed.">        if(user.getFirstName() != null &amp;&amp; !user.getFirstName().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L173">            txtNameUser.setText(user.getFirstName() + &quot; &quot; + user.getLastName());</span>
-        }
+        try {
+<span class="nc" id="L177">            UserModel user = new UserController(FragmentInformation.this.getActivity()).getCache();</span>
 
-<span class="nc bnc" id="L176" title="All 4 branches missed.">        if(user.getEmails().get(0).getEmail() != null &amp;&amp; !user.getEmails().get(0).getEmail().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L177">            txtEmailUser.setText(user.getEmails().get(0).getEmail());</span>
-        }
+<span class="nc bnc" id="L179" title="All 4 branches missed.">            if (user.getFirstName() != null &amp;&amp; !user.getFirstName().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L180">                txtNameUser.setText(user.getFirstName() + &quot; &quot; + user.getLastName());</span>
+            }
 
-<span class="nc bnc" id="L180" title="All 2 branches missed.">        if(user.getPicture().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L181">            imgUser.setImageResource(R.drawable.ic_user_round);</span>
-        } else {
-            try {
-<span class="nc" id="L184">                imgUser.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));</span>
-<span class="nc" id="L185">            } catch (Exception ex) {</span>
-<span class="nc" id="L186">                FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L187">                imgUser.setImageResource(R.drawable.ic_user_round);</span>
-<span class="nc" id="L188">            }</span>
-        }
-<span class="nc" id="L190">    }</span>
+<span class="nc bnc" id="L183" title="All 4 branches missed.">            if (user.getEmails().get(0).getEmail() != null &amp;&amp; !user.getEmails().get(0).getEmail().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L184">                txtEmailUser.setText(user.getEmails().get(0).getEmail());</span>
+            }
+
+<span class="nc bnc" id="L187" title="All 2 branches missed.">            if (user.getPicture().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L188">                imgUser.setImageResource(R.drawable.ic_user_round);</span>
+            } else {
+                try {
+<span class="nc" id="L191">                    imgUser.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));</span>
+<span class="nc" id="L192">                } catch (Exception ex) {</span>
+<span class="nc" id="L193">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L194">                    imgUser.setImageResource(R.drawable.ic_user_round);</span>
+<span class="nc" id="L195">                }</span>
+            }
+<span class="nc" id="L197">        } catch (Exception ex) {</span>
+<span class="nc" id="L198">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L199">        }</span>
+<span class="nc" id="L200">    }</span>
 
     /**
      * Set the text and image source of the button according the status of the Message Queue Telemetry Transport (MQTT)
      * @param bval the value, online if true, otherwise offline
      */
     private void statusMQTT(Boolean bval) {
-<span class="nc bnc" id="L197" title="All 2 branches missed.">        if (bval) {</span>
-<span class="nc" id="L198">            txtOnline.setText(getResources().getString(R.string.online));</span>
-<span class="nc" id="L199">            imgOnline.setImageResource(R.drawable.ic_online);</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">        if (bval) {</span>
+<span class="nc" id="L208">            txtOnline.setText(getResources().getString(R.string.online));</span>
+<span class="nc" id="L209">            imgOnline.setImageResource(R.drawable.ic_online);</span>
         } else {
-<span class="nc" id="L201">            txtOnline.setText(getResources().getString(R.string.offline));</span>
-<span class="nc" id="L202">            imgOnline.setImageResource(R.drawable.ic_offline);</span>
+<span class="nc" id="L211">            txtOnline.setText(getResources().getString(R.string.offline));</span>
+<span class="nc" id="L212">            imgOnline.setImageResource(R.drawable.ic_offline);</span>
         }
-<span class="nc" id="L204">    }</span>
+<span class="nc" id="L214">    }</span>
 
     /**
      * broadcastServiceStatus instance that receive service status from MQTTService
      */
-<span class="nc" id="L209">    private BroadcastReceiver broadcastServiceStatus = new BroadcastReceiver() {</span>
+<span class="nc" id="L219">    private BroadcastReceiver broadcastServiceStatus = new BroadcastReceiver() {</span>
         @Override
         public void onReceive(Context context, Intent intent) {
-<span class="nc" id="L212">            String action = intent.getAction();</span>
-<span class="nc" id="L213">            String msg = intent.getStringExtra(&quot;message&quot;);</span>
+<span class="nc" id="L222">            String action = intent.getAction();</span>
+<span class="nc" id="L223">            String msg = intent.getStringExtra(&quot;message&quot;);</span>
 
             // status ONLINE / OFFLINE
-<span class="nc bnc" id="L216" title="All 2 branches missed.">            if(&quot;flyve.mqtt.status&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">            if(&quot;flyve.mqtt.status&quot;.equalsIgnoreCase(action)) {</span>
                 try {
-<span class="nc bnc" id="L218" title="All 2 branches missed.">                    if(isAdded()) {</span>
-<span class="nc" id="L219">                        statusMQTT(Boolean.parseBoolean(msg));</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">                    if(isAdded()) {</span>
+<span class="nc" id="L229">                        statusMQTT(Boolean.parseBoolean(msg));</span>
                     }
-<span class="nc" id="L221">                } catch (Exception ex) {</span>
-<span class="nc" id="L222">                    FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L223">                }</span>
+<span class="nc" id="L231">                } catch (Exception ex) {</span>
+<span class="nc" id="L232">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L233">                }</span>
             }
-<span class="nc" id="L225">        }</span>
+<span class="nc" id="L235">        }</span>
     };
 
     /**
      * Instance that receive message from mqtt service
      */
-<span class="nc" id="L231">    private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {</span>
+<span class="nc" id="L241">    private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {</span>
 
         /**
          * Open Splash Activity
          */
         private void openSplash() {
-<span class="nc" id="L237">            Intent intent = new Intent(FragmentInformation.this.getActivity(), SplashActivity.class);</span>
-<span class="nc" id="L238">            FragmentInformation.this.getActivity().startActivity(intent);</span>
-<span class="nc" id="L239">            FragmentInformation.this.getActivity().finish();</span>
-<span class="nc" id="L240">        }</span>
+<span class="nc" id="L247">            Intent intent = new Intent(FragmentInformation.this.getActivity(), SplashActivity.class);</span>
+<span class="nc" id="L248">            FragmentInformation.this.getActivity().startActivity(intent);</span>
+<span class="nc" id="L249">            FragmentInformation.this.getActivity().finish();</span>
+<span class="nc" id="L250">        }</span>
 
 
         @Override
         public void onReceive(Context context, Intent intent) {
 
             // exit if not attached to an activity
-<span class="nc bnc" id="L247" title="All 2 branches missed.">            if(!isAdded()) {</span>
-<span class="nc" id="L248">                return;</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">            if(!isAdded()) {</span>
+<span class="nc" id="L258">                return;</span>
             }
 
-<span class="nc" id="L251">            String action = intent.getAction();</span>
-<span class="nc" id="L252">            String msg = intent.getStringExtra(&quot;message&quot;);</span>
+<span class="nc" id="L261">            String action = intent.getAction();</span>
+<span class="nc" id="L262">            String msg = intent.getStringExtra(&quot;message&quot;);</span>
 
             // Message from service
-<span class="nc bnc" id="L255" title="All 2 branches missed.">            if(&quot;flyve.mqtt.msg&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">            if(&quot;flyve.mqtt.msg&quot;.equalsIgnoreCase(action)) {</span>
 
                 try {
-<span class="nc" id="L258">                    JSONObject json = new JSONObject(msg);</span>
+<span class="nc" id="L268">                    JSONObject json = new JSONObject(msg);</span>
 
-<span class="nc" id="L260">                    String type = json.getString(&quot;type&quot;);</span>
-<span class="nc" id="L261">                    String title = json.getString(&quot;title&quot;);</span>
-<span class="nc" id="L262">                    String body = json.getString(&quot;body&quot;);</span>
+<span class="nc" id="L270">                    String type = json.getString(&quot;type&quot;);</span>
+<span class="nc" id="L271">                    String title = json.getString(&quot;title&quot;);</span>
+<span class="nc" id="L272">                    String body = json.getString(&quot;body&quot;);</span>
 
-<span class="nc bnc" id="L264" title="All 6 branches missed.">                    if(&quot;action&quot;.equalsIgnoreCase(type) &amp;&amp; &quot;open&quot;.equalsIgnoreCase(title) &amp;&amp; &quot;splash&quot;.equalsIgnoreCase(body)) {</span>
-<span class="nc" id="L265">                        openSplash();</span>
+<span class="nc bnc" id="L274" title="All 6 branches missed.">                    if(&quot;action&quot;.equalsIgnoreCase(type) &amp;&amp; &quot;open&quot;.equalsIgnoreCase(title) &amp;&amp; &quot;splash&quot;.equalsIgnoreCase(body)) {</span>
+<span class="nc" id="L275">                        openSplash();</span>
                     }
 
-<span class="nc bnc" id="L268" title="All 2 branches missed.">                    if(&quot;ERROR&quot;.equalsIgnoreCase(type)) {</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">                    if(&quot;ERROR&quot;.equalsIgnoreCase(type)) {</span>
 
-<span class="nc" id="L270">                        Helpers.snack(FragmentInformation.this.getActivity(), body, getResources().getString(R.string.close), new View.OnClickListener() {</span>
+<span class="nc" id="L280">                        Helpers.snack(FragmentInformation.this.getActivity(), body, getResources().getString(R.string.close), new View.OnClickListener() {</span>
                             @Override
                             public void onClick(View v) {
-<span class="nc" id="L273">                            }</span>
+<span class="nc" id="L283">                            }</span>
                         });
                     }
 
-<span class="nc" id="L277">                } catch (Exception ex) {</span>
-<span class="nc" id="L278">                    FlyveLog.d(&quot;ERROR&quot; + ex.getMessage());</span>
-<span class="nc" id="L279">                }</span>
+<span class="nc" id="L287">                } catch (Exception ex) {</span>
+<span class="nc" id="L288">                    FlyveLog.d(&quot;ERROR&quot; + ex.getMessage());</span>
+<span class="nc" id="L289">                }</span>
             }
-<span class="nc" id="L281">        }</span>
+<span class="nc" id="L291">        }</span>
     };
 
 
@@ -286,16 +296,16 @@ import org.json.JSONObject;
      * Open Edit User Activity
      */
     private void openViewUser() {
-<span class="nc" id="L289">        Intent intent = new Intent(FragmentInformation.this.getActivity(), PreviewUserActivity.class);</span>
-<span class="nc" id="L290">        FragmentInformation.this.startActivityForResult(intent, EDIT_USER);</span>
-<span class="nc" id="L291">    }</span>
+<span class="nc" id="L299">        Intent intent = new Intent(FragmentInformation.this.getActivity(), PreviewUserActivity.class);</span>
+<span class="nc" id="L300">        FragmentInformation.this.startActivityForResult(intent, EDIT_USER);</span>
+<span class="nc" id="L301">    }</span>
 
     /**
      * Open Supervisor Activity
      */
     private void openSupervisorUser() {
-<span class="nc" id="L297">        Intent intent = new Intent(FragmentInformation.this.getActivity(), PreviewSupervisorActivity.class);</span>
-<span class="nc" id="L298">        FragmentInformation.this.getActivity().startActivity(intent);</span>
-<span class="nc" id="L299">    }</span>
+<span class="nc" id="L307">        Intent intent = new Intent(FragmentInformation.this.getActivity(), PreviewSupervisorActivity.class);</span>
+<span class="nc" id="L308">        FragmentInformation.this.getActivity().startActivity(intent);</span>
+<span class="nc" id="L309">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

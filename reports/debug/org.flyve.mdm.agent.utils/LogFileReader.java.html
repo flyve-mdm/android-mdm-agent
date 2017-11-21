@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 
+import org.flyve.mdm.agent.ui.MDMAgent;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -44,17 +45,17 @@ public class LogFileReader {
     private static ArrayList&lt;HashMap&lt;String, String&gt;&gt; arrData;
     private static Handler uiHandler;
     static {
-<span class="nc" id="L47">        uiHandler = new Handler(Looper.getMainLooper());</span>
-<span class="nc" id="L48">    }</span>
+<span class="nc" id="L48">        uiHandler = new Handler(Looper.getMainLooper());</span>
+<span class="nc" id="L49">    }</span>
     private static void runOnUI(Runnable runnable) {
-<span class="nc" id="L50">        uiHandler.post(runnable);</span>
-<span class="nc" id="L51">    }</span>
+<span class="nc" id="L51">        uiHandler.post(runnable);</span>
+<span class="nc" id="L52">    }</span>
 
     /**
      * Constructor
      */
-<span class="nc" id="L56">    private LogFileReader() {</span>
-<span class="nc" id="L57">    }</span>
+<span class="nc" id="L57">    private LogFileReader() {</span>
+<span class="nc" id="L58">    }</span>
 
     /**
      * Add a new line
@@ -63,20 +64,20 @@ public class LogFileReader {
      */
     private static void addLine(String line) {
         try {
-<span class="nc" id="L66">            HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L67">            HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
 
-<span class="nc" id="L68">            JSONObject json = new JSONObject(line);</span>
+<span class="nc" id="L69">            JSONObject json = new JSONObject(line);</span>
 
-<span class="nc" id="L70">            map.put(&quot;type&quot;, json.getString(&quot;type&quot;));</span>
-<span class="nc" id="L71">            map.put(&quot;title&quot;, json.getString(&quot;title&quot;));</span>
-<span class="nc" id="L72">            map.put(&quot;body&quot;, json.getString(&quot;body&quot;));</span>
-<span class="nc" id="L73">            map.put(&quot;date&quot;, json.getString(&quot;date&quot;));</span>
+<span class="nc" id="L71">            map.put(&quot;type&quot;, json.getString(&quot;type&quot;));</span>
+<span class="nc" id="L72">            map.put(&quot;title&quot;, json.getString(&quot;title&quot;));</span>
+<span class="nc" id="L73">            map.put(&quot;body&quot;, json.getString(&quot;body&quot;));</span>
+<span class="nc" id="L74">            map.put(&quot;date&quot;, json.getString(&quot;date&quot;));</span>
 
-<span class="nc" id="L75">            arrData.add(map);</span>
-<span class="nc" id="L76">        } catch (Exception ex) {</span>
-<span class="nc" id="L77">            FlyveLog.d(&quot;ERROR&quot; + ex.getMessage());</span>
-<span class="nc" id="L78">        }</span>
-<span class="nc" id="L79">    }</span>
+<span class="nc" id="L76">            arrData.add(map);</span>
+<span class="nc" id="L77">        } catch (Exception ex) {</span>
+<span class="nc" id="L78">            FlyveLog.d(&quot;ERROR&quot; + ex.getMessage());</span>
+<span class="nc" id="L79">        }</span>
+<span class="nc" id="L80">    }</span>
 
     /**
      * Load the log of the file reader
@@ -84,51 +85,55 @@ public class LogFileReader {
      * @param callback
      */
     public static void loadLog(final String fileName, final LogFileCallback callback) {
-<span class="nc" id="L87">        arrData = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L88">        arrData = new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L89">        Thread t = new Thread(new Runnable() {</span>
+<span class="nc" id="L90">        Thread t = new Thread(new Runnable() {</span>
             public void run() {
-<span class="nc" id="L91">                FileReader fr = null;</span>
+<span class="nc" id="L92">                FileReader fr = null;</span>
                 try {
-<span class="nc" id="L93">                    File file = new File(Environment.getExternalStorageDirectory().getPath() + &quot;/FlyveMDM/&quot; + fileName);</span>
-<span class="nc" id="L94">                    fr = new FileReader(file);</span>
-<span class="nc" id="L95">                    BufferedReader br = new BufferedReader(fr);</span>
-
-                    String line;
-<span class="nc bnc" id="L98" title="All 2 branches missed.">                    while ((line = br.readLine()) != null) {</span>
-<span class="nc" id="L99">                        addLine(line);</span>
+<span class="nc" id="L94">                    File file = new File(Environment.getExternalStorageDirectory().getPath() + &quot;/FlyveMDM/&quot; + fileName);</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">                    if(!file.exists()) {</span>
+<span class="nc" id="L96">                        file = new File(MDMAgent.getInstance().getExternalFilesDir(null), fileName);</span>
                     }
 
-<span class="nc" id="L102">                    br.close();</span>
-<span class="nc" id="L103">                    fr.close();</span>
+<span class="nc" id="L99">                    fr = new FileReader(file);</span>
+<span class="nc" id="L100">                    BufferedReader br = new BufferedReader(fr);</span>
 
-<span class="nc" id="L105">                    LogFileReader.runOnUI(new Runnable() {</span>
+                    String line;
+<span class="nc bnc" id="L103" title="All 2 branches missed.">                    while ((line = br.readLine()) != null) {</span>
+<span class="nc" id="L104">                        addLine(line);</span>
+                    }
+
+<span class="nc" id="L107">                    br.close();</span>
+<span class="nc" id="L108">                    fr.close();</span>
+
+<span class="nc" id="L110">                    LogFileReader.runOnUI(new Runnable() {</span>
                         public void run() {
-<span class="nc" id="L107">                            callback.onSuccess( arrData );</span>
-<span class="nc" id="L108">                        }</span>
+<span class="nc" id="L112">                            callback.onSuccess( arrData );</span>
+<span class="nc" id="L113">                        }</span>
                     });
 
-<span class="nc" id="L111">                } catch (final Exception ex) {</span>
-<span class="nc" id="L112">                    FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L113">                    LogFileReader.runOnUI(new Runnable() {</span>
+<span class="nc" id="L116">                } catch (final Exception ex) {</span>
+<span class="nc" id="L117">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L118">                    LogFileReader.runOnUI(new Runnable() {</span>
                         public void run() {
-<span class="nc" id="L115">                            callback.onError(ex.getMessage());</span>
-<span class="nc" id="L116">                        }</span>
+<span class="nc" id="L120">                            callback.onError(ex.getMessage());</span>
+<span class="nc" id="L121">                        }</span>
                     });
                 }
                 finally {
-<span class="nc bnc" id="L120" title="All 6 branches missed.">                    if(fr!=null) {</span>
+<span class="nc bnc" id="L125" title="All 6 branches missed.">                    if(fr!=null) {</span>
                         try {
-<span class="nc" id="L122">                            fr.close();</span>
-<span class="nc" id="L123">                        } catch (Exception ex) {</span>
-<span class="nc" id="L124">                            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L125">                        }</span>
+<span class="nc" id="L127">                            fr.close();</span>
+<span class="nc" id="L128">                        } catch (Exception ex) {</span>
+<span class="nc" id="L129">                            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L130">                        }</span>
                     }
                 }
-<span class="nc" id="L128">            }</span>
+<span class="nc" id="L133">            }</span>
         });
-<span class="nc" id="L130">        t.start();</span>
-<span class="nc" id="L131">    }</span>
+<span class="nc" id="L135">        t.start();</span>
+<span class="nc" id="L136">    }</span>
 
     /**
      * This is the return data interface

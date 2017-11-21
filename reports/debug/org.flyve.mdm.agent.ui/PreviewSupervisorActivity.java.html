@@ -9,6 +9,7 @@ import android.widget.TextView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.supervisor.SupervisorController;
 import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
+import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
 /*
@@ -37,7 +38,7 @@ import org.flyve.mdm.agent.utils.Helpers;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-<span class="nc" id="L40">public class PreviewSupervisorActivity extends AppCompatActivity {</span>
+<span class="nc" id="L41">public class PreviewSupervisorActivity extends AppCompatActivity {</span>
 
     /**
      * Called when the activity is starting
@@ -46,49 +47,53 @@ import org.flyve.mdm.agent.utils.Helpers;
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-<span class="nc" id="L49">        super.onCreate(savedInstanceState);</span>
-<span class="nc" id="L50">        setContentView(R.layout.activity_supervisor_preview);</span>
+<span class="nc" id="L50">        super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L51">        setContentView(R.layout.activity_supervisor_preview);</span>
 
-<span class="nc" id="L52">        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);</span>
-<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (toolbar != null) {</span>
-<span class="nc" id="L54">            setSupportActionBar(toolbar);</span>
-<span class="nc" id="L55">            getSupportActionBar().setDisplayHomeAsUpEnabled(true);</span>
+<span class="nc" id="L53">        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (toolbar != null) {</span>
+<span class="nc" id="L55">            setSupportActionBar(toolbar);</span>
+<span class="nc" id="L56">            getSupportActionBar().setDisplayHomeAsUpEnabled(true);</span>
 
-<span class="nc" id="L57">            toolbar.setNavigationOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L58">            toolbar.setNavigationOnClickListener(new View.OnClickListener() {</span>
                 @Override
                 public void onClick(View v) {
-<span class="nc" id="L60">                    onBackPressed();</span>
-<span class="nc" id="L61">                }</span>
+<span class="nc" id="L61">                    onBackPressed();</span>
+<span class="nc" id="L62">                }</span>
             });
         }
 
-<span class="nc" id="L65">        SupervisorModel supervisor = new SupervisorController(PreviewSupervisorActivity.this).getCache();</span>
+        try {
+<span class="nc" id="L67">            SupervisorModel supervisor = new SupervisorController(PreviewSupervisorActivity.this).getCache();</span>
 
-<span class="nc" id="L67">        ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);</span>
-<span class="nc bnc" id="L68" title="All 4 branches missed.">        if(supervisor.getPicture() != null &amp;&amp; !supervisor.getPicture().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L69">            imgPhoto.setImageBitmap(Helpers.stringToBitmap(supervisor.getPicture()));</span>
-        }
+<span class="nc" id="L69">            ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);</span>
+<span class="nc bnc" id="L70" title="All 4 branches missed.">            if (supervisor.getPicture() != null &amp;&amp; !supervisor.getPicture().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L71">                imgPhoto.setImageBitmap(Helpers.stringToBitmap(supervisor.getPicture()));</span>
+            }
 
-<span class="nc" id="L72">        TextView txtName = (TextView) findViewById(R.id.txtName);</span>
-<span class="nc bnc" id="L73" title="All 4 branches missed.">        if(supervisor.getName() != null &amp;&amp; !supervisor.getName().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L74">            txtName.setText(supervisor.getName());</span>
-        }
+<span class="nc" id="L74">            TextView txtName = (TextView) findViewById(R.id.txtName);</span>
+<span class="nc bnc" id="L75" title="All 4 branches missed.">            if (supervisor.getName() != null &amp;&amp; !supervisor.getName().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L76">                txtName.setText(supervisor.getName());</span>
+            }
 
-<span class="nc" id="L77">        TextView txtEmail = (TextView) findViewById(R.id.txtEmail);</span>
-<span class="nc bnc" id="L78" title="All 4 branches missed.">        if(supervisor.getEmail() != null &amp;&amp; !supervisor.getEmail().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L79">            txtEmail.setText(supervisor.getEmail());</span>
-        }
+<span class="nc" id="L79">            TextView txtEmail = (TextView) findViewById(R.id.txtEmail);</span>
+<span class="nc bnc" id="L80" title="All 4 branches missed.">            if (supervisor.getEmail() != null &amp;&amp; !supervisor.getEmail().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L81">                txtEmail.setText(supervisor.getEmail());</span>
+            }
 
-<span class="nc" id="L82">        TextView txtPhone = (TextView) findViewById(R.id.txtPhone);</span>
-<span class="nc bnc" id="L83" title="All 4 branches missed.">        if(supervisor.getPhone() != null &amp;&amp; !supervisor.getPhone().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L84">            txtPhone.setText(supervisor.getPhone());</span>
-        }
+<span class="nc" id="L84">            TextView txtPhone = (TextView) findViewById(R.id.txtPhone);</span>
+<span class="nc bnc" id="L85" title="All 4 branches missed.">            if (supervisor.getPhone() != null &amp;&amp; !supervisor.getPhone().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L86">                txtPhone.setText(supervisor.getPhone());</span>
+            }
 
-<span class="nc" id="L87">        TextView txtWebsite = (TextView) findViewById(R.id.txtWebsite);</span>
-<span class="nc bnc" id="L88" title="All 4 branches missed.">        if(supervisor.getWebsite() != null &amp;&amp; !supervisor.getWebsite().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L89">            txtWebsite.setText(supervisor.getWebsite());</span>
-        }
+<span class="nc" id="L89">            TextView txtWebsite = (TextView) findViewById(R.id.txtWebsite);</span>
+<span class="nc bnc" id="L90" title="All 4 branches missed.">            if (supervisor.getWebsite() != null &amp;&amp; !supervisor.getWebsite().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L91">                txtWebsite.setText(supervisor.getWebsite());</span>
+            }
+<span class="nc" id="L93">        } catch (Exception ex) {</span>
+<span class="nc" id="L94">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L95">        }</span>
 
-<span class="nc" id="L92">    }</span>
+<span class="nc" id="L97">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

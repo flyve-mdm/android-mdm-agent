@@ -217,7 +217,7 @@ public class EnrollmentHelper {
 <span class="nc bnc" id="L217" title="All 2 branches missed.">                    if(data.contains(&quot;ERROR&quot;)){</span>
 <span class="nc" id="L218">                        JSONArray jsonArr = new JSONArray(data);</span>
 <span class="nc" id="L219">                        final String msgError = jsonArr.get(1).toString();</span>
-<span class="nc" id="L220">                        FlyveLog.e(msgError);</span>
+<span class="nc" id="L220">                        FlyveLog.e(msgError + &quot; - Device serial: &quot; + Helpers.getDeviceSerial());</span>
 
 <span class="nc" id="L222">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
                             public void run() {
