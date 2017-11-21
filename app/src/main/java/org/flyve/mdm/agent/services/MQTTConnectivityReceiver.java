@@ -53,6 +53,10 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
         DataStorage cache = new DataStorage(context);
 
+        if(action==null) {
+            return;
+        }
+
         if("android.provider.Telephony.SMS_RECEIVED".equalsIgnoreCase(action)) {
             FlyveLog.d("SMS Received");
             if(cache.getSmsMms()!=null && !cache.getSmsMms().equals("")) {
