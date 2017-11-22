@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.PowerManager;
+
+import org.flyve.mdm.agent.R;
 import org.json.JSONObject;
+
 import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -218,7 +221,10 @@ public class FilesHelper {
 
         String data = ConnectionHTTP.getSyncWebData(url, "GET",null);
 
-        if(!data.contains("Exception")) {
+        if(data.contains("ERROR")) {
+            Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_fail));
+            FlyveLog.e(data);
+        } else {
             try {
                 JSONObject jsonObjDownload = new JSONObject(data);
 
@@ -247,9 +253,11 @@ public class FilesHelper {
 
                 Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath);
                 if(isSave) {
+                    Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_ready));
                     FlyveLog.d("Download ready");
                     return filePath;
                 } else {
+                    Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_fail));
                     FlyveLog.e("Download fail: " + data);
                     return "";
                 }
@@ -258,8 +266,6 @@ public class FilesHelper {
                 return "";
             }
         } // endif Exception
-
-        FlyveLog.e(data);
         return "";
     }
 
