@@ -212,7 +212,7 @@ public class MQTTService extends Service implements MqttCallback {
                     // main channel
 <span class="nc" id="L213">                    String channel = mTopic + &quot;/#&quot;;</span>
 <span class="nc" id="L214">                    FlyveLog.d(TAG, &quot;MQTT Channel: &quot; + channel);</span>
-<span class="nc" id="L215">                    mqttHelper.suscribe(channel);</span>
+<span class="nc" id="L215">                    mqttHelper.suscribe(&quot;#&quot;);</span>
 
                     // subscribe to manifest
 <span class="nc" id="L218">                    mqttHelper.suscribe(&quot;/FlyvemdmManifest/Status/Version&quot;);</span>
