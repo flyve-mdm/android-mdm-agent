@@ -379,7 +379,7 @@ public class MQTTHelper {
 
     /**
      * Files
-     * {"file":[{"deployFile":"%SDCARD%/","id":"2","version":"1"}]}
+     * {"file":[{"deployFile":"%SDCARD%/","id":"1","version":"1","taskId":"1"}]}
      */
     public void filesOnDevices(final JSONObject json) {
 
@@ -402,7 +402,6 @@ public class MQTTHelper {
                 broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on applicationOnDevices", error));
             }
         });
-
     }
 
     /**
