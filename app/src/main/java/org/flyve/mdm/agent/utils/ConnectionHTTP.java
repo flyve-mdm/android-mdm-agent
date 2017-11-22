@@ -29,6 +29,7 @@ package org.flyve.mdm.agent.utils;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 
 import org.json.JSONObject;
 
@@ -134,6 +135,9 @@ public class ConnectionHTTP {
 	{
 		try
 		{
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+			StrictMode.setThreadPolicy(policy);
+
 			URL dataURL = new URL(url);
 			FlyveLog.d("Method: " + method + " - URL = " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
@@ -178,6 +182,9 @@ public class ConnectionHTTP {
 	public static String getSyncWebData(final String url, final JSONObject data, final Map<String, String> header) {
 		try
 		{
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+			StrictMode.setThreadPolicy(policy);
+
 			URL dataURL = new URL(url);
 			FlyveLog.i("getSyncWebData: " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
@@ -227,6 +234,9 @@ public class ConnectionHTTP {
 		OutputStream output = null;
 
 		try {
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+			StrictMode.setThreadPolicy(policy);
+
 			URL dataURL = new URL(url);
 			FlyveLog.d("getSyncFile: " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
