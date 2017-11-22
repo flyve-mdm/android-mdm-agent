@@ -29,6 +29,9 @@ package org.flyve.mdm.agent.utils;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -36,16 +39,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Base64;
 import android.view.View;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.ui.MainActivity;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -70,6 +76,35 @@ public class Helpers {
 	 * private construtor
 	 */
 	private Helpers() {
+	}
+
+	public static void sendToNotificationBar(Context context, String message) {
+		Intent resultIntent = new Intent(context, MainActivity.class);
+		resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		PendingIntent piResult = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_ONE_SHOT);
+
+		Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+				.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.icon))
+				.setContentTitle(context.getResources().getString(R.string.app_name))
+				.setContentText(message)
+				.setSound(defaultSoundUri)
+				.setAutoCancel(true)
+				.setContentIntent(piResult)
+				.setPriority(Notification.PRIORITY_HIGH);
+
+		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			builder.setSmallIcon(R.drawable.ic_notification_white);
+		} else {
+			builder.setSmallIcon(R.drawable.icon);
+		}
+
+
+		builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+
+		NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManager.notify(121, builder.build());
 	}
 
 	public static String isSystemApp(Context context) {
