@@ -57,118 +57,116 @@ public class ConnectivityHelper {
 <span class="nc" id="L57">    }</span>
 
     public static void disableGps(boolean disable) {
-<span class="nc" id="L60">        String gps = &quot;+gps&quot;;</span>
-<span class="nc bnc" id="L61" title="All 2 branches missed.">        if(disable) {</span>
-<span class="nc" id="L62">            gps = &quot;-gps&quot;;</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if(disable) {</span>
+<span class="nc" id="L61">            String gps = &quot;''&quot;;</span>
+<span class="nc" id="L62">            String[] cmds = {&quot;cd /system/bin&quot; ,&quot;settings put secure location_providers_allowed &quot; + gps};</span>
+<span class="nc" id="L63">            executecmd(cmds);</span>
         }
 
-<span class="nc" id="L65">        String[] cmds = {&quot;cd /system/bin&quot; ,&quot;settings put secure location_providers_allowed &quot; + gps};</span>
-
-<span class="nc" id="L67">        executecmd(cmds);</span>
-<span class="nc" id="L68">    }</span>
+<span class="nc" id="L66">    }</span>
 
     public static void disableRoaming(boolean disable){
 
-<span class="nc bnc" id="L72" title="All 2 branches missed.">        if(Build.VERSION.SDK_INT&gt;=21) {</span>
-<span class="nc" id="L73">            new FlyveDeviceAdminUtils(MDMAgent.getInstance()).disableRoaming(disable);</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        if(Build.VERSION.SDK_INT&gt;=21) {</span>
+<span class="nc" id="L71">            new FlyveDeviceAdminUtils(MDMAgent.getInstance()).disableRoaming(disable);</span>
         } else {
             // ROOT OPTION
-<span class="nc" id="L76">            String value = &quot;1&quot;;</span>
-<span class="nc bnc" id="L77" title="All 2 branches missed.">            if (disable) {</span>
-<span class="nc" id="L78">                value = &quot;0&quot;;</span>
+<span class="nc" id="L74">            String value = &quot;1&quot;;</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">            if (disable) {</span>
+<span class="nc" id="L76">                value = &quot;0&quot;;</span>
             }
 
-<span class="nc" id="L81">            String[] cmds = {&quot;cd /system/bin&quot;, &quot;settings put global data_roaming0 &quot; + value};</span>
+<span class="nc" id="L79">            String[] cmds = {&quot;cd /system/bin&quot;, &quot;settings put global data_roaming0 &quot; + value};</span>
 
-<span class="nc" id="L83">            executecmd(cmds);</span>
+<span class="nc" id="L81">            executecmd(cmds);</span>
         }
-<span class="nc" id="L85">    }</span>
+<span class="nc" id="L83">    }</span>
 
     public static void disableNFC(boolean disable) {
-<span class="nc" id="L88">        String value = &quot;enable&quot;;</span>
-<span class="nc bnc" id="L89" title="All 2 branches missed.">        if(disable) {</span>
-<span class="nc" id="L90">            value = &quot;disable&quot;;</span>
+<span class="nc" id="L86">        String value = &quot;enable&quot;;</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if(disable) {</span>
+<span class="nc" id="L88">            value = &quot;disable&quot;;</span>
         }
 
-<span class="nc" id="L93">        String[] cmds = {&quot;svc nfc &quot; + value};</span>
+<span class="nc" id="L91">        String[] cmds = {&quot;svc nfc &quot; + value};</span>
 
-<span class="nc" id="L95">        executecmd(cmds);</span>
-<span class="nc" id="L96">    }</span>
+<span class="nc" id="L93">        executecmd(cmds);</span>
+<span class="nc" id="L94">    }</span>
 
     public static void disableMobileLine(boolean disable) {
-<span class="nc" id="L99">        String value = &quot;enable&quot;;</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">        if(disable) {</span>
-<span class="nc" id="L101">            value = &quot;disable&quot;;</span>
+<span class="nc" id="L97">        String value = &quot;enable&quot;;</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if(disable) {</span>
+<span class="nc" id="L99">            value = &quot;disable&quot;;</span>
         }
 
-<span class="nc" id="L104">        String[] cmds = {&quot;svc data &quot; + value};</span>
+<span class="nc" id="L102">        String[] cmds = {&quot;svc data &quot; + value};</span>
 
-<span class="nc" id="L106">        executecmd(cmds);</span>
-<span class="nc" id="L107">    }</span>
+<span class="nc" id="L104">        executecmd(cmds);</span>
+<span class="nc" id="L105">    }</span>
 
     public static void disableAirplaneMode(boolean disable) {
 
-<span class="nc bnc" id="L111" title="All 2 branches missed.">        if(Build.VERSION.SDK_INT&gt;=21) {</span>
-<span class="nc" id="L112">            new FlyveDeviceAdminUtils(MDMAgent.getInstance()).disableAirplaneMode(disable);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if(Build.VERSION.SDK_INT&gt;=21) {</span>
+<span class="nc" id="L110">            new FlyveDeviceAdminUtils(MDMAgent.getInstance()).disableAirplaneMode(disable);</span>
         } else {
 
-<span class="nc" id="L115">            String value = &quot;1&quot;; // enable</span>
-<span class="nc bnc" id="L116" title="All 2 branches missed.">            if (disable) {</span>
-<span class="nc" id="L117">                value = &quot;0&quot;; // disable</span>
+<span class="nc" id="L113">            String value = &quot;1&quot;; // enable</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">            if (disable) {</span>
+<span class="nc" id="L115">                value = &quot;0&quot;; // disable</span>
             }
 
-<span class="nc" id="L120">            String[] cmds = {&quot;settings put global airplane_mode_on &quot; + value};</span>
+<span class="nc" id="L118">            String[] cmds = {&quot;settings put global airplane_mode_on &quot; + value};</span>
 
-<span class="nc" id="L122">            executecmd(cmds);</span>
+<span class="nc" id="L120">            executecmd(cmds);</span>
         }
-<span class="nc" id="L124">    }</span>
+<span class="nc" id="L122">    }</span>
 
     // Not require system permission
     private static final String SSID = &quot;1234567890abcdef&quot;;
     public static boolean disableHostpotTethering(Context context, boolean disable) {
         try {
-<span class="nc" id="L130">            WifiManager mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);</span>
-<span class="nc bnc" id="L131" title="All 2 branches missed.">            if(!disable) {</span>
+<span class="nc" id="L128">            WifiManager mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">            if(!disable) {</span>
                 // to start Tethering wifi need to be disable
-<span class="nc" id="L133">                mWifiManager.setWifiEnabled(false);</span>
+<span class="nc" id="L131">                mWifiManager.setWifiEnabled(false);</span>
             }
 
-<span class="nc" id="L136">            WifiConfiguration conf = getWifiApConfiguration();</span>
-<span class="nc" id="L137">            mWifiManager.addNetwork(conf);</span>
+<span class="nc" id="L134">            WifiConfiguration conf = getWifiApConfiguration();</span>
+<span class="nc" id="L135">            mWifiManager.addNetwork(conf);</span>
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">            return (Boolean) mWifiManager.getClass().getMethod(&quot;setWifiApEnabled&quot;, WifiConfiguration.class, boolean.class).invoke(mWifiManager, null, !disable);</span>
-<span class="nc" id="L140">        } catch (NullPointerException ex) {</span>
-<span class="nc" id="L141">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L142">            return false;</span>
-<span class="nc" id="L143">        } catch (Exception ex) {</span>
-<span class="nc" id="L144">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L145">            return false;</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">            return (Boolean) mWifiManager.getClass().getMethod(&quot;setWifiApEnabled&quot;, WifiConfiguration.class, boolean.class).invoke(mWifiManager, null, !disable);</span>
+<span class="nc" id="L138">        } catch (NullPointerException ex) {</span>
+<span class="nc" id="L139">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L140">            return false;</span>
+<span class="nc" id="L141">        } catch (Exception ex) {</span>
+<span class="nc" id="L142">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L143">            return false;</span>
         }
     }
 
     private static WifiConfiguration getWifiApConfiguration() {
-<span class="nc" id="L150">        WifiConfiguration conf = new WifiConfiguration();</span>
-<span class="nc" id="L151">        conf.SSID =  SSID;</span>
-<span class="nc" id="L152">        conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);</span>
-<span class="nc" id="L153">        return conf;</span>
+<span class="nc" id="L148">        WifiConfiguration conf = new WifiConfiguration();</span>
+<span class="nc" id="L149">        conf.SSID =  SSID;</span>
+<span class="nc" id="L150">        conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);</span>
+<span class="nc" id="L151">        return conf;</span>
     }
 
     public static void disableUsbFileTransferProtocols(boolean disable) {
-<span class="nc" id="L157">        String value = &quot;mtp,ptp,adb&quot;;</span>
-<span class="nc bnc" id="L158" title="All 2 branches missed.">        if(disable) {</span>
-<span class="nc" id="L159">            value = &quot;none&quot;;</span>
+<span class="nc" id="L155">        String value = &quot;mtp,ptp,adb&quot;;</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        if(disable) {</span>
+<span class="nc" id="L157">            value = &quot;none&quot;;</span>
         }
 
-<span class="nc" id="L162">        String[] cmds = {&quot;setprop persist.sys.usb.config &quot; + value};</span>
+<span class="nc" id="L160">        String[] cmds = {&quot;setprop persist.sys.usb.config &quot; + value};</span>
 
-<span class="nc" id="L164">        executecmd(cmds);</span>
-<span class="nc" id="L165">    }</span>
+<span class="nc" id="L162">        executecmd(cmds);</span>
+<span class="nc" id="L163">    }</span>
 
     public static void disableSMS(boolean disable) {
 
 
 
-<span class="nc" id="L171">    }</span>
+<span class="nc" id="L169">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>
