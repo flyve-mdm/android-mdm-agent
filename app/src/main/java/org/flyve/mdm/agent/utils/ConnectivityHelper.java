@@ -3,6 +3,10 @@ package org.flyve.mdm.agent.utils;
 import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.os.Build;
+
+import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
+import org.flyve.mdm.agent.ui.MDMAgent;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -64,14 +68,20 @@ public class ConnectivityHelper {
     }
 
     public static void disableRoaming(boolean disable){
-        String value = "1";
-        if(disable) {
-            value = "0";
+
+        if(Build.VERSION.SDK_INT>=21) {
+            new FlyveDeviceAdminUtils(MDMAgent.getInstance()).disableRoaming(disable);
+        } else {
+            // ROOT OPTION
+            String value = "1";
+            if (disable) {
+                value = "0";
+            }
+
+            String[] cmds = {"cd /system/bin", "settings put global data_roaming0 " + value};
+
+            executecmd(cmds);
         }
-
-        String[] cmds = {"cd /system/bin" ,"settings put global data_roaming0 " + value};
-
-        executecmd(cmds);
     }
 
     public static void disableNFC(boolean disable) {
@@ -98,7 +108,7 @@ public class ConnectivityHelper {
 
     public static void disableAirplaneMode(boolean disable) {
         String value = "1"; // enable
-        if(disable) {
+        if (disable) {
             value = "0"; // disable
         }
 
