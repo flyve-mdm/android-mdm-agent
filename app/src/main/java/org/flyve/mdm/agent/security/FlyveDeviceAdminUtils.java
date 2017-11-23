@@ -66,6 +66,11 @@ public class FlyveDeviceAdminUtils {
     public void disableStatusBar(boolean disable) {
         mDPM.setStatusBarDisabled(mDeviceAdmin, disable);
     }
+
+    public void resetPassword(String newPassword) {
+        mDPM.resetPassword(newPassword, 0);
+    }
+
     /**
      * Erase all data of the device
      */
