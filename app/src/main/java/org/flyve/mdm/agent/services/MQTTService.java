@@ -370,6 +370,12 @@ public class MQTTService extends Service implements MqttCallback {
                 return;
             }
 
+            // UI
+            if(jsonObj.has("ui")) {
+                mqttHelper.disableUI(jsonObj);
+                return;
+            }
+
             // FLEET encryption
             if(jsonObj.has("encryption")) {
                 mqttHelper.storageEncryption(jsonObj);

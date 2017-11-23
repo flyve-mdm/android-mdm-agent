@@ -226,6 +226,28 @@ public class MQTTHelper {
         }
     }
 
+    public void disableUI(JSONObject json) {
+        try {
+            JSONArray jsonConnectivities = json.getJSONArray("connectivity");
+            for (int i = 0; i <= jsonConnectivities.length(); i++) {
+                JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);
+
+                if (jsonConnectivity.has("disableScreenCapture")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableScreenCapture");
+                    new FlyveDeviceAdminUtils(context).disableCaptureScreen(disable);
+                }
+
+                if (jsonConnectivity.has("disableStatusBar")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableStatusBar");
+                    new FlyveDeviceAdminUtils(context).disableCaptureScreen(disable);
+                }
+
+            }
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+    }
+
     /**
      * FLEET connectivity
      * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
