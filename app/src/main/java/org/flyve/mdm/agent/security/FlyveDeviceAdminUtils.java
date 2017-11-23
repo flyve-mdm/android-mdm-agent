@@ -57,6 +57,11 @@ public class FlyveDeviceAdminUtils {
         mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.AIRPLANE_MODE_ON, disable ? "0" : "1");
     }
 
+    @TargetApi(21)
+    public void disableCaptureScreen(boolean disable) {
+        mDPM.setScreenCaptureDisabled(mDeviceAdmin, disable);
+    }
+
     /**
      * Erase all data of the device
      */
