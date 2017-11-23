@@ -111,9 +111,9 @@ import java.util.ArrayList;
 <span class="fc" id="L111">        EnvInfoSetup setup = new EnvInfoSetup(SplashActivity.this);</span>
 
 <span class="fc" id="L113">        walkthrough = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L114">        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_1), getResources().getString(R.string.walkthrough_step_link_1), R.drawable.logoflyve));</span>
-<span class="fc" id="L115">        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_2), setup.getAdminWebConsole(), R.drawable.ic_walkthroug_2));</span>
-<span class="fc" id="L116">        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_3), &quot;&quot;, R.drawable.ic_walkthroug_3));</span>
+<span class="fc" id="L114">        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));</span>
+<span class="fc" id="L115">        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));</span>
+<span class="fc" id="L116">        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));</span>
 
         // Instantiate a ViewPager and a PagerAdapter.
 <span class="fc" id="L119">        ViewPager mPager = (ViewPager) findViewById(R.id.pager);</span>
