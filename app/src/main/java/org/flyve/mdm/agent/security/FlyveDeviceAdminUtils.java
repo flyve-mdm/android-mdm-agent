@@ -49,22 +49,38 @@ public class FlyveDeviceAdminUtils {
 
     @TargetApi(21)
     public void disableRoaming(boolean disable) {
-        mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.DATA_ROAMING, disable ? "0" : "1");
+        try {
+            mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.DATA_ROAMING, disable ? "0" : "1");
+        }catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
     }
 
     @TargetApi(21)
     public void disableAirplaneMode(boolean disable) {
-        mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.AIRPLANE_MODE_ON, disable ? "0" : "1");
+        try {
+            mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.AIRPLANE_MODE_ON, disable ? "0" : "1");
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
     }
 
     @TargetApi(21)
     public void disableCaptureScreen(boolean disable) {
-        mDPM.setScreenCaptureDisabled(mDeviceAdmin, disable);
+        try {
+            mDPM.setScreenCaptureDisabled(mDeviceAdmin, disable);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
     }
 
     @TargetApi(23)
     public void disableStatusBar(boolean disable) {
-        mDPM.setStatusBarDisabled(mDeviceAdmin, disable);
+        try {
+            mDPM.setStatusBarDisabled(mDeviceAdmin, disable);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
     }
 
     public void resetPassword(String newPassword) {
