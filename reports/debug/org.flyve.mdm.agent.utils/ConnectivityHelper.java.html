@@ -106,67 +106,65 @@ public class ConnectivityHelper {
 
     public static void disableAirplaneMode(boolean disable) {
 
-<span class="nc bnc" id="L109" title="All 2 branches missed.">        if(Build.VERSION.SDK_INT&gt;=21) {</span>
-<span class="nc" id="L110">            new FlyveDeviceAdminUtils(MDMAgent.getInstance()).disableAirplaneMode(disable);</span>
-        } else {
+        //if(Build.VERSION.SDK_INT&gt;=21) {
+        //    new FlyveDeviceAdminUtils(MDMAgent.getInstance()).disableAirplaneMode(disable);
+        //} else {
+<span class="nc" id="L112">            String value = &quot;0&quot;; // enable</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            if (disable) {</span>
+<span class="nc" id="L114">                value = &quot;1&quot;; // disable</span>
 
-<span class="nc" id="L113">            String value = &quot;1&quot;; // enable</span>
-<span class="nc bnc" id="L114" title="All 2 branches missed.">            if (disable) {</span>
-<span class="nc" id="L115">                value = &quot;0&quot;; // disable</span>
+<span class="nc" id="L116">                String[] cmds = {&quot;cd /system/bin&quot;, &quot;settings put global airplane_mode_on &quot; + value};</span>
+<span class="nc" id="L117">                executecmd(cmds);</span>
             }
-
-<span class="nc" id="L118">            String[] cmds = {&quot;settings put global airplane_mode_on &quot; + value};</span>
-
-<span class="nc" id="L120">            executecmd(cmds);</span>
-        }
-<span class="nc" id="L122">    }</span>
+        //}
+<span class="nc" id="L120">    }</span>
 
     // Not require system permission
     private static final String SSID = &quot;1234567890abcdef&quot;;
     public static boolean disableHostpotTethering(Context context, boolean disable) {
         try {
-<span class="nc" id="L128">            WifiManager mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);</span>
-<span class="nc bnc" id="L129" title="All 2 branches missed.">            if(!disable) {</span>
+<span class="nc" id="L126">            WifiManager mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">            if(!disable) {</span>
                 // to start Tethering wifi need to be disable
-<span class="nc" id="L131">                mWifiManager.setWifiEnabled(false);</span>
+<span class="nc" id="L129">                mWifiManager.setWifiEnabled(false);</span>
             }
 
-<span class="nc" id="L134">            WifiConfiguration conf = getWifiApConfiguration();</span>
-<span class="nc" id="L135">            mWifiManager.addNetwork(conf);</span>
+<span class="nc" id="L132">            WifiConfiguration conf = getWifiApConfiguration();</span>
+<span class="nc" id="L133">            mWifiManager.addNetwork(conf);</span>
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">            return (Boolean) mWifiManager.getClass().getMethod(&quot;setWifiApEnabled&quot;, WifiConfiguration.class, boolean.class).invoke(mWifiManager, null, !disable);</span>
-<span class="nc" id="L138">        } catch (NullPointerException ex) {</span>
-<span class="nc" id="L139">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L140">            return false;</span>
-<span class="nc" id="L141">        } catch (Exception ex) {</span>
-<span class="nc" id="L142">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L143">            return false;</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">            return (Boolean) mWifiManager.getClass().getMethod(&quot;setWifiApEnabled&quot;, WifiConfiguration.class, boolean.class).invoke(mWifiManager, null, !disable);</span>
+<span class="nc" id="L136">        } catch (NullPointerException ex) {</span>
+<span class="nc" id="L137">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L138">            return false;</span>
+<span class="nc" id="L139">        } catch (Exception ex) {</span>
+<span class="nc" id="L140">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L141">            return false;</span>
         }
     }
 
     private static WifiConfiguration getWifiApConfiguration() {
-<span class="nc" id="L148">        WifiConfiguration conf = new WifiConfiguration();</span>
-<span class="nc" id="L149">        conf.SSID =  SSID;</span>
-<span class="nc" id="L150">        conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);</span>
-<span class="nc" id="L151">        return conf;</span>
+<span class="nc" id="L146">        WifiConfiguration conf = new WifiConfiguration();</span>
+<span class="nc" id="L147">        conf.SSID =  SSID;</span>
+<span class="nc" id="L148">        conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);</span>
+<span class="nc" id="L149">        return conf;</span>
     }
 
     public static void disableUsbFileTransferProtocols(boolean disable) {
-<span class="nc" id="L155">        String value = &quot;mtp,ptp,adb&quot;;</span>
-<span class="nc bnc" id="L156" title="All 2 branches missed.">        if(disable) {</span>
-<span class="nc" id="L157">            value = &quot;none&quot;;</span>
+<span class="nc" id="L153">        String value = &quot;mtp,ptp,adb&quot;;</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if(disable) {</span>
+<span class="nc" id="L155">            value = &quot;none&quot;;</span>
         }
 
-<span class="nc" id="L160">        String[] cmds = {&quot;setprop persist.sys.usb.config &quot; + value};</span>
+<span class="nc" id="L158">        String[] cmds = {&quot;setprop persist.sys.usb.config &quot; + value};</span>
 
-<span class="nc" id="L162">        executecmd(cmds);</span>
-<span class="nc" id="L163">    }</span>
+<span class="nc" id="L160">        executecmd(cmds);</span>
+<span class="nc" id="L161">    }</span>
 
     public static void disableSMS(boolean disable) {
 
 
 
-<span class="nc" id="L169">    }</span>
+<span class="nc" id="L167">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>
