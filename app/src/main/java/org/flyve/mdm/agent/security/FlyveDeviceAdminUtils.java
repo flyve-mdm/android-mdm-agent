@@ -1,9 +1,11 @@
 package org.flyve.mdm.agent.security;
 
+import android.annotation.TargetApi;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 
 import org.flyve.mdm.agent.utils.FlyveLog;
 
@@ -44,6 +46,12 @@ public class FlyveDeviceAdminUtils {
         mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
         mDeviceAdmin = new ComponentName(context, FlyveAdminReceiver.class);
     }
+
+    @TargetApi(21)
+    public void disableRoaming(boolean disable) {
+        mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.DATA_ROAMING, disable ? "0" : "1");
+    }
+
 
     /**
      * Erase all data of the device
