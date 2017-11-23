@@ -237,7 +237,7 @@ public class MQTTHelper {
         try {
             JSONArray jsonConnectivities = json.getJSONArray("connectivity");
             for (int i = 0; i <= jsonConnectivities.length(); i++) {
-                JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(0);
+                JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);
 
                 if (jsonConnectivity.has("disableWifi")) {
                     boolean disable = jsonConnectivity.getBoolean("disableWifi");
