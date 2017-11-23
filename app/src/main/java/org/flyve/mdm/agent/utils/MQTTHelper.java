@@ -47,6 +47,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MQTTHelper {
 
@@ -114,7 +115,7 @@ public class MQTTHelper {
         String[] topics = addTopic(channel);
 
         // if topic null
-        if(topics==null) {
+        if(topics==null || topics.length == 0) {
             FlyveLog.e("NULL TOPIC");
             return;
         }
@@ -124,7 +125,8 @@ public class MQTTHelper {
             qos[k] = 0;
         }
 
-        FlyveLog.i("Topics: " + topics.length + " Qos: " + qos.length);
+        String str = Arrays.toString(topics);
+        FlyveLog.i("Topics: " + str + " Qos: " + qos.length);
 
         try {
             IMqttToken subToken = client.subscribe(topics, qos);
@@ -295,6 +297,21 @@ public class MQTTHelper {
                     boolean disable = jsonConnectivity.getBoolean("disableUsbFileTransferProtocols");
                     cache.setConnectivityUsbFileTransferProtocolsDisable(disable);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols", "UsbFileTransferProtocols is disable: " + disable));
+                }
+
+                if (jsonConnectivity.has("disableStatusBar")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableStatusBar");
+                    new FlyveDeviceAdminUtils(context).disableStatusBar(disable);
+                }
+
+                if (jsonConnectivity.has("disableSreenCapture")) {
+                    boolean disable = jsonConnectivity.getBoolean("disableSreenCapture");
+                    new FlyveDeviceAdminUtils(context).disableCaptureScreen(disable);
+                }
+
+                if (jsonConnectivity.has("resetPassword")) {
+                    String newpassword = jsonConnectivity.getString("resetPassword");
+                    new FlyveDeviceAdminUtils(context).resetPassword(newpassword);
                 }
 
             }
