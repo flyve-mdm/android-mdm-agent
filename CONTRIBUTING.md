@@ -14,7 +14,7 @@ As a contributor, we present you the guidelines to start contributing in any of 
 
 If you require general support assistance, you can find us in [Telegram](https://t.me/flyvemdm), and we'll help you as soon as possible.
 
-For notices about major changes and general discussion of Flyve MDM development, subscribe to the [/r/FlyveMDM](https://www.reddit.com/r/FlyveMDM/) subreddit. You can also chat with us via IRC in [#flyve-mdm on freenode](http://webchat.freenode.net/?channels=flyve-mdm%5D).
+For notices about major changes and general discussion of Flyve MDM development, subscribe to the [/r/FlyveMDM](https://www.reddit.com/r/FlyveMDM/) subreddit. You can also chat with us via IRC in [#flyve-mdm on freenode](http://webchat.freenode.net/?channels=flyve-mdm).
 
 This is in order to keep GitHub issues for bug reports and new features only.
 
@@ -35,7 +35,7 @@ You can _**request**_ a new feature by submitting an issue, and if you would lik
 
 ### Submit an Issue
 
-Before submitting the issue please check the [issue tracker](https://github.com/flyve-mdm/flyve-mdm-android-agent/issues), there exists the possibility that the bug was already reported by other contributor. 
+Before submitting the issue please check the [issue tracker](https://github.com/flyve-mdm/android-mdm-agent/issues), there exists the possibility that the bug was already reported by other contributor.
 
 This way you help us to maximize the effort we can spend fixing issues and adding new features, by not reporting duplicate issues.
 
@@ -49,7 +49,7 @@ We'll work very hard to fix all the issues without delay, but before fixing it w
 - Related Issues - has a similar issue been reported before?
 - Suggest a Fix - if you can't fix the bug yourself, perhaps you can point to what might be causing the problem (line of code or commit)
 
-You can file new issues by filling out our [new issue form](https://github.com/flyve-mdm/flyve-mdm-android-agent/issues/new).
+You can file new issues by filling out our [new issue form](https://github.com/flyve-mdm/android-mdm-agent/issues/new).
 
 ### Submit a Pull Request
 
@@ -57,7 +57,7 @@ Before submitting your Pull Request check  for an open or closed PR that relates
 
 - Make your changes in a new branch, the project is organized according to the branch model [Git Flow](http://git-flow.readthedocs.io/en/latest/), though this is not mandatory it's really useful:
 
-```
+```console
     git checkout -b my-fix-branch develop
 ```
 
@@ -67,11 +67,11 @@ Before submitting your Pull Request check  for an open or closed PR that relates
 
 - Push your branch to GitHub:
 
-```
+```console
     git push origin my-fix-branch
 ```
 
-- In GitHub, send a pull request to our [Repository](https://github.com/flyve-mdm/flyve-mdm-android-agent).
+- In GitHub, send a pull request to our [Repository](https://github.com/flyve-mdm/android-mdm-agent).
 
 - If we suggest changes then:
 
