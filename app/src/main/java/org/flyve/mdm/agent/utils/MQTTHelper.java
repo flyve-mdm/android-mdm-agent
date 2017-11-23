@@ -36,7 +36,6 @@ import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.BuildConfig;
@@ -151,7 +150,7 @@ public class MQTTHelper {
                     broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on subscribe", errorMessage));
                 }
             });
-        } catch (MqttException ex) {
+        } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
     }
@@ -266,6 +265,7 @@ public class MQTTHelper {
                 if (jsonConnectivity.has("disableAirplaneMode")) {
                     boolean disable = jsonConnectivity.getBoolean("disableAirplaneMode");
                     cache.setConnectivityAirplaneModeDisable(disable);
+                    ConnectivityHelper.disableAirplaneMode(cache.getConnectivityAirplaneModeDisable());
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "AIRPLANEMODE", "AIRPLANEMODE is disable: " + disable));
                 }
 

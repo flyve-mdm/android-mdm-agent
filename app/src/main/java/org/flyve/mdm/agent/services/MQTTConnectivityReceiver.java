@@ -105,6 +105,12 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             if(cache.getHostpotTethering()!=null && !cache.getHostpotTethering().equals("")) {
                 ConnectivityHelper.disableHostpotTethering(context, cache.getConnectivityHostpotTetheringDisable());
             }
+
+            // Disable / Enable Airplane Mode
+            if(cache.getAirplaneMode()!=null && !cache.getAirplaneMode().equals("")) {
+                ConnectivityHelper.disableAirplaneMode(cache.getConnectivityAirplaneModeDisable());
+            }
+
         }
 
         // Manage Bluetooth

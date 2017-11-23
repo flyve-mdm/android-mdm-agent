@@ -106,19 +106,17 @@ public class ConnectivityHelper {
 
     public static void disableAirplaneMode(boolean disable) {
 
-        if(Build.VERSION.SDK_INT>=21) {
-            new FlyveDeviceAdminUtils(MDMAgent.getInstance()).disableAirplaneMode(disable);
-        } else {
-
-            String value = "1"; // enable
+        //if(Build.VERSION.SDK_INT>=21) {
+        //    new FlyveDeviceAdminUtils(MDMAgent.getInstance()).disableAirplaneMode(disable);
+        //} else {
+            String value = "0"; // enable
             if (disable) {
-                value = "0"; // disable
+                value = "1"; // disable
+
+                String[] cmds = {"cd /system/bin", "settings put global airplane_mode_on " + value};
+                executecmd(cmds);
             }
-
-            String[] cmds = {"settings put global airplane_mode_on " + value};
-
-            executecmd(cmds);
-        }
+        //}
     }
 
     // Not require system permission
