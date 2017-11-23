@@ -111,9 +111,9 @@ public class SplashActivity extends FragmentActivity {
         EnvInfoSetup setup = new EnvInfoSetup(SplashActivity.this);
 
         walkthrough = new ArrayList<>();
-        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_1), getResources().getString(R.string.walkthrough_step_link_1), R.drawable.logoflyve));
-        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_2), setup.getAdminWebConsole(), R.drawable.ic_walkthroug_2));
-        walkthrough.add(new WalkthroughModel(getResources().getString(R.string.walkthrough_step_3), "", R.drawable.ic_walkthroug_3));
+        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
+        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));
+        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));
 
         // Instantiate a ViewPager and a PagerAdapter.
         ViewPager mPager = (ViewPager) findViewById(R.id.pager);
