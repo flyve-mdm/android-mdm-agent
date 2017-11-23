@@ -28,7 +28,7 @@ package org.flyve.mdm.agent.core.walkthrough;
  */
 public class WalkthroughModel {
 
-    private String message;
+    private int message;
     private String link;
     private int image;
 
@@ -38,7 +38,7 @@ public class WalkthroughModel {
      * @param link
      * @param image
      */
-    public WalkthroughModel(String message, String link, int image) {
+    public WalkthroughModel(int message, String link, int image) {
         this.message = message;
         this.link = link;
         this.image = image;
@@ -46,9 +46,9 @@ public class WalkthroughModel {
 
     /**
      * Get the message of the Walkthrough
-     * @return string the message
+     * @return int the message
      */
-    public String getMessage() {
+    public int getMessage() {
         return message;
     }
 
@@ -56,7 +56,7 @@ public class WalkthroughModel {
      * Set the message of the Walkthrough
      * @param message
      */
-    public void setMessage(String message) {
+    public void setMessage(int message) {
         this.message = message;
     }
 
