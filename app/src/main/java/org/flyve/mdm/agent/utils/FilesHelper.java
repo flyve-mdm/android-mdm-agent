@@ -46,6 +46,7 @@ public class FilesHelper {
     private static final String EXTERNAL_STORAGE = "EXTERNAL_STORAGE"; 
     private Context context;
     private Routes routes;
+    private String sessionToken;
 
     /**
      * This constructor loads the context of the current class
@@ -174,6 +175,7 @@ public class FilesHelper {
             FlyveLog.e(ex.getMessage());
         }
 
+        this.sessionToken = sessionToken;
         final String url = routes.pluginFlyvemdmFile(id, sessionToken);
         String completeFilePath = download(url, filePath);
 
@@ -202,6 +204,7 @@ public class FilesHelper {
             FlyveLog.e(ex.getMessage());
         }
 
+        this.sessionToken = sessionToken;
         final String url = routes.pluginFlyvemdmPackage(id, sessionToken);
         String completeFilePath = download(url, filePath);
         if(completeFilePath.equalsIgnoreCase("")) {
@@ -257,6 +260,9 @@ public class FilesHelper {
         String fileName = "";
 
         try {
+
+            String id = jsonObjDownload.getString("id");
+
             // Both has name
             if (jsonObjDownload.has("name")) {
                 fileName = jsonObjDownload.getString("name");
@@ -277,8 +283,8 @@ public class FilesHelper {
                 FlyveLog.d("File exists");
                 return "";
             }
-
-            Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath);
+            String urlLocal = routes.pluginFlyvemdmPackage(id, sessionToken);
+            Boolean isSave = ConnectionHTTP.getSyncFile(urlLocal, filePath);
             if (isSave) {
                 Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_ready));
                 FlyveLog.d("Download ready");
