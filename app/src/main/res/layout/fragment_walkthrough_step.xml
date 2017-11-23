@@ -1,57 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
-    >
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <ImageView
+                android:id="@+id/imgBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bg_walkthrough"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                />
 
-    <ImageView
-        android:id="@+id/imgBackground"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/bg_walkthrough"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        />
+            <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo_walkthroug"
+                android:layout_above="@+id/imgStep"
+                android:layout_marginBottom="20dp"
+                android:layout_centerHorizontal="true"
+                />
 
-    <ImageView
-        android:id="@+id/imgStep"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logoflyve"
-        android:layout_centerHorizontal="true"
-        android:layout_alignBottom="@+id/imgBackground"
-        android:paddingBottom="50dp"
-        />
+            <ImageView
+                android:id="@+id/imgStep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_walkthroug_1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                />
 
-    <TextView
-        android:id="@+id/txtMessage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/walkthrough_step_1"
-        android:gravity="center"
-        style="@style/regularText"
-        android:layout_below="@+id/imgBackground"
-        android:layout_above="@+id/lnSliders"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:textColor="@color/white"
-        />
+            <ImageView
+                android:id="@+id/imgDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/wt_text_1"
+                android:layout_below="@+id/imgStep"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                />
 
+            <ImageView
+                android:id="@+id/imgMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/wt_more_information"
+                android:layout_below="@+id/imgDescription"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                />
 
-    <LinearLayout
-        android:id="@+id/lnSliders"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:padding="10dp"
-        android:orientation="horizontal"
-        >
-
-    </LinearLayout>
-
-
-</RelativeLayout>
-
+            <LinearLayout
+                android:id="@+id/lnSliders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:padding="10dp"
+                android:orientation="horizontal"
+                >
+            </LinearLayout>
+        </RelativeLayout>
