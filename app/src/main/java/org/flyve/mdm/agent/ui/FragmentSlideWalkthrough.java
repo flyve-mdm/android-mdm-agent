@@ -2,13 +2,11 @@ package org.flyve.mdm.agent.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
@@ -48,7 +46,7 @@ public class FragmentSlideWalkthrough extends Fragment {
     private int position;
 
     private String mLink = "";
-    private String mMessage = "";
+    private int mMessage = 0;
     private int mImage = 0;
 
 
@@ -86,24 +84,24 @@ public class FragmentSlideWalkthrough extends Fragment {
             FlyveLog.e(ex.getMessage());
         }
 
-        TextView txtMessage = (TextView) v.findViewById(R.id.txtMessage);
-        if (!mLink.equals("")) {
-            txtMessage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Helpers.openURL(FragmentSlideWalkthrough.this.getContext(), mLink);
-                }
-            });
-        }
-
-        if (!mMessage.equals("")) {
-            txtMessage.setText(Html.fromHtml(mMessage));
-        }
 
         ImageView imgStep = (ImageView) v.findViewById(R.id.imgStep);
         if (mImage>0) {
             imgStep.setImageResource(mImage);
         }
+
+        ImageView imgMessage = (ImageView) v.findViewById(R.id.imgDescription);
+        if (mMessage>0) {
+            imgMessage.setImageResource(mMessage);
+        }
+
+        ImageView imgMore = (ImageView) v.findViewById(R.id.imgMore);
+        imgMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Helpers.openURL( FragmentSlideWalkthrough.this.getActivity(), mLink );
+            }
+        });
 
         slideDots(v);
 
