@@ -52,6 +52,10 @@ public class FlyveDeviceAdminUtils {
         mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.DATA_ROAMING, disable ? "0" : "1");
     }
 
+    @TargetApi(21)
+    public void disableAirplaneMode(boolean disable) {
+        mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.AIRPLANE_MODE_ON, disable ? "0" : "1");
+    }
 
     /**
      * Erase all data of the device
