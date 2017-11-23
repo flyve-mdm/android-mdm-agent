@@ -62,7 +62,6 @@ public class ConnectivityHelper {
             String[] cmds = {"cd /system/bin" ,"settings put secure location_providers_allowed " + gps};
             executecmd(cmds);
         }
-
     }
 
     public static void disableRoaming(boolean disable){
