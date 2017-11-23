@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.os.PowerManager;
 
 import org.flyve.mdm.agent.R;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -206,7 +207,12 @@ public class FilesHelper {
         if(completeFilePath.equalsIgnoreCase("")) {
             return false;
         } else {
-            installApk(completeFilePath);
+            String[] apk = completeFilePath.split("$$");
+            for(int i=0; i<apk.length;i++) {
+                if(!apk[i].equals("")) {
+                    installApk(apk[i]);
+                }
+            }
             return true;
         }
     }
@@ -227,46 +233,67 @@ public class FilesHelper {
         } else {
             try {
                 JSONObject jsonObjDownload = new JSONObject(data);
-
-                String fileName = "";
-
-                // Both has name
-                if (jsonObjDownload.has("name")) {
-                    fileName = jsonObjDownload.getString("name");
-                }
-
-                // is APK
-                if(jsonObjDownload.has("dl_filename")) {
-                    fileName = jsonObjDownload.getString("dl_filename");
-                }
-
-                // validating if folder exists or create
-                new File(path).mkdirs();
-
-                // validating if file exists
-                String filePath = path + fileName;
-                File file = new File(filePath);
-                if(file.exists()) {
-                    FlyveLog.d("File exists");
-                    return "";
-                }
-
-                Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath);
-                if(isSave) {
-                    Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_ready));
-                    FlyveLog.d("Download ready");
-                    return filePath;
-                } else {
-                    Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_fail));
-                    FlyveLog.e("Download fail: " + data);
-                    return "";
-                }
+                getFile(jsonObjDownload, url, path, data);
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-                return "";
+                try {
+                    JSONArray arr = new JSONArray(data);
+                    StringBuffer str = new StringBuffer();
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject jsonObjDownload = arr.getJSONObject(i);
+                        str.append(getFile(jsonObjDownload, path, url, data) + "$$");
+                    }
+                    return str.toString();
+                } catch (Exception ex1) {
+                    FlyveLog.e(ex1.getMessage());
+                    return "";
+                }
             }
         } // endif Exception
         return "";
+    }
+
+    private String getFile(JSONObject jsonObjDownload, String path, String url, String data) {
+
+        String fileName = "";
+
+        try {
+            // Both has name
+            if (jsonObjDownload.has("name")) {
+                fileName = jsonObjDownload.getString("name");
+            }
+
+            // is APK
+            if (jsonObjDownload.has("dl_filename")) {
+                fileName = jsonObjDownload.getString("dl_filename");
+            }
+
+            // validating if folder exists or create
+            new File(path).mkdirs();
+
+            // validating if file exists
+            String filePath = path + fileName;
+            File file = new File(filePath);
+            if (file.exists()) {
+                FlyveLog.d("File exists");
+                return "";
+            }
+
+            Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath);
+            if (isSave) {
+                Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_ready));
+                FlyveLog.d("Download ready");
+                return filePath;
+            } else {
+                Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_fail));
+                FlyveLog.e("Download fail: " + data);
+                return "";
+            }
+        } catch(Exception ex) {
+            FlyveLog.e(ex.getMessage());
+            return "";
+        }
+
+
     }
 
     /**

@@ -393,8 +393,6 @@ public class MQTTService extends Service implements MqttCallback {
                 mqttHelper.applicationOnDevices(jsonObj);
                 return;
             }
-
-
         } catch (Exception ex) {
             FlyveLog.e(TAG, ex.getMessage());
             storeLog(Helpers.broadCastMessage(ERROR, "Error on messageArrived", ex.getMessage()));
