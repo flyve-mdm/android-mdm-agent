@@ -62,6 +62,10 @@ public class FlyveDeviceAdminUtils {
         mDPM.setScreenCaptureDisabled(mDeviceAdmin, disable);
     }
 
+    @TargetApi(23)
+    public void disableStatusBar(boolean disable) {
+        mDPM.setStatusBarDisabled(mDeviceAdmin, disable);
+    }
     /**
      * Erase all data of the device
      */
