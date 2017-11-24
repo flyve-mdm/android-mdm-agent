@@ -9,7 +9,6 @@ import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
 import org.flyve.mdm.agent.ui.MDMAgent;
 
 import java.io.DataOutputStream;
-import java.io.IOException;
 
 /*
  *   Copyright (C) 2017 Teclib. All rights reserved.
@@ -51,15 +50,14 @@ public class ConnectivityHelper {
             os.writeBytes("exit\n");
             os.flush();
         }
-        catch (IOException ex){
+        catch (Exception ex){
             FlyveLog.d(ex.getMessage());
         }
     }
 
     public static void disableGps(boolean disable) {
         if(disable) {
-            String gps = "''";
-            String[] cmds = {"cd /system/bin" ,"settings put secure location_providers_allowed " + gps};
+            String[] cmds = {"cd /system/bin", "settings put secure location_providers_allowed -gps", "settings put secure location_providers_allowed -network" };
             executecmd(cmds);
         }
     }
