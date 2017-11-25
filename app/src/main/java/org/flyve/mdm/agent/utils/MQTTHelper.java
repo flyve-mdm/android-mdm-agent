@@ -761,16 +761,6 @@ public class MQTTHelper {
     }
 
     /**
-     * Require root or system install
-     * Disable Roaming
-     */
-    public void disableRoaming() {
-
-
-
-    }
-
-    /**
      * Broadcast the received log
      * @param message
      */
