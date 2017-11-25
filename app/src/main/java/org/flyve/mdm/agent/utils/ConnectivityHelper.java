@@ -1,7 +1,7 @@
 package org.flyve.mdm.agent.utils;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
-import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
@@ -74,14 +74,13 @@ public class ConnectivityHelper {
             new FlyveDeviceAdminUtils(MDMAgent.getInstance()).disableRoaming(disable);
         } else {
             // ROOT OPTION
-            String value = "1";
             if (disable) {
-                value = "0";
+                String value = "0";
+                String[] cmds = {"cd /system/bin", "settings put global data_roaming0 " + value};
+
+                executecmd(cmds);
+
             }
-
-            String[] cmds = {"cd /system/bin", "settings put global data_roaming0 " + value};
-
-            executecmd(cmds);
         }
     }
 
@@ -108,48 +107,24 @@ public class ConnectivityHelper {
     }
 
     public static void disableAirplaneMode(boolean disable) {
+        if (disable) {
+            String value = "1"; // enable
+            String[] cmds = {"cd /system/bin", "settings put global airplane_mode_on " + value};
+            executecmd(cmds);
 
-        //if(Build.VERSION.SDK_INT>=21) {
-        //    new FlyveDeviceAdminUtils(MDMAgent.getInstance()).disableAirplaneMode(disable);
-        //} else {
-            String value = "0"; // enable
-            if (disable) {
-                value = "1"; // disable
-
-                String[] cmds = {"cd /system/bin", "settings put global airplane_mode_on " + value};
-                executecmd(cmds);
-            }
-        //}
-    }
-
-    // Not require system permission
-    private static final String SSID = "1234567890abcdef";
-    public static boolean disableHostpotTethering(Context context, boolean disable) {
-        try {
-            WifiManager mWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-            if(!disable) {
-                // to start Tethering wifi need to be disable
-                mWifiManager.setWifiEnabled(false);
-            }
-
-            WifiConfiguration conf = getWifiApConfiguration();
-            mWifiManager.addNetwork(conf);
-
-            return (Boolean) mWifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class).invoke(mWifiManager, null, !disable);
-        } catch (NullPointerException ex) {
-            FlyveLog.e(ex.getMessage());
-            return false;
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-            return false;
+            // disable wifi
+            disableWifi(disable);
+            disableBluetooth(disable);
+            disableMobileLine(disable);
+            disableNFC(disable);
         }
     }
 
-    private static WifiConfiguration getWifiApConfiguration() {
-        WifiConfiguration conf = new WifiConfiguration();
-        conf.SSID =  SSID;
-        conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-        return conf;
+    public static void disableHostpotTethering(boolean disable) {
+        if(disable) {
+            disableWifi(disable);
+            disableBluetooth(disable);
+        }
     }
 
     public static void disableUsbFileTransferProtocols(boolean disable) {
@@ -163,8 +138,24 @@ public class ConnectivityHelper {
         executecmd(cmds);
     }
 
-    public static void disableSMS(boolean disable) {
+    public static void disableBluetooth(boolean disable) {
+        if(disable) {
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
+            if (bluetoothAdapter!=null && bluetoothAdapter.isEnabled()) {
+                bluetoothAdapter.disable();
+            }
+        }
+    }
+
+    public static void disableWifi(boolean disable) {
+        WifiManager wifiManager = (WifiManager) MDMAgent.getInstance().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        if(wifiManager!=null && wifiManager.isWifiEnabled()) {
+            wifiManager.setWifiEnabled(!disable);
+        }
+    }
+
+    public static void disableSMS(boolean disable) {
 
 
     }

@@ -64,6 +64,17 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
+        Switch swAirplane = (Switch) v.findViewById(R.id.swAirplane);
+        swAirplane.setChecked(cache.getConnectivityAirplaneModeDisable());
+        swAirplane.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cache.setConnectivityAirplaneModeDisable(isChecked);
+                if(isChecked) {
+                    ConnectivityHelper.disableAirplaneMode(isChecked);
+                }
+            }
+        });
 
         return v;
     }
