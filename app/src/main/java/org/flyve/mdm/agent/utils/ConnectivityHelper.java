@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.provider.Settings;
 
 import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
 import org.flyve.mdm.agent.ui.MDMAgent;
@@ -56,6 +57,11 @@ public class ConnectivityHelper {
     }
 
     public static void disableGps(boolean disable) {
+        String provider = Settings.Secure.getString(MDMAgent.getInstance().getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        if(provider.trim().equals("")){
+            return;
+        }
+
         if(disable) {
             String[] cmds = {"cd /system/bin", "settings put secure location_providers_allowed -gps", "settings put secure location_providers_allowed -network" };
             executecmd(cmds);
