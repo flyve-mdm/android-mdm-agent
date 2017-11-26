@@ -260,9 +260,6 @@ public class FilesHelper {
         String fileName = "";
 
         try {
-
-            String id = jsonObjDownload.getString("id");
-
             // Both has name
             if (jsonObjDownload.has("name")) {
                 fileName = jsonObjDownload.getString("name");
@@ -283,8 +280,8 @@ public class FilesHelper {
                 FlyveLog.d("File exists");
                 return "";
             }
-            String urlLocal = routes.pluginFlyvemdmPackage(id, sessionToken);
-            Boolean isSave = ConnectionHTTP.getSyncFile(urlLocal, filePath);
+
+            Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath);
             if (isSave) {
                 Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_ready));
                 FlyveLog.d("Download ready");
@@ -298,8 +295,6 @@ public class FilesHelper {
             FlyveLog.e(ex.getMessage());
             return "";
         }
-
-
     }
 
     /**

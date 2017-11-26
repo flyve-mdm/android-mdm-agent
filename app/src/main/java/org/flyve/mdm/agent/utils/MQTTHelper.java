@@ -356,8 +356,8 @@ public class MQTTHelper {
             @Override
             public void onSuccess(String data) {
                 try {
-                    JSONArray checkInstall = json.getJSONArray("application");
-                    appWork(checkInstall, data);
+                    JSONArray appsInstall = json.getJSONArray("application");
+                    appWork(appsInstall, data);
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
                     broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on getActiveSessionToken", ex.getMessage()));
@@ -377,29 +377,29 @@ public class MQTTHelper {
 
     /**
      * Check if the App is to be installed or uninstalled
-     * @param checkInstall if the object has remove or deploy app
+     * @param appsInstall if the object has remove or deploy app
      * @param sessionToken the session token
      */
-    public void appWork(JSONArray checkInstall, String sessionToken) throws Exception {
+    public void appWork(JSONArray appsInstall, String sessionToken) throws Exception {
         AppInfo appInfo = new AppInfo(this.context);
         FilesHelper filesHelper = new FilesHelper(this.context);
 
-        for(int i=0; i<checkInstall.length(); i++) {
+        for(int i=0; i<appsInstall.length(); i++) {
 
-            if(checkInstall.getJSONObject(i).has(REMOVE_APP)){
+            if(appsInstall.getJSONObject(i).has(REMOVE_APP)){
                 FlyveLog.d("uninstall apps");
 
-                JSONObject jsonApp = checkInstall.getJSONObject(i);
+                JSONObject jsonApp = appsInstall.getJSONObject(i);
                 if(appInfo.isInstall(jsonApp.getString(REMOVE_APP))) {
                     FilesHelper.removeApk(this.context, jsonApp.getString(REMOVE_APP));
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Remove app", "Package: " + jsonApp.getString(REMOVE_APP)));
                 }
             }
 
-            if(checkInstall.getJSONObject(i).has("deployApp")){
+            if(appsInstall.getJSONObject(i).has("deployApp")){
                 FlyveLog.d("install apps");
 
-                JSONObject jsonApp = checkInstall.getJSONObject(i);
+                JSONObject jsonApp = appsInstall.getJSONObject(i);
 
                 String idlist;
                 String packageNamelist;
@@ -412,7 +412,7 @@ public class MQTTHelper {
                 versionCode = jsonApp.getString("versionCode");
 
                 if(!appInfo.isInstall(packageNamelist,versionCode)){
-                    filesHelper.downloadApk(packageNamelist, versionCode, sessionToken);
+                    filesHelper.downloadApk(packageNamelist, idlist, sessionToken);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Download app", "Package: " + packageNamelist));
                 }
             }
