@@ -76,6 +76,78 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
+        Switch swBluetooth = (Switch) v.findViewById(R.id.swBluetooth);
+        swBluetooth.setChecked(cache.getConnectivityBluetoothDisable());
+        swBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cache.setConnectivityBluetoothDisable(isChecked);
+                if(isChecked) {
+                    ConnectivityHelper.disableBluetooth(isChecked);
+                }
+            }
+        });
+
+        Switch swWifi = (Switch) v.findViewById(R.id.swWifi);
+        swWifi.setChecked(cache.getConnectivityWifiDisable());
+        swWifi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cache.setConnectivityWifiDisable(isChecked);
+                if(isChecked) {
+                    ConnectivityHelper.disableWifi(isChecked);
+                }
+            }
+        });
+
+        Switch swNFC = (Switch) v.findViewById(R.id.swNFC);
+        swNFC.setChecked(cache.getConnectivityRoamingDisable());
+        swNFC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cache.setConnectivityNFCDisable(isChecked);
+                if(isChecked) {
+                    ConnectivityHelper.disableNFC(isChecked);
+                }
+            }
+        });
+
+        Switch swHostpot = (Switch) v.findViewById(R.id.swHostpot);
+        swHostpot.setChecked(cache.getConnectivityHostpotTetheringDisable());
+        swHostpot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cache.setConnectivityHostpotTetheringDisable(isChecked);
+                if(isChecked) {
+                    ConnectivityHelper.disableHostpotTethering(isChecked);
+                }
+            }
+        });
+
+        Switch swMobileLine = (Switch) v.findViewById(R.id.swMobileLine);
+        swMobileLine.setChecked(cache.getConnectivityMobileLineDisable());
+        swMobileLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cache.setConnectivityMobileLineDisable(isChecked);
+                if(isChecked) {
+                    ConnectivityHelper.disableMobileLine(isChecked);
+                }
+            }
+        });
+
+        Switch swUsbOnTheGo = (Switch) v.findViewById(R.id.swUsbOnTheGo);
+        swUsbOnTheGo.setChecked(cache.getConnectivityUsbFileTransferProtocolsDisable());
+        swUsbOnTheGo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cache.setConnectivityUsbFileTransferProtocolsDisable(isChecked);
+                if(isChecked) {
+                    ConnectivityHelper.disableUsbFileTransferProtocols(isChecked);
+                }
+            }
+        });
+
         return v;
     }
 

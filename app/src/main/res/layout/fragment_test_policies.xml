@@ -24,6 +24,48 @@
             android:layout_height="wrap_content"
             android:text="Enable Airplane Mode" />
 
+        <Switch
+            android:id="@+id/swBluetooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Disable Bluetooth" />
+
+        <Switch
+            android:id="@+id/swWifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Disable Wifi" />
+
+        <Switch
+            android:id="@+id/swRoaming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Disable Roaming" />
+
+        <Switch
+            android:id="@+id/swNFC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Disable NFC" />
+
+        <Switch
+            android:id="@+id/swHostpot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Disable Hostpot/Tethering" />
+
+        <Switch
+            android:id="@+id/swMobileLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Disable Mobile Line" />
+
+        <Switch
+            android:id="@+id/swUsbOnTheGo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Disable Usb On The Go" />
+
     </LinearLayout>
 
 
