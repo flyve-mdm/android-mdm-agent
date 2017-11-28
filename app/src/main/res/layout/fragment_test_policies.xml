@@ -22,7 +22,7 @@
             android:id="@+id/swAirplane"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enable Airplane Mode" />
+            android:text="Disable Airplane Mode" />
 
         <Switch
             android:id="@+id/swBluetooth"
