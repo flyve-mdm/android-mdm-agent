@@ -408,7 +408,7 @@ public class DataStorage {
 	}
 
 	/**
-	 * Set the state of the Airplane mode enable / disable
+	 * Set the state of the Airplane mode disable
 	 * @param disable
 	 */
 	public void setConnectivityAirplaneModeDisable(boolean disable) {
@@ -469,6 +469,10 @@ public class DataStorage {
 	 */
 	public boolean getConnectivityGPSDisable() {
 		return Boolean.valueOf(getData("ConnectivityGPSDisable"));
+	}
+
+	public String getWifi() {
+		return getData("ConnectivityWifiDisable");
 	}
 
 	public String getRoaming() {
