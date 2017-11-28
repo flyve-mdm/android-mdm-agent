@@ -69,22 +69,24 @@ public class ConnectivityHelper {
         if(disable) {
             String[] cmds = {"cd /system/bin", "settings put secure location_providers_allowed -gps", "settings put secure location_providers_allowed -network" };
             executecmd(cmds);
+        } else {
+            String[] cmds = {"cd /system/bin", "settings put secure location_providers_allowed +gps", "settings put secure location_providers_allowed +network" };
+            executecmd(cmds);
         }
     }
 
     public static void disableRoaming(boolean disable){
-
         if(Build.VERSION.SDK_INT>=21) {
             new FlyveDeviceAdminUtils(MDMAgent.getInstance()).disableRoaming(disable);
         } else {
             // ROOT OPTION
+            String value = "0"; // disable
             if (disable) {
-                String value = "0";
-                String[] cmds = {"cd /system/bin", "settings put global data_roaming0 " + value};
-
-                executecmd(cmds);
-
+                value = "1"; // disable
             }
+
+            String[] cmds = {"cd /system/bin", "settings put global data_roaming0 " + value};
+            executecmd(cmds);
         }
     }
 
@@ -95,52 +97,53 @@ public class ConnectivityHelper {
         }
 
         String[] cmds = {"svc nfc " + value};
-
         executecmd(cmds);
     }
 
     public static void disableMobileLine(boolean disable) {
+        String value = "enable";
         if(disable) {
-            String value = "disable";
-
-            try {
-                TelephonyManager tm = (TelephonyManager) MDMAgent.getInstance().getApplicationContext().getSystemService(TELEPHONY_SERVICE);
-
-                Method m1 = tm.getClass().getDeclaredMethod("getITelephony");
-                m1.setAccessible(true);
-                Object iTelephony = m1.invoke(tm);
-
-                Method m2 = iTelephony.getClass().getDeclaredMethod("setRadio", boolean.class);
-
-                m2.invoke(iTelephony, false);
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-
-            String[] cmds = {"svc data " + value};
-            executecmd(cmds);
+            value = "disable";
         }
+
+        try {
+            TelephonyManager tm = (TelephonyManager) MDMAgent.getInstance().getApplicationContext().getSystemService(TELEPHONY_SERVICE);
+
+            Method m1 = tm.getClass().getDeclaredMethod("getITelephony");
+            m1.setAccessible(true);
+            Object iTelephony = m1.invoke(tm);
+
+            Method m2 = iTelephony.getClass().getDeclaredMethod("setRadio", boolean.class);
+
+            m2.invoke(iTelephony, false);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+
+        String[] cmds = {"svc data " + value};
+        executecmd(cmds);
+
     }
 
     public static void disableAirplaneMode(boolean disable) {
-        if (disable) {
-            String value = "1"; // enable
+        String value = "1"; // enable
+        if(disable) {
+            value = "0"; // disable
+
             String[] cmds = {"cd /system/bin", "settings put global airplane_mode_on " + value};
             executecmd(cmds);
 
             // disable wifi
-            disableWifi(disable);
-            disableBluetooth(disable);
-            disableMobileLine(disable);
-            disableNFC(disable);
+            //disableWifi(disable);
+            //disableBluetooth(disable);
+            //disableMobileLine(disable);
+            //disableNFC(disable);
         }
     }
 
     public static void disableHostpotTethering(boolean disable) {
-        if(disable) {
-            disableWifi(disable);
-            disableBluetooth(disable);
-        }
+        disableWifi(disable);
+        disableBluetooth(disable);
     }
 
     public static void disableUsbFileTransferProtocols(boolean disable) {

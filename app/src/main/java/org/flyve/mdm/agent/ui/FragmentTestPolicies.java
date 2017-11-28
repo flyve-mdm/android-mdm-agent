@@ -70,9 +70,7 @@ public class FragmentTestPolicies extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 cache.setConnectivityAirplaneModeDisable(isChecked);
-                if(isChecked) {
-                    ConnectivityHelper.disableAirplaneMode(isChecked);
-                }
+                ConnectivityHelper.disableAirplaneMode(isChecked);
             }
         });
 
