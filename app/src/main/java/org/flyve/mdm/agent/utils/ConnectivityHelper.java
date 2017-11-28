@@ -5,11 +5,15 @@ import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 
 import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
 import org.flyve.mdm.agent.ui.MDMAgent;
 
 import java.io.DataOutputStream;
+import java.lang.reflect.Method;
+
+import static android.content.Context.TELEPHONY_SERVICE;
 
 /*
  *   Copyright (C) 2017 Teclib. All rights reserved.
@@ -96,14 +100,26 @@ public class ConnectivityHelper {
     }
 
     public static void disableMobileLine(boolean disable) {
-        String value = "enable";
         if(disable) {
-            value = "disable";
+            String value = "disable";
+
+            try {
+                TelephonyManager tm = (TelephonyManager) MDMAgent.getInstance().getApplicationContext().getSystemService(TELEPHONY_SERVICE);
+
+                Method m1 = tm.getClass().getDeclaredMethod("getITelephony");
+                m1.setAccessible(true);
+                Object iTelephony = m1.invoke(tm);
+
+                Method m2 = iTelephony.getClass().getDeclaredMethod("setRadio", boolean.class);
+
+                m2.invoke(iTelephony, false);
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+
+            String[] cmds = {"svc data " + value};
+            executecmd(cmds);
         }
-
-        String[] cmds = {"svc data " + value};
-
-        executecmd(cmds);
     }
 
     public static void disableAirplaneMode(boolean disable) {
