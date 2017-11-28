@@ -103,7 +103,7 @@ public class SplashActivity extends FragmentActivity {
             }, TIME);
 
             return;
-        }
+       }
 
         // if user is not enrolled show help
         setContentView(R.layout.activity_splash);

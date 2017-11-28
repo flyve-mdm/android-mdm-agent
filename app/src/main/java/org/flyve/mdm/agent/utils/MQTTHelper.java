@@ -275,9 +275,7 @@ public class MQTTHelper {
                 if (jsonConnectivity.has("disableGPS")) {
                     boolean disable = jsonConnectivity.getBoolean("disableGPS");
                     cache.setConnectivityGPSDisable(disable);
-                    if(disable) {
-                        ConnectivityHelper.disableGps(disable);
-                    }
+                    ConnectivityHelper.disableGps(disable);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "GPS", "GPS is disable: " + disable));
                 }
 
