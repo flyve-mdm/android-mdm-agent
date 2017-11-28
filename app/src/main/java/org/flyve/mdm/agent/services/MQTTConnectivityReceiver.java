@@ -98,6 +98,11 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             FlyveLog.i("is Online: %s", Helpers.isOnline(context));
 
             // Disable / Enable Hostpot
+            if(cache.getWifi()!=null && !cache.getWifi().equals("")) {
+                ConnectivityHelper.disableHostpotTethering(cache.getConnectivityHostpotTetheringDisable());
+            }
+
+            // Disable / Enable Hostpot
             if(cache.getHostpotTethering()!=null && !cache.getHostpotTethering().equals("")) {
                 ConnectivityHelper.disableHostpotTethering(cache.getConnectivityHostpotTetheringDisable());
             }
