@@ -236,7 +236,7 @@ public class FilesHelper {
         } else {
             try {
                 JSONObject jsonObjDownload = new JSONObject(data);
-                getFile(jsonObjDownload, url, path, data);
+                getFile(jsonObjDownload, path, url, data);
             } catch (Exception ex) {
                 try {
                     JSONArray arr = new JSONArray(data);
