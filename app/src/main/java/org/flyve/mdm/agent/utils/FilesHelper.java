@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.PowerManager;
 
@@ -42,12 +43,11 @@ import java.util.regex.Pattern;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class FilesHelper {
+public class FilesHelper extends AsyncTask<String, Integer, String> {
 
     private static final String EXTERNAL_STORAGE = "EXTERNAL_STORAGE"; 
     private Context context;
     private Routes routes;
-    private String sessionToken;
 
     /**
      * This constructor loads the context of the current class
@@ -64,8 +64,6 @@ public class FilesHelper {
      */
     private static String getApkDir() {
         FlyveLog.d(MDMAgent.getInstance().getCacheDir().getAbsolutePath());
-
-        //return MDMAgent.getInstance().getCacheDir().getAbsolutePath();
         return System.getenv(EXTERNAL_STORAGE) + "/apk/";
     }
 
@@ -158,6 +156,22 @@ public class FilesHelper {
         return sreturn;
     }
 
+    @Override
+    protected String doInBackground(String... args) {
+        if(args[0].equals("file")) {
+            if(downloadFile(args[1], args[2], args[3])) {
+                return "true";
+            }
+
+        } else {
+            if(downloadApk(args[1], args[2], args[3])) {
+                return "true";
+            }
+        }
+
+        return "false";
+    }
+
     /**
      * Download and save file from Id to path
      * @param path String path to save the file on device
@@ -178,7 +192,6 @@ public class FilesHelper {
             FlyveLog.e(ex.getMessage());
         }
 
-        this.sessionToken = sessionToken;
         final String url = routes.pluginFlyvemdmFile(id, sessionToken);
         String completeFilePath = download(url, filePath);
 
@@ -207,7 +220,6 @@ public class FilesHelper {
             FlyveLog.e(ex.getMessage());
         }
 
-        this.sessionToken = sessionToken;
         final String url = routes.pluginFlyvemdmPackage(id, sessionToken);
         String completeFilePath = download(url, filePath);
         if(completeFilePath.equalsIgnoreCase("")) {
@@ -280,7 +292,7 @@ public class FilesHelper {
             String filePath = path + fileName;
             File file = new File(filePath);
             if (file.exists()) {
-                FlyveLog.d("File exists");
+                FlyveLog.d("File exists: " + filePath);
                 return "";
             }
 

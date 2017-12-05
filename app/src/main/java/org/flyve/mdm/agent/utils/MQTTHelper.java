@@ -380,9 +380,10 @@ public class MQTTHelper {
      */
     public void appWork(JSONArray appsInstall, String sessionToken) throws Exception {
         AppInfo appInfo = new AppInfo(this.context);
-        FilesHelper filesHelper = new FilesHelper(this.context);
 
         for(int i=0; i<appsInstall.length(); i++) {
+
+            FilesHelper filesHelper = new FilesHelper(this.context);
 
             if(appsInstall.getJSONObject(i).has(REMOVE_APP)){
                 FlyveLog.d("uninstall apps");
@@ -410,7 +411,7 @@ public class MQTTHelper {
                 versionCode = jsonApp.getString("versionCode");
 
                 if(!appInfo.isInstall(packageNamelist,versionCode)){
-                    filesHelper.downloadApk(packageNamelist, idlist, sessionToken);
+                    filesHelper.execute("app",packageNamelist, idlist, sessionToken);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Download app", "Package: " + packageNamelist));
                 }
             }
@@ -451,9 +452,9 @@ public class MQTTHelper {
      */
     public void filesWork(JSONArray jsonFiles, String sessionToken) throws Exception {
 
-        FilesHelper filesHelper = new FilesHelper(this.context);
-
         for(int i=0; i<=jsonFiles.length();i++) {
+            FilesHelper filesHelper = new FilesHelper(this.context);
+
             JSONObject jsonFile = jsonFiles.getJSONObject(i);
 
             if(jsonFile.has(REMOVE_FILE)){
@@ -465,7 +466,7 @@ public class MQTTHelper {
                 String fileId = jsonFile.getString("id");
                 String filePath = jsonFile.getString("deployFile");
 
-                if (filesHelper.downloadFile(filePath, fileId, sessionToken)) {
+                if("true".equals(filesHelper.execute("file", filePath, fileId, sessionToken))) {
                     FlyveLog.v("File was stored on: " + filePath);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Download file", filePath));
                 }
