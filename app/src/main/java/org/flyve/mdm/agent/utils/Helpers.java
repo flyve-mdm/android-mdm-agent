@@ -62,6 +62,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This class content some helpers function
@@ -104,7 +105,12 @@ public class Helpers {
 		builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 
 		NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManager.notify(121, builder.build());
+		notificationManager.notify(getIntID(), builder.build());
+	}
+
+	private final static AtomicInteger c = new AtomicInteger(0);
+	public static int getIntID() {
+		return c.incrementAndGet();
 	}
 
 	public static String isSystemApp(Context context) {

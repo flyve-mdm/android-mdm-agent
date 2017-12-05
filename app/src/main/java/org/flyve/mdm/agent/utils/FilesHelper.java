@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.os.PowerManager;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.ui.MDMAgent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -62,7 +63,9 @@ public class FilesHelper {
      * @return string the apk directory
      */
     private static String getApkDir() {
-        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + "/apk/");
+        FlyveLog.d(MDMAgent.getInstance().getCacheDir().getAbsolutePath());
+
+        //return MDMAgent.getInstance().getCacheDir().getAbsolutePath();
         return System.getenv(EXTERNAL_STORAGE) + "/apk/";
     }
 
@@ -236,7 +239,7 @@ public class FilesHelper {
         } else {
             try {
                 JSONObject jsonObjDownload = new JSONObject(data);
-                getFile(jsonObjDownload, path, url, data);
+                return getFile(jsonObjDownload, path, url, data);
             } catch (Exception ex) {
                 try {
                     JSONArray arr = new JSONArray(data);
@@ -283,11 +286,11 @@ public class FilesHelper {
 
             Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath);
             if (isSave) {
-                Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_ready));
+                Helpers.sendToNotificationBar(context, fileName + " - " + context.getResources().getString(R.string.download_file_ready));
                 FlyveLog.d("Download ready");
-                return filePath;
+                return file.getAbsolutePath();
             } else {
-                Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_fail));
+                Helpers.sendToNotificationBar(context, fileName + " - " + context.getResources().getString(R.string.download_file_fail));
                 FlyveLog.e("Download fail: " + data);
                 return "";
             }
