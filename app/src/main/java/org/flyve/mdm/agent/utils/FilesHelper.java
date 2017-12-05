@@ -1,16 +1,19 @@
 package org.flyve.mdm.agent.utils;
 
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.PowerManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.Builder;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.ui.MDMAgent;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -43,11 +46,14 @@ import java.util.regex.Pattern;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class FilesHelper extends AsyncTask<String, Integer, String> {
+public class FilesHelper extends AsyncTask<String, Integer, Integer> {
 
     private static final String EXTERNAL_STORAGE = "EXTERNAL_STORAGE"; 
     private Context context;
     private Routes routes;
+    private NotificationManager mNotifyManager;
+    private Builder mBuilder;
+    private Integer idNotification = 0;
 
     /**
      * This constructor loads the context of the current class
@@ -56,6 +62,20 @@ public class FilesHelper extends AsyncTask<String, Integer, String> {
     public FilesHelper(Context context) {
         this.context = context;
         routes = new Routes(context);
+
+        idNotification = Helpers.getIntID();
+
+        mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mBuilder = new NotificationCompat.Builder(context);
+        mBuilder.setContentTitle("Download")
+                .setContentText("Download in progress");
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mBuilder.setSmallIcon(R.drawable.ic_notification_white);
+        } else {
+            mBuilder.setSmallIcon(R.drawable.icon);
+        }
+
     }
 
     /**
@@ -156,20 +176,39 @@ public class FilesHelper extends AsyncTask<String, Integer, String> {
         return sreturn;
     }
 
+    @Override // onPreExecute and onProgressUpdate run on ui thread so you can update ui from here
+    protected void onPreExecute() {
+        // Displays the progress bar for the first time.
+        mBuilder.setProgress(100, 0, false);
+    }
+
     @Override
-    protected String doInBackground(String... args) {
+    protected void onProgressUpdate(Integer... values) {
+        // Update progress
+        mBuilder.setProgress(100, values[0], false);
+        mNotifyManager.notify(idNotification, mBuilder.build());
+        super.onProgressUpdate(values);
+    }
+
+    @Override
+    protected Integer doInBackground(String... args) {
         if(args[0].equals("file")) {
+
             if(downloadFile(args[1], args[2], args[3])) {
-                return "true";
+                return 1;
             }
 
         } else {
             if(downloadApk(args[1], args[2], args[3])) {
-                return "true";
+                return 1;
             }
         }
 
-        return "false";
+        return 0;
+    }
+
+    protected void onPostExecute(Integer result) {
+        super.onPostExecute(result);
     }
 
     /**
@@ -244,7 +283,6 @@ public class FilesHelper extends AsyncTask<String, Integer, String> {
     private String download(final String url, final String path) {
 
         String data = ConnectionHTTP.getSyncWebData(url, "GET",null);
-
         if(data.contains("ERROR")) {
             Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_fail));
             FlyveLog.e(data);
@@ -253,18 +291,8 @@ public class FilesHelper extends AsyncTask<String, Integer, String> {
                 JSONObject jsonObjDownload = new JSONObject(data);
                 return getFile(jsonObjDownload, path, url, data);
             } catch (Exception ex) {
-                try {
-                    JSONArray arr = new JSONArray(data);
-                    StringBuffer str = new StringBuffer();
-                    for (int i = 0; i < arr.length(); i++) {
-                        JSONObject jsonObjDownload = arr.getJSONObject(i);
-                        str.append(getFile(jsonObjDownload, path, url, data) + "$$");
-                    }
-                    return str.toString();
-                } catch (Exception ex1) {
-                    FlyveLog.e(ex1.getMessage());
-                    return "";
-                }
+                FlyveLog.e(ex.getMessage());
+                return "";
             }
         } // endif Exception
         return "";
@@ -278,6 +306,7 @@ public class FilesHelper extends AsyncTask<String, Integer, String> {
             // Both has name
             if (jsonObjDownload.has("name")) {
                 fileName = jsonObjDownload.getString("name");
+                mBuilder.setContentText("Downloading " + fileName);
             }
 
             // is APK
@@ -296,16 +325,24 @@ public class FilesHelper extends AsyncTask<String, Integer, String> {
                 return "";
             }
 
+            mBuilder.setContentText("Download " + fileName);
+            mNotifyManager.notify(idNotification, mBuilder.build());
+
+            publishProgress(50);
+
             Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath);
             if (isSave) {
-                Helpers.sendToNotificationBar(context, fileName + " - " + context.getResources().getString(R.string.download_file_ready));
+                publishProgress(100);
                 FlyveLog.d("Download ready");
+
                 return file.getAbsolutePath();
             } else {
-                Helpers.sendToNotificationBar(context, fileName + " - " + context.getResources().getString(R.string.download_file_fail));
+                publishProgress(100);
                 FlyveLog.e("Download fail: " + data);
+
                 return "";
             }
+
         } catch(Exception ex) {
             FlyveLog.e(ex.getMessage());
             return "";
