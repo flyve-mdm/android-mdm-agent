@@ -99,7 +99,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
             // Disable / Enable Hostpot
             if(cache.getWifi()!=null && !cache.getWifi().equals("")) {
-                ConnectivityHelper.disableHostpotTethering(cache.getConnectivityHostpotTetheringDisable());
+                ConnectivityHelper.disableWifi(cache.getConnectivityWifiDisable());
             }
 
             // Disable / Enable Hostpot
