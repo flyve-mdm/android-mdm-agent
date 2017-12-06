@@ -268,6 +268,7 @@ public class MQTTHelper {
                 if (jsonConnectivity.has("disableWifi")) {
                     boolean disable = jsonConnectivity.getBoolean("disableWifi");
                     cache.setConnectivityWifiDisable(disable);
+                    ConnectivityHelper.disableWifi(disable);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Wifi", "Wifi is disable: " + disable));
                 }
 
