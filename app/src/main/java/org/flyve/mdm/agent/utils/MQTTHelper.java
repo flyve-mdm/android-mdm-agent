@@ -120,8 +120,13 @@ public class MQTTHelper {
         }
 
         int[] qos = new int[arrTopics.size()];
-        for (int k = 0; k < qos.length; k++) {
-            qos[k] = 0;
+
+        try {
+            for (int k = 0; k < qos.length; k++) {
+                qos[k] = 0;
+            }
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
         }
 
         String str = Arrays.toString(topics);

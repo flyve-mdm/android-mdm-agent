@@ -75,7 +75,7 @@ public class LogFileReader {
 
             arrData.add(map);
         } catch (Exception ex) {
-            FlyveLog.d("ERROR" + ex.getMessage());
+            FlyveLog.e("ERROR: " + ex.getMessage());
         }
     }
 
@@ -90,6 +90,7 @@ public class LogFileReader {
         Thread t = new Thread(new Runnable() {
             public void run() {
                 FileReader fr = null;
+                BufferedReader br = null;
                 try {
                     File file = new File(Environment.getExternalStorageDirectory().getPath() + "/FlyveMDM/" + fileName);
                     if(!file.exists()) {
@@ -97,7 +98,7 @@ public class LogFileReader {
                     }
 
                     fr = new FileReader(file);
-                    BufferedReader br = new BufferedReader(fr);
+                    br = new BufferedReader(fr);
 
                     String line;
                     while ((line = br.readLine()) != null) {
@@ -122,6 +123,14 @@ public class LogFileReader {
                     });
                 }
                 finally {
+                    if(br!=null) {
+                        try {
+                            br.close();
+                        } catch(Exception ex) {
+                            FlyveLog.e(ex.getMessage());
+                        }
+                    }
+
                     if(fr!=null) {
                         try {
                             fr.close();
