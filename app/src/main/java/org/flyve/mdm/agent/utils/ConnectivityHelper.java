@@ -125,12 +125,6 @@ public class ConnectivityHelper {
 
             String[] cmds = {"cd /system/bin", "settings put global airplane_mode_on " + value};
             executecmd(cmds);
-
-            // disable wifi
-            //disableWifi(disable);
-            //disableBluetooth(disable);
-            //disableMobileLine(disable);
-            //disableNFC(disable);
         }
     }
 
