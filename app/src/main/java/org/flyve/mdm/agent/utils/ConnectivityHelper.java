@@ -85,7 +85,7 @@ public class ConnectivityHelper {
                 value = "1"; // disable
             }
 
-            String[] cmds = {"cd /system/bin", "settings put global data_roaming0 " + value};
+            String[] cmds = {"cd /system/bin", "settings put global data_roaming " + value};
             executecmd(cmds);
         }
     }
