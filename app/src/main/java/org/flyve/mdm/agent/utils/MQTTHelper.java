@@ -301,6 +301,7 @@ public class MQTTHelper {
                 if (jsonConnectivity.has("disableMobileLine")) {
                     boolean disable = jsonConnectivity.getBoolean("disableMobileLine");
                     cache.setConnectivityMobileLineDisable(disable);
+                    ConnectivityHelper.disableMobileLine(disable);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MOBILE_LINE", "MOBILE_LINE is disable: " + disable));
                 }
 
