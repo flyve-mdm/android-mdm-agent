@@ -85,7 +85,7 @@ public class ConnectivityHelper {
 <span class="nc" id="L85">                value = &quot;1&quot;; // disable</span>
             }
 
-<span class="nc" id="L88">            String[] cmds = {&quot;cd /system/bin&quot;, &quot;settings put global data_roaming0 &quot; + value};</span>
+<span class="nc" id="L88">            String[] cmds = {&quot;cd /system/bin&quot;, &quot;settings put global data_roaming &quot; + value};</span>
 <span class="nc" id="L89">            executecmd(cmds);</span>
         }
 <span class="nc" id="L91">    }</span>
@@ -101,83 +101,70 @@ public class ConnectivityHelper {
 <span class="nc" id="L101">    }</span>
 
     public static void disableMobileLine(boolean disable) {
-<span class="nc" id="L104">        String value = &quot;enable&quot;;</span>
-<span class="nc bnc" id="L105" title="All 2 branches missed.">        if(disable) {</span>
-<span class="nc" id="L106">            value = &quot;disable&quot;;</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if(disable) {</span>
+            try {
+<span class="nc" id="L106">                TelephonyManager tm = (TelephonyManager) MDMAgent.getInstance().getApplicationContext().getSystemService(TELEPHONY_SERVICE);</span>
+
+<span class="nc" id="L108">                Method m1 = tm.getClass().getDeclaredMethod(&quot;getITelephony&quot;);</span>
+<span class="nc" id="L109">                m1.setAccessible(true);</span>
+<span class="nc" id="L110">                Object iTelephony = m1.invoke(tm);</span>
+
+<span class="nc" id="L112">                Method m2 = iTelephony.getClass().getDeclaredMethod(&quot;setRadio&quot;, boolean.class);</span>
+
+<span class="nc" id="L114">                m2.invoke(iTelephony, false);</span>
+<span class="nc" id="L115">            } catch (Exception ex) {</span>
+<span class="nc" id="L116">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L117">            }</span>
         }
-
-        try {
-<span class="nc" id="L110">            TelephonyManager tm = (TelephonyManager) MDMAgent.getInstance().getApplicationContext().getSystemService(TELEPHONY_SERVICE);</span>
-
-<span class="nc" id="L112">            Method m1 = tm.getClass().getDeclaredMethod(&quot;getITelephony&quot;);</span>
-<span class="nc" id="L113">            m1.setAccessible(true);</span>
-<span class="nc" id="L114">            Object iTelephony = m1.invoke(tm);</span>
-
-<span class="nc" id="L116">            Method m2 = iTelephony.getClass().getDeclaredMethod(&quot;setRadio&quot;, boolean.class);</span>
-
-<span class="nc" id="L118">            m2.invoke(iTelephony, false);</span>
-<span class="nc" id="L119">        } catch (Exception ex) {</span>
-<span class="nc" id="L120">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L121">        }</span>
-
-<span class="nc" id="L123">        String[] cmds = {&quot;svc data &quot; + value};</span>
-<span class="nc" id="L124">        executecmd(cmds);</span>
-
-<span class="nc" id="L126">    }</span>
+<span class="nc" id="L119">    }</span>
 
     public static void disableAirplaneMode(boolean disable) {
-<span class="nc" id="L129">        String value = &quot;1&quot;; // enable</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">        if(disable) {</span>
-<span class="nc" id="L131">            value = &quot;0&quot;; // disable</span>
+<span class="nc" id="L122">        String value = &quot;1&quot;; // enable</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        if(disable) {</span>
+<span class="nc" id="L124">            value = &quot;0&quot;; // disable</span>
 
-<span class="nc" id="L133">            String[] cmds = {&quot;cd /system/bin&quot;, &quot;settings put global airplane_mode_on &quot; + value};</span>
-<span class="nc" id="L134">            executecmd(cmds);</span>
-
-            // disable wifi
-            //disableWifi(disable);
-            //disableBluetooth(disable);
-            //disableMobileLine(disable);
-            //disableNFC(disable);
+<span class="nc" id="L126">            String[] cmds = {&quot;cd /system/bin&quot;, &quot;settings put global airplane_mode_on &quot; + value};</span>
+<span class="nc" id="L127">            executecmd(cmds);</span>
         }
-<span class="nc" id="L142">    }</span>
+<span class="nc" id="L129">    }</span>
 
     public static void disableHostpotTethering(boolean disable) {
-<span class="nc" id="L145">        disableWifi(disable);</span>
-<span class="nc" id="L146">        disableBluetooth(disable);</span>
-<span class="nc" id="L147">    }</span>
+<span class="nc" id="L132">        disableWifi(disable);</span>
+<span class="nc" id="L133">        disableBluetooth(disable);</span>
+<span class="nc" id="L134">    }</span>
 
     public static void disableUsbFileTransferProtocols(boolean disable) {
-<span class="nc" id="L150">        String value = &quot;mtp,ptp,adb&quot;;</span>
-<span class="nc bnc" id="L151" title="All 2 branches missed.">        if(disable) {</span>
-<span class="nc" id="L152">            value = &quot;none&quot;;</span>
+<span class="nc" id="L137">        String value = &quot;mtp,ptp,adb&quot;;</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if(disable) {</span>
+<span class="nc" id="L139">            value = &quot;none&quot;;</span>
         }
 
-<span class="nc" id="L155">        String[] cmds = {&quot;setprop persist.sys.usb.config &quot; + value};</span>
+<span class="nc" id="L142">        String[] cmds = {&quot;setprop persist.sys.usb.config &quot; + value};</span>
 
-<span class="nc" id="L157">        executecmd(cmds);</span>
-<span class="nc" id="L158">    }</span>
+<span class="nc" id="L144">        executecmd(cmds);</span>
+<span class="nc" id="L145">    }</span>
 
     public static void disableBluetooth(boolean disable) {
-<span class="nc bnc" id="L161" title="All 2 branches missed.">        if(disable) {</span>
-<span class="nc" id="L162">            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        if(disable) {</span>
+<span class="nc" id="L149">            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();</span>
 
-<span class="nc bnc" id="L164" title="All 4 branches missed.">            if (bluetoothAdapter!=null &amp;&amp; bluetoothAdapter.isEnabled()) {</span>
-<span class="nc" id="L165">                bluetoothAdapter.disable();</span>
+<span class="nc bnc" id="L151" title="All 4 branches missed.">            if (bluetoothAdapter!=null &amp;&amp; bluetoothAdapter.isEnabled()) {</span>
+<span class="nc" id="L152">                bluetoothAdapter.disable();</span>
             }
         }
-<span class="nc" id="L168">    }</span>
+<span class="nc" id="L155">    }</span>
 
     public static void disableWifi(boolean disable) {
-<span class="nc" id="L171">        WifiManager wifiManager = (WifiManager) MDMAgent.getInstance().getApplicationContext().getSystemService(Context.WIFI_SERVICE);</span>
-<span class="nc bnc" id="L172" title="All 4 branches missed.">        if(wifiManager!=null &amp;&amp; wifiManager.isWifiEnabled()) {</span>
-<span class="nc bnc" id="L173" title="All 2 branches missed.">            wifiManager.setWifiEnabled(!disable);</span>
+<span class="nc" id="L158">        WifiManager wifiManager = (WifiManager) MDMAgent.getInstance().getApplicationContext().getSystemService(Context.WIFI_SERVICE);</span>
+<span class="nc bnc" id="L159" title="All 4 branches missed.">        if(wifiManager!=null &amp;&amp; wifiManager.isWifiEnabled()) {</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">            wifiManager.setWifiEnabled(!disable);</span>
         }
-<span class="nc" id="L175">    }</span>
+<span class="nc" id="L162">    }</span>
 
     public static void disableSMS(boolean disable) {
 
 
-<span class="nc" id="L180">    }</span>
+<span class="nc" id="L167">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

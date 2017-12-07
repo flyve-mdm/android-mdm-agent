@@ -75,7 +75,7 @@ public class LogFileReader {
 
 <span class="nc" id="L76">            arrData.add(map);</span>
 <span class="nc" id="L77">        } catch (Exception ex) {</span>
-<span class="nc" id="L78">            FlyveLog.d(&quot;ERROR&quot; + ex.getMessage());</span>
+<span class="nc" id="L78">            FlyveLog.e(&quot;ERROR: &quot; + ex.getMessage());</span>
 <span class="nc" id="L79">        }</span>
 <span class="nc" id="L80">    }</span>
 
@@ -90,50 +90,59 @@ public class LogFileReader {
 <span class="nc" id="L90">        Thread t = new Thread(new Runnable() {</span>
             public void run() {
 <span class="nc" id="L92">                FileReader fr = null;</span>
+<span class="nc" id="L93">                BufferedReader br = null;</span>
                 try {
-<span class="nc" id="L94">                    File file = new File(Environment.getExternalStorageDirectory().getPath() + &quot;/FlyveMDM/&quot; + fileName);</span>
-<span class="nc bnc" id="L95" title="All 2 branches missed.">                    if(!file.exists()) {</span>
-<span class="nc" id="L96">                        file = new File(MDMAgent.getInstance().getExternalFilesDir(null), fileName);</span>
+<span class="nc" id="L95">                    File file = new File(Environment.getExternalStorageDirectory().getPath() + &quot;/FlyveMDM/&quot; + fileName);</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                    if(!file.exists()) {</span>
+<span class="nc" id="L97">                        file = new File(MDMAgent.getInstance().getExternalFilesDir(null), fileName);</span>
                     }
 
-<span class="nc" id="L99">                    fr = new FileReader(file);</span>
-<span class="nc" id="L100">                    BufferedReader br = new BufferedReader(fr);</span>
+<span class="nc" id="L100">                    fr = new FileReader(file);</span>
+<span class="nc" id="L101">                    br = new BufferedReader(fr);</span>
 
                     String line;
-<span class="nc bnc" id="L103" title="All 2 branches missed.">                    while ((line = br.readLine()) != null) {</span>
-<span class="nc" id="L104">                        addLine(line);</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">                    while ((line = br.readLine()) != null) {</span>
+<span class="nc" id="L105">                        addLine(line);</span>
                     }
 
-<span class="nc" id="L107">                    br.close();</span>
-<span class="nc" id="L108">                    fr.close();</span>
+<span class="nc" id="L108">                    br.close();</span>
+<span class="nc" id="L109">                    fr.close();</span>
 
-<span class="nc" id="L110">                    LogFileReader.runOnUI(new Runnable() {</span>
+<span class="nc" id="L111">                    LogFileReader.runOnUI(new Runnable() {</span>
                         public void run() {
-<span class="nc" id="L112">                            callback.onSuccess( arrData );</span>
-<span class="nc" id="L113">                        }</span>
+<span class="nc" id="L113">                            callback.onSuccess( arrData );</span>
+<span class="nc" id="L114">                        }</span>
                     });
 
-<span class="nc" id="L116">                } catch (final Exception ex) {</span>
-<span class="nc" id="L117">                    FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L118">                    LogFileReader.runOnUI(new Runnable() {</span>
+<span class="nc" id="L117">                } catch (final Exception ex) {</span>
+<span class="nc" id="L118">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L119">                    LogFileReader.runOnUI(new Runnable() {</span>
                         public void run() {
-<span class="nc" id="L120">                            callback.onError(ex.getMessage());</span>
-<span class="nc" id="L121">                        }</span>
+<span class="nc" id="L121">                            callback.onError(ex.getMessage());</span>
+<span class="nc" id="L122">                        }</span>
                     });
                 }
                 finally {
-<span class="nc bnc" id="L125" title="All 6 branches missed.">                    if(fr!=null) {</span>
+<span class="nc bnc" id="L126" title="All 6 branches missed.">                    if(br!=null) {</span>
                         try {
-<span class="nc" id="L127">                            fr.close();</span>
-<span class="nc" id="L128">                        } catch (Exception ex) {</span>
-<span class="nc" id="L129">                            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L130">                        }</span>
+<span class="nc" id="L128">                            br.close();</span>
+<span class="nc" id="L129">                        } catch(Exception ex) {</span>
+<span class="nc" id="L130">                            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L131">                        }</span>
+                    }
+
+<span class="nc bnc" id="L134" title="All 6 branches missed.">                    if(fr!=null) {</span>
+                        try {
+<span class="nc" id="L136">                            fr.close();</span>
+<span class="nc" id="L137">                        } catch (Exception ex) {</span>
+<span class="nc" id="L138">                            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L139">                        }</span>
                     }
                 }
-<span class="nc" id="L133">            }</span>
+<span class="nc" id="L142">            }</span>
         });
-<span class="nc" id="L135">        t.start();</span>
-<span class="nc" id="L136">    }</span>
+<span class="nc" id="L144">        t.start();</span>
+<span class="nc" id="L145">    }</span>
 
     /**
      * This is the return data interface
