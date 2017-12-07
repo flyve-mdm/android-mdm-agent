@@ -101,28 +101,21 @@ public class ConnectivityHelper {
     }
 
     public static void disableMobileLine(boolean disable) {
-        String value = "enable";
         if(disable) {
-            value = "disable";
+            try {
+                TelephonyManager tm = (TelephonyManager) MDMAgent.getInstance().getApplicationContext().getSystemService(TELEPHONY_SERVICE);
+
+                Method m1 = tm.getClass().getDeclaredMethod("getITelephony");
+                m1.setAccessible(true);
+                Object iTelephony = m1.invoke(tm);
+
+                Method m2 = iTelephony.getClass().getDeclaredMethod("setRadio", boolean.class);
+
+                m2.invoke(iTelephony, false);
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
         }
-
-        try {
-            TelephonyManager tm = (TelephonyManager) MDMAgent.getInstance().getApplicationContext().getSystemService(TELEPHONY_SERVICE);
-
-            Method m1 = tm.getClass().getDeclaredMethod("getITelephony");
-            m1.setAccessible(true);
-            Object iTelephony = m1.invoke(tm);
-
-            Method m2 = iTelephony.getClass().getDeclaredMethod("setRadio", boolean.class);
-
-            m2.invoke(iTelephony, false);
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-        }
-
-        String[] cmds = {"svc data " + value};
-        executecmd(cmds);
-
     }
 
     public static void disableAirplaneMode(boolean disable) {
