@@ -91,7 +91,6 @@
             android:name=".ui.SplashActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
