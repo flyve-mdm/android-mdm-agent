@@ -38,10 +38,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
 import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.utils.EnvInfoSetup;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.util.ArrayList;
@@ -87,7 +90,7 @@ public class SplashActivity extends FragmentActivity {
 
         // if broker is on cache open the main activity
         String broker = cache.getBroker();
-        //if(broker != null) {
+        if(broker != null) {
             // if user is enrolled show landing screen
             FlyveLog.d(cache.getSessionToken());
 
@@ -100,22 +103,22 @@ public class SplashActivity extends FragmentActivity {
             }, TIME);
 
             return;
-       //}
+       }
 
-//        // if user is not enrolled show help
-//        setContentView(R.layout.activity_splash);
-//
-//        EnvInfoSetup setup = new EnvInfoSetup(SplashActivity.this);
-//
-//        walkthrough = new ArrayList<>();
-//        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
-//        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));
-//        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));
-//
-//        // Instantiate a ViewPager and a PagerAdapter.
-//        ViewPager mPager = (ViewPager) findViewById(R.id.pager);
-//        PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-//        mPager.setAdapter(mPagerAdapter);
+        // if user is not enrolled show help
+        setContentView(R.layout.activity_splash);
+
+        EnvInfoSetup setup = new EnvInfoSetup(SplashActivity.this);
+
+        walkthrough = new ArrayList<>();
+        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
+        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));
+        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));
+
+        // Instantiate a ViewPager and a PagerAdapter.
+        ViewPager mPager = (ViewPager) findViewById(R.id.pager);
+        PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
     }
 
     /**
