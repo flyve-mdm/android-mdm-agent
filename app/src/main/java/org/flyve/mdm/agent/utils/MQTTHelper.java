@@ -27,6 +27,7 @@ package org.flyve.mdm.agent.utils;
  * ------------------------------------------------------------------------------
  */
 
+import android.app.Service;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -42,6 +43,8 @@ import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
 import org.flyve.mdm.agent.services.LockScreenService;
+import org.flyve.mdm.agent.services.MQTTService;
+import org.flyve.mdm.agent.ui.MDMAgent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -115,7 +118,6 @@ public class MQTTHelper {
 
         // if topic null
         if(topics==null || topics.length == 0) {
-            FlyveLog.e("NULL TOPIC");
             return;
         }
 
@@ -184,6 +186,46 @@ public class MQTTHelper {
                 broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on createInventory", error.getMessage()));
             }
         });
+    }
+
+    /**
+     * MDM
+     * Example  "MDM": [ { "useTLS": "true|false", "taskId": "25" }]
+     */
+    public void mdm(Context context, JSONObject json) {
+        try {
+
+            DataStorage cache = new DataStorage(context);
+
+            JSONArray jsonMDM = json.getJSONArray("MDM");
+            for(int i=0; i < jsonMDM.length(); i++) {
+                JSONObject j = jsonMDM.getJSONObject(i);
+
+                if(j.has("useTLS")) {
+                    String useTLS = j.getString("useTLS");
+
+                    if ("true".equals(useTLS) && !cache.getTls().equals("1")) {
+                        cache.setTls("1");
+
+                        // stop service
+                        ((Service) context).stopSelf();
+
+                        // restart MQTT connection with this new parameters
+                        MQTTService.start(MDMAgent.getInstance());
+                    } else if("false".equals(useTLS) && !cache.getTls().equals("0")) {
+                        cache.setTls("0");
+
+                        // stop service
+                        ((Service) context).stopSelf();
+
+                        // restart MQTT connection with this new parameters
+                        MQTTService.start(MDMAgent.getInstance());
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
     }
 
     /**
