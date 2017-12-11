@@ -44,7 +44,7 @@ public class FlyveLog {
 
     private static final String FILE_NAME_FEEDBACK = &quot;FlyveMDMFeedback.txt&quot;;
     public static final String FILE_NAME_LOG = &quot;FlyveMDMLog.txt&quot;;
-<span class="fc" id="L47">    public static final String FLYVE_PATH = Environment.getExternalStorageDirectory().getPath() + &quot;/FlyveMDM/&quot;;</span>
+<span class="nc" id="L47">    public static final String FLYVE_PATH = Environment.getExternalStorageDirectory().getPath() + &quot;/FlyveMDM/&quot;;</span>
 
     /**
      * private constructor to prevent instances of this class
@@ -57,10 +57,10 @@ public class FlyveLog {
      * @param object Object to write
      */
     public static void d(Object object) {
-<span class="pc bpc" id="L60" title="1 of 2 branches missed.">        if(MDMAgent.getIsDebuggable()){</span>
-<span class="fc" id="L61">            Logger.d(object);</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if(MDMAgent.getIsDebuggable()){</span>
+<span class="nc" id="L61">            Logger.d(object);</span>
         }
-<span class="fc" id="L63">    }</span>
+<span class="nc" id="L63">    }</span>
 
     /**
      * Send a DEBUG log message

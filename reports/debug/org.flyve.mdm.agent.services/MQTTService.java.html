@@ -352,58 +352,64 @@ public class MQTTService extends Service implements MqttCallback {
 <span class="nc" id="L352">                return;</span>
             }
 
-            // Lock
-<span class="nc bnc" id="L356" title="All 2 branches missed.">            if(jsonObj.has(&quot;lock&quot;)) {</span>
-<span class="nc" id="L357">                mqttHelper.lockDevice(MQTTService.this, jsonObj);</span>
+            // MDM
+<span class="nc bnc" id="L356" title="All 2 branches missed.">            if(jsonObj.has(&quot;MDM&quot;)) {</span>
+<span class="nc" id="L357">                mqttHelper.mdm(MQTTService.this, jsonObj);</span>
 <span class="nc" id="L358">                return;</span>
             }
 
-            // FLEET Camera
-<span class="nc bnc" id="L362" title="All 2 branches missed.">            if(jsonObj.has(&quot;camera&quot;)) {</span>
-<span class="nc" id="L363">                mqttHelper.disableCamera(jsonObj);</span>
+            // Lock
+<span class="nc bnc" id="L362" title="All 2 branches missed.">            if(jsonObj.has(&quot;lock&quot;)) {</span>
+<span class="nc" id="L363">                mqttHelper.lockDevice(MQTTService.this, jsonObj);</span>
 <span class="nc" id="L364">                return;</span>
             }
 
-            // FLEET connectivity
-<span class="nc bnc" id="L368" title="All 2 branches missed.">            if(jsonObj.has(&quot;connectivity&quot;)) {</span>
-<span class="nc" id="L369">                mqttHelper.disableConnectivity(jsonObj);</span>
+            // FLEET Camera
+<span class="nc bnc" id="L368" title="All 2 branches missed.">            if(jsonObj.has(&quot;camera&quot;)) {</span>
+<span class="nc" id="L369">                mqttHelper.disableCamera(jsonObj);</span>
 <span class="nc" id="L370">                return;</span>
             }
 
-            // UI
-<span class="nc bnc" id="L374" title="All 2 branches missed.">            if(jsonObj.has(&quot;ui&quot;)) {</span>
-<span class="nc" id="L375">                mqttHelper.disableUI(jsonObj);</span>
+            // FLEET connectivity
+<span class="nc bnc" id="L374" title="All 2 branches missed.">            if(jsonObj.has(&quot;connectivity&quot;)) {</span>
+<span class="nc" id="L375">                mqttHelper.disableConnectivity(jsonObj);</span>
 <span class="nc" id="L376">                return;</span>
             }
 
-            // FLEET encryption
-<span class="nc bnc" id="L380" title="All 2 branches missed.">            if(jsonObj.has(&quot;encryption&quot;)) {</span>
-<span class="nc" id="L381">                mqttHelper.storageEncryption(jsonObj);</span>
+            // UI
+<span class="nc bnc" id="L380" title="All 2 branches missed.">            if(jsonObj.has(&quot;ui&quot;)) {</span>
+<span class="nc" id="L381">                mqttHelper.disableUI(jsonObj);</span>
 <span class="nc" id="L382">                return;</span>
             }
 
-            // FLEET policies
-<span class="nc bnc" id="L386" title="All 2 branches missed.">            if(jsonObj.has(&quot;policies&quot;)) {</span>
-<span class="nc" id="L387">                mqttHelper.policiesDevice(jsonObj);</span>
+            // FLEET encryption
+<span class="nc bnc" id="L386" title="All 2 branches missed.">            if(jsonObj.has(&quot;encryption&quot;)) {</span>
+<span class="nc" id="L387">                mqttHelper.storageEncryption(jsonObj);</span>
 <span class="nc" id="L388">                return;</span>
             }
 
-            // Files
-<span class="nc bnc" id="L392" title="All 2 branches missed.">            if(jsonObj.has(&quot;file&quot;)) {</span>
-<span class="nc" id="L393">                mqttHelper.filesOnDevices(jsonObj);</span>
+            // FLEET policies
+<span class="nc bnc" id="L392" title="All 2 branches missed.">            if(jsonObj.has(&quot;policies&quot;)) {</span>
+<span class="nc" id="L393">                mqttHelper.policiesDevice(jsonObj);</span>
 <span class="nc" id="L394">                return;</span>
             }
 
-            // Applications
-<span class="nc bnc" id="L398" title="All 2 branches missed.">            if(jsonObj.has(&quot;application&quot;)) {</span>
-<span class="nc" id="L399">                mqttHelper.applicationOnDevices(jsonObj);</span>
+            // Files
+<span class="nc bnc" id="L398" title="All 2 branches missed.">            if(jsonObj.has(&quot;file&quot;)) {</span>
+<span class="nc" id="L399">                mqttHelper.filesOnDevices(jsonObj);</span>
 <span class="nc" id="L400">                return;</span>
             }
-<span class="nc" id="L402">        } catch (Exception ex) {</span>
-<span class="nc" id="L403">            FlyveLog.e(TAG, ex.getMessage());</span>
-<span class="nc" id="L404">            storeLog(Helpers.broadCastMessage(ERROR, &quot;Error on messageArrived&quot;, ex.getMessage()));</span>
-<span class="nc" id="L405">        }</span>
-<span class="nc" id="L406">    }</span>
+
+            // Applications
+<span class="nc bnc" id="L404" title="All 2 branches missed.">            if(jsonObj.has(&quot;application&quot;)) {</span>
+<span class="nc" id="L405">                mqttHelper.applicationOnDevices(jsonObj);</span>
+<span class="nc" id="L406">                return;</span>
+            }
+<span class="nc" id="L408">        } catch (Exception ex) {</span>
+<span class="nc" id="L409">            FlyveLog.e(TAG, ex.getMessage());</span>
+<span class="nc" id="L410">            storeLog(Helpers.broadCastMessage(ERROR, &quot;Error on messageArrived&quot;, ex.getMessage()));</span>
+<span class="nc" id="L411">        }</span>
+<span class="nc" id="L412">    }</span>
 
     /**
      * Send broadcast for log messages from MQTT
@@ -411,8 +417,8 @@ public class MQTTService extends Service implements MqttCallback {
      */
     public void broadcastMessage(String message) {
         //send broadcast
-<span class="nc" id="L414">        Helpers.sendBroadcast(message, Helpers.BROADCAST_MSG, getApplicationContext());</span>
-<span class="nc" id="L415">    }</span>
+<span class="nc" id="L420">        Helpers.sendBroadcast(message, Helpers.BROADCAST_MSG, getApplicationContext());</span>
+<span class="nc" id="L421">    }</span>
 
     /**
      * store log messages from MQTT
@@ -420,8 +426,8 @@ public class MQTTService extends Service implements MqttCallback {
      */
     public void storeLog(String message) {
         // write log file
-<span class="nc" id="L423">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
-<span class="nc" id="L424">    }</span>
+<span class="nc" id="L429">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
+<span class="nc" id="L430">    }</span>
 
     /**
      * Send broadcast for status of the service
@@ -429,12 +435,12 @@ public class MQTTService extends Service implements MqttCallback {
      */
     private void broadcastServiceStatus(boolean status) {
         //send broadcast
-<span class="nc" id="L432">        this.connected = status;</span>
+<span class="nc" id="L438">        this.connected = status;</span>
 
-<span class="nc" id="L434">        DataStorage cache = new DataStorage(this.getApplicationContext());</span>
-<span class="nc" id="L435">        cache.setOnlineStatus(status);</span>
+<span class="nc" id="L440">        DataStorage cache = new DataStorage(this.getApplicationContext());</span>
+<span class="nc" id="L441">        cache.setOnlineStatus(status);</span>
 
-<span class="nc" id="L437">        Helpers.sendBroadcast(status, Helpers.BROADCAST_STATUS, getApplicationContext());</span>
-<span class="nc" id="L438">    }</span>
+<span class="nc" id="L443">        Helpers.sendBroadcast(status, Helpers.BROADCAST_STATUS, getApplicationContext());</span>
+<span class="nc" id="L444">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>
