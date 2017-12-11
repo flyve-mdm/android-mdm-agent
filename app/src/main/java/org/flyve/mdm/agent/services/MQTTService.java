@@ -352,6 +352,12 @@ public class MQTTService extends Service implements MqttCallback {
                 return;
             }
 
+            // MDM
+            if(jsonObj.has("MDM")) {
+                mqttHelper.mdm(MQTTService.this, jsonObj);
+                return;
+            }
+
             // Lock
             if(jsonObj.has("lock")) {
                 mqttHelper.lockDevice(MQTTService.this, jsonObj);

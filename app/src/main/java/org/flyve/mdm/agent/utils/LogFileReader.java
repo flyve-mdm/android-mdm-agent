@@ -75,7 +75,7 @@ public class LogFileReader {
 
             arrData.add(map);
         } catch (Exception ex) {
-            FlyveLog.e("ERROR: " + ex.getMessage());
+            FlyveLog.e("ERROR: " + line + " - " + ex.getMessage());
         }
     }
 
