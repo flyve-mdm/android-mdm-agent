@@ -544,17 +544,21 @@ public class MQTTHelper {
 
     /**
      * FLEET policies
-     * Example {"policies":[{MIN_LENGTH:"6"},
-     * {"passwordQuality":"PASSWORD_QUALITY_UNSPECIFIED"},
-     * {"passwordEnabled":"PASSWORD_PIN"},
-     * {MIN_LETTERS:"0"},
-     * {MIN_LOWERCASE:"0"},
-     * {MIN_NON_LETTER:"0"},
-     * {MIN_NUMERIC:"0"},
-     * {MIN_SYMBOLS:"0"},
-     * {MIN_UPPERCASE:"0"},
-     * {MAXIMUM_FAILED_FOR_WIPE:"0"},
-     * {"MaximumTimeToLock":"60000"}]}
+     * Example {
+     * "policies": [
+     * { "passwordEnabled": "true|false", "taskId": "2"},
+     * { "passwordQuality" : "PASSWORD_QUALITY_NUMERIC|PASSWORD_QUALITY_ALPHABETIC|PASSWORD_QUALITY_ALPHANUMERIC|PASSWORD_QUALITY_COMPLEX|PASSWORD_QUALITY_SOMETHING|PASSWORD_QUALITY_UNSPECIFIED", "taskId": "3"},
+     * { "passwordMinLetters" : "0|1|2|..", "taskId": "4"},
+     * { "passwordMinLowerCase" : "0|1|2|..", "taskId": "5"},
+     * { "passwordMinUpperCase" : "0|1|2|..", "taskId": "6"},
+     * { "passwordMinNonLetter" : "0|1|2|..", "taskId": "7"},
+     * { "passwordMinNumeric" : "0|1|2|..", "taskId": "7"},
+     * { "passwordMinLength" : "0|1|2|..", "taskId": "8"},
+     * { "MaximumFailedPasswordsForWipe" : "0|1|2|..", "taskId": "9"},
+     * { "MaximumTimeToLock" : "time in MS", "taskId": "10"},
+     * { "passwordMinSymbols" : "0|1|2|..", "taskId": "11"}
+     * ]
+     * }
      */
     public void policiesDevice(JSONObject json) {
 
