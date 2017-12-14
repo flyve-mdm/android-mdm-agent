@@ -57,15 +57,6 @@ public class FlyveDeviceAdminUtils {
     }
 
     @TargetApi(21)
-    public void disableAirplaneMode(boolean disable) {
-        try {
-            mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.AIRPLANE_MODE_ON, disable ? "0" : "1");
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-        }
-    }
-
-    @TargetApi(21)
     public void disableCaptureScreen(boolean disable) {
         try {
             mDPM.setScreenCaptureDisabled(mDeviceAdmin, disable);
