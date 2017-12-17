@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
 
+import org.flyve.mdm.agent.ui.LockActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 /*
@@ -83,6 +84,14 @@ public class FlyveDeviceAdminUtils {
      */
     public void wipe() {
         mDPM.wipeData(0);
+    }
+
+    /**
+     * Launch lock activity
+     */
+    public void lockScreen() {
+        Intent miIntent = new Intent(context, LockActivity.class);
+        context.startActivity(miIntent);
     }
 
     /**
