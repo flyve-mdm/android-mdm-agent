@@ -223,16 +223,6 @@
                 <data android:scheme="package"/>
             </intent-filter>
         </receiver>
-
-        <!-- Lock Screen services -->
-        <service android:name=".services.LockScreenService" />
-        <receiver
-            android:name=".services.LockScreenReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>
