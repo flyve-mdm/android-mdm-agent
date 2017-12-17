@@ -42,7 +42,6 @@ import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
-import org.flyve.mdm.agent.services.LockScreenService;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.json.JSONArray;
@@ -238,13 +237,12 @@ public class MQTTHelper {
 
             String lock = json.getString("lock");
             if(lock.equalsIgnoreCase("now")) {
-                // Start lock screen service
-                context.getBaseContext().startService(new Intent(context, LockScreenService.class));
-
+                mdm.lockScreen();
                 mdm.lockDevice();
                 broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Lock", "Device Lock"));
             } else {
-                Helpers.sendBroadcast("unlock", "org.flyve.mdm.agent.unlock", context);
+                Intent intent = new Intent("finish_lock");
+                context.sendBroadcast(intent);
             }
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on lockDevice", ex.getMessage()));
