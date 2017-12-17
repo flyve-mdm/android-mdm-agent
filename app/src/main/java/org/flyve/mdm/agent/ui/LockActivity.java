@@ -1,6 +1,9 @@
 package org.flyve.mdm.agent.ui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +26,17 @@ public class LockActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN,
                 PixelFormat.TRANSLUCENT);
 
+        BroadcastReceiver broadcastLock = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context arg0, Intent intent) {
+                String action = intent.getAction();
+                if (action.equals("finish_lock")) {
+                    finish();
+                }
+            }
+        };
+        registerReceiver(broadcastLock, new IntentFilter("finish_lock"));
+
         WindowManager wm = (WindowManager) getApplicationContext()
                 .getSystemService(Context.WINDOW_SERVICE);
 
@@ -38,8 +52,8 @@ public class LockActivity extends AppCompatActivity {
     }
 
     public void unlockScreen(View view) {
-        //Instead of using finish(), this totally destroys the process
-        android.os.Process.killProcess(android.os.Process.myPid());
+        Intent intent = new Intent("finish_lock");
+        LockActivity.this.sendBroadcast(intent);
     }
 
     // Handle button clicks
