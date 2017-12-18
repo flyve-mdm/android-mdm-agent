@@ -5,11 +5,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
 import org.flyve.mdm.agent.utils.ConnectivityHelper;
 
 /*
@@ -143,6 +145,15 @@ public class FragmentTestPolicies extends Fragment {
                 if(isChecked) {
                     ConnectivityHelper.disableUsbFileTransferProtocols(isChecked);
                 }
+            }
+        });
+
+        Button btnLock = (Button) v.findViewById(R.id.btnLock);
+        btnLock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(FragmentTestPolicies.this.getContext());
+                mdm.lockScreen();
             }
         });
 
