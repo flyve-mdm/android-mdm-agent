@@ -68,25 +68,7 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             >
-            <intent-filter>
-                <action android:name="org.flyve.mdm.agent.unlock" />
-            </intent-filter>
         </activity>
-
-        <activity-alias
-            android:name=".LockHome"
-            android:enabled="false"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:targetActivity=".ui.LockActivity"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.HOME" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity-alias>
-
         <activity
             android:name=".ui.SplashActivity"
             android:configChanges="orientation|screenSize"
