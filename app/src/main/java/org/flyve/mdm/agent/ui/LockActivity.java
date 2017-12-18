@@ -6,19 +6,52 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.core.supervisor.SupervisorController;
+import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
+import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class LockActivity extends AppCompatActivity {
+
+    private TextView txtNameSupervisor;
+    private TextView txtDescriptionSupervisor;
+    private ViewGroup mTopView;
+    private WindowManager wm;
+    private LocalBroadcastManager mLocalBroadcastManager;
+    BroadcastReceiver broadcastLock = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context arg0, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals("org.flyvemdm.finishlock")) {
+                if (mTopView != null) wm.removeView(mTopView);
+                Intent miIntent = new Intent(LockActivity.this, MainActivity.class);
+                LockActivity.this.startActivity(miIntent);
+                LockActivity.this.finish();
+            }
+        }
+    };
+
+    @Override
+    protected void onPause() {
+        //unregister our receiver
+        mLocalBroadcastManager.unregisterReceiver(broadcastLock);
+        super.onPause();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
+        mLocalBroadcastManager.registerReceiver(broadcastLock, new IntentFilter("org.flyvemdm.finishlock"));
 
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.TYPE_SYSTEM_ERROR,
@@ -26,24 +59,36 @@ public class LockActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN,
                 PixelFormat.TRANSLUCENT);
 
-        BroadcastReceiver broadcastLock = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context arg0, Intent intent) {
-                String action = intent.getAction();
-                if (action.equals("finish_lock")) {
-                    finish();
-                }
-            }
-        };
-        registerReceiver(broadcastLock, new IntentFilter("finish_lock"));
-
-        WindowManager wm = (WindowManager) getApplicationContext()
+        wm = (WindowManager) getApplicationContext()
                 .getSystemService(Context.WINDOW_SERVICE);
 
-        ViewGroup mTopView = (ViewGroup) getLayoutInflater().inflate(R.layout.activity_lock, null);
+        mTopView = (ViewGroup) getLayoutInflater().inflate(R.layout.activity_lock, null);
         getWindow().setAttributes(params);
         wm.addView(mTopView, params);
 
+        txtNameSupervisor = (TextView) mTopView.findViewById(R.id.txtNameSupervisor);
+        txtDescriptionSupervisor = (TextView) mTopView.findViewById(R.id.txtDescriptionSupervisor);
+
+        loadSupervisor();
+    }
+
+    /**
+     * Load Supervisor information
+     */
+    private void loadSupervisor() {
+
+        try {
+            SupervisorModel supervisor = new SupervisorController(LockActivity.this).getCache();
+
+            if (supervisor.getName() != null && !supervisor.getName().equals("")) {
+                txtNameSupervisor.setText(supervisor.getName());
+            }
+            if (supervisor.getEmail() != null && !supervisor.getEmail().equals("")) {
+                txtDescriptionSupervisor.setText(supervisor.getEmail());
+            }
+        } catch(Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
     }
 
     @Override
@@ -52,8 +97,15 @@ public class LockActivity extends AppCompatActivity {
     }
 
     public void unlockScreen(View view) {
-        Intent intent = new Intent("finish_lock");
-        LockActivity.this.sendBroadcast(intent);
+        if (mTopView != null) wm.removeView(mTopView);
+        Intent miIntent = new Intent(LockActivity.this, MainActivity.class);
+        LockActivity.this.startActivity(miIntent);
+        LockActivity.this.finish();
+
+//        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager
+//                .getInstance(LockActivity.this);
+//        localBroadcastManager.sendBroadcast(new Intent(
+//                "org.flyvemdm.finishlock"));
     }
 
     // Handle button clicks
