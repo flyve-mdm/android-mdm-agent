@@ -69,6 +69,11 @@ public class FragmentActivity extends Fragment {
         // ----------------
         adapter.addFragment(new FragmentLog(), "Log");
 
+        // ----------------
+        // Connectivity
+        // ----------------
+        adapter.addFragment(new FragmentConnectivity(), "Connectivity");
+
         viewPager.setAdapter(adapter);
     }
 
