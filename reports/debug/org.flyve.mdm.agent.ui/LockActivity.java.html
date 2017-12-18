@@ -1,199 +1,144 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LockActivity.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">LockActivity.java</span></div><h1>LockActivity.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.ui;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.EditText;
+import android.widget.TextView;
+
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.user.UserController;
-import org.flyve.mdm.agent.core.user.UserModel;
-import java.util.ArrayList;
-import java.util.List;
+import org.flyve.mdm.agent.core.supervisor.SupervisorController;
+import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
+import org.flyve.mdm.agent.utils.FlyveLog;
 
-<span class="nc" id="L26">public class LockActivity extends Activity {</span>
+<span class="nc" id="L22">public class LockActivity extends AppCompatActivity {</span>
 
+    private TextView txtNameSupervisor;
+    private TextView txtDescriptionSupervisor;
+    private ViewGroup mTopView;
     private WindowManager wm;
-    private PackageManager packageManager;
-    private int flags; // Window flags
-    private View disableStatusBar;
-
-    // Components for home launcher activity
-    private ComponentName cnHome;
-    private int componentEnabled;
-    private EditText editEmail;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-<span class="nc" id="L40">        super.onCreate(savedInstanceState);</span>
-
-<span class="nc" id="L42">        IntentFilter filter = new IntentFilter(&quot;org.flyve.mdm.agent.unlock&quot;);</span>
-<span class="nc" id="L43">        this.registerReceiver(new Receiver(), filter);</span>
-
-        // Activity window flags
-<span class="nc" id="L46">        flags = WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |</span>
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
-
-<span class="nc" id="L51">        disableStatusBar = new View(this);</span>
-
-        // Get screen density and calculate disableStatusBar view height
-<span class="nc" id="L54">        float screenDensity = getResources().getDisplayMetrics().density;</span>
-
-<span class="nc" id="L56">        float disableStatusBar_height = screenDensity * 70;</span>
-
-        // DisableStatusBar view parameters
-<span class="nc" id="L59">        WindowManager.LayoutParams handleParamsTop = new WindowManager.LayoutParams(</span>
-                WindowManager.LayoutParams.MATCH_PARENT,
-                (int) disableStatusBar_height,
-                WindowManager.LayoutParams.TYPE_SYSTEM_ERROR,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
-                PixelFormat.TRANSPARENT);
-
-<span class="nc" id="L68">        handleParamsTop.gravity = Gravity.TOP | Gravity.CENTER;</span>
-
-<span class="nc" id="L70">        packageManager = getPackageManager();</span>
-<span class="nc" id="L71">        componentEnabled = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;</span>
-
-<span class="nc" id="L73">        cnHome = new ComponentName(this, &quot;org.flyve.mdm.agent.LockHome&quot;);</span>
-
-        // Enable home launcher activity component
-<span class="nc" id="L76">        packageManager.setComponentEnabledSetting(cnHome, componentEnabled, PackageManager.DONT_KILL_APP);</span>
-
-        // Get window manager service, add the window flags and the disableStatusBar view
-<span class="nc" id="L79">        wm = (WindowManager) getApplicationContext().getSystemService(WINDOW_SERVICE);</span>
-<span class="nc" id="L80">        this.getWindow().addFlags(flags);</span>
-<span class="nc" id="L81">        wm.addView(disableStatusBar, handleParamsTop);</span>
-
-        // If Android version 4.4 or bigger, add translucent status bar flag
-<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (Build.VERSION.SDK_INT &gt;= 19) {</span>
-<span class="nc" id="L85">            this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);</span>
-        }
-
-        // When disableStatusBar view touched, consume touch
-<span class="nc" id="L89">        disableStatusBar.setOnTouchListener(new View.OnTouchListener() {</span>
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-<span class="nc" id="L92">                return true;</span>
+    private LocalBroadcastManager mLocalBroadcastManager;
+<span class="nc" id="L29">    BroadcastReceiver broadcastLock = new BroadcastReceiver() {</span>
+        @Override
+        public void onReceive(Context arg0, Intent intent) {
+<span class="nc" id="L32">            String action = intent.getAction();</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">            if (action.equals(&quot;org.flyvemdm.finishlock&quot;)) {</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">                if (mTopView != null) wm.removeView(mTopView);</span>
+<span class="nc" id="L35">                Intent miIntent = new Intent(LockActivity.this, MainActivity.class);</span>
+<span class="nc" id="L36">                LockActivity.this.startActivity(miIntent);</span>
+<span class="nc" id="L37">                LockActivity.this.finish();</span>
             }
-        });
-
-<span class="nc" id="L96">        setContentView(R.layout.activity_lock);</span>
-
-<span class="nc" id="L98">        editEmail = (EditText) findViewById(R.id.editEmail);</span>
-
-        // Check default launcher, if current package isn't the default one
-        // Open the 'Select home app' dialog for user to pick default home launcher
-<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (!isMyLauncherDefault()) {</span>
-<span class="nc" id="L103">            packageManager.clearPackagePreferredActivities(getPackageName());</span>
-
-<span class="nc" id="L105">            Intent launcherPicker = new Intent();</span>
-<span class="nc" id="L106">            launcherPicker.setAction(Intent.ACTION_MAIN);</span>
-<span class="nc" id="L107">            launcherPicker.addCategory(Intent.CATEGORY_HOME);</span>
-<span class="nc" id="L108">            startActivity(launcherPicker);</span>
-        }
-<span class="nc" id="L110">    }</span>
-
-    // Method to check whether the package is the default home launcher or not
-    public boolean isMyLauncherDefault() {
-<span class="nc" id="L114">        final IntentFilter launcherFilter = new IntentFilter(Intent.ACTION_MAIN);</span>
-<span class="nc" id="L115">        launcherFilter.addCategory(Intent.CATEGORY_HOME);</span>
-
-<span class="nc" id="L117">        List&lt;IntentFilter&gt; filters = new ArrayList&lt;IntentFilter&gt;();</span>
-<span class="nc" id="L118">        filters.add(launcherFilter);</span>
-
-<span class="nc" id="L120">        final String myPackageName = getPackageName();</span>
-<span class="nc" id="L121">        List&lt;ComponentName&gt; activities = new ArrayList&lt;ComponentName&gt;();</span>
-
-<span class="nc" id="L123">        packageManager.getPreferredActivities(filters, activities, &quot;org.flyve.mdm.agent&quot;);</span>
-
-<span class="nc bnc" id="L125" title="All 2 branches missed.">        for (ComponentName activity : activities) {</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">            if (myPackageName.equals(activity.getPackageName())) {</span>
-<span class="nc" id="L127">                return true;</span>
-            }
-<span class="nc" id="L129">        }</span>
-
-<span class="nc" id="L131">        return false;</span>
-    }
-
-    @Override
-    public void onBackPressed() {
-<span class="nc" id="L136">        return; //Do nothing!</span>
-    }
-
-    public void unlockScreen(View view) {
-        //Instead of using finish(), this totally destroys the process
-<span class="nc" id="L141">        UserModel user = new UserController(LockActivity.this).getCache();</span>
-
-<span class="nc bnc" id="L143" title="All 2 branches missed.">        if(editEmail.getText().toString().equals(user.getEmails().get(0).getEmail())) {</span>
-<span class="nc" id="L144">            closeLock();</span>
-        }
-<span class="nc" id="L146">    }</span>
-
-    private void closeLock() {
-<span class="nc" id="L149">        android.os.Process.killProcess(android.os.Process.myPid());</span>
-<span class="nc" id="L150">    }</span>
+<span class="nc" id="L39">        }</span>
+    };
 
     @Override
     protected void onPause() {
-<span class="nc" id="L154">        super.onPause();</span>
+        //unregister our receiver
+<span class="nc" id="L45">        mLocalBroadcastManager.unregisterReceiver(broadcastLock);</span>
+<span class="nc" id="L46">        super.onPause();</span>
+<span class="nc" id="L47">    }</span>
 
-<span class="nc" id="L156">        ActivityManager activityManager = (ActivityManager) getApplicationContext()</span>
-<span class="nc" id="L157">                .getSystemService(Context.ACTIVITY_SERVICE);</span>
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+<span class="nc" id="L51">        super.onCreate(savedInstanceState);</span>
 
-<span class="nc" id="L159">        activityManager.moveTaskToFront(getTaskId(), 0);</span>
-<span class="nc" id="L160">    }</span>
+<span class="nc" id="L53">        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);</span>
+<span class="nc" id="L54">        mLocalBroadcastManager.registerReceiver(broadcastLock, new IntentFilter(&quot;org.flyvemdm.finishlock&quot;));</span>
+
+<span class="nc" id="L56">        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(</span>
+                WindowManager.LayoutParams.TYPE_SYSTEM_ERROR,
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN,
+                PixelFormat.TRANSLUCENT);
+
+<span class="nc" id="L62">        wm = (WindowManager) getApplicationContext()</span>
+<span class="nc" id="L63">                .getSystemService(Context.WINDOW_SERVICE);</span>
+
+<span class="nc" id="L65">        mTopView = (ViewGroup) getLayoutInflater().inflate(R.layout.activity_lock, null);</span>
+<span class="nc" id="L66">        getWindow().setAttributes(params);</span>
+<span class="nc" id="L67">        wm.addView(mTopView, params);</span>
+
+<span class="nc" id="L69">        txtNameSupervisor = (TextView) mTopView.findViewById(R.id.txtNameSupervisor);</span>
+<span class="nc" id="L70">        txtDescriptionSupervisor = (TextView) mTopView.findViewById(R.id.txtDescriptionSupervisor);</span>
+
+<span class="nc" id="L72">        loadSupervisor();</span>
+<span class="nc" id="L73">    }</span>
+
+    /**
+     * Load Supervisor information
+     */
+    private void loadSupervisor() {
+
+        try {
+<span class="nc" id="L81">            SupervisorModel supervisor = new SupervisorController(LockActivity.this).getCache();</span>
+
+<span class="nc bnc" id="L83" title="All 4 branches missed.">            if (supervisor.getName() != null &amp;&amp; !supervisor.getName().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L84">                txtNameSupervisor.setText(supervisor.getName());</span>
+            }
+<span class="nc bnc" id="L86" title="All 4 branches missed.">            if (supervisor.getEmail() != null &amp;&amp; !supervisor.getEmail().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L87">                txtDescriptionSupervisor.setText(supervisor.getEmail());</span>
+            }
+<span class="nc" id="L89">        } catch(Exception ex) {</span>
+<span class="nc" id="L90">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L91">        }</span>
+<span class="nc" id="L92">    }</span>
+
+    @Override
+    public void onBackPressed() {
+<span class="nc" id="L96">        return; //Do nothing!</span>
+    }
+
+    public void unlockScreen(View view) {
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (mTopView != null) wm.removeView(mTopView);</span>
+<span class="nc" id="L101">        Intent miIntent = new Intent(LockActivity.this, MainActivity.class);</span>
+<span class="nc" id="L102">        LockActivity.this.startActivity(miIntent);</span>
+<span class="nc" id="L103">        LockActivity.this.finish();</span>
+
+//        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager
+//                .getInstance(LockActivity.this);
+//        localBroadcastManager.sendBroadcast(new Intent(
+//                &quot;org.flyvemdm.finishlock&quot;));
+<span class="nc" id="L109">    }</span>
 
     // Handle button clicks
     @Override
     public boolean onKeyDown(int keyCode, android.view.KeyEvent event) {
 
-<span class="nc bnc" id="L166" title="All 10 branches missed.">        if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)</span>
+<span class="nc bnc" id="L115" title="All 8 branches missed.">        if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)</span>
                 || (keyCode == KeyEvent.KEYCODE_POWER)
                 || (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
-                || (keyCode == KeyEvent.KEYCODE_CAMERA)
-                || (keyCode == KeyEvent.KEYCODE_HOME)) {
-<span class="nc" id="L171">            return true;</span>
+                || (keyCode == KeyEvent.KEYCODE_CAMERA)) {
+<span class="nc" id="L119">            return true;</span>
+        }
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if ((keyCode == KeyEvent.KEYCODE_HOME)) {</span>
+
+<span class="nc" id="L123">            return true;</span>
         }
 
-<span class="nc" id="L174">        return false;</span>
+<span class="nc" id="L126">        return false;</span>
+
     }
 
     // handle the key press events here itself
     public boolean dispatchKeyEvent(KeyEvent event) {
-<span class="nc bnc" id="L179" title="All 2 branches missed.">        if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP</span>
-<span class="nc bnc" id="L180" title="All 2 branches missed.">                || (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)</span>
-<span class="nc bnc" id="L181" title="All 2 branches missed.">                || (event.getKeyCode() == KeyEvent.KEYCODE_POWER)) {</span>
-<span class="nc" id="L182">            return false;</span>
-<span class="nc bnc" id="L183" title="All 2 branches missed.">        } else if ((event.getKeyCode() == KeyEvent.KEYCODE_HOME)) {</span>
-<span class="nc" id="L184">            return true;</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">                || (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">                || (event.getKeyCode() == KeyEvent.KEYCODE_POWER)) {</span>
+<span class="nc" id="L135">            return false;</span>
         }
-<span class="nc" id="L186">        return false;</span>
-    }
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        if ((event.getKeyCode() == KeyEvent.KEYCODE_HOME)) {</span>
 
-<span class="nc" id="L189">    private class Receiver extends BroadcastReceiver {</span>
-        @Override
-        public void onReceive(Context context, Intent intent) {
-<span class="nc" id="L192">            String action = intent.getAction();</span>
-<span class="nc bnc" id="L193" title="All 2 branches missed.">            if(&quot;unlock&quot;.equalsIgnoreCase(action)) {</span>
-<span class="nc" id="L194">                closeLock();</span>
-            }
-<span class="nc" id="L196">        }</span>
+<span class="nc" id="L139">            return true;</span>
+        }
+<span class="nc" id="L141">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

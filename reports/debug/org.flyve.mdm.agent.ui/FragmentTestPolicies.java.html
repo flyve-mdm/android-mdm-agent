@@ -5,11 +5,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
 import org.flyve.mdm.agent.utils.ConnectivityHelper;
 
 /*
@@ -38,7 +40,7 @@ import org.flyve.mdm.agent.utils.ConnectivityHelper;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-<span class="nc" id="L41">public class FragmentTestPolicies extends Fragment {</span>
+<span class="nc" id="L43">public class FragmentTestPolicies extends Fragment {</span>
 
     private DataStorage cache;
 
@@ -47,106 +49,115 @@ import org.flyve.mdm.agent.utils.ConnectivityHelper;
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-<span class="nc" id="L50">        View v = inflater.inflate(R.layout.fragment_test_policies, container, false);</span>
+<span class="nc" id="L52">        View v = inflater.inflate(R.layout.fragment_test_policies, container, false);</span>
 
-<span class="nc" id="L52">        cache = new DataStorage(FragmentTestPolicies.this.getContext());</span>
+<span class="nc" id="L54">        cache = new DataStorage(FragmentTestPolicies.this.getContext());</span>
 
-<span class="nc" id="L54">        Switch swGPS = (Switch) v.findViewById(R.id.swGPS);</span>
+<span class="nc" id="L56">        Switch swGPS = (Switch) v.findViewById(R.id.swGPS);</span>
 
-<span class="nc" id="L56">        swGPS.setChecked(cache.getConnectivityGPSDisable());</span>
-<span class="nc" id="L57">        swGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L58">        swGPS.setChecked(cache.getConnectivityGPSDisable());</span>
+<span class="nc" id="L59">        swGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc" id="L60">                cache.setConnectivityGPSDisable(isChecked);</span>
-<span class="nc bnc" id="L61" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L62">                    ConnectivityHelper.disableGps(isChecked);</span>
+<span class="nc" id="L62">                cache.setConnectivityGPSDisable(isChecked);</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">                if(isChecked) {</span>
+<span class="nc" id="L64">                    ConnectivityHelper.disableGps(isChecked);</span>
                 }
-<span class="nc" id="L64">            }</span>
+<span class="nc" id="L66">            }</span>
         });
 
-<span class="nc" id="L67">        Switch swAirplane = (Switch) v.findViewById(R.id.swAirplane);</span>
-<span class="nc" id="L68">        swAirplane.setChecked(cache.getConnectivityAirplaneModeDisable());</span>
-<span class="nc" id="L69">        swAirplane.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L69">        Switch swAirplane = (Switch) v.findViewById(R.id.swAirplane);</span>
+<span class="nc" id="L70">        swAirplane.setChecked(cache.getConnectivityAirplaneModeDisable());</span>
+<span class="nc" id="L71">        swAirplane.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc" id="L72">                cache.setConnectivityAirplaneModeDisable(isChecked);</span>
-<span class="nc" id="L73">                ConnectivityHelper.disableAirplaneMode(isChecked);</span>
-<span class="nc" id="L74">            }</span>
+<span class="nc" id="L74">                cache.setConnectivityAirplaneModeDisable(isChecked);</span>
+<span class="nc" id="L75">                ConnectivityHelper.disableAirplaneMode(isChecked);</span>
+<span class="nc" id="L76">            }</span>
         });
 
-<span class="nc" id="L77">        Switch swBluetooth = (Switch) v.findViewById(R.id.swBluetooth);</span>
-<span class="nc" id="L78">        swBluetooth.setChecked(cache.getConnectivityBluetoothDisable());</span>
-<span class="nc" id="L79">        swBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L79">        Switch swBluetooth = (Switch) v.findViewById(R.id.swBluetooth);</span>
+<span class="nc" id="L80">        swBluetooth.setChecked(cache.getConnectivityBluetoothDisable());</span>
+<span class="nc" id="L81">        swBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc" id="L82">                cache.setConnectivityBluetoothDisable(isChecked);</span>
-<span class="nc bnc" id="L83" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L84">                    ConnectivityHelper.disableBluetooth(isChecked);</span>
+<span class="nc" id="L84">                cache.setConnectivityBluetoothDisable(isChecked);</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">                if(isChecked) {</span>
+<span class="nc" id="L86">                    ConnectivityHelper.disableBluetooth(isChecked);</span>
                 }
-<span class="nc" id="L86">            }</span>
+<span class="nc" id="L88">            }</span>
         });
 
-<span class="nc" id="L89">        Switch swWifi = (Switch) v.findViewById(R.id.swWifi);</span>
-<span class="nc" id="L90">        swWifi.setChecked(cache.getConnectivityWifiDisable());</span>
-<span class="nc" id="L91">        swWifi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L91">        Switch swWifi = (Switch) v.findViewById(R.id.swWifi);</span>
+<span class="nc" id="L92">        swWifi.setChecked(cache.getConnectivityWifiDisable());</span>
+<span class="nc" id="L93">        swWifi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc" id="L94">                cache.setConnectivityWifiDisable(isChecked);</span>
-<span class="nc bnc" id="L95" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L96">                    ConnectivityHelper.disableWifi(isChecked);</span>
+<span class="nc" id="L96">                cache.setConnectivityWifiDisable(isChecked);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                if(isChecked) {</span>
+<span class="nc" id="L98">                    ConnectivityHelper.disableWifi(isChecked);</span>
                 }
-<span class="nc" id="L98">            }</span>
+<span class="nc" id="L100">            }</span>
         });
 
-<span class="nc" id="L101">        Switch swNFC = (Switch) v.findViewById(R.id.swNFC);</span>
-<span class="nc" id="L102">        swNFC.setChecked(cache.getConnectivityRoamingDisable());</span>
-<span class="nc" id="L103">        swNFC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L103">        Switch swNFC = (Switch) v.findViewById(R.id.swNFC);</span>
+<span class="nc" id="L104">        swNFC.setChecked(cache.getConnectivityRoamingDisable());</span>
+<span class="nc" id="L105">        swNFC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc" id="L106">                cache.setConnectivityNFCDisable(isChecked);</span>
-<span class="nc bnc" id="L107" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L108">                    ConnectivityHelper.disableNFC(isChecked);</span>
+<span class="nc" id="L108">                cache.setConnectivityNFCDisable(isChecked);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                if(isChecked) {</span>
+<span class="nc" id="L110">                    ConnectivityHelper.disableNFC(isChecked);</span>
                 }
-<span class="nc" id="L110">            }</span>
+<span class="nc" id="L112">            }</span>
         });
 
-<span class="nc" id="L113">        Switch swHostpot = (Switch) v.findViewById(R.id.swHostpot);</span>
-<span class="nc" id="L114">        swHostpot.setChecked(cache.getConnectivityHostpotTetheringDisable());</span>
-<span class="nc" id="L115">        swHostpot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L115">        Switch swHostpot = (Switch) v.findViewById(R.id.swHostpot);</span>
+<span class="nc" id="L116">        swHostpot.setChecked(cache.getConnectivityHostpotTetheringDisable());</span>
+<span class="nc" id="L117">        swHostpot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc" id="L118">                cache.setConnectivityHostpotTetheringDisable(isChecked);</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L120">                    ConnectivityHelper.disableHostpotTethering(isChecked);</span>
+<span class="nc" id="L120">                cache.setConnectivityHostpotTetheringDisable(isChecked);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">                if(isChecked) {</span>
+<span class="nc" id="L122">                    ConnectivityHelper.disableHostpotTethering(isChecked);</span>
                 }
-<span class="nc" id="L122">            }</span>
+<span class="nc" id="L124">            }</span>
         });
 
-<span class="nc" id="L125">        Switch swMobileLine = (Switch) v.findViewById(R.id.swMobileLine);</span>
-<span class="nc" id="L126">        swMobileLine.setChecked(cache.getConnectivityMobileLineDisable());</span>
-<span class="nc" id="L127">        swMobileLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L127">        Switch swMobileLine = (Switch) v.findViewById(R.id.swMobileLine);</span>
+<span class="nc" id="L128">        swMobileLine.setChecked(cache.getConnectivityMobileLineDisable());</span>
+<span class="nc" id="L129">        swMobileLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc" id="L130">                cache.setConnectivityMobileLineDisable(isChecked);</span>
-<span class="nc bnc" id="L131" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L132">                    ConnectivityHelper.disableMobileLine(isChecked);</span>
+<span class="nc" id="L132">                cache.setConnectivityMobileLineDisable(isChecked);</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">                if(isChecked) {</span>
+<span class="nc" id="L134">                    ConnectivityHelper.disableMobileLine(isChecked);</span>
                 }
-<span class="nc" id="L134">            }</span>
+<span class="nc" id="L136">            }</span>
         });
 
-<span class="nc" id="L137">        Switch swUsbOnTheGo = (Switch) v.findViewById(R.id.swUsbOnTheGo);</span>
-<span class="nc" id="L138">        swUsbOnTheGo.setChecked(cache.getConnectivityUsbFileTransferProtocolsDisable());</span>
-<span class="nc" id="L139">        swUsbOnTheGo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L139">        Switch swUsbOnTheGo = (Switch) v.findViewById(R.id.swUsbOnTheGo);</span>
+<span class="nc" id="L140">        swUsbOnTheGo.setChecked(cache.getConnectivityUsbFileTransferProtocolsDisable());</span>
+<span class="nc" id="L141">        swUsbOnTheGo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc" id="L142">                cache.setConnectivityUsbFileTransferProtocolsDisable(isChecked);</span>
-<span class="nc bnc" id="L143" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L144">                    ConnectivityHelper.disableUsbFileTransferProtocols(isChecked);</span>
+<span class="nc" id="L144">                cache.setConnectivityUsbFileTransferProtocolsDisable(isChecked);</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">                if(isChecked) {</span>
+<span class="nc" id="L146">                    ConnectivityHelper.disableUsbFileTransferProtocols(isChecked);</span>
                 }
-<span class="nc" id="L146">            }</span>
+<span class="nc" id="L148">            }</span>
         });
 
-<span class="nc" id="L149">        return v;</span>
+<span class="nc" id="L151">        Button btnLock = (Button) v.findViewById(R.id.btnLock);</span>
+<span class="nc" id="L152">        btnLock.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View v) {
+<span class="nc" id="L155">                FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(FragmentTestPolicies.this.getContext());</span>
+<span class="nc" id="L156">                mdm.lockScreen();</span>
+<span class="nc" id="L157">            }</span>
+        });
+
+<span class="nc" id="L160">        return v;</span>
     }
 
     }

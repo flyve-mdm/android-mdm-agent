@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
 
+import org.flyve.mdm.agent.ui.LockActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 /*
@@ -41,57 +42,56 @@ public class FlyveDeviceAdminUtils {
     private ComponentName mDeviceAdmin;
     private Context context;
 
-<span class="nc" id="L44">    public FlyveDeviceAdminUtils(Context context) {</span>
-<span class="nc" id="L45">        this.context = context;</span>
-<span class="nc" id="L46">        mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);</span>
-<span class="nc" id="L47">        mDeviceAdmin = new ComponentName(context, FlyveAdminReceiver.class);</span>
-<span class="nc" id="L48">    }</span>
+<span class="nc" id="L45">    public FlyveDeviceAdminUtils(Context context) {</span>
+<span class="nc" id="L46">        this.context = context;</span>
+<span class="nc" id="L47">        mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);</span>
+<span class="nc" id="L48">        mDeviceAdmin = new ComponentName(context, FlyveAdminReceiver.class);</span>
+<span class="nc" id="L49">    }</span>
 
     @TargetApi(21)
     public void disableRoaming(boolean disable) {
         try {
-<span class="nc bnc" id="L53" title="All 2 branches missed.">            mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.DATA_ROAMING, disable ? &quot;0&quot; : &quot;1&quot;);</span>
-<span class="nc" id="L54">        }catch (Exception ex) {</span>
-<span class="nc" id="L55">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L56">        }</span>
-<span class="nc" id="L57">    }</span>
-
-    @TargetApi(21)
-    public void disableAirplaneMode(boolean disable) {
-        try {
-<span class="nc bnc" id="L62" title="All 2 branches missed.">            mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.AIRPLANE_MODE_ON, disable ? &quot;0&quot; : &quot;1&quot;);</span>
-<span class="nc" id="L63">        } catch (Exception ex) {</span>
-<span class="nc" id="L64">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L65">        }</span>
-<span class="nc" id="L66">    }</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.DATA_ROAMING, disable ? &quot;0&quot; : &quot;1&quot;);</span>
+<span class="nc" id="L55">        }catch (Exception ex) {</span>
+<span class="nc" id="L56">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L57">        }</span>
+<span class="nc" id="L58">    }</span>
 
     @TargetApi(21)
     public void disableCaptureScreen(boolean disable) {
         try {
-<span class="nc" id="L71">            mDPM.setScreenCaptureDisabled(mDeviceAdmin, disable);</span>
-<span class="nc" id="L72">        } catch (Exception ex) {</span>
-<span class="nc" id="L73">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L74">        }</span>
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L63">            mDPM.setScreenCaptureDisabled(mDeviceAdmin, disable);</span>
+<span class="nc" id="L64">        } catch (Exception ex) {</span>
+<span class="nc" id="L65">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L66">        }</span>
+<span class="nc" id="L67">    }</span>
 
     @TargetApi(23)
     public void disableStatusBar(boolean disable) {
         try {
-<span class="nc" id="L80">            mDPM.setStatusBarDisabled(mDeviceAdmin, disable);</span>
-<span class="nc" id="L81">        } catch (Exception ex) {</span>
-<span class="nc" id="L82">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L83">        }</span>
-<span class="nc" id="L84">    }</span>
+<span class="nc" id="L72">            mDPM.setStatusBarDisabled(mDeviceAdmin, disable);</span>
+<span class="nc" id="L73">        } catch (Exception ex) {</span>
+<span class="nc" id="L74">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L75">        }</span>
+<span class="nc" id="L76">    }</span>
 
     public void resetPassword(String newPassword) {
-<span class="nc" id="L87">        mDPM.resetPassword(newPassword, 0);</span>
-<span class="nc" id="L88">    }</span>
+<span class="nc" id="L79">        mDPM.resetPassword(newPassword, 0);</span>
+<span class="nc" id="L80">    }</span>
 
     /**
      * Erase all data of the device
      */
     public void wipe() {
-<span class="nc" id="L94">        mDPM.wipeData(0);</span>
+<span class="nc" id="L86">        mDPM.wipeData(0);</span>
+<span class="nc" id="L87">    }</span>
+
+    /**
+     * Launch lock activity
+     */
+    public void lockScreen() {
+<span class="nc" id="L93">        Intent miIntent = new Intent(context, LockActivity.class);</span>
+<span class="nc" id="L94">        context.startActivity(miIntent);</span>
 <span class="nc" id="L95">    }</span>
 
     /**
