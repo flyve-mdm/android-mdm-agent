@@ -23,22 +23,12 @@
         android:layout_margin="30dp"
         />
 
-    <EditText
-        android:id="@+id/editEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:layout_below="@+id/txtMessage"
-        android:layout_centerHorizontal="true"
-        android:hint="@string/lock_email"
-        />
-
     <org.flyve.mdm.agent.utils.RoundedImageView
         android:id="@+id/imgLogoSupervisor"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/ic_teclib"
-        android:layout_below="@+id/editEmail"
+        android:layout_below="@+id/txtMessage"
         android:layout_marginLeft="30dp"
         />
 
@@ -50,7 +40,7 @@
         android:layout_toRightOf="@id/imgLogoSupervisor"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="5dp"
-        android:layout_below="@+id/editEmail"
+        android:layout_below="@+id/txtMessage"
         style="@style/regularText"
         />
 
