@@ -117,7 +117,7 @@
                 <data
                     android:scheme="http"
                     android:host="flyve.org"
-                    android:pathPrefix="/flyve-mdm-deeplink"
+                    android:pathPrefix="/deeplink"
                      />
             </intent-filter>
             <intent-filter>
