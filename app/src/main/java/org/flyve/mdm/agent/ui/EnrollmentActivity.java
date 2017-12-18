@@ -56,6 +56,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import org.flyve.inventory.InventoryTask;
 import org.flyve.inventory.categories.Hardware;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
@@ -99,6 +101,7 @@ public class EnrollmentActivity extends AppCompatActivity {
     private ImageView imgPhoto;
     private ProgressDialog pd;
     private File filePhoto;
+    private String inventory = "";
 
     /**
      * Called when the activity is starting
@@ -189,6 +192,19 @@ public class EnrollmentActivity extends AppCompatActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        InventoryTask inventoryTask = new InventoryTask(EnrollmentActivity.this, "FlyveMDM-Agent");
+        inventoryTask.getJSON(new InventoryTask.OnTaskCompleted() {
+            @Override
+            public void onTaskSuccess(String s) {
+                inventory = s;
+            }
+
+            @Override
+            public void onTaskError(Throwable throwable) {
+                inventory = "error";
             }
         });
 
@@ -399,6 +415,18 @@ public class EnrollmentActivity extends AppCompatActivity {
             allowSave = false;
         }
 
+        // inventory error
+        if(inventory.equals("error")) {
+            errMsg.append(getResources().getString(R.string.validate_inventory) );
+            allowSave = false;
+        }
+
+        // inventory running
+        if(inventory.equals("")) {
+            errMsg.append(getResources().getString(R.string.validate_inventory_wait) );
+            allowSave = false;
+        }
+
         if(allowSave){
             sendEnroll();
         } else {
@@ -434,6 +462,7 @@ public class EnrollmentActivity extends AppCompatActivity {
             payload.put("version", BuildConfig.VERSION_NAME);
             payload.put("type", "android");
             payload.put("has_system_permission", Helpers.isSystemApp(EnrollmentActivity.this));
+            payload.put("inventory", inventory);
 
             enroll.enrollment(payload, new EnrollmentHelper.EnrollCallBack() {
                 @Override
