@@ -65,6 +65,8 @@
     <string name="validate_first_name">- First name should not be empty.\n</string>
     <string name="validate_last_name">- Last name should not be empty.\n</string>
     <string name="validate_organization">- Organization should not be empty.\n</string>
+    <string name="validate_inventory">- Inventory fail please close enrollment and try again.\n</string>
+    <string name="validate_inventory_wait">- Inventory is running please wait and try again.\n</string>
 
     <string name="lock_message">This device has been blocked by user, please enter your email to unlock</string>
     <string name="lock_email">Please enter your email</string>
