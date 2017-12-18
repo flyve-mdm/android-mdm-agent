@@ -66,6 +66,13 @@
             android:layout_height="wrap_content"
             android:text="Disable Usb On The Go" />
 
+        <Button
+            android:id="@+id/btnLock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lock Screen"
+            />
+
     </LinearLayout>
 
 
