@@ -144,9 +144,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Log
+        // Activity
         if (item.get("id").equals("2")) {
-            FragmentLog f = new FragmentLog();
+            FragmentActivity f = new FragmentActivity();
             fragmentTransaction.replace(R.id.containerView, f).commit();
             return;
         }
@@ -212,10 +212,10 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        // Log
+        // Activity
         map = new HashMap<>();
         map.put("id", "2");
-        map.put("name", getResources().getString(R.string.drawer_log));
+        map.put("name", getResources().getString(R.string.drawer_activity));
         map.put("img", "ic_log");
         map.put("separator", "true");
         arrDrawer.add(map);
