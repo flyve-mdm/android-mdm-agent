@@ -1,0 +1,93 @@
+package org.flyve.mdm.agent.ui;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
+
+import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.adapter.ConnectivityAdapter;
+import org.flyve.mdm.agent.data.DataStorage;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+/*
+ *   Copyright © 2017 Teclib. All rights reserved.
+ *
+ *   This file is part of flyve-mdm-android
+ *
+ * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @date      18/12/17
+ * @copyright Copyright © 2017 Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+public class FragmentConnectivity extends Fragment {
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        /**
+         *Inflate be_calendario_fragment and setup Views.
+         */
+        View v = inflater.inflate(R.layout.fragment_connectivity, null);
+
+        ListView lst = (ListView) v.findViewById(R.id.lst);
+        loadData(lst);
+
+        return v;
+    }
+
+    private void loadData(ListView lst) {
+
+        DataStorage cache = new DataStorage(FragmentConnectivity.this.getContext());
+
+        ArrayList arr = new ArrayList<HashMap<String, Boolean>>();
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("description", "Disable Airplane Mode");
+        map.put("disable", String.valueOf(cache.getConnectivityAirplaneModeDisable()));
+        arr.add(map);
+
+        map = new HashMap<>();
+        map.put("description", "Disable Bluetooth");
+        map.put("disable", String.valueOf(cache.getConnectivityBluetoothDisable()));
+        arr.add(map);
+
+        map = new HashMap<>();
+        map.put("description", "Disable GPS");
+        map.put("disable", String.valueOf(cache.getConnectivityGPSDisable()));
+        arr.add(map);
+
+        map = new HashMap<>();
+        map.put("description", "Disable Mobile Line");
+        map.put("disable", String.valueOf(cache.getConnectivityMobileLineDisable()));
+        arr.add(map);
+
+        map = new HashMap<>();
+        map.put("description", "Disable Wifi");
+        map.put("disable", String.valueOf(cache.getConnectivityWifiDisable()));
+        arr.add(map);
+
+        lst.setAdapter( new ConnectivityAdapter(FragmentConnectivity.this.getActivity(), arr));
+
+    }
+
+}
