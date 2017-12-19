@@ -291,6 +291,9 @@ public class FlyveDeviceAdminUtils {
      * @param maxFailed int
      */
     public void setMaximumFailedPasswordsForWipe(int maxFailed) {
+
+        cache.setMaximumFailedPasswordsForWipe(String.valueOf(maxFailed));
+
         if(mDPM.getMaximumFailedPasswordsForWipe(mDeviceAdmin)!=maxFailed) {
             FlyveLog.d("setMaximumFailedPasswordsForWipe:  " + maxFailed);
             mDPM.setMaximumFailedPasswordsForWipe(mDeviceAdmin, maxFailed);
