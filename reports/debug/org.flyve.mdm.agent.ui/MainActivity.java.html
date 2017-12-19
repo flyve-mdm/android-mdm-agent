@@ -144,9 +144,9 @@ import java.util.HashMap;
 <span class="nc" id="L144">            return;</span>
         }
 
-        // Log
+        // Activity
 <span class="nc bnc" id="L148" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;2&quot;)) {</span>
-<span class="nc" id="L149">            FragmentLog f = new FragmentLog();</span>
+<span class="nc" id="L149">            FragmentActivity f = new FragmentActivity();</span>
 <span class="nc" id="L150">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
 <span class="nc" id="L151">            return;</span>
         }
@@ -212,10 +212,10 @@ import java.util.HashMap;
 
         }
 
-        // Log
+        // Activity
 <span class="nc" id="L216">        map = new HashMap&lt;&gt;();</span>
 <span class="nc" id="L217">        map.put(&quot;id&quot;, &quot;2&quot;);</span>
-<span class="nc" id="L218">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_log));</span>
+<span class="nc" id="L218">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_activity));</span>
 <span class="nc" id="L219">        map.put(&quot;img&quot;, &quot;ic_log&quot;);</span>
 <span class="nc" id="L220">        map.put(&quot;separator&quot;, &quot;true&quot;);</span>
 <span class="nc" id="L221">        arrDrawer.add(map);</span>

@@ -574,18 +574,115 @@ public class DataStorage {
 <span class="nc" id="L574">		return Boolean.valueOf(getData(&quot;easterEgg&quot;));</span>
 	}
 
+
+	public void setStorageEncryptionDevice(boolean enable) {
+<span class="nc" id="L579">		setData(&quot;StorageEncryptionDevice&quot;, String.valueOf(enable));</span>
+<span class="nc" id="L580">	}</span>
+
+	public boolean getStorageEncryptionDevice() {
+<span class="nc" id="L583">		return Boolean.valueOf(getData(&quot;StorageEncryptionDevice&quot;));</span>
+	}
+
+	public void setDisableCamera(boolean enable) {
+<span class="nc" id="L587">		setData(&quot;DisableCamera&quot;, String.valueOf(enable));</span>
+<span class="nc" id="L588">	}</span>
+
+	public boolean getDisableCamera() {
+<span class="nc" id="L591">		return Boolean.valueOf(getData(&quot;DisableCamera&quot;));</span>
+	}
+
+	public void setPasswordLength(String value) {
+<span class="nc" id="L595">		setData(&quot;PasswordLength&quot;, value);</span>
+<span class="nc" id="L596">	}</span>
+
+	public String getPasswordLength() {
+<span class="nc" id="L599">		return getData(&quot;PasswordLength&quot;);</span>
+	}
+
+	public void setPasswordQuality(String value) {
+<span class="nc" id="L603">		setData(&quot;PasswordQuality&quot;, value);</span>
+<span class="nc" id="L604">	}</span>
+
+	public String getPasswordQuality() {
+<span class="nc" id="L607">		return getData(&quot;PasswordQuality&quot;);</span>
+	}
+
+	public void setPasswordMinimumLetters(String value) {
+<span class="nc" id="L611">		setData(&quot;PasswordMinimumLetters&quot;, value);</span>
+<span class="nc" id="L612">	}</span>
+
+	public String getPasswordMinimumLetters() {
+<span class="nc" id="L615">		return getData(&quot;PasswordMinimumLetters&quot;);</span>
+	}
+
+	public void setPasswordMinimumLowerCase(String value) {
+<span class="nc" id="L619">		setData(&quot;PasswordMinimumLowerCase&quot;, value);</span>
+<span class="nc" id="L620">	}</span>
+
+	public String getPasswordMinimumLowerCase() {
+<span class="nc" id="L623">		return getData(&quot;PasswordMinimumLowerCase&quot;);</span>
+	}
+
+	public void setPasswordMinimumUpperCase(String value) {
+<span class="nc" id="L627">		setData(&quot;PasswordMinimumUpperCase&quot;, value);</span>
+<span class="nc" id="L628">	}</span>
+
+	public String getPasswordMinimumUpperCase() {
+<span class="nc" id="L631">		return getData(&quot;PasswordMinimumUpperCase&quot;);</span>
+	}
+
+	public void setPasswordMinimumNonLetter(String value) {
+<span class="nc" id="L635">		setData(&quot;PasswordMinimumNonLetter&quot;, value);</span>
+<span class="nc" id="L636">	}</span>
+
+	public String getPasswordMinimumNonLetter() {
+<span class="nc" id="L639">		return getData(&quot;PasswordMinimumNonLetter&quot;);</span>
+	}
+
+	public void setPasswordMinimumNumeric(String value) {
+<span class="nc" id="L643">		setData(&quot;PasswordMinimumNumeric&quot;, value);</span>
+<span class="nc" id="L644">	}</span>
+
+	public String getPasswordMinimumNumeric() {
+<span class="nc" id="L647">		return getData(&quot;PasswordMinimumNumeric&quot;);</span>
+	}
+
+	public void setPasswordMinimumSymbols(String value) {
+<span class="nc" id="L651">		setData(&quot;PasswordMinimumSymbols&quot;, value);</span>
+<span class="nc" id="L652">	}</span>
+
+	public String getPasswordMinimumSymbols() {
+<span class="nc" id="L655">		return getData(&quot;PasswordMinimumSymbols&quot;);</span>
+	}
+
+	public void setMaximumFailedPasswordsForWipe(String value) {
+<span class="nc" id="L659">		setData(&quot;MaximumFailedPasswordsForWipe&quot;, value);</span>
+<span class="nc" id="L660">	}</span>
+
+	public String getMaximumFailedPasswordsForWipe() {
+<span class="nc" id="L663">		return getData(&quot;MaximumFailedPasswordsForWipe&quot;);</span>
+	}
+
+	public void setMaximumTimeToLock(String value) {
+<span class="nc" id="L667">		setData(&quot;MaximumTimeToLock&quot;, value);</span>
+<span class="nc" id="L668">	}</span>
+
+	public String getMaximumTimeToLock() {
+<span class="nc" id="L671">		return getData(&quot;MaximumTimeToLock&quot;);</span>
+	}
+
 	/**
 	 * Get the data matching the given argument
 	 * @param key
 	 * @return string the data
 	 */
 	private String getData(String key){
-<span class="fc" id="L583">		String data = &quot;&quot;;</span>
-<span class="fc" id="L584">		SharedPreferences sp = getSettings();</span>
-<span class="pc bpc" id="L585" title="1 of 2 branches missed.">		if(sp != null) {</span>
-<span class="fc" id="L586">			data = sp.getString(key, null);</span>
+<span class="fc" id="L680">		String data = &quot;&quot;;</span>
+<span class="fc" id="L681">		SharedPreferences sp = getSettings();</span>
+<span class="pc bpc" id="L682" title="1 of 2 branches missed.">		if(sp != null) {</span>
+<span class="fc" id="L683">			data = sp.getString(key, null);</span>
 		}
-<span class="fc" id="L588">		return data;</span>
+<span class="fc" id="L685">		return data;</span>
 	}
 
 	/**
@@ -594,37 +691,37 @@ public class DataStorage {
 	 * @param value
 	 */
 	private void setData(String key, String value) {
-<span class="nc" id="L597">		SharedPreferences sp = getSettings();</span>
-<span class="nc bnc" id="L598" title="All 2 branches missed.">		if(sp != null) {</span>
-<span class="nc" id="L599">			SharedPreferences.Editor editor = sp.edit();</span>
-<span class="nc" id="L600">			editor.putString(key, value );</span>
-<span class="nc" id="L601">			editor.apply();</span>
+<span class="nc" id="L694">		SharedPreferences sp = getSettings();</span>
+<span class="nc bnc" id="L695" title="All 2 branches missed.">		if(sp != null) {</span>
+<span class="nc" id="L696">			SharedPreferences.Editor editor = sp.edit();</span>
+<span class="nc" id="L697">			editor.putString(key, value );</span>
+<span class="nc" id="L698">			editor.apply();</span>
 		}
-<span class="nc" id="L603">	}</span>
+<span class="nc" id="L700">	}</span>
 
 	/**
 	 * Removes all the values from the preferences
 	 */
 	public void clearSettings(){
-<span class="nc" id="L609">		SharedPreferences sp = getSettings();</span>
-<span class="nc bnc" id="L610" title="All 2 branches missed.">		if(sp != null) {</span>
-<span class="nc" id="L611">			SharedPreferences.Editor editor = sp.edit();</span>
-<span class="nc" id="L612">			editor.clear();</span>
-<span class="nc" id="L613">			editor.apply();</span>
+<span class="nc" id="L706">		SharedPreferences sp = getSettings();</span>
+<span class="nc bnc" id="L707" title="All 2 branches missed.">		if(sp != null) {</span>
+<span class="nc" id="L708">			SharedPreferences.Editor editor = sp.edit();</span>
+<span class="nc" id="L709">			editor.clear();</span>
+<span class="nc" id="L710">			editor.apply();</span>
 		}
-<span class="nc" id="L615">	}</span>
+<span class="nc" id="L712">	}</span>
 
 	/**
 	 * Remove the key cache
 	 * @param key value to remove
 	 */
 	public void deleteKeyCache(String key){
-<span class="nc" id="L622">		SharedPreferences sp = getSettings();</span>
-<span class="nc bnc" id="L623" title="All 2 branches missed.">		if(sp != null) {</span>
-<span class="nc" id="L624">			SharedPreferences.Editor editor = sp.edit();</span>
-<span class="nc" id="L625">			editor.remove(key);</span>
-<span class="nc" id="L626">			editor.apply();</span>
+<span class="nc" id="L719">		SharedPreferences sp = getSettings();</span>
+<span class="nc bnc" id="L720" title="All 2 branches missed.">		if(sp != null) {</span>
+<span class="nc" id="L721">			SharedPreferences.Editor editor = sp.edit();</span>
+<span class="nc" id="L722">			editor.remove(key);</span>
+<span class="nc" id="L723">			editor.apply();</span>
 		}
-<span class="nc" id="L628">	}</span>
+<span class="nc" id="L725">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>
