@@ -207,6 +207,9 @@ public class FlyveDeviceAdminUtils {
      * @param minLetters int
      */
     public void setPasswordMinumimLetters(int minLetters) {
+
+        cache.setPasswordMinumimLetters(String.valueOf(minLetters));
+
         if(mDPM.getPasswordMinimumLetters(mDeviceAdmin)!=minLetters) {
             FlyveLog.d("setPasswordMinumimLetters:  " + minLetters);
             mDPM.setPasswordMinimumUpperCase(mDeviceAdmin, minLetters);
