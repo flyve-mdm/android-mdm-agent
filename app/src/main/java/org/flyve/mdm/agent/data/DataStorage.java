@@ -574,6 +574,103 @@ public class DataStorage {
 		return Boolean.valueOf(getData("easterEgg"));
 	}
 
+
+	public void setStorageEncryptionDevice(boolean enable) {
+		setData("StorageEncryptionDevice", String.valueOf(enable));
+	}
+
+	public boolean getStorageEncryptionDevice() {
+		return Boolean.valueOf(getData("StorageEncryptionDevice"));
+	}
+
+	public void setDisableCamera(boolean enable) {
+		setData("DisableCamera", String.valueOf(enable));
+	}
+
+	public boolean getDisableCamera() {
+		return Boolean.valueOf(getData("DisableCamera"));
+	}
+
+	public void setPasswordLength(String value) {
+		setData("PasswordLength", value);
+	}
+
+	public boolean getPasswordLength() {
+		return Boolean.valueOf(getData("PasswordLength"));
+	}
+
+	public void setPasswordQuality(String value) {
+		setData("PasswordQuality", value);
+	}
+
+	public boolean getPasswordQuality() {
+		return Boolean.valueOf(getData("PasswordQuality"));
+	}
+
+	public void setPasswordMinumimLetters(String value) {
+		setData("PasswordMinumimLetters", value);
+	}
+
+	public boolean getPasswordMinumimLetters() {
+		return Boolean.valueOf(getData("PasswordMinumimLetters"));
+	}
+
+	public void setPasswordMinimumLowerCase(String value) {
+		setData("PasswordMinimumLowerCase", value);
+	}
+
+	public boolean getPasswordMinimumLowerCase() {
+		return Boolean.valueOf(getData("PasswordMinimumLowerCase"));
+	}
+
+	public void setPasswordMinimumUpperCase(String value) {
+		setData("PasswordMinimumUpperCase", value);
+	}
+
+	public boolean getPasswordMinimumUpperCase() {
+		return Boolean.valueOf(getData("PasswordMinimumUpperCase"));
+	}
+
+	public void setPasswordMinimumNonLetter(String value) {
+		setData("PasswordMinimumNonLetter", value);
+	}
+
+	public boolean getPasswordMinimumNonLetter() {
+		return Boolean.valueOf(getData("PasswordMinimumNonLetter"));
+	}
+
+	public void setPasswordMinimumNumeric(String value) {
+		setData("PasswordMinimumNumeric", value);
+	}
+
+	public boolean getPasswordMinimumNumeric() {
+		return Boolean.valueOf(getData("PasswordMinimumNumeric"));
+	}
+
+	public void setPasswordMinimumSymbols(String value) {
+		setData("PasswordMinimumSymbols", value);
+	}
+
+	public boolean getPasswordMinimumSymbols() {
+		return Boolean.valueOf(getData("PasswordMinimumSymbols"));
+	}
+
+	public void setMaximumFailedPasswordsForWipe(String value) {
+		setData("MaximumFailedPasswordsForWipe", value);
+	}
+
+	public boolean getMaximumFailedPasswordsForWipe() {
+		return Boolean.valueOf(getData("MaximumFailedPasswordsForWipe"));
+	}
+
+	public void setMaximumTimeToLock(String value) {
+		setData("MaximumTimeToLock", value);
+	}
+
+	public boolean getMaximumTimeToLock() {
+		return Boolean.valueOf(getData("MaximumTimeToLock"));
+	}
+
 	/**
 	 * Get the data matching the given argument
 	 * @param key
