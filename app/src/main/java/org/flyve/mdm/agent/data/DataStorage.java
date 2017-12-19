@@ -595,80 +595,80 @@ public class DataStorage {
 		setData("PasswordLength", value);
 	}
 
-	public boolean getPasswordLength() {
-		return Boolean.valueOf(getData("PasswordLength"));
+	public String getPasswordLength() {
+		return getData("PasswordLength");
 	}
 
 	public void setPasswordQuality(String value) {
 		setData("PasswordQuality", value);
 	}
 
-	public boolean getPasswordQuality() {
-		return Boolean.valueOf(getData("PasswordQuality"));
+	public String getPasswordQuality() {
+		return getData("PasswordQuality");
 	}
 
 	public void setPasswordMinimumLetters(String value) {
 		setData("PasswordMinimumLetters", value);
 	}
 
-	public boolean getPasswordMinimumLetters() {
-		return Boolean.valueOf(getData("PasswordMinimumLetters"));
+	public String getPasswordMinimumLetters() {
+		return getData("PasswordMinimumLetters");
 	}
 
 	public void setPasswordMinimumLowerCase(String value) {
 		setData("PasswordMinimumLowerCase", value);
 	}
 
-	public boolean getPasswordMinimumLowerCase() {
-		return Boolean.valueOf(getData("PasswordMinimumLowerCase"));
+	public String getPasswordMinimumLowerCase() {
+		return getData("PasswordMinimumLowerCase");
 	}
 
 	public void setPasswordMinimumUpperCase(String value) {
 		setData("PasswordMinimumUpperCase", value);
 	}
 
-	public boolean getPasswordMinimumUpperCase() {
-		return Boolean.valueOf(getData("PasswordMinimumUpperCase"));
+	public String getPasswordMinimumUpperCase() {
+		return getData("PasswordMinimumUpperCase");
 	}
 
 	public void setPasswordMinimumNonLetter(String value) {
 		setData("PasswordMinimumNonLetter", value);
 	}
 
-	public boolean getPasswordMinimumNonLetter() {
-		return Boolean.valueOf(getData("PasswordMinimumNonLetter"));
+	public String getPasswordMinimumNonLetter() {
+		return getData("PasswordMinimumNonLetter");
 	}
 
 	public void setPasswordMinimumNumeric(String value) {
 		setData("PasswordMinimumNumeric", value);
 	}
 
-	public boolean getPasswordMinimumNumeric() {
-		return Boolean.valueOf(getData("PasswordMinimumNumeric"));
+	public String getPasswordMinimumNumeric() {
+		return getData("PasswordMinimumNumeric");
 	}
 
 	public void setPasswordMinimumSymbols(String value) {
 		setData("PasswordMinimumSymbols", value);
 	}
 
-	public boolean getPasswordMinimumSymbols() {
-		return Boolean.valueOf(getData("PasswordMinimumSymbols"));
+	public String getPasswordMinimumSymbols() {
+		return getData("PasswordMinimumSymbols");
 	}
 
 	public void setMaximumFailedPasswordsForWipe(String value) {
 		setData("MaximumFailedPasswordsForWipe", value);
 	}
 
-	public boolean getMaximumFailedPasswordsForWipe() {
-		return Boolean.valueOf(getData("MaximumFailedPasswordsForWipe"));
+	public String getMaximumFailedPasswordsForWipe() {
+		return getData("MaximumFailedPasswordsForWipe");
 	}
 
 	public void setMaximumTimeToLock(String value) {
 		setData("MaximumTimeToLock", value);
 	}
 
-	public boolean getMaximumTimeToLock() {
-		return Boolean.valueOf(getData("MaximumTimeToLock"));
+	public String getMaximumTimeToLock() {
+		return getData("MaximumTimeToLock");
 	}
 
 	/**
