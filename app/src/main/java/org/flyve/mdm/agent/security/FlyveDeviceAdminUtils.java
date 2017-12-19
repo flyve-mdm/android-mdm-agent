@@ -155,6 +155,8 @@ public class FlyveDeviceAdminUtils {
      */
     public void setPasswordLength(int length) {
         FlyveLog.d("setPasswordLength: " + length);
+        cache.setPasswordLength(String.valueOf(length));
+
         if(mDPM.getPasswordMinimumLength(mDeviceAdmin)!=length){
             FlyveLog.d("Apply setPasswordLength: " + length);
             mDPM.setPasswordMinimumLength(mDeviceAdmin, length);
