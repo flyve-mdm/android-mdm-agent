@@ -277,6 +277,9 @@ public class FlyveDeviceAdminUtils {
      * @param minSymbols int
      */
     public void setPasswordMinimumSymbols(int minSymbols) {
+
+        cache.setPasswordMinimumSymbols(String.valueOf(minSymbols));
+
         if(mDPM.getPasswordMinimumSymbols(mDeviceAdmin)!=minSymbols) {
             FlyveLog.d("setPasswordMinimumSymbols:  " + minSymbols);
             mDPM.setPasswordMinimumSymbols(mDeviceAdmin, minSymbols);
