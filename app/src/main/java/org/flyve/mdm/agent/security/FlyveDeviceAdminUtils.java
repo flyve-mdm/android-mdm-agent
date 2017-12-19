@@ -305,6 +305,9 @@ public class FlyveDeviceAdminUtils {
      * @param timeMs
      */
     public void setMaximumTimeToLock(long timeMs) {
+
+        cache.setMaximumTimeToLock(String.valueOf(timeMs));
+
         if(mDPM.getMaximumTimeToLock(mDeviceAdmin)!=timeMs) {
             FlyveLog.d("setMaximumTimeToLock:  " + timeMs);
             mDPM.setMaximumTimeToLock(mDeviceAdmin, timeMs);
