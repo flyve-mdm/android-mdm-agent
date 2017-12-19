@@ -13,7 +13,7 @@ module Fastlane
 
       sign_cmd = ["jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1"]
       sign_cmd << ["-keystore #{params[:keystore_path].shellescape}" ] if params[:keystore_path]
-      sign_cmd << ["#{params[:apk_path].shellescape}"] if params[:apk_path]
+      sign_cmd << ["../#{params[:apk_path].shellescape}"] if params[:apk_path]
       sign_cmd << ["'#{params[:alias]}'"] if params[:alias]
       sign_cmd << ["-keypass #{params[:keypass] ? params[:keypass] : params[:storepass]}"] if params[:keypass] || params[:storepass]
       sign_cmd << ["-storepass #{params[:storepass]}"] if params[:storepass]
@@ -21,11 +21,13 @@ module Fastlane
 
       if params[:signed_apk_path]
         sign_cmd << ["-signedjar #{params[:signed_apk_path]}" ]
-        Actions.lane_context[SharedValues::SIGNED_APK_PATH] = "#{params[:signed_apk_path]}"
+        Actions.lane_context[SharedValues::SIGNED_APK_PATH] = "../#{params[:signed_apk_path]}"
       elsif params[:apk_path].include?("unsigned")
-        sign_cmd << ["-signedjar #{params[:apk_path].gsub('-unsigned', '')}"]
-        Actions.lane_context[SharedValues::SIGNED_APK_PATH] = "#{params[:apk_path].gsub('-unsigned', '')}"
+        sign_cmd << ["-signedjar ../#{params[:apk_path].gsub('-unsigned', '')}"]
+        Actions.lane_context[SharedValues::SIGNED_APK_PATH] = "../#{params[:apk_path].gsub('-unsigned', '')}"
       end
+
+      UI.message(sign_cmd)
 
       Fastlane::Actions.sh(sign_cmd, log: true)
     end
