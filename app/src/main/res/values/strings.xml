@@ -92,6 +92,19 @@
     <string name="disable_mobile_line">Disable mobile line</string>
     <string name="disable_wifi">Disable wifi</string>
 
+    <string name="storage_encryption_device">Storage encryption device</string>
+    <string name="disable_camera">Disable camera</string>
+    <string name="password_length">Password length</string>
+    <string name="password_quality">Password quality</string>
+    <string name="password_minimum_letters">Password minimum letters</string>
+    <string name="password_minimum_lower_case">Password minimum lower case</string>
+    <string name="password_minimum_upper_case">Password minimum upper case</string>
+    <string name="password_minimum_non_letter">Password minimum non letter</string>
+    <string name="password_minimum_numeric">Password minimum numeric</string>
+    <string name="password_minimum_symbols">Password minimum symbols</string>
+    <string name="maximum_failed_passwords_for_wipe">Maximum failed passwords for wipe</string>
+    <string name="maximum_time_to_lock">Maximum time to lock</string>
+
     <string name="easter_egg_success">Now you have log version agent</string>
     <plurals name="easter_egg_attempts">
         <item quantity="one">You have %d Attempt</item>
