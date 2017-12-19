@@ -62,62 +62,62 @@ public class FragmentPolicies extends Fragment {
         ArrayList arr = new ArrayList<HashMap<String, Boolean>>();
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("description", "Storage encryption device");
+        map.put("description", getResources().getString(R.string.storage_encryption_device));
         map.put("value", String.valueOf(cache.getStorageEncryptionDevice()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Disable camera");
+        map.put("description", getResources().getString(R.string.disable_camera));
         map.put("value", String.valueOf(cache.getDisableCamera()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Password length");
+        map.put("description", getResources().getString(R.string.password_length));
         map.put("value", String.valueOf(cache.getPasswordLength()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Password quality");
+        map.put("description", getResources().getString(R.string.password_quality));
         map.put("value", String.valueOf(cache.getPasswordQuality()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Password minumim letters");
+        map.put("description", getResources().getString(R.string.password_minimum_letters));
         map.put("value", String.valueOf(cache.getPasswordMinimumLetters()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Password minimum lower case");
+        map.put("description", getResources().getString(R.string.password_minimum_lower_case));
         map.put("value", String.valueOf(cache.getPasswordMinimumLowerCase()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Password minimum upper case");
+        map.put("description", getResources().getString(R.string.password_minimum_upper_case));
         map.put("value", String.valueOf(cache.getPasswordMinimumUpperCase()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Password minimum non letter");
+        map.put("description", getResources().getString(R.string.password_minimum_non_letter));
         map.put("value", String.valueOf(cache.getPasswordMinimumNonLetter()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Password minimum numeric");
+        map.put("description", getResources().getString(R.string.password_minimum_numeric));
         map.put("value", String.valueOf(cache.getPasswordMinimumNumeric()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Password minimum symbols");
+        map.put("description", getResources().getString(R.string.password_minimum_symbols));
         map.put("value", String.valueOf(cache.getPasswordMinimumSymbols()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Maximum failed passwords for wipe");
+        map.put("description", getResources().getString(R.string.maximum_failed_passwords_for_wipe));
         map.put("value", String.valueOf(cache.getMaximumFailedPasswordsForWipe()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Maximum time to lock");
+        map.put("description", getResources().getString(R.string.maximum_time_to_lock));
         map.put("value", String.valueOf(cache.getMaximumTimeToLock()));
         arr.add(map);
 
