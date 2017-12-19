@@ -168,6 +168,9 @@ public class FlyveDeviceAdminUtils {
      * @param quality String quality type
      */
     public void setPasswordQuality(String quality) {
+
+        cache.setPasswordQuality(quality);
+
          if("PASSWORD_QUALITY_NUMERIC".equalsIgnoreCase(quality)) {
              FlyveLog.d("switch: PASSWORD_QUALITY_NUMERIC");
              mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_NUMERIC);
