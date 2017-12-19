@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.adapter.ConnectivityAdapter;
+import org.flyve.mdm.agent.adapter.PoliciesAdapter;
 import org.flyve.mdm.agent.data.DataStorage;
 
 import java.util.ArrayList;
@@ -40,14 +40,14 @@ import java.util.HashMap;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class FragmentConnectivity extends Fragment {
+public class FragmentPolicies extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         /**
          *Inflate be_calendario_fragment and setup Views.
          */
-        View v = inflater.inflate(R.layout.fragment_connectivity, null);
+        View v = inflater.inflate(R.layout.fragment_policies, null);
 
         ListView lst = (ListView) v.findViewById(R.id.lst);
         loadData(lst);
@@ -57,36 +57,71 @@ public class FragmentConnectivity extends Fragment {
 
     private void loadData(ListView lst) {
 
-        DataStorage cache = new DataStorage(FragmentConnectivity.this.getContext());
+        DataStorage cache = new DataStorage(FragmentPolicies.this.getContext());
 
         ArrayList arr = new ArrayList<HashMap<String, Boolean>>();
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("description", "Disable Airplane Mode");
-        map.put("disable", String.valueOf(cache.getConnectivityAirplaneModeDisable()));
+        map.put("description", "Storage encryption device");
+        map.put("value", String.valueOf(cache.getStorageEncryptionDevice()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Disable Bluetooth");
-        map.put("disable", String.valueOf(cache.getConnectivityBluetoothDisable()));
+        map.put("description", "Disable camera");
+        map.put("value", String.valueOf(cache.getDisableCamera()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Disable GPS");
-        map.put("disable", String.valueOf(cache.getConnectivityGPSDisable()));
+        map.put("description", "Password length");
+        map.put("value", String.valueOf(cache.getPasswordLength()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Disable Mobile Line");
-        map.put("disable", String.valueOf(cache.getConnectivityMobileLineDisable()));
+        map.put("description", "Password quality");
+        map.put("value", String.valueOf(cache.getPasswordQuality()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Disable Wifi");
-        map.put("disable", String.valueOf(cache.getConnectivityWifiDisable()));
+        map.put("description", "Password minumim letters");
+        map.put("value", String.valueOf(cache.getPasswordMinimumLetters()));
         arr.add(map);
 
-        lst.setAdapter( new ConnectivityAdapter(FragmentConnectivity.this.getActivity(), arr));
+        map = new HashMap<>();
+        map.put("description", "Password minimum lower case");
+        map.put("value", String.valueOf(cache.getPasswordMinimumLowerCase()));
+        arr.add(map);
+
+        map = new HashMap<>();
+        map.put("description", "Password minimum upper case");
+        map.put("value", String.valueOf(cache.getPasswordMinimumUpperCase()));
+        arr.add(map);
+
+        map = new HashMap<>();
+        map.put("description", "Password minimum non letter");
+        map.put("value", String.valueOf(cache.getPasswordMinimumNonLetter()));
+        arr.add(map);
+
+        map = new HashMap<>();
+        map.put("description", "Password minimum numeric");
+        map.put("value", String.valueOf(cache.getPasswordMinimumNumeric()));
+        arr.add(map);
+
+        map = new HashMap<>();
+        map.put("description", "Password minimum symbols");
+        map.put("value", String.valueOf(cache.getPasswordMinimumSymbols()));
+        arr.add(map);
+
+        map = new HashMap<>();
+        map.put("description", "Maximum failed passwords for wipe");
+        map.put("value", String.valueOf(cache.getMaximumFailedPasswordsForWipe()));
+        arr.add(map);
+
+        map = new HashMap<>();
+        map.put("description", "Maximum time to lock");
+        map.put("value", String.valueOf(cache.getMaximumTimeToLock()));
+        arr.add(map);
+
+        lst.setAdapter( new PoliciesAdapter(FragmentPolicies.this.getActivity(), arr));
 
     }
 
