@@ -586,7 +586,7 @@ public class MQTTHelper {
 
                 if (jsonPolicie.has(MIN_LETTERS)) {
                     int min = jsonPolicie.getInt(MIN_LETTERS);
-                    mdm.setPasswordMinumimLetters(min);
+                    mdm.setPasswordMinimumLetters(min);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_LETTERS, String.valueOf(min)));
                 }
 
