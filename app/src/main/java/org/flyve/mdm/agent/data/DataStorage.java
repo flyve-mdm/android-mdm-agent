@@ -607,12 +607,12 @@ public class DataStorage {
 		return Boolean.valueOf(getData("PasswordQuality"));
 	}
 
-	public void setPasswordMinumimLetters(String value) {
-		setData("PasswordMinumimLetters", value);
+	public void setPasswordMinimumLetters(String value) {
+		setData("PasswordMinimumLetters", value);
 	}
 
-	public boolean getPasswordMinumimLetters() {
-		return Boolean.valueOf(getData("PasswordMinumimLetters"));
+	public boolean getPasswordMinimumLetters() {
+		return Boolean.valueOf(getData("PasswordMinimumLetters"));
 	}
 
 	public void setPasswordMinimumLowerCase(String value) {
