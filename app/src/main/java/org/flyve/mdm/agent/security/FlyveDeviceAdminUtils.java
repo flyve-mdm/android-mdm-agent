@@ -263,6 +263,9 @@ public class FlyveDeviceAdminUtils {
      * @param minNumeric int
      */
     public void setPasswordMinimumNumeric(int minNumeric) {
+
+        cache.setPasswordMinimumNumeric(String.valueOf(minNumeric));
+
         if(mDPM.getPasswordMinimumNumeric(mDeviceAdmin)!=minNumeric) {
             FlyveLog.d("setPasswordMinimumNumeric:  " + minNumeric);
             mDPM.setPasswordMinimumNumeric(mDeviceAdmin, minNumeric);
