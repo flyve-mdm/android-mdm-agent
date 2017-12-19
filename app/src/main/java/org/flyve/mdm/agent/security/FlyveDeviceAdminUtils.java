@@ -249,6 +249,9 @@ public class FlyveDeviceAdminUtils {
      * @param minNonLetter int
      */
     public void setPasswordMinimumNonLetter(int minNonLetter) {
+
+        cache.setPasswordMinimumNonLetter(String.valueOf(minNonLetter));
+
         if(mDPM.getPasswordMinimumNonLetter(mDeviceAdmin)!=minNonLetter) {
             FlyveLog.d("setPasswordMinimumNonLetter: " + minNonLetter);
             mDPM.setPasswordMinimumNonLetter(mDeviceAdmin, minNonLetter);
