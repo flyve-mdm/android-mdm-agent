@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
 
+import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.ui.LockActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
@@ -41,11 +42,13 @@ public class FlyveDeviceAdminUtils {
     private DevicePolicyManager mDPM;
     private ComponentName mDeviceAdmin;
     private Context context;
+    private DataStorage cache;
 
     public FlyveDeviceAdminUtils(Context context) {
         this.context = context;
         mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
         mDeviceAdmin = new ComponentName(context, FlyveAdminReceiver.class);
+        cache = new DataStorage(context);
     }
 
     @TargetApi(21)
@@ -117,6 +120,8 @@ public class FlyveDeviceAdminUtils {
     public void storageEncryptionDevice(boolean isEncryption) {
         int status = mDPM.getStorageEncryptionStatus();
         FlyveLog.d("status: " + status);
+
+        cache.setStorageEncryptionDevice(isEncryption);
 
         if(isEncryption && status == DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE) {
             // the data is already encrypted
