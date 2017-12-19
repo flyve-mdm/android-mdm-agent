@@ -235,6 +235,9 @@ public class FlyveDeviceAdminUtils {
      * @param minUpperCase int
      */
     public void setPasswordMinimumUpperCase(int minUpperCase) {
+
+        cache.setPasswordMinimumUpperCase(String.valueOf(minUpperCase));
+
         if(mDPM.getPasswordMinimumUpperCase(mDeviceAdmin)!=minUpperCase) {
             FlyveLog.d("setPasswordMinimumUpperCase:  " + minUpperCase);
             mDPM.setPasswordMinimumUpperCase(mDeviceAdmin, minUpperCase);
