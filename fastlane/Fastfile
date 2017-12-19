@@ -19,16 +19,13 @@ default_platform :android
 platform :android do
 
     desc "Beta release app. Deploy a new version to the Google Play Store - Beta channel"
+    lane :test do |options|
+         Fastlane::Actions.sh("jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../ci/release.keystore ../app/build/outputs/apk/app-release-unsigned.apk 'mdmagent' -keypass " + options[:keypass] + " -storepass " + options[:storepass] + " -tsa http://timestamp.comodoca.com/rfc316 -signedjar ../app/build/outputs/apk/app-release.apk", log: true)
+         Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/zipalign -c -v 4 ../app/build/outputs/apk/app-release.apk", log: true)
+    end
     lane :beta do |options|
-        sign_apk(
-            keystore_path: "ci/release.keystore",
-            alias: "mdmagent",
-            storepass: options[:storepass],
-            tsa: "http://timestamp.comodoca.com/rfc316",
-            keypass: options[:keypass]
-        )
-
-        zipalign(apk_path: "#{lane_context[SharedValues::SIGNED_APK_PATH]}")
+         Fastlane::Actions.sh("jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../ci/release.keystore ../app/build/outputs/apk/app-release-unsigned.apk 'mdmagent' -keypass " + options[:keypass] + " -storepass " + options[:storepass] + " -tsa http://timestamp.comodoca.com/rfc316 -signedjar ../app/build/outputs/apk/app-release.apk", log: true)
+         Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/zipalign -c -v 4 ../app/build/outputs/apk/app-release.apk", log: true)
 
         supply(
             track: 'beta',
@@ -36,15 +33,8 @@ platform :android do
         )
     end
     lane :playstore do |options|
-        sign_apk(
-            keystore_path: "ci/release.keystore",
-            alias: "mdmagent",
-            storepass: options[:storepass],
-            tsa: "http://timestamp.comodoca.com/rfc316",
-            keypass: options[:keypass]
-        )
-
-        zipalign(apk_path: "#{lane_context[SharedValues::SIGNED_APK_PATH]}")
+         Fastlane::Actions.sh("jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../ci/release.keystore ../app/build/outputs/apk/app-release-unsigned.apk 'mdmagent' -keypass " + options[:keypass] + " -storepass " + options[:storepass] + " -tsa http://timestamp.comodoca.com/rfc316 -signedjar ../app/build/outputs/apk/app-release.apk", log: true)
+         Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/zipalign -c -v 4 ../app/build/outputs/apk/app-release.apk", log: true)
 
         supply(
             track: 'production',
