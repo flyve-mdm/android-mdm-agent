@@ -86,6 +86,12 @@
     <string name="help">help</string>
     <string name="loading">Loading...</string>
 
+    <string name="disable_airplane_mode">Disable airplane mode</string>
+    <string name="disable_bluetooth">Disable bluetooth</string>
+    <string name="disable_gps">Disable GPS</string>
+    <string name="disable_mobile_line">Disable mobile line</string>
+    <string name="disable_wifi">Disable wifi</string>
+
     <string name="easter_egg_success">Now you have log version agent</string>
     <plurals name="easter_egg_attempts">
         <item quantity="one">You have %d Attempt</item>

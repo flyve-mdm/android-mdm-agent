@@ -62,27 +62,27 @@ public class FragmentConnectivity extends Fragment {
         ArrayList arr = new ArrayList<HashMap<String, Boolean>>();
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("description", "Disable Airplane Mode");
+        map.put("description", getResources().getString(R.string.disable_airplane_mode));
         map.put("disable", String.valueOf(cache.getConnectivityAirplaneModeDisable()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Disable Bluetooth");
+        map.put("description", getResources().getString(R.string.disable_bluetooth));
         map.put("disable", String.valueOf(cache.getConnectivityBluetoothDisable()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Disable GPS");
+        map.put("description", getResources().getString(R.string.disable_gps));
         map.put("disable", String.valueOf(cache.getConnectivityGPSDisable()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Disable Mobile Line");
+        map.put("description", getResources().getString(R.string.disable_mobile_line));
         map.put("disable", String.valueOf(cache.getConnectivityMobileLineDisable()));
         arr.add(map);
 
         map = new HashMap<>();
-        map.put("description", "Disable Wifi");
+        map.put("description", getResources().getString(R.string.disable_wifi));
         map.put("disable", String.valueOf(cache.getConnectivityWifiDisable()));
         arr.add(map);
 
