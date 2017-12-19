@@ -146,6 +146,7 @@ public class FlyveDeviceAdminUtils {
      */
     public void disableCamera(boolean disable) {
         mDPM.setCameraDisabled(mDeviceAdmin, disable);
+        cache.setDisableCamera(disable);
     }
 
     /**
