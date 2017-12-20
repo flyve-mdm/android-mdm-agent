@@ -81,10 +81,10 @@ prose:
           element: "text"
           label: "Permalink"
           value: ""
-      - name: "wiki"
+      - name: "howtos"
         field:
           element: "checkbox"
-          label: "wiki"
+          label: "howtos"
           value: false
       - name: "published"
         field:

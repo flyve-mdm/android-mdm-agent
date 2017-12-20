@@ -2,11 +2,11 @@
 layout: container
 ---
 
-<h2>Wiki</h2>
+<h2>How tos</h2>
 
 {% assign articles = site.posts %}
 {% for article in articles %}
-    {% if article.wiki %}
+    {% if article.howtos %}
         <div class="article-wiki">
             <h3>
                 <a class="post-link" href="{{ article.url | absolute_url }}">{{ article.title | escape }}</a>
