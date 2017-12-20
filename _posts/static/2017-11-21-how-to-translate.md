@@ -1,6 +1,6 @@
 ---
 layout: post
-wiki: true
+howtos: true
 published: true
 title: How to Translate
 permalink: howtos/how-to-translate
