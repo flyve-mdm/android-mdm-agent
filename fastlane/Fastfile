@@ -25,7 +25,7 @@ platform :android do
         Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/apksigner verify ../app/build/outputs/apk/app-ready.apk", log: true)
     end
     lane :beta do |options|
-        Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/zipalign -c -v 4 ../app/build/outputs/apk/app-release.apk", log: true)
+        Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/zipalign -v -p 4 ../app/build/outputs/apk/app-release-unsigned.apk ../app/build/outputs/apk/app-release-unsigned-aligned.apk", log: true)
         Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/apksigner sign --ks ../ci/release.keystore --ks-key-alias mdmagent --ks-pass pass:"+ options[:storepass] +" --key-pass pass:"+ options[:keypass] +"  --out ../app/build/outputs/apk/app-ready.apk ../app/build/outputs/apk/app-release-unsigned-aligned.apk", log: true)
         Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/apksigner verify ../app/build/outputs/apk/app-ready.apk", log: true)
 
@@ -35,7 +35,7 @@ platform :android do
         )
     end
     lane :playstore do |options|
-        Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/zipalign -c -v 4 ../app/build/outputs/apk/app-release.apk", log: true)
+        Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/zipalign -v -p 4 ../app/build/outputs/apk/app-release-unsigned.apk ../app/build/outputs/apk/app-release-unsigned-aligned.apk", log: true)
         Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/apksigner sign --ks ../ci/release.keystore --ks-key-alias mdmagent --ks-pass pass:"+ options[:storepass] +" --key-pass pass:"+ options[:keypass] +"  --out ../app/build/outputs/apk/app-ready.apk ../app/build/outputs/apk/app-release-unsigned-aligned.apk", log: true)
         Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/apksigner verify ../app/build/outputs/apk/app-ready.apk", log: true)
 
