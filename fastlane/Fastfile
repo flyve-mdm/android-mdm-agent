@@ -29,7 +29,7 @@ platform :android do
 
         supply(
             track: 'beta',
-            apk: "#{lane_context[SharedValues::SIGNED_APK_PATH]}"
+            apk: "../app/build/outputs/apk/app-release.apk"
         )
     end
     lane :playstore do |options|
@@ -39,7 +39,7 @@ platform :android do
 
         supply(
             track: 'production',
-            apk: "#{lane_context[SharedValues::SIGNED_APK_PATH]}"
+            apk: "../app/build/outputs/apk/app-release.apk"
         )
     end
 end
