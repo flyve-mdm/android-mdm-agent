@@ -66,6 +66,12 @@
             android:layout_height="wrap_content"
             android:text="Disable Usb On The Go" />
 
+        <Switch
+            android:id="@+id/swDisableCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Disable Camera" />
+
         <Button
             android:id="@+id/btnLock"
             android:layout_width="wrap_content"
