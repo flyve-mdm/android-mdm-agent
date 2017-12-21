@@ -157,6 +157,16 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
+        Switch swDisableCamera = (Switch) v.findViewById(R.id.swDisableCamera);
+        swDisableCamera.setChecked(cache.getDisableCamera());
+        swDisableCamera.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(FragmentTestPolicies.this.getContext());
+                mdm.disableCamera(isChecked);
+            }
+        });
+
         return v;
     }
 
