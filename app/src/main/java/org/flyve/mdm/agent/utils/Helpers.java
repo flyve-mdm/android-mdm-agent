@@ -55,6 +55,7 @@ import org.flyve.mdm.agent.ui.MainActivity;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -77,6 +78,27 @@ public class Helpers {
 	 * private construtor
 	 */
 	private Helpers() {
+	}
+
+	public static void deleteMQTTCache(Context context) {
+		File path = context.getExternalFilesDir("MqttConnection");
+		FlyveLog.d(path.getAbsolutePath());
+		deleteFolder(path.getAbsolutePath());
+	}
+
+	public static void deleteFolder(String path) {
+
+		File file = new File(path);
+
+		if (file.exists()) {
+			String deleteCmd = "rm -r " + path;
+			Runtime runtime = Runtime.getRuntime();
+			try {
+				runtime.exec(deleteCmd);
+			} catch (IOException ex) {
+				FlyveLog.e(ex.getMessage());
+			}
+		}
 	}
 
 	public static void sendToNotificationBar(Context context, String message) {
