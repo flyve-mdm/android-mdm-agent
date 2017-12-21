@@ -13,6 +13,8 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
 import org.flyve.mdm.agent.utils.ConnectivityHelper;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -164,6 +166,18 @@ public class FragmentTestPolicies extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(FragmentTestPolicies.this.getContext());
                 mdm.disableCamera(isChecked);
+            }
+        });
+
+        Button btnClearMQTT = (Button) v.findViewById(R.id.btnCleatMQTT);
+        btnClearMQTT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Helpers.deleteMQTTCache(FragmentTestPolicies.this.getContext());
+                } catch (Exception ex) {
+                    FlyveLog.e(ex.getMessage());
+                }
             }
         });
 
