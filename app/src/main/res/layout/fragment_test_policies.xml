@@ -5,6 +5,9 @@
     android:layout_height="match_parent"
     >
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,11 +81,100 @@
             android:layout_height="wrap_content"
             android:text="Storage Encryption Device" />
 
+        <EditText
+            android:id="@+id/edtPasswordQuality"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Password Quality"
+            />
+
+        <EditText
+            android:id="@+id/edtPasswordLength"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Password Length"
+            android:inputType="number"
+            />
+
+        <EditText
+            android:id="@+id/edtPasswordMinimumLetters"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Password Minimum Letters"
+            android:inputType="number"
+            />
+
+        <EditText
+            android:id="@+id/edtPasswordMinimumLowerCase"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Password Minimum Lower Case"
+            android:inputType="number"
+            />
+
+        <EditText
+            android:id="@+id/edtPasswordMinimumUpperCase"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Password Minimum Upper Case"
+            android:inputType="number"
+            />
+
+        <EditText
+            android:id="@+id/edtPasswordMinimumNonLetter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Password Minimum Non Letter"
+            android:inputType="number"
+            />
+
+        <EditText
+            android:id="@+id/edtPasswordMinimumNumeric"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Password Minimum Numeric"
+            android:inputType="number"
+            />
+
+        <EditText
+            android:id="@+id/edtPasswordMinimumSymbols"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Password Minimum Symbols"
+            android:inputType="number"
+            />
+
+        <EditText
+            android:id="@+id/edtMaximumFailedPasswordsForWipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Maximum Failed Passwords For Wipe"
+            android:inputType="number"
+            />
+
+        <EditText
+            android:id="@+id/edtMaximumTimeToLock"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Maximum Time To Lock"
+            android:inputType="number"
+            />
+
+
+        <Button
+            android:id="@+id/btnPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send Password Policy"
+            />
+
+
         <Button
             android:id="@+id/btnLock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lock Screen"
+            android:layout_marginTop="20dp"
             />
 
         <Button
@@ -92,4 +184,5 @@
             android:text="Clear MQTT Cache"
             />
     </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
