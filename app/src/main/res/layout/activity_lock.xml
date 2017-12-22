@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/grayDark"
     >
 
     <ImageView
@@ -16,12 +16,14 @@
 
     <TextView
         android:id="@+id/txtMessage"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/lock_message"
         android:layout_below="@+id/logo"
         android:layout_margin="30dp"
-        />
+        android:gravity="center_horizontal"
+        android:text="@string/lock_message"
+        android:textAlignment="center"
+        android:textColor="@color/white" />
 
     <org.flyve.mdm.agent.utils.RoundedImageView
         android:id="@+id/imgLogoSupervisor"
@@ -42,6 +44,7 @@
         android:layout_marginBottom="5dp"
         android:layout_below="@+id/txtMessage"
         style="@style/regularText"
+        android:textColor="@color/white"
         />
 
     <TextView
@@ -52,6 +55,7 @@
         android:layout_marginLeft="10dp"
         android:layout_below="@+id/txtTitleSupervisor"
         style="@style/titleText"
+        android:textColor="@color/white"
         android:text="@string/not_available"
         />
 
@@ -64,10 +68,22 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         style="@style/regularText"
+        android:textColor="@color/white"
         android:text="@string/not_available"
         />
 
+    <ImageView
+        android:id="@+id/ic_shield"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_shield"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/btnUnlock"
+        android:layout_marginBottom="20dp"
+        />
+
     <Button
+        android:id="@+id/btnUnlock"
         android:onClick="unlockScreen"
         android:text="@string/lock_unlock"
         android:layout_width="wrap_content"
@@ -75,6 +91,8 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="30dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="@color/white"
         />
 
 </RelativeLayout>
