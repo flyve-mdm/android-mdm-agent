@@ -135,8 +135,15 @@ public class FlyveDeviceAdminUtils {
 
         if (status != DevicePolicyManager.ENCRYPTION_STATUS_UNSUPPORTED) {
             // encrypt file mute
+            // 3 = ENCRYPTION_STATUS_ACTIVE
+            // 1 = ENCRYPTION_STATUS_INACTIVE
+            // 5 = ENCRYPTION_STATUS_ACTIVE_PER_USER
+            // 4 = ENCRYPTION_STATUS_ACTIVE_DEFAULT_KEY
+            // 2 = ENCRYPTION_STATUS_ACTIVATING
             int isEncrypt = mDPM.setStorageEncryption(mDeviceAdmin, isEncryption);
             FlyveLog.d("setStorageEncryption: " + isEncrypt);
+        } else {
+            FlyveLog.d("Storage Encryption unsupported");
         }
     }
 
