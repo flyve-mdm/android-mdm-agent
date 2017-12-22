@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
@@ -45,6 +46,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 public class FragmentTestPolicies extends Fragment {
 
     private DataStorage cache;
+    private FlyveDeviceAdminUtils mdm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +56,7 @@ public class FragmentTestPolicies extends Fragment {
         View v = inflater.inflate(R.layout.fragment_test_policies, container, false);
 
         cache = new DataStorage(FragmentTestPolicies.this.getContext());
+        mdm = new FlyveDeviceAdminUtils(FragmentTestPolicies.this.getContext());
 
         Switch swGPS = (Switch) v.findViewById(R.id.swGPS);
 
@@ -154,7 +157,6 @@ public class FragmentTestPolicies extends Fragment {
         btnLock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(FragmentTestPolicies.this.getContext());
                 mdm.lockScreen();
             }
         });
@@ -164,7 +166,6 @@ public class FragmentTestPolicies extends Fragment {
         swDisableCamera.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(FragmentTestPolicies.this.getContext());
                 mdm.disableCamera(isChecked);
             }
         });
@@ -174,7 +175,6 @@ public class FragmentTestPolicies extends Fragment {
         swStorageEncryptionDevice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(FragmentTestPolicies.this.getContext());
                 mdm.storageEncryptionDevice(isChecked);
             }
         });
@@ -188,6 +188,32 @@ public class FragmentTestPolicies extends Fragment {
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
                 }
+            }
+        });
+
+        final EditText edtPasswordLength = (EditText) v.findViewById(R.id.edtPasswordLength);
+        final EditText edtPasswordMinimumLetters = (EditText) v.findViewById(R.id.edtPasswordMinimumLetters);
+        final EditText edtPasswordMinimumLowerCase = (EditText) v.findViewById(R.id.edtPasswordMinimumLowerCase);
+        final EditText edtPasswordMinimumUpperCase = (EditText) v.findViewById(R.id.edtPasswordMinimumUpperCase);
+        final EditText edtPasswordMinimumNonLetter = (EditText) v.findViewById(R.id.edtPasswordMinimumNonLetter);
+        final EditText edtPasswordMinimumNumeric = (EditText) v.findViewById(R.id.edtPasswordMinimumNumeric);
+        final EditText edtPasswordMinimumSymbols = (EditText) v.findViewById(R.id.edtPasswordMinimumSymbols);
+        final EditText edtMaximumFailedPasswordsForWipe = (EditText) v.findViewById(R.id.edtMaximumFailedPasswordsForWipe);
+        final EditText edtMaximumTimeToLock = (EditText) v.findViewById(R.id.edtMaximumTimeToLock);
+
+        Button btnPassword = (Button) v.findViewById(R.id.btnPassword);
+        btnPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mdm.setPasswordLength( Integer.parseInt( edtPasswordLength.getText().toString() ) );
+                mdm.setPasswordMinimumLetters( Integer.parseInt( edtPasswordMinimumLetters.getText().toString() ) );
+                mdm.setPasswordMinimumUpperCase( Integer.parseInt( edtPasswordMinimumUpperCase.getText().toString() ) );
+                mdm.setPasswordMinimumLowerCase( Integer.parseInt( edtPasswordMinimumLowerCase.getText().toString() ) );
+                mdm.setPasswordMinimumNonLetter( Integer.parseInt( edtPasswordMinimumNonLetter.getText().toString() ) );
+                mdm.setPasswordMinimumNumeric( Integer.parseInt( edtPasswordMinimumNumeric.getText().toString() ) );
+                mdm.setPasswordMinimumSymbols( Integer.parseInt( edtPasswordMinimumSymbols.getText().toString() ) );
+                mdm.setMaximumFailedPasswordsForWipe( Integer.parseInt( edtMaximumFailedPasswordsForWipe.getText().toString() ) );
+                mdm.setMaximumTimeToLock( Integer.parseInt( edtMaximumTimeToLock.getText().toString() ) );
             }
         });
 
