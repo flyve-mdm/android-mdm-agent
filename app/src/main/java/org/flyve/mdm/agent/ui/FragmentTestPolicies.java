@@ -169,6 +169,16 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
+        Switch swStorageEncryptionDevice = (Switch) v.findViewById(R.id.swStorageEncryptionDevice);
+        swStorageEncryptionDevice.setChecked(cache.getStorageEncryptionDevice());
+        swStorageEncryptionDevice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(FragmentTestPolicies.this.getContext());
+                mdm.storageEncryptionDevice(isChecked);
+            }
+        });
+
         Button btnClearMQTT = (Button) v.findViewById(R.id.btnCleatMQTT);
         btnClearMQTT.setOnClickListener(new View.OnClickListener() {
             @Override

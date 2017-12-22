@@ -72,6 +72,12 @@
             android:layout_height="wrap_content"
             android:text="Disable Camera" />
 
+        <Switch
+            android:id="@+id/swStorageEncryptionDevice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Storage Encryption Device" />
+
         <Button
             android:id="@+id/btnLock"
             android:layout_width="wrap_content"
