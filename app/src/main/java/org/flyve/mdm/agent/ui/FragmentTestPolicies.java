@@ -179,6 +179,14 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
+        Button btnReboot = (Button) v.findViewById(R.id.btnReboot);
+        btnReboot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mdm.reboot();
+            }
+        });
+
         Button btnClearMQTT = (Button) v.findViewById(R.id.btnCleatMQTT);
         btnClearMQTT.setOnClickListener(new View.OnClickListener() {
             @Override

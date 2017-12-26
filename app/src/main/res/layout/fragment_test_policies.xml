@@ -183,6 +183,14 @@
             android:layout_height="wrap_content"
             android:text="Clear MQTT Cache"
             />
+
+        <Button
+            android:id="@+id/btnReboot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reboot"
+            />
+
     </LinearLayout>
     </ScrollView>
 </RelativeLayout>
