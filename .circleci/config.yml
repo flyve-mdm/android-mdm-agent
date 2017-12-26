@@ -240,47 +240,48 @@ workflows:
   version: 2
   build_test_and_deploy:
     jobs:
-      - build
-      - test_api_v16:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - develop
-      - test_api_v25:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - develop
-      - deploy_beta:
-          requires:
-            - test_api_v16
-            - test_api_v25
-          filters:
-            branches:
-              only:
-                - develop
-      - documentation:
-          requires:
-            - test_api_v16
-            - test_api_v25
-          filters:
-            branches:
-              only:
-                - develop
-      - screenshot_api_16:
-          requires:
-            - test_api_v16
-            - test_api_v25
-          filters:
-            branches:
-              only:
-                - develop
-      - deploy_production:
-          filters:
-            branches:
-              only:
-                - master
+      - test_api_v25
+#      - build
+#      - test_api_v16:
+#          requires:
+#            - build
+#          filters:
+#            branches:
+#              only:
+#                - develop
+#      - test_api_v25:
+#          requires:
+#            - build
+#          filters:
+#            branches:
+#              only:
+#                - develop
+#      - deploy_beta:
+#          requires:
+#            - test_api_v16
+#            - test_api_v25
+#          filters:
+#            branches:
+#              only:
+#                - develop
+#      - documentation:
+#          requires:
+#            - test_api_v16
+#            - test_api_v25
+#          filters:
+#            branches:
+#              only:
+#                - develop
+#      - screenshot_api_16:
+#          requires:
+#            - test_api_v16
+#            - test_api_v25
+#          filters:
+#            branches:
+#              only:
+#                - develop
+#      - deploy_production:
+#          filters:
+#            branches:
+#              only:
+#                - master
