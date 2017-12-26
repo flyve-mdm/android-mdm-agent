@@ -5,6 +5,7 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PowerManager;
 import android.provider.Settings;
 
 import org.flyve.mdm.agent.data.DataStorage;
@@ -73,6 +74,15 @@ public class FlyveDeviceAdminUtils {
     public void disableStatusBar(boolean disable) {
         try {
             mDPM.setStatusBarDisabled(mDeviceAdmin, disable);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+    }
+
+    public void reboot() {
+        try {
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            pm.reboot(null);
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
