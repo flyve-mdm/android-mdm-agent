@@ -10,6 +10,7 @@ import android.provider.Settings;
 
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.ui.LockActivity;
+import org.flyve.mdm.agent.utils.DeviceLockedHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 /*
@@ -80,8 +81,20 @@ public class FlyveDeviceAdminUtils {
     }
 
     public void enablePassword() {
-        Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
-        context.startActivity(intent);
+        DeviceLockedHelper pwd = new DeviceLockedHelper(context);
+        if(pwd.isDeviceScreenLocked()) {
+            try {
+                if (!mDPM.isActivePasswordSufficient()) {
+                    Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
+                    context.startActivity(intent);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        } else {
+            Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
+            context.startActivity(intent);
+        }
     }
 
     public void reboot() {
