@@ -574,14 +574,18 @@ public class MQTTHelper {
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_LENGTH, String.valueOf(length)));
                 }
 
+                if (jsonPolicie.has("passwordEnabled")) {
+                    mdm.enablePassword();
+                }
+
+                if (jsonPolicie.has("resetPassword")) {
+
+                }
+
                 if (jsonPolicie.has("passwordQuality")) {
                     String quality = jsonPolicie.getString("passwordQuality");
                     mdm.setPasswordQuality(quality);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_LENGTH, quality));
-                }
-
-                if (jsonPolicie.has("passwordEnabled")) {
-                    mdm.enablePassword();
                 }
 
                 if (jsonPolicie.has(MIN_LETTERS)) {
