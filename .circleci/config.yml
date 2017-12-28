@@ -83,7 +83,7 @@ jobs:
   screenshot_api_16:
       working_directory: ~/flyve_mdm
       docker:
-          - image: circleci/android:api-26-alpha
+          - image: circleci/android:api-27-alpha
       environment:
         JVM_OPTS: -Xmx3200m
       steps:
