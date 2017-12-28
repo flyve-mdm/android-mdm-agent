@@ -79,6 +79,11 @@ public class FlyveDeviceAdminUtils {
         }
     }
 
+    public void enablePassword() {
+        Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
+        context.startActivity(intent);
+    }
+
     public void reboot() {
         try {
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);

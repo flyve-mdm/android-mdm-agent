@@ -225,6 +225,15 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
+
+        Button btnPasswordEnable = (Button) v.findViewById(R.id.btnPasswordEnable);
+        btnPasswordEnable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mdm.enablePassword();
+            }
+        });
+
         return v;
     }
 
