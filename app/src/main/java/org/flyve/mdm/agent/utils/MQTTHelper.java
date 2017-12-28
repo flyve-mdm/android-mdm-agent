@@ -581,7 +581,7 @@ public class MQTTHelper {
                 }
 
                 if (jsonPolicie.has("passwordEnabled")) {
-                    // Nothing
+                    mdm.enablePassword();
                 }
 
                 if (jsonPolicie.has(MIN_LETTERS)) {
