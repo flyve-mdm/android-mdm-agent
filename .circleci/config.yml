@@ -22,6 +22,7 @@ jobs:
     working_directory: ~/flyve_mdm
     docker:
         - image: circleci/android:api-27-alpha
+    resource_class: large
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
