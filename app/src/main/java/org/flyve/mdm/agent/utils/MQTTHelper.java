@@ -568,12 +568,6 @@ public class MQTTHelper {
             for (int i = 0; i <= jsonPolicies.length(); i++) {
                 JSONObject jsonPolicie = jsonPolicies.getJSONObject(0);
 
-                if (jsonPolicie.has(MIN_LENGTH)) {
-                    int length = jsonPolicie.getInt(MIN_LENGTH);
-                    mdm.setPasswordLength(length);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_LENGTH, String.valueOf(length)));
-                }
-
                 if (jsonPolicie.has("passwordQuality")) {
                     String quality = jsonPolicie.getString("passwordQuality");
                     mdm.setPasswordQuality(quality);
@@ -584,50 +578,107 @@ public class MQTTHelper {
                     mdm.enablePassword();
                 }
 
+                if (jsonPolicie.has(MIN_LENGTH)) {
+                    int length = 0;
+                    try {
+                        length = jsonPolicie.getInt(MIN_LENGTH);
+                    } catch (Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                    }
+                    mdm.setPasswordLength(length);
+                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_LENGTH, String.valueOf(length)));
+                }
+
                 if (jsonPolicie.has(MIN_LETTERS)) {
-                    int min = jsonPolicie.getInt(MIN_LETTERS);
+                    int min = 0;
+                    try {
+                        min = jsonPolicie.getInt(MIN_LETTERS);
+                    } catch (Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                    }
                     mdm.setPasswordMinimumLetters(min);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_LETTERS, String.valueOf(min)));
                 }
 
-                if (jsonPolicie.has(MIN_LOWERCASE)) {
-                    int min = jsonPolicie.getInt(MIN_LOWERCASE);
-                    mdm.setPasswordMinimumLowerCase(min);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_LOWERCASE, String.valueOf(min)));
-                }
-
                 if (jsonPolicie.has(MIN_NON_LETTER)) {
-                    int min = jsonPolicie.getInt(MIN_NON_LETTER);
+                    int min = 0;
+                    try {
+                        min = jsonPolicie.getInt(MIN_NON_LETTER);
+                    } catch (Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                    }
+
                     mdm.setPasswordMinimumNonLetter(min);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_NON_LETTER, String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has(MIN_NUMERIC)) {
-                    int min = jsonPolicie.getInt(MIN_NUMERIC);
+                    int min = 0;
+                    try {
+                        min = jsonPolicie.getInt(MIN_NUMERIC);
+                    } catch (Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                    }
+
                     mdm.setPasswordMinimumNumeric(min);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_NUMERIC, String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has(MIN_SYMBOLS)) {
-                    int min = jsonPolicie.getInt(MIN_SYMBOLS);
+                    int min = 0;
+                    try {
+                        min = jsonPolicie.getInt(MIN_SYMBOLS);
+                    } catch (Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                    }
+
                     mdm.setPasswordMinimumSymbols(min);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_SYMBOLS, String.valueOf(min)));
                 }
 
+                if (jsonPolicie.has(MIN_LOWERCASE)) {
+                    int min = 0;
+                    try {
+                        min = jsonPolicie.getInt(MIN_LOWERCASE);
+                    } catch (Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                    }
+                    mdm.setPasswordMinimumLowerCase(min);
+                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_LOWERCASE, String.valueOf(min)));
+                }
+
                 if (jsonPolicie.has(MIN_UPPERCASE)) {
-                    int min = jsonPolicie.getInt(MIN_UPPERCASE);
+                    int min = 0;
+                    try {
+                        min = jsonPolicie.getInt(MIN_UPPERCASE);
+                    } catch (Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                    }
+
                     mdm.setPasswordMinimumUpperCase(min);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_UPPERCASE, String.valueOf(min)));
                 }
 
                 if (jsonPolicie.has(MAXIMUM_FAILED_FOR_WIPE)) {
-                    int max = jsonPolicie.getInt(MAXIMUM_FAILED_FOR_WIPE);
+                    int max = 0;
+                    try {
+                        max = jsonPolicie.getInt(MAXIMUM_FAILED_FOR_WIPE);
+                    } catch (Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                    }
+
                     mdm.setMaximumFailedPasswordsForWipe(max);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MAXIMUM_FAILED_FOR_WIPE, String.valueOf(max)));
                 }
 
                 if (jsonPolicie.has("MaximumTimeToLock")) {
-                    int time = jsonPolicie.getInt("MaximumTimeToLock");
+                    int time = 0;
+                    try {
+                        time = jsonPolicie.getInt("MaximumTimeToLock");
+                    } catch (Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                    }
+
                     mdm.setMaximumTimeToLock(time);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MAXIMUM_FAILED_FOR_WIPE, String.valueOf(time)));
                 }
