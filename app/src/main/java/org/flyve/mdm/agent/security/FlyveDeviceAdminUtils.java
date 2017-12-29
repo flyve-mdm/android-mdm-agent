@@ -246,6 +246,11 @@ public class FlyveDeviceAdminUtils {
 
         if(mDPM.getPasswordMinimumLetters(mDeviceAdmin)!=minLetters) {
             FlyveLog.d("PasswordMinimumLetters:  " + minLetters);
+
+            if (mDPM.getPasswordQuality(mDeviceAdmin) != DevicePolicyManager.PASSWORD_QUALITY_COMPLEX) {
+                mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);
+            }
+
             mDPM.setPasswordMinimumLetters(mDeviceAdmin, minLetters);
         }
     }
@@ -260,6 +265,11 @@ public class FlyveDeviceAdminUtils {
 
         if(mDPM.getPasswordMinimumLowerCase(mDeviceAdmin)!=minLowerCase) {
             FlyveLog.d("setPasswordMinimumLowerCase:  " + minLowerCase);
+
+            if (mDPM.getPasswordQuality(mDeviceAdmin) != DevicePolicyManager.PASSWORD_QUALITY_COMPLEX) {
+                mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);
+            }
+
             mDPM.setPasswordMinimumLowerCase(mDeviceAdmin, minLowerCase);
         }
     }
@@ -274,6 +284,11 @@ public class FlyveDeviceAdminUtils {
 
         if(mDPM.getPasswordMinimumUpperCase(mDeviceAdmin)!=minUpperCase) {
             FlyveLog.d("setPasswordMinimumUpperCase:  " + minUpperCase);
+
+            if (mDPM.getPasswordQuality(mDeviceAdmin) != DevicePolicyManager.PASSWORD_QUALITY_COMPLEX) {
+                mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);
+            }
+
             mDPM.setPasswordMinimumUpperCase(mDeviceAdmin, minUpperCase);
         }
     }
@@ -288,6 +303,11 @@ public class FlyveDeviceAdminUtils {
 
         if(mDPM.getPasswordMinimumNonLetter(mDeviceAdmin)!=minNonLetter) {
             FlyveLog.d("setPasswordMinimumNonLetter: " + minNonLetter);
+
+            if (mDPM.getPasswordQuality(mDeviceAdmin) != DevicePolicyManager.PASSWORD_QUALITY_COMPLEX) {
+                mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);
+            }
+
             mDPM.setPasswordMinimumNonLetter(mDeviceAdmin, minNonLetter);
         }
     }
@@ -302,6 +322,11 @@ public class FlyveDeviceAdminUtils {
 
         if(mDPM.getPasswordMinimumNumeric(mDeviceAdmin)!=minNumeric) {
             FlyveLog.d("setPasswordMinimumNumeric:  " + minNumeric);
+
+            if (mDPM.getPasswordQuality(mDeviceAdmin) != DevicePolicyManager.PASSWORD_QUALITY_COMPLEX) {
+                mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);
+            }
+
             mDPM.setPasswordMinimumNumeric(mDeviceAdmin, minNumeric);
         }
     }
@@ -316,6 +341,11 @@ public class FlyveDeviceAdminUtils {
 
         if(mDPM.getPasswordMinimumSymbols(mDeviceAdmin)!=minSymbols) {
             FlyveLog.d("setPasswordMinimumSymbols:  " + minSymbols);
+
+            if (mDPM.getPasswordQuality(mDeviceAdmin) != DevicePolicyManager.PASSWORD_QUALITY_COMPLEX) {
+                mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);
+            }
+
             mDPM.setPasswordMinimumSymbols(mDeviceAdmin, minSymbols);
         }
     }
