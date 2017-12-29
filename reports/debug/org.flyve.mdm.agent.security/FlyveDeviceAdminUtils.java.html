@@ -5,10 +5,12 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PowerManager;
 import android.provider.Settings;
 
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.ui.LockActivity;
+import org.flyve.mdm.agent.utils.DeviceLockedHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 /*
@@ -44,124 +46,156 @@ public class FlyveDeviceAdminUtils {
     private Context context;
     private DataStorage cache;
 
-<span class="nc" id="L47">    public FlyveDeviceAdminUtils(Context context) {</span>
-<span class="nc" id="L48">        this.context = context;</span>
-<span class="nc" id="L49">        mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);</span>
-<span class="nc" id="L50">        mDeviceAdmin = new ComponentName(context, FlyveAdminReceiver.class);</span>
-<span class="nc" id="L51">        cache = new DataStorage(context);</span>
-<span class="nc" id="L52">    }</span>
+<span class="nc" id="L49">    public FlyveDeviceAdminUtils(Context context) {</span>
+<span class="nc" id="L50">        this.context = context;</span>
+<span class="nc" id="L51">        mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);</span>
+<span class="nc" id="L52">        mDeviceAdmin = new ComponentName(context, FlyveAdminReceiver.class);</span>
+<span class="nc" id="L53">        cache = new DataStorage(context);</span>
+<span class="nc" id="L54">    }</span>
 
     @TargetApi(21)
     public void disableRoaming(boolean disable) {
         try {
-<span class="nc bnc" id="L57" title="All 2 branches missed.">            mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.DATA_ROAMING, disable ? &quot;0&quot; : &quot;1&quot;);</span>
-<span class="nc" id="L58">        }catch (Exception ex) {</span>
-<span class="nc" id="L59">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L60">        }</span>
-<span class="nc" id="L61">    }</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.DATA_ROAMING, disable ? &quot;0&quot; : &quot;1&quot;);</span>
+<span class="nc" id="L60">        }catch (Exception ex) {</span>
+<span class="nc" id="L61">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L62">        }</span>
+<span class="nc" id="L63">    }</span>
 
     @TargetApi(21)
     public void disableCaptureScreen(boolean disable) {
         try {
-<span class="nc" id="L66">            mDPM.setScreenCaptureDisabled(mDeviceAdmin, disable);</span>
-<span class="nc" id="L67">        } catch (Exception ex) {</span>
-<span class="nc" id="L68">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L69">        }</span>
-<span class="nc" id="L70">    }</span>
+<span class="nc" id="L68">            mDPM.setScreenCaptureDisabled(mDeviceAdmin, disable);</span>
+<span class="nc" id="L69">        } catch (Exception ex) {</span>
+<span class="nc" id="L70">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L71">        }</span>
+<span class="nc" id="L72">    }</span>
 
     @TargetApi(23)
     public void disableStatusBar(boolean disable) {
         try {
-<span class="nc" id="L75">            mDPM.setStatusBarDisabled(mDeviceAdmin, disable);</span>
-<span class="nc" id="L76">        } catch (Exception ex) {</span>
-<span class="nc" id="L77">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L78">        }</span>
-<span class="nc" id="L79">    }</span>
+<span class="nc" id="L77">            mDPM.setStatusBarDisabled(mDeviceAdmin, disable);</span>
+<span class="nc" id="L78">        } catch (Exception ex) {</span>
+<span class="nc" id="L79">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L80">        }</span>
+<span class="nc" id="L81">    }</span>
+
+    public void enablePassword() {
+<span class="nc" id="L84">        DeviceLockedHelper pwd = new DeviceLockedHelper(context);</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        if(pwd.isDeviceScreenLocked()) {</span>
+            try {
+<span class="nc bnc" id="L87" title="All 2 branches missed.">                if (!mDPM.isActivePasswordSufficient()) {</span>
+<span class="nc" id="L88">                    Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);</span>
+<span class="nc" id="L89">                    context.startActivity(intent);</span>
+                }
+<span class="nc" id="L91">            } catch (Exception ex) {</span>
+<span class="nc" id="L92">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L93">            }</span>
+        } else {
+<span class="nc" id="L95">            Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);</span>
+<span class="nc" id="L96">            context.startActivity(intent);</span>
+        }
+<span class="nc" id="L98">    }</span>
+
+    public void reboot() {
+        try {
+<span class="nc" id="L102">            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);</span>
+<span class="nc" id="L103">            pm.reboot(null);</span>
+<span class="nc" id="L104">        } catch (Exception ex) {</span>
+<span class="nc" id="L105">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L106">        }</span>
+<span class="nc" id="L107">    }</span>
 
     public void resetPassword(String newPassword) {
-<span class="nc" id="L82">        mDPM.resetPassword(newPassword, 0);</span>
-<span class="nc" id="L83">    }</span>
+<span class="nc" id="L110">        mDPM.resetPassword(newPassword, 0);</span>
+<span class="nc" id="L111">    }</span>
 
     /**
      * Erase all data of the device
      */
     public void wipe() {
-<span class="nc" id="L89">        mDPM.wipeData(0);</span>
-<span class="nc" id="L90">    }</span>
+<span class="nc" id="L117">        mDPM.wipeData(0);</span>
+<span class="nc" id="L118">    }</span>
 
     /**
      * Launch lock activity
      */
     public void lockScreen() {
-<span class="nc" id="L96">        Intent miIntent = new Intent(context, LockActivity.class);</span>
-<span class="nc" id="L97">        context.startActivity(miIntent);</span>
-<span class="nc" id="L98">    }</span>
+<span class="nc" id="L124">        Intent miIntent = new Intent(context, LockActivity.class);</span>
+<span class="nc" id="L125">        context.startActivity(miIntent);</span>
+<span class="nc" id="L126">    }</span>
 
     /**
      * Lock the device now
      */
     public void lockDevice() {
-<span class="nc" id="L104">        mDPM.lockNow();</span>
-<span class="nc" id="L105">    }</span>
+<span class="nc" id="L132">        mDPM.lockNow();</span>
+<span class="nc" id="L133">    }</span>
 
     /**
      * Request to user encrypt files
      */
     public void storageEncryptionDeviceRequest() {
-<span class="nc" id="L111">        Intent intent = new Intent(DevicePolicyManager.ACTION_START_ENCRYPTION);</span>
-<span class="nc" id="L112">        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
-<span class="nc" id="L113">        context.getApplicationContext().startActivity(intent);</span>
-<span class="nc" id="L114">    }</span>
+<span class="nc" id="L139">        Intent intent = new Intent(DevicePolicyManager.ACTION_START_ENCRYPTION);</span>
+<span class="nc" id="L140">        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
+<span class="nc" id="L141">        context.getApplicationContext().startActivity(intent);</span>
+<span class="nc" id="L142">    }</span>
 
     /**
      * Encrypt Storage from dashboard
      * @param isEncryption boolean
      */
     public void storageEncryptionDevice(boolean isEncryption) {
-<span class="nc" id="L121">        int status = mDPM.getStorageEncryptionStatus();</span>
-<span class="nc" id="L122">        FlyveLog.d(&quot;status: &quot; + status);</span>
+<span class="nc" id="L149">        int status = mDPM.getStorageEncryptionStatus();</span>
+<span class="nc" id="L150">        FlyveLog.d(&quot;status: &quot; + status);</span>
 
-<span class="nc" id="L124">        cache.setStorageEncryptionDevice(isEncryption);</span>
+<span class="nc" id="L152">        cache.setStorageEncryptionDevice(isEncryption);</span>
 
-<span class="nc bnc" id="L126" title="All 4 branches missed.">        if(isEncryption &amp;&amp; status == DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE) {</span>
+<span class="nc bnc" id="L154" title="All 4 branches missed.">        if(isEncryption &amp;&amp; status == DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE) {</span>
             // the data is already encrypted
-<span class="nc" id="L128">            return;</span>
+<span class="nc" id="L156">            return;</span>
         }
 
-<span class="nc bnc" id="L131" title="All 4 branches missed.">        if(isEncryption &amp;&amp; status == DevicePolicyManager.ENCRYPTION_STATUS_ACTIVATING) {</span>
+<span class="nc bnc" id="L159" title="All 4 branches missed.">        if(isEncryption &amp;&amp; status == DevicePolicyManager.ENCRYPTION_STATUS_ACTIVATING) {</span>
             // the encryption is working
-<span class="nc" id="L133">            return;</span>
+<span class="nc" id="L161">            return;</span>
         }
 
-<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (status != DevicePolicyManager.ENCRYPTION_STATUS_UNSUPPORTED) {</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        if (status != DevicePolicyManager.ENCRYPTION_STATUS_UNSUPPORTED) {</span>
             // encrypt file mute
-<span class="nc" id="L138">            int isEncrypt = mDPM.setStorageEncryption(mDeviceAdmin, isEncryption);</span>
-<span class="nc" id="L139">            FlyveLog.d(&quot;setStorageEncryption: &quot; + isEncrypt);</span>
+            // 3 = ENCRYPTION_STATUS_ACTIVE
+            // 1 = ENCRYPTION_STATUS_INACTIVE
+            // 5 = ENCRYPTION_STATUS_ACTIVE_PER_USER
+            // 4 = ENCRYPTION_STATUS_ACTIVE_DEFAULT_KEY
+            // 2 = ENCRYPTION_STATUS_ACTIVATING
+<span class="nc" id="L171">            int isEncrypt = mDPM.setStorageEncryption(mDeviceAdmin, isEncryption);</span>
+<span class="nc" id="L172">            FlyveLog.d(&quot;setStorageEncryption: &quot; + isEncrypt);</span>
+<span class="nc" id="L173">        } else {</span>
+<span class="nc" id="L174">            FlyveLog.d(&quot;Storage Encryption unsupported&quot;);</span>
         }
-<span class="nc" id="L141">    }</span>
+<span class="nc" id="L176">    }</span>
 
     /**
      * Disable the possibility to use the camera
      * @param disable boolean true | false
      */
     public void disableCamera(boolean disable) {
-<span class="nc" id="L148">        mDPM.setCameraDisabled(mDeviceAdmin, disable);</span>
-<span class="nc" id="L149">        cache.setDisableCamera(disable);</span>
-<span class="nc" id="L150">    }</span>
+<span class="nc" id="L183">        mDPM.setCameraDisabled(mDeviceAdmin, disable);</span>
+<span class="nc" id="L184">        cache.setDisableCamera(disable);</span>
+<span class="nc" id="L185">    }</span>
 
     /**
      * Set password length
      * @param length int
      */
     public void setPasswordLength(int length) {
-<span class="nc" id="L157">        FlyveLog.d(&quot;setPasswordLength: &quot; + length);</span>
-<span class="nc" id="L158">        cache.setPasswordLength(String.valueOf(length));</span>
+<span class="nc" id="L192">        cache.setPasswordLength(String.valueOf(length));</span>
 
-<span class="nc bnc" id="L160" title="All 2 branches missed.">        if(mDPM.getPasswordMinimumLength(mDeviceAdmin)!=length){</span>
-<span class="nc" id="L161">            FlyveLog.d(&quot;Apply setPasswordLength: &quot; + length);</span>
-<span class="nc" id="L162">            mDPM.setPasswordMinimumLength(mDeviceAdmin, length);</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if(mDPM.getPasswordMinimumLength(mDeviceAdmin)!=length){</span>
+<span class="nc" id="L195">            FlyveLog.d(&quot;PasswordLength: &quot; + length);</span>
+<span class="nc" id="L196">            mDPM.setPasswordMinimumLength(mDeviceAdmin, length);</span>
         }
-<span class="nc" id="L164">    }</span>
+<span class="nc" id="L198">    }</span>
 
     /**
      * Set password quality
@@ -169,38 +203,38 @@ public class FlyveDeviceAdminUtils {
      */
     public void setPasswordQuality(String quality) {
 
-<span class="nc" id="L172">        cache.setPasswordQuality(quality);</span>
+<span class="nc" id="L206">        cache.setPasswordQuality(quality);</span>
 
-<span class="nc bnc" id="L174" title="All 2 branches missed.">         if(&quot;PASSWORD_QUALITY_NUMERIC&quot;.equalsIgnoreCase(quality)) {</span>
-<span class="nc" id="L175">             FlyveLog.d(&quot;switch: PASSWORD_QUALITY_NUMERIC&quot;);</span>
-<span class="nc" id="L176">             mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_NUMERIC);</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">         if(&quot;PASSWORD_QUALITY_NUMERIC&quot;.equalsIgnoreCase(quality)) {</span>
+<span class="nc" id="L209">             FlyveLog.d(&quot;switch: PASSWORD_QUALITY_NUMERIC&quot;);</span>
+<span class="nc" id="L210">             mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_NUMERIC);</span>
          }
 
-<span class="nc bnc" id="L179" title="All 2 branches missed.">         if(&quot;PASSWORD_QUALITY_ALPHABETIC&quot;.equalsIgnoreCase(quality)) {</span>
-<span class="nc" id="L180">            FlyveLog.d(&quot;switch: PASSWORD_QUALITY_ALPHABETIC&quot;);</span>
-<span class="nc" id="L181">            mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_ALPHABETIC);</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">         if(&quot;PASSWORD_QUALITY_ALPHABETIC&quot;.equalsIgnoreCase(quality)) {</span>
+<span class="nc" id="L214">            FlyveLog.d(&quot;switch: PASSWORD_QUALITY_ALPHABETIC&quot;);</span>
+<span class="nc" id="L215">            mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_ALPHABETIC);</span>
         }
 
-<span class="nc bnc" id="L184" title="All 2 branches missed.">        if(&quot;PASSWORD_QUALITY_ALPHANUMERIC&quot;.equalsIgnoreCase(quality)) {</span>
-<span class="nc" id="L185">            FlyveLog.d(&quot;switch: PASSWORD_QUALITY_ALPHANUMERIC&quot;);</span>
-<span class="nc" id="L186">            mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_ALPHANUMERIC);</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">        if(&quot;PASSWORD_QUALITY_ALPHANUMERIC&quot;.equalsIgnoreCase(quality)) {</span>
+<span class="nc" id="L219">            FlyveLog.d(&quot;switch: PASSWORD_QUALITY_ALPHANUMERIC&quot;);</span>
+<span class="nc" id="L220">            mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_ALPHANUMERIC);</span>
         }
 
-<span class="nc bnc" id="L189" title="All 2 branches missed.">        if(&quot;PASSWORD_QUALITY_COMPLEX&quot;.equalsIgnoreCase(quality)) {</span>
-<span class="nc" id="L190">            FlyveLog.d(&quot;switch: PASSWORD_QUALITY_COMPLEX&quot;);</span>
-<span class="nc" id="L191">            mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">        if(&quot;PASSWORD_QUALITY_COMPLEX&quot;.equalsIgnoreCase(quality)) {</span>
+<span class="nc" id="L224">            FlyveLog.d(&quot;switch: PASSWORD_QUALITY_COMPLEX&quot;);</span>
+<span class="nc" id="L225">            mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);</span>
         }
 
-<span class="nc bnc" id="L194" title="All 2 branches missed.">        if(&quot;PASSWORD_QUALITY_SOMETHING&quot;.equalsIgnoreCase(quality)) {</span>
-<span class="nc" id="L195">            FlyveLog.d(&quot;switch: PASSWORD_QUALITY_SOMETHING&quot;);</span>
-<span class="nc" id="L196">            mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_SOMETHING);</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">        if(&quot;PASSWORD_QUALITY_SOMETHING&quot;.equalsIgnoreCase(quality)) {</span>
+<span class="nc" id="L229">            FlyveLog.d(&quot;switch: PASSWORD_QUALITY_SOMETHING&quot;);</span>
+<span class="nc" id="L230">            mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_SOMETHING);</span>
         }
 
-<span class="nc bnc" id="L199" title="All 2 branches missed.">        if(&quot;PASSWORD_QUALITY_UNSPECIFIED&quot;.equalsIgnoreCase(quality)) {</span>
-<span class="nc" id="L200">            FlyveLog.d(&quot;switch: PASSWORD_QUALITY_UNSPECIFIED&quot;);</span>
-<span class="nc" id="L201">            mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_UNSPECIFIED);</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        if(&quot;PASSWORD_QUALITY_UNSPECIFIED&quot;.equalsIgnoreCase(quality)) {</span>
+<span class="nc" id="L234">            FlyveLog.d(&quot;switch: PASSWORD_QUALITY_UNSPECIFIED&quot;);</span>
+<span class="nc" id="L235">            mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_UNSPECIFIED);</span>
         }
-<span class="nc" id="L203">    }</span>
+<span class="nc" id="L237">    }</span>
 
     /**
      * Set Password minumim letters
@@ -208,13 +242,18 @@ public class FlyveDeviceAdminUtils {
      */
     public void setPasswordMinimumLetters(int minLetters) {
 
-<span class="nc" id="L211">        cache.setPasswordMinimumLetters(String.valueOf(minLetters));</span>
+<span class="nc" id="L245">        cache.setPasswordMinimumLetters(String.valueOf(minLetters));</span>
 
-<span class="nc bnc" id="L213" title="All 2 branches missed.">        if(mDPM.getPasswordMinimumLetters(mDeviceAdmin)!=minLetters) {</span>
-<span class="nc" id="L214">            FlyveLog.d(&quot;PasswordMinimumLetters:  &quot; + minLetters);</span>
-<span class="nc" id="L215">            mDPM.setPasswordMinimumLetters(mDeviceAdmin, minLetters);</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">        if(mDPM.getPasswordMinimumLetters(mDeviceAdmin)!=minLetters) {</span>
+<span class="nc" id="L248">            FlyveLog.d(&quot;PasswordMinimumLetters:  &quot; + minLetters);</span>
+
+<span class="nc bnc" id="L250" title="All 2 branches missed.">            if (mDPM.getPasswordQuality(mDeviceAdmin) != DevicePolicyManager.PASSWORD_QUALITY_COMPLEX) {</span>
+<span class="nc" id="L251">                mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);</span>
+            }
+
+<span class="nc" id="L254">            mDPM.setPasswordMinimumLetters(mDeviceAdmin, minLetters);</span>
         }
-<span class="nc" id="L217">    }</span>
+<span class="nc" id="L256">    }</span>
 
     /**
      * set Password Minimum Lower Case
@@ -222,13 +261,18 @@ public class FlyveDeviceAdminUtils {
      */
     public void setPasswordMinimumLowerCase(int minLowerCase) {
 
-<span class="nc" id="L225">        cache.setPasswordMinimumLowerCase(String.valueOf(minLowerCase));</span>
+<span class="nc" id="L264">        cache.setPasswordMinimumLowerCase(String.valueOf(minLowerCase));</span>
 
-<span class="nc bnc" id="L227" title="All 2 branches missed.">        if(mDPM.getPasswordMinimumLowerCase(mDeviceAdmin)!=minLowerCase) {</span>
-<span class="nc" id="L228">            FlyveLog.d(&quot;setPasswordMinimumLowerCase:  &quot; + minLowerCase);</span>
-<span class="nc" id="L229">            mDPM.setPasswordMinimumLowerCase(mDeviceAdmin, minLowerCase);</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">        if(mDPM.getPasswordMinimumLowerCase(mDeviceAdmin)!=minLowerCase) {</span>
+<span class="nc" id="L267">            FlyveLog.d(&quot;setPasswordMinimumLowerCase:  &quot; + minLowerCase);</span>
+
+<span class="nc bnc" id="L269" title="All 2 branches missed.">            if (mDPM.getPasswordQuality(mDeviceAdmin) != DevicePolicyManager.PASSWORD_QUALITY_COMPLEX) {</span>
+<span class="nc" id="L270">                mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);</span>
+            }
+
+<span class="nc" id="L273">            mDPM.setPasswordMinimumLowerCase(mDeviceAdmin, minLowerCase);</span>
         }
-<span class="nc" id="L231">    }</span>
+<span class="nc" id="L275">    }</span>
 
     /**
      * set Password Minimum Upper Case
@@ -236,13 +280,18 @@ public class FlyveDeviceAdminUtils {
      */
     public void setPasswordMinimumUpperCase(int minUpperCase) {
 
-<span class="nc" id="L239">        cache.setPasswordMinimumUpperCase(String.valueOf(minUpperCase));</span>
+<span class="nc" id="L283">        cache.setPasswordMinimumUpperCase(String.valueOf(minUpperCase));</span>
 
-<span class="nc bnc" id="L241" title="All 2 branches missed.">        if(mDPM.getPasswordMinimumUpperCase(mDeviceAdmin)!=minUpperCase) {</span>
-<span class="nc" id="L242">            FlyveLog.d(&quot;setPasswordMinimumUpperCase:  &quot; + minUpperCase);</span>
-<span class="nc" id="L243">            mDPM.setPasswordMinimumUpperCase(mDeviceAdmin, minUpperCase);</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">        if(mDPM.getPasswordMinimumUpperCase(mDeviceAdmin)!=minUpperCase) {</span>
+<span class="nc" id="L286">            FlyveLog.d(&quot;setPasswordMinimumUpperCase:  &quot; + minUpperCase);</span>
+
+<span class="nc bnc" id="L288" title="All 2 branches missed.">            if (mDPM.getPasswordQuality(mDeviceAdmin) != DevicePolicyManager.PASSWORD_QUALITY_COMPLEX) {</span>
+<span class="nc" id="L289">                mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);</span>
+            }
+
+<span class="nc" id="L292">            mDPM.setPasswordMinimumUpperCase(mDeviceAdmin, minUpperCase);</span>
         }
-<span class="nc" id="L245">    }</span>
+<span class="nc" id="L294">    }</span>
 
     /**
      * set Password Minimum Non Letter
@@ -250,13 +299,18 @@ public class FlyveDeviceAdminUtils {
      */
     public void setPasswordMinimumNonLetter(int minNonLetter) {
 
-<span class="nc" id="L253">        cache.setPasswordMinimumNonLetter(String.valueOf(minNonLetter));</span>
+<span class="nc" id="L302">        cache.setPasswordMinimumNonLetter(String.valueOf(minNonLetter));</span>
 
-<span class="nc bnc" id="L255" title="All 2 branches missed.">        if(mDPM.getPasswordMinimumNonLetter(mDeviceAdmin)!=minNonLetter) {</span>
-<span class="nc" id="L256">            FlyveLog.d(&quot;setPasswordMinimumNonLetter: &quot; + minNonLetter);</span>
-<span class="nc" id="L257">            mDPM.setPasswordMinimumNonLetter(mDeviceAdmin, minNonLetter);</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">        if(mDPM.getPasswordMinimumNonLetter(mDeviceAdmin)!=minNonLetter) {</span>
+<span class="nc" id="L305">            FlyveLog.d(&quot;setPasswordMinimumNonLetter: &quot; + minNonLetter);</span>
+
+<span class="nc bnc" id="L307" title="All 2 branches missed.">            if (mDPM.getPasswordQuality(mDeviceAdmin) != DevicePolicyManager.PASSWORD_QUALITY_COMPLEX) {</span>
+<span class="nc" id="L308">                mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);</span>
+            }
+
+<span class="nc" id="L311">            mDPM.setPasswordMinimumNonLetter(mDeviceAdmin, minNonLetter);</span>
         }
-<span class="nc" id="L259">    }</span>
+<span class="nc" id="L313">    }</span>
 
     /**
      * set Password Minimum Numeric
@@ -264,13 +318,18 @@ public class FlyveDeviceAdminUtils {
      */
     public void setPasswordMinimumNumeric(int minNumeric) {
 
-<span class="nc" id="L267">        cache.setPasswordMinimumNumeric(String.valueOf(minNumeric));</span>
+<span class="nc" id="L321">        cache.setPasswordMinimumNumeric(String.valueOf(minNumeric));</span>
 
-<span class="nc bnc" id="L269" title="All 2 branches missed.">        if(mDPM.getPasswordMinimumNumeric(mDeviceAdmin)!=minNumeric) {</span>
-<span class="nc" id="L270">            FlyveLog.d(&quot;setPasswordMinimumNumeric:  &quot; + minNumeric);</span>
-<span class="nc" id="L271">            mDPM.setPasswordMinimumNumeric(mDeviceAdmin, minNumeric);</span>
+<span class="nc bnc" id="L323" title="All 2 branches missed.">        if(mDPM.getPasswordMinimumNumeric(mDeviceAdmin)!=minNumeric) {</span>
+<span class="nc" id="L324">            FlyveLog.d(&quot;setPasswordMinimumNumeric:  &quot; + minNumeric);</span>
+
+<span class="nc bnc" id="L326" title="All 2 branches missed.">            if (mDPM.getPasswordQuality(mDeviceAdmin) != DevicePolicyManager.PASSWORD_QUALITY_COMPLEX) {</span>
+<span class="nc" id="L327">                mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);</span>
+            }
+
+<span class="nc" id="L330">            mDPM.setPasswordMinimumNumeric(mDeviceAdmin, minNumeric);</span>
         }
-<span class="nc" id="L273">    }</span>
+<span class="nc" id="L332">    }</span>
 
     /**
      * set Password Minimum Symbols
@@ -278,13 +337,18 @@ public class FlyveDeviceAdminUtils {
      */
     public void setPasswordMinimumSymbols(int minSymbols) {
 
-<span class="nc" id="L281">        cache.setPasswordMinimumSymbols(String.valueOf(minSymbols));</span>
+<span class="nc" id="L340">        cache.setPasswordMinimumSymbols(String.valueOf(minSymbols));</span>
 
-<span class="nc bnc" id="L283" title="All 2 branches missed.">        if(mDPM.getPasswordMinimumSymbols(mDeviceAdmin)!=minSymbols) {</span>
-<span class="nc" id="L284">            FlyveLog.d(&quot;setPasswordMinimumSymbols:  &quot; + minSymbols);</span>
-<span class="nc" id="L285">            mDPM.setPasswordMinimumSymbols(mDeviceAdmin, minSymbols);</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">        if(mDPM.getPasswordMinimumSymbols(mDeviceAdmin)!=minSymbols) {</span>
+<span class="nc" id="L343">            FlyveLog.d(&quot;setPasswordMinimumSymbols:  &quot; + minSymbols);</span>
+
+<span class="nc bnc" id="L345" title="All 2 branches missed.">            if (mDPM.getPasswordQuality(mDeviceAdmin) != DevicePolicyManager.PASSWORD_QUALITY_COMPLEX) {</span>
+<span class="nc" id="L346">                mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);</span>
+            }
+
+<span class="nc" id="L349">            mDPM.setPasswordMinimumSymbols(mDeviceAdmin, minSymbols);</span>
         }
-<span class="nc" id="L287">    }</span>
+<span class="nc" id="L351">    }</span>
 
     /**
      * set Maximum Failed Passwords For Wipe
@@ -292,13 +356,13 @@ public class FlyveDeviceAdminUtils {
      */
     public void setMaximumFailedPasswordsForWipe(int maxFailed) {
 
-<span class="nc" id="L295">        cache.setMaximumFailedPasswordsForWipe(String.valueOf(maxFailed));</span>
+<span class="nc" id="L359">        cache.setMaximumFailedPasswordsForWipe(String.valueOf(maxFailed));</span>
 
-<span class="nc bnc" id="L297" title="All 2 branches missed.">        if(mDPM.getMaximumFailedPasswordsForWipe(mDeviceAdmin)!=maxFailed) {</span>
-<span class="nc" id="L298">            FlyveLog.d(&quot;setMaximumFailedPasswordsForWipe:  &quot; + maxFailed);</span>
-<span class="nc" id="L299">            mDPM.setMaximumFailedPasswordsForWipe(mDeviceAdmin, maxFailed);</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">        if(mDPM.getMaximumFailedPasswordsForWipe(mDeviceAdmin)!=maxFailed) {</span>
+<span class="nc" id="L362">            FlyveLog.d(&quot;setMaximumFailedPasswordsForWipe:  &quot; + maxFailed);</span>
+<span class="nc" id="L363">            mDPM.setMaximumFailedPasswordsForWipe(mDeviceAdmin, maxFailed);</span>
         }
-<span class="nc" id="L301">    }</span>
+<span class="nc" id="L365">    }</span>
 
     /**
      * set Maximum Time To Lock
@@ -306,13 +370,13 @@ public class FlyveDeviceAdminUtils {
      */
     public void setMaximumTimeToLock(long timeMs) {
 
-<span class="nc" id="L309">        cache.setMaximumTimeToLock(String.valueOf(timeMs));</span>
+<span class="nc" id="L373">        cache.setMaximumTimeToLock(String.valueOf(timeMs));</span>
 
-<span class="nc bnc" id="L311" title="All 2 branches missed.">        if(mDPM.getMaximumTimeToLock(mDeviceAdmin)!=timeMs) {</span>
-<span class="nc" id="L312">            FlyveLog.d(&quot;setMaximumTimeToLock:  &quot; + timeMs);</span>
-<span class="nc" id="L313">            mDPM.setMaximumTimeToLock(mDeviceAdmin, timeMs);</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">        if(mDPM.getMaximumTimeToLock(mDeviceAdmin)!=timeMs) {</span>
+<span class="nc" id="L376">            FlyveLog.d(&quot;setMaximumTimeToLock:  &quot; + timeMs);</span>
+<span class="nc" id="L377">            mDPM.setMaximumTimeToLock(mDeviceAdmin, timeMs);</span>
         }
-<span class="nc" id="L315">    }</span>
+<span class="nc" id="L379">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>
