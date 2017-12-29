@@ -248,17 +248,17 @@ workflows:
             branches:
               only:
                 - develop
-      - test_api_v25:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - develop
+#      - test_api_v25:
+#          requires:
+#            - build
+#          filters:
+#            branches:
+#              only:
+#                - develop
       - deploy_beta:
           requires:
             - test_api_v16
-            - test_api_v25
+  #          - test_api_v25
           filters:
             branches:
               only:
@@ -266,7 +266,7 @@ workflows:
       - documentation:
           requires:
             - test_api_v16
-            - test_api_v25
+ #           - test_api_v25
           filters:
             branches:
               only:
@@ -274,7 +274,7 @@ workflows:
       - screenshot_api_16:
           requires:
             - test_api_v16
-            - test_api_v25
+#            - test_api_v25
           filters:
             branches:
               only:
