@@ -53,17 +53,30 @@ public class FastLocationProvider {
         if (isNetworkEnabled) {
             Criteria criteria = new Criteria();
             criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-            locationManager.requestSingleUpdate(criteria, new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
-                    callback.onNewLocationAvailable(location);
-                }
+            try {
+                locationManager.requestSingleUpdate(criteria, new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        callback.onNewLocationAvailable(location);
+                    }
 
-                @Override public void onStatusChanged(String provider, int status, Bundle extras) { }
-                @Override public void onProviderEnabled(String provider) { }
-                @Override public void onProviderDisabled(String provider) { }
-            }, null);
-            return true;
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String provider) {
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String provider) {
+                    }
+                }, null);
+                return true;
+            } catch (SecurityException ex) {
+                FlyveLog.e(ex.getMessage());
+                return false;
+            }
         }
 
         return false;
