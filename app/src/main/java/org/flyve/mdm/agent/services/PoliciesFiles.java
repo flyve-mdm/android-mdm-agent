@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent.utils;
+package org.flyve.mdm.agent.services;
 
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
@@ -14,6 +14,10 @@ import android.support.v4.app.NotificationCompat.Builder;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.ui.MDMAgent;
+import org.flyve.mdm.agent.utils.ConnectionHTTP;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.mdm.agent.core.Routes;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -46,7 +50,7 @@ import java.util.regex.Pattern;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class FilesHelper extends AsyncTask<String, Integer, Integer> {
+public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
 
     private static final String EXTERNAL_STORAGE = "EXTERNAL_STORAGE"; 
     private Context context;
@@ -59,7 +63,7 @@ public class FilesHelper extends AsyncTask<String, Integer, Integer> {
      * This constructor loads the context of the current class
      * @param context of the class
      */
-    public FilesHelper(Context context) {
+    public PoliciesFiles(Context context) {
         this.context = context;
         routes = new Routes(context);
 

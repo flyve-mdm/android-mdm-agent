@@ -46,7 +46,6 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.flyve.mdm.agent.utils.MQTTHelper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

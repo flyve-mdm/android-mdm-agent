@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent.utils;
+package org.flyve.mdm.agent.core;
 
 import android.content.Context;
 import android.os.Handler;
@@ -7,6 +7,9 @@ import android.os.Looper;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
+import org.flyve.mdm.agent.utils.ConnectionHTTP;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

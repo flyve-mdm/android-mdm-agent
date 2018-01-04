@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent.utils;
+package org.flyve.mdm.agent.services;
 
 import android.annotation.TargetApi;
 import android.app.KeyguardManager;
@@ -6,6 +6,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
+
+import org.flyve.mdm.agent.utils.FlyveLog;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.

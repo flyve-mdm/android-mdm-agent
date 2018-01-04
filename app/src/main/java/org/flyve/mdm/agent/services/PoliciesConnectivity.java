@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent.utils;
+package org.flyve.mdm.agent.services;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
-import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
 import org.flyve.mdm.agent.ui.MDMAgent;
+import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.io.DataOutputStream;
 import java.lang.reflect.Method;
@@ -41,9 +41,9 @@ import static android.content.Context.TELEPHONY_SERVICE;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class ConnectivityHelper {
+public class PoliciesConnectivity {
 
-    private ConnectivityHelper() {}
+    private PoliciesConnectivity() {}
 
     private static void executecmd(String[] cmds) {
         try {
@@ -77,7 +77,7 @@ public class ConnectivityHelper {
 
     public static void disableRoaming(boolean disable){
         if(Build.VERSION.SDK_INT>=21) {
-            new FlyveDeviceAdminUtils(MDMAgent.getInstance()).disableRoaming(disable);
+            new PoliciesDeviceManager(MDMAgent.getInstance()).disableRoaming(disable);
         } else {
             // ROOT OPTION
             String value = "0"; // disable

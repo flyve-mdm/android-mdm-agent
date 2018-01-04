@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent.security;
+package org.flyve.mdm.agent.services;
 
 import android.annotation.TargetApi;
 import android.app.admin.DevicePolicyManager;
@@ -9,8 +9,8 @@ import android.os.PowerManager;
 import android.provider.Settings;
 
 import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.ui.LockActivity;
-import org.flyve.mdm.agent.utils.DeviceLockedHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 /*
@@ -39,14 +39,14 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class FlyveDeviceAdminUtils {
+public class PoliciesDeviceManager {
 
     private DevicePolicyManager mDPM;
     private ComponentName mDeviceAdmin;
     private Context context;
     private DataStorage cache;
 
-    public FlyveDeviceAdminUtils(Context context) {
+    public PoliciesDeviceManager(Context context) {
         this.context = context;
         mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
         mDeviceAdmin = new ComponentName(context, FlyveAdminReceiver.class);

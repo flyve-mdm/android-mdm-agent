@@ -1,17 +1,9 @@
-package org.flyve.mdm.agent.security;
-
-import android.app.admin.DeviceAdminReceiver;
-import android.content.Context;
-import android.content.Intent;
-
-import org.flyve.mdm.agent.utils.FlyveLog;
-
 /*
  *   Copyright (C) 2017 Teclib. All rights reserved.
  *
- *   This file is part of flyve-mdm-android-agent
+ * This file is part of flyve-mdm-android-agent
  *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -25,24 +17,36 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
- * @date      4/7/17
- * @copyright Copyright (C) 2017 Teclib. All rights reserved.
+ * @date      02/06/2017
+ * @copyright Copyright (C) ${YEAR} Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class FlyveAdminReceiver extends DeviceAdminReceiver {
-    
+
+package org.flyve.mdm.agent.receivers;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+
+import org.flyve.mdm.agent.services.MQTTService;
+import org.flyve.mdm.agent.utils.FlyveLog;
+
+/**
+ * Broadcast for BOOT
+ */
+public class MQTTRestarterBroadcastReceiver extends BroadcastReceiver {
+
     /**
-     * Called after the administrator is first enabled
-     * It calls the parent method
-     * @param context
-     * @param intent
+     * Re-starts the service if it stops
+     * @param context in which the receiver is running
+     * @param intent being received
      */
     @Override
-    public void onEnabled(Context context, Intent intent) {
-        FlyveLog.d(intent.getAction());
-        super.onEnabled(context, intent);
+    public void onReceive(Context context, Intent intent) {
+        FlyveLog.d(MQTTRestarterBroadcastReceiver.class.getSimpleName(), "Service Stops!");
+        context.startService(new Intent(context, MQTTService.class));
     }
 }
