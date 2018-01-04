@@ -44,7 +44,6 @@ import android.support.v4.view.ViewPager;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
 import org.flyve.mdm.agent.data.DataStorage;
-import org.flyve.mdm.agent.utils.EnvInfoSetup;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.util.ArrayList;
@@ -58,7 +57,6 @@ public class SplashActivity extends FragmentActivity {
     private static final int TIME = 3000;
     private IntentFilter mIntent;
     private ArrayList<WalkthroughModel> walkthrough;
-
 
     @Override
     public void onPause() {
@@ -107,8 +105,6 @@ public class SplashActivity extends FragmentActivity {
 
         // if user is not enrolled show help
         setContentView(R.layout.activity_splash);
-
-        EnvInfoSetup setup = new EnvInfoSetup(SplashActivity.this);
 
         walkthrough = new ArrayList<>();
         walkthrough.add(new WalkthroughModel(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
