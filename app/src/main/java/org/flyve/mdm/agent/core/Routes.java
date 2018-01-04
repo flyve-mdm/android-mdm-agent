@@ -25,11 +25,12 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.utils;
+package org.flyve.mdm.agent.core;
 
 import android.content.Context;
 
 import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.utils.FlyveLog;
 
 /**
  * Content all the routes of the app

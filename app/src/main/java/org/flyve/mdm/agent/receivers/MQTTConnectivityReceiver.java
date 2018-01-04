@@ -24,14 +24,14 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.services;
+package org.flyve.mdm.agent.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
 import org.flyve.mdm.agent.data.DataStorage;
-import org.flyve.mdm.agent.utils.ConnectivityHelper;
+import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
@@ -67,7 +67,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         if("android.hardware.usb.action.USB_DEVICE_ATTACHED".equalsIgnoreCase(action)) {
             FlyveLog.d("USB Device Attached");
             if(cache.getUsbFileTransferProtocols()!=null && !cache.getUsbFileTransferProtocols().equals("")) {
-                ConnectivityHelper.disableUsbFileTransferProtocols( cache.getConnectivityUsbFileTransferProtocolsDisable() );
+                PoliciesConnectivity.disableUsbFileTransferProtocols( cache.getConnectivityUsbFileTransferProtocolsDisable() );
             }
 
         }
@@ -77,19 +77,19 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
             // Disable / Enable Roaming
             if(cache.getRoaming()!=null && !cache.getRoaming().equals("")) {
-                ConnectivityHelper.disableRoaming(cache.getConnectivityRoamingDisable());
+                PoliciesConnectivity.disableRoaming(cache.getConnectivityRoamingDisable());
             }
 
             // Disable / Enable Mobile line
             if(cache.getMobileLine()!=null && !cache.getMobileLine().equals("")) {
-                ConnectivityHelper.disableMobileLine(cache.getConnectivityMobileLineDisable());
+                PoliciesConnectivity.disableMobileLine(cache.getConnectivityMobileLineDisable());
             }
         }
 
         if("android.intent.action.AIRPLANE_MODE".equalsIgnoreCase(action)) {
             // Disable / Enable Airplane Mode
             if(cache.getAirplaneMode()!=null && !cache.getAirplaneMode().equals("")) {
-                ConnectivityHelper.disableAirplaneMode(cache.getConnectivityAirplaneModeDisable());
+                PoliciesConnectivity.disableAirplaneMode(cache.getConnectivityAirplaneModeDisable());
             }
         }
 
@@ -99,12 +99,12 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
             // Disable / Enable Hostpot
             if(cache.getWifi()!=null && !cache.getWifi().equals("")) {
-                ConnectivityHelper.disableWifi(cache.getConnectivityWifiDisable());
+                PoliciesConnectivity.disableWifi(cache.getConnectivityWifiDisable());
             }
 
             // Disable / Enable Hostpot
             if(cache.getHostpotTethering()!=null && !cache.getHostpotTethering().equals("")) {
-                ConnectivityHelper.disableHostpotTethering(cache.getConnectivityHostpotTetheringDisable());
+                PoliciesConnectivity.disableHostpotTethering(cache.getConnectivityHostpotTetheringDisable());
             }
 
         }
@@ -112,7 +112,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         // Manage Bluetooth
         if ("android.bluetooth.adapter.action.STATE_CHANGED".equalsIgnoreCase(action)) {
             if(cache.getConnectivityBluetoothDisable()) {
-                ConnectivityHelper.disableBluetooth(cache.getConnectivityBluetoothDisable());
+                PoliciesConnectivity.disableBluetooth(cache.getConnectivityBluetoothDisable());
             }
         }
 
@@ -120,7 +120,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         if("android.nfc.extra.ADAPTER_STATE".equalsIgnoreCase(action)) {
             FlyveLog.d("ADAPTER STATE Change");
             if(cache.getNFC()!=null || !cache.getNFC().equals("")) {
-                ConnectivityHelper.disableNFC(cache.getConnectivityNFCDisable());
+                PoliciesConnectivity.disableNFC(cache.getConnectivityNFCDisable());
             }
         }
 
@@ -154,7 +154,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
              */
 
             boolean disable = cache.getConnectivityGPSDisable();
-            ConnectivityHelper.disableGps(disable);
+            PoliciesConnectivity.disableGps(disable);
 
             FlyveLog.i("Location providers change: " + disable);
         }

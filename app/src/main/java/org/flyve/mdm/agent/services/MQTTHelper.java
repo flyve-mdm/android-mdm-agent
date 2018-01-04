@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent.utils;
+package org.flyve.mdm.agent.services;
 
 /*
  *   Copyright (C) 2017 Teclib. All rights reserved.
@@ -41,9 +41,12 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.data.DataStorage;
-import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
-import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.ui.MDMAgent;
+import org.flyve.mdm.agent.utils.AppInfo;
+import org.flyve.mdm.agent.core.EnrollmentHelper;
+import org.flyve.mdm.agent.utils.FastLocationProvider;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -233,7 +236,7 @@ public class MQTTHelper {
      */
     public void lockDevice(ContextWrapper context, JSONObject json) {
         try {
-            FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.context);
+            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
 
             String lock = json.getString("lock");
             if(lock.equalsIgnoreCase("now")) {
@@ -256,7 +259,7 @@ public class MQTTHelper {
      */
     public void disableCamera(JSONObject json) {
         try {
-            FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.context);
+            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
 
             JSONArray jsonCameras = json.getJSONArray("camera");
             for(int i=0; i<= jsonCameras.length(); i++) {
@@ -279,12 +282,12 @@ public class MQTTHelper {
 
                 if (jsonConnectivity.has("disableScreenCapture")) {
                     boolean disable = jsonConnectivity.getBoolean("disableScreenCapture");
-                    new FlyveDeviceAdminUtils(context).disableCaptureScreen(disable);
+                    new PoliciesDeviceManager(context).disableCaptureScreen(disable);
                 }
 
                 if (jsonConnectivity.has("disableStatusBar")) {
                     boolean disable = jsonConnectivity.getBoolean("disableStatusBar");
-                    new FlyveDeviceAdminUtils(context).disableCaptureScreen(disable);
+                    new PoliciesDeviceManager(context).disableCaptureScreen(disable);
                 }
 
             }
@@ -308,7 +311,7 @@ public class MQTTHelper {
                 if (jsonConnectivity.has("disableWifi")) {
                     boolean disable = jsonConnectivity.getBoolean("disableWifi");
                     cache.setConnectivityWifiDisable(disable);
-                    ConnectivityHelper.disableWifi(disable);
+                    PoliciesConnectivity.disableWifi(disable);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Wifi", "Wifi is disable: " + disable));
                 }
 
@@ -321,7 +324,7 @@ public class MQTTHelper {
                 if (jsonConnectivity.has("disableGPS")) {
                     boolean disable = jsonConnectivity.getBoolean("disableGPS");
                     cache.setConnectivityGPSDisable(disable);
-                    ConnectivityHelper.disableGps(disable);
+                    PoliciesConnectivity.disableGps(disable);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "GPS", "GPS is disable: " + disable));
                 }
 
@@ -334,14 +337,14 @@ public class MQTTHelper {
                 if (jsonConnectivity.has("disableAirplaneMode")) {
                     boolean disable = jsonConnectivity.getBoolean("disableAirplaneMode");
                     cache.setConnectivityAirplaneModeDisable(disable);
-                    ConnectivityHelper.disableAirplaneMode(cache.getConnectivityAirplaneModeDisable());
+                    PoliciesConnectivity.disableAirplaneMode(cache.getConnectivityAirplaneModeDisable());
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "AIRPLANEMODE", "AIRPLANEMODE is disable: " + disable));
                 }
 
                 if (jsonConnectivity.has("disableMobileLine")) {
                     boolean disable = jsonConnectivity.getBoolean("disableMobileLine");
                     cache.setConnectivityMobileLineDisable(disable);
-                    ConnectivityHelper.disableMobileLine(disable);
+                    PoliciesConnectivity.disableMobileLine(disable);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MOBILE_LINE", "MOBILE_LINE is disable: " + disable));
                 }
 
@@ -371,17 +374,17 @@ public class MQTTHelper {
 
                 if (jsonConnectivity.has("disableStatusBar")) {
                     boolean disable = jsonConnectivity.getBoolean("disableStatusBar");
-                    new FlyveDeviceAdminUtils(context).disableStatusBar(disable);
+                    new PoliciesDeviceManager(context).disableStatusBar(disable);
                 }
 
                 if (jsonConnectivity.has("disableSreenCapture")) {
                     boolean disable = jsonConnectivity.getBoolean("disableSreenCapture");
-                    new FlyveDeviceAdminUtils(context).disableCaptureScreen(disable);
+                    new PoliciesDeviceManager(context).disableCaptureScreen(disable);
                 }
 
                 if (jsonConnectivity.has("resetPassword")) {
                     String newpassword = jsonConnectivity.getString("resetPassword");
-                    new FlyveDeviceAdminUtils(context).resetPassword(newpassword);
+                    new PoliciesDeviceManager(context).resetPassword(newpassword);
                 }
 
             }
@@ -430,14 +433,14 @@ public class MQTTHelper {
 
         for(int i=0; i<appsInstall.length(); i++) {
 
-            FilesHelper filesHelper = new FilesHelper(this.context);
+            PoliciesFiles policiesFiles = new PoliciesFiles(this.context);
 
             if(appsInstall.getJSONObject(i).has(REMOVE_APP)){
                 FlyveLog.d("uninstall apps");
 
                 JSONObject jsonApp = appsInstall.getJSONObject(i);
                 if(appInfo.isInstall(jsonApp.getString(REMOVE_APP))) {
-                    FilesHelper.removeApk(this.context, jsonApp.getString(REMOVE_APP));
+                    PoliciesFiles.removeApk(this.context, jsonApp.getString(REMOVE_APP));
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Remove app", "Package: " + jsonApp.getString(REMOVE_APP)));
                 }
             }
@@ -458,7 +461,7 @@ public class MQTTHelper {
                 versionCode = jsonApp.getString("versionCode");
 
                 if(!appInfo.isInstall(packageNamelist,versionCode)){
-                    filesHelper.execute("app",packageNamelist, idlist, sessionToken);
+                    policiesFiles.execute("app",packageNamelist, idlist, sessionToken);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Download app", "Package: " + packageNamelist));
                 }
             }
@@ -500,12 +503,12 @@ public class MQTTHelper {
     public void filesWork(JSONArray jsonFiles, String sessionToken) throws Exception {
 
         for(int i=0; i<=jsonFiles.length();i++) {
-            FilesHelper filesHelper = new FilesHelper(this.context);
+            PoliciesFiles policiesFiles = new PoliciesFiles(this.context);
 
             JSONObject jsonFile = jsonFiles.getJSONObject(i);
 
             if(jsonFile.has(REMOVE_FILE)){
-                filesHelper.removeFile(jsonFile.getString(REMOVE_FILE));
+                policiesFiles.removeFile(jsonFile.getString(REMOVE_FILE));
                 broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Remove file", jsonFile.getString(REMOVE_FILE)));
             }
 
@@ -513,7 +516,7 @@ public class MQTTHelper {
                 String fileId = jsonFile.getString("id");
                 String filePath = jsonFile.getString("deployFile");
 
-                if("true".equals(filesHelper.execute("file", filePath, fileId, sessionToken))) {
+                if("true".equals(policiesFiles.execute("file", filePath, fileId, sessionToken))) {
                     FlyveLog.v("File was stored on: " + filePath);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Download file", filePath));
                 }
@@ -530,7 +533,7 @@ public class MQTTHelper {
             JSONObject jsonEncryption = json.getJSONArray("encryption").getJSONObject(0);
             boolean enable = jsonEncryption.getBoolean("storageEncryption");
             if(jsonEncryption.has("storageEncryption")) {
-                FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.context);
+                PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
                 mdm.storageEncryptionDevice(enable);
                 broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Encryption", "Encryption: " + enable));
             }
@@ -561,7 +564,7 @@ public class MQTTHelper {
     public void policiesDevice(JSONObject json) {
 
         try {
-            FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.context);
+            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
 
             JSONArray jsonPolicies = json.getJSONArray("policies");
 
@@ -695,7 +698,7 @@ public class MQTTHelper {
      */
     public void wipe() {
         try {
-            FlyveDeviceAdminUtils mdm = new FlyveDeviceAdminUtils(this.context);
+            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.wipe();
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Wipe", "Wipe success"));
         } catch (Exception ex) {

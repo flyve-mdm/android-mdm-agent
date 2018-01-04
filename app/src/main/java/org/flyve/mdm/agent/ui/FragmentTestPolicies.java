@@ -12,8 +12,8 @@ import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.DataStorage;
-import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
-import org.flyve.mdm.agent.utils.ConnectivityHelper;
+import org.flyve.mdm.agent.services.PoliciesDeviceManager;
+import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
@@ -46,7 +46,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 public class FragmentTestPolicies extends Fragment {
 
     private DataStorage cache;
-    private FlyveDeviceAdminUtils mdm;
+    private PoliciesDeviceManager mdm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +56,7 @@ public class FragmentTestPolicies extends Fragment {
         View v = inflater.inflate(R.layout.fragment_test_policies, container, false);
 
         cache = new DataStorage(FragmentTestPolicies.this.getContext());
-        mdm = new FlyveDeviceAdminUtils(FragmentTestPolicies.this.getContext());
+        mdm = new PoliciesDeviceManager(FragmentTestPolicies.this.getContext());
 
         Switch swGPS = (Switch) v.findViewById(R.id.swGPS);
 
@@ -66,7 +66,7 @@ public class FragmentTestPolicies extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 cache.setConnectivityGPSDisable(isChecked);
                 if(isChecked) {
-                    ConnectivityHelper.disableGps(isChecked);
+                    PoliciesConnectivity.disableGps(isChecked);
                 }
             }
         });
@@ -77,7 +77,7 @@ public class FragmentTestPolicies extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 cache.setConnectivityAirplaneModeDisable(isChecked);
-                ConnectivityHelper.disableAirplaneMode(isChecked);
+                PoliciesConnectivity.disableAirplaneMode(isChecked);
             }
         });
 
@@ -88,7 +88,7 @@ public class FragmentTestPolicies extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 cache.setConnectivityBluetoothDisable(isChecked);
                 if(isChecked) {
-                    ConnectivityHelper.disableBluetooth(isChecked);
+                    PoliciesConnectivity.disableBluetooth(isChecked);
                 }
             }
         });
@@ -100,7 +100,7 @@ public class FragmentTestPolicies extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 cache.setConnectivityWifiDisable(isChecked);
                 if(isChecked) {
-                    ConnectivityHelper.disableWifi(isChecked);
+                    PoliciesConnectivity.disableWifi(isChecked);
                 }
             }
         });
@@ -112,7 +112,7 @@ public class FragmentTestPolicies extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 cache.setConnectivityNFCDisable(isChecked);
                 if(isChecked) {
-                    ConnectivityHelper.disableNFC(isChecked);
+                    PoliciesConnectivity.disableNFC(isChecked);
                 }
             }
         });
@@ -124,7 +124,7 @@ public class FragmentTestPolicies extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 cache.setConnectivityHostpotTetheringDisable(isChecked);
                 if(isChecked) {
-                    ConnectivityHelper.disableHostpotTethering(isChecked);
+                    PoliciesConnectivity.disableHostpotTethering(isChecked);
                 }
             }
         });
@@ -136,7 +136,7 @@ public class FragmentTestPolicies extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 cache.setConnectivityMobileLineDisable(isChecked);
                 if(isChecked) {
-                    ConnectivityHelper.disableMobileLine(isChecked);
+                    PoliciesConnectivity.disableMobileLine(isChecked);
                 }
             }
         });
@@ -148,7 +148,7 @@ public class FragmentTestPolicies extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 cache.setConnectivityUsbFileTransferProtocolsDisable(isChecked);
                 if(isChecked) {
-                    ConnectivityHelper.disableUsbFileTransferProtocols(isChecked);
+                    PoliciesConnectivity.disableUsbFileTransferProtocols(isChecked);
                 }
             }
         });

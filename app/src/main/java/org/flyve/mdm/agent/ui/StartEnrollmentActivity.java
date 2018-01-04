@@ -43,7 +43,7 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.supervisor.SupervisorController;
 import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
 import org.flyve.mdm.agent.data.DataStorage;
-import org.flyve.mdm.agent.utils.EnrollmentHelper;
+import org.flyve.mdm.agent.core.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 

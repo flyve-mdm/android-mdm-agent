@@ -147,7 +147,7 @@
 
         <!-- This receiver is for restart MQTT on reboot device -->
         <receiver
-            android:name=".services.MQTTRestarterBroadcastReceiver"
+            android:name=".receivers.MQTTRestarterBroadcastReceiver"
             android:enabled="true"
             android:exported="true"
             android:label="RestartServiceWhenStopped">
@@ -161,7 +161,7 @@
 
         <!-- This receiver is for Device Admin Policies -->
         <receiver
-            android:name=".security.FlyveAdminReceiver"
+            android:name=".receivers.FlyveAdminReceiver"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
@@ -185,7 +185,7 @@
 
         <!-- This receiver is for information about Wifi or Bluetooth -->
         <receiver
-            android:name=".services.MQTTConnectivityReceiver"
+            android:name=".receivers.MQTTConnectivityReceiver"
             android:exported="false">
             <intent-filter android:priority="100">
                 <action android:name="android.net.wifi.STATE_CHANGE" />
@@ -198,7 +198,7 @@
         </receiver>
 
         <!-- This receiver check if any app is installed, deleted or updated -->
-        <receiver android:name=".services.AppsReceiver">
+        <receiver android:name=".receivers.AppsReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.ACTION_PACKAGE_REMOVED" />

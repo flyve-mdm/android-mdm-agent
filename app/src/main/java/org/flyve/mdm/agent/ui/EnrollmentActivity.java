@@ -65,7 +65,7 @@ import org.flyve.mdm.agent.core.user.UserController;
 import org.flyve.mdm.agent.core.user.UserModel;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
-import org.flyve.mdm.agent.utils.EnrollmentHelper;
+import org.flyve.mdm.agent.core.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.InputValidatorHelper;

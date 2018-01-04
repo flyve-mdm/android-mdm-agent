@@ -1,8 +1,10 @@
-package org.flyve.mdm.agent.services;
+package org.flyve.mdm.agent.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import org.flyve.mdm.agent.services.MQTTService;
 
 /*
  *   Copyright (C) 2017 Teclib. All rights reserved.
