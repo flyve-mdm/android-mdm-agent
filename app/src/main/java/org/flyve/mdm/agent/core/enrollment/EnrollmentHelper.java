@@ -1,10 +1,11 @@
-package org.flyve.mdm.agent.core;
+package org.flyve.mdm.agent.core.enrollment;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
