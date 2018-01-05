@@ -58,16 +58,16 @@ public class EnrollmentPresenter implements Enrollment.Presenter {
     }
 
     @Override
-    public void X509certificationSuccess() {
+    public void certificationX509Success() {
         if(view!=null) {
-            view.X509certificationSuccess();
+            view.certificationX509Success();
         }
     }
 
     @Override
-    public void inventorySucess() {
+    public void inventorySuccess(String inventory) {
         if(view!=null) {
-            view.inventorySucess();
+            view.inventorySuccess(inventory);
         }
     }
 

@@ -365,7 +365,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
     }
 
     @Override
-    public void X509certificationSuccess() {
+    public void certificationX509Success() {
         pbx509.setVisibility(View.GONE);
         if(sendEnrollment) {
             pd.dismiss();
@@ -375,7 +375,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
     }
 
     @Override
-    public void inventorySucess() {
-
+    public void inventorySuccess(String inventory) {
+        this.inventory = inventory;
     }
 }
