@@ -38,16 +38,16 @@ public interface Enrollment {
     interface View {
         void showError(String message);
         void enrollSuccess();
-        void X509certificationSuccess();
-        void inventorySucess();
+        void certificationX509Success();
+        void inventorySuccess(String inventory);
     }
 
     interface Presenter {
         // Views
         void showError(String message);
         void enrollSuccess();
-        void X509certificationSuccess();
-        void inventorySucess();
+        void certificationX509Success();
+        void inventorySuccess(String inventory);
 
         // Models
         void createInventory(Context context);

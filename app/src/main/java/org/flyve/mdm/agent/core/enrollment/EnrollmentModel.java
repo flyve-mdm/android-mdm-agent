@@ -64,7 +64,7 @@ public class EnrollmentModel implements Enrollment.Model {
         inventoryTask.getJSON(new InventoryTask.OnTaskCompleted() {
             @Override
             public void onTaskSuccess(String s) {
-                presenter.inventorySucess();
+                presenter.inventorySuccess(s);
             }
 
             @Override
@@ -81,7 +81,7 @@ public class EnrollmentModel implements Enrollment.Model {
         enroll.createX509cert(new EnrollmentHelper.EnrollCallBack() {
             @Override
             public void onSuccess(String data) {
-                presenter.X509certificationSuccess();
+                presenter.certificationX509Success();
             }
 
             @Override
@@ -173,7 +173,7 @@ public class EnrollmentModel implements Enrollment.Model {
             allow = false;
         }
 
-        if(inventory.equals("error")) {
+        if(inventory.contains("fail")) {
             errMsg.append(context.getResources().getString(R.string.validate_inventory) );
             allow = false;
         }
@@ -186,6 +186,7 @@ public class EnrollmentModel implements Enrollment.Model {
 
         if(!allow) {
             presenter.showError(errMsg.toString());
+            return;
         }
 
         try {
