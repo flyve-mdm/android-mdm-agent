@@ -12,8 +12,8 @@ import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.DataStorage;
-import org.flyve.mdm.agent.security.FlyveDeviceAdminUtils;
-import org.flyve.mdm.agent.utils.ConnectivityHelper;
+import org.flyve.mdm.agent.services.PoliciesDeviceManager;
+import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
@@ -46,7 +46,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L46">public class FragmentTestPolicies extends Fragment {</span>
 
     private DataStorage cache;
-    private FlyveDeviceAdminUtils mdm;
+    private PoliciesDeviceManager mdm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +56,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L56">        View v = inflater.inflate(R.layout.fragment_test_policies, container, false);</span>
 
 <span class="nc" id="L58">        cache = new DataStorage(FragmentTestPolicies.this.getContext());</span>
-<span class="nc" id="L59">        mdm = new FlyveDeviceAdminUtils(FragmentTestPolicies.this.getContext());</span>
+<span class="nc" id="L59">        mdm = new PoliciesDeviceManager(FragmentTestPolicies.this.getContext());</span>
 
 <span class="nc" id="L61">        Switch swGPS = (Switch) v.findViewById(R.id.swGPS);</span>
 
@@ -66,7 +66,7 @@ import org.flyve.mdm.agent.utils.Helpers;
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 <span class="nc" id="L67">                cache.setConnectivityGPSDisable(isChecked);</span>
 <span class="nc bnc" id="L68" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L69">                    ConnectivityHelper.disableGps(isChecked);</span>
+<span class="nc" id="L69">                    PoliciesConnectivity.disableGps(isChecked);</span>
                 }
 <span class="nc" id="L71">            }</span>
         });
@@ -77,7 +77,7 @@ import org.flyve.mdm.agent.utils.Helpers;
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 <span class="nc" id="L79">                cache.setConnectivityAirplaneModeDisable(isChecked);</span>
-<span class="nc" id="L80">                ConnectivityHelper.disableAirplaneMode(isChecked);</span>
+<span class="nc" id="L80">                PoliciesConnectivity.disableAirplaneMode(isChecked);</span>
 <span class="nc" id="L81">            }</span>
         });
 
@@ -88,7 +88,7 @@ import org.flyve.mdm.agent.utils.Helpers;
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 <span class="nc" id="L89">                cache.setConnectivityBluetoothDisable(isChecked);</span>
 <span class="nc bnc" id="L90" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L91">                    ConnectivityHelper.disableBluetooth(isChecked);</span>
+<span class="nc" id="L91">                    PoliciesConnectivity.disableBluetooth(isChecked);</span>
                 }
 <span class="nc" id="L93">            }</span>
         });
@@ -100,7 +100,7 @@ import org.flyve.mdm.agent.utils.Helpers;
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 <span class="nc" id="L101">                cache.setConnectivityWifiDisable(isChecked);</span>
 <span class="nc bnc" id="L102" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L103">                    ConnectivityHelper.disableWifi(isChecked);</span>
+<span class="nc" id="L103">                    PoliciesConnectivity.disableWifi(isChecked);</span>
                 }
 <span class="nc" id="L105">            }</span>
         });
@@ -112,7 +112,7 @@ import org.flyve.mdm.agent.utils.Helpers;
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 <span class="nc" id="L113">                cache.setConnectivityNFCDisable(isChecked);</span>
 <span class="nc bnc" id="L114" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L115">                    ConnectivityHelper.disableNFC(isChecked);</span>
+<span class="nc" id="L115">                    PoliciesConnectivity.disableNFC(isChecked);</span>
                 }
 <span class="nc" id="L117">            }</span>
         });
@@ -124,7 +124,7 @@ import org.flyve.mdm.agent.utils.Helpers;
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 <span class="nc" id="L125">                cache.setConnectivityHostpotTetheringDisable(isChecked);</span>
 <span class="nc bnc" id="L126" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L127">                    ConnectivityHelper.disableHostpotTethering(isChecked);</span>
+<span class="nc" id="L127">                    PoliciesConnectivity.disableHostpotTethering(isChecked);</span>
                 }
 <span class="nc" id="L129">            }</span>
         });
@@ -136,7 +136,7 @@ import org.flyve.mdm.agent.utils.Helpers;
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 <span class="nc" id="L137">                cache.setConnectivityMobileLineDisable(isChecked);</span>
 <span class="nc bnc" id="L138" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L139">                    ConnectivityHelper.disableMobileLine(isChecked);</span>
+<span class="nc" id="L139">                    PoliciesConnectivity.disableMobileLine(isChecked);</span>
                 }
 <span class="nc" id="L141">            }</span>
         });
@@ -148,7 +148,7 @@ import org.flyve.mdm.agent.utils.Helpers;
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 <span class="nc" id="L149">                cache.setConnectivityUsbFileTransferProtocolsDisable(isChecked);</span>
 <span class="nc bnc" id="L150" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L151">                    ConnectivityHelper.disableUsbFileTransferProtocols(isChecked);</span>
+<span class="nc" id="L151">                    PoliciesConnectivity.disableUsbFileTransferProtocols(isChecked);</span>
                 }
 <span class="nc" id="L153">            }</span>
         });

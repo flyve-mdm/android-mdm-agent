@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
+import org.flyve.mdm.agent.core.walkthrough.WalkthroughData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
@@ -41,7 +41,7 @@ import org.flyve.mdm.agent.utils.Helpers;
  */
 <span class="fc" id="L42">public class FragmentSlideWalkthrough extends Fragment {</span>
 
-    private WalkthroughModel walkthroughModel;
+    private WalkthroughData walkthroughData;
     private int slides;
     private int position;
 
@@ -52,21 +52,21 @@ import org.flyve.mdm.agent.utils.Helpers;
 
     /**
      * Set the properties to equal the given arguments
-     * @param walkthroughModel the walkthroug model class
-     * @param slides the number of slides the walkthrough has
+     * @param walkthroughData the walkthroug Model class
+     * @param slides the number of slides the Walkthrough has
      * @param position the user is currently on
      */
-    public void config(WalkthroughModel walkthroughModel, int slides, int position) {
-<span class="fc" id="L60">        this.walkthroughModel = walkthroughModel;</span>
+    public void config(WalkthroughData walkthroughData, int slides, int position) {
+<span class="fc" id="L60">        this.walkthroughData = walkthroughData;</span>
 <span class="fc" id="L61">        this.slides = slides;</span>
 <span class="fc" id="L62">        this.position = position;</span>
 <span class="fc" id="L63">    }</span>
 
     /**
-     * Called to have the fragments instantiate its user interface view
-     * It displays the view for the Walkthrough
+     * Called to have the fragments instantiate its user interface View
+     * It displays the View for the Walkthrough
      * @param inflater the object that can be used to inflate any views
-     * @param container the parent view
+     * @param container the parent View
      * @param savedInstanceState if non-null, this fragment is being reconstructed from a previous saved state
      * @return View the fragment's UI
      */
@@ -77,9 +77,9 @@ import org.flyve.mdm.agent.utils.Helpers;
                 R.layout.fragment_walkthrough_step, container, false);
 
         try {
-<span class="fc" id="L80">            mLink = walkthroughModel.getLink();</span>
-<span class="fc" id="L81">            mMessage = walkthroughModel.getMessage();</span>
-<span class="fc" id="L82">            mImage = walkthroughModel.getImage();</span>
+<span class="fc" id="L80">            mLink = walkthroughData.getLink();</span>
+<span class="fc" id="L81">            mMessage = walkthroughData.getMessage();</span>
+<span class="fc" id="L82">            mImage = walkthroughData.getImage();</span>
 <span class="nc" id="L83">        } catch (Exception ex) {</span>
 <span class="nc" id="L84">            FlyveLog.e(ex.getMessage());</span>
 <span class="fc" id="L85">        }</span>
@@ -110,7 +110,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 
     /**
      * Shows the slide dots of the screen
-     * @param v the view
+     * @param v the View
      */
     private void slideDots(ViewGroup v) {
 

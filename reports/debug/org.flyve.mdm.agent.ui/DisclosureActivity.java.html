@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.security.FlyveAdminReceiver;
+import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.utils.Helpers;
 
 /*

@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>WalkthroughModel.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.core.walkthrough</a> &gt; <span class="el_source">WalkthroughModel.java</span></div><h1>WalkthroughModel.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.core.walkthrough;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+
+import org.flyve.mdm.agent.ui.FragmentSlideWalkthrough;
+
+import java.util.ArrayList;
+
 /*
- *   Copyright (C) 2017 Teclib. All rights reserved.
+ *   Copyright © 2018 Teclib. All rights reserved.
  *
- *   This file is part of flyve-mdm-android-agent
+ *   This file is part of flyve-mdm-android
  *
- * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -19,77 +28,50 @@
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
- * @date      17/8/17
- * @copyright Copyright (C) 2017 Teclib. All rights reserved.
+ * @date      4/1/18
+ * @copyright Copyright © 2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class WalkthroughModel {
+public class WalkthroughModel implements Walkthrough.Model {
 
-    private int message;
-    private String link;
-    private int image;
+    private Walkthrough.Presenter Presenter;
+    private ArrayList&lt;WalkthroughData&gt; data;
 
-    /**
-     * This constructor sets the properties to equal the given arguments
-     * @param message
-     * @param link
-     * @param image
-     */
-<span class="fc" id="L41">    public WalkthroughModel(int message, String link, int image) {</span>
-<span class="fc" id="L42">        this.message = message;</span>
-<span class="fc" id="L43">        this.link = link;</span>
-<span class="fc" id="L44">        this.image = image;</span>
+<span class="fc" id="L43">    public WalkthroughModel(Walkthrough.Presenter Presenter) {</span>
+<span class="fc" id="L44">        this.Presenter = Presenter;</span>
 <span class="fc" id="L45">    }</span>
 
+    @Override
+    public void createSlides(ArrayList&lt;WalkthroughData&gt; data, FragmentManager fm) {
+<span class="fc" id="L49">        this.data = data;</span>
+
+<span class="fc" id="L51">        PagerAdapter mPagerAdapter = new SimpleSlidePagerAdapter(fm);</span>
+<span class="fc" id="L52">        Presenter.addSlides(mPagerAdapter);</span>
+<span class="fc" id="L53">    }</span>
+
     /**
-     * Get the message of the Walkthrough
-     * @return int the message
+     * A simple pager adapter
      */
-    public int getMessage() {
-<span class="fc" id="L52">        return message;</span>
+    private class SimpleSlidePagerAdapter extends FragmentStatePagerAdapter {
+<span class="fc" id="L59">        public SimpleSlidePagerAdapter(FragmentManager fm) {</span>
+<span class="fc" id="L60">            super(fm);</span>
+<span class="fc" id="L61">        }</span>
+
+        @Override
+        public Fragment getItem(int position) {
+<span class="fc" id="L65">            FragmentSlideWalkthrough f = new FragmentSlideWalkthrough();</span>
+<span class="fc" id="L66">            f.config(data.get(position), data.size(), position);</span>
+<span class="fc" id="L67">            return f;</span>
+        }
+
+        @Override
+        public int getCount() {
+<span class="fc" id="L72">            return data.size();</span>
+        }
     }
 
-    /**
-     * Set the message of the Walkthrough
-     * @param message
-     */
-    public void setMessage(int message) {
-<span class="nc" id="L60">        this.message = message;</span>
-<span class="nc" id="L61">    }</span>
-
-    /**
-     * Get the link of the Walkthrough
-     * @return string the link
-     */
-    public String getLink() {
-<span class="fc" id="L68">        return link;</span>
-    }
-
-    /**
-     * Set the link of the Walkthrough
-     * @param link
-     */
-    public void setLink(String link) {
-<span class="nc" id="L76">        this.link = link;</span>
-<span class="nc" id="L77">    }</span>
-
-    /**
-     * Get the image of the Walkthrough
-     * @return int the image
-     */
-    public int getImage() {
-<span class="fc" id="L84">        return image;</span>
-    }
-
-    /**
-     * Set the image of the Walkthrough
-     * @param image
-     */
-    public void setImage(int image) {
-<span class="nc" id="L92">        this.image = image;</span>
-<span class="nc" id="L93">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

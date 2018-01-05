@@ -80,11 +80,11 @@ public class PoliciesAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * Get a view that displays the data at the specified position
-	 * @param position of the item within the adapter's data set of the item whose view we want
-	 * @param convertView the old view to reuse, if possible
-	 * @param parent the parent that this view will eventually be attached to
-	 * @return View a view corresponding to the data at the specified position
+	 * Get a View that displays the data at the specified position
+	 * @param position of the item within the adapter's data set of the item whose View we want
+	 * @param convertView the old View to reuse, if possible
+	 * @param parent the parent that this View will eventually be attached to
+	 * @return View a View corresponding to the data at the specified position
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
