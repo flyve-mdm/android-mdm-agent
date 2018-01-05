@@ -49,6 +49,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Base64;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.ui.MainActivity;
@@ -79,6 +80,20 @@ public class Helpers {
 	 */
 	private Helpers() {
 	}
+
+	public static void hideKeyboard(Activity activity) {
+		// Hide keyboard
+		View view = activity.getCurrentFocus();
+		if (view != null) {
+			try {
+				InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+			} catch (NullPointerException ex) {
+				FlyveLog.e(ex.getMessage());
+			}
+		}
+	}
+
 
 	public static void deleteMQTTCache(Context context) {
 		File path = context.getExternalFilesDir("MqttConnection");
