@@ -31,24 +31,19 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -57,36 +52,31 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.flyve.inventory.InventoryTask;
-import org.flyve.inventory.categories.Hardware;
-import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.user.UserController;
+import org.flyve.mdm.agent.core.enrollment.Enrollment;
+import org.flyve.mdm.agent.core.enrollment.EnrollmentPresenter;
 import org.flyve.mdm.agent.core.user.UserModel;
-import org.flyve.mdm.agent.data.DataStorage;
-import org.flyve.mdm.agent.security.AndroidCryptoProvider;
-import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.flyve.mdm.agent.utils.InputValidatorHelper;
 import org.flyve.mdm.agent.utils.MultipleEditText;
-import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.flyve.mdm.agent.R.string.email;
 
 
 /**
  * Register the agent to the platform
  */
-public class EnrollmentActivity extends AppCompatActivity {
+public class EnrollmentActivity extends AppCompatActivity implements Enrollment.View {
+
+    private static final int REQUEST_CAMERA = 0;
+    private static final int SELECT_FILE = 1;
 
     private ProgressBar pbx509;
-    private DataStorage cache;
-    private EnrollmentHelper enroll;
     private TextView txtMessage;
     private EditText editName;
     private EditText editLastName;
@@ -95,13 +85,12 @@ public class EnrollmentActivity extends AppCompatActivity {
     private MultipleEditText editPhone;
     private Spinner spinnerLanguage;
     private boolean sendEnrollment = false;
-    private static final int REQUEST_CAMERA = 0;
-    private static final int SELECT_FILE = 1;
     private String strPicture;
     private ImageView imgPhoto;
     private ProgressDialog pd;
     private File filePhoto;
     private String inventory = "";
+    private Enrollment.Presenter presenter;
 
     /**
      * Called when the activity is starting
@@ -126,6 +115,8 @@ public class EnrollmentActivity extends AppCompatActivity {
             });
         }
 
+        presenter = new EnrollmentPresenter(EnrollmentActivity.this);
+
         // Request all the permissions that the library need
         int permissionAll = 1;
         String[] permissions = { Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA };
@@ -136,16 +127,13 @@ public class EnrollmentActivity extends AppCompatActivity {
 
         pbx509 = (ProgressBar) findViewById(R.id.progressBarX509);
 
-        enroll = new EnrollmentHelper(EnrollmentActivity.this);
-        cache = new DataStorage(EnrollmentActivity.this);
-
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
 
         ImageView btnCamera = (ImageView) findViewById(R.id.btnCamera);
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectImage();
+                presenter.selectPhoto(EnrollmentActivity.this, REQUEST_CAMERA, SELECT_FILE);
             }
         });
 
@@ -195,19 +183,6 @@ public class EnrollmentActivity extends AppCompatActivity {
             }
         });
 
-        InventoryTask inventoryTask = new InventoryTask(EnrollmentActivity.this, "FlyveMDM-Agent");
-        inventoryTask.getJSON(new InventoryTask.OnTaskCompleted() {
-            @Override
-            public void onTaskSuccess(String s) {
-                inventory = s;
-            }
-
-            @Override
-            public void onTaskError(Throwable throwable) {
-                inventory = "error";
-            }
-        });
-
         ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,22 +193,11 @@ public class EnrollmentActivity extends AppCompatActivity {
 
         // start creating a certificated
         pbx509.setVisibility(View.VISIBLE);
-        enroll.createX509cert(new EnrollmentHelper.EnrollCallBack() {
-            @Override
-            public void onSuccess(String data) {
-                pbx509.setVisibility(View.GONE);
-                if(sendEnrollment) {
-                    pd.dismiss();
-                    validateForm();
-                }
-            }
+        presenter.createX509certification(EnrollmentActivity.this);
 
-            @Override
-            public void onError(String error) {
-                pbx509.setVisibility(View.GONE);
-                showError(getResources().getString(R.string.error_certified_x509));
-            }
-        });
+        // starting inventory
+        presenter.createInventory(EnrollmentActivity.this);
+
     }
 
     /**
@@ -251,69 +215,6 @@ public class EnrollmentActivity extends AppCompatActivity {
             }
         }
         return true;
-    }
-
-    /**
-     * It displays the options to select the image of the user
-     */
-    private void selectImage() {
-        final CharSequence[] items = {
-                getResources().getString(R.string.take_photo),
-                getResources().getString(R.string.choose_from_library),
-                getResources().getString(R.string.cancel)
-        };
-
-        hideKeyboard();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(EnrollmentActivity.this);
-        builder.setTitle(getResources().getString(R.string.add_photo) );
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-
-                if (items[item].equals(getResources().getString(R.string.take_photo))) {
-                    cameraIntent();
-
-                } else if (items[item].equals(getResources().getString(R.string.choose_from_library))) {
-                    galleryIntent();
-
-                } else if (items[item].equals(getResources().getString(R.string.cancel) )) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-
-    /**
-     * If the user selects the image with the option from the gallery
-     */
-    private void galleryIntent() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);//
-        startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.select_file) ),SELECT_FILE);
-    }
-
-    /**
-     * If the user selects the image with the option take photo
-     */
-    private void cameraIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, getImageUri());
-            startActivityForResult(takePictureIntent, REQUEST_CAMERA);
-        }
-    }
-
-    /**
-     * Get the URI of the image
-     * @return the URI 
-     */
-    public Uri getImageUri() {
-        // Store image in dcim
-        filePhoto = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "flyveUser.jpg");
-        return Uri.fromFile(filePhoto);
     }
 
     /**
@@ -364,25 +265,10 @@ public class EnrollmentActivity extends AppCompatActivity {
         imgPhoto.setImageBitmap(bm);
     }
 
-
-    public void hideKeyboard() {
-        // Hide keyboard
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
     /**
      * Send information to validateForm
      */
     private void validateForm() {
-        StringBuilder errMsg = new StringBuilder(getResources().getString(R.string.validate_error) );
-        txtMessage.setText("");
-
-        // Hide keyboard
-        hideKeyboard();
 
         // waiting for cert x509
         if(pbx509.getVisibility() == View.VISIBLE) {
@@ -391,165 +277,67 @@ public class EnrollmentActivity extends AppCompatActivity {
             return;
         }
 
-        //Validate and Save
-        boolean allowSave = true;
+        pd = ProgressDialog.show(EnrollmentActivity.this, "", getResources().getString(R.string.enrollment_in_process));
 
-        String name = editName.getText().toString().trim();
-        String lastName = editLastName.getText().toString().trim();
+        // Get all emails
+        ArrayList<UserModel.EmailsData> arrEmails = new ArrayList<>();
 
-        // First name
-        if (InputValidatorHelper.isNullOrEmpty(name)) {
-            errMsg.append(getResources().getString(R.string.validate_first_name) );
-            allowSave = false;
-        }
+        List<EditText> emailEdit = editEmail.getEditList();
+        List<Spinner> emailTypeEdit = editEmail.getSpinnList();
 
-        // Last name
-        if (InputValidatorHelper.isNullOrEmpty(lastName)) {
-            errMsg.append(getResources().getString(R.string.validate_last_name) );
-            allowSave = false;
-        }
+        for (int i=0; i<emailEdit.size(); i++) {
+            EditText editText = emailEdit.get(i);
+            Spinner spinner = emailTypeEdit.get(i);
 
-        // Email
-        if (editEmail.getEditList().isEmpty()) {
-            errMsg.append(getResources().getString(R.string.validate_email_at_least_one) );
-            allowSave = false;
-        }
-
-        // inventory error
-        if(inventory.equals("error")) {
-            errMsg.append(getResources().getString(R.string.validate_inventory) );
-            allowSave = false;
-        }
-
-        // inventory running
-        if(inventory.equals("")) {
-            errMsg.append(getResources().getString(R.string.validate_inventory_wait) );
-            allowSave = false;
-        }
-
-        if(allowSave){
-            sendEnroll();
-        } else {
-            txtMessage.setText(errMsg);
-        }
-    }
-
-    /**
-     * Send information to validateForm the device
-     */
-    private void sendEnroll() {
-        try {
-            pd = ProgressDialog.show(EnrollmentActivity.this, "", getResources().getString(R.string.enrollment_in_process));
-
-            AndroidCryptoProvider csr = new AndroidCryptoProvider(EnrollmentActivity.this.getBaseContext());
-            String requestCSR = "";
-            if( csr.getlCsr() != null ) {
-                requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
+            if(!editText.getText().toString().equals("")) {
+                UserModel.EmailsData emails = new UserModel().new EmailsData();
+                emails.setEmail(editText.getText().toString());
+                emails.setType(spinner.getSelectedItem().toString());
+                arrEmails.add(emails);
             }
-
-            JSONObject payload = new JSONObject();
-
-            payload.put("_email", editEmail.getEditList().get(0).getText().toString());
-            payload.put("_invitation_token", cache.getInvitationToken());
-            payload.put("_serial", Helpers.getDeviceSerial());
-            payload.put("_uuid", new Hardware(EnrollmentActivity.this).getUUID());
-            payload.put("csr", requestCSR);
-            payload.put("firstname", editName.getText().toString());
-            payload.put("lastname", editLastName.getText().toString());
-            if(!editPhone.getEditList().isEmpty()) {
-                payload.put("phone", editPhone.getEditList().get(0).getText().toString());
-            }
-            payload.put("version", BuildConfig.VERSION_NAME);
-            payload.put("type", "android");
-            payload.put("has_system_permission", Helpers.isSystemApp(EnrollmentActivity.this));
-            payload.put("inventory", inventory);
-
-            enroll.enrollment(payload, new EnrollmentHelper.EnrollCallBack() {
-                @Override
-                public void onSuccess(String data) {
-                    pd.dismiss();
-
-                    ArrayList<UserModel.EmailsData> arrEmails = new ArrayList<>();
-
-                    List<EditText> emailEdit = editEmail.getEditList();
-                    List<Spinner> emailTypeEdit = editEmail.getSpinnList();
-
-                    for (int i=0; i<emailEdit.size(); i++) {
-                        EditText editText = emailEdit.get(i);
-                        Spinner spinner = emailTypeEdit.get(i);
-
-                        if(!editText.getText().toString().equals("")) {
-                            UserModel.EmailsData emails = new UserModel().new EmailsData();
-                            emails.setEmail(editText.getText().toString());
-                            emails.setType(spinner.getSelectedItem().toString());
-                            arrEmails.add(emails);
-                        }
-                    }
-
-                    // -------------------------------
-                    // Store user information
-                    // -------------------------------
-                    UserModel userModel = new UserModel();
-                    userModel.setFirstName(editName.getText().toString());
-                    userModel.setLastName(editLastName.getText().toString());
-                    userModel.setEmails(arrEmails);
-
-                    // Mobile Phone
-                    if(!editPhone.getEditList().isEmpty()) {
-                        String mobilePhone = editPhone.getEditList().get(0).getText().toString();
-                        if (!mobilePhone.equals("")) {
-                            userModel.setMobilePhone(mobilePhone);
-                        }
-                    }
-
-                    // Phone
-                    if(editPhone.getEditList().size() > 1) {
-                        String phone = editPhone.getEditList().get(1).getText().toString();
-                        if (!phone.equals("")) {
-                            userModel.setPhone(phone);
-                        }
-                    }
-
-                    // Phone 2
-                    if(editPhone.getEditList().size() > 2) {
-                        String phone2 = editPhone.getEditList().get(2).getText().toString();
-                        if (!phone2.equals("")) {
-                            userModel.setPhone2(phone2);
-                        }
-                    }
-
-                    userModel.setPicture(strPicture);
-                    userModel.setLanguage( spinnerLanguage.getSelectedItem().toString() );
-                    userModel.setAdministrativeNumber( editAdministrative.getText().toString() );
-
-                    new UserController(EnrollmentActivity.this).save(userModel);
-
-                    nextStep();
-                }
-
-                @Override
-                public void onError(String error) {
-                    pd.dismiss();
-                    showError(error);
-                }
-            });
-        } catch (Exception ex) {
-            pd.dismiss();
-            showError( ex.getMessage() );
-            FlyveLog.e( ex.getMessage() );
         }
-    }
 
-    /**
-     * Shows an error message
-     * @param message
-     */
-    private void showError(String message) {
-        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        String mobilePhone = "";
+        String phone = "";
+        String phone2 = "";
+
+        // Mobile Phone
+        if(!editPhone.getEditList().isEmpty()) {
+            String mMobilePhone = editPhone.getEditList().get(0).getText().toString();
+            if (!mMobilePhone.equals("")) {
+                mobilePhone = mMobilePhone;
             }
-        });
+        }
+
+        // Phone
+        if(editPhone.getEditList().size() > 1) {
+            String mPhone = editPhone.getEditList().get(1).getText().toString();
+            if (!phone.equals("")) {
+                phone = mPhone;
+            }
+        }
+
+        // Phone 2
+        if(editPhone.getEditList().size() > 2) {
+            String mPhone2 = editPhone.getEditList().get(2).getText().toString();
+            if (!mPhone2.equals("")) {
+                phone2 = mPhone2;
+            }
+        }
+
+        // Enroll the user
+        presenter.enroll(EnrollmentActivity.this,
+                arrEmails,
+                editName.getText().toString(),
+                editLastName.getText().toString(),
+                phone,
+                phone2,
+                mobilePhone,
+                inventory,
+                strPicture,
+                spinnerLanguage.getSelectedItem().toString(),
+                editAdministrative.getText().toString()
+        );
     }
 
     /**
@@ -560,5 +348,34 @@ public class EnrollmentActivity extends AppCompatActivity {
         EnrollmentActivity.this.startActivity(intent);
         setResult(RESULT_OK, null);
         EnrollmentActivity.this.finish();
+    }
+
+    @Override
+    public void showError(String message) {
+        pd.dismiss();
+        pbx509.setVisibility(View.GONE);
+
+        txtMessage.setText(message);
+    }
+
+    @Override
+    public void enrollSuccess() {
+        pd.dismiss();
+        nextStep();
+    }
+
+    @Override
+    public void X509certificationSuccess() {
+        pbx509.setVisibility(View.GONE);
+        if(sendEnrollment) {
+            pd.dismiss();
+            validateForm();
+        }
+
+    }
+
+    @Override
+    public void inventorySucess() {
+
     }
 }
