@@ -284,7 +284,7 @@ public class Helpers {
 	/**
 	 * Generate a snackbar with the given arguments
 	 * https://developer.android.com/reference/android/support/design/widget/Snackbar.html Documentation of the Sanackbars
-	 * @param activity the view to show
+	 * @param activity the View to show
 	 * @param message to display
 	 */
 	public static void snack(Activity activity, String message) {
@@ -295,7 +295,7 @@ public class Helpers {
 
 	/**
 	 * Generate a snackbar with the given arguments
-	 * @param activity the view to show
+	 * @param activity the View to show
 	 * @param message to display
 	 * @param action the text to display for the action
 	 * @param callback to be invoked when the action is clicked

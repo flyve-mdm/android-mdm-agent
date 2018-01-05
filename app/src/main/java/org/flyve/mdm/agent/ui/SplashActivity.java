@@ -33,16 +33,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
+import org.flyve.mdm.agent.core.walkthrough.Walkthrough;
+import org.flyve.mdm.agent.core.walkthrough.WalkthroughData;
+import org.flyve.mdm.agent.core.walkthrough.WalkthroughPresenter;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
@@ -52,11 +51,11 @@ import java.util.ArrayList;
  * This is the first screen of the app here you can get information about flyve-mdm-agent
  * if you are not register
  */
-public class SplashActivity extends FragmentActivity {
+public class SplashActivity extends FragmentActivity implements Walkthrough.View {
 
     private static final int TIME = 3000;
     private IntentFilter mIntent;
-    private ArrayList<WalkthroughModel> walkthrough;
+    private Walkthrough.Presenter presenter;
 
     @Override
     public void onPause() {
@@ -105,38 +104,20 @@ public class SplashActivity extends FragmentActivity {
 
         // if user is not enrolled show help
         setContentView(R.layout.activity_splash);
+        presenter = new WalkthroughPresenter(this);
 
-        walkthrough = new ArrayList<>();
-        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
-        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));
-        walkthrough.add(new WalkthroughModel(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));
+        ArrayList<WalkthroughData> walkthrough = new ArrayList<>();
+        walkthrough.add(new WalkthroughData(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
+        walkthrough.add(new WalkthroughData(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));
+        walkthrough.add(new WalkthroughData(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));
 
-        // Instantiate a ViewPager and a PagerAdapter.
-        ViewPager mPager = (ViewPager) findViewById(R.id.pager);
-        PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
+        presenter.createSlides(walkthrough, getSupportFragmentManager());
     }
 
-    /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
-     */
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            FragmentSlideWalkthrough f = new FragmentSlideWalkthrough();
-            f.config(walkthrough.get(position), walkthrough.size(), position);
-            return f;
-        }
-
-        @Override
-        public int getCount() {
-            return walkthrough.size();
-        }
+    @Override
+    public void addSlides(PagerAdapter mPagerAdapter) {
+        ViewPager mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(mPagerAdapter);
     }
 
     /**

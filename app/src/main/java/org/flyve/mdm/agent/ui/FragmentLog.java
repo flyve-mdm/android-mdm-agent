@@ -60,9 +60,9 @@ public class FragmentLog extends Fragment  {
     private ProgressBar pb;
 
     /**
-     * Called to have the fragments instantiate its user interface view
+     * Called to have the fragments instantiate its user interface View
      * @param inflater the object that can be used to inflate any views
-     * @param container the parent view
+     * @param container the parent View
      * @param savedInstanceState if non-null, this fragment is being reconstructed from a previous saved state
      * @return View the fragment's UI
      */

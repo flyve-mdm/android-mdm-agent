@@ -1,11 +1,20 @@
 package org.flyve.mdm.agent.core.walkthrough;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+
+import org.flyve.mdm.agent.ui.FragmentSlideWalkthrough;
+
+import java.util.ArrayList;
+
 /*
- *   Copyright (C) 2017 Teclib. All rights reserved.
+ *   Copyright © 2018 Teclib. All rights reserved.
  *
- *   This file is part of flyve-mdm-android-agent
+ *   This file is part of flyve-mdm-android
  *
- * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
  * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
@@ -19,76 +28,49 @@ package org.flyve.mdm.agent.core.walkthrough;
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
- * @date      17/8/17
- * @copyright Copyright (C) 2017 Teclib. All rights reserved.
+ * @date      4/1/18
+ * @copyright Copyright © 2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class WalkthroughModel {
+public class WalkthroughModel implements Walkthrough.Model {
 
-    private int message;
-    private String link;
-    private int image;
+    private Walkthrough.Presenter Presenter;
+    private ArrayList<WalkthroughData> data;
 
-    /**
-     * This constructor sets the properties to equal the given arguments
-     * @param message
-     * @param link
-     * @param image
-     */
-    public WalkthroughModel(int message, String link, int image) {
-        this.message = message;
-        this.link = link;
-        this.image = image;
+    public WalkthroughModel(Walkthrough.Presenter Presenter) {
+        this.Presenter = Presenter;
+    }
+
+    @Override
+    public void createSlides(ArrayList<WalkthroughData> data, FragmentManager fm) {
+        this.data = data;
+
+        PagerAdapter mPagerAdapter = new SimpleSlidePagerAdapter(fm);
+        Presenter.addSlides(mPagerAdapter);
     }
 
     /**
-     * Get the message of the Walkthrough
-     * @return int the message
+     * A simple pager adapter
      */
-    public int getMessage() {
-        return message;
+    private class SimpleSlidePagerAdapter extends FragmentStatePagerAdapter {
+        public SimpleSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            FragmentSlideWalkthrough f = new FragmentSlideWalkthrough();
+            f.config(data.get(position), data.size(), position);
+            return f;
+        }
+
+        @Override
+        public int getCount() {
+            return data.size();
+        }
     }
 
-    /**
-     * Set the message of the Walkthrough
-     * @param message
-     */
-    public void setMessage(int message) {
-        this.message = message;
-    }
-
-    /**
-     * Get the link of the Walkthrough
-     * @return string the link
-     */
-    public String getLink() {
-        return link;
-    }
-
-    /**
-     * Set the link of the Walkthrough
-     * @param link
-     */
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    /**
-     * Get the image of the Walkthrough
-     * @return int the image
-     */
-    public int getImage() {
-        return image;
-    }
-
-    /**
-     * Set the image of the Walkthrough
-     * @param image
-     */
-    public void setImage(int image) {
-        this.image = image;
-    }
 }
