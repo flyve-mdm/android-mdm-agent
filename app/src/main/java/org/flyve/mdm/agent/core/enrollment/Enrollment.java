@@ -36,7 +36,8 @@ import java.util.List;
 public interface Enrollment {
 
     interface View {
-        void showError(String message);
+        void showDetailError(String message);
+        void showSnackError(String message);
         void enrollSuccess();
         void certificationX509Success();
         void inventorySuccess(String inventory);
@@ -44,7 +45,8 @@ public interface Enrollment {
 
     interface Presenter {
         // Views
-        void showError(String message);
+        void showDetailError(String message);
+        void showSnackError(String message);
         void enrollSuccess();
         void certificationX509Success();
         void inventorySuccess(String inventory);

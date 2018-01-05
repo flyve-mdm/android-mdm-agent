@@ -351,11 +351,23 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
     }
 
     @Override
-    public void showError(String message) {
+    public void showDetailError(String message) {
         pd.dismiss();
         pbx509.setVisibility(View.GONE);
 
         txtMessage.setText(message);
+    }
+
+    @Override
+    public void showSnackError(String message) {
+        pd.dismiss();
+        pbx509.setVisibility(View.GONE);
+
+        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
     }
 
     @Override

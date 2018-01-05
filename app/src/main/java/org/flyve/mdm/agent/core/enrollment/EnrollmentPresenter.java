@@ -44,9 +44,16 @@ public class EnrollmentPresenter implements Enrollment.Presenter {
     }
 
     @Override
-    public void showError(String message) {
+    public void showDetailError(String message) {
         if(view!=null) {
-            view.showError(message);
+            view.showDetailError(message);
+        }
+    }
+
+    @Override
+    public void showSnackError(String message) {
+        if(view!=null) {
+            view.showSnackError(message);
         }
     }
 
