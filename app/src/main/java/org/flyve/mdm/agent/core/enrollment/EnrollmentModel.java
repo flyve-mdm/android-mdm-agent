@@ -200,7 +200,7 @@ public class EnrollmentModel implements Enrollment.Model {
 
             JSONObject payload = new JSONObject();
 
-            payload.put("_email", arrEmails.get(0)); // get first email
+            payload.put("_email", arrEmails.get(0).getEmail()); // get first email
             payload.put("_invitation_token", invitationToken);
             payload.put("_serial", Helpers.getDeviceSerial());
             payload.put("_uuid", new Hardware(context).getUUID());
@@ -226,8 +226,8 @@ public class EnrollmentModel implements Enrollment.Model {
                     userModel.setLastName(lastName);
                     userModel.setEmails(arrEmails);
                     userModel.setPicture(photo);
-                    userModel.setLanguage( language );
-                    userModel.setAdministrativeNumber( administrativeNumber );
+                    userModel.setLanguage(language);
+                    userModel.setAdministrativeNumber(administrativeNumber);
 
                     new UserController(context).save(userModel);
 
