@@ -69,7 +69,7 @@ public class EnrollmentModel implements Enrollment.Model {
 
             @Override
             public void onTaskError(Throwable throwable) {
-                presenter.showError("Inventory fail");
+                presenter.showSnackError("Inventory fail");
             }
         });
 
@@ -86,7 +86,7 @@ public class EnrollmentModel implements Enrollment.Model {
 
             @Override
             public void onError(String error) {
-                presenter.showError(error);
+                presenter.showSnackError(error);
             }
         });
     }
@@ -185,7 +185,8 @@ public class EnrollmentModel implements Enrollment.Model {
         }
 
         if(!allow) {
-            presenter.showError(errMsg.toString());
+            presenter.showSnackError(context.getResources().getString(R.string.validate_check_details));
+            presenter.showDetailError(errMsg.toString());
             return;
         }
 
@@ -237,11 +238,11 @@ public class EnrollmentModel implements Enrollment.Model {
 
                 @Override
                 public void onError(String error) {
-                    presenter.showError(error);
+                    presenter.showSnackError(error);
                 }
             });
         } catch (Exception ex) {
-            presenter.showError(ex.getMessage());
+            presenter.showSnackError(ex.getMessage());
         }
     }
 }
