@@ -1,5 +1,10 @@
 package org.flyve.mdm.agent.core.walkthrough;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.PagerAdapter;
+
+import java.util.ArrayList;
+
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
  *
@@ -18,7 +23,7 @@ package org.flyve.mdm.agent.core.walkthrough;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
- * @author    rafaelhernandez
+ * @author    Rafael Hernandez
  * @date      4/1/18
  * @copyright Copyright © 2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
@@ -26,5 +31,25 @@ package org.flyve.mdm.agent.core.walkthrough;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class WalkthroughPresenter {
+public class WalkthroughPresenter implements Walkthrough.Presenter {
+
+    private Walkthrough.View view;
+    private Walkthrough.Model model;
+
+    public WalkthroughPresenter(Walkthrough.View view){
+        this.view = view;
+        model = new WalkthroughModel(this);
+    }
+
+    @Override
+    public void addSlides(PagerAdapter mPagerAdapter) {
+        if(view != null) {
+            view.addSlides(mPagerAdapter);
+        }
+    }
+
+    @Override
+    public void createSlides(ArrayList<WalkthroughData> data, FragmentManager fm) {
+        model.createSlides(data, fm);
+    }
 }

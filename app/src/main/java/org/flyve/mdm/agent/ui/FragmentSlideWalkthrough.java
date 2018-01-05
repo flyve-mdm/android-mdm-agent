@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.walkthrough.WalkthroughModel;
+import org.flyve.mdm.agent.core.walkthrough.WalkthroughData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
@@ -41,7 +41,7 @@ import org.flyve.mdm.agent.utils.Helpers;
  */
 public class FragmentSlideWalkthrough extends Fragment {
 
-    private WalkthroughModel walkthroughModel;
+    private WalkthroughData walkthroughData;
     private int slides;
     private int position;
 
@@ -52,21 +52,21 @@ public class FragmentSlideWalkthrough extends Fragment {
 
     /**
      * Set the properties to equal the given arguments
-     * @param walkthroughModel the walkthroug model class
-     * @param slides the number of slides the walkthrough has
+     * @param walkthroughData the walkthroug Model class
+     * @param slides the number of slides the Walkthrough has
      * @param position the user is currently on
      */
-    public void config(WalkthroughModel walkthroughModel, int slides, int position) {
-        this.walkthroughModel = walkthroughModel;
+    public void config(WalkthroughData walkthroughData, int slides, int position) {
+        this.walkthroughData = walkthroughData;
         this.slides = slides;
         this.position = position;
     }
 
     /**
-     * Called to have the fragments instantiate its user interface view
-     * It displays the view for the Walkthrough
+     * Called to have the fragments instantiate its user interface View
+     * It displays the View for the Walkthrough
      * @param inflater the object that can be used to inflate any views
-     * @param container the parent view
+     * @param container the parent View
      * @param savedInstanceState if non-null, this fragment is being reconstructed from a previous saved state
      * @return View the fragment's UI
      */
@@ -77,9 +77,9 @@ public class FragmentSlideWalkthrough extends Fragment {
                 R.layout.fragment_walkthrough_step, container, false);
 
         try {
-            mLink = walkthroughModel.getLink();
-            mMessage = walkthroughModel.getMessage();
-            mImage = walkthroughModel.getImage();
+            mLink = walkthroughData.getLink();
+            mMessage = walkthroughData.getMessage();
+            mImage = walkthroughData.getImage();
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
@@ -110,7 +110,7 @@ public class FragmentSlideWalkthrough extends Fragment {
 
     /**
      * Shows the slide dots of the screen
-     * @param v the view
+     * @param v the View
      */
     private void slideDots(ViewGroup v) {
 

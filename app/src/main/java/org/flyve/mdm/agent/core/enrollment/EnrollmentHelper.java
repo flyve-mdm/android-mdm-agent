@@ -97,7 +97,7 @@ public class EnrollmentHelper {
             }
 
             // Manage error from backend
-            // Example: ["ERROR_SESSION_TOKEN_MISSING","parameter session_token is missing or empty; view documentation in your browser at https://dev.flyve.org/glpi/apirest.php/#ERROR_SESSION_TOKEN_MISSING"]
+            // Example: ["ERROR_SESSION_TOKEN_MISSING","parameter session_token is missing or empty; View documentation in your browser at https://dev.flyve.org/glpi/apirest.php/#ERROR_SESSION_TOKEN_MISSING"]
             try {
                 JSONArray jError = new JSONArray(error);
                 errorMessage = jError.getString(1);
