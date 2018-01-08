@@ -1,5 +1,12 @@
 package org.flyve.mdm.agent.core.user;
 
+import android.content.Context;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.flyve.mdm.agent.data.LocalStorage;
+
 import java.util.List;
 
 /*
@@ -28,47 +35,27 @@ import java.util.List;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class UserModel {
+public class UserData extends LocalStorage {
 
-    private String firstName = "";
-    private String lastName = "";
-    private String language = "";
-    private String phone = "";
-    private String mobilePhone = "";
-    private String phone2 = "";
-    private String administrativeNumber = "";
-    private String picture = "";
-    private List<UserModel.EmailsData> emails;
+    private static String local = "FlyveMDMUserObject_";
+
+    private static final String FIRST_NAME = local + "firstName";
+    private static final String LAST_NAME = local + "lastName";
+    private static final String LANGUAGE = local + "language";
+    private static final String PHONE = local + "phone";
+    private static final String MOBILE_PHONE = local + "mobilePhone";
+    private static final String PHONE2 = local + "phone2";
+    private static final String ADMINISTRATIVE_NUMBER = local + "administrativeNumber";
+    private static final String PICTURE = local + "picture";
+    private static final String EMAIL = local + "email";
 
     /**
      * Constructor
+     *
+     * @param context
      */
-    public UserModel() {
-
-    }
-
-    /**
-     * Set the object's properties to equal the arguments given
-     * @param firstName
-     * @param lastName
-     * @param language
-     * @param phone
-     * @param mobilePhone
-     * @param phone2
-     * @param administrativeNumber
-     * @param picture
-     * @param emails
-     */
-    public UserModel(String firstName, String lastName, String language, String phone, String mobilePhone, String phone2, String administrativeNumber, String picture, List<EmailsData> emails) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.language = language;
-        this.phone = phone;
-        this.mobilePhone = mobilePhone;
-        this.phone2 = phone2;
-        this.administrativeNumber = administrativeNumber;
-        this.picture = picture;
-        this.emails = emails;
+    public UserData(Context context) {
+        super(context);
     }
 
     /**
@@ -76,7 +63,7 @@ public class UserModel {
      * @return the first name
      */
     public String getFirstName() {
-        return firstName;
+        return getData(FIRST_NAME);
     }
 
     /**
@@ -84,7 +71,7 @@ public class UserModel {
      * @param firstName the first name
      */
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        setData(FIRST_NAME, firstName);
     }
 
     /**
@@ -92,7 +79,7 @@ public class UserModel {
      * @return the last name
      */
     public String getLastName() {
-        return lastName;
+        return getData(LAST_NAME);
     }
 
     /**
@@ -100,7 +87,7 @@ public class UserModel {
      * @param lastName the last name
      */
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        setData(LAST_NAME, lastName);
     }
 
     /**
@@ -108,7 +95,7 @@ public class UserModel {
      * @return the language
      */
     public String getLanguage() {
-        return language;
+        return getData(LANGUAGE);
     }
 
     /**
@@ -116,7 +103,7 @@ public class UserModel {
      * @param language
      */
     public void setLanguage(String language) {
-        this.language = language;
+        setData(LANGUAGE, language);
     }
 
     /**
@@ -124,7 +111,7 @@ public class UserModel {
      * @return the phone
      */
     public String getPhone() {
-        return phone;
+        return getData(PHONE);
     }
 
     /**
@@ -132,7 +119,7 @@ public class UserModel {
      * @param phone
      */
     public void setPhone(String phone) {
-        this.phone = phone;
+        setData(PHONE, phone);
     }
 
     /**
@@ -140,7 +127,7 @@ public class UserModel {
      * @return the mobile phone
      */
     public String getMobilePhone() {
-        return mobilePhone;
+        return getData(MOBILE_PHONE);
     }
 
     /**
@@ -148,15 +135,15 @@ public class UserModel {
      * @param mobilePhone
      */
     public void setMobilePhone(String mobilePhone) {
-        this.mobilePhone = mobilePhone;
+        setData(MOBILE_PHONE, mobilePhone);
     }
 
     /**
      * Get a second phone of the user
-     * @return the second phone 
+     * @return the second phone
      */
     public String getPhone2() {
-        return phone2;
+        return getData(PHONE2);
     }
 
     /**
@@ -164,7 +151,7 @@ public class UserModel {
      * @param phone2
      */
     public void setPhone2(String phone2) {
-        this.phone2 = phone2;
+        setData(PHONE2, phone2);
     }
 
     /**
@@ -172,7 +159,7 @@ public class UserModel {
      * @return the administrative number
      */
     public String getAdministrativeNumber() {
-        return administrativeNumber;
+        return getData(ADMINISTRATIVE_NUMBER);
     }
 
     /**
@@ -180,7 +167,7 @@ public class UserModel {
      * @param administrativeNumber
      */
     public void setAdministrativeNumber(String administrativeNumber) {
-        this.administrativeNumber = administrativeNumber;
+        setData(ADMINISTRATIVE_NUMBER, administrativeNumber);
     }
 
     /**
@@ -188,7 +175,7 @@ public class UserModel {
      * @return the picture
      */
     public String getPicture() {
-        return picture;
+        return getData(PICTURE);
     }
 
     /**
@@ -196,7 +183,7 @@ public class UserModel {
      * @param picture
      */
     public void setPicture(String picture) {
-        this.picture = picture;
+        setData(PICTURE, picture);
     }
 
     /**
@@ -204,7 +191,9 @@ public class UserModel {
      * @return the emails
      */
     public List<EmailsData> getEmails() {
-        return emails;
+        String json = getData(EMAIL);
+        Gson gson = new Gson();
+        return gson.fromJson(json, new TypeToken<List<EmailsData>>(){}.getType());
     }
 
     /**
@@ -212,7 +201,9 @@ public class UserModel {
      * @param emails
      */
     public void setEmails(List<EmailsData> emails) {
-        this.emails = emails;
+        Gson gson = new Gson();
+        String json = gson.toJson(emails);
+        setData(EMAIL, json);
     }
 
     public class EmailsData {

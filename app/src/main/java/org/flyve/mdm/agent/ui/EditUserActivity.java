@@ -25,8 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.user.UserController;
-import org.flyve.mdm.agent.core.user.UserModel;
+import org.flyve.mdm.agent.core.user.UserData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.InputValidatorHelper;
@@ -70,7 +69,7 @@ public class EditUserActivity extends AppCompatActivity {
     private EditText editLastName;
     private EditText editAdministrative;
     private ImageView imgPhoto;
-    private UserModel user;
+    private UserData user;
     private MultipleEditText editEmail;
     private MultipleEditText editPhone;
     private Spinner spinnerLanguage;
@@ -89,7 +88,7 @@ public class EditUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_form);
 
-        user = new UserController(EditUserActivity.this).getCache();
+        user = new UserData(EditUserActivity.this);
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -224,13 +223,13 @@ public class EditUserActivity extends AppCompatActivity {
         // -------------
         // Emails
         // -------------
-        ArrayList<UserModel.EmailsData> arrEmails = new ArrayList<>();
+        ArrayList<UserData.EmailsData> arrEmails = new ArrayList<>();
 
         List<EditText> emailEdit = editEmail.getEditList();
         List<Spinner> emailTypeEdit = editEmail.getSpinnList();
 
         for (int i=0; i<emailEdit.size(); i++) {
-            UserModel.EmailsData emails = new UserModel().new EmailsData();
+            UserData.EmailsData emails = new UserData(EditUserActivity.this).new EmailsData();
             EditText editText = emailEdit.get(i);
             Spinner spinner = emailTypeEdit.get(i);
 
@@ -244,7 +243,7 @@ public class EditUserActivity extends AppCompatActivity {
         // -------------
         // USER
         // -------------
-        user = new UserModel();
+        user = new UserData(EditUserActivity.this);
 
         user.setFirstName( editName.getText().toString() );
         user.setLastName( editLastName.getText().toString() );
@@ -277,8 +276,6 @@ public class EditUserActivity extends AppCompatActivity {
         user.setPicture(strPicture);
         user.setLanguage( spinnerLanguage.getSelectedItem().toString() );
         user.setAdministrativeNumber( editAdministrative.getText().toString() );
-
-        new UserController(EditUserActivity.this).save(user);
 
         Helpers.snack( EditUserActivity.this, getResources().getString(R.string.saved) );
     }

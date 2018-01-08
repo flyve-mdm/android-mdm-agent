@@ -1,5 +1,9 @@
 package org.flyve.mdm.agent.core.supervisor;
 
+import android.content.Context;
+
+import org.flyve.mdm.agent.data.LocalStorage;
+
 /*
  *   Copyright (C) 2017 Teclib. All rights reserved.
  *
@@ -26,34 +30,23 @@ package org.flyve.mdm.agent.core.supervisor;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class SupervisorModel {
+public class SupervisorData extends LocalStorage {
 
-    private String name;
-    private String email;
-    private String phone;
-    private String website;
-    private String picture;
+    private static String local = "FlyveMDMSupervisorObject_";
+
+    private static final String NAME = local + "name";
+    private static final String EMAIL = local + "email";
+    private static final String PHONE = local + "phone";
+    private static final String WEBSITE = local + "website";
+    private static final String PICTURE = local + "picture";
 
     /**
      * Constructor
+     *
+     * @param context
      */
-    public SupervisorModel() {
-    }
-
-    /**
-     * Set the object's properties to equal the arguments given
-     * @param name
-     * @param email
-     * @param phone
-     * @param website
-     * @param picture
-     */
-    public SupervisorModel(String name, String email, String phone, String website, String picture) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.website = website;
-        this.picture = picture;
+    public SupervisorData(Context context) {
+        super(context);
     }
 
     /**
@@ -61,7 +54,7 @@ public class SupervisorModel {
      * @return string the name
      */
     public String getName() {
-        return name;
+        return getData(NAME);
     }
 
     /**
@@ -69,7 +62,7 @@ public class SupervisorModel {
      * @param name
      */
     public void setName(String name) {
-        this.name = name;
+        setData(NAME, name);
     }
 
     /**
@@ -77,7 +70,7 @@ public class SupervisorModel {
      * @return string the email
      */
     public String getEmail() {
-        return email;
+        return getData(EMAIL);
     }
 
     /**
@@ -85,7 +78,7 @@ public class SupervisorModel {
      * @param email
      */
     public void setEmail(String email) {
-        this.email = email;
+        setData(EMAIL, email);
     }
 
     /**
@@ -93,7 +86,7 @@ public class SupervisorModel {
      * @return string the phone
      */
     public String getPhone() {
-        return phone;
+        return getData(PHONE);
     }
 
     /**
@@ -101,7 +94,7 @@ public class SupervisorModel {
      * @param phone
      */
     public void setPhone(String phone) {
-        this.phone = phone;
+        setData(PHONE, phone);
     }
 
     /**
@@ -109,7 +102,7 @@ public class SupervisorModel {
      * @return string the website
      */
     public String getWebsite() {
-        return website;
+        return getData(WEBSITE);
     }
 
     /**
@@ -117,7 +110,7 @@ public class SupervisorModel {
      * @param website
      */
     public void setWebsite(String website) {
-        this.website = website;
+        setData(WEBSITE, website);
     }
 
     /**
@@ -125,7 +118,7 @@ public class SupervisorModel {
      * @return string the picture
      */
     public String getPicture() {
-        return picture;
+        return getData(PICTURE);
     }
 
     /**
@@ -133,6 +126,7 @@ public class SupervisorModel {
      * @param picture
      */
     public void setPicture(String picture) {
-        this.picture = picture;
+        setData(PICTURE, picture);
     }
+
 }

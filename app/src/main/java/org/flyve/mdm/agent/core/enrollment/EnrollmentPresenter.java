@@ -3,7 +3,7 @@ package org.flyve.mdm.agent.core.enrollment;
 import android.app.Activity;
 import android.content.Context;
 
-import org.flyve.mdm.agent.core.user.UserModel;
+import org.flyve.mdm.agent.core.user.UserData;
 
 import java.util.List;
 
@@ -94,7 +94,7 @@ public class EnrollmentPresenter implements Enrollment.Presenter {
     }
 
     @Override
-    public void enroll(Context context, List<UserModel.EmailsData> arrEmails, String firstName, String lastName, String phone, String phone2, String mobilePhone, String inventory, String photo, String language, String administrativeNumber) {
+    public void enroll(Context context, List<UserData.EmailsData> arrEmails, String firstName, String lastName, String phone, String phone2, String mobilePhone, String inventory, String photo, String language, String administrativeNumber) {
         model.enroll(context, arrEmails, firstName, lastName, phone, phone2, mobilePhone, inventory, photo, language, administrativeNumber);
     }
 }

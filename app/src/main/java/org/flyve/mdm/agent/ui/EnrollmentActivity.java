@@ -55,7 +55,7 @@ import android.widget.TextView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.enrollment.Enrollment;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentPresenter;
-import org.flyve.mdm.agent.core.user.UserModel;
+import org.flyve.mdm.agent.core.user.UserData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.MultipleEditText;
@@ -280,7 +280,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
         pd = ProgressDialog.show(EnrollmentActivity.this, "", getResources().getString(R.string.enrollment_in_process));
 
         // Get all emails
-        ArrayList<UserModel.EmailsData> arrEmails = new ArrayList<>();
+        ArrayList<UserData.EmailsData> arrEmails = new ArrayList<>();
 
         List<EditText> emailEdit = editEmail.getEditList();
         List<Spinner> emailTypeEdit = editEmail.getSpinnList();
@@ -290,7 +290,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
             Spinner spinner = emailTypeEdit.get(i);
 
             if(!editText.getText().toString().equals("")) {
-                UserModel.EmailsData emails = new UserModel().new EmailsData();
+                UserData.EmailsData emails = new UserData(EnrollmentActivity.this).new EmailsData();
                 emails.setEmail(editText.getText().toString());
                 emails.setType(spinner.getSelectedItem().toString());
                 arrEmails.add(emails);
