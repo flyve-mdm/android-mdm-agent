@@ -40,10 +40,11 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.BuildConfig;
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
+import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.AppInfo;
-import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -72,14 +73,16 @@ public class MQTTHelper {
     private ArrayList<String> arrTopics;
     private MqttAndroidClient client;
     private Context context;
-    private DataStorage cache;
+    private PoliciesData cache;
+    private MqttData mqttCache;
     private String mTopic;
 
     public MQTTHelper(Context context, MqttAndroidClient client) {
         this.client = client;
         this.context = context;
-        cache = new DataStorage(context);
-        mTopic = cache.getTopic();
+        cache = new PoliciesData(context);
+        mqttCache = new MqttData(context);
+        mTopic = mqttCache.getTopic();
         arrTopics = new ArrayList<>();
     }
 
@@ -105,7 +108,7 @@ public class MQTTHelper {
     public void addManifest(JSONObject json) {
         try {
             String version = json.getString("version");
-            cache.setManifestVersion(version);
+            mqttCache.setManifestVersion(version);
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
@@ -197,7 +200,7 @@ public class MQTTHelper {
     public void mdm(Context context, JSONObject json) {
         try {
 
-            DataStorage cache = new DataStorage(context);
+            MqttData cache = new MqttData(context);
 
             JSONArray jsonMDM = json.getJSONArray("MDM");
             for(int i=0; i < jsonMDM.length(); i++) {

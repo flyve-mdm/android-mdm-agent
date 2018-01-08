@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.os.PowerManager;
 import android.provider.Settings;
 
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.ui.LockActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -44,13 +44,13 @@ public class PoliciesDeviceManager {
     private DevicePolicyManager mDPM;
     private ComponentName mDeviceAdmin;
     private Context context;
-    private DataStorage cache;
+    private PoliciesData cache;
 
     public PoliciesDeviceManager(Context context) {
         this.context = context;
         mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
         mDeviceAdmin = new ComponentName(context, FlyveAdminReceiver.class);
-        cache = new DataStorage(context);
+        cache = new PoliciesData(context);
     }
 
     @TargetApi(21)
