@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent.core.walkthrough;
+package org.flyve.mdm.agent.data;
 
 /*
  *   Copyright (C) 2017 Teclib. All rights reserved.
