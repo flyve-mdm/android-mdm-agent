@@ -3,7 +3,7 @@ package org.flyve.mdm.agent.core.enrollment;
 import android.app.Activity;
 import android.content.Context;
 
-import org.flyve.mdm.agent.core.user.UserData;
+import org.flyve.mdm.agent.data.UserData;
 
 import java.util.List;
 

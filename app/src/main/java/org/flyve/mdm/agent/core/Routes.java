@@ -29,7 +29,7 @@ package org.flyve.mdm.agent.core;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 /**
@@ -38,14 +38,14 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 public class Routes {
 
     private String url;
-    private DataStorage cache;
+    private MqttData cache;
 
     /**
      * Constructor
      * @param context
      */
     public Routes(Context context) {
-        cache = new DataStorage(context);
+        cache = new MqttData(context);
         url = cache.getUrl();
     }
 
