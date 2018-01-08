@@ -1,11 +1,9 @@
-package org.flyve.mdm.agent.data.user;
+package org.flyve.mdm.agent.data;
 
 import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import org.flyve.mdm.agent.data.LocalStorage;
 
 import java.util.List;
 

@@ -1,8 +1,6 @@
-package org.flyve.mdm.agent.data.supervisor;
+package org.flyve.mdm.agent.data;
 
 import android.content.Context;
-
-import org.flyve.mdm.agent.data.LocalStorage;
 
 /*
  *   Copyright (C) 2017 Teclib. All rights reserved.
