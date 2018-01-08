@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent.core.user;
+package org.flyve.mdm.agent.data.user;
 
 import android.content.Context;
 
