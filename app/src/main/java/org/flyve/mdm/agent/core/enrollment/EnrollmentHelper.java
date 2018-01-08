@@ -6,7 +6,7 @@ import android.os.Looper;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -66,7 +66,7 @@ public class EnrollmentHelper {
     }
 
     private Context context;
-    private DataStorage cache;
+    private MqttData cache;
     private Routes routes;
 
     /**
@@ -75,7 +75,7 @@ public class EnrollmentHelper {
      */
     public EnrollmentHelper(Context context) {
         this.context = context;
-        cache = new DataStorage(context);
+        cache = new MqttData(context);
         routes = new Routes(context);
     }
 

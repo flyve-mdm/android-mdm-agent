@@ -13,8 +13,8 @@ import org.flyve.inventory.InventoryTask;
 import org.flyve.inventory.categories.Hardware;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.user.UserData;
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.data.UserData;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONObject;
@@ -196,7 +196,7 @@ public class EnrollmentModel implements Enrollment.Model {
                 requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
             }
 
-            DataStorage cache = new DataStorage(context);
+            MqttData cache = new MqttData(context);
             String invitationToken = cache.getInvitationToken();
 
             JSONObject payload = new JSONObject();
