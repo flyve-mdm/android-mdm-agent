@@ -41,7 +41,7 @@ import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.DrawerAdapter;
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<String, String> selectedItem;
     private TextView txtToolbarTitle;
     private Intent mServiceIntent;
-    private DataStorage cache;
+    private AppData cache;
 
     /**
      * Perform the final clenup before the activity is destroyed
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         // start MQTT
         globalStartMQTT();
 
-        cache = new DataStorage(this);
+        cache = new AppData(this);
 
          // Setup the DrawerLayout and NavigationView
         txtToolbarTitle = (TextView) findViewById(R.id.txtToolbarTitle);

@@ -9,7 +9,7 @@ import android.widget.ListView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.ConnectivityAdapter;
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.PoliciesData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +57,7 @@ public class FragmentConnectivity extends Fragment {
 
     private void loadData(ListView lst) {
 
-        DataStorage cache = new DataStorage(FragmentConnectivity.this.getContext());
+        PoliciesData cache = new PoliciesData(FragmentConnectivity.this.getContext());
 
         ArrayList arr = new ArrayList<HashMap<String, Boolean>>();
 

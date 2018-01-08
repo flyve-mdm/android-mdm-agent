@@ -11,9 +11,9 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.DataStorage;
-import org.flyve.mdm.agent.services.PoliciesDeviceManager;
+import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.services.PoliciesConnectivity;
+import org.flyve.mdm.agent.services.PoliciesDeviceManager;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
@@ -45,7 +45,7 @@ import org.flyve.mdm.agent.utils.Helpers;
  */
 public class FragmentTestPolicies extends Fragment {
 
-    private DataStorage cache;
+    private PoliciesData cache;
     private PoliciesDeviceManager mdm;
 
     @Override
@@ -55,7 +55,7 @@ public class FragmentTestPolicies extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_test_policies, container, false);
 
-        cache = new DataStorage(FragmentTestPolicies.this.getContext());
+        cache = new PoliciesData(FragmentTestPolicies.this.getContext());
         mdm = new PoliciesDeviceManager(FragmentTestPolicies.this.getContext());
 
         Switch swGPS = (Switch) v.findViewById(R.id.swGPS);

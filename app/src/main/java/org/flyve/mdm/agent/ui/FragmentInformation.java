@@ -16,9 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.supervisor.SupervisorData;
-import org.flyve.mdm.agent.core.user.UserData;
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.SupervisorData;
+import org.flyve.mdm.agent.data.UserData;
+import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONObject;
@@ -30,7 +30,7 @@ public class FragmentInformation extends Fragment {
     private IntentFilter mIntent;
     private TextView txtOnline;
     private ImageView imgOnline;
-    private DataStorage cache;
+    private AppData cache;
     private TextView txtNameUser;
     private TextView txtEmailUser;
     private ImageView imgUser;
@@ -80,7 +80,7 @@ public class FragmentInformation extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_information, container, false);
 
-        cache = new DataStorage(FragmentInformation.this.getActivity());
+        cache = new AppData(FragmentInformation.this.getActivity());
 
         ImageView imgLogo = (ImageView) v.findViewById(R.id.imgLogo);
         imgLogo.setOnClickListener(new View.OnClickListener() {

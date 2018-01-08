@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.utils.Helpers;
 
 /*
@@ -40,7 +40,7 @@ import org.flyve.mdm.agent.utils.Helpers;
  */
 public class FragmentMQTTConfig extends Fragment {
 
-    private DataStorage cache;
+    private MqttData cache;
 
     /**
      * Instantiate the user interface View
@@ -56,7 +56,7 @@ public class FragmentMQTTConfig extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_mqtt_configuration, container, false);
 
-        cache = new DataStorage(FragmentMQTTConfig.this.getContext());
+        cache = new MqttData(FragmentMQTTConfig.this.getContext());
 
         final String mBroker = cache.getBroker();
         final String mPort = cache.getPort();
