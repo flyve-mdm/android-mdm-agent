@@ -40,9 +40,9 @@ import android.support.v4.view.ViewPager;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.Walkthrough;
-import org.flyve.mdm.agent.core.walkthrough.WalkthroughData;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughPresenter;
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.data.WalkthroughData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.util.ArrayList;
@@ -83,7 +83,7 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DataStorage cache = new DataStorage( SplashActivity.this );
+        MqttData cache = new MqttData( SplashActivity.this );
 
         // if broker is on cache open the main activity
         String broker = cache.getBroker();

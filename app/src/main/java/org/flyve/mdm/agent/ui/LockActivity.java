@@ -15,7 +15,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.supervisor.SupervisorData;
+import org.flyve.mdm.agent.data.SupervisorData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class LockActivity extends AppCompatActivity {

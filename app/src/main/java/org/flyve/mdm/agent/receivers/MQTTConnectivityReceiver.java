@@ -30,7 +30,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -51,7 +51,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         final String action = intent.getAction();
         FlyveLog.d("Connectivity receiver: " + action);
 
-        DataStorage cache = new DataStorage(context);
+        PoliciesData cache = new PoliciesData(context);
 
         if(action==null) {
             return;
