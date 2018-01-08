@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent.core.supervisor;
+package org.flyve.mdm.agent.data.supervisor;
 
 import android.content.Context;
 
