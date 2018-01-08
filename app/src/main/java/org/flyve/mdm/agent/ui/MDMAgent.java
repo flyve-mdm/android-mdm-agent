@@ -38,7 +38,6 @@ import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
 
-import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.UtilsCrash;
 
 /**
@@ -46,7 +45,6 @@ import org.flyve.mdm.agent.utils.UtilsCrash;
  */
 public class MDMAgent extends Application {
 
-    private DataStorage cache;
     private static MDMAgent instance;
     private static Boolean isDebuggable;
 
@@ -61,7 +59,6 @@ public class MDMAgent extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        cache = new DataStorage(this);
 
         instance = this;
 
@@ -78,14 +75,6 @@ public class MDMAgent extends Application {
 
         isDebuggable =  ( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
 
-    }
-
-    /**
-     * Get the cache class
-     * @return DataStorage
-     */
-    public DataStorage getCache() {
-        return cache;
     }
 
     /**
