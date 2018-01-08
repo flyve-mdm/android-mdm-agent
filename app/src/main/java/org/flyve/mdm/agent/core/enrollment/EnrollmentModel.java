@@ -13,8 +13,7 @@ import org.flyve.inventory.InventoryTask;
 import org.flyve.inventory.categories.Hardware;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.user.UserController;
-import org.flyve.mdm.agent.core.user.UserModel;
+import org.flyve.mdm.agent.core.user.UserData;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -153,7 +152,7 @@ public class EnrollmentModel implements Enrollment.Model {
     }
 
     @Override
-    public void enroll(final Context context, final List<UserModel.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber) {
+    public void enroll(final Context context, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber) {
 
         StringBuilder errMsg = new StringBuilder(context.getResources().getString(R.string.validate_error) );
         boolean allow = true;
@@ -223,15 +222,13 @@ public class EnrollmentModel implements Enrollment.Model {
                     // -------------------------------
                     // Store user information
                     // -------------------------------
-                    UserModel userModel = new UserModel();
-                    userModel.setFirstName(firstName);
-                    userModel.setLastName(lastName);
-                    userModel.setEmails(arrEmails);
-                    userModel.setPicture(photo);
-                    userModel.setLanguage(language);
-                    userModel.setAdministrativeNumber(administrativeNumber);
-
-                    new UserController(context).save(userModel);
+                    UserData userData = new UserData(context);
+                    userData.setFirstName(firstName);
+                    userData.setLastName(lastName);
+                    userData.setEmails(arrEmails);
+                    userData.setPicture(photo);
+                    userData.setLanguage(language);
+                    userData.setAdministrativeNumber(administrativeNumber);
 
                     presenter.enrollSuccess();
                 }

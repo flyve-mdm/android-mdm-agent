@@ -15,8 +15,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.supervisor.SupervisorController;
-import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
+import org.flyve.mdm.agent.core.supervisor.SupervisorData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class LockActivity extends AppCompatActivity {
@@ -78,7 +77,7 @@ public class LockActivity extends AppCompatActivity {
     private void loadSupervisor() {
 
         try {
-            SupervisorModel supervisor = new SupervisorController(LockActivity.this).getCache();
+            SupervisorData supervisor = new SupervisorData(LockActivity.this);
 
             if (supervisor.getName() != null && !supervisor.getName().equals("")) {
                 txtNameSupervisor.setText(supervisor.getName());

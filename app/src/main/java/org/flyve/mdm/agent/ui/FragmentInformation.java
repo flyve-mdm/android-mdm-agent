@@ -14,11 +14,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.supervisor.SupervisorController;
-import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
-import org.flyve.mdm.agent.core.user.UserController;
-import org.flyve.mdm.agent.core.user.UserModel;
+import org.flyve.mdm.agent.core.supervisor.SupervisorData;
+import org.flyve.mdm.agent.core.user.UserData;
 import org.flyve.mdm.agent.data.DataStorage;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -155,7 +154,7 @@ public class FragmentInformation extends Fragment {
     private void loadSupervisor() {
 
         try {
-            SupervisorModel supervisor = new SupervisorController(FragmentInformation.this.getActivity()).getCache();
+            SupervisorData supervisor = new SupervisorData(FragmentInformation.this.getActivity());
 
             if (supervisor.getName() != null && !supervisor.getName().equals("")) {
                 txtNameSupervisor.setText(supervisor.getName());
@@ -174,7 +173,7 @@ public class FragmentInformation extends Fragment {
     private void loadClientInfo() {
 
         try {
-            UserModel user = new UserController(FragmentInformation.this.getActivity()).getCache();
+            UserData user = new UserData(FragmentInformation.this.getActivity());
 
             if (user.getFirstName() != null && !user.getFirstName().equals("")) {
                 txtNameUser.setText(user.getFirstName() + " " + user.getLastName());

@@ -9,8 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.user.UserController;
-import org.flyve.mdm.agent.core.user.UserModel;
+import org.flyve.mdm.agent.core.user.UserData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
@@ -95,7 +94,7 @@ public class PreviewUserActivity extends AppCompatActivity {
     private void loadData() {
 
         try {
-            UserModel user = new UserController(PreviewUserActivity.this).getCache();
+            UserData user = new UserData(PreviewUserActivity.this);
 
             if (user == null) {
                 return;

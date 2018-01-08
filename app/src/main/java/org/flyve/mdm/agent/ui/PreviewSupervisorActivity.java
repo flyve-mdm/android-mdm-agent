@@ -7,8 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.supervisor.SupervisorController;
-import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
+import org.flyve.mdm.agent.core.supervisor.SupervisorData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
@@ -64,7 +63,7 @@ public class PreviewSupervisorActivity extends AppCompatActivity {
         }
 
         try {
-            SupervisorModel supervisor = new SupervisorController(PreviewSupervisorActivity.this).getCache();
+            SupervisorData supervisor = new SupervisorData(PreviewSupervisorActivity.this);
 
             ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
             if (supervisor.getPicture() != null && !supervisor.getPicture().equals("")) {
