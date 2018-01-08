@@ -3,6 +3,8 @@ package org.flyve.mdm.agent.core.walkthrough;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 
+import org.flyve.mdm.agent.data.WalkthroughData;
+
 import java.util.ArrayList;
 
 /*
