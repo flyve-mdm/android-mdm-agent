@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 
+import org.flyve.mdm.agent.data.WalkthroughData;
 import org.flyve.mdm.agent.ui.FragmentSlideWalkthrough;
 
 import java.util.ArrayList;
