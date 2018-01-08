@@ -43,7 +43,8 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.AppData;
+import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
@@ -144,7 +145,7 @@ public class MQTTService extends Service implements MqttCallback {
     public void connect() {
         Context mContext = this.getApplicationContext();
 
-        DataStorage cache = new DataStorage(mContext);
+        MqttData cache = new MqttData(mContext);
 
         final String mBroker = cache.getBroker();
         final String mPort = cache.getPort();
@@ -439,7 +440,7 @@ public class MQTTService extends Service implements MqttCallback {
         //send broadcast
         this.connected = status;
 
-        DataStorage cache = new DataStorage(this.getApplicationContext());
+        AppData cache = new AppData(this.getApplicationContext());
         cache.setOnlineStatus(status);
 
         Helpers.sendBroadcast(status, Helpers.BROADCAST_STATUS, getApplicationContext());
