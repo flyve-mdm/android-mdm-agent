@@ -212,7 +212,7 @@ public class EnrollmentModel implements Enrollment.Model {
             payload.put("version", BuildConfig.VERSION_NAME);
             payload.put("type", "android");
             payload.put("has_system_permission", Helpers.isSystemApp(context));
-            payload.put("inventory", inventory);
+            payload.put("inventory", Helpers.base64encode(inventory));
 
             EnrollmentHelper enroll = new EnrollmentHelper(context);
             enroll.enrollment(payload, new EnrollmentHelper.EnrollCallBack() {
