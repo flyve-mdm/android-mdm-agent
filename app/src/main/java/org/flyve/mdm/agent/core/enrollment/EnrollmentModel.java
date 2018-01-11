@@ -60,7 +60,7 @@ public class EnrollmentModel implements Enrollment.Model {
     @Override
     public void createInventory(Context context) {
         InventoryTask inventoryTask = new InventoryTask(context, "FlyveMDM-Agent");
-        inventoryTask.getJSON(new InventoryTask.OnTaskCompleted() {
+        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
             @Override
             public void onTaskSuccess(String s) {
                 presenter.inventorySuccess(s);
