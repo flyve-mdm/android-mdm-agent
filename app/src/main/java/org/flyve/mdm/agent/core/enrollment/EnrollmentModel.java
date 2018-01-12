@@ -3,10 +3,6 @@ package org.flyve.mdm.agent.core.enrollment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 
 import org.flyve.inventory.InventoryTask;
@@ -19,7 +15,6 @@ import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -107,10 +102,10 @@ public class EnrollmentModel implements Enrollment.Model {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (items[item].equals(activity.getResources().getString(R.string.take_photo))) {
-                    cameraIntent(activity, requestCamera);
+                    Helpers.cameraIntent(activity, requestCamera);
 
                 } else if (items[item].equals(activity.getResources().getString(R.string.choose_from_library))) {
-                    galleryIntent(activity, requestFile);
+                    Helpers.galleryIntent(activity, requestFile);
 
                 } else if (items[item].equals(activity.getResources().getString(R.string.cancel) )) {
                     dialog.dismiss();
@@ -118,37 +113,6 @@ public class EnrollmentModel implements Enrollment.Model {
             }
         });
         builder.show();
-    }
-
-    /**
-     * If the user selects the image with the option from the gallery
-     */
-    private void galleryIntent(Activity activity, int requestFile) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);//
-        activity.startActivityForResult(Intent.createChooser(intent, activity.getResources().getString(R.string.select_file) ),requestFile);
-    }
-
-    /**
-     * If the user selects the image with the option take photo
-     */
-    private void cameraIntent(Activity activity, int requestCamera) {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, getImageUri());
-            activity.startActivityForResult(takePictureIntent, requestCamera);
-        }
-    }
-
-    /**
-     * Get the URI of the image
-     * @return the URI
-     */
-    private Uri getImageUri() {
-        // Store image in dcim
-        File filePhoto = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "flyveUser.jpg");
-        return Uri.fromFile(filePhoto);
     }
 
     @Override
