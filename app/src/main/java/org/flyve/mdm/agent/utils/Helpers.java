@@ -44,6 +44,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -92,6 +94,37 @@ public class Helpers {
 				FlyveLog.e(ex.getMessage());
 			}
 		}
+	}
+
+	/**
+	 * If the user selects the image with the option from the gallery
+	 */
+	public static void galleryIntent(Activity activity, int requestFile) {
+		Intent intent = new Intent();
+		intent.setType("image/*");
+		intent.setAction(Intent.ACTION_GET_CONTENT);//
+		activity.startActivityForResult(Intent.createChooser(intent, activity.getResources().getString(R.string.select_file) ),requestFile);
+	}
+
+	/**
+	 * If the user selects the image with the option take photo
+	 */
+	public static void cameraIntent(Activity activity, int requestCamera) {
+		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
+			takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, getImageUri());
+			activity.startActivityForResult(takePictureIntent, requestCamera);
+		}
+	}
+
+	/**
+	 * Get the URI of the image
+	 * @return the URI
+	 */
+	public static Uri getImageUri() {
+		// Store image in dcim
+		File filePhoto = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "flyveUser.jpg");
+		return Uri.fromFile(filePhoto);
 	}
 
 
