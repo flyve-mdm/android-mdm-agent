@@ -25,6 +25,7 @@ public class LockActivity extends AppCompatActivity {
     private ViewGroup mTopView;
     private WindowManager wm;
     private LocalBroadcastManager mLocalBroadcastManager;
+
     BroadcastReceiver broadcastLock = new BroadcastReceiver() {
         @Override
         public void onReceive(Context arg0, Intent intent) {
@@ -100,11 +101,6 @@ public class LockActivity extends AppCompatActivity {
         Intent miIntent = new Intent(LockActivity.this, MainActivity.class);
         LockActivity.this.startActivity(miIntent);
         LockActivity.this.finish();
-
-//        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager
-//                .getInstance(LockActivity.this);
-//        localBroadcastManager.sendBroadcast(new Intent(
-//                "org.flyvemdm.finishlock"));
     }
 
     // Handle button clicks
@@ -114,16 +110,12 @@ public class LockActivity extends AppCompatActivity {
         if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
                 || (keyCode == KeyEvent.KEYCODE_POWER)
                 || (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
-                || (keyCode == KeyEvent.KEYCODE_CAMERA)) {
-            return true;
-        }
-        if ((keyCode == KeyEvent.KEYCODE_HOME)) {
-
+                || (keyCode == KeyEvent.KEYCODE_CAMERA)
+                || (keyCode == KeyEvent.KEYCODE_HOME)) {
             return true;
         }
 
         return false;
-
     }
 
     // handle the key press events here itself
