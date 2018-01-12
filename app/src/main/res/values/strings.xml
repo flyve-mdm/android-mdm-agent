@@ -52,6 +52,7 @@
     <string name="mqtt_initital_topic">Initial Topic</string>
     <string name="mqtt_save_message">Saved</string>
 
+    <string name="success">Success</string>
     <string name="saved">Saved</string>
     <string name="accept">Accept</string>
     <string name="cancel">Cancel</string>
