@@ -48,21 +48,6 @@ public class EnrollmentHelperTest {
     }
 
     @Test
-    public void checkActiveSessionToken() throws Exception {
-        enroll.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
-            @Override
-            public void onSuccess(String data) {
-                Assert.assertTrue(true);
-            }
-
-            @Override
-            public void onError(String error) {
-                Assert.assertTrue(false);
-            }
-        });
-    }
-
-    @Test
     public void createX509certificateSuccess() throws Exception {
         enroll.createX509cert(new EnrollmentHelper.EnrollCallBack() {
             @Override
