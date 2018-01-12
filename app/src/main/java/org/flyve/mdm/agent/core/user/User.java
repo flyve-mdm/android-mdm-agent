@@ -1,11 +1,7 @@
-package org.flyve.mdm.agent.core.enrollment;
+package org.flyve.mdm.agent.core.user;
 
 import android.app.Activity;
 import android.content.Context;
-
-import org.flyve.mdm.agent.data.UserData;
-
-import java.util.List;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -33,35 +29,29 @@ import java.util.List;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public interface Enrollment {
+public interface User {
 
     interface View {
-        void showDetailError(String message);
-        void showSnackError(String message);
-        void enrollSuccess();
-        void certificationX509Success();
-        void inventorySuccess(String inventory);
+        void saveSuccess();
+        void showError(String message);
+        void loadSuccess(UserSchema userSchema);
     }
 
     interface Presenter {
         // Views
-        void showDetailError(String message);
-        void showSnackError(String message);
-        void enrollSuccess();
-        void certificationX509Success();
-        void inventorySuccess(String inventory);
+        void saveSuccess();
+        void showError(String message);
+        void loadSuccess(UserSchema userSchema);
 
         // Models
-        void createInventory(Context context);
-        void createX509certification(Context context);
+        void load(Context context);
         void selectPhoto(final Activity activity, final int requestCamera, final int requestFile);
-        void enroll(final Context context, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber);
+        void save(Activity activity, UserSchema userSchema);
     }
 
     interface Model {
-        void createInventory(Context context);
-        void createX509certification(Context context);
+        void load(Context context);
         void selectPhoto(final Activity activity, final int requestCamera, final int requestFile);
-        void enroll(final Context context, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber);
+        void save(Activity activity, UserSchema userSchema);
     }
 }
