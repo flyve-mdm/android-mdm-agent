@@ -1,22 +1,16 @@
 package org.flyve.mdm.agent.ui;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,13 +19,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.core.user.User;
+import org.flyve.mdm.agent.core.user.UserPresenter;
+import org.flyve.mdm.agent.core.user.UserSchema;
 import org.flyve.mdm.agent.data.UserData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.flyve.mdm.agent.utils.InputValidatorHelper;
 import org.flyve.mdm.agent.utils.MultipleEditText;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,21 +57,22 @@ import java.util.List;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class EditUserActivity extends AppCompatActivity {
+public class EditUserActivity extends AppCompatActivity implements User.View{
 
+    private static final int REQUEST_CAMERA = 0;
+    private static final int SELECT_FILE = 1;
+
+    private User.Presenter presenter;
     private TextView txtMessage;
     private EditText editName;
     private EditText editLastName;
     private EditText editAdministrative;
     private ImageView imgPhoto;
-    private UserData user;
     private MultipleEditText editEmail;
     private MultipleEditText editPhone;
     private Spinner spinnerLanguage;
-    private static final int REQUEST_CAMERA = 0;
-    private static final int SELECT_FILE = 1;
     private String strPicture;
-    private String photoPath;
+    private String photoPath = "";
 
     /**
      * Called when the activity is starting
@@ -88,7 +84,8 @@ public class EditUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_form);
 
-        user = new UserData(EditUserActivity.this);
+        presenter = new UserPresenter(this);
+        presenter.load(EditUserActivity.this);
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -103,105 +100,38 @@ public class EditUserActivity extends AppCompatActivity {
             });
         }
 
-        imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
-        if(!user.getPicture().equals("")) {
-            imgPhoto.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));
-        }
-
-        ImageView btnCamera = (ImageView) findViewById(R.id.btnCamera);
-        btnCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage();
-            }
-        });
-
         TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
-        txtTitle.setText("");
+        txtTitle.setVisibility(View.GONE);
 
-        txtMessage = (TextView) findViewById(R.id.txtMessage);
+        imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
 
         editName = (EditText) findViewById(R.id.editName);
-        editName.setText( user.getFirstName() );
 
         editLastName = (EditText) findViewById(R.id.editLastName);
-        editLastName.setText( user.getLastName() );
 
-        // Multiples Emails
-        LinearLayout lnEmails = (LinearLayout) findViewById(R.id.lnEmails);
-        editEmail = new MultipleEditText(this, lnEmails, getResources().getString(R.string.email));
-        editEmail.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        editEmail.setSpinnerArray(R.array.email_array);
-
-        // load store values
-        List<String> arrEmails = new ArrayList<>();
-        List<String> arrEmailTypes = new ArrayList<>();
-
-        for(int i = 0; i < user.getEmails().size(); i++) {
-            arrEmails.add( user.getEmails().get(i).getEmail() );
-            arrEmailTypes.add( user.getEmails().get(i).getType() );
-        }
-
-        editEmail.setValue( arrEmails, arrEmailTypes );
-        lnEmails.addView( editEmail.createEditText() );
-
-        // 3 Phones
-        LinearLayout lnPhones = (LinearLayout) findViewById(R.id.lnPhones);
-        editPhone = new MultipleEditText(this, lnPhones, getResources().getString(R.string.phone));
-        editPhone.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_PHONE);
-        editPhone.setLimit(3);
-        editPhone.setSpinnerArray(R.array.phone_array);
-
-        // load store values
-        List<String> arrPhones = new ArrayList<>();
-        List<String> arrPhoneTypes = new ArrayList<>();
-
-        if(!user.getMobilePhone().equals("")) {
-            arrPhones.add(user.getMobilePhone());
-            arrPhoneTypes.add("");
-        }
-
-        if(!user.getPhone().equals("")) {
-            arrPhones.add(user.getPhone());
-            arrPhoneTypes.add("");
-        }
-
-        if(!user.getPhone2().equals("")) {
-            arrPhones.add(user.getPhone2());
-            arrPhoneTypes.add("");
-        }
-
-        editPhone.setValue( arrPhones, arrPhoneTypes );
-        lnPhones.addView( editPhone.createEditText() );
-
-        // Language
         spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.language_array, android.R.layout.simple_spinner_item);
-
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Apply the adapter to the spinner
-        spinnerLanguage.setAdapter(adapter);
-
-        // select language stored on cache
-        int spinnerPosition = adapter.getPosition(user.getLanguage());
-        spinnerLanguage.setSelection(spinnerPosition);
-
         editAdministrative = (EditText) findViewById(R.id.editAdministrative);
-        editAdministrative.setText(user.getAdministrativeNumber());
         editAdministrative.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editAdministrative.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    validateForm();
+                    save();
                     return true;
                 }
                 return false;
+            }
+        });
+
+        txtMessage = (TextView) findViewById(R.id.txtMessage);
+
+        // Button Camera
+        ImageView btnCamera = (ImageView) findViewById(R.id.btnCamera);
+        btnCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.selectPhoto(EditUserActivity.this,REQUEST_CAMERA, SELECT_FILE);
             }
         });
 
@@ -210,7 +140,7 @@ public class EditUserActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validateForm();
+                save();
             }
         });
     }
@@ -219,6 +149,7 @@ public class EditUserActivity extends AppCompatActivity {
      * Storage information
      */
     private void save() {
+        UserSchema userSchema = new UserSchema();
 
         // -------------
         // Emails
@@ -240,20 +171,18 @@ public class EditUserActivity extends AppCompatActivity {
             }
         }
 
-        // -------------
-        // USER
-        // -------------
-        user = new UserData(EditUserActivity.this);
-
-        user.setFirstName( editName.getText().toString() );
-        user.setLastName( editLastName.getText().toString() );
-        user.setEmails(arrEmails);
+        userSchema.setEmails(arrEmails);
+        userSchema.setFirstName(editName.getText().toString());
+        userSchema.setLastName(editLastName.getText().toString());
+        userSchema.setPicture(strPicture);
+        userSchema.setLanguage(spinnerLanguage.getSelectedItem().toString());
+        userSchema.setAdministrativeNumber(editAdministrative.getText().toString());
 
         // Mobile Phone
         if(!editPhone.getEditList().isEmpty()) {
             String mobilePhone = editPhone.getEditList().get(0).getText().toString();
             if (!mobilePhone.equals("")) {
-                user.setMobilePhone(mobilePhone);
+                userSchema.setMobilePhone(mobilePhone);
             }
         }
 
@@ -261,7 +190,7 @@ public class EditUserActivity extends AppCompatActivity {
         if(editPhone.getEditList().size() > 1) {
             String phone = editPhone.getEditList().get(1).getText().toString();
             if (!phone.equals("")) {
-                user.setPhone(phone);
+                userSchema.setPhone(phone);
             }
         }
 
@@ -269,80 +198,16 @@ public class EditUserActivity extends AppCompatActivity {
         if(editPhone.getEditList().size() > 2) {
             String phone2 = editPhone.getEditList().get(2).getText().toString();
             if (!phone2.equals("")) {
-                user.setPhone2(phone2);
+                userSchema.setPhone2(phone2);
             }
         }
 
-        user.setPicture(strPicture);
-        user.setLanguage( spinnerLanguage.getSelectedItem().toString() );
-        user.setAdministrativeNumber( editAdministrative.getText().toString() );
-
-        Helpers.snack( EditUserActivity.this, getResources().getString(R.string.saved) );
-    }
-
-    /**
-     * It displays the options to select the image of the user
-     */
-    private void selectImage() {
-        final CharSequence[] items = { getResources().getString(R.string.take_photo), getResources().getString(R.string.choose_from_library), getResources().getString(R.string.cancel) };
-
-        hideKeyboard();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(EditUserActivity.this);
-        builder.setTitle(getResources().getString(R.string.add_photo));
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-
-                if (items[item].equals(getResources().getString(R.string.take_photo))) {
-                    cameraIntent();
-
-                } else if (items[item].equals(getResources().getString(R.string.choose_from_library))) {
-                    galleryIntent();
-
-                } else if (items[item].equals(getResources().getString(R.string.cancel))) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-
-    /**
-     * If the user selects the image with the option from the gallery
-     */
-    private void galleryIntent() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);//
-        startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.select_file)),SELECT_FILE);
-    }
-
-    /**
-     * If the user selects the image with the option take photo
-     */
-    private void cameraIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, getImageUri());
-            startActivityForResult(takePictureIntent, REQUEST_CAMERA);
-        }
-    }
-
-    /**
-     * Get the URI of the image
-     * @return the URI 
-     */
-    public Uri getImageUri() {
-        // Store image in dcim
-        File filePhoto = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "flyveUser.jpg");
-        photoPath = filePhoto.getAbsolutePath();
-        return Uri.fromFile(filePhoto);
+        presenter.save(EditUserActivity.this, userSchema);
     }
 
     /**
      * Called when a launched activity exits
-     * It proccesses the information from galleryIntent and cameraIntent
+     * It processes the information from galleryIntent and cameraIntent
      * @param requestCode the request code originally supplied, allowing to identify who this result came from
      * @param resultCode the integer result code returned
      * @param data an Intent, which can return result data to the caller
@@ -372,7 +237,6 @@ public class EditUserActivity extends AppCompatActivity {
     /**
      * Retrieves the selected image from the gallery
      * @param data of the image
-     * @throws IOException error message
      */
     private void onSelectFromGalleryResult(Intent data) {
         Bitmap bm=null;
@@ -388,51 +252,98 @@ public class EditUserActivity extends AppCompatActivity {
         imgPhoto.setImageBitmap(bm);
     }
 
-    public void hideKeyboard() {
-        // Hide keyboard
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    @Override
+    public void loadSuccess(UserSchema userSchema) {
+
+        // photo on the header
+        if(!userSchema.getPicture().equals("")) {
+            imgPhoto.setImageBitmap(Helpers.stringToBitmap(userSchema.getPicture()));
         }
+
+        // first name
+        editName.setText(userSchema.getFirstName());
+
+        // last name
+        editLastName.setText(userSchema.getLastName());
+
+        // Multiples Emails
+        LinearLayout lnEmails = (LinearLayout) findViewById(R.id.lnEmails);
+        editEmail = new MultipleEditText(this, lnEmails, getResources().getString(R.string.email));
+        editEmail.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        editEmail.setSpinnerArray(R.array.email_array);
+
+        // load store values
+        List<String> arrEmails = new ArrayList<>();
+        List<String> arrEmailTypes = new ArrayList<>();
+
+        for(int i = 0; i < userSchema.getEmails().size(); i++) {
+            arrEmails.add( userSchema.getEmails().get(i).getEmail() );
+            arrEmailTypes.add( userSchema.getEmails().get(i).getType() );
+        }
+
+        editEmail.setValue( arrEmails, arrEmailTypes );
+        lnEmails.addView( editEmail.createEditText() );
+
+        // load information phones
+        LinearLayout lnPhones = (LinearLayout) findViewById(R.id.lnPhones);
+        editPhone = new MultipleEditText(this, lnPhones, getResources().getString(R.string.phone));
+        editPhone.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_PHONE);
+        editPhone.setLimit(3);
+        editPhone.setSpinnerArray(R.array.phone_array);
+
+        // load store values
+        List<String> arrPhones = new ArrayList<>();
+        List<String> arrPhoneTypes = new ArrayList<>();
+
+        if(!userSchema.getMobilePhone().equals("")) {
+            arrPhones.add(userSchema.getMobilePhone());
+            arrPhoneTypes.add("");
+        }
+
+        if(!userSchema.getPhone().equals("")) {
+            arrPhones.add(userSchema.getPhone());
+            arrPhoneTypes.add("");
+        }
+
+        if(!userSchema.getPhone2().equals("")) {
+            arrPhones.add(userSchema.getPhone2());
+            arrPhoneTypes.add("");
+        }
+
+        editPhone.setValue( arrPhones, arrPhoneTypes );
+        lnPhones.addView( editPhone.createEditText() );
+
+        // Language
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.language_array, android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        spinnerLanguage.setAdapter(adapter);
+
+        // select language stored on cache
+        int spinnerPosition = adapter.getPosition(userSchema.getLanguage());
+        spinnerLanguage.setSelection(spinnerPosition);
+
+        // Administrative Number
+        editAdministrative.setText(userSchema.getAdministrativeNumber());
     }
 
-    /**
-     * Send information to validateForm
-     */
-    private void validateForm() {
-        StringBuilder errMsg = new StringBuilder(getResources().getString(R.string.validate_error));
-        txtMessage.setText("");
-
-        //Validate and Save
-        boolean allowSave = true;
-
-        hideKeyboard();
-
-        String name = editName.getText().toString().trim();
-        String lastName = editLastName.getText().toString().trim();
-
-        // Name
-        if (InputValidatorHelper.isNullOrEmpty(name)) {
-            errMsg.append(getResources().getString(R.string.validate_first_name));
-            allowSave = false;
-        }
-
-        // Last name
-        if (InputValidatorHelper.isNullOrEmpty(lastName)) {
-            errMsg.append(getResources().getString(R.string.validate_last_name));
-            allowSave = false;
-        }
-
-        if(editEmail.getEditList().isEmpty()) {
-            errMsg.append(getResources().getString(R.string.validate_email_at_least_one));
-            allowSave = false;
-        }
-
-        if(allowSave){
-            save();
-        } else {
-            txtMessage.setText(errMsg);
-        }
+    @Override
+    public void saveSuccess() {
+        Helpers.snack(this, getResources().getString(R.string.saved), this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
     }
+
+    @Override
+    public void showError(String message) {
+        txtMessage.setText(message);
+    }
+
 }
