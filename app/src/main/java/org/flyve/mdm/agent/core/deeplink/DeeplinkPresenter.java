@@ -1,11 +1,7 @@
-package org.flyve.mdm.agent.core.enrollment;
+package org.flyve.mdm.agent.core.deeplink;
 
 import android.app.Activity;
 import android.content.Context;
-
-import org.flyve.mdm.agent.data.UserData;
-
-import java.util.List;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -33,68 +29,62 @@ import java.util.List;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class EnrollmentPresenter implements Enrollment.Presenter {
+public class DeeplinkPresenter implements Deeplink.Presenter {
 
-    private Enrollment.View view;
-    private Enrollment.Model model;
+    private Deeplink.View view;
+    private Deeplink.Model model;
 
-    public EnrollmentPresenter(Enrollment.View view){
+    public DeeplinkPresenter(Deeplink.View view){
         this.view = view;
-        model = new EnrollmentModel(this);
+        model = new DeeplinkModel(this);
     }
 
+
     @Override
-    public void showDetailError(String message) {
+    public void showError(String message) {
         if(view!=null) {
-            view.showDetailError(message);
+            view.showError(message);
         }
     }
 
     @Override
-    public void showSnackError(String message) {
+    public void lintSuccess(DeeplinkSchema deeplinkSchema) {
         if(view!=null) {
-            view.showSnackError(message);
+            view.lintSuccess(deeplinkSchema);
         }
     }
 
     @Override
-    public void enrollSuccess() {
+    public void openEnrollSuccess() {
         if(view!=null) {
-            view.enrollSuccess();
+            view.openEnrollSuccess();
         }
     }
 
     @Override
-    public void certificationX509Success() {
+    public void openEnrollFail() {
         if(view!=null) {
-            view.certificationX509Success();
+            view.openEnrollFail();
         }
     }
 
     @Override
-    public void inventorySuccess(String inventory) {
-        if(view!=null) {
-            view.inventorySuccess(inventory);
-        }
+    public void lint(Context context, String deeplink) {
+        model.lint(context, deeplink);
     }
 
     @Override
-    public void createInventory(Context context) {
-        model.createInventory(context);
+    public void saveSupervisor(Context context, String name, String phone, String webSite, String email) {
+        model.saveSupervisor(context, name, phone, webSite, email);
     }
 
     @Override
-    public void createX509certification(Context context) {
-        model.createX509certification(context);
+    public void saveMQTTConfig(Context context, String url, String userToken, String invitationToken) {
+        model.saveMQTTConfig(context, url, userToken, invitationToken);
     }
 
     @Override
-    public void selectPhoto(Activity activity, int requestCamera, int requestFile) {
-        model.selectPhoto(activity, requestCamera, requestFile);
-    }
-
-    @Override
-    public void enroll(Activity activity, List<UserData.EmailsData> arrEmails, String firstName, String lastName, String phone, String phone2, String mobilePhone, String inventory, String photo, String language, String administrativeNumber) {
-        model.enroll(activity, arrEmails, firstName, lastName, phone, phone2, mobilePhone, inventory, photo, language, administrativeNumber);
+    public void openEnrollment(Activity activity, int request) {
+        model.openEnrollment(activity, request);
     }
 }
