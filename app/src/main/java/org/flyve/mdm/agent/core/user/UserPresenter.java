@@ -1,11 +1,7 @@
-package org.flyve.mdm.agent.core.enrollment;
+package org.flyve.mdm.agent.core.user;
 
 import android.app.Activity;
 import android.content.Context;
-
-import org.flyve.mdm.agent.data.UserData;
-
-import java.util.List;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -33,59 +29,40 @@ import java.util.List;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class EnrollmentPresenter implements Enrollment.Presenter {
+public class UserPresenter implements User.Presenter {
 
-    private Enrollment.View view;
-    private Enrollment.Model model;
+    private User.View view;
+    private User.Model model;
 
-    public EnrollmentPresenter(Enrollment.View view){
+    public UserPresenter(User.View view){
         this.view = view;
-        model = new EnrollmentModel(this);
+        model = new UserModel(this);
     }
 
     @Override
-    public void showDetailError(String message) {
+    public void saveSuccess() {
         if(view!=null) {
-            view.showDetailError(message);
+            view.saveSuccess();
         }
     }
 
     @Override
-    public void showSnackError(String message) {
+    public void showError(String message) {
         if(view!=null) {
-            view.showSnackError(message);
+            view.showError(message);
         }
     }
 
     @Override
-    public void enrollSuccess() {
+    public void loadSuccess(UserSchema userSchema) {
         if(view!=null) {
-            view.enrollSuccess();
+            view.loadSuccess(userSchema);
         }
     }
 
     @Override
-    public void certificationX509Success() {
-        if(view!=null) {
-            view.certificationX509Success();
-        }
-    }
-
-    @Override
-    public void inventorySuccess(String inventory) {
-        if(view!=null) {
-            view.inventorySuccess(inventory);
-        }
-    }
-
-    @Override
-    public void createInventory(Context context) {
-        model.createInventory(context);
-    }
-
-    @Override
-    public void createX509certification(Context context) {
-        model.createX509certification(context);
+    public void load(Context context) {
+        model.load(context);
     }
 
     @Override
@@ -94,7 +71,8 @@ public class EnrollmentPresenter implements Enrollment.Presenter {
     }
 
     @Override
-    public void enroll(Activity activity, List<UserData.EmailsData> arrEmails, String firstName, String lastName, String phone, String phone2, String mobilePhone, String inventory, String photo, String language, String administrativeNumber) {
-        model.enroll(activity, arrEmails, firstName, lastName, phone, phone2, mobilePhone, inventory, photo, language, administrativeNumber);
+    public void save(Activity activity, UserSchema userSchema) {
+        model.save(activity, userSchema);
     }
+
 }
