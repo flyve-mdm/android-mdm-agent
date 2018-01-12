@@ -34,14 +34,14 @@ import java.util.List;
 public class UserSchema {
 
     private List<UserData.EmailsData> emails;
-    private String firstName;
-    private String lastName;
-    private String phone;
-    private String phone2;
-    private String mobilePhone;
-    private String picture;
-    private String language;
-    private String administrativeNumber;
+    private String firstName = "";
+    private String lastName = "";
+    private String phone = "";
+    private String phone2 = "";
+    private String mobilePhone = "";
+    private String picture = "";
+    private String language = "";
+    private String administrativeNumber = "";
 
     public UserSchema() {
     }
