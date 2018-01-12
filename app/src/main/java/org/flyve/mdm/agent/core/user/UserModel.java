@@ -1,27 +1,13 @@
-package org.flyve.mdm.agent.core.enrollment;
+package org.flyve.mdm.agent.core.user;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 
-import org.flyve.inventory.InventoryTask;
-import org.flyve.inventory.categories.Hardware;
-import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.data.UserData;
-import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.net.URLEncoder;
-import java.util.List;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -49,45 +35,30 @@ import java.util.List;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class EnrollmentModel implements Enrollment.Model {
+public class UserModel implements User.Model {
 
-    private Enrollment.Presenter presenter;
+    private User.Presenter presenter;
 
-    public EnrollmentModel(Enrollment.Presenter presenter) {
+    public UserModel(User.Presenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void createInventory(Context context) {
-        InventoryTask inventoryTask = new InventoryTask(context, "FlyveMDM-Agent");
-        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
-            @Override
-            public void onTaskSuccess(String s) {
-                presenter.inventorySuccess(s);
-            }
+    public void load(Context context) {
+        UserSchema userSchema = new UserSchema();
 
-            @Override
-            public void onTaskError(Throwable throwable) {
-                presenter.showSnackError("Inventory fail");
-            }
-        });
+        UserData user = new UserData(context);
+        userSchema.setEmails(user.getEmails());
+        userSchema.setFirstName(user.getFirstName());
+        userSchema.setLastName(user.getLastName());
+        userSchema.setPhone(user.getPhone());
+        userSchema.setPhone2(user.getPhone2());
+        userSchema.setMobilePhone(user.getMobilePhone());
+        userSchema.setLanguage(user.getLanguage());
+        userSchema.setPicture(user.getPicture());
+        userSchema.setAdministrativeNumber(user.getAdministrativeNumber());
 
-    }
-
-    @Override
-    public void createX509certification(Context context) {
-        EnrollmentHelper enroll = new EnrollmentHelper(context);
-        enroll.createX509cert(new EnrollmentHelper.EnrollCallBack() {
-            @Override
-            public void onSuccess(String data) {
-                presenter.certificationX509Success();
-            }
-
-            @Override
-            public void onError(String error) {
-                presenter.showSnackError(error);
-            }
-        });
+        presenter.loadSuccess(userSchema);
     }
 
     @Override
@@ -107,10 +78,10 @@ public class EnrollmentModel implements Enrollment.Model {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (items[item].equals(activity.getResources().getString(R.string.take_photo))) {
-                    cameraIntent(activity, requestCamera);
+                    Helpers.cameraIntent(activity, requestCamera);
 
                 } else if (items[item].equals(activity.getResources().getString(R.string.choose_from_library))) {
-                    galleryIntent(activity, requestFile);
+                    Helpers.galleryIntent(activity, requestFile);
 
                 } else if (items[item].equals(activity.getResources().getString(R.string.cancel) )) {
                     dialog.dismiss();
@@ -120,126 +91,49 @@ public class EnrollmentModel implements Enrollment.Model {
         builder.show();
     }
 
-    /**
-     * If the user selects the image with the option from the gallery
-     */
-    private void galleryIntent(Activity activity, int requestFile) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);//
-        activity.startActivityForResult(Intent.createChooser(intent, activity.getResources().getString(R.string.select_file) ),requestFile);
-    }
-
-    /**
-     * If the user selects the image with the option take photo
-     */
-    private void cameraIntent(Activity activity, int requestCamera) {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, getImageUri());
-            activity.startActivityForResult(takePictureIntent, requestCamera);
-        }
-    }
-
-    /**
-     * Get the URI of the image
-     * @return the URI
-     */
-    private Uri getImageUri() {
-        // Store image in dcim
-        File filePhoto = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "flyveUser.jpg");
-        return Uri.fromFile(filePhoto);
-    }
-
     @Override
-    public void enroll(final Context context, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber) {
+    public void save(Activity activity, UserSchema schema) {
 
-        StringBuilder errMsg = new StringBuilder(context.getResources().getString(R.string.validate_error) );
+        StringBuilder errMsg = new StringBuilder(activity.getResources().getString(R.string.validate_error) );
         boolean allow = true;
 
-        if(arrEmails.isEmpty() || arrEmails.get(0).getEmail().equals("")) {
-            errMsg.append(context.getResources().getString(R.string.validate_email_at_least_one) );
+        Helpers.hideKeyboard(activity);
+
+        if(schema.getEmails().isEmpty() || schema.getEmails().get(0).getEmail().equals("")) {
+            errMsg.append(activity.getResources().getString(R.string.validate_email_at_least_one) );
             allow = false;
         }
 
-        if(firstName.trim().equals("")) {
-            errMsg.append(context.getResources().getString(R.string.validate_first_name) );
+        if(schema.getFirstName().trim().equals("")) {
+            errMsg.append(activity.getResources().getString(R.string.validate_first_name) );
             allow = false;
         }
 
-        if(lastName.trim().equals("")) {
-            errMsg.append(context.getResources().getString(R.string.validate_last_name) );
-            allow = false;
-        }
-
-        if(inventory.contains("fail")) {
-            errMsg.append(context.getResources().getString(R.string.validate_inventory) );
-            allow = false;
-        }
-
-        // inventory running
-        if(inventory.equals("")) {
-            errMsg.append(context.getResources().getString(R.string.validate_inventory_wait) );
+        if(schema.getLastName().trim().equals("")) {
+            errMsg.append(activity.getResources().getString(R.string.validate_last_name) );
             allow = false;
         }
 
         if(!allow) {
-            presenter.showSnackError(context.getResources().getString(R.string.validate_check_details));
-            presenter.showDetailError(errMsg.toString());
+            presenter.showError(errMsg.toString());
             return;
         }
 
-        try {
-            AndroidCryptoProvider csr = new AndroidCryptoProvider(context);
-            String requestCSR = "";
-            if( csr.getlCsr() != null ) {
-                requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
-            }
+        // -------------
+        // USER
+        // -------------
+        UserData user = new UserData(activity);
 
-            MqttData cache = new MqttData(context);
-            String invitationToken = cache.getInvitationToken();
+        user.setFirstName(schema.getFirstName());
+        user.setLastName(schema.getLastName());
+        user.setEmails(schema.getEmails());
+        user.setPhone(schema.getPhone());
+        user.setPhone2(schema.getPhone2());
+        user.setMobilePhone(schema.getMobilePhone());
+        user.setPicture(schema.getPicture());
+        user.setLanguage(schema.getLanguage());
+        user.setAdministrativeNumber(schema.getAdministrativeNumber());
 
-            JSONObject payload = new JSONObject();
-
-            payload.put("_email", arrEmails.get(0).getEmail()); // get first email
-            payload.put("_invitation_token", invitationToken);
-            payload.put("_serial", Helpers.getDeviceSerial());
-            payload.put("_uuid", new Hardware(context).getUUID());
-            payload.put("csr", requestCSR);
-            payload.put("firstname", firstName);
-            payload.put("lastname", lastName);
-            payload.put("phone", phone);
-            payload.put("version", BuildConfig.VERSION_NAME);
-            payload.put("type", "android");
-            payload.put("has_system_permission", Helpers.isSystemApp(context));
-            payload.put("inventory", Helpers.base64encode(inventory));
-
-            EnrollmentHelper enroll = new EnrollmentHelper(context);
-            enroll.enrollment(payload, new EnrollmentHelper.EnrollCallBack() {
-                @Override
-                public void onSuccess(String data) {
-
-                    // -------------------------------
-                    // Store user information
-                    // -------------------------------
-                    UserData userData = new UserData(context);
-                    userData.setFirstName(firstName);
-                    userData.setLastName(lastName);
-                    userData.setEmails(arrEmails);
-                    userData.setPicture(photo);
-                    userData.setLanguage(language);
-                    userData.setAdministrativeNumber(administrativeNumber);
-
-                    presenter.enrollSuccess();
-                }
-
-                @Override
-                public void onError(String error) {
-                    presenter.showSnackError(error);
-                }
-            });
-        } catch (Exception ex) {
-            presenter.showSnackError(ex.getMessage());
-        }
+        presenter.saveSuccess();
     }
 }
