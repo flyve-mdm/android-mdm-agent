@@ -40,20 +40,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
+import org.flyve.mdm.agent.core.deeplink.Deeplink;
+import org.flyve.mdm.agent.core.deeplink.DeeplinkPresenter;
+import org.flyve.mdm.agent.core.deeplink.DeeplinkSchema;
 import org.flyve.mdm.agent.data.MqttData;
-import org.flyve.mdm.agent.data.SupervisorData;
-import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
-public class StartEnrollmentActivity extends Activity {
+public class StartEnrollmentActivity extends Activity implements Deeplink.View {
 
+    private static final int REQUEST_EXIT = 1;
+
+    private Deeplink.Presenter presenter;
     private RelativeLayout btnEnroll;
     private TextView txtMessage;
     private TextView txtTitle;
     private ProgressBar pb;
-    private static final int REQUEST_EXIT = 1;
-    private boolean status = true;
 
     /**
      * Called when the activity is starting
@@ -65,10 +66,13 @@ public class StartEnrollmentActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_enrollment);
 
-        broadcastClose();
+        sendBroadcast();
 
+        presenter = new DeeplinkPresenter(this);
+
+        // check if broker is on cache open the main activity
         MqttData cache = new MqttData( StartEnrollmentActivity.this );
-        // if broker is on cache open the main activity
+
         String broker = cache.getBroker();
         if(broker != null) {
             openMain();
@@ -77,104 +81,18 @@ public class StartEnrollmentActivity extends Activity {
         TextView txtIntro = (TextView) findViewById(R.id.txtIntro);
         txtIntro.setText( Html.fromHtml(StartEnrollmentActivity.this.getResources().getString(R.string.walkthrough_step_1)) );
         txtIntro.setMovementMethod(LinkMovementMethod.getInstance());
-
         txtMessage = (TextView) findViewById(R.id.txtMessage);
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         pb = (ProgressBar) findViewById(R.id.progressBar);
 
+        // get the deeplink
         Intent intent = getIntent();
         Uri data = intent.getData();
-
-        String deepLinkErrorMessage = getResources().getString(R.string.ERROR_DEEP_LINK);
-        String deepLinkData;
-
         try {
-            deepLinkData = Helpers.base64decode(data.getQueryParameter("data"));
-        } catch(Exception ex) {
-            showError( deepLinkErrorMessage );
-            FlyveLog.e(deepLinkErrorMessage + " - " + ex.getMessage());
-            return;
-        }
-
-        String url;
-        String userToken;
-        String invitationToken;
-        String name;
-        String phone;
-        String website;
-        String email;
-
-        try {
-            // CSV comma-separated values format
-            // url; user token; invitation token; support name; support phone, support website; support email
-            String[] csv = deepLinkData.split("\\\\;");
-
-            if(csv.length >= 0) {
-
-                // url
-                if(!csv[0].isEmpty()) {
-                    url = csv[0];
-                } else {
-                    deepLinkErrorMessage = "URL " + deepLinkErrorMessage;
-                    showError( deepLinkErrorMessage );
-                    return;
-                }
-
-                // user token
-                if(!csv[1].isEmpty()) {
-                    userToken = csv[1];
-                } else {
-                    deepLinkErrorMessage = "USER " + deepLinkErrorMessage;
-                    showError( deepLinkErrorMessage );
-                    return;
-                }
-
-                // invitation token
-                if(!csv[2].isEmpty()) {
-                    invitationToken = csv[2];
-                } else {
-                    deepLinkErrorMessage = "TOKEN " + deepLinkErrorMessage;
-                    showError( deepLinkErrorMessage );
-                    return;
-                }
-
-                SupervisorData supervisorData = new SupervisorData(StartEnrollmentActivity.this);
-
-                // name
-                if(csv.length > 3 && !csv[3].isEmpty()) {
-                    name = csv[3];
-                    supervisorData.setName(name);
-                }
-
-                // phone
-                if(csv.length > 4 && !csv[4].isEmpty()) {
-                    phone = csv[4];
-                    supervisorData.setPhone(phone);
-                }
-
-                // website
-                if(csv.length > 5 && !csv[5].isEmpty()) {
-                    website = csv[5];
-                    supervisorData.setWebsite(website);
-                }
-
-                // email
-                if(csv.length > 6 && !csv[6].isEmpty()) {
-                    email = csv[6];
-                    supervisorData.setEmail(email);
-                }
-
-                cache.setUrl(url);
-                cache.setUserToken(userToken);
-                cache.setInvitationToken(invitationToken);
-
-            } else {
-                showError( deepLinkErrorMessage );
-            }
-
+            String deeplink = data.getQueryParameter("data");
+            presenter.lint(StartEnrollmentActivity.this, deeplink);
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-            showError( deepLinkErrorMessage );
+            showError(ex.getMessage());
         }
 
         btnEnroll = (RelativeLayout) findViewById(R.id.btnEnroll);
@@ -185,26 +103,7 @@ public class StartEnrollmentActivity extends Activity {
                 txtMessage.setText(getResources().getString(R.string.please_wait));
                 pb.setVisibility(View.VISIBLE);
 
-                EnrollmentHelper sessionToken = new EnrollmentHelper(StartEnrollmentActivity.this);
-                sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
-                    @Override
-                    public void onSuccess(String data) {
-                        btnEnroll.setVisibility(View.VISIBLE);
-                        pb.setVisibility(View.GONE);
-                        txtMessage.setText("");
-                        txtTitle.setText(getResources().getString(R.string.start_enroll));
-
-                        // Active EnrollmentHelper Token is stored on cache
-                        openActivity();
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        btnEnroll.setVisibility(View.VISIBLE);
-                        pb.setVisibility(View.GONE);
-                        showError( error );
-                    }
-                });
+                presenter.openEnrollment(StartEnrollmentActivity.this, REQUEST_EXIT);
             }
         });
     }
@@ -212,33 +111,11 @@ public class StartEnrollmentActivity extends Activity {
     /**
      * Send a Broadcast with the Close Action
      */
-    public void broadcastClose() {
+    public void sendBroadcast() {
         //send broadcast
         Intent in = new Intent();
         in.setAction("flyve.ACTION_CLOSE");
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
-    }
-    
-    /**
-     * Shows an error message
-     * @param message
-     */
-    private void showError(String message) {
-        txtTitle.setText(getResources().getString(R.string.fail_enroll));
-
-        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-    }
-
-    /**
-     * Open activity
-     */
-    private void openActivity() {
-        Intent miIntent = new Intent(StartEnrollmentActivity.this, EnrollmentActivity.class);
-        StartEnrollmentActivity.this.startActivityForResult(miIntent, REQUEST_EXIT);
     }
 
     /**
@@ -248,6 +125,41 @@ public class StartEnrollmentActivity extends Activity {
         Intent intent = new Intent(StartEnrollmentActivity.this, MainActivity.class);
         StartEnrollmentActivity.this.startActivity(intent);
         StartEnrollmentActivity.this.finish();
+    }
+
+    /**
+     * Shows an error message
+     * @param message
+     */
+    @Override
+    public void showError(String message) {
+        txtTitle.setText(getResources().getString(R.string.fail_enroll));
+        txtMessage.setText(message);
+        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+    }
+
+    @Override
+    public void lintSuccess(DeeplinkSchema deeplinkSchema) {
+        presenter.saveMQTTConfig(StartEnrollmentActivity.this, deeplinkSchema.getUrl(), deeplinkSchema.getUserToken(), deeplinkSchema.getInvitationToken());
+        presenter.saveSupervisor(StartEnrollmentActivity.this, deeplinkSchema.getName(), deeplinkSchema.getPhone(), deeplinkSchema.getWebsite(), deeplinkSchema.getEmail());
+    }
+
+    @Override
+    public void openEnrollSuccess() {
+        btnEnroll.setVisibility(View.VISIBLE);
+        pb.setVisibility(View.GONE);
+        txtMessage.setText(getResources().getString(R.string.success));
+        txtTitle.setText(getResources().getString(R.string.start_enroll));
+    }
+
+    @Override
+    public void openEnrollFail() {
+        btnEnroll.setVisibility(View.VISIBLE);
+        pb.setVisibility(View.GONE);
     }
 
     /**
