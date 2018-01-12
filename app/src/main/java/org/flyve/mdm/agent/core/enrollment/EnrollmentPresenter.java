@@ -94,7 +94,7 @@ public class EnrollmentPresenter implements Enrollment.Presenter {
     }
 
     @Override
-    public void enroll(Context context, List<UserData.EmailsData> arrEmails, String firstName, String lastName, String phone, String phone2, String mobilePhone, String inventory, String photo, String language, String administrativeNumber) {
-        model.enroll(context, arrEmails, firstName, lastName, phone, phone2, mobilePhone, inventory, photo, language, administrativeNumber);
+    public void enroll(Activity activity, List<UserData.EmailsData> arrEmails, String firstName, String lastName, String phone, String phone2, String mobilePhone, String inventory, String photo, String language, String administrativeNumber) {
+        model.enroll(activity, arrEmails, firstName, lastName, phone, phone2, mobilePhone, inventory, photo, language, administrativeNumber);
     }
 }
