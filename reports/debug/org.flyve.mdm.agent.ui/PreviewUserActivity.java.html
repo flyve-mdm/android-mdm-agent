@@ -9,8 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.user.UserController;
-import org.flyve.mdm.agent.core.user.UserModel;
+import org.flyve.mdm.agent.data.UserData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
@@ -41,7 +40,7 @@ import org.flyve.mdm.agent.utils.Helpers;
  * ------------------------------------------------------------------------------
  */
 
-<span class="nc" id="L44">public class PreviewUserActivity extends AppCompatActivity {</span>
+<span class="nc" id="L43">public class PreviewUserActivity extends AppCompatActivity {</span>
 
     private static final int EDIT_USER = 101;
 
@@ -52,42 +51,42 @@ import org.flyve.mdm.agent.utils.Helpers;
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-<span class="nc" id="L55">        super.onCreate(savedInstanceState);</span>
-<span class="nc" id="L56">        setContentView(R.layout.activity_user_preview);</span>
+<span class="nc" id="L54">        super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L55">        setContentView(R.layout.activity_user_preview);</span>
 
-<span class="nc" id="L58">        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (toolbar != null) {</span>
-<span class="nc" id="L60">            setSupportActionBar(toolbar);</span>
-<span class="nc" id="L61">            getSupportActionBar().setDisplayHomeAsUpEnabled(true);</span>
+<span class="nc" id="L57">        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (toolbar != null) {</span>
+<span class="nc" id="L59">            setSupportActionBar(toolbar);</span>
+<span class="nc" id="L60">            getSupportActionBar().setDisplayHomeAsUpEnabled(true);</span>
 
-<span class="nc" id="L63">            toolbar.setNavigationOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L62">            toolbar.setNavigationOnClickListener(new View.OnClickListener() {</span>
                 @Override
                 public void onClick(View v) {
-<span class="nc" id="L66">                    onBackPressed();</span>
-<span class="nc" id="L67">                }</span>
+<span class="nc" id="L65">                    onBackPressed();</span>
+<span class="nc" id="L66">                }</span>
             });
         }
 
-<span class="nc" id="L71">        loadData();</span>
+<span class="nc" id="L70">        loadData();</span>
 
-<span class="nc" id="L73">        ImageView btnEdit = (ImageView) findViewById(R.id.btnEdit);</span>
-<span class="nc" id="L74">        btnEdit.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L72">        ImageView btnEdit = (ImageView) findViewById(R.id.btnEdit);</span>
+<span class="nc" id="L73">        btnEdit.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L77">                openEditUser();</span>
-<span class="nc" id="L78">            }</span>
+<span class="nc" id="L76">                openEditUser();</span>
+<span class="nc" id="L77">            }</span>
         });
-<span class="nc" id="L80">    }</span>
+<span class="nc" id="L79">    }</span>
 
     /**
      * Called when the activity will start interacting with the user
      */
     @Override
     public void onResume() {
-<span class="nc" id="L87">        super.onResume();</span>
+<span class="nc" id="L86">        super.onResume();</span>
 
-<span class="nc" id="L89">        loadData();</span>
-<span class="nc" id="L90">    }</span>
+<span class="nc" id="L88">        loadData();</span>
+<span class="nc" id="L89">    }</span>
 
     /**
      * Loads the information of the User
@@ -95,69 +94,69 @@ import org.flyve.mdm.agent.utils.Helpers;
     private void loadData() {
 
         try {
-<span class="nc" id="L98">            UserModel user = new UserController(PreviewUserActivity.this).getCache();</span>
+<span class="nc" id="L97">            UserData user = new UserData(PreviewUserActivity.this);</span>
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (user == null) {</span>
-<span class="nc" id="L101">                return;</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (user == null) {</span>
+<span class="nc" id="L100">                return;</span>
             }
 
-<span class="nc" id="L104">            ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);</span>
-<span class="nc bnc" id="L105" title="All 4 branches missed.">            if (user.getPicture() != null &amp;&amp; !user.getPicture().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L106">                imgPhoto.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));</span>
+<span class="nc" id="L103">            ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);</span>
+<span class="nc bnc" id="L104" title="All 4 branches missed.">            if (user.getPicture() != null &amp;&amp; !user.getPicture().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L105">                imgPhoto.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));</span>
             }
 
-<span class="nc" id="L109">            LinearLayout lnEmail = (LinearLayout) findViewById(R.id.lnEmails);</span>
-<span class="nc" id="L110">            lnEmail.removeAllViews();</span>
+<span class="nc" id="L108">            LinearLayout lnEmail = (LinearLayout) findViewById(R.id.lnEmails);</span>
+<span class="nc" id="L109">            lnEmail.removeAllViews();</span>
 
-<span class="nc bnc" id="L112" title="All 2 branches missed.">            for (int i = 0; i &lt; user.getEmails().size(); i++) {</span>
-<span class="nc" id="L113">                TextView txtEmail = new TextView(PreviewUserActivity.this);</span>
-<span class="nc" id="L114">                txtEmail.setText(user.getEmails().get(i).getEmail());</span>
-<span class="nc" id="L115">                lnEmail.addView(txtEmail);</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">            for (int i = 0; i &lt; user.getEmails().size(); i++) {</span>
+<span class="nc" id="L112">                TextView txtEmail = new TextView(PreviewUserActivity.this);</span>
+<span class="nc" id="L113">                txtEmail.setText(user.getEmails().get(i).getEmail());</span>
+<span class="nc" id="L114">                lnEmail.addView(txtEmail);</span>
             }
 
-<span class="nc" id="L118">            TextView txtFirstName = (TextView) findViewById(R.id.txtFirstName);</span>
-<span class="nc" id="L119">            txtFirstName.setText(user.getFirstName() + &quot; &quot; + user.getLastName());</span>
+<span class="nc" id="L117">            TextView txtFirstName = (TextView) findViewById(R.id.txtFirstName);</span>
+<span class="nc" id="L118">            txtFirstName.setText(user.getFirstName() + &quot; &quot; + user.getLastName());</span>
 
-<span class="nc" id="L121">            TextView txtPhone = (TextView) findViewById(R.id.txtPhone);</span>
-<span class="nc bnc" id="L122" title="All 2 branches missed.">            if (!user.getPhone().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L123">                txtPhone.setText(user.getPhone());</span>
-<span class="nc" id="L124">                txtPhone.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L120">            TextView txtPhone = (TextView) findViewById(R.id.txtPhone);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if (!user.getPhone().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L122">                txtPhone.setText(user.getPhone());</span>
+<span class="nc" id="L123">                txtPhone.setVisibility(View.VISIBLE);</span>
             } else {
-<span class="nc" id="L126">                txtPhone.setVisibility(View.GONE);</span>
+<span class="nc" id="L125">                txtPhone.setVisibility(View.GONE);</span>
             }
 
-<span class="nc" id="L129">            TextView txtPhoneMobile = (TextView) findViewById(R.id.txtPhoneMobile);</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">            if (!user.getMobilePhone().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L131">                txtPhoneMobile.setText(user.getMobilePhone());</span>
-<span class="nc" id="L132">                txtPhoneMobile.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L128">            TextView txtPhoneMobile = (TextView) findViewById(R.id.txtPhoneMobile);</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">            if (!user.getMobilePhone().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L130">                txtPhoneMobile.setText(user.getMobilePhone());</span>
+<span class="nc" id="L131">                txtPhoneMobile.setVisibility(View.VISIBLE);</span>
             } else {
-<span class="nc" id="L134">                txtPhoneMobile.setVisibility(View.GONE);</span>
+<span class="nc" id="L133">                txtPhoneMobile.setVisibility(View.GONE);</span>
             }
 
-<span class="nc" id="L137">            TextView txtPhone2 = (TextView) findViewById(R.id.txtPhone2);</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">            if (!user.getMobilePhone().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L139">                txtPhone2.setText(user.getPhone2());</span>
-<span class="nc" id="L140">                txtPhone2.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L136">            TextView txtPhone2 = (TextView) findViewById(R.id.txtPhone2);</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">            if (!user.getMobilePhone().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L138">                txtPhone2.setText(user.getPhone2());</span>
+<span class="nc" id="L139">                txtPhone2.setVisibility(View.VISIBLE);</span>
             } else {
-<span class="nc" id="L142">                txtPhone2.setVisibility(View.GONE);</span>
+<span class="nc" id="L141">                txtPhone2.setVisibility(View.GONE);</span>
             }
 
-<span class="nc" id="L145">            TextView txtLanguage = (TextView) findViewById(R.id.txtLanguage);</span>
-<span class="nc" id="L146">            txtLanguage.setText(user.getLanguage());</span>
+<span class="nc" id="L144">            TextView txtLanguage = (TextView) findViewById(R.id.txtLanguage);</span>
+<span class="nc" id="L145">            txtLanguage.setText(user.getLanguage());</span>
 
-<span class="nc" id="L148">            TextView txtAdministrativeNumber = (TextView) findViewById(R.id.txtAdministrativeNumber);</span>
-<span class="nc" id="L149">            txtAdministrativeNumber.setText(user.getAdministrativeNumber());</span>
-<span class="nc" id="L150">        } catch (Exception ex) {</span>
-<span class="nc" id="L151">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L152">        }</span>
-<span class="nc" id="L153">    }</span>
+<span class="nc" id="L147">            TextView txtAdministrativeNumber = (TextView) findViewById(R.id.txtAdministrativeNumber);</span>
+<span class="nc" id="L148">            txtAdministrativeNumber.setText(user.getAdministrativeNumber());</span>
+<span class="nc" id="L149">        } catch (Exception ex) {</span>
+<span class="nc" id="L150">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L151">        }</span>
+<span class="nc" id="L152">    }</span>
 
     /**
      * Open Edit User Activity
      */
     private void openEditUser() {
-<span class="nc" id="L159">        Intent intent = new Intent(PreviewUserActivity.this, EditUserActivity.class);</span>
-<span class="nc" id="L160">        PreviewUserActivity.this.startActivityForResult(intent, EDIT_USER);</span>
-<span class="nc" id="L161">    }</span>
+<span class="nc" id="L158">        Intent intent = new Intent(PreviewUserActivity.this, EditUserActivity.class);</span>
+<span class="nc" id="L159">        PreviewUserActivity.this.startActivityForResult(intent, EDIT_USER);</span>
+<span class="nc" id="L160">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

@@ -55,7 +55,7 @@ import android.widget.TextView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.enrollment.Enrollment;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentPresenter;
-import org.flyve.mdm.agent.core.user.UserModel;
+import org.flyve.mdm.agent.data.UserData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.MultipleEditText;
@@ -280,7 +280,7 @@ import static org.flyve.mdm.agent.R.string.email;
 <span class="nc" id="L280">        pd = ProgressDialog.show(EnrollmentActivity.this, &quot;&quot;, getResources().getString(R.string.enrollment_in_process));</span>
 
         // Get all emails
-<span class="nc" id="L283">        ArrayList&lt;UserModel.EmailsData&gt; arrEmails = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L283">        ArrayList&lt;UserData.EmailsData&gt; arrEmails = new ArrayList&lt;&gt;();</span>
 
 <span class="nc" id="L285">        List&lt;EditText&gt; emailEdit = editEmail.getEditList();</span>
 <span class="nc" id="L286">        List&lt;Spinner&gt; emailTypeEdit = editEmail.getSpinnList();</span>
@@ -290,7 +290,7 @@ import static org.flyve.mdm.agent.R.string.email;
 <span class="nc" id="L290">            Spinner spinner = emailTypeEdit.get(i);</span>
 
 <span class="nc bnc" id="L292" title="All 2 branches missed.">            if(!editText.getText().toString().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L293">                UserModel.EmailsData emails = new UserModel().new EmailsData();</span>
+<span class="nc" id="L293">                UserData.EmailsData emails = new UserData(EnrollmentActivity.this).new EmailsData();</span>
 <span class="nc" id="L294">                emails.setEmail(editText.getText().toString());</span>
 <span class="nc" id="L295">                emails.setType(spinner.getSelectedItem().toString());</span>
 <span class="nc" id="L296">                arrEmails.add(emails);</span>

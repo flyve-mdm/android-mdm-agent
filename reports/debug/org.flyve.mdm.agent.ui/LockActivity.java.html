@@ -15,17 +15,17 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.supervisor.SupervisorController;
-import org.flyve.mdm.agent.core.supervisor.SupervisorModel;
+import org.flyve.mdm.agent.data.SupervisorData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
-<span class="nc" id="L22">public class LockActivity extends AppCompatActivity {</span>
+<span class="nc" id="L21">public class LockActivity extends AppCompatActivity {</span>
 
     private TextView txtNameSupervisor;
     private TextView txtDescriptionSupervisor;
     private ViewGroup mTopView;
     private WindowManager wm;
     private LocalBroadcastManager mLocalBroadcastManager;
+
 <span class="nc" id="L29">    BroadcastReceiver broadcastLock = new BroadcastReceiver() {</span>
         @Override
         public void onReceive(Context arg0, Intent intent) {
@@ -78,7 +78,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
     private void loadSupervisor() {
 
         try {
-<span class="nc" id="L81">            SupervisorModel supervisor = new SupervisorController(LockActivity.this).getCache();</span>
+<span class="nc" id="L81">            SupervisorData supervisor = new SupervisorData(LockActivity.this);</span>
 
 <span class="nc bnc" id="L83" title="All 4 branches missed.">            if (supervisor.getName() != null &amp;&amp; !supervisor.getName().equals(&quot;&quot;)) {</span>
 <span class="nc" id="L84">                txtNameSupervisor.setText(supervisor.getName());</span>
@@ -101,44 +101,35 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 <span class="nc" id="L101">        Intent miIntent = new Intent(LockActivity.this, MainActivity.class);</span>
 <span class="nc" id="L102">        LockActivity.this.startActivity(miIntent);</span>
 <span class="nc" id="L103">        LockActivity.this.finish();</span>
-
-//        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager
-//                .getInstance(LockActivity.this);
-//        localBroadcastManager.sendBroadcast(new Intent(
-//                &quot;org.flyvemdm.finishlock&quot;));
-<span class="nc" id="L109">    }</span>
+<span class="nc" id="L104">    }</span>
 
     // Handle button clicks
     @Override
     public boolean onKeyDown(int keyCode, android.view.KeyEvent event) {
 
-<span class="nc bnc" id="L115" title="All 8 branches missed.">        if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)</span>
+<span class="nc bnc" id="L110" title="All 10 branches missed.">        if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)</span>
                 || (keyCode == KeyEvent.KEYCODE_POWER)
                 || (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
-                || (keyCode == KeyEvent.KEYCODE_CAMERA)) {
-<span class="nc" id="L119">            return true;</span>
-        }
-<span class="nc bnc" id="L121" title="All 2 branches missed.">        if ((keyCode == KeyEvent.KEYCODE_HOME)) {</span>
-
-<span class="nc" id="L123">            return true;</span>
+                || (keyCode == KeyEvent.KEYCODE_CAMERA)
+                || (keyCode == KeyEvent.KEYCODE_HOME)) {
+<span class="nc" id="L115">            return true;</span>
         }
 
-<span class="nc" id="L126">        return false;</span>
-
+<span class="nc" id="L118">        return false;</span>
     }
 
     // handle the key press events here itself
     public boolean dispatchKeyEvent(KeyEvent event) {
-<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP</span>
-<span class="nc bnc" id="L133" title="All 2 branches missed.">                || (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)</span>
-<span class="nc bnc" id="L134" title="All 2 branches missed.">                || (event.getKeyCode() == KeyEvent.KEYCODE_POWER)) {</span>
-<span class="nc" id="L135">            return false;</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">                || (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">                || (event.getKeyCode() == KeyEvent.KEYCODE_POWER)) {</span>
+<span class="nc" id="L126">            return false;</span>
         }
-<span class="nc bnc" id="L137" title="All 2 branches missed.">        if ((event.getKeyCode() == KeyEvent.KEYCODE_HOME)) {</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if ((event.getKeyCode() == KeyEvent.KEYCODE_HOME)) {</span>
 
-<span class="nc" id="L139">            return true;</span>
+<span class="nc" id="L130">            return true;</span>
         }
-<span class="nc" id="L141">        return false;</span>
+<span class="nc" id="L132">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

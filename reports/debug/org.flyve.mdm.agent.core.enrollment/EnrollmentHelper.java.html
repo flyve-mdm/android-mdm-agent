@@ -6,7 +6,7 @@ import android.os.Looper;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -58,26 +58,26 @@ public class EnrollmentHelper {
     private static final String REFERER = &quot;Referer&quot;;
 
     static {
-<span class="nc" id="L61">        uiHandler = new Handler(Looper.getMainLooper());</span>
-<span class="nc" id="L62">    }</span>
+<span class="fc" id="L61">        uiHandler = new Handler(Looper.getMainLooper());</span>
+<span class="fc" id="L62">    }</span>
 
     private static void runOnUI(Runnable runnable) {
 <span class="nc" id="L65">        uiHandler.post(runnable);</span>
 <span class="nc" id="L66">    }</span>
 
     private Context context;
-    private DataStorage cache;
+    private MqttData cache;
     private Routes routes;
 
     /**
      * This constructor loads the context of the current class
      * @param context of the class
      */
-<span class="nc" id="L76">    public EnrollmentHelper(Context context) {</span>
-<span class="nc" id="L77">        this.context = context;</span>
-<span class="nc" id="L78">        cache = new DataStorage(context);</span>
-<span class="nc" id="L79">        routes = new Routes(context);</span>
-<span class="nc" id="L80">    }</span>
+<span class="fc" id="L76">    public EnrollmentHelper(Context context) {</span>
+<span class="fc" id="L77">        this.context = context;</span>
+<span class="fc" id="L78">        cache = new MqttData(context);</span>
+<span class="fc" id="L79">        routes = new Routes(context);</span>
+<span class="fc" id="L80">    }</span>
 
     /**
      * Manage the errors 
@@ -294,7 +294,7 @@ public class EnrollmentHelper {
      * Create X509 certificate
      */
     public void createX509cert(final EnrollCallBack callback) {
-<span class="nc" id="L297">        new Thread(new Runnable() {</span>
+<span class="fc" id="L297">        new Thread(new Runnable() {</span>
             public void run() {
                 try {
 <span class="nc" id="L300">                    AndroidCryptoProvider createCertificate = new AndroidCryptoProvider(context);</span>
@@ -319,8 +319,8 @@ public class EnrollmentHelper {
                     });
 <span class="nc" id="L320">                }</span>
 <span class="nc" id="L321">            }</span>
-<span class="nc" id="L322">        }).start();</span>
-<span class="nc" id="L323">    }</span>
+<span class="fc" id="L322">        }).start();</span>
+<span class="fc" id="L323">    }</span>
 
     public interface EnrollCallBack {
         void onSuccess(String data);

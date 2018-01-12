@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.walkthrough.WalkthroughData;
+import org.flyve.mdm.agent.data.WalkthroughData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 

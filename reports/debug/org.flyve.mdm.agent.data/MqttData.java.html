@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MqttData.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.data</a> &gt; <span class="el_source">MqttData.java</span></div><h1>MqttData.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.data;
+
+import android.content.Context;
+
+/*
+ *   Copyright © 2018 Teclib. All rights reserved.
+ *
+ *   This file is part of flyve-mdm-android
+ *
+ * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    rafaelhernandez
+ * @date      8/1/18
+ * @copyright Copyright © 2018 Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+public class MqttData extends LocalStorage {
+
+    /**
+     * Constructor
+     *
+     * @param context
+     */
+    public MqttData(Context context) {
+<span class="fc" id="L39">        super(context);</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * Get the version of the Manifest
+     * @return string the Manifest version
+     */
+    public String getManifestVersion() {
+<span class="nc" id="L47">        return getData(&quot;manifestVersion&quot;);</span>
+    }
+
+    /**
+     * Set the version of the Manifest
+     * @param version number of the version
+     */
+    public void setManifestVersion(String version) {
+<span class="nc" id="L55">        setData(&quot;manifestVersion&quot;, version);</span>
+<span class="nc" id="L56">    }</span>
+
+    /**
+     * Get the URL
+     * @return string the URL
+     */
+    public String getUrl() {
+<span class="fc" id="L63">        return getData(&quot;url&quot;);</span>
+    }
+
+    /**
+     * Set the URL
+     * @param url
+     */
+    public void setUrl(String url) {
+<span class="nc" id="L71">        setData(&quot;url&quot;, url);</span>
+<span class="nc" id="L72">    }</span>
+
+    /**
+     * Get the token of the user
+     * @return string the user token
+     */
+    public String getUserToken() {
+<span class="nc" id="L79">        return getData(&quot;user_token&quot;);</span>
+    }
+
+    /**
+     * Set the token of the user
+     * @param userToken
+     */
+    public void setUserToken(String userToken) {
+<span class="nc" id="L87">        setData(&quot;user_token&quot;, userToken);</span>
+<span class="nc" id="L88">    }</span>
+
+    /**
+     * Get the invitation token
+     * @return string the invitation token
+     */
+    public String getInvitationToken() {
+<span class="nc" id="L95">        return getData(&quot;invitation_token&quot;);</span>
+    }
+
+    /**
+     * Set the invitation token
+     * @param invitationToken
+     */
+    public void setInvitationToken(String invitationToken) {
+<span class="nc" id="L103">        setData(&quot;invitation_token&quot;, invitationToken);</span>
+<span class="nc" id="L104">    }</span>
+
+    /**
+     * Get the session token
+     * @return string the session token
+     */
+    public String getSessionToken() {
+<span class="nc" id="L111">        return getData(&quot;session_token&quot;);</span>
+    }
+
+    /**
+     * Set the session token
+     * @param sessionToken
+     */
+    public void setSessionToken(String sessionToken) {
+<span class="nc" id="L119">        setData(&quot;session_token&quot;, sessionToken);</span>
+<span class="nc" id="L120">    }</span>
+
+    /**
+     * Get the ID of the profile
+     * @return string the profile ID
+     */
+    public String getProfileId() {
+<span class="nc" id="L127">        return getData(&quot;profile_id&quot;);</span>
+    }
+
+    /**
+     * Set the ID of the profile
+     * @param profileId
+     */
+    public void setProfileId(String profileId) {
+<span class="nc" id="L135">        setData(&quot;profile_id&quot;, profileId);</span>
+<span class="nc" id="L136">    }</span>
+
+    /**
+     * Get the ID of the agent
+     * @return string the agent ID
+     */
+    public String getAgentId() {
+<span class="nc" id="L143">        return getData(&quot;agent_id&quot;);</span>
+    }
+
+    /**
+     * Set the ID of the agent
+     * @param agentId
+     */
+    public void setAgentId(String agentId) {
+<span class="nc" id="L151">        setData(&quot;agent_id&quot;, agentId);</span>
+<span class="nc" id="L152">    }</span>
+
+    /**
+     * Get the broker
+     * @return string the broker
+     */
+    public String getBroker() {
+<span class="fc" id="L159">        return getData(&quot;broker&quot;);</span>
+    }
+
+    /**
+     * Set the broker
+     * @param broker
+     */
+    public void setBroker(String broker) {
+<span class="nc" id="L167">        setData(&quot;broker&quot;, broker);</span>
+<span class="nc" id="L168">    }</span>
+
+    /**
+     * Get the port
+     * @return string the port
+     */
+    public String getPort() {
+<span class="nc" id="L175">        return getData(&quot;port&quot;);</span>
+    }
+
+    /**
+     * Set the port
+     * @param port
+     */
+    public void setPort(String port) {
+<span class="nc" id="L183">        setData(&quot;port&quot;, port);</span>
+<span class="nc" id="L184">    }</span>
+
+    /**
+     * Get the Transport Layer Security (TLS)
+     * @return string the TLS
+     */
+    public String getTls() {
+<span class="nc" id="L191">        return getData(&quot;tls&quot;);</span>
+    }
+
+    /**
+     * Set the Transport Layer Security (TLS)
+     * @param tls
+     */
+    public void setTls(String tls) {
+<span class="nc" id="L199">        setData(&quot;tls&quot;, tls);</span>
+<span class="nc" id="L200">    }</span>
+
+    /**
+     * Get the topic
+     * @return string the topic
+     */
+    public String getTopic() {
+<span class="nc" id="L207">        return getData(&quot;topic&quot;);</span>
+    }
+
+    /**
+     * Set the topic
+     * @param topic
+     */
+    public void setTopic(String topic) {
+<span class="nc" id="L215">        setData(&quot;topic&quot;, topic);</span>
+<span class="nc" id="L216">    }</span>
+
+    /**
+     * Get the user of the Message Queue Telemetry Transport (MQTT)
+     * @return string the MQTT user
+     */
+    public String getMqttuser() {
+<span class="nc" id="L223">        return getData(&quot;mqttuser&quot;);</span>
+    }
+
+    /**
+     * Set the user of the Message Queue Telemetry Transport (MQTT)
+     * @param mqttuser
+     */
+    public void setMqttuser(String mqttuser) {
+<span class="nc" id="L231">        setData(&quot;mqttuser&quot;, mqttuser);</span>
+<span class="nc" id="L232">    }</span>
+
+    /**
+     * Get the password of the Message Queue Telemetry Transport (MQTT)
+     * @return the MQTT password
+     */
+    public String getMqttpasswd() {
+<span class="nc" id="L239">        return getData(&quot;mqttpasswd&quot;);</span>
+    }
+
+    /**
+     * Set the password of the Message Queue Telemetry Transport (MQTT)
+     * @param mqttpasswd
+     */
+    public void setMqttpasswd(String mqttpasswd) {
+<span class="nc" id="L247">        setData(&quot;mqttpasswd&quot;, mqttpasswd);</span>
+<span class="nc" id="L248">    }</span>
+
+    /**
+     * Get the Certificate
+     * @return string the certificate
+     */
+    public String getCertificate() {
+<span class="nc" id="L255">        return getData(&quot;certificate&quot;);</span>
+    }
+
+    /**
+     * Set the Certificate
+     * @param certificate
+     */
+    public void setCertificate(String certificate) {
+<span class="nc" id="L263">        setData(&quot;certificate&quot;, certificate);</span>
+<span class="nc" id="L264">    }</span>
+
+    /**
+     * Get the name
+     * @return string the name
+     */
+    public String getName() {
+<span class="nc" id="L271">        return getData(&quot;name&quot;);</span>
+    }
+
+    /**
+     * Set the name
+     * @param name
+     */
+    public void setName(String name) {
+<span class="nc" id="L279">        setData(&quot;name&quot;, name);</span>
+<span class="nc" id="L280">    }</span>
+
+    /**
+     * Get the ID of the computer
+     * @return string the computer ID
+     */
+    public String getComputersId() {
+<span class="nc" id="L287">        return getData(&quot;computers_id&quot;);</span>
+    }
+
+    /**
+     * Set the ID of the computer
+     * @param computersId
+     */
+    public void setComputersId(String computersId) {
+<span class="nc" id="L295">        setData(&quot;computers_id&quot;, computersId);</span>
+<span class="nc" id="L296">    }</span>
+
+    /**
+     * Get the ID of the entities
+     * @return string the entities ID
+     */
+    public String getEntitiesId() {
+<span class="nc" id="L303">        return getData(&quot;entities_id&quot;);</span>
+    }
+
+    /**
+     * Set the ID of the entities
+     * @param entitiesId
+     */
+    public void setEntitiesId(String entitiesId) {
+<span class="nc" id="L311">        setData(&quot;entities_id&quot;, entitiesId);</span>
+<span class="nc" id="L312">    }</span>
+
+    /**
+     * Get the ID of the Fleets of the Flyve MDM plugin
+     * @return string the Fleets ID
+     */
+    public String getPluginFlyvemdmFleetsId() {
+<span class="nc" id="L319">        return getData(&quot;plugin_flyvemdm_fleets_id&quot;);</span>
+    }
+
+    /**
+     * Set the ID of the Fleets of the Flyve MDM plugin
+     * @param pluginFlyvemdmFleetsId
+     */
+    public void setPluginFlyvemdmFleetsId(String pluginFlyvemdmFleetsId) {
+<span class="nc" id="L327">        setData(&quot;plugin_flyvemdm_fleets_id&quot;, pluginFlyvemdmFleetsId);</span>
+<span class="nc" id="L328">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

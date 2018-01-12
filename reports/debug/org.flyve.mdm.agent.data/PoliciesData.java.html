@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PoliciesData.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.data</a> &gt; <span class="el_source">PoliciesData.java</span></div><h1>PoliciesData.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.data;
+
+import android.content.Context;
+
+/*
+ *   Copyright © 2018 Teclib. All rights reserved.
+ *
+ *   This file is part of flyve-mdm-android
+ *
+ * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    rafaelhernandez
+ * @date      8/1/18
+ * @copyright Copyright © 2018 Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+public class PoliciesData extends LocalStorage {
+
+    /**
+     * Constructor
+     *
+     * @param context
+     */
+    public PoliciesData(Context context) {
+<span class="nc" id="L39">        super(context);</span>
+<span class="nc" id="L40">    }</span>
+
+    /**
+     * Set the state of the Connectivity of the Wifi
+     * @param disable the state of the connectivity, true if disabled, false otherwise
+     */
+    public void setConnectivityWifiDisable(boolean disable) {
+<span class="nc" id="L47">        setData(&quot;ConnectivityWifiDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L48">    }</span>
+
+    /**
+     * Get the state of the Connectivity of the Wifi
+     * @return boolean the state of the connectivity, true if disabled, false otherwise
+     */
+    public boolean getConnectivityWifiDisable() {
+<span class="nc" id="L55">        return Boolean.valueOf(getData(&quot;ConnectivityWifiDisable&quot;));</span>
+    }
+
+    /**
+     * Set the state of the Connectivity of the Bluetooth
+     * @param disable the state of the connectivity, true if disabled, false otherwise
+     */
+    public void setConnectivityBluetoothDisable(boolean disable) {
+<span class="nc" id="L63">        setData(&quot;ConnectivityBluetoothDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L64">    }</span>
+
+    /**
+     * Get the state of the Connectivity of the Bluetooth
+     * @return boolean the state of the connectivity, true if disabled, false otherwise
+     */
+    public boolean getConnectivityBluetoothDisable() {
+<span class="nc" id="L71">        return Boolean.valueOf(getData(&quot;ConnectivityBluetoothDisable&quot;));</span>
+    }
+
+    /**
+     * Set the state of the Connectivity of the GPS
+     * @param disable the state of the connectivity, true if disabled, false otherwise
+     */
+    public void setConnectivityGPSDisable(boolean disable) {
+<span class="nc" id="L79">        setData(&quot;ConnectivityGPSDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L80">    }</span>
+
+    /**
+     * Set the state of the Roaming enable / disable
+     * @param disable
+     */
+    public void setConnectivityRoamingDisable(boolean disable) {
+<span class="nc" id="L87">        setData(&quot;ConnectivityRoamingDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L88">    }</span>
+
+    /**
+     * Set the state of the Airplane mode disable
+     * @param disable
+     */
+    public void setConnectivityAirplaneModeDisable(boolean disable) {
+<span class="nc" id="L95">        setData(&quot;ConnectivityAirplaneModeDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L96">    }</span>
+
+    /**
+     * Set the state of the Radio FM enable / disable
+     * @param disable
+     */
+    public void setConnectivityRadioFMDisable(boolean disable) {
+<span class="nc" id="L103">        setData(&quot;ConnectivityRadioFMDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L104">    }</span>
+
+    /**
+     * Set the state of the Mobile Line enable / disable
+     * @param disable
+     */
+    public void setConnectivityMobileLineDisable(boolean disable) {
+<span class="nc" id="L111">        setData(&quot;ConnectivityMobileLineDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L112">    }</span>
+
+    /**
+     * Set the state of the NFC enable / disable
+     * @param disable
+     */
+    public void setConnectivityNFCDisable(boolean disable) {
+<span class="nc" id="L119">        setData(&quot;ConnectivityNFCDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L120">    }</span>
+
+    /**
+     * Set the state of the Hostpot Tethering  enable / disable
+     * @param disable
+     */
+    public void setConnectivityHostpotTetheringDisable(boolean disable) {
+<span class="nc" id="L127">        setData(&quot;ConnectivityHostpotTetheringDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L128">    }</span>
+
+    /**
+     * Set SMS / MMS  enable / disable
+     * @param disable
+     */
+    public void setConnectivitySmsMmsDisable(boolean disable) {
+<span class="nc" id="L135">        setData(&quot;ConnectivitySmsMmsDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L136">    }</span>
+
+    /**
+     * Set Usb File Transfer Protocols  enable / disable
+     * @param disable
+     */
+    public void setConnectivityUsbFileTransferProtocolsDisable(boolean disable) {
+<span class="nc" id="L143">        setData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L144">    }</span>
+
+    /**
+     * Get the state of the Connectivity of the GPS
+     * @return boolean the state of the connectivity, true if disabled, false otherwise
+     */
+    public boolean getConnectivityGPSDisable() {
+<span class="nc" id="L151">        return Boolean.valueOf(getData(&quot;ConnectivityGPSDisable&quot;));</span>
+    }
+
+    public String getWifi() {
+<span class="nc" id="L155">        return getData(&quot;ConnectivityWifiDisable&quot;);</span>
+    }
+
+    public String getRoaming() {
+<span class="nc" id="L159">        return getData(&quot;ConnectivityRoamingDisable&quot;);</span>
+    }
+
+    public String getNFC() {
+<span class="nc" id="L163">        return getData(&quot;ConnectivityNFCDisable&quot;);</span>
+    }
+
+    public String getMobileLine() {
+<span class="nc" id="L167">        return getData(&quot;ConnectivityMobileLineDisable&quot;);</span>
+    }
+
+    public String getHostpotTethering() {
+<span class="nc" id="L171">        return getData(&quot;ConnectivityHostpotTetheringDisable&quot;);</span>
+    }
+
+    public String getUsbFileTransferProtocols() {
+<span class="nc" id="L175">        return getData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;);</span>
+    }
+
+    public String getSmsMms() {
+<span class="nc" id="L179">        return getData(&quot;ConnectivitySmsMmsDisable&quot;);</span>
+    }
+    public String getAirplaneMode() {
+<span class="nc" id="L182">        return getData(&quot;ConnectivityAirplaneModeDisable&quot;);</span>
+    }
+
+    /**
+     * Get the state of the Roaming enable / disable
+     */
+    public boolean getConnectivityRoamingDisable() {
+<span class="nc" id="L189">        return Boolean.valueOf(getData(&quot;ConnectivityRoamingDisable&quot;));</span>
+    }
+
+    /**
+     * Get the state of the Radio FM enable / disable
+     */
+    public boolean getConnectivityRadioFMDisable() {
+<span class="nc" id="L196">        return Boolean.valueOf(getData(&quot;ConnectivityRadioFMDisable&quot;));</span>
+    }
+
+    /**
+     * Get the state of the Mobile Line enable / disable
+     */
+    public boolean getConnectivityMobileLineDisable() {
+<span class="nc" id="L203">        return Boolean.valueOf(getData(&quot;ConnectivityMobileLineDisable&quot;));</span>
+    }
+
+    /**
+     * Get the state of the NFC enable / disable
+     */
+    public boolean getConnectivityNFCDisable() {
+<span class="nc" id="L210">        return Boolean.valueOf(getData(&quot;ConnectivityNFCDisable&quot;));</span>
+    }
+
+    /**
+     * Get the state of the Hostpot Tethering  enable / disable
+     */
+    public boolean getConnectivityHostpotTetheringDisable() {
+<span class="nc" id="L217">        return Boolean.valueOf(getData(&quot;ConnectivityHostpotTetheringDisable&quot;));</span>
+    }
+
+    /**
+     * Get the state of the Hostpot Tethering  enable / disable
+     */
+    public boolean getConnectivityUsbFileTransferProtocolsDisable() {
+<span class="nc" id="L224">        return Boolean.valueOf(getData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;));</span>
+    }
+
+    /**
+     * Get the state of the Airplane Mode  enable / disable
+     */
+    public boolean getConnectivityAirplaneModeDisable() {
+<span class="nc" id="L231">        return Boolean.valueOf(getData(&quot;ConnectivityAirplaneModeDisable&quot;));</span>
+    }
+
+    /**
+     * Get the state of SMS / MMS  enable / disable
+     */
+    public boolean getConnectivitySmsMmsDisable() {
+<span class="nc" id="L238">        return Boolean.valueOf(getData(&quot;ConnectivitySmsMmsDisable&quot;));</span>
+    }
+
+    public void setStorageEncryptionDevice(boolean enable) {
+<span class="nc" id="L242">        setData(&quot;StorageEncryptionDevice&quot;, String.valueOf(enable));</span>
+<span class="nc" id="L243">    }</span>
+
+    public boolean getStorageEncryptionDevice() {
+<span class="nc" id="L246">        return Boolean.valueOf(getData(&quot;StorageEncryptionDevice&quot;));</span>
+    }
+
+    public void setDisableCamera(boolean enable) {
+<span class="nc" id="L250">        setData(&quot;DisableCamera&quot;, String.valueOf(enable));</span>
+<span class="nc" id="L251">    }</span>
+
+    public boolean getDisableCamera() {
+<span class="nc" id="L254">        return Boolean.valueOf(getData(&quot;DisableCamera&quot;));</span>
+    }
+
+    public void setPasswordLength(String value) {
+<span class="nc" id="L258">        setData(&quot;PasswordLength&quot;, value);</span>
+<span class="nc" id="L259">    }</span>
+
+    public String getPasswordLength() {
+<span class="nc" id="L262">        return getData(&quot;PasswordLength&quot;);</span>
+    }
+
+    public void setPasswordQuality(String value) {
+<span class="nc" id="L266">        setData(&quot;PasswordQuality&quot;, value);</span>
+<span class="nc" id="L267">    }</span>
+
+    public String getPasswordQuality() {
+<span class="nc" id="L270">        return getData(&quot;PasswordQuality&quot;);</span>
+    }
+
+    public void setPasswordMinimumLetters(String value) {
+<span class="nc" id="L274">        setData(&quot;PasswordMinimumLetters&quot;, value);</span>
+<span class="nc" id="L275">    }</span>
+
+    public String getPasswordMinimumLetters() {
+<span class="nc" id="L278">        return getData(&quot;PasswordMinimumLetters&quot;);</span>
+    }
+
+    public void setPasswordMinimumLowerCase(String value) {
+<span class="nc" id="L282">        setData(&quot;PasswordMinimumLowerCase&quot;, value);</span>
+<span class="nc" id="L283">    }</span>
+
+    public String getPasswordMinimumLowerCase() {
+<span class="nc" id="L286">        return getData(&quot;PasswordMinimumLowerCase&quot;);</span>
+    }
+
+    public void setPasswordMinimumUpperCase(String value) {
+<span class="nc" id="L290">        setData(&quot;PasswordMinimumUpperCase&quot;, value);</span>
+<span class="nc" id="L291">    }</span>
+
+    public String getPasswordMinimumUpperCase() {
+<span class="nc" id="L294">        return getData(&quot;PasswordMinimumUpperCase&quot;);</span>
+    }
+
+    public void setPasswordMinimumNonLetter(String value) {
+<span class="nc" id="L298">        setData(&quot;PasswordMinimumNonLetter&quot;, value);</span>
+<span class="nc" id="L299">    }</span>
+
+    public String getPasswordMinimumNonLetter() {
+<span class="nc" id="L302">        return getData(&quot;PasswordMinimumNonLetter&quot;);</span>
+    }
+
+    public void setPasswordMinimumNumeric(String value) {
+<span class="nc" id="L306">        setData(&quot;PasswordMinimumNumeric&quot;, value);</span>
+<span class="nc" id="L307">    }</span>
+
+    public String getPasswordMinimumNumeric() {
+<span class="nc" id="L310">        return getData(&quot;PasswordMinimumNumeric&quot;);</span>
+    }
+
+    public void setPasswordMinimumSymbols(String value) {
+<span class="nc" id="L314">        setData(&quot;PasswordMinimumSymbols&quot;, value);</span>
+<span class="nc" id="L315">    }</span>
+
+    public String getPasswordMinimumSymbols() {
+<span class="nc" id="L318">        return getData(&quot;PasswordMinimumSymbols&quot;);</span>
+    }
+
+    public void setMaximumFailedPasswordsForWipe(String value) {
+<span class="nc" id="L322">        setData(&quot;MaximumFailedPasswordsForWipe&quot;, value);</span>
+<span class="nc" id="L323">    }</span>
+
+    public String getMaximumFailedPasswordsForWipe() {
+<span class="nc" id="L326">        return getData(&quot;MaximumFailedPasswordsForWipe&quot;);</span>
+    }
+
+    public void setMaximumTimeToLock(String value) {
+<span class="nc" id="L330">        setData(&quot;MaximumTimeToLock&quot;, value);</span>
+<span class="nc" id="L331">    }</span>
+
+    public String getMaximumTimeToLock() {
+<span class="nc" id="L334">        return getData(&quot;MaximumTimeToLock&quot;);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>

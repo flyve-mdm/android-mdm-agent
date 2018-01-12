@@ -39,17 +39,17 @@ public class LocalStorage {
 	 * Constructor
 	 * @param context
 	 */
-<span class="nc" id="L42">	public LocalStorage(Context context){</span>
-<span class="nc" id="L43">		mContext = context;</span>
-<span class="nc" id="L44">	}</span>
+<span class="fc" id="L42">	public LocalStorage(Context context){</span>
+<span class="fc" id="L43">		mContext = context;</span>
+<span class="fc" id="L44">	}</span>
 
 	/**
 	 * Get preference from setting
 	 * @return SharedPreferences
 	 */
 	private SharedPreferences getSettings(){
-<span class="nc bnc" id="L51" title="All 2 branches missed.">		if (mContext != null) {</span>
-<span class="nc" id="L52">		return mContext.getSharedPreferences(SHARED_PREFS_FILE, 0);</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">		if (mContext != null) {</span>
+<span class="fc" id="L52">		return mContext.getSharedPreferences(SHARED_PREFS_FILE, 0);</span>
 		} else {
 <span class="nc" id="L54">			return null;</span>
 		}
@@ -61,12 +61,12 @@ public class LocalStorage {
 	 * @return string the data
 	 */
 	protected String getData(String key){
-<span class="nc" id="L64">		String data = &quot;&quot;;</span>
-<span class="nc" id="L65">		SharedPreferences sp = getSettings();</span>
-<span class="nc bnc" id="L66" title="All 2 branches missed.">		if(sp != null) {</span>
-<span class="nc" id="L67">			data = sp.getString(key, null);</span>
+<span class="fc" id="L64">		String data = &quot;&quot;;</span>
+<span class="fc" id="L65">		SharedPreferences sp = getSettings();</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">		if(sp != null) {</span>
+<span class="fc" id="L67">			data = sp.getString(key, null);</span>
 		}
-<span class="nc" id="L69">		return data;</span>
+<span class="fc" id="L69">		return data;</span>
 	}
 
 	/**

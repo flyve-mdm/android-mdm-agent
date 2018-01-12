@@ -30,7 +30,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -51,7 +51,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L51">        final String action = intent.getAction();</span>
 <span class="nc" id="L52">        FlyveLog.d(&quot;Connectivity receiver: &quot; + action);</span>
 
-<span class="nc" id="L54">        DataStorage cache = new DataStorage(context);</span>
+<span class="nc" id="L54">        PoliciesData cache = new PoliciesData(context);</span>
 
 <span class="nc bnc" id="L56" title="All 2 branches missed.">        if(action==null) {</span>
 <span class="nc" id="L57">            return;</span>

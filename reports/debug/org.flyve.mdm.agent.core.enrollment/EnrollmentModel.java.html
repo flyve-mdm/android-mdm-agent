@@ -3,24 +3,18 @@
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 
 import org.flyve.inventory.InventoryTask;
 import org.flyve.inventory.categories.Hardware;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.user.UserController;
-import org.flyve.mdm.agent.core.user.UserModel;
-import org.flyve.mdm.agent.data.DataStorage;
+import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.data.UserData;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -54,196 +48,165 @@ public class EnrollmentModel implements Enrollment.Model {
 
     private Enrollment.Presenter presenter;
 
-<span class="nc" id="L57">    public EnrollmentModel(Enrollment.Presenter presenter) {</span>
-<span class="nc" id="L58">        this.presenter = presenter;</span>
-<span class="nc" id="L59">    }</span>
+<span class="nc" id="L51">    public EnrollmentModel(Enrollment.Presenter presenter) {</span>
+<span class="nc" id="L52">        this.presenter = presenter;</span>
+<span class="nc" id="L53">    }</span>
 
     @Override
     public void createInventory(Context context) {
-<span class="nc" id="L63">        InventoryTask inventoryTask = new InventoryTask(context, &quot;FlyveMDM-Agent&quot;);</span>
-<span class="nc" id="L64">        inventoryTask.getJSON(new InventoryTask.OnTaskCompleted() {</span>
+<span class="nc" id="L57">        InventoryTask inventoryTask = new InventoryTask(context, &quot;FlyveMDM-Agent&quot;);</span>
+<span class="nc" id="L58">        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {</span>
             @Override
             public void onTaskSuccess(String s) {
-<span class="nc" id="L67">                presenter.inventorySuccess(s);</span>
-<span class="nc" id="L68">            }</span>
+<span class="nc" id="L61">                presenter.inventorySuccess(s);</span>
+<span class="nc" id="L62">            }</span>
 
             @Override
             public void onTaskError(Throwable throwable) {
-<span class="nc" id="L72">                presenter.showSnackError(&quot;Inventory fail&quot;);</span>
-<span class="nc" id="L73">            }</span>
+<span class="nc" id="L66">                presenter.showSnackError(&quot;Inventory fail&quot;);</span>
+<span class="nc" id="L67">            }</span>
         });
 
-<span class="nc" id="L76">    }</span>
+<span class="nc" id="L70">    }</span>
 
     @Override
     public void createX509certification(Context context) {
-<span class="nc" id="L80">        EnrollmentHelper enroll = new EnrollmentHelper(context);</span>
-<span class="nc" id="L81">        enroll.createX509cert(new EnrollmentHelper.EnrollCallBack() {</span>
+<span class="nc" id="L74">        EnrollmentHelper enroll = new EnrollmentHelper(context);</span>
+<span class="nc" id="L75">        enroll.createX509cert(new EnrollmentHelper.EnrollCallBack() {</span>
             @Override
             public void onSuccess(String data) {
-<span class="nc" id="L84">                presenter.certificationX509Success();</span>
-<span class="nc" id="L85">            }</span>
+<span class="nc" id="L78">                presenter.certificationX509Success();</span>
+<span class="nc" id="L79">            }</span>
 
             @Override
             public void onError(String error) {
-<span class="nc" id="L89">                presenter.showSnackError(error);</span>
-<span class="nc" id="L90">            }</span>
+<span class="nc" id="L83">                presenter.showSnackError(error);</span>
+<span class="nc" id="L84">            }</span>
         });
-<span class="nc" id="L92">    }</span>
+<span class="nc" id="L86">    }</span>
 
     @Override
     public void selectPhoto(final Activity activity, final int requestCamera, final int requestFile) {
-<span class="nc" id="L96">        final CharSequence[] items = {</span>
-<span class="nc" id="L97">                activity.getResources().getString(R.string.take_photo),</span>
-<span class="nc" id="L98">                activity.getResources().getString(R.string.choose_from_library),</span>
-<span class="nc" id="L99">                activity.getResources().getString(R.string.cancel)</span>
+<span class="nc" id="L90">        final CharSequence[] items = {</span>
+<span class="nc" id="L91">                activity.getResources().getString(R.string.take_photo),</span>
+<span class="nc" id="L92">                activity.getResources().getString(R.string.choose_from_library),</span>
+<span class="nc" id="L93">                activity.getResources().getString(R.string.cancel)</span>
         };
 
-<span class="nc" id="L102">        Helpers.hideKeyboard(activity);</span>
+<span class="nc" id="L96">        Helpers.hideKeyboard(activity);</span>
 
-<span class="nc" id="L104">        AlertDialog.Builder builder = new AlertDialog.Builder(activity);</span>
-<span class="nc" id="L105">        builder.setTitle(activity.getResources().getString(R.string.add_photo) );</span>
-<span class="nc" id="L106">        builder.setItems(items, new DialogInterface.OnClickListener() {</span>
+<span class="nc" id="L98">        AlertDialog.Builder builder = new AlertDialog.Builder(activity);</span>
+<span class="nc" id="L99">        builder.setTitle(activity.getResources().getString(R.string.add_photo) );</span>
+<span class="nc" id="L100">        builder.setItems(items, new DialogInterface.OnClickListener() {</span>
             @Override
             public void onClick(DialogInterface dialog, int item) {
 
-<span class="nc bnc" id="L110" title="All 2 branches missed.">                if (items[item].equals(activity.getResources().getString(R.string.take_photo))) {</span>
-<span class="nc" id="L111">                    cameraIntent(activity, requestCamera);</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">                if (items[item].equals(activity.getResources().getString(R.string.take_photo))) {</span>
+<span class="nc" id="L105">                    Helpers.cameraIntent(activity, requestCamera);</span>
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">                } else if (items[item].equals(activity.getResources().getString(R.string.choose_from_library))) {</span>
-<span class="nc" id="L114">                    galleryIntent(activity, requestFile);</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">                } else if (items[item].equals(activity.getResources().getString(R.string.choose_from_library))) {</span>
+<span class="nc" id="L108">                    Helpers.galleryIntent(activity, requestFile);</span>
 
-<span class="nc bnc" id="L116" title="All 2 branches missed.">                } else if (items[item].equals(activity.getResources().getString(R.string.cancel) )) {</span>
-<span class="nc" id="L117">                    dialog.dismiss();</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">                } else if (items[item].equals(activity.getResources().getString(R.string.cancel) )) {</span>
+<span class="nc" id="L111">                    dialog.dismiss();</span>
                 }
-<span class="nc" id="L119">            }</span>
+<span class="nc" id="L113">            }</span>
         });
-<span class="nc" id="L121">        builder.show();</span>
-<span class="nc" id="L122">    }</span>
-
-    /**
-     * If the user selects the image with the option from the gallery
-     */
-    private void galleryIntent(Activity activity, int requestFile) {
-<span class="nc" id="L128">        Intent intent = new Intent();</span>
-<span class="nc" id="L129">        intent.setType(&quot;image/*&quot;);</span>
-<span class="nc" id="L130">        intent.setAction(Intent.ACTION_GET_CONTENT);//</span>
-<span class="nc" id="L131">        activity.startActivityForResult(Intent.createChooser(intent, activity.getResources().getString(R.string.select_file) ),requestFile);</span>
-<span class="nc" id="L132">    }</span>
-
-    /**
-     * If the user selects the image with the option take photo
-     */
-    private void cameraIntent(Activity activity, int requestCamera) {
-<span class="nc" id="L138">        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">        if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {</span>
-<span class="nc" id="L140">            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, getImageUri());</span>
-<span class="nc" id="L141">            activity.startActivityForResult(takePictureIntent, requestCamera);</span>
-        }
-<span class="nc" id="L143">    }</span>
-
-    /**
-     * Get the URI of the image
-     * @return the URI
-     */
-    private Uri getImageUri() {
-        // Store image in dcim
-<span class="nc" id="L151">        File filePhoto = new File(Environment.getExternalStorageDirectory() + &quot;/DCIM/&quot;, &quot;flyveUser.jpg&quot;);</span>
-<span class="nc" id="L152">        return Uri.fromFile(filePhoto);</span>
-    }
+<span class="nc" id="L115">        builder.show();</span>
+<span class="nc" id="L116">    }</span>
 
     @Override
-    public void enroll(final Context context, final List&lt;UserModel.EmailsData&gt; arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber) {
+    public void enroll(final Activity activity, final List&lt;UserData.EmailsData&gt; arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber) {
 
-<span class="nc" id="L158">        StringBuilder errMsg = new StringBuilder(context.getResources().getString(R.string.validate_error) );</span>
-<span class="nc" id="L159">        boolean allow = true;</span>
+<span class="nc" id="L121">        StringBuilder errMsg = new StringBuilder(activity.getResources().getString(R.string.validate_error) );</span>
+<span class="nc" id="L122">        boolean allow = true;</span>
 
-<span class="nc bnc" id="L161" title="All 4 branches missed.">        if(arrEmails.isEmpty() || arrEmails.get(0).getEmail().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L162">            errMsg.append(context.getResources().getString(R.string.validate_email_at_least_one) );</span>
-<span class="nc" id="L163">            allow = false;</span>
+<span class="nc" id="L124">        Helpers.hideKeyboard(activity);</span>
+
+<span class="nc bnc" id="L126" title="All 4 branches missed.">        if(arrEmails.isEmpty() || arrEmails.get(0).getEmail().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L127">            errMsg.append(activity.getResources().getString(R.string.validate_email_at_least_one) );</span>
+<span class="nc" id="L128">            allow = false;</span>
         }
 
-<span class="nc bnc" id="L166" title="All 2 branches missed.">        if(firstName.trim().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L167">            errMsg.append(context.getResources().getString(R.string.validate_first_name) );</span>
-<span class="nc" id="L168">            allow = false;</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if(firstName.trim().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L132">            errMsg.append(activity.getResources().getString(R.string.validate_first_name) );</span>
+<span class="nc" id="L133">            allow = false;</span>
         }
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">        if(lastName.trim().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L172">            errMsg.append(context.getResources().getString(R.string.validate_last_name) );</span>
-<span class="nc" id="L173">            allow = false;</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if(lastName.trim().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L137">            errMsg.append(activity.getResources().getString(R.string.validate_last_name) );</span>
+<span class="nc" id="L138">            allow = false;</span>
         }
 
-<span class="nc bnc" id="L176" title="All 2 branches missed.">        if(inventory.contains(&quot;fail&quot;)) {</span>
-<span class="nc" id="L177">            errMsg.append(context.getResources().getString(R.string.validate_inventory) );</span>
-<span class="nc" id="L178">            allow = false;</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if(inventory.contains(&quot;fail&quot;)) {</span>
+<span class="nc" id="L142">            errMsg.append(activity.getResources().getString(R.string.validate_inventory) );</span>
+<span class="nc" id="L143">            allow = false;</span>
         }
 
         // inventory running
-<span class="nc bnc" id="L182" title="All 2 branches missed.">        if(inventory.equals(&quot;&quot;)) {</span>
-<span class="nc" id="L183">            errMsg.append(context.getResources().getString(R.string.validate_inventory_wait) );</span>
-<span class="nc" id="L184">            allow = false;</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if(inventory.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L148">            errMsg.append(activity.getResources().getString(R.string.validate_inventory_wait) );</span>
+<span class="nc" id="L149">            allow = false;</span>
         }
 
-<span class="nc bnc" id="L187" title="All 2 branches missed.">        if(!allow) {</span>
-<span class="nc" id="L188">            presenter.showSnackError(context.getResources().getString(R.string.validate_check_details));</span>
-<span class="nc" id="L189">            presenter.showDetailError(errMsg.toString());</span>
-<span class="nc" id="L190">            return;</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if(!allow) {</span>
+<span class="nc" id="L153">            presenter.showSnackError(activity.getResources().getString(R.string.validate_check_details));</span>
+<span class="nc" id="L154">            presenter.showDetailError(errMsg.toString());</span>
+<span class="nc" id="L155">            return;</span>
         }
 
         try {
-<span class="nc" id="L194">            AndroidCryptoProvider csr = new AndroidCryptoProvider(context);</span>
-<span class="nc" id="L195">            String requestCSR = &quot;&quot;;</span>
-<span class="nc bnc" id="L196" title="All 2 branches missed.">            if( csr.getlCsr() != null ) {</span>
-<span class="nc" id="L197">                requestCSR = URLEncoder.encode(csr.getlCsr(), &quot;UTF-8&quot;);</span>
+<span class="nc" id="L159">            AndroidCryptoProvider csr = new AndroidCryptoProvider(activity);</span>
+<span class="nc" id="L160">            String requestCSR = &quot;&quot;;</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">            if( csr.getlCsr() != null ) {</span>
+<span class="nc" id="L162">                requestCSR = URLEncoder.encode(csr.getlCsr(), &quot;UTF-8&quot;);</span>
             }
 
-<span class="nc" id="L200">            DataStorage cache = new DataStorage(context);</span>
-<span class="nc" id="L201">            String invitationToken = cache.getInvitationToken();</span>
+<span class="nc" id="L165">            MqttData cache = new MqttData(activity);</span>
+<span class="nc" id="L166">            String invitationToken = cache.getInvitationToken();</span>
 
-<span class="nc" id="L203">            JSONObject payload = new JSONObject();</span>
+<span class="nc" id="L168">            JSONObject payload = new JSONObject();</span>
 
-<span class="nc" id="L205">            payload.put(&quot;_email&quot;, arrEmails.get(0).getEmail()); // get first email</span>
-<span class="nc" id="L206">            payload.put(&quot;_invitation_token&quot;, invitationToken);</span>
-<span class="nc" id="L207">            payload.put(&quot;_serial&quot;, Helpers.getDeviceSerial());</span>
-<span class="nc" id="L208">            payload.put(&quot;_uuid&quot;, new Hardware(context).getUUID());</span>
-<span class="nc" id="L209">            payload.put(&quot;csr&quot;, requestCSR);</span>
-<span class="nc" id="L210">            payload.put(&quot;firstname&quot;, firstName);</span>
-<span class="nc" id="L211">            payload.put(&quot;lastname&quot;, lastName);</span>
-<span class="nc" id="L212">            payload.put(&quot;phone&quot;, phone);</span>
-<span class="nc" id="L213">            payload.put(&quot;version&quot;, BuildConfig.VERSION_NAME);</span>
-<span class="nc" id="L214">            payload.put(&quot;type&quot;, &quot;android&quot;);</span>
-<span class="nc" id="L215">            payload.put(&quot;has_system_permission&quot;, Helpers.isSystemApp(context));</span>
-<span class="nc" id="L216">            payload.put(&quot;inventory&quot;, inventory);</span>
+<span class="nc" id="L170">            payload.put(&quot;_email&quot;, arrEmails.get(0).getEmail()); // get first email</span>
+<span class="nc" id="L171">            payload.put(&quot;_invitation_token&quot;, invitationToken);</span>
+<span class="nc" id="L172">            payload.put(&quot;_serial&quot;, Helpers.getDeviceSerial());</span>
+<span class="nc" id="L173">            payload.put(&quot;_uuid&quot;, new Hardware(activity).getUUID());</span>
+<span class="nc" id="L174">            payload.put(&quot;csr&quot;, requestCSR);</span>
+<span class="nc" id="L175">            payload.put(&quot;firstname&quot;, firstName);</span>
+<span class="nc" id="L176">            payload.put(&quot;lastname&quot;, lastName);</span>
+<span class="nc" id="L177">            payload.put(&quot;phone&quot;, phone);</span>
+<span class="nc" id="L178">            payload.put(&quot;version&quot;, BuildConfig.VERSION_NAME);</span>
+<span class="nc" id="L179">            payload.put(&quot;type&quot;, &quot;android&quot;);</span>
+<span class="nc" id="L180">            payload.put(&quot;has_system_permission&quot;, Helpers.isSystemApp(activity));</span>
+<span class="nc" id="L181">            payload.put(&quot;inventory&quot;, inventory);</span>
 
-<span class="nc" id="L218">            EnrollmentHelper enroll = new EnrollmentHelper(context);</span>
-<span class="nc" id="L219">            enroll.enrollment(payload, new EnrollmentHelper.EnrollCallBack() {</span>
+<span class="nc" id="L183">            EnrollmentHelper enroll = new EnrollmentHelper(activity);</span>
+<span class="nc" id="L184">            enroll.enrollment(payload, new EnrollmentHelper.EnrollCallBack() {</span>
                 @Override
                 public void onSuccess(String data) {
 
                     // -------------------------------
                     // Store user information
                     // -------------------------------
-<span class="nc" id="L226">                    UserModel userModel = new UserModel();</span>
-<span class="nc" id="L227">                    userModel.setFirstName(firstName);</span>
-<span class="nc" id="L228">                    userModel.setLastName(lastName);</span>
-<span class="nc" id="L229">                    userModel.setEmails(arrEmails);</span>
-<span class="nc" id="L230">                    userModel.setPicture(photo);</span>
-<span class="nc" id="L231">                    userModel.setLanguage(language);</span>
-<span class="nc" id="L232">                    userModel.setAdministrativeNumber(administrativeNumber);</span>
+<span class="nc" id="L191">                    UserData userData = new UserData(activity);</span>
+<span class="nc" id="L192">                    userData.setFirstName(firstName);</span>
+<span class="nc" id="L193">                    userData.setLastName(lastName);</span>
+<span class="nc" id="L194">                    userData.setEmails(arrEmails);</span>
+<span class="nc" id="L195">                    userData.setPicture(photo);</span>
+<span class="nc" id="L196">                    userData.setLanguage(language);</span>
+<span class="nc" id="L197">                    userData.setAdministrativeNumber(administrativeNumber);</span>
 
-<span class="nc" id="L234">                    new UserController(context).save(userModel);</span>
-
-<span class="nc" id="L236">                    presenter.enrollSuccess();</span>
-<span class="nc" id="L237">                }</span>
+<span class="nc" id="L199">                    presenter.enrollSuccess();</span>
+<span class="nc" id="L200">                }</span>
 
                 @Override
                 public void onError(String error) {
-<span class="nc" id="L241">                    presenter.showSnackError(error);</span>
-<span class="nc" id="L242">                }</span>
+<span class="nc" id="L204">                    presenter.showSnackError(error);</span>
+<span class="nc" id="L205">                }</span>
             });
-<span class="nc" id="L244">        } catch (Exception ex) {</span>
-<span class="nc" id="L245">            presenter.showSnackError(ex.getMessage());</span>
-<span class="nc" id="L246">        }</span>
-<span class="nc" id="L247">    }</span>
+<span class="nc" id="L207">        } catch (Exception ex) {</span>
+<span class="nc" id="L208">            presenter.showSnackError(ex.getMessage());</span>
+<span class="nc" id="L209">        }</span>
+<span class="nc" id="L210">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.3</div></body></html>
