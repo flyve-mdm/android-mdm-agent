@@ -121,6 +121,8 @@ public class EnrollmentModel implements Enrollment.Model {
         StringBuilder errMsg = new StringBuilder(activity.getResources().getString(R.string.validate_error) );
         boolean allow = true;
 
+        Helpers.hideKeyboard(activity);
+
         if(arrEmails.isEmpty() || arrEmails.get(0).getEmail().equals("")) {
             errMsg.append(activity.getResources().getString(R.string.validate_email_at_least_one) );
             allow = false;
