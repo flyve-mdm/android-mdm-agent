@@ -116,51 +116,51 @@ public class EnrollmentModel implements Enrollment.Model {
     }
 
     @Override
-    public void enroll(final Context context, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber) {
+    public void enroll(final Activity activity, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber) {
 
-        StringBuilder errMsg = new StringBuilder(context.getResources().getString(R.string.validate_error) );
+        StringBuilder errMsg = new StringBuilder(activity.getResources().getString(R.string.validate_error) );
         boolean allow = true;
 
         if(arrEmails.isEmpty() || arrEmails.get(0).getEmail().equals("")) {
-            errMsg.append(context.getResources().getString(R.string.validate_email_at_least_one) );
+            errMsg.append(activity.getResources().getString(R.string.validate_email_at_least_one) );
             allow = false;
         }
 
         if(firstName.trim().equals("")) {
-            errMsg.append(context.getResources().getString(R.string.validate_first_name) );
+            errMsg.append(activity.getResources().getString(R.string.validate_first_name) );
             allow = false;
         }
 
         if(lastName.trim().equals("")) {
-            errMsg.append(context.getResources().getString(R.string.validate_last_name) );
+            errMsg.append(activity.getResources().getString(R.string.validate_last_name) );
             allow = false;
         }
 
         if(inventory.contains("fail")) {
-            errMsg.append(context.getResources().getString(R.string.validate_inventory) );
+            errMsg.append(activity.getResources().getString(R.string.validate_inventory) );
             allow = false;
         }
 
         // inventory running
         if(inventory.equals("")) {
-            errMsg.append(context.getResources().getString(R.string.validate_inventory_wait) );
+            errMsg.append(activity.getResources().getString(R.string.validate_inventory_wait) );
             allow = false;
         }
 
         if(!allow) {
-            presenter.showSnackError(context.getResources().getString(R.string.validate_check_details));
+            presenter.showSnackError(activity.getResources().getString(R.string.validate_check_details));
             presenter.showDetailError(errMsg.toString());
             return;
         }
 
         try {
-            AndroidCryptoProvider csr = new AndroidCryptoProvider(context);
+            AndroidCryptoProvider csr = new AndroidCryptoProvider(activity);
             String requestCSR = "";
             if( csr.getlCsr() != null ) {
                 requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
             }
 
-            MqttData cache = new MqttData(context);
+            MqttData cache = new MqttData(activity);
             String invitationToken = cache.getInvitationToken();
 
             JSONObject payload = new JSONObject();
@@ -168,17 +168,17 @@ public class EnrollmentModel implements Enrollment.Model {
             payload.put("_email", arrEmails.get(0).getEmail()); // get first email
             payload.put("_invitation_token", invitationToken);
             payload.put("_serial", Helpers.getDeviceSerial());
-            payload.put("_uuid", new Hardware(context).getUUID());
+            payload.put("_uuid", new Hardware(activity).getUUID());
             payload.put("csr", requestCSR);
             payload.put("firstname", firstName);
             payload.put("lastname", lastName);
             payload.put("phone", phone);
             payload.put("version", BuildConfig.VERSION_NAME);
             payload.put("type", "android");
-            payload.put("has_system_permission", Helpers.isSystemApp(context));
+            payload.put("has_system_permission", Helpers.isSystemApp(activity));
             payload.put("inventory", Helpers.base64encode(inventory));
 
-            EnrollmentHelper enroll = new EnrollmentHelper(context);
+            EnrollmentHelper enroll = new EnrollmentHelper(activity);
             enroll.enrollment(payload, new EnrollmentHelper.EnrollCallBack() {
                 @Override
                 public void onSuccess(String data) {
@@ -186,7 +186,7 @@ public class EnrollmentModel implements Enrollment.Model {
                     // -------------------------------
                     // Store user information
                     // -------------------------------
-                    UserData userData = new UserData(context);
+                    UserData userData = new UserData(activity);
                     userData.setFirstName(firstName);
                     userData.setLastName(lastName);
                     userData.setEmails(arrEmails);
