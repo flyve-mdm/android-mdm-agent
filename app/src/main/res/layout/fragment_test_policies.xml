@@ -198,6 +198,20 @@
             android:text="Reboot"
             />
 
+        <Button
+            android:id="@+id/btnDownloadFile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Download File"
+            />
+
+        <Button
+            android:id="@+id/btnDownloadAPK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Download APK"
+            />
+
     </LinearLayout>
     </ScrollView>
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package org.flyve.mdm.agent.ui;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,10 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.services.PoliciesDeviceManager;
+import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.mdm.agent.utils.StorageFolder;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -231,6 +234,33 @@ public class FragmentTestPolicies extends Fragment {
             @Override
             public void onClick(View v) {
                 mdm.enablePassword();
+            }
+        });
+
+        Button btnDownloadFile = (Button) v.findViewById(R.id.btnDownloadFile);
+        btnDownloadFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    public void run() {
+                        //
+                        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/CHANGELOG.md";
+                        FlyveLog.d(path);
+                        ConnectionHTTP.getSyncFile("https://raw.githubusercontent.com/flyve-mdm/android-mdm-agent/develop/CHANGELOG.md", path);
+                    }
+                }).start();
+
+
+            }
+        });
+
+        Button btnDownloadAPK = (Button) v.findViewById(R.id.btnDownloadAPK);
+        btnDownloadAPK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String path = new StorageFolder(getContext()).getDocumentsDir() + "/flyve-apk.apk";
+                FlyveLog.d(path);
+                ConnectionHTTP.getSyncFile("https://f-droid.org/repo/org.flyve.inventory.agent_37960.apk", path);
             }
         });
 
