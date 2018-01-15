@@ -58,6 +58,8 @@
     <string name="cancel">Cancel</string>
     <string name="not_available">Not available</string>
 
+    <string name="check_store_fail">This path is not available</string>
+
     <string name="disclosure_title">Terms and Conditions</string>
 
     <string name="validate_error">Please fix the following errors and try again.\n\n</string>
