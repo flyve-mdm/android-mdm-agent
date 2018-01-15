@@ -194,15 +194,33 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         super.onProgressUpdate(values);
     }
 
+
+    /**
+     * Thread to download files or package on background
+     * @param args args[0] = "file|package",
+     *             args[1] = "file path (/storage/sdcard/documents)"
+     *             args[2] = "file id on the server"
+     *             args[3] = "valid session token"
+     * @return
+     */
     @Override
     protected Integer doInBackground(String... args) {
+
+        // check values
+        if(args[0].isEmpty() ||
+            args[1].isEmpty() ||
+            args[2].isEmpty()  ||
+            args[3].isEmpty()) {
+            return 0;
+        }
+
         if(args[0].equals("file")) {
 
             if(downloadFile(args[1], args[2], args[3])) {
                 return 1;
             }
 
-        } else {
+        } else if (args[0].equals("package")) {
             if(downloadApk(args[1], args[2], args[3])) {
                 return 1;
             }
