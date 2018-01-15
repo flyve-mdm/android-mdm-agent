@@ -7,22 +7,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Environment;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.ui.MDMAgent;
+import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.flyve.mdm.agent.core.Routes;
+import org.flyve.mdm.agent.utils.StorageFolder;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /*
  *   Copyright (C) 2017 Teclib. All rights reserved.
@@ -52,7 +49,6 @@ import java.util.regex.Pattern;
  */
 public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
 
-    private static final String EXTERNAL_STORAGE = "EXTERNAL_STORAGE"; 
     private Context context;
     private Routes routes;
     private NotificationManager mNotifyManager;
@@ -80,104 +76,6 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
             mBuilder.setSmallIcon(R.drawable.icon);
         }
 
-    }
-
-    /**
-     * Get the directory of the apk
-     * @return string the apk directory
-     */
-    private static String getApkDir() {
-        FlyveLog.d(MDMAgent.getInstance().getCacheDir().getAbsolutePath());
-        return System.getenv(EXTERNAL_STORAGE) + "/apk/";
-    }
-
-    /**
-     * Get the directory of the Secure Digital card
-     * @return string the SD card directory
-     */
-    private static String getSDcardDir() {
-        FlyveLog.d(System.getenv(EXTERNAL_STORAGE));
-        return System.getenv(EXTERNAL_STORAGE);
-    }
-
-    /**
-     * Get the directory of the UPK
-     * @return string the UPK directory
-     */
-    private static String getUpkDir() {
-        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + "/.fdroid/");
-        return System.getenv(EXTERNAL_STORAGE) + "/.fdroid/";
-    }
-
-    /**
-     * Get the directory of the pictures
-     * @return string the pictures directory
-     */
-    private static String getPicturesDir() {
-        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + "/" + Environment.DIRECTORY_DCIM);
-        return System.getenv(EXTERNAL_STORAGE) + "/" + Environment.DIRECTORY_DCIM;
-    }
-
-    /**
-     * Get the directory of the documents
-     * @return string the documents directory
-     */
-    private static String getDocumentsDir() {
-        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + "/" + Environment.DIRECTORY_DOWNLOADS);
-        return System.getenv(EXTERNAL_STORAGE) + "/" + Environment.DIRECTORY_DOWNLOADS;
-    }
-
-    /**
-     * Get the directory of the music
-     * @return string the music directory
-     * @throws Exception
-     */
-    private static String getMusicsDir() {
-        FlyveLog.d(System.getenv(EXTERNAL_STORAGE) + "/" + Environment.DIRECTORY_MUSIC);
-        return System.getenv(EXTERNAL_STORAGE) + "/" + Environment.DIRECTORY_MUSIC;
-    }
-
-    /**
-     * Convert the path according to the given arguments
-     * @param receivePath
-     * @return string the converted path
-     */
-    private String convertPath(String receivePath) {
-
-        String sreturn = receivePath;
-
-        Pattern sdcard = Pattern.compile("%SDCARD%");
-        Pattern document = Pattern.compile("%DOCUMENTS%");
-        Pattern music = Pattern.compile("%MUSIC%");
-        Pattern photo = Pattern.compile("%PHOTOS%");
-
-        Matcher msdcard = sdcard.matcher(receivePath);
-        Matcher mdocument = document.matcher(receivePath);
-        Matcher mmusic = music.matcher(receivePath);
-        Matcher mphoto = photo.matcher(receivePath);
-
-        //Find the sequence that matches the pattern
-        if (msdcard.find()) {
-            sreturn = receivePath;
-            sreturn = sreturn.replace("%SDCARD%", getSDcardDir());
-        }
-
-        if (mdocument.find()) {
-            sreturn = receivePath;
-            sreturn = sreturn.replace("%DOCUMENTS%", getDocumentsDir());
-        }
-
-        if (mmusic.find()) {
-            sreturn = receivePath;
-            sreturn = sreturn.replace("%MUSIC%", getMusicsDir());
-        }
-
-        if (mphoto.find()) {
-            sreturn = receivePath;
-            sreturn = sreturn.replace("%PHOTOS%", getPicturesDir());
-        }
-        FlyveLog.d("convertPath return = " + sreturn);
-        return sreturn;
     }
 
     @Override // onPreExecute and onProgressUpdate run on ui thread so you can update ui from here
@@ -248,7 +146,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
 
         String filePath = "";
         try {
-            filePath = convertPath(path);
+            filePath = new StorageFolder(context).convertPath(path);
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
@@ -276,7 +174,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
 
         String filePath = "";
         try {
-            filePath = getApkDir();
+            filePath = new StorageFolder(context).getApkDir();
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
@@ -378,7 +276,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
      */
     public boolean removeFile(String filePath) {
         try {
-            String realPath = convertPath(filePath);
+            String realPath = new StorageFolder(context).convertPath(filePath);
             File file = new File(realPath);
             return file.delete();
         } catch (Exception ex) {
