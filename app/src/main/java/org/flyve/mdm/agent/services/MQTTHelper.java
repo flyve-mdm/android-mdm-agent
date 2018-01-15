@@ -408,7 +408,7 @@ public class MQTTHelper {
             public void onSuccess(String data) {
                 try {
                     JSONArray appsInstall = json.getJSONArray("application");
-                    appWork(appsInstall, data);
+                    managePackage(appsInstall, data);
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
                     broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on getActiveSessionToken", ex.getMessage()));
@@ -431,7 +431,7 @@ public class MQTTHelper {
      * @param appsInstall if the object has remove or deploy app
      * @param sessionToken the session token
      */
-    public void appWork(JSONArray appsInstall, String sessionToken) throws Exception {
+    public void managePackage(JSONArray appsInstall, String sessionToken) throws Exception {
         AppInfo appInfo = new AppInfo(this.context);
 
         for(int i=0; i<appsInstall.length(); i++) {
@@ -464,7 +464,7 @@ public class MQTTHelper {
                 versionCode = jsonApp.getString("versionCode");
 
                 if(!appInfo.isInstall(packageNamelist,versionCode)){
-                    policiesFiles.execute("app",packageNamelist, idlist, sessionToken);
+                    policiesFiles.execute("package",packageNamelist, idlist, sessionToken);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Download app", "Package: " + packageNamelist));
                 }
             }
@@ -483,7 +483,7 @@ public class MQTTHelper {
             public void onSuccess(String data) {
                 try {
                     JSONArray jsonFiles = json.getJSONArray("file");
-                    filesWork(jsonFiles, data);
+                    manageFiles(jsonFiles, data);
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
                     broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on applicationOnDevices", ex.getMessage()));
@@ -503,7 +503,7 @@ public class MQTTHelper {
      * @param jsonFiles if the object has remove or deploy file
      * @param sessionToken the session token
      */
-    public void filesWork(JSONArray jsonFiles, String sessionToken) throws Exception {
+    public void manageFiles(JSONArray jsonFiles, String sessionToken) throws Exception {
 
         for(int i=0; i<=jsonFiles.length();i++) {
             PoliciesFiles policiesFiles = new PoliciesFiles(this.context);
