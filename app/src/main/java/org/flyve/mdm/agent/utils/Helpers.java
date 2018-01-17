@@ -257,13 +257,13 @@ public class Helpers {
 		if(text == null) { return ""; }
 		try {
 			byte[] data = text.getBytes("UTF-8");
-			rtext = Base64.encodeToString(data, Base64.DEFAULT);
-			rtext = rtext.trim().replace("==", "");
+			rtext = Base64.encodeToString(data, Base64.NO_WRAP | Base64.URL_SAFE);
+			rtext = rtext.replaceAll("-", "+");
 		} catch (UnsupportedEncodingException e) {
 			FlyveLog.e(e.getMessage());
 		}
 		
-		return rtext.trim();
+		return rtext;
 	}
 
 	/**
