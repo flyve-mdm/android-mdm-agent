@@ -12,6 +12,7 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.data.UserData;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
+import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONObject;
 
@@ -58,6 +59,9 @@ public class EnrollmentModel implements Enrollment.Model {
         inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
             @Override
             public void onTaskSuccess(String s) {
+                // String str = s.replaceAll("<\\?xml version='1.0' encoding='utf-8' standalone='yes' \\?>", "");
+                // String str = s.replaceAll("\\n|\\r", "");
+                // str = str.replaceAll(" ", "");
                 presenter.inventorySuccess(s);
             }
 
@@ -167,6 +171,8 @@ public class EnrollmentModel implements Enrollment.Model {
 
             JSONObject payload = new JSONObject();
 
+            String mInventory = Helpers.base64encode( inventory );
+
             payload.put("_email", arrEmails.get(0).getEmail()); // get first email
             payload.put("_invitation_token", invitationToken);
             payload.put("_serial", Helpers.getDeviceSerial());
@@ -178,7 +184,9 @@ public class EnrollmentModel implements Enrollment.Model {
             payload.put("version", BuildConfig.VERSION_NAME);
             payload.put("type", "android");
             payload.put("has_system_permission", Helpers.isSystemApp(activity));
-            payload.put("inventory", inventory);
+            payload.put("inventory", mInventory);
+
+            FlyveLog.d(mInventory);
 
             EnrollmentHelper enroll = new EnrollmentHelper(activity);
             enroll.enrollment(payload, new EnrollmentHelper.EnrollCallBack() {
