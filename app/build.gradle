@@ -65,7 +65,7 @@ dependencies {
     compile 'com.madgag.spongycastle:pkix:1.54.0.0'
     compile 'com.orhanobut:logger:2.1.1'
     compile 'com.google.code.gson:gson:2.8.1'
-    compile 'org.flyve:inventory:0.5.2@aar'
+    compile 'org.flyve:inventory:0.6.1@aar'
     compile 'com.bugsnag:bugsnag-android:4.1.3'
 
 }
