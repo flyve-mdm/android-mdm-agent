@@ -52,8 +52,8 @@ public class ConnectionHTTP {
 		uiHandler = new Handler(Looper.getMainLooper());
 	}
 
-	private static int timeout = 18000;
-	private static int readtimeout = 6000;
+	private static int timeout = 1800000;
+	private static int readtimeout = 600000;
 	private static final String EXCEPTION_HTTP = "EXCEPTION_HTTP_";
 
 	private static void runOnUI(Runnable runnable) {
