@@ -408,7 +408,7 @@ public class MQTTHelper {
             public void onSuccess(String data) {
                 try {
 <span class="nc" id="L410">                    JSONArray appsInstall = json.getJSONArray(&quot;application&quot;);</span>
-<span class="nc" id="L411">                    appWork(appsInstall, data);</span>
+<span class="nc" id="L411">                    managePackage(appsInstall, data);</span>
 <span class="nc" id="L412">                } catch (Exception ex) {</span>
 <span class="nc" id="L413">                    FlyveLog.e(ex.getMessage());</span>
 <span class="nc" id="L414">                    broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on getActiveSessionToken&quot;, ex.getMessage()));</span>
@@ -431,7 +431,7 @@ public class MQTTHelper {
      * @param appsInstall if the object has remove or deploy app
      * @param sessionToken the session token
      */
-    public void appWork(JSONArray appsInstall, String sessionToken) throws Exception {
+    public void managePackage(JSONArray appsInstall, String sessionToken) throws Exception {
 <span class="nc" id="L435">        AppInfo appInfo = new AppInfo(this.context);</span>
 
 <span class="nc bnc" id="L437" title="All 2 branches missed.">        for(int i=0; i&lt;appsInstall.length(); i++) {</span>
@@ -464,7 +464,7 @@ public class MQTTHelper {
 <span class="nc" id="L464">                versionCode = jsonApp.getString(&quot;versionCode&quot;);</span>
 
 <span class="nc bnc" id="L466" title="All 2 branches missed.">                if(!appInfo.isInstall(packageNamelist,versionCode)){</span>
-<span class="nc" id="L467">                    policiesFiles.execute(&quot;app&quot;,packageNamelist, idlist, sessionToken);</span>
+<span class="nc" id="L467">                    policiesFiles.execute(&quot;package&quot;,packageNamelist, idlist, sessionToken);</span>
 <span class="nc" id="L468">                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Download app&quot;, &quot;Package: &quot; + packageNamelist));</span>
                 }
             }
@@ -483,7 +483,7 @@ public class MQTTHelper {
             public void onSuccess(String data) {
                 try {
 <span class="nc" id="L485">                    JSONArray jsonFiles = json.getJSONArray(&quot;file&quot;);</span>
-<span class="nc" id="L486">                    filesWork(jsonFiles, data);</span>
+<span class="nc" id="L486">                    manageFiles(jsonFiles, data);</span>
 <span class="nc" id="L487">                } catch (Exception ex) {</span>
 <span class="nc" id="L488">                    FlyveLog.e(ex.getMessage());</span>
 <span class="nc" id="L489">                    broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on applicationOnDevices&quot;, ex.getMessage()));</span>
@@ -503,7 +503,7 @@ public class MQTTHelper {
      * @param jsonFiles if the object has remove or deploy file
      * @param sessionToken the session token
      */
-    public void filesWork(JSONArray jsonFiles, String sessionToken) throws Exception {
+    public void manageFiles(JSONArray jsonFiles, String sessionToken) throws Exception {
 
 <span class="nc bnc" id="L508" title="All 2 branches missed.">        for(int i=0; i&lt;=jsonFiles.length();i++) {</span>
 <span class="nc" id="L509">            PoliciesFiles policiesFiles = new PoliciesFiles(this.context);</span>

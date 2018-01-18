@@ -257,13 +257,13 @@ public class Helpers {
 <span class="nc bnc" id="L257" title="All 2 branches missed.">		if(text == null) { return &quot;&quot;; }</span>
 		try {
 <span class="nc" id="L259">			byte[] data = text.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L260">			rtext = Base64.encodeToString(data, Base64.DEFAULT);</span>
-<span class="nc" id="L261">			rtext = rtext.trim().replace(&quot;==&quot;, &quot;&quot;);</span>
+<span class="nc" id="L260">			rtext = Base64.encodeToString(data, Base64.NO_WRAP | Base64.URL_SAFE);</span>
+<span class="nc" id="L261">			rtext = rtext.replaceAll(&quot;-&quot;, &quot;+&quot;);</span>
 <span class="nc" id="L262">		} catch (UnsupportedEncodingException e) {</span>
 <span class="nc" id="L263">			FlyveLog.e(e.getMessage());</span>
 <span class="nc" id="L264">		}</span>
 		
-<span class="nc" id="L266">		return rtext.trim();</span>
+<span class="nc" id="L266">		return rtext;</span>
 	}
 
 	/**
