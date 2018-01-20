@@ -449,23 +449,17 @@ public class MQTTHelper {
             }
 
             if(appsInstall.getJSONObject(i).has("deployApp")){
-                FlyveLog.d("install apps");
-
                 JSONObject jsonApp = appsInstall.getJSONObject(i);
 
-                String idlist;
-                String packageNamelist;
-                String versionCode;
+                String idList = jsonApp.getString("id");
+                String packageNameList = jsonApp.getString("deployApp");
+                String versionCode = jsonApp.getString("versionCode");
 
-                idlist = jsonApp.getString("id");
-                FlyveLog.d("Id: " + idlist);
+                FlyveLog.d("installing app id: " + idList + " packageNamelist: " + packageNameList + " versionCode: " + versionCode);
 
-                packageNamelist = jsonApp.getString("deployApp");
-                versionCode = jsonApp.getString("versionCode");
-
-                if(!appInfo.isInstall(packageNamelist,versionCode)){
-                    policiesFiles.execute("package",packageNamelist, idlist, sessionToken);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Download app", "Package: " + packageNamelist));
+                if(!appInfo.isInstall(packageNameList,versionCode)){
+                    policiesFiles.execute("package",packageNameList, idList, sessionToken);
+                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Download app", "Package: " + packageNameList));
                 }
             }
         }
