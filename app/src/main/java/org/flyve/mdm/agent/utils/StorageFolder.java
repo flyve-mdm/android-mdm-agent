@@ -53,7 +53,7 @@ public class StorageFolder {
      * @return string the apk directory
      */
     public String getApkDir() throws Exception {
-        String path = context.getFilesDir().getAbsolutePath() + "/apk/";
+        String path = getFolderPath(Environment.DIRECTORY_DOWNLOADS);
         if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }
 
         FlyveLog.d(path);
@@ -65,7 +65,7 @@ public class StorageFolder {
      * @return string the UPK directory
      */
     public String getUpkDir() {
-        String path = context.getFilesDir().getAbsolutePath() + "/.fdroid/";
+        String path = getFolderPath(Environment.DIRECTORY_DOWNLOADS) + "/.fdroid/";
         if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }
 
         FlyveLog.d(path);
@@ -170,7 +170,7 @@ public class StorageFolder {
     }
 
     private String getFolderPath(String folderName) {
-        return Environment.getExternalStoragePublicDirectory(folderName).getAbsolutePath();
+        return Environment.getExternalStoragePublicDirectory(folderName).getAbsolutePath() + "/";
     }
 
     private Boolean checkPath(String path) {
