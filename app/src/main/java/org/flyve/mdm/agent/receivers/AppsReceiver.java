@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import org.flyve.mdm.agent.services.MQTTService;
+import org.flyve.mdm.agent.utils.FlyveLog;
 
 /*
  *   Copyright (C) 2017 Teclib. All rights reserved.
@@ -41,7 +42,11 @@ public class AppsReceiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent mIntent = new Intent(MQTTService.ACTION_INVENTORY);
-        context.startService(mIntent);
+        try {
+            Intent mIntent = new Intent(MQTTService.ACTION_INVENTORY);
+            context.startService(mIntent);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
     }
 }
