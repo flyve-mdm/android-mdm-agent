@@ -257,10 +257,12 @@ public class ConnectionHTTP {
 				total += count;
 				//publish progress only if total length is known
 				if (fileLength > 0) {
-					FlyveLog.v( String.valueOf (((int)(total * 100 / fileLength))));
+					//FlyveLog.v( String.valueOf (((int)(total * 100 / fileLength))));
 				}
 				output.write(data, 0, count);
 			}
+
+			FlyveLog.d( "Download complete size: " + total);
 			return true;
 		}
 		catch (final Exception ex) {
