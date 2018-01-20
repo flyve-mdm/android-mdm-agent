@@ -360,7 +360,10 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
 
     @Override
     public void showSnackError(String message) {
-        pd.dismiss();
+        if(pd!=null) {
+            pd.dismiss();
+        }
+
         pbx509.setVisibility(View.GONE);
 
         Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
@@ -372,7 +375,10 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
 
     @Override
     public void enrollSuccess() {
-        pd.dismiss();
+        if(pd!=null) {
+            pd.dismiss();
+        }
+
         nextStep();
     }
 
