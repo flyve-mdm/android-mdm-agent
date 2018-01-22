@@ -27,10 +27,13 @@
 
 package org.flyve.mdm.agent.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -55,6 +58,7 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
     private TextView txtMessage;
     private TextView txtTitle;
     private ProgressBar pb;
+    private boolean mPermissions = false;
 
     /**
      * Called when the activity is starting
@@ -95,17 +99,51 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
             showError(ex.getMessage());
         }
 
+        requestPermission();
+
         btnEnroll = (RelativeLayout) findViewById(R.id.btnEnroll);
         btnEnroll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnEnroll.setVisibility(View.GONE);
-                txtMessage.setText(getResources().getString(R.string.please_wait));
-                pb.setVisibility(View.VISIBLE);
+                if(mPermissions) {
+                    btnEnroll.setVisibility(View.GONE);
+                    txtMessage.setText(getResources().getString(R.string.please_wait));
+                    pb.setVisibility(View.VISIBLE);
 
-                presenter.openEnrollment(StartEnrollmentActivity.this, REQUEST_EXIT);
+                    presenter.openEnrollment(StartEnrollmentActivity.this, REQUEST_EXIT);
+                } else {
+                    showError("All permissions are require");
+                    requestPermission();
+                }
             }
         });
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(StartEnrollmentActivity.this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.CAMERA},
+                1);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                    mPermissions = true;
+                } else {
+                    mPermissions = false;
+                }
+            }
+        }
     }
 
     /**
