@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '25.0.3'
+    buildToolsVersion '27.0.1'
     defaultConfig {
         applicationId "org.flyve.mdm.agent"
         minSdkVersion 16
@@ -40,7 +40,7 @@ sonarqube {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
         exclude module: 'support-v4'
         transitive = true
@@ -48,13 +48,12 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestCompile ('tools.fastlane:screengrab:1.1.0', {
+    androidTestCompile('tools.fastlane:screengrab:1.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:2.9.0"
+    testCompile 'org.mockito:mockito-core:2.9.0'
     androidTestCompile 'org.mockito:mockito-android:2.7.22'
-
     compile 'com.android.support:multidex:1.0.1'
     compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
     compile 'com.android.support:appcompat-v7:24.2.1'
@@ -67,7 +66,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'org.flyve:inventory:0.6.1@aar'
     compile 'com.bugsnag:bugsnag-android:4.1.3'
-
 }
 
 import java.util.regex.Pattern
