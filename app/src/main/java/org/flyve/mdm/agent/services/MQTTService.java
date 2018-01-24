@@ -50,6 +50,9 @@ import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.net.ssl.SSLContext;
 
 /**
@@ -65,6 +68,7 @@ public class MQTTService extends Service implements MqttCallback {
     private static final String QUERY = "query";
     private static final String TAG = "MQTT - %s";
 
+    private Timer _timer;
     private MqttAndroidClient client;
     private Boolean connected = false;
     private MQTTHelper mqttHelper;
@@ -271,6 +275,24 @@ public class MQTTService extends Service implements MqttCallback {
         broadcastServiceStatus(false);
         storeLog(Helpers.broadCastMessage(ERROR, ERROR, cause.getMessage()));
         FlyveLog.d(TAG, "Connection fail " + cause.getMessage());
+
+        reconnect();
+    }
+
+    public void reconnect() {
+        _timer = new Timer();
+        _timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if(!MQTTService.this.connected) {
+                    FlyveLog.d("Reconnecting...");
+                    connect();
+                } else {
+                    FlyveLog.d("Reconnection finish");
+                    _timer.cancel();
+                }
+            }
+        }, 1000, 10000);
     }
 
     /**
