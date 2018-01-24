@@ -275,8 +275,6 @@ public class MQTTService extends Service implements MqttCallback {
         broadcastServiceStatus(false);
         storeLog(Helpers.broadCastMessage(ERROR, ERROR, cause.getMessage()));
         FlyveLog.d(TAG, "Connection fail " + cause.getMessage());
-
-        reconnect();
     }
 
     public void reconnect() {
@@ -461,6 +459,11 @@ public class MQTTService extends Service implements MqttCallback {
     private void broadcastServiceStatus(boolean status) {
         //send broadcast
         this.connected = status;
+
+        // reconnect
+        if(!status) {
+            reconnect();
+        }
 
         AppData cache = new AppData(this.getApplicationContext());
         cache.setOnlineStatus(status);
