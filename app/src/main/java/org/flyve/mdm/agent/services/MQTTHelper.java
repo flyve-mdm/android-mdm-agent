@@ -818,50 +818,42 @@ public class MQTTHelper {
      * payload: {"latitude":"10.2485486","longitude":"-67.5904498","datetime":1499364642}
      */
     public void sendGPS() {
-        boolean isNetworkEnabled = FastLocationProvider.requestSingleUpdate(this.context, new FastLocationProvider.LocationCallback() {
+
+        new FastLocationProvider().getLocation(context, new FastLocationProvider.LocationResult() {
             @Override
-            public void onNewLocationAvailable(Location location) {
-                String latitude = String.valueOf(location.getLatitude());
-                String longitude = String.valueOf(location.getLongitude());
+            public void gotLocation(Location location) {
+                if(location == null) {
+                    FlyveLog.d("without location yet...");
+                } else {
+                    FlyveLog.d("lat: " + location.getLatitude() + " lon: " + location.getLongitude());
 
-                FlyveLog.i("sendGPS: " + "Lat = " + latitude + "Lon = " + longitude);
+                    try {
+                        String latitude = String.valueOf(location.getLatitude());
+                        String longitude = String.valueOf(location.getLongitude());
 
-                JSONObject jsonGPS = new JSONObject();
+                        JSONObject jsonGPS = new JSONObject();
 
-                try {
-                    jsonGPS.put("latitude", latitude);
-                    jsonGPS.put("longitude", longitude);
-                    jsonGPS.put("datetime", Helpers.getUnixTime());
-                } catch (Exception ex) {
-                    FlyveLog.e(ex.getMessage());
-                    // send broadcast
-                    broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error GPS get location", ex.getMessage()));
-                    return;
-                }
+                        jsonGPS.put("latitude", latitude);
+                        jsonGPS.put("longitude", longitude);
+                        jsonGPS.put("datetime", Helpers.getUnixTime());
 
-                String topic = mTopic + "/Status/Geolocation";
-                String payload = jsonGPS.toString();
-                byte[] encodedPayload;
-                try {
-                    encodedPayload = payload.getBytes(UTF_8);
-                    MqttMessage message = new MqttMessage(encodedPayload);
-                    IMqttDeliveryToken token = client.publish(topic, message);
+                        String topic = mTopic + "/Status/Geolocation";
+                        String payload = jsonGPS.toString();
+                        byte[] encodedPayload;
 
-                    // send broadcast
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Send Geolocation", "ID: " + token.getMessageId()));
-                } catch (Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                        encodedPayload = payload.getBytes(UTF_8);
+                        MqttMessage message = new MqttMessage(encodedPayload);
+                        IMqttDeliveryToken token = client.publish(topic, message);
 
-                    // send broadcast
-                    broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on sendGPS", ex.getMessage()));
+                        // send broadcast
+                        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Send Geolocation", "ID: " + token.getMessageId()));
+                    } catch (Exception ex) {
+                        FlyveLog.e(ex.getMessage());
+                        broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on GPS location", ex.getMessage()));
+                    }
                 }
             }
         });
-
-        // is network fail
-        if(!isNetworkEnabled) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error GPS", "Network fail"));
-        }
     }
 
     /**
