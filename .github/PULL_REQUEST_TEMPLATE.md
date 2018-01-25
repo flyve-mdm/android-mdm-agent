@@ -1,10 +1,9 @@
-## Checklist
-Please check if your PR fulfills the following requirements:
+## Requirements
+Please check if your PR fulfills the following specifications:
 
-- [ ] The commit message follows our guidelines: [Conventional Commit](http://conventionalcommits.org/)
-- [ ] Tests for the changes have been added (for bug fixes / features)
-- [ ] Docs have been added / updated (for bug fixes / features)
-
+- The commit message follows our guidelines: [Conventional Commit](https://conventionalcommits.org/)
+- Tests for the changes have been added (for bug fixes / features)
+- Docs have been added / updated (for bug fixes / features)
 
 ## PR Type
 What kind of change does this PR introduce?
@@ -19,14 +18,12 @@ What kind of change does this PR introduce?
 - [ ] Documentation content changes
 - [ ] Other... Please describe:
 
+## What is the current behaviour?
+<!-- Please describe the current behaviour that you are modifying, or link to a relevant issue. -->
 
-## What is the current behavior?
-<!-- Please describe the current behavior that you are modifying, or link to a relevant issue. -->
+Issue #N/A
 
-Issue # N/A
-
-
-## What is the new behavior?
+## What is the new behaviour?
 
 
 ## Does this PR introduce a breaking change?
@@ -36,5 +33,6 @@ Issue # N/A
 
 <!-- If this PR contains a breaking change, please describe the impact and migration path for existing applications below. -->
 
-
 ## Other information
+
+<!-- Documentation followed, user mentions -->
