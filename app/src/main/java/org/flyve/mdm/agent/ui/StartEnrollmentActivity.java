@@ -123,7 +123,9 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
         ActivityCompat.requestPermissions(StartEnrollmentActivity.this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.READ_PHONE_STATE,
-                        Manifest.permission.CAMERA},
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                },
                 1);
     }
 
@@ -137,7 +139,8 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[3] == PackageManager.PERMISSION_GRANTED) {
                     mPermissions = true;
                 } else {
                     mPermissions = false;
