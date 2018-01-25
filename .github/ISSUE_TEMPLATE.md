@@ -1,16 +1,33 @@
-### Expected behaviour
+<!--
+PLEASE HELP US PROCESS GITHUB ISSUES FASTER BY PROVIDING THE FOLLOWING INFORMATION.
+-->
 
-### Actual behaviour
+# Checklist
+<!-- Check one of the following options with "x" -->
 
-### Environment Details
+- [ ] Regression (a behaviour that used to work and stopped working in a new release)
+- [ ] Bug report <!-- Please search GitHub for a similar issue or PR before submitting -->
+- [ ] Feature request
+- [ ] Documentation issue or request
+- [ ] Support request => Please do not submit support request here, instead see our [Questions or doubts section](https://git.io/vNiEZ)
 
-- Android Version : 
-- Device : 
-- App Version : 
+## Current behaviour
+<!-- Describe how the issue manifests. -->
 
-### Steps to reproduce the behaviour
 
-when device is in landscape app bug
+## Expected behaviour
+<!-- Describe what the desired behaviour would be. -->
 
-### Screenshots
 
+## Steps to reproduce the behaviour
+<!--
+For bug reports please provide the *STEPS TO REPRODUCE* and if possible a *MINIMAL DEMO* of the problem or similar.
+-->
+
+
+## Environment
+<!-- Check whether this is still an issue in the most recent version, add relevant information like Operating system version, GLPI version, IDE, package manager, HTTP server ... -->
+
+* MDM Agent version: X.Y.Z
+* Device:
+* Android version:
