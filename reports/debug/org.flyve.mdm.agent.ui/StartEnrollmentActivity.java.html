@@ -123,47 +123,50 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L123">        ActivityCompat.requestPermissions(StartEnrollmentActivity.this,</span>
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.READ_PHONE_STATE,
-                        Manifest.permission.CAMERA},
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                },
                 1);
-<span class="nc" id="L128">    }</span>
+<span class="nc" id="L130">    }</span>
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-<span class="nc bnc" id="L133" title="All 2 branches missed.">        switch (requestCode) {</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        switch (requestCode) {</span>
             case 1: {
 
                 // If request is cancelled, the result arrays are empty.
-<span class="nc bnc" id="L137" title="All 8 branches missed.">                if (grantResults.length &gt; 0</span>
+<span class="nc bnc" id="L139" title="All 10 branches missed.">                if (grantResults.length &gt; 0</span>
                         &amp;&amp; grantResults[0] == PackageManager.PERMISSION_GRANTED
                         &amp;&amp; grantResults[1] == PackageManager.PERMISSION_GRANTED
-                        &amp;&amp; grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-<span class="nc" id="L141">                    mPermissions = true;</span>
+                        &amp;&amp; grantResults[2] == PackageManager.PERMISSION_GRANTED
+                        &amp;&amp; grantResults[3] == PackageManager.PERMISSION_GRANTED) {
+<span class="nc" id="L144">                    mPermissions = true;</span>
                 } else {
-<span class="nc" id="L143">                    mPermissions = false;</span>
+<span class="nc" id="L146">                    mPermissions = false;</span>
                 }
             }
         }
-<span class="nc" id="L147">    }</span>
+<span class="nc" id="L150">    }</span>
 
     /**
      * Send a Broadcast with the Close Action
      */
     public void sendBroadcast() {
         //send broadcast
-<span class="nc" id="L154">        Intent in = new Intent();</span>
-<span class="nc" id="L155">        in.setAction(&quot;flyve.ACTION_CLOSE&quot;);</span>
-<span class="nc" id="L156">        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);</span>
-<span class="nc" id="L157">    }</span>
+<span class="nc" id="L157">        Intent in = new Intent();</span>
+<span class="nc" id="L158">        in.setAction(&quot;flyve.ACTION_CLOSE&quot;);</span>
+<span class="nc" id="L159">        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);</span>
+<span class="nc" id="L160">    }</span>
 
     /**
      * Open the main activity
      */
     private void openMain() {
-<span class="nc" id="L163">        Intent intent = new Intent(StartEnrollmentActivity.this, MainActivity.class);</span>
-<span class="nc" id="L164">        StartEnrollmentActivity.this.startActivity(intent);</span>
-<span class="nc" id="L165">        StartEnrollmentActivity.this.finish();</span>
-<span class="nc" id="L166">    }</span>
+<span class="nc" id="L166">        Intent intent = new Intent(StartEnrollmentActivity.this, MainActivity.class);</span>
+<span class="nc" id="L167">        StartEnrollmentActivity.this.startActivity(intent);</span>
+<span class="nc" id="L168">        StartEnrollmentActivity.this.finish();</span>
+<span class="nc" id="L169">    }</span>
 
     /**
      * Shows an error message
@@ -171,34 +174,34 @@ import org.flyve.mdm.agent.utils.Helpers;
      */
     @Override
     public void showError(String message) {
-<span class="nc" id="L174">        txtTitle.setText(getResources().getString(R.string.fail_enroll));</span>
-<span class="nc" id="L175">        txtMessage.setText(message);</span>
-<span class="nc" id="L176">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
+<span class="nc" id="L177">        txtTitle.setText(getResources().getString(R.string.fail_enroll));</span>
+<span class="nc" id="L178">        txtMessage.setText(message);</span>
+<span class="nc" id="L179">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L179">            }</span>
+<span class="nc" id="L182">            }</span>
         });
-<span class="nc" id="L181">    }</span>
+<span class="nc" id="L184">    }</span>
 
     @Override
     public void lintSuccess(DeeplinkSchema deeplinkSchema) {
-<span class="nc" id="L185">        presenter.saveMQTTConfig(StartEnrollmentActivity.this, deeplinkSchema.getUrl(), deeplinkSchema.getUserToken(), deeplinkSchema.getInvitationToken());</span>
-<span class="nc" id="L186">        presenter.saveSupervisor(StartEnrollmentActivity.this, deeplinkSchema.getName(), deeplinkSchema.getPhone(), deeplinkSchema.getWebsite(), deeplinkSchema.getEmail());</span>
-<span class="nc" id="L187">    }</span>
+<span class="nc" id="L188">        presenter.saveMQTTConfig(StartEnrollmentActivity.this, deeplinkSchema.getUrl(), deeplinkSchema.getUserToken(), deeplinkSchema.getInvitationToken());</span>
+<span class="nc" id="L189">        presenter.saveSupervisor(StartEnrollmentActivity.this, deeplinkSchema.getName(), deeplinkSchema.getPhone(), deeplinkSchema.getWebsite(), deeplinkSchema.getEmail());</span>
+<span class="nc" id="L190">    }</span>
 
     @Override
     public void openEnrollSuccess() {
-<span class="nc" id="L191">        btnEnroll.setVisibility(View.VISIBLE);</span>
-<span class="nc" id="L192">        pb.setVisibility(View.GONE);</span>
-<span class="nc" id="L193">        txtMessage.setText(getResources().getString(R.string.success));</span>
-<span class="nc" id="L194">        txtTitle.setText(getResources().getString(R.string.start_enroll));</span>
-<span class="nc" id="L195">    }</span>
+<span class="nc" id="L194">        btnEnroll.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L195">        pb.setVisibility(View.GONE);</span>
+<span class="nc" id="L196">        txtMessage.setText(getResources().getString(R.string.success));</span>
+<span class="nc" id="L197">        txtTitle.setText(getResources().getString(R.string.start_enroll));</span>
+<span class="nc" id="L198">    }</span>
 
     @Override
     public void openEnrollFail() {
-<span class="nc" id="L199">        btnEnroll.setVisibility(View.VISIBLE);</span>
-<span class="nc" id="L200">        pb.setVisibility(View.GONE);</span>
-<span class="nc" id="L201">    }</span>
+<span class="nc" id="L202">        btnEnroll.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L203">        pb.setVisibility(View.GONE);</span>
+<span class="nc" id="L204">    }</span>
 
     /**
      * Called when the launched activity exits
@@ -208,9 +211,9 @@ import org.flyve.mdm.agent.utils.Helpers;
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-<span class="nc bnc" id="L211" title="All 4 branches missed.">        if (requestCode == REQUEST_EXIT &amp;&amp; resultCode == RESULT_OK) {</span>
-<span class="nc" id="L212">            this.finish();</span>
+<span class="nc bnc" id="L214" title="All 4 branches missed.">        if (requestCode == REQUEST_EXIT &amp;&amp; resultCode == RESULT_OK) {</span>
+<span class="nc" id="L215">            this.finish();</span>
         }
-<span class="nc" id="L214">    }</span>
+<span class="nc" id="L217">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

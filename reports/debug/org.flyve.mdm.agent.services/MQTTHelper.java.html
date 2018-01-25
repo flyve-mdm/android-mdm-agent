@@ -818,51 +818,43 @@ public class MQTTHelper {
      * payload: {&quot;latitude&quot;:&quot;10.2485486&quot;,&quot;longitude&quot;:&quot;-67.5904498&quot;,&quot;datetime&quot;:1499364642}
      */
     public void sendGPS() {
-<span class="nc" id="L821">        boolean isNetworkEnabled = FastLocationProvider.requestSingleUpdate(this.context, new FastLocationProvider.LocationCallback() {</span>
+
+<span class="nc" id="L822">        new FastLocationProvider().getLocation(context, new FastLocationProvider.LocationResult() {</span>
             @Override
-            public void onNewLocationAvailable(Location location) {
-<span class="nc" id="L824">                String latitude = String.valueOf(location.getLatitude());</span>
-<span class="nc" id="L825">                String longitude = String.valueOf(location.getLongitude());</span>
+            public void gotLocation(Location location) {
+<span class="nc bnc" id="L825" title="All 2 branches missed.">                if(location == null) {</span>
+<span class="nc" id="L826">                    FlyveLog.d(&quot;without location yet...&quot;);</span>
+                } else {
+<span class="nc" id="L828">                    FlyveLog.d(&quot;lat: &quot; + location.getLatitude() + &quot; lon: &quot; + location.getLongitude());</span>
 
-<span class="nc" id="L827">                FlyveLog.i(&quot;sendGPS: &quot; + &quot;Lat = &quot; + latitude + &quot;Lon = &quot; + longitude);</span>
+                    try {
+<span class="nc" id="L831">                        String latitude = String.valueOf(location.getLatitude());</span>
+<span class="nc" id="L832">                        String longitude = String.valueOf(location.getLongitude());</span>
 
-<span class="nc" id="L829">                JSONObject jsonGPS = new JSONObject();</span>
+<span class="nc" id="L834">                        JSONObject jsonGPS = new JSONObject();</span>
 
-                try {
-<span class="nc" id="L832">                    jsonGPS.put(&quot;latitude&quot;, latitude);</span>
-<span class="nc" id="L833">                    jsonGPS.put(&quot;longitude&quot;, longitude);</span>
-<span class="nc" id="L834">                    jsonGPS.put(&quot;datetime&quot;, Helpers.getUnixTime());</span>
-<span class="nc" id="L835">                } catch (Exception ex) {</span>
-<span class="nc" id="L836">                    FlyveLog.e(ex.getMessage());</span>
-                    // send broadcast
-<span class="nc" id="L838">                    broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error GPS get location&quot;, ex.getMessage()));</span>
-<span class="nc" id="L839">                    return;</span>
-<span class="nc" id="L840">                }</span>
+<span class="nc" id="L836">                        jsonGPS.put(&quot;latitude&quot;, latitude);</span>
+<span class="nc" id="L837">                        jsonGPS.put(&quot;longitude&quot;, longitude);</span>
+<span class="nc" id="L838">                        jsonGPS.put(&quot;datetime&quot;, Helpers.getUnixTime());</span>
 
-<span class="nc" id="L842">                String topic = mTopic + &quot;/Status/Geolocation&quot;;</span>
-<span class="nc" id="L843">                String payload = jsonGPS.toString();</span>
-                byte[] encodedPayload;
-                try {
-<span class="nc" id="L846">                    encodedPayload = payload.getBytes(UTF_8);</span>
-<span class="nc" id="L847">                    MqttMessage message = new MqttMessage(encodedPayload);</span>
-<span class="nc" id="L848">                    IMqttDeliveryToken token = client.publish(topic, message);</span>
+<span class="nc" id="L840">                        String topic = mTopic + &quot;/Status/Geolocation&quot;;</span>
+<span class="nc" id="L841">                        String payload = jsonGPS.toString();</span>
+                        byte[] encodedPayload;
 
-                    // send broadcast
-<span class="nc" id="L851">                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Geolocation&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
-<span class="nc" id="L852">                } catch (Exception ex) {</span>
-<span class="nc" id="L853">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L844">                        encodedPayload = payload.getBytes(UTF_8);</span>
+<span class="nc" id="L845">                        MqttMessage message = new MqttMessage(encodedPayload);</span>
+<span class="nc" id="L846">                        IMqttDeliveryToken token = client.publish(topic, message);</span>
 
-                    // send broadcast
-<span class="nc" id="L856">                    broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendGPS&quot;, ex.getMessage()));</span>
-<span class="nc" id="L857">                }</span>
-<span class="nc" id="L858">            }</span>
+                        // send broadcast
+<span class="nc" id="L849">                        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Geolocation&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
+<span class="nc" id="L850">                    } catch (Exception ex) {</span>
+<span class="nc" id="L851">                        FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L852">                        broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on GPS location&quot;, ex.getMessage()));</span>
+<span class="nc" id="L853">                    }</span>
+                }
+<span class="nc" id="L855">            }</span>
         });
-
-        // is network fail
-<span class="nc bnc" id="L862" title="All 2 branches missed.">        if(!isNetworkEnabled) {</span>
-<span class="nc" id="L863">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error GPS&quot;, &quot;Network fail&quot;));</span>
-        }
-<span class="nc" id="L865">    }</span>
+<span class="nc" id="L857">    }</span>
 
     /**
      * Broadcast the received log
@@ -870,8 +862,8 @@ public class MQTTHelper {
      */
     private void broadcastReceivedLog(String message){
         // write log file
-<span class="nc" id="L873">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
-<span class="nc" id="L874">    }</span>
+<span class="nc" id="L865">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
+<span class="nc" id="L866">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

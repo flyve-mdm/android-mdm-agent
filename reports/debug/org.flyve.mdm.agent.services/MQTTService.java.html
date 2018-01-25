@@ -275,25 +275,23 @@ public class MQTTService extends Service implements MqttCallback {
 <span class="nc" id="L275">        broadcastServiceStatus(false);</span>
 <span class="nc" id="L276">        storeLog(Helpers.broadCastMessage(ERROR, ERROR, cause.getMessage()));</span>
 <span class="nc" id="L277">        FlyveLog.d(TAG, &quot;Connection fail &quot; + cause.getMessage());</span>
-
-<span class="nc" id="L279">        reconnect();</span>
-<span class="nc" id="L280">    }</span>
+<span class="nc" id="L278">    }</span>
 
     public void reconnect() {
-<span class="nc" id="L283">        _timer = new Timer();</span>
-<span class="nc" id="L284">        _timer.schedule(new TimerTask() {</span>
+<span class="nc" id="L281">        _timer = new Timer();</span>
+<span class="nc" id="L282">        _timer.schedule(new TimerTask() {</span>
             @Override
             public void run() {
-<span class="nc bnc" id="L287" title="All 2 branches missed.">                if(!MQTTService.this.connected) {</span>
-<span class="nc" id="L288">                    FlyveLog.d(&quot;Reconnecting...&quot;);</span>
-<span class="nc" id="L289">                    connect();</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">                if(!MQTTService.this.connected) {</span>
+<span class="nc" id="L286">                    FlyveLog.d(&quot;Reconnecting...&quot;);</span>
+<span class="nc" id="L287">                    connect();</span>
                 } else {
-<span class="nc" id="L291">                    FlyveLog.d(&quot;Reconnection finish&quot;);</span>
-<span class="nc" id="L292">                    _timer.cancel();</span>
+<span class="nc" id="L289">                    FlyveLog.d(&quot;Reconnection finish&quot;);</span>
+<span class="nc" id="L290">                    _timer.cancel();</span>
                 }
-<span class="nc" id="L294">            }</span>
+<span class="nc" id="L292">            }</span>
         }, 1000, 10000);
-<span class="nc" id="L296">    }</span>
+<span class="nc" id="L294">    }</span>
 
     /**
      * If delivery of the message was complete
@@ -301,9 +299,9 @@ public class MQTTService extends Service implements MqttCallback {
      */
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
-<span class="nc" id="L304">        FlyveLog.d(TAG, &quot;deliveryComplete: &quot; + token.toString());</span>
-<span class="nc" id="L305">        storeLog(Helpers.broadCastMessage(&quot;MQTT Delivery&quot;, &quot;Response id&quot;, String.valueOf(token.getMessageId())));</span>
-<span class="nc" id="L306">    }</span>
+<span class="nc" id="L302">        FlyveLog.d(TAG, &quot;deliveryComplete: &quot; + token.toString());</span>
+<span class="nc" id="L303">        storeLog(Helpers.broadCastMessage(&quot;MQTT Delivery&quot;, &quot;Response id&quot;, String.valueOf(token.getMessageId())));</span>
+<span class="nc" id="L304">    }</span>
 
     /**
      * When a message from server arrive
@@ -313,128 +311,128 @@ public class MQTTService extends Service implements MqttCallback {
      */
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-<span class="nc" id="L316">        FlyveLog.d(TAG, &quot;Topic &quot; + topic);</span>
-<span class="nc" id="L317">        FlyveLog.d(TAG, &quot;Message &quot; + new String(message.getPayload()));</span>
+<span class="nc" id="L314">        FlyveLog.d(TAG, &quot;Topic &quot; + topic);</span>
+<span class="nc" id="L315">        FlyveLog.d(TAG, &quot;Message &quot; + new String(message.getPayload()));</span>
 
-<span class="nc" id="L319">        String messageBody = new String(message.getPayload());</span>
+<span class="nc" id="L317">        String messageBody = new String(message.getPayload());</span>
 
-<span class="nc" id="L321">        storeLog(Helpers.broadCastMessage(&quot;MQTT Message&quot;, &quot;Body&quot;, messageBody));</span>
+<span class="nc" id="L319">        storeLog(Helpers.broadCastMessage(&quot;MQTT Message&quot;, &quot;Body&quot;, messageBody));</span>
 
         try {
-<span class="nc" id="L324">            JSONObject jsonObj = new JSONObject(messageBody);</span>
+<span class="nc" id="L322">            JSONObject jsonObj = new JSONObject(messageBody);</span>
 
-<span class="nc bnc" id="L326" title="All 2 branches missed.">            if (jsonObj.has(QUERY)) {</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">            if (jsonObj.has(QUERY)) {</span>
                 // PING request
-<span class="nc bnc" id="L328" title="All 2 branches missed.">                if (&quot;Ping&quot;.equalsIgnoreCase(jsonObj.getString(QUERY))) {</span>
-<span class="nc" id="L329">                    mqttHelper.sendKeepAlive();</span>
-<span class="nc" id="L330">                    return;</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">                if (&quot;Ping&quot;.equalsIgnoreCase(jsonObj.getString(QUERY))) {</span>
+<span class="nc" id="L327">                    mqttHelper.sendKeepAlive();</span>
+<span class="nc" id="L328">                    return;</span>
                 }
                 // Inventory Request
-<span class="nc bnc" id="L333" title="All 2 branches missed.">                if(&quot;Inventory&quot;.equalsIgnoreCase(jsonObj.getString(QUERY))) {</span>
-<span class="nc" id="L334">                    mqttHelper.createInventory();</span>
-<span class="nc" id="L335">                    return;</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">                if(&quot;Inventory&quot;.equalsIgnoreCase(jsonObj.getString(QUERY))) {</span>
+<span class="nc" id="L332">                    mqttHelper.createInventory();</span>
+<span class="nc" id="L333">                    return;</span>
                 }
 
                 // Geolocation request
-<span class="nc bnc" id="L339" title="All 2 branches missed.">                if(&quot;Geolocate&quot;.equalsIgnoreCase(jsonObj.getString(QUERY))) {</span>
-<span class="nc" id="L340">                    mqttHelper.sendGPS();</span>
-<span class="nc" id="L341">                    return;</span>
+<span class="nc bnc" id="L337" title="All 2 branches missed.">                if(&quot;Geolocate&quot;.equalsIgnoreCase(jsonObj.getString(QUERY))) {</span>
+<span class="nc" id="L338">                    mqttHelper.sendGPS();</span>
+<span class="nc" id="L339">                    return;</span>
                 }
             }
 
             // Wipe Request
-<span class="nc bnc" id="L346" title="All 4 branches missed.">            if(jsonObj.has(&quot;wipe&quot;) &amp;&amp; &quot;NOW&quot;.equalsIgnoreCase(jsonObj.getString(&quot;wipe&quot;)) ) {</span>
-<span class="nc" id="L347">                mqttHelper.wipe();</span>
-<span class="nc" id="L348">                return;</span>
+<span class="nc bnc" id="L344" title="All 4 branches missed.">            if(jsonObj.has(&quot;wipe&quot;) &amp;&amp; &quot;NOW&quot;.equalsIgnoreCase(jsonObj.getString(&quot;wipe&quot;)) ) {</span>
+<span class="nc" id="L345">                mqttHelper.wipe();</span>
+<span class="nc" id="L346">                return;</span>
             }
 
             // Version Manifest
-<span class="nc bnc" id="L352" title="All 2 branches missed.">            if(jsonObj.has(&quot;version&quot;)) {</span>
-<span class="nc" id="L353">                mqttHelper.addManifest(jsonObj);</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">            if(jsonObj.has(&quot;version&quot;)) {</span>
+<span class="nc" id="L351">                mqttHelper.addManifest(jsonObj);</span>
             }
 
             // Unenroll Request
-<span class="nc bnc" id="L357" title="All 2 branches missed.">            if (jsonObj.has(&quot;unenroll&quot;)) {</span>
-<span class="nc" id="L358">                mqttHelper.unenroll();</span>
-<span class="nc" id="L359">                return;</span>
+<span class="nc bnc" id="L355" title="All 2 branches missed.">            if (jsonObj.has(&quot;unenroll&quot;)) {</span>
+<span class="nc" id="L356">                mqttHelper.unenroll();</span>
+<span class="nc" id="L357">                return;</span>
             }
 
             // Unenroll Request
-<span class="nc bnc" id="L363" title="All 2 branches missed.">            if (jsonObj.has(&quot;unenroll&quot;)) {</span>
-<span class="nc" id="L364">                mqttHelper.unenroll();</span>
-<span class="nc" id="L365">                return;</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">            if (jsonObj.has(&quot;unenroll&quot;)) {</span>
+<span class="nc" id="L362">                mqttHelper.unenroll();</span>
+<span class="nc" id="L363">                return;</span>
             }
 
             // Subscribe a new channel in MQTT
-<span class="nc bnc" id="L369" title="All 2 branches missed.">            if(jsonObj.has(&quot;subscribe&quot;)) {</span>
-<span class="nc" id="L370">                JSONArray jsonTopics = jsonObj.getJSONArray(&quot;subscribe&quot;);</span>
-<span class="nc bnc" id="L371" title="All 2 branches missed.">                for(int i=0; i&lt;jsonTopics.length();i++) {</span>
-<span class="nc" id="L372">                    JSONObject jsonTopic = jsonTopics.getJSONObject(i);</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">            if(jsonObj.has(&quot;subscribe&quot;)) {</span>
+<span class="nc" id="L368">                JSONArray jsonTopics = jsonObj.getJSONArray(&quot;subscribe&quot;);</span>
+<span class="nc bnc" id="L369" title="All 2 branches missed.">                for(int i=0; i&lt;jsonTopics.length();i++) {</span>
+<span class="nc" id="L370">                    JSONObject jsonTopic = jsonTopics.getJSONObject(i);</span>
 
                     // Add new channel
-<span class="nc" id="L375">                    mqttHelper.suscribe(jsonTopic.getString(&quot;topic&quot;)+&quot;/#&quot;);</span>
+<span class="nc" id="L373">                    mqttHelper.suscribe(jsonTopic.getString(&quot;topic&quot;)+&quot;/#&quot;);</span>
                 }
-<span class="nc" id="L377">                return;</span>
+<span class="nc" id="L375">                return;</span>
             }
 
             // MDM
-<span class="nc bnc" id="L381" title="All 2 branches missed.">            if(jsonObj.has(&quot;MDM&quot;)) {</span>
-<span class="nc" id="L382">                mqttHelper.mdm(MQTTService.this, jsonObj);</span>
-<span class="nc" id="L383">                return;</span>
+<span class="nc bnc" id="L379" title="All 2 branches missed.">            if(jsonObj.has(&quot;MDM&quot;)) {</span>
+<span class="nc" id="L380">                mqttHelper.mdm(MQTTService.this, jsonObj);</span>
+<span class="nc" id="L381">                return;</span>
             }
 
             // Lock
-<span class="nc bnc" id="L387" title="All 2 branches missed.">            if(jsonObj.has(&quot;lock&quot;)) {</span>
-<span class="nc" id="L388">                mqttHelper.lockDevice(MQTTService.this, jsonObj);</span>
-<span class="nc" id="L389">                return;</span>
+<span class="nc bnc" id="L385" title="All 2 branches missed.">            if(jsonObj.has(&quot;lock&quot;)) {</span>
+<span class="nc" id="L386">                mqttHelper.lockDevice(MQTTService.this, jsonObj);</span>
+<span class="nc" id="L387">                return;</span>
             }
 
             // FLEET Camera
-<span class="nc bnc" id="L393" title="All 2 branches missed.">            if(jsonObj.has(&quot;camera&quot;)) {</span>
-<span class="nc" id="L394">                mqttHelper.disableCamera(jsonObj);</span>
-<span class="nc" id="L395">                return;</span>
+<span class="nc bnc" id="L391" title="All 2 branches missed.">            if(jsonObj.has(&quot;camera&quot;)) {</span>
+<span class="nc" id="L392">                mqttHelper.disableCamera(jsonObj);</span>
+<span class="nc" id="L393">                return;</span>
             }
 
             // FLEET connectivity
-<span class="nc bnc" id="L399" title="All 2 branches missed.">            if(jsonObj.has(&quot;connectivity&quot;)) {</span>
-<span class="nc" id="L400">                mqttHelper.disableConnectivity(jsonObj);</span>
-<span class="nc" id="L401">                return;</span>
+<span class="nc bnc" id="L397" title="All 2 branches missed.">            if(jsonObj.has(&quot;connectivity&quot;)) {</span>
+<span class="nc" id="L398">                mqttHelper.disableConnectivity(jsonObj);</span>
+<span class="nc" id="L399">                return;</span>
             }
 
             // UI
-<span class="nc bnc" id="L405" title="All 2 branches missed.">            if(jsonObj.has(&quot;ui&quot;)) {</span>
-<span class="nc" id="L406">                mqttHelper.disableUI(jsonObj);</span>
-<span class="nc" id="L407">                return;</span>
+<span class="nc bnc" id="L403" title="All 2 branches missed.">            if(jsonObj.has(&quot;ui&quot;)) {</span>
+<span class="nc" id="L404">                mqttHelper.disableUI(jsonObj);</span>
+<span class="nc" id="L405">                return;</span>
             }
 
             // FLEET encryption
-<span class="nc bnc" id="L411" title="All 2 branches missed.">            if(jsonObj.has(&quot;encryption&quot;)) {</span>
-<span class="nc" id="L412">                mqttHelper.storageEncryption(jsonObj);</span>
-<span class="nc" id="L413">                return;</span>
+<span class="nc bnc" id="L409" title="All 2 branches missed.">            if(jsonObj.has(&quot;encryption&quot;)) {</span>
+<span class="nc" id="L410">                mqttHelper.storageEncryption(jsonObj);</span>
+<span class="nc" id="L411">                return;</span>
             }
 
             // FLEET policies
-<span class="nc bnc" id="L417" title="All 2 branches missed.">            if(jsonObj.has(&quot;policies&quot;)) {</span>
-<span class="nc" id="L418">                mqttHelper.policiesDevice(jsonObj);</span>
-<span class="nc" id="L419">                return;</span>
+<span class="nc bnc" id="L415" title="All 2 branches missed.">            if(jsonObj.has(&quot;policies&quot;)) {</span>
+<span class="nc" id="L416">                mqttHelper.policiesDevice(jsonObj);</span>
+<span class="nc" id="L417">                return;</span>
             }
 
             // Files
-<span class="nc bnc" id="L423" title="All 2 branches missed.">            if(jsonObj.has(&quot;file&quot;)) {</span>
-<span class="nc" id="L424">                mqttHelper.filesOnDevices(jsonObj);</span>
-<span class="nc" id="L425">                return;</span>
+<span class="nc bnc" id="L421" title="All 2 branches missed.">            if(jsonObj.has(&quot;file&quot;)) {</span>
+<span class="nc" id="L422">                mqttHelper.filesOnDevices(jsonObj);</span>
+<span class="nc" id="L423">                return;</span>
             }
 
             // Applications
-<span class="nc bnc" id="L429" title="All 2 branches missed.">            if(jsonObj.has(&quot;application&quot;)) {</span>
-<span class="nc" id="L430">                mqttHelper.applicationOnDevices(jsonObj);</span>
-<span class="nc" id="L431">                return;</span>
+<span class="nc bnc" id="L427" title="All 2 branches missed.">            if(jsonObj.has(&quot;application&quot;)) {</span>
+<span class="nc" id="L428">                mqttHelper.applicationOnDevices(jsonObj);</span>
+<span class="nc" id="L429">                return;</span>
             }
-<span class="nc" id="L433">        } catch (Exception ex) {</span>
-<span class="nc" id="L434">            FlyveLog.e(TAG, ex.getMessage());</span>
-<span class="nc" id="L435">            storeLog(Helpers.broadCastMessage(ERROR, &quot;Error on messageArrived&quot;, ex.getMessage()));</span>
-<span class="nc" id="L436">        }</span>
-<span class="nc" id="L437">    }</span>
+<span class="nc" id="L431">        } catch (Exception ex) {</span>
+<span class="nc" id="L432">            FlyveLog.e(TAG, ex.getMessage());</span>
+<span class="nc" id="L433">            storeLog(Helpers.broadCastMessage(ERROR, &quot;Error on messageArrived&quot;, ex.getMessage()));</span>
+<span class="nc" id="L434">        }</span>
+<span class="nc" id="L435">    }</span>
 
     /**
      * Send broadcast for log messages from MQTT
@@ -442,8 +440,8 @@ public class MQTTService extends Service implements MqttCallback {
      */
     public void broadcastMessage(String message) {
         //send broadcast
-<span class="nc" id="L445">        Helpers.sendBroadcast(message, Helpers.BROADCAST_MSG, getApplicationContext());</span>
-<span class="nc" id="L446">    }</span>
+<span class="nc" id="L443">        Helpers.sendBroadcast(message, Helpers.BROADCAST_MSG, getApplicationContext());</span>
+<span class="nc" id="L444">    }</span>
 
     /**
      * store log messages from MQTT
@@ -451,8 +449,8 @@ public class MQTTService extends Service implements MqttCallback {
      */
     public void storeLog(String message) {
         // write log file
-<span class="nc" id="L454">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
-<span class="nc" id="L455">    }</span>
+<span class="nc" id="L452">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
+<span class="nc" id="L453">    }</span>
 
     /**
      * Send broadcast for status of the service
@@ -460,12 +458,17 @@ public class MQTTService extends Service implements MqttCallback {
      */
     private void broadcastServiceStatus(boolean status) {
         //send broadcast
-<span class="nc" id="L463">        this.connected = status;</span>
+<span class="nc" id="L461">        this.connected = status;</span>
 
-<span class="nc" id="L465">        AppData cache = new AppData(this.getApplicationContext());</span>
-<span class="nc" id="L466">        cache.setOnlineStatus(status);</span>
+        // reconnect
+<span class="nc bnc" id="L464" title="All 2 branches missed.">        if(!status) {</span>
+<span class="nc" id="L465">            reconnect();</span>
+        }
 
-<span class="nc" id="L468">        Helpers.sendBroadcast(status, Helpers.BROADCAST_STATUS, getApplicationContext());</span>
-<span class="nc" id="L469">    }</span>
+<span class="nc" id="L468">        AppData cache = new AppData(this.getApplicationContext());</span>
+<span class="nc" id="L469">        cache.setOnlineStatus(status);</span>
+
+<span class="nc" id="L471">        Helpers.sendBroadcast(status, Helpers.BROADCAST_STATUS, getApplicationContext());</span>
+<span class="nc" id="L472">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
