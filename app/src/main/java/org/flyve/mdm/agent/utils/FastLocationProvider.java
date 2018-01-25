@@ -1,11 +1,13 @@
 package org.flyve.mdm.agent.utils;
 
 import android.content.Context;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /*
  *   Copyright (C) 2017 Teclib. All rights reserved.
@@ -39,46 +41,139 @@ import android.os.Bundle;
  */
 public class FastLocationProvider {
 
-    private FastLocationProvider() {}
+    private Timer timer;
+    private LocationManager locationManager;
+    private LocationResult locationResult;
+    private boolean gpsEnabled = false;
+    private boolean networkEnabled = false;
 
-    public static interface LocationCallback {
-        public void onNewLocationAvailable(Location location);
-    }
-
-    // with network is the fast way to get location if you need accuracy
-    // add gps location this call usually takes <15ms
-    public static boolean requestSingleUpdate(final Context context, final LocationCallback callback) {
-        final LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        if (isNetworkEnabled) {
-            Criteria criteria = new Criteria();
-            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-            try {
-                locationManager.requestSingleUpdate(criteria, new LocationListener() {
-                    @Override
-                    public void onLocationChanged(Location location) {
-                        callback.onNewLocationAvailable(location);
-                    }
-
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
-                    }
-
-                    @Override
-                    public void onProviderEnabled(String provider) {
-                    }
-
-                    @Override
-                    public void onProviderDisabled(String provider) {
-                    }
-                }, null);
-                return true;
-            } catch (SecurityException ex) {
-                FlyveLog.e(ex.getMessage());
-                return false;
-            }
+    public boolean getLocation(Context context, LocationResult result) {
+        //I use LocationResult callback class to pass location value from MyLocation to user code.
+        locationResult = result;
+        if(locationManager == null) {
+            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         }
 
-        return false;
+        //exceptions will be thrown if provider is not permitted.
+        try {
+            gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);}
+        catch(Exception ex){
+            FlyveLog.e(ex.getMessage());
+        }
+
+        try {
+            networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch(Exception ex){
+            FlyveLog.e(ex.getMessage());
+        }
+
+        //don't start listeners if no provider is enabled
+        if(!gpsEnabled && !networkEnabled) {
+            return false;
+        }
+
+        try {
+            if (gpsEnabled) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListenerGps);
+            }
+
+            if (networkEnabled) {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);
+            }
+        } catch (SecurityException ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+
+        timer = new Timer();
+        timer.schedule(new GetLastLocation(), 10000);
+
+        return true;
+    }
+
+    private LocationListener locationListenerGps = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            timer.cancel();
+            locationResult.gotLocation(location);
+            locationManager.removeUpdates(this);
+            locationManager.removeUpdates(locationListenerNetwork);
+        }
+
+        public void onProviderDisabled(String provider) {
+            FlyveLog.d("onProviderDisabled");
+        }
+
+        public void onProviderEnabled(String provider) {
+            FlyveLog.d("onProviderEnabled");
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            FlyveLog.d("onStatusChanged");
+        }
+    };
+
+    private LocationListener locationListenerNetwork = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            timer.cancel();
+            locationResult.gotLocation(location);
+            locationManager.removeUpdates(this);
+            locationManager.removeUpdates(locationListenerGps);
+        }
+
+        public void onProviderDisabled(String provider) {
+            FlyveLog.d("onProviderDisabled");
+        }
+
+        public void onProviderEnabled(String provider) {
+            FlyveLog.d("onProviderEnabled");
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            FlyveLog.d("onStatusChanged");
+        }
+    };
+
+    class GetLastLocation extends TimerTask {
+        @Override
+        public void run() {
+            Location netLocation = null;
+            Location gpsLocation = null;
+
+            try {
+                if (gpsEnabled) {
+                    gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                }
+
+                if (networkEnabled) {
+                    netLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                }
+            } catch (SecurityException ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+
+            //if there are both values use the latest one
+            if(gpsLocation!=null && netLocation!=null){
+                if(gpsLocation.getTime()>netLocation.getTime())
+                    locationResult.gotLocation(gpsLocation);
+                else
+                    locationResult.gotLocation(netLocation);
+                return;
+            }
+
+            if(gpsLocation!=null) {
+                locationResult.gotLocation(gpsLocation);
+                return;
+            }
+
+            if(netLocation!=null) {
+                locationResult.gotLocation(netLocation);
+                return;
+            }
+
+            locationResult.gotLocation(null);
+        }
+    }
+
+    public abstract static class LocationResult {
+        public abstract void gotLocation(Location location);
     }
 }
