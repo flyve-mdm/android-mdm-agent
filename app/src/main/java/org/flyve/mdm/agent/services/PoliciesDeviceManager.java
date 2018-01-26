@@ -121,8 +121,9 @@ public class PoliciesDeviceManager {
      * Launch lock activity
      */
     public void lockScreen() {
-        Intent miIntent = new Intent(context, LockActivity.class);
-        context.startActivity(miIntent);
+        Intent intent = new Intent(context, LockActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
     /**
