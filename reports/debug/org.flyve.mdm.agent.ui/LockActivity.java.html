@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,59 +17,62 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.SupervisorData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
-<span class="nc" id="L21">public class LockActivity extends AppCompatActivity {</span>
+<span class="nc" id="L20">public class LockActivity extends AppCompatActivity {</span>
 
     private TextView txtNameSupervisor;
     private TextView txtDescriptionSupervisor;
     private ViewGroup mTopView;
     private WindowManager wm;
-    private LocalBroadcastManager mLocalBroadcastManager;
 
-<span class="nc" id="L29">    BroadcastReceiver broadcastLock = new BroadcastReceiver() {</span>
+<span class="nc" id="L27">    private BroadcastReceiver broadcastLock = new BroadcastReceiver() {</span>
         @Override
         public void onReceive(Context arg0, Intent intent) {
-<span class="nc" id="L32">            String action = intent.getAction();</span>
-<span class="nc bnc" id="L33" title="All 2 branches missed.">            if (action.equals(&quot;org.flyvemdm.finishlock&quot;)) {</span>
-<span class="nc bnc" id="L34" title="All 2 branches missed.">                if (mTopView != null) wm.removeView(mTopView);</span>
-<span class="nc" id="L35">                Intent miIntent = new Intent(LockActivity.this, MainActivity.class);</span>
-<span class="nc" id="L36">                LockActivity.this.startActivity(miIntent);</span>
-<span class="nc" id="L37">                LockActivity.this.finish();</span>
+<span class="nc" id="L30">            String action = intent.getAction();</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">            if (action.equals(&quot;org.flyvemdm.finishlock&quot;)) {</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">                if (mTopView != null) wm.removeView(mTopView);</span>
+<span class="nc" id="L33">                Intent miIntent = new Intent(LockActivity.this, MainActivity.class);</span>
+<span class="nc" id="L34">                LockActivity.this.startActivity(miIntent);</span>
+<span class="nc" id="L35">                LockActivity.this.finish();</span>
             }
-<span class="nc" id="L39">        }</span>
+<span class="nc" id="L37">        }</span>
     };
 
     @Override
     protected void onPause() {
         //unregister our receiver
-<span class="nc" id="L45">        mLocalBroadcastManager.unregisterReceiver(broadcastLock);</span>
-<span class="nc" id="L46">        super.onPause();</span>
-<span class="nc" id="L47">    }</span>
+<span class="nc" id="L43">        super.onPause();</span>
+<span class="nc" id="L44">    }</span>
+
+    @Override
+    protected void onResume() {
+<span class="nc" id="L48">        super.onResume();</span>
+<span class="nc" id="L49">        this.registerReceiver(broadcastLock, new IntentFilter(&quot;org.flyvemdm.finishlock&quot;));</span>
+<span class="nc" id="L50">    }</span>
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-<span class="nc" id="L51">        super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L54">        super.onCreate(savedInstanceState);</span>
 
-<span class="nc" id="L53">        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);</span>
-<span class="nc" id="L54">        mLocalBroadcastManager.registerReceiver(broadcastLock, new IntentFilter(&quot;org.flyvemdm.finishlock&quot;));</span>
+<span class="nc" id="L56">        this.registerReceiver(broadcastLock, new IntentFilter(&quot;org.flyvemdm.finishlock&quot;));</span>
 
-<span class="nc" id="L56">        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(</span>
+<span class="nc" id="L58">        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(</span>
                 WindowManager.LayoutParams.TYPE_SYSTEM_ERROR,
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN,
                 PixelFormat.TRANSLUCENT);
 
-<span class="nc" id="L62">        wm = (WindowManager) getApplicationContext()</span>
-<span class="nc" id="L63">                .getSystemService(Context.WINDOW_SERVICE);</span>
+<span class="nc" id="L64">        wm = (WindowManager) getApplicationContext()</span>
+<span class="nc" id="L65">                .getSystemService(Context.WINDOW_SERVICE);</span>
 
-<span class="nc" id="L65">        mTopView = (ViewGroup) getLayoutInflater().inflate(R.layout.activity_lock, null);</span>
-<span class="nc" id="L66">        getWindow().setAttributes(params);</span>
-<span class="nc" id="L67">        wm.addView(mTopView, params);</span>
+<span class="nc" id="L67">        mTopView = (ViewGroup) getLayoutInflater().inflate(R.layout.activity_lock, null);</span>
+<span class="nc" id="L68">        getWindow().setAttributes(params);</span>
+<span class="nc" id="L69">        wm.addView(mTopView, params);</span>
 
-<span class="nc" id="L69">        txtNameSupervisor = (TextView) mTopView.findViewById(R.id.txtNameSupervisor);</span>
-<span class="nc" id="L70">        txtDescriptionSupervisor = (TextView) mTopView.findViewById(R.id.txtDescriptionSupervisor);</span>
+<span class="nc" id="L71">        txtNameSupervisor = (TextView) mTopView.findViewById(R.id.txtNameSupervisor);</span>
+<span class="nc" id="L72">        txtDescriptionSupervisor = (TextView) mTopView.findViewById(R.id.txtDescriptionSupervisor);</span>
 
-<span class="nc" id="L72">        loadSupervisor();</span>
-<span class="nc" id="L73">    }</span>
+<span class="nc" id="L74">        loadSupervisor();</span>
+<span class="nc" id="L75">    }</span>
 
     /**
      * Load Supervisor information
@@ -78,58 +80,58 @@ import org.flyve.mdm.agent.utils.FlyveLog;
     private void loadSupervisor() {
 
         try {
-<span class="nc" id="L81">            SupervisorData supervisor = new SupervisorData(LockActivity.this);</span>
+<span class="nc" id="L83">            SupervisorData supervisor = new SupervisorData(LockActivity.this);</span>
 
-<span class="nc bnc" id="L83" title="All 4 branches missed.">            if (supervisor.getName() != null &amp;&amp; !supervisor.getName().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L84">                txtNameSupervisor.setText(supervisor.getName());</span>
+<span class="nc bnc" id="L85" title="All 4 branches missed.">            if (supervisor.getName() != null &amp;&amp; !supervisor.getName().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L86">                txtNameSupervisor.setText(supervisor.getName());</span>
             }
-<span class="nc bnc" id="L86" title="All 4 branches missed.">            if (supervisor.getEmail() != null &amp;&amp; !supervisor.getEmail().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L87">                txtDescriptionSupervisor.setText(supervisor.getEmail());</span>
+<span class="nc bnc" id="L88" title="All 4 branches missed.">            if (supervisor.getEmail() != null &amp;&amp; !supervisor.getEmail().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L89">                txtDescriptionSupervisor.setText(supervisor.getEmail());</span>
             }
-<span class="nc" id="L89">        } catch(Exception ex) {</span>
-<span class="nc" id="L90">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L91">        }</span>
-<span class="nc" id="L92">    }</span>
+<span class="nc" id="L91">        } catch(Exception ex) {</span>
+<span class="nc" id="L92">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L93">        }</span>
+<span class="nc" id="L94">    }</span>
 
     @Override
     public void onBackPressed() {
-<span class="nc" id="L96">        return; //Do nothing!</span>
+<span class="nc" id="L98">        return; //Do nothing!</span>
     }
 
     public void unlockScreen(View view) {
-<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (mTopView != null) wm.removeView(mTopView);</span>
-<span class="nc" id="L101">        Intent miIntent = new Intent(LockActivity.this, MainActivity.class);</span>
-<span class="nc" id="L102">        LockActivity.this.startActivity(miIntent);</span>
-<span class="nc" id="L103">        LockActivity.this.finish();</span>
-<span class="nc" id="L104">    }</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (mTopView != null) wm.removeView(mTopView);</span>
+<span class="nc" id="L103">        Intent miIntent = new Intent(LockActivity.this, MainActivity.class);</span>
+<span class="nc" id="L104">        LockActivity.this.startActivity(miIntent);</span>
+<span class="nc" id="L105">        LockActivity.this.finish();</span>
+<span class="nc" id="L106">    }</span>
 
     // Handle button clicks
     @Override
     public boolean onKeyDown(int keyCode, android.view.KeyEvent event) {
 
-<span class="nc bnc" id="L110" title="All 10 branches missed.">        if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)</span>
+<span class="nc bnc" id="L112" title="All 10 branches missed.">        if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)</span>
                 || (keyCode == KeyEvent.KEYCODE_POWER)
                 || (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
                 || (keyCode == KeyEvent.KEYCODE_CAMERA)
                 || (keyCode == KeyEvent.KEYCODE_HOME)) {
-<span class="nc" id="L115">            return true;</span>
+<span class="nc" id="L117">            return true;</span>
         }
 
-<span class="nc" id="L118">        return false;</span>
+<span class="nc" id="L120">        return false;</span>
     }
 
     // handle the key press events here itself
     public boolean dispatchKeyEvent(KeyEvent event) {
-<span class="nc bnc" id="L123" title="All 2 branches missed.">        if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP</span>
-<span class="nc bnc" id="L124" title="All 2 branches missed.">                || (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">                || (event.getKeyCode() == KeyEvent.KEYCODE_POWER)) {</span>
-<span class="nc" id="L126">            return false;</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">                || (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">                || (event.getKeyCode() == KeyEvent.KEYCODE_POWER)) {</span>
+<span class="nc" id="L128">            return false;</span>
         }
-<span class="nc bnc" id="L128" title="All 2 branches missed.">        if ((event.getKeyCode() == KeyEvent.KEYCODE_HOME)) {</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        if ((event.getKeyCode() == KeyEvent.KEYCODE_HOME)) {</span>
 
-<span class="nc" id="L130">            return true;</span>
+<span class="nc" id="L132">            return true;</span>
         }
-<span class="nc" id="L132">        return false;</span>
+<span class="nc" id="L134">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

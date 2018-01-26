@@ -183,7 +183,7 @@ import org.json.JSONObject;
 <span class="nc" id="L183">                txtEmailUser.setText(user.getEmails().get(0).getEmail());</span>
             }
 
-<span class="nc bnc" id="L186" title="All 2 branches missed.">            if (user.getPicture().equals(&quot;&quot;)) {</span>
+<span class="nc bnc" id="L186" title="All 4 branches missed.">            if (user.getPicture() == null || user.getPicture().equals(&quot;&quot;)) {</span>
 <span class="nc" id="L187">                imgUser.setImageResource(R.drawable.ic_user_round);</span>
             } else {
                 try {

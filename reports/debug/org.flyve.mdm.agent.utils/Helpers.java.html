@@ -367,7 +367,7 @@ public class Helpers {
 <span class="nc" id="L367">		Intent in = new Intent();</span>
 <span class="nc" id="L368">		in.setAction(action);</span>
 <span class="nc" id="L369">		in.putExtra(&quot;message&quot;, message);</span>
-<span class="nc" id="L370">		LocalBroadcastManager.getInstance(context).sendBroadcast(in);</span>
+<span class="nc" id="L370">		context.sendBroadcast(in);</span>
 <span class="nc" id="L371">	}</span>
 
 	/**
