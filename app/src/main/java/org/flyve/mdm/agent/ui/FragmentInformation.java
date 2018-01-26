@@ -183,7 +183,7 @@ public class FragmentInformation extends Fragment {
                 txtEmailUser.setText(user.getEmails().get(0).getEmail());
             }
 
-            if (user.getPicture().equals("")) {
+            if (user.getPicture() == null || user.getPicture().equals("")) {
                 imgUser.setImageResource(R.drawable.ic_user_round);
             } else {
                 try {
