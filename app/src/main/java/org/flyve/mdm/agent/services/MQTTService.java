@@ -369,8 +369,11 @@ public class MQTTService extends Service implements MqttCallback {
                 for(int i=0; i<jsonTopics.length();i++) {
                     JSONObject jsonTopic = jsonTopics.getJSONObject(i);
 
+                    String channel = jsonTopic.getString("topic")+"/#";
+                    FlyveLog.d(channel);
+
                     // Add new channel
-                    mqttHelper.suscribe(jsonTopic.getString("topic")+"/#");
+                    mqttHelper.suscribe(channel);
                 }
                 return;
             }
