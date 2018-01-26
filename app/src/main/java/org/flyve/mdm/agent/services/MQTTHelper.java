@@ -30,7 +30,6 @@ package org.flyve.mdm.agent.services;
 import android.app.Service;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.Intent;
 import android.location.Location;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -246,9 +245,8 @@ public class MQTTHelper {
                 mdm.lockScreen();
                 mdm.lockDevice();
                 broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Lock", "Device Lock"));
-            } else {
-                Intent intent = new Intent("finish_lock");
-                context.sendBroadcast(intent);
+            } else if (lock.equalsIgnoreCase("unlock")) {
+                Helpers.sendBroadcast("unlock", "org.flyvemdm.finishlock", context);
             }
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on lockDevice", ex.getMessage()));
