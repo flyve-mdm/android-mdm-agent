@@ -367,7 +367,7 @@ public class Helpers {
 		Intent in = new Intent();
 		in.setAction(action);
 		in.putExtra("message", message);
-		LocalBroadcastManager.getInstance(context).sendBroadcast(in);
+		context.sendBroadcast(in);
 	}
 
 	/**
