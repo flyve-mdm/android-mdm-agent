@@ -318,6 +318,11 @@ public class MQTTService extends Service implements MqttCallback {
 
         storeLog(Helpers.broadCastMessage("MQTT Message", "Body", messageBody));
 
+        if(messageBody.isEmpty()) {
+            // exit if the message if empty
+            return;
+        }
+
         try {
             JSONObject jsonObj = new JSONObject(messageBody);
 
