@@ -328,12 +328,25 @@ public class MQTTService extends Service implements MqttCallback {
         }
 
         // Command/Ping
-        if(topic.toLowerCase().contains("Ping")) {
+        if(topic.toLowerCase().contains("ping")) {
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
                 if (jsonObj.has(QUERY)
                         && "Ping".equalsIgnoreCase(jsonObj.getString(QUERY))) {
                     mqttHelper.sendKeepAlive();
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
+        // Command/Geolocate
+        if(topic.toLowerCase().contains("geolocate")) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+                if (jsonObj.has(QUERY)
+                        && "Geolocate".equalsIgnoreCase(jsonObj.getString(QUERY))) {
+                    mqttHelper.sendGPS();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
