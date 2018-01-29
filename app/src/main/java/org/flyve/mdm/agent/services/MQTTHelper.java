@@ -117,7 +117,7 @@ public class MQTTHelper {
      * Subscribe to the topic
      * When come from MQTT has a format like this {"subscribe":[{"topic":"/2/fleet/22"}]}
      */
-    public void suscribe(final String channel) {
+    public void subscribe(final String channel) {
         String[] topics = addTopic(channel);
 
         // if topic null
@@ -262,7 +262,7 @@ public class MQTTHelper {
         try {
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
 
-            JSONArray jsonCameras = json.getJSONArray("camera");
+            JSONArray jsonCameras = json.getJSONArray("disableCamera");
             for(int i=0; i<= jsonCameras.length(); i++) {
                 JSONObject jsonCamera = jsonCameras.getJSONObject(0);
                 boolean disable = jsonCamera.getBoolean("disableCamera");
