@@ -47,7 +47,6 @@ import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Timer;
@@ -318,127 +317,27 @@ public class MQTTService extends Service implements MqttCallback {
 
         storeLog(Helpers.broadCastMessage("MQTT Message", "Body", messageBody));
 
+        if(topic.isEmpty()) {
+            // exit if the topic if empty
+            return;
+        }
+
         if(messageBody.isEmpty()) {
             // exit if the message if empty
             return;
         }
 
-        try {
-            JSONObject jsonObj = new JSONObject(messageBody);
-
-            if (jsonObj.has(QUERY)) {
-                // PING request
-                if ("Ping".equalsIgnoreCase(jsonObj.getString(QUERY))) {
+        // Command/Ping
+        if(topic.toLowerCase().contains("Ping")) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+                if (jsonObj.has(QUERY)
+                        && "Ping".equalsIgnoreCase(jsonObj.getString(QUERY))) {
                     mqttHelper.sendKeepAlive();
-                    return;
                 }
-                // Inventory Request
-                if("Inventory".equalsIgnoreCase(jsonObj.getString(QUERY))) {
-                    mqttHelper.createInventory();
-                    return;
-                }
-
-                // Geolocation request
-                if("Geolocate".equalsIgnoreCase(jsonObj.getString(QUERY))) {
-                    mqttHelper.sendGPS();
-                    return;
-                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
             }
-
-            // Wipe Request
-            if(jsonObj.has("wipe") && "NOW".equalsIgnoreCase(jsonObj.getString("wipe")) ) {
-                mqttHelper.wipe();
-                return;
-            }
-
-            // Version Manifest
-            if(jsonObj.has("version")) {
-                mqttHelper.addManifest(jsonObj);
-            }
-
-            // Unenroll Request
-            if (jsonObj.has("unenroll")) {
-                mqttHelper.unenroll();
-                return;
-            }
-
-            // Unenroll Request
-            if (jsonObj.has("unenroll")) {
-                mqttHelper.unenroll();
-                return;
-            }
-
-            // Subscribe a new channel in MQTT
-            if(jsonObj.has("subscribe")) {
-                JSONArray jsonTopics = jsonObj.getJSONArray("subscribe");
-                for(int i=0; i<jsonTopics.length();i++) {
-                    JSONObject jsonTopic = jsonTopics.getJSONObject(i);
-
-                    String channel = jsonTopic.getString("topic")+"/#";
-                    FlyveLog.d(channel);
-
-                    // Add new channel
-                    mqttHelper.suscribe(channel);
-                }
-                return;
-            }
-
-            // MDM
-            if(jsonObj.has("MDM")) {
-                mqttHelper.mdm(MQTTService.this, jsonObj);
-                return;
-            }
-
-            // Lock
-            if(jsonObj.has("lock")) {
-                mqttHelper.lockDevice(MQTTService.this, jsonObj);
-                return;
-            }
-
-            // FLEET Camera
-            if(jsonObj.has("camera")) {
-                mqttHelper.disableCamera(jsonObj);
-                return;
-            }
-
-            // FLEET connectivity
-            if(jsonObj.has("connectivity")) {
-                mqttHelper.disableConnectivity(jsonObj);
-                return;
-            }
-
-            // UI
-            if(jsonObj.has("ui")) {
-                mqttHelper.disableUI(jsonObj);
-                return;
-            }
-
-            // FLEET encryption
-            if(jsonObj.has("encryption")) {
-                mqttHelper.storageEncryption(jsonObj);
-                return;
-            }
-
-            // FLEET policies
-            if(jsonObj.has("policies")) {
-                mqttHelper.policiesDevice(jsonObj);
-                return;
-            }
-
-            // Files
-            if(jsonObj.has("file")) {
-                mqttHelper.filesOnDevices(jsonObj);
-                return;
-            }
-
-            // Applications
-            if(jsonObj.has("application")) {
-                mqttHelper.applicationOnDevices(jsonObj);
-                return;
-            }
-        } catch (Exception ex) {
-            FlyveLog.e(TAG, ex.getMessage());
-            storeLog(Helpers.broadCastMessage(ERROR, "Error on messageArrived", ex.getMessage()));
         }
     }
 
