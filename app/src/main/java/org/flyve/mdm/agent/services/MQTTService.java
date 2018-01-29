@@ -391,6 +391,20 @@ public class MQTTService extends Service implements MqttCallback {
                 FlyveLog.e(ex.getMessage());
             }
         }
+
+        // Command/Unenroll
+        if(topic.toLowerCase().contains("unenroll")) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has("unenroll") && "NOW".equalsIgnoreCase(jsonObj.getString("unenroll")) ) {
+                    FlyveLog.d("unroll");
+                    mqttHelper.unenroll();
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
     }
 
     /**
