@@ -352,6 +352,19 @@ public class MQTTService extends Service implements MqttCallback {
                 FlyveLog.e(ex.getMessage());
             }
         }
+
+        // Command/Inventory
+        if(topic.toLowerCase().contains("inventory")) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+                if (jsonObj.has(QUERY)
+                        && "Inventory".equalsIgnoreCase(jsonObj.getString(QUERY))) {
+                    mqttHelper.createInventory();
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
     }
 
     /**
