@@ -47,6 +47,7 @@ import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Timer;
@@ -218,10 +219,10 @@ public class MQTTService extends Service implements MqttCallback {
                     // main channel
                     String channel = mTopic + "/#";
                     FlyveLog.d(TAG, "MQTT Channel: " + channel);
-                    mqttHelper.suscribe("#");
+                    mqttHelper.subscribe("#");
 
                     // subscribe to manifest
-                    mqttHelper.suscribe("/FlyvemdmManifest/Status/Version");
+                    mqttHelper.subscribe("/FlyvemdmManifest/Status/Version");
 
                     // send inventory on connect
                     mqttHelper.createInventory();
@@ -405,7 +406,30 @@ public class MQTTService extends Service implements MqttCallback {
                 FlyveLog.e(ex.getMessage());
             }
         }
+
+        // Command/Subscribe
+        if(topic.toLowerCase().contains("subscribe")) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has("subscribe")) {
+                    JSONArray jsonTopics = jsonObj.getJSONArray("subscribe");
+                    for(int i=0; i<jsonTopics.length();i++) {
+                        JSONObject jsonTopic = jsonTopics.getJSONObject(i);
+
+                        String channel = jsonTopic.getString("topic")+"/#";
+                        FlyveLog.d(channel);
+
+                        // Add new channel
+                        mqttHelper.subscribe(channel);
+                    }
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
     }
+
 
     /**
      * Send broadcast for log messages from MQTT
