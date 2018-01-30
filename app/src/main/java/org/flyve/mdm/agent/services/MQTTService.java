@@ -473,6 +473,36 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/passwordMinLowerCase
+        String PASSWORD_MIN_LOWERCASE = "passwordMinLowerCase";
+        if(topic.toLowerCase().contains(PASSWORD_MIN_LOWERCASE.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(PASSWORD_MIN_LOWERCASE)) {
+                    int minimum = jsonObj.getInt(PASSWORD_MIN_LOWERCASE);
+                    mqttHelper.passwordMinLength(minimum);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
+        // Policy/passwordMinLowerCase
+        String PASSWORD_MIN_LOWERCASE = "passwordMinLowerCase";
+        if(topic.toLowerCase().contains(PASSWORD_MIN_LOWERCASE.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(PASSWORD_MIN_LOWERCASE)) {
+                    int minimum = jsonObj.getInt(PASSWORD_MIN_LOWERCASE);
+                    mqttHelper.passwordMinLowerCase(minimum);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
         // Policy/disableCamera
         String DISABLE_CAMERA = "disableCamera";
         if(topic.toLowerCase().contains(DISABLE_CAMERA.toLowerCase())) {
