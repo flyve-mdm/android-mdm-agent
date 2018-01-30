@@ -337,6 +337,16 @@ public class MQTTHelper {
         }
     }
 
+    public void disableAirplaneMode(boolean disable) {
+        try {
+            cache.setConnectivityAirplaneModeDisable(disable);
+            PoliciesConnectivity.disableAirplaneMode(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "AirplaneMode", "AirplaneMode is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on AirplaneMode", ex.getMessage()));
+        }
+    }
+
     /**
      * FLEET connectivity
      * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
@@ -348,13 +358,6 @@ public class MQTTHelper {
             JSONArray jsonConnectivities = json.getJSONArray("connectivity");
             for (int i = 0; i < jsonConnectivities.length(); i++) {
                 JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);
-
-                if (jsonConnectivity.has("disableAirplaneMode")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableAirplaneMode");
-                    cache.setConnectivityAirplaneModeDisable(disable);
-                    PoliciesConnectivity.disableAirplaneMode(cache.getConnectivityAirplaneModeDisable());
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "AIRPLANEMODE", "AIRPLANEMODE is disable: " + disable));
-                }
 
                 if (jsonConnectivity.has("disableMobileLine")) {
                     boolean disable = jsonConnectivity.getBoolean("disableMobileLine");
