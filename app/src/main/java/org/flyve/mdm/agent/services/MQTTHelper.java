@@ -587,6 +587,12 @@ public class MQTTHelper {
         broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinNonLetter", String.valueOf(length)));
     }
 
+    public void passwordMinLetter(int length) {
+        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+        mdm.setPasswordMinimumLetters(length);
+        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLetter", String.valueOf(length)));
+    }
+
     public void passwordMinNumeric(int minimum) {
         PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
         mdm.setPasswordMinimumNumeric(minimum);

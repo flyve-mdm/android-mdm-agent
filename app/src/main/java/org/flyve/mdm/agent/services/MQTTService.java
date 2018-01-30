@@ -518,6 +518,21 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/passwordMinLetters
+        String PASSWORD_MIN_LETTERS = "passwordMinLetters";
+        if(topic.toLowerCase().contains(PASSWORD_MIN_LETTERS.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(PASSWORD_MIN_LETTERS)) {
+                    int minimum = jsonObj.getInt(PASSWORD_MIN_LETTERS);
+                    mqttHelper.passwordMinLetter(minimum);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
         // Policy/passwordMinNumeric
         String PASSWORD_MIN_NUMERIC = "passwordMinNumeric";
         if(topic.toLowerCase().contains(PASSWORD_MIN_NUMERIC.toLowerCase())) {
