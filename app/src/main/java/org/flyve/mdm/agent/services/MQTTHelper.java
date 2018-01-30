@@ -572,24 +572,12 @@ public class MQTTHelper {
         }
     }
 
-    /**
-     * FLEET policies
-     * Example {
-     * "policies": [
-     * { "passwordEnabled": "true|false", "taskId": "2"},
-     * { "passwordQuality" : "PASSWORD_QUALITY_NUMERIC|PASSWORD_QUALITY_ALPHABETIC|PASSWORD_QUALITY_ALPHANUMERIC|PASSWORD_QUALITY_COMPLEX|PASSWORD_QUALITY_SOMETHING|PASSWORD_QUALITY_UNSPECIFIED", "taskId": "3"},
-     * { "passwordMinLetters" : "0|1|2|..", "taskId": "4"},
-     * { "passwordMinLowerCase" : "0|1|2|..", "taskId": "5"},
-     * { "passwordMinUpperCase" : "0|1|2|..", "taskId": "6"},
-     * { "passwordMinNonLetter" : "0|1|2|..", "taskId": "7"},
-     * { "passwordMinNumeric" : "0|1|2|..", "taskId": "7"},
-     * { "passwordMinLength" : "0|1|2|..", "taskId": "8"},
-     * { "MaximumFailedPasswordsForWipe" : "0|1|2|..", "taskId": "9"},
-     * { "MaximumTimeToLock" : "time in MS", "taskId": "10"},
-     * { "passwordMinSymbols" : "0|1|2|..", "taskId": "11"}
-     * ]
-     * }
-     */
+    public void passwordQuality(String quality) {
+        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+        mdm.setPasswordQuality(quality);
+        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordQuality", quality));
+    }
+
     public void policiesDevice(JSONObject json) {
 
         try {
@@ -599,12 +587,6 @@ public class MQTTHelper {
 
             for (int i = 0; i <= jsonPolicies.length(); i++) {
                 JSONObject jsonPolicie = jsonPolicies.getJSONObject(0);
-
-                if (jsonPolicie.has("passwordQuality")) {
-                    String quality = jsonPolicie.getString("passwordQuality");
-                    mdm.setPasswordQuality(quality);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_LENGTH, quality));
-                }
 
                 if (jsonPolicie.has("passwordEnabled")) {
                     mdm.enablePassword();
