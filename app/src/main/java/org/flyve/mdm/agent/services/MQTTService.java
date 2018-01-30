@@ -443,6 +443,22 @@ public class MQTTService extends Service implements MqttCallback {
                 FlyveLog.e(ex.getMessage());
             }
         }
+
+        // Policy/disableBluetooth
+        String DISABLE_BLUETOOTH = "disableBluetooth";
+        if(topic.toLowerCase().contains(DISABLE_BLUETOOTH.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_BLUETOOTH)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_BLUETOOTH);
+                    mqttHelper.disableBluetooth(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
