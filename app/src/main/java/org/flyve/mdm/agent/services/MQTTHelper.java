@@ -608,6 +608,12 @@ public class MQTTHelper {
         broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinSymbols", String.valueOf(minimum)));
     }
 
+    public void passwordMinLowerCase(int minimum) {
+        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+        mdm.setPasswordMinimumLowerCase(minimum);
+        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLowerCase", String.valueOf(minimum)));
+    }
+
     public void policiesDevice(JSONObject json) {
 
         try {
@@ -617,17 +623,6 @@ public class MQTTHelper {
 
             for (int i = 0; i <= jsonPolicies.length(); i++) {
                 JSONObject jsonPolicie = jsonPolicies.getJSONObject(0);
-
-                if (jsonPolicie.has(MIN_LOWERCASE)) {
-                    int min = 0;
-                    try {
-                        min = jsonPolicie.getInt(MIN_LOWERCASE);
-                    } catch (Exception ex) {
-                        FlyveLog.e(ex.getMessage());
-                    }
-                    mdm.setPasswordMinimumLowerCase(min);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_LOWERCASE, String.valueOf(min)));
-                }
 
                 if (jsonPolicie.has(MIN_UPPERCASE)) {
                     int min = 0;
