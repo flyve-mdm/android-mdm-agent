@@ -443,6 +443,21 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/passwordEnabled
+        String PASSWORD_QUALITY = "passwordQuality";
+        if(topic.toLowerCase().contains(PASSWORD_QUALITY.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(PASSWORD_QUALITY)) {
+                    String quality = jsonObj.getString(PASSWORD_QUALITY);
+                    mqttHelper.passwordQuality(quality);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
         // Policy/disableCamera
         String DISABLE_CAMERA = "disableCamera";
         if(topic.toLowerCase().contains(DISABLE_CAMERA.toLowerCase())) {
