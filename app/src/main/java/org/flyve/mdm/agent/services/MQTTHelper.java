@@ -397,6 +397,15 @@ public class MQTTHelper {
         }
     }
 
+    public void disableStatusBar(boolean disable) {
+        try {
+            new PoliciesDeviceManager(context).disableStatusBar(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "status bar", "status bar is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on status bar", ex.getMessage()));
+        }
+    }
+
     /**
      * FLEET connectivity
      * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
@@ -408,11 +417,6 @@ public class MQTTHelper {
             JSONArray jsonConnectivities = json.getJSONArray("connectivity");
             for (int i = 0; i < jsonConnectivities.length(); i++) {
                 JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);
-
-                if (jsonConnectivity.has("disableStatusBar")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableStatusBar");
-                    new PoliciesDeviceManager(context).disableStatusBar(disable);
-                }
 
                 if (jsonConnectivity.has("disableSreenCapture")) {
                     boolean disable = jsonConnectivity.getBoolean("disableSreenCapture");
