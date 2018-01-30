@@ -387,6 +387,16 @@ public class MQTTHelper {
         }
     }
 
+    public void disableUsbFileTransferProtocols(boolean disable) {
+        try {
+            cache.setConnectivityUsbFileTransferProtocolsDisable(disable);
+            PoliciesConnectivity.disableUsbFileTransferProtocols(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols", "UsbFileTransferProtocols is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on UsbFileTransferProtocols", ex.getMessage()));
+        }
+    }
+
     /**
      * FLEET connectivity
      * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
@@ -398,12 +408,6 @@ public class MQTTHelper {
             JSONArray jsonConnectivities = json.getJSONArray("connectivity");
             for (int i = 0; i < jsonConnectivities.length(); i++) {
                 JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);
-
-                if (jsonConnectivity.has("disableUsbFileTransferProtocols")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableUsbFileTransferProtocols");
-                    cache.setConnectivityUsbFileTransferProtocolsDisable(disable);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols", "UsbFileTransferProtocols is disable: " + disable));
-                }
 
                 if (jsonConnectivity.has("disableStatusBar")) {
                     boolean disable = jsonConnectivity.getBoolean("disableStatusBar");
