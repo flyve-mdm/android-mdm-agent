@@ -577,7 +577,7 @@ public class MQTTHelper {
 
     public void passwordMinLength(int length) {
         PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-        mdm.setPasswordMinimumLetters(length);
+        mdm.setPasswordLength(length);
         broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLength", String.valueOf(length)));
     }
 
