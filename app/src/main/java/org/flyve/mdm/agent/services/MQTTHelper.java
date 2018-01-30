@@ -307,6 +307,16 @@ public class MQTTHelper {
         }
     }
 
+    public void disableWifi(boolean disable) {
+        try {
+            cache.setConnectivityWifiDisable(disable);
+            PoliciesConnectivity.disableWifi(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Wifi", "Wifi is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on disableConnectivity", ex.getMessage()));
+        }
+    }
+
     /**
      * FLEET connectivity
      * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
@@ -318,19 +328,6 @@ public class MQTTHelper {
             JSONArray jsonConnectivities = json.getJSONArray("connectivity");
             for (int i = 0; i < jsonConnectivities.length(); i++) {
                 JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);
-
-                if (jsonConnectivity.has("disableWifi")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableWifi");
-                    cache.setConnectivityWifiDisable(disable);
-                    PoliciesConnectivity.disableWifi(disable);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Wifi", "Wifi is disable: " + disable));
-                }
-
-                if (jsonConnectivity.has("disableBluetooth")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableBluetooth");
-                    cache.setConnectivityBluetoothDisable(disable);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Bluetooth", "Bluetooth is disable: " + disable));
-                }
 
                 if (jsonConnectivity.has("disableGPS")) {
                     boolean disable = jsonConnectivity.getBoolean("disableGPS");
