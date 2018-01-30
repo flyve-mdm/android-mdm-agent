@@ -415,26 +415,16 @@ public class MQTTHelper {
         }
     }
 
-    /**
-     * FLEET connectivity
-     * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
-     * The stored policies on cache this was used on MQTTConnectivityReceiver
-     */
-    public void disableConnectivity(JSONObject json) {
-
+    public void resetPassword(String newPassword) {
         try {
-            JSONArray jsonConnectivities = json.getJSONArray("connectivity");
-            for (int i = 0; i < jsonConnectivities.length(); i++) {
-                JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);
-
-                if (jsonConnectivity.has("resetPassword")) {
-                    String newpassword = jsonConnectivity.getString("resetPassword");
-                    new PoliciesDeviceManager(context).resetPassword(newpassword);
-                }
-
+            if(!newPassword.isEmpty()) {
+                new PoliciesDeviceManager(context).resetPassword(newPassword);
+                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Reset Password", "Reset Password : ****"));
+            } else {
+                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Reset Password", "the new password is empty"));
             }
         } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on disableConnectivity", ex.getMessage()));
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Reset Password", ex.getMessage()));
         }
     }
 
