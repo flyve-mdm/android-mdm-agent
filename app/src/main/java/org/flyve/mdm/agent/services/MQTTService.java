@@ -563,6 +563,21 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/MaximumFailedPasswordsForWipe
+        String MAXIMUM_FAILED_PASSWORDS_FOR_WIPE = "MaximumFailedPasswordsForWipe";
+        if(topic.toLowerCase().contains(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE)) {
+                    int max = jsonObj.getInt(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE);
+                    mqttHelper.maximumFailedPasswordsForWipe(max);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
         // Policy/disableCamera
         String DISABLE_CAMERA = "disableCamera";
         if(topic.toLowerCase().contains(DISABLE_CAMERA.toLowerCase())) {
