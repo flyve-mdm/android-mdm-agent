@@ -626,45 +626,10 @@ public class MQTTHelper {
         broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MaximumFailedPasswordsForWipe", String.valueOf(maximum)));
     }
 
-    public void policiesDevice(JSONObject json) {
-
-        try {
-            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-
-            JSONArray jsonPolicies = json.getJSONArray("policies");
-
-            for (int i = 0; i <= jsonPolicies.length(); i++) {
-                JSONObject jsonPolicie = jsonPolicies.getJSONObject(0);
-
-                if (jsonPolicie.has(MAXIMUM_FAILED_FOR_WIPE)) {
-                    int max = 0;
-                    try {
-                        max = jsonPolicie.getInt(MAXIMUM_FAILED_FOR_WIPE);
-                    } catch (Exception ex) {
-                        FlyveLog.e(ex.getMessage());
-                    }
-
-                    mdm.setMaximumFailedPasswordsForWipe(max);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MAXIMUM_FAILED_FOR_WIPE, String.valueOf(max)));
-                }
-
-                if (jsonPolicie.has("MaximumTimeToLock")) {
-                    int time = 0;
-                    try {
-                        time = jsonPolicie.getInt("MaximumTimeToLock");
-                    } catch (Exception ex) {
-                        FlyveLog.e(ex.getMessage());
-                    }
-
-                    mdm.setMaximumTimeToLock(time);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MAXIMUM_FAILED_FOR_WIPE, String.valueOf(time)));
-                }
-
-            }// end for
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on policiesDevice", ex.getMessage()));
-        }
+    public void maximumTimeToLock(int maximum) {
+        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+        mdm.setMaximumTimeToLock(maximum);
+        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "maximumTimeToLock", String.valueOf(maximum)));
     }
 
     /**
