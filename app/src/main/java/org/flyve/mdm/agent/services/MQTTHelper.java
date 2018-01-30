@@ -347,6 +347,16 @@ public class MQTTHelper {
         }
     }
 
+    public void disableMobileLine(boolean disable) {
+        try {
+            cache.setConnectivityMobileLineDisable(disable);
+            PoliciesConnectivity.disableMobileLine(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MobileLine", "MobileLine is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on MobileLine", ex.getMessage()));
+        }
+    }
+
     /**
      * FLEET connectivity
      * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
@@ -358,13 +368,6 @@ public class MQTTHelper {
             JSONArray jsonConnectivities = json.getJSONArray("connectivity");
             for (int i = 0; i < jsonConnectivities.length(); i++) {
                 JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);
-
-                if (jsonConnectivity.has("disableMobileLine")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableMobileLine");
-                    cache.setConnectivityMobileLineDisable(disable);
-                    PoliciesConnectivity.disableMobileLine(disable);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MOBILE_LINE", "MOBILE_LINE is disable: " + disable));
-                }
 
                 if (jsonConnectivity.has("disableNFC")) {
                     boolean disable = jsonConnectivity.getBoolean("disableNFC");
