@@ -578,6 +578,21 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/MaximumTimeToLock
+        String MAXIMUM_TIME_TO_LOCK = "MaximumTimeToLock";
+        if(topic.toLowerCase().contains(MAXIMUM_TIME_TO_LOCK.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(MAXIMUM_TIME_TO_LOCK)) {
+                    int max = jsonObj.getInt(MAXIMUM_TIME_TO_LOCK);
+                    mqttHelper.maximumTimeToLock(max);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
         // Policy/disableCamera
         String DISABLE_CAMERA = "disableCamera";
         if(topic.toLowerCase().contains(DISABLE_CAMERA.toLowerCase())) {
