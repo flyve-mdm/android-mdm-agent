@@ -357,6 +357,16 @@ public class MQTTHelper {
         }
     }
 
+    public void disableNFC(boolean disable) {
+        try {
+            cache.setConnectivityNFCDisable(disable);
+            PoliciesConnectivity.disableNFC(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "NFC", "NFC is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on NFC", ex.getMessage()));
+        }
+    }
+
     /**
      * FLEET connectivity
      * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
@@ -368,12 +378,6 @@ public class MQTTHelper {
             JSONArray jsonConnectivities = json.getJSONArray("connectivity");
             for (int i = 0; i < jsonConnectivities.length(); i++) {
                 JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);
-
-                if (jsonConnectivity.has("disableNFC")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableNFC");
-                    cache.setConnectivityNFCDisable(disable);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "NFC", "NFC is disable: " + disable));
-                }
 
                 if (jsonConnectivity.has("disableHostpotTethering")) {
                     boolean disable = jsonConnectivity.getBoolean("disableHostpotTethering");
