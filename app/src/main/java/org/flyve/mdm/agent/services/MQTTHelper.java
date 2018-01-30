@@ -406,6 +406,15 @@ public class MQTTHelper {
         }
     }
 
+    public void disableScreenCapture(boolean disable) {
+        try {
+            new PoliciesDeviceManager(context).disableCaptureScreen(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Screen Capture", "Screen Capture is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Screen Capture", ex.getMessage()));
+        }
+    }
+
     /**
      * FLEET connectivity
      * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
@@ -417,11 +426,6 @@ public class MQTTHelper {
             JSONArray jsonConnectivities = json.getJSONArray("connectivity");
             for (int i = 0; i < jsonConnectivities.length(); i++) {
                 JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);
-
-                if (jsonConnectivity.has("disableSreenCapture")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableSreenCapture");
-                    new PoliciesDeviceManager(context).disableCaptureScreen(disable);
-                }
 
                 if (jsonConnectivity.has("resetPassword")) {
                     String newpassword = jsonConnectivity.getString("resetPassword");
