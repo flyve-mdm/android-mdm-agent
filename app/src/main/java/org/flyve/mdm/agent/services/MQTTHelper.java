@@ -297,6 +297,16 @@ public class MQTTHelper {
         }
     }
 
+    public void disableBluetooth(boolean disable) {
+        try {
+            cache.setConnectivityBluetoothDisable(disable);
+            PoliciesConnectivity.disableBluetooth(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Bluetooth", "Bluetooth is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on disableConnectivity", ex.getMessage()));
+        }
+    }
+
     /**
      * FLEET connectivity
      * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
