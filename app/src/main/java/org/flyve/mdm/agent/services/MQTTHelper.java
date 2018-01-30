@@ -614,6 +614,18 @@ public class MQTTHelper {
         broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLowerCase", String.valueOf(minimum)));
     }
 
+    public void passwordMinUpperCase(int minimum) {
+        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+        mdm.setPasswordMinimumUpperCase(minimum);
+        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinUpperCase", String.valueOf(minimum)));
+    }
+
+    public void maximumFailedPasswordsForWipe(int maximum) {
+        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+        mdm.setMaximumFailedPasswordsForWipe(maximum);
+        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MaximumFailedPasswordsForWipe", String.valueOf(maximum)));
+    }
+
     public void policiesDevice(JSONObject json) {
 
         try {
@@ -623,18 +635,6 @@ public class MQTTHelper {
 
             for (int i = 0; i <= jsonPolicies.length(); i++) {
                 JSONObject jsonPolicie = jsonPolicies.getJSONObject(0);
-
-                if (jsonPolicie.has(MIN_UPPERCASE)) {
-                    int min = 0;
-                    try {
-                        min = jsonPolicie.getInt(MIN_UPPERCASE);
-                    } catch (Exception ex) {
-                        FlyveLog.e(ex.getMessage());
-                    }
-
-                    mdm.setPasswordMinimumUpperCase(min);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_UPPERCASE, String.valueOf(min)));
-                }
 
                 if (jsonPolicie.has(MAXIMUM_FAILED_FOR_WIPE)) {
                     int max = 0;
