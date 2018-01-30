@@ -572,16 +572,22 @@ public class MQTTHelper {
         }
     }
 
+    public void passwordEnabled() {
+        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+        mdm.enablePassword();
+        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordEnabled", "true"));
+    }
+
     public void passwordQuality(String quality) {
         PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
         mdm.setPasswordQuality(quality);
         broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordQuality", quality));
     }
 
-    public void passwordEnabled() {
+    public void passwordMinLength(int length) {
         PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-        mdm.enablePassword();
-        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordEnabled", "true"));
+        mdm.setPasswordMinimumLetters(length);
+        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLength", String.valueOf(length)));
     }
 
     public void policiesDevice(JSONObject json) {
@@ -593,33 +599,6 @@ public class MQTTHelper {
 
             for (int i = 0; i <= jsonPolicies.length(); i++) {
                 JSONObject jsonPolicie = jsonPolicies.getJSONObject(0);
-
-                if (jsonPolicie.has("passwordEnabled")) {
-                    mdm.enablePassword();
-
-                }
-
-                if (jsonPolicie.has(MIN_LENGTH)) {
-                    int length = 0;
-                    try {
-                        length = jsonPolicie.getInt(MIN_LENGTH);
-                    } catch (Exception ex) {
-                        FlyveLog.e(ex.getMessage());
-                    }
-                    mdm.setPasswordLength(length);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_LENGTH, String.valueOf(length)));
-                }
-
-                if (jsonPolicie.has(MIN_LETTERS)) {
-                    int min = 0;
-                    try {
-                        min = jsonPolicie.getInt(MIN_LETTERS);
-                    } catch (Exception ex) {
-                        FlyveLog.e(ex.getMessage());
-                    }
-                    mdm.setPasswordMinimumLetters(min);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_LETTERS, String.valueOf(min)));
-                }
 
                 if (jsonPolicie.has(MIN_NON_LETTER)) {
                     int min = 0;
