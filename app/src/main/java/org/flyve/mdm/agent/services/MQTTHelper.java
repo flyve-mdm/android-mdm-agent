@@ -303,7 +303,7 @@ public class MQTTHelper {
             PoliciesConnectivity.disableBluetooth(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Bluetooth", "Bluetooth is disable: " + disable));
         } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on disableConnectivity", ex.getMessage()));
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Bluetooth", ex.getMessage()));
         }
     }
 
@@ -313,7 +313,7 @@ public class MQTTHelper {
             PoliciesConnectivity.disableWifi(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Wifi", "Wifi is disable: " + disable));
         } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on disableConnectivity", ex.getMessage()));
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Wifi", ex.getMessage()));
         }
     }
 
@@ -323,7 +323,17 @@ public class MQTTHelper {
             PoliciesConnectivity.disableGps(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "GPS", "GPS is disable: " + disable));
         } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on disableConnectivity", ex.getMessage()));
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on GPS", ex.getMessage()));
+        }
+    }
+
+    public void disableRoaming(boolean disable) {
+        try {
+            cache.setConnectivityRoamingDisable(disable);
+            PoliciesConnectivity.disableRoaming(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Roaming", "Roaming is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Roaming", ex.getMessage()));
         }
     }
 
@@ -338,12 +348,6 @@ public class MQTTHelper {
             JSONArray jsonConnectivities = json.getJSONArray("connectivity");
             for (int i = 0; i < jsonConnectivities.length(); i++) {
                 JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);
-
-                if (jsonConnectivity.has("disableRoaming")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableRoaming");
-                    cache.setConnectivityRoamingDisable(disable);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "ROAMING", "ROAMING is disable: " + disable));
-                }
 
                 if (jsonConnectivity.has("disableAirplaneMode")) {
                     boolean disable = jsonConnectivity.getBoolean("disableAirplaneMode");
