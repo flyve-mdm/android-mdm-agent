@@ -590,6 +590,12 @@ public class MQTTHelper {
         broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLength", String.valueOf(length)));
     }
 
+    public void passwordMinNonLetter(int length) {
+        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+        mdm.setPasswordMinimumNonLetter(length);
+        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinNonLetter", String.valueOf(length)));
+    }
+
     public void policiesDevice(JSONObject json) {
 
         try {
@@ -599,18 +605,6 @@ public class MQTTHelper {
 
             for (int i = 0; i <= jsonPolicies.length(); i++) {
                 JSONObject jsonPolicie = jsonPolicies.getJSONObject(0);
-
-                if (jsonPolicie.has(MIN_NON_LETTER)) {
-                    int min = 0;
-                    try {
-                        min = jsonPolicie.getInt(MIN_NON_LETTER);
-                    } catch (Exception ex) {
-                        FlyveLog.e(ex.getMessage());
-                    }
-
-                    mdm.setPasswordMinimumNonLetter(min);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, MIN_NON_LETTER, String.valueOf(min)));
-                }
 
                 if (jsonPolicie.has(MIN_NUMERIC)) {
                     int min = 0;
