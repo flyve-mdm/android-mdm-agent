@@ -43,7 +43,6 @@ import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.ui.MDMAgent;
-import org.flyve.mdm.agent.utils.AppInfo;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -430,17 +429,20 @@ public class MQTTHelper {
 
     /**
      * Application
-     * {"application":[{"deployApp":"org.flyve.inventory.agent","id":"1","versionCode":"1"}]}
      */
-    public void applicationOnDevices(final JSONObject json) {
+    public void installPackage(final String deployApp, final String id, final String versionCode, final String taskId) {
 
         EnrollmentHelper sToken = new EnrollmentHelper(this.context);
         sToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
             @Override
-            public void onSuccess(String data) {
+            public void onSuccess(String sessionToken) {
                 try {
-                    JSONArray appsInstall = json.getJSONArray("application");
-                    managePackage(appsInstall, data);
+                    FlyveLog.d("Install package: " + deployApp + " id: " + id);
+
+                    PoliciesFiles policiesFiles = new PoliciesFiles(MQTTHelper.this.context);
+                    policiesFiles.execute("package", deployApp, id, sessionToken);
+
+                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Install package", "name: " + deployApp + " id: " + id));
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
                     broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on getActiveSessionToken", ex.getMessage()));
@@ -456,45 +458,6 @@ public class MQTTHelper {
         });
 
 
-    }
-
-    /**
-     * Check if the App is to be installed or uninstalled
-     * @param appsInstall if the object has remove or deploy app
-     * @param sessionToken the session token
-     */
-    public void managePackage(JSONArray appsInstall, String sessionToken) throws Exception {
-        AppInfo appInfo = new AppInfo(this.context);
-
-        for(int i=0; i<appsInstall.length(); i++) {
-
-            PoliciesFiles policiesFiles = new PoliciesFiles(this.context);
-
-            if(appsInstall.getJSONObject(i).has(REMOVE_APP)){
-                FlyveLog.d("uninstall apps");
-
-                JSONObject jsonApp = appsInstall.getJSONObject(i);
-                if(appInfo.isInstall(jsonApp.getString(REMOVE_APP))) {
-                    PoliciesFiles.removeApk(this.context, jsonApp.getString(REMOVE_APP));
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Remove app", "Package: " + jsonApp.getString(REMOVE_APP)));
-                }
-            }
-
-            if(appsInstall.getJSONObject(i).has("deployApp")){
-                JSONObject jsonApp = appsInstall.getJSONObject(i);
-
-                String idList = jsonApp.getString("id");
-                String packageNameList = jsonApp.getString("deployApp");
-                String versionCode = jsonApp.getString("versionCode");
-
-                FlyveLog.d("installing app id: " + idList + " packageNamelist: " + packageNameList + " versionCode: " + versionCode);
-
-                if(!appInfo.isInstall(packageNameList,versionCode)){
-                    policiesFiles.execute("package",packageNameList, idList, sessionToken);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Download app", "Package: " + packageNameList));
-                }
-            }
-        }
     }
 
     /**
