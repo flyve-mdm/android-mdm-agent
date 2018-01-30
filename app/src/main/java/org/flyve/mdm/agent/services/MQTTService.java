@@ -428,6 +428,21 @@ public class MQTTService extends Service implements MqttCallback {
                 FlyveLog.e(ex.getMessage());
             }
         }
+
+        // Policy/disableCamera
+        String DISABLE_CAMERA = "disableCamera";
+        if(topic.toLowerCase().contains(DISABLE_CAMERA.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_CAMERA)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_CAMERA);
+                    mqttHelper.disableCamera(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
     }
 
 
