@@ -377,6 +377,16 @@ public class MQTTHelper {
         }
     }
 
+    public void disableSmsMms(boolean disable) {
+        try {
+            cache.setConnectivitySmsMmsDisable(disable);
+            PoliciesConnectivity.disableSMS(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "SMS", "SMS is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on SMS", ex.getMessage()));
+        }
+    }
+
     /**
      * FLEET connectivity
      * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
@@ -388,12 +398,6 @@ public class MQTTHelper {
             JSONArray jsonConnectivities = json.getJSONArray("connectivity");
             for (int i = 0; i < jsonConnectivities.length(); i++) {
                 JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);
-
-                if (jsonConnectivity.has("disableSmsMms")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableSmsMms");
-                    cache.setConnectivitySmsMmsDisable(disable);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "SmsMms", "SmsMms is disable: " + disable));
-                }
 
                 if (jsonConnectivity.has("disableUsbFileTransferProtocols")) {
                     boolean disable = jsonConnectivity.getBoolean("disableUsbFileTransferProtocols");
