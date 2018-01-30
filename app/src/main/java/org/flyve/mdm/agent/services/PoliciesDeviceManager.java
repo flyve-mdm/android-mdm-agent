@@ -86,6 +86,7 @@ public class PoliciesDeviceManager {
             try {
                 if (!mDPM.isActivePasswordSufficient()) {
                     Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
             } catch (Exception ex) {
@@ -93,6 +94,7 @@ public class PoliciesDeviceManager {
             }
         } else {
             Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
     }
