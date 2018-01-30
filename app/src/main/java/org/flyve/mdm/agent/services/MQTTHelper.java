@@ -578,6 +578,12 @@ public class MQTTHelper {
         broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordQuality", quality));
     }
 
+    public void passwordEnabled() {
+        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+        mdm.enablePassword();
+        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordEnabled", "true"));
+    }
+
     public void policiesDevice(JSONObject json) {
 
         try {
@@ -590,6 +596,7 @@ public class MQTTHelper {
 
                 if (jsonPolicie.has("passwordEnabled")) {
                     mdm.enablePassword();
+
                 }
 
                 if (jsonPolicie.has(MIN_LENGTH)) {
