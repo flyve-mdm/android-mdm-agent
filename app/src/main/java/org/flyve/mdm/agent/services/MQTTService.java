@@ -481,21 +481,6 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(PASSWORD_MIN_LOWERCASE)) {
                     int minimum = jsonObj.getInt(PASSWORD_MIN_LOWERCASE);
-                    mqttHelper.passwordMinLength(minimum);
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        // Policy/passwordMinLowerCase
-        String PASSWORD_MIN_LOWERCASE = "passwordMinLowerCase";
-        if(topic.toLowerCase().contains(PASSWORD_MIN_LOWERCASE.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(PASSWORD_MIN_LOWERCASE)) {
-                    int minimum = jsonObj.getInt(PASSWORD_MIN_LOWERCASE);
                     mqttHelper.passwordMinLowerCase(minimum);
                 }
             } catch (Exception ex) {
@@ -503,7 +488,7 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
-        // Policy/passwordMinLowerCase
+        // Policy/passwordMinNonLetter
         String PASSWORD_MIN_NON_LETTER = "passwordMinNonLetter";
         if(topic.toLowerCase().contains(PASSWORD_MIN_NON_LETTER.toLowerCase())) {
             try {
@@ -512,6 +497,21 @@ public class MQTTService extends Service implements MqttCallback {
                 if(jsonObj.has(PASSWORD_MIN_NON_LETTER)) {
                     int minimum = jsonObj.getInt(PASSWORD_MIN_NON_LETTER);
                     mqttHelper.passwordMinNonLetter(minimum);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
+        // Policy/passwordMinNumeric
+        String PASSWORD_MIN_NUMERIC = "passwordMinNumeric";
+        if(topic.toLowerCase().contains(PASSWORD_MIN_NUMERIC.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(PASSWORD_MIN_NUMERIC)) {
+                    int minimum = jsonObj.getInt(PASSWORD_MIN_NUMERIC);
+                    mqttHelper.passwordMinNumeric(minimum);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
