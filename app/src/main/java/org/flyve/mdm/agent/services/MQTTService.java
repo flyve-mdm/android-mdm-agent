@@ -429,6 +429,20 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/passwordEnabled
+        String PASSWORD_ENABLE = "passwordEnabled";
+        if(topic.toLowerCase().contains(PASSWORD_ENABLE.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(PASSWORD_ENABLE)) {
+                    mqttHelper.passwordEnabled();
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
         // Policy/disableCamera
         String DISABLE_CAMERA = "disableCamera";
         if(topic.toLowerCase().contains(DISABLE_CAMERA.toLowerCase())) {
