@@ -317,6 +317,16 @@ public class MQTTHelper {
         }
     }
 
+    public void disableGPS(boolean disable) {
+        try {
+            cache.setConnectivityGPSDisable(disable);
+            PoliciesConnectivity.disableGps(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "GPS", "GPS is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on disableConnectivity", ex.getMessage()));
+        }
+    }
+
     /**
      * FLEET connectivity
      * Example {"connectivity":[{"disableWifi":"false"},{"disableBluetooth":"false"},{"disableGPS":"false"}]}
@@ -328,13 +338,6 @@ public class MQTTHelper {
             JSONArray jsonConnectivities = json.getJSONArray("connectivity");
             for (int i = 0; i < jsonConnectivities.length(); i++) {
                 JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);
-
-                if (jsonConnectivity.has("disableGPS")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableGPS");
-                    cache.setConnectivityGPSDisable(disable);
-                    PoliciesConnectivity.disableGps(disable);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "GPS", "GPS is disable: " + disable));
-                }
 
                 if (jsonConnectivity.has("disableRoaming")) {
                     boolean disable = jsonConnectivity.getBoolean("disableRoaming");
