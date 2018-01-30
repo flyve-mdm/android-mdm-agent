@@ -557,19 +557,10 @@ public class MQTTHelper {
      * FLEET encryption
      * Example {"encryption":[{"storageEncryption":"false"}]}
      */
-    public void storageEncryption(JSONObject json) {
-        try {
-            JSONObject jsonEncryption = json.getJSONArray("encryption").getJSONObject(0);
-            boolean enable = jsonEncryption.getBoolean("storageEncryption");
-            if(jsonEncryption.has("storageEncryption")) {
-                PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-                mdm.storageEncryptionDevice(enable);
-                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Encryption", "Encryption: " + enable));
-            }
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on storageEncryption", ex.getMessage()));
-        }
+    public void storageEncryption(Boolean enable) {
+        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+        mdm.storageEncryptionDevice(enable);
+        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "storage Encryption", "storage Encryption: " + enable));
     }
 
     public void passwordEnabled() {
