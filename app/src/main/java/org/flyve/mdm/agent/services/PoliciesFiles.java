@@ -287,11 +287,10 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
 
     /**
      * Uninstall the Android Package
-     * @param context
      * @param mPackage to uninstall
      * @return int if it succeed 1, otherwise 0
      */
-    public static int removeApk(Context context, String mPackage){
+    public int removeApk(String mPackage){
         Uri packageUri = Uri.parse("package:"+mPackage);
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
