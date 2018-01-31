@@ -674,6 +674,24 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/deployFile
+        String DEPLOY_FILE = "deployFile";
+        if(topic.toLowerCase().contains(DEPLOY_FILE.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DEPLOY_FILE)) {
+                    String deployFile = jsonObj.getString(DEPLOY_FILE);
+                    String id = jsonObj.getString("id");
+                    String versionCode = jsonObj.getString("version");
+                    String taskId = jsonObj.getString("taskId");
+
+                    mqttHelper.downloadFile(deployFile, id, versionCode, taskId);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
     }
 
 
