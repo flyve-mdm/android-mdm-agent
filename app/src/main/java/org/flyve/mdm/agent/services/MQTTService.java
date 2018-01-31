@@ -373,7 +373,8 @@ public class MQTTService extends Service implements MqttCallback {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
                 if (jsonObj.has("lock")) {
-                    mqttHelper.lockDevice(MQTTService.this, jsonObj);
+                    String lock = jsonObj.getString("lock");
+                    mqttHelper.lockDevice(lock.equalsIgnoreCase("now"));
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
