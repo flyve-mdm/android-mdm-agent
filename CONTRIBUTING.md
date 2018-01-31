@@ -1,148 +1,339 @@
-# How to contribute
+---
+title: CONTRIBUTING
+robots: noindex, nofollow
+description: contribute guidelines
+tags: contributing, github, flyve, mdm
+---
 
-Welcome to our ever growing community! We are more than happy to accept external contributions to the project in the form of feedback, [translations](http://flyve.org/android-mdm-agent/howtos/how-to-translate), bug reports and even better, pull requests!
+[![flyve hero](/images/flyve-mdm-banner.png)](https://flyve-mdm.com/)
 
-As a contributor, we present you the guidelines to start contributing in any of the Flyve MDM projects.
+# How to contribute to Flyve MDM Android MDM Agent
 
-* [Questions or Doubts?](#questions-or-doubts)
-* [Bugs](#found-a-bug)
-* [Proposed Features](#new-feature)
-* [Submitting issues and Pull Requests](#submitting)
-* [Coding Rules](#coding-rules)
+Welcome to our ever-growing community :octocat:!
 
-### Questions or Doubts
+We are more than happy to accept external contributions to the project in the form of feedback, translations, bug reports and even better, pull requests.
 
-If you require general support assistance, you can find us in [Telegram](https://t.me/flyvemdm), and we'll help you as soon as possible.
+We present you the guidelines to start contributing in any of the Flyve MDM projects.
 
-For notices about major changes and general discussion of Flyve MDM development, subscribe to the [/r/FlyveMDM](https://www.reddit.com/r/FlyveMDM/) subreddit. You can also chat with us via IRC in [#flyve-mdm on freenode](http://webchat.freenode.net/?channels=flyve-mdm).
+# Table of contents:
 
-This is in order to keep GitHub issues for bug reports and new features only.
+- 1 [See what’s going on](#1)
+    - 1.1 [Issue Dashboard](#1.1)
+    - 1.2 [Pull Request Dashboard](#1.2)
+- 2 [Assistance](#2)
+    - 2.1 [Live Support](#2.1)
+    - 2.2 [Technical Questions](#2.2)
+    - 2.3 [Discussion](#2.3)
+    - 2.4 [Customers Assistance](#2.4)
+- 3 [Feature Requests](#3)
+    - 3.1 [Requirement for a Feature Request](#3.1)
+        - 3.1.1 [Major Feature Request](#3.1.1)
+        - 3.1.2 [Minor Feature Request](#3.1.2)
+    - 3.2 [Request a New Feature](#3.2)
+    - 3.3 [Implement a New Feature](#3.3)
+- 4 [Submitting](#4)
+    - 4.1 [How to Submit an Issue](#4.1)
+        - 4.1.1 [Check for Past Issues](#4.1.1)
+        - 4.1.2 [Information Needed](#4.1.2)
+        - 4.1.3 [Submit an Issue](#4.1.3)
+    - 4.2 [How to Create a Pull Request (PR)](#4.2)
+        - 4.2.1 [Create a Branch](#4.2.1)
+        - 4.2.2 [Make Changes](#4.2.2)
+        - 4.2.3 [Commit Your Changes](#4.2.3)
+            - 4.2.3.1 [Rules to Follow](#4.2.3.1)
+            - 4.2.3.2 [Commit Format](#4.2.3.2)
+                - 4.2.3.2.1 [Header: Writting a `<type>`](#4.2.3.2.1)
+                - 4.2.3.2.2 [Header: Writting the (`<optional scope>`)](#4.2.3.2.2 )
+                - 4.2.3.2.3 [Header: Writting a `<description>`](#4.2.3.2.3)
+                - 4.2.3.2.4 [Header Lenght](#4.2.3.2.4)
+                - 4.2.3.2.5 [Writting the `<optional body>`](#4.2.3.2.5)
+                - 4.2.3.2.6 [Writting the `<optional footer>`](#4.2.3.2.6)
+            - 4.2.3.3 [Commit Examples](#4.2.3.3)
+        - 4.2.4 [Push your Changes](#4.2.4)
+        - 4.2.5 [Create a Pull Request](#4.2.5)
+            - 4.2.5.1 [How to Write a Title for a Pull Request.](#4.2.5.1)
+            - 4.2.5.2 [How to Write a Description for a Pull Request.](#4.2.5.2)
+            - 4.2.5.1 [Additional Information.](#4.2.5.1)
+        - 4.2.6 [How to proceed with suggestions.](#4.2.6)
+- 5 [What to do next?](#5)
+- 6 [Coding Rules](#6)
 
-### Found a bug?
+# <a name="1"></a> 1. See what's going on!
 
-You can let us know in our [issue Dashboard](#submit-an-issue).
 
-Know how to fix it? Great! Then submit a [pull request](#submit-a-pull-request).
+## <a name="1.1"></a> 1.1 Issue Dashboard :fire:
+If you want to know all the issues we're dealing with right now, take a look at our [Issue Dashboard](https://github.com/flyve-mdm/android-mdm-agent/issues) and look for areas in which you can help.
 
-### New feature?
 
-You can _**request**_ a new feature by submitting an issue, and if you would like to _**implement**_ a new feature, please submit an issue with a proposal for your work first, to be sure that we can use it, this will allow us to better coordinate our efforts, prevent duplication of work, and help you to craft the change so that it is successfully accepted into the project. Please consider what kind of change it is:
+## <a name="1.2"></a> 1.2 Pull Request Dashboard :fire_engine:
+If you want to give us a hand solving issues then great, take a look at our [Pull Request Dashboard](https://github.com/flyve-mdm/android-mdm-agent/issues) and check for an open or closed PR. We don’t want to duplicate efforts.
 
-* For a Major Feature, first open an issue and outline your proposal so it can be discussed.
-* Small Features can be crafted and directly submitted as a Pull Request.
+# <a name="2"></a> 2. Assistance
 
-## Submitting
+## <a name="2.1"></a> 2.1 Live Support :loudspeaker:
+You can find us in [Telegram](https://t.me/flyvemdm), we'll help you as soon as possible.
 
-### Submit an Issue
+## <a name="2.2"></a> 2.2 Technical Questions :closed_book:
+For general technical questions, post an appropriately tagged question on [StackOverflow](http://stackoverflow.com/).
 
-Before submitting the issue please check the [issue tracker](https://github.com/flyve-mdm/android-mdm-agent/issues), there exists the possibility that the bug was already reported by other contributor.
+## <a name="2.3"></a> 2.3 Discussion :speech_balloon:
+For general discussion, use the [Flyve-MDM mailing list](http://mail.ow2.org/wws/info/flyve-mdm-dev).
 
-This way you help us to maximise the effort we can spend fixing issues and adding new features, by not reporting duplicate issues.
+## <a name="2.4"></a> 2.4 Customers Assistance :ear:
+Use our official [support channel](https://support.teclib.com/).
 
-We'll work very hard to fix all the issues without delay, but before fixing it we need to confirm it, for that we require you to provide us of the following information:
+# <a name="3"></a> 3. Feature Requests
 
-* Overview of the Issue - if an error is being thrown a description of the problem is extremely helpful
-* Motivation for or Use Case - explain why this is a bug for you
-* Project Version(s)
-* Device Operating System & Model - is this a problem with all devices or only specific ones?
-* Reproduce the Error - provide a live example or an unambiguous set of steps.
-* Related Issues - has a similar issue been reported before?
-* Suggest a Fix - if you can't fix the bug yourself, perhaps you can point to what might be causing the problem (line of code or commit)
+## <a name="3.1"></a> 3.1 Requirement for a Feature Request
 
-You can file new issues by filling out our [new issue form](https://github.com/flyve-mdm/android-mdm-agent/issues/new).
+### <a name="3.1.1"></a> 3.1.1 Major Feature Request
+For a major new feature request, [open an Issue](https://github.com/flyve-mdm/android-mdm-agent/issues/new) and outline your proposal so it can be discussed.
 
-### Submit a Pull Request
+### <a name="3.1.2"></a> 3.1.2 Minor Feature Request
+For a minor new feature request, you can craft it and directly [submit it as a Pull Request](https://github.com/flyve-mdm/android-mdm-agent/pulls), we'll take care of it.
 
-Before submitting your Pull Request check  for an open or closed PR that relates to your submission. We don't want to duplicate efforts.
+## <a name="3.2"></a> 3.2 Request a New Feature
+You can request a new feature by [submitting an Issue](https://github.com/flyve-mdm/android-mdm-agent/issues/new)
 
-* Make your changes in a new branch, the project is organized according to the branch model [Git Flow](http://git-flow.readthedocs.io/en/latest/), though this is not mandatory it's really useful:
+## <a name="3.3"></a> 3.3 Implement a New Feature
+If you like to _implement_ a new feature please [submit an Issue](https://github.com/flyve-mdm/android-mdm-agent/issues/new) with a proposal, so we can be sure it's relevant.
+
+# <a name="4"></a> 4. Submitting
+
+## <a name="4.1"></a> 4.1 How to Submit an Issue.
+
+### <a name="4.1.1"></a> 4.1.1 Check for Past Issues.
+Before submitting the issue please check the [Issue Tracker](https://github.com/flyve-mdm/android-mdm-agent/issues/), maybe the bug was already reported by another contributor. By doing this you help us maximize the effort spent on solving problems and the addition of new features.
+
+### <a name="4.1.2"></a> 4.1.2 Information Needed.
+We require the following information:
+
+* :warning: **Observed Results:** A brief description of the problem.
+* :boom: **Expected Results:** What did you expect to happen?
+
+### <a name="4.1.3"></a> 4.1.3 Submit an Issue. :rocket:
+Having all data and hand, file the new issue by filling out our [Issue form](https://github.com/flyve-mdm/android-mdm-agent/issues/new).
+### That's it! :tada:
+
+## <a name="4.2"></a> 4.2 How to Create a Pull Request (PR).
+
+Before submitting your Pull Request check for an open or closed PR that relates to your submission. We don't want to duplicate efforts.
+
+### <a name="4.2.1"></a> 4.2.1 Create a Branch
+
+Create a new branch before committing any changes. A _branch is a parallel version of a repository._ It is contained within the repository but does not affect the **`primary or master` branch**. Name it anything _except master, develop, release-*, or hotfix-*_. For the educational purpose in our examples, we'll use **`created-branch`**.
+
+:no_entry_sign: **Important:** Do not commit to our default **`develop`** branch.
+
+### <a name="4.2.2"></a> 4.2.2 Make Changes
+
+
+Make your changes in your **newly created** branch, the project is organized according to the branch model [Git Flow.](http://git-flow.readthedocs.io/en/latest/)
 
 ```console
-    git checkout -b my-fix-branch develop
+    git checkout -b created-branch develop
 ```
 
-* Follow our [Coding Rules](#coding-rules).
+### <a name="4.2.3"></a> 4.2.3 Commit Your Changes
+A commit, or "revision", is an individual change to a file (or set of files). It's like when you save a file, except with Git, every time you save it creates a unique ID (a.k.a. the "SHA" or "hash") that allows you to keep a record of what changes were made when and by who. Commits usually contain a commit message which is a brief description of what changes were made.
 
-* Commit your changes using a descriptive commit message that follows the [Conventional Commit](http://conventionalcommits.org/). This is **indispensable** since the release notes and changelogs are automatically generated from these messages.
+### <a name="4.2.3.1"></a> 4.2.3.1 Rules to Follow
+For commits, we follow the [Conventional Commit](http://conventionalcommits.org/). This leads to **more readable messages** that are easy to follow when looking through the project history. But also, we use the git commit messages to **automatically generate changelogs** from these messages.
 
-Please try not to write a commit message too long, in case your commit changes several aspect provide this information in the commit's description, for example:
+### <a name="4.2.3.2"></a> 4.2.3.2 Commit Format
+Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
+format that includes a **type**, a **scope** and a **description**:
 
-Bad
+The commit message should be structured as follows:
+
+```
+<type>(<optional scope>): <description>
+<BLANK LINE>
+<optional body>
+<BLANK LINE>
+<optional footer>
+```
+
+### <a name="4.2.3.2.1"></a> 4.2.3.2.1 Header: Writting a `<type>`. 
+Commits must be prefixed with a type, which consists of a verb, **feat, fix, build,** followed by a colon and space.
+
+**Your options:**
+
+* **build**: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm).
+* **ci**: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs).
+* **docs**: Documentation only changes.
+* **feat**: A new feature.
+* **fix**: A bug fix.
+* **perf**: A code change that improves performance.
+* **refactor**: A code change that neither fixes a bug or adds a feature.
+* **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).
+* **test**: Adding missing tests or correcting existing tests.
+
+---
+>**Example for `<type>`:**
+>:point_right:feat:point_left:(parser): add ability to parse arrays
+---
+
+### <a name="4.2.3.2.2"></a> 4.2.3.2.2 Header: Writting the (`<optional scope>`).
+A scope (optional) may be provided to a commit’s type, to provide additional contextual information and is contained in parenthesis.
+
+---
+> **Example for a (`<optional scope>`):**
+> feat:point_right:(parser):point_left:: add ability to parse arrays 
+---
+
+### <a name="4.2.3.2.3"></a> 4.2.3.2.3 Header: Writting a `<description>`
+A description must immediately follow the **`<type>(<optional scope>):`** The description is a short description of the pull request.
+
+**Important**
+* Use the imperative, present tense: "change" not "changed" nor "changes".
+* Don't capitalize the first letter.
+* Do not use a dot (.) at the end.
+
+---
+>**Example for `<description>`**:
+>feat(parser)::point_right:add ability to parse arrays:point_left:
+---
+
+### <a name="4.2.3.2.4"></a> 4.2.3.2.4 Header Lenght
+The **header** cannot be longer than 100 characters. This allows the message to be easier to read on GitHub as well as in various git tools.
+
+### <a name="4.2.3.2.5"></a> 4.2.3.2.5 Writting the `<optional body>`.
+The body should include the motivation for the change and contrast this with previous behavior.
+
+---
+>**Example for `<optional body>`**:
+```
+fix orthography
+remove out of date paragraph
+fix broken links
+```
+---
+
+### <a name="4.2.3.2.6"></a> 4.2.3.2.6 Writting the `<optional footer>`.
+The `<optional footer>` should contain a [closing reference to an issue](https://help.github.com/articles/closing-issues-using-keywords/) if any.
+
+For example, to close an issue numbered **`123`**, you could use the phrases **`Closes #123`** in your pull request description or commit message. Once the branch is merged into the default branch, the issue will close.
+
+---
+>**Example for `<optional footer>`**:
+>:point_right:Closes #123:point_left:
+---
+
+### <a name="4.2.3.3 "></a> 4.2.3.3 Commit Examples
+:shit:
+**Bad**
 
 ```console
-    docs(readme): fix orthography, remove out of date paragraph and fix broken links
+docs(readme): fix orthography, remove out of date paragraph and fix broken links
 ```
-
-Good
+:+1:
+**Good**
 
 ```console
-    docs(readme): change content
+docs(readme): document design improvement change content
 
-    fix orthography
-    remove out of date paragraph
-    fix broken links
+fix orthography
+remove out of date paragraph
+fix broken links
 ```
 
-* Push your branch to GitHub:
+### <a name="4.2.4"></a> 4.2.4 Push your Changes
+Pushing refers to **sending your committed changes to a remote repository**, such as a repository hosted on GitHub. For instance, if you change something locally, you'd want to then push those changes so that others may access them.
+
+After working on your changes you need to Push it (upload) your **newly created branch** to GitHub
 
 ```console
-    git push origin my-fix-branch
+    git push origin created-branch
 ```
 
-* In GitHub, send a pull request to our [Repository](https://github.com/flyve-mdm/android-mdm-agent).
+### <a name="4.2.5"></a> 4.2.5 Create a Pull Request
 
-Keep in mind that the PR should be named in reference of the main fix or feature you provide, minor information can be added in the description.
+Pull requests or PR are **proposed changes** to a repository submitted by a user and accepted or rejected by a repository's collaborators.
 
-Bad
+After all the work being pushed to the newly created branch, In GitHub, send a pull request to our [repository.](https://github.com/flyve-mdm/android-mdm-agent/pulls)
 
-> Fix errors in installation method, update dependencies and improve installation documentation
+### <a name="4.2.5.1"></a> 4.2.5.1 How to Write a Title for a Pull Request.
+Pull Request should be named in reference to the main fix or feature you provide, minor information can be added to the description.
 
-Good
+:straight_ruler:
+**Title Lenght:** Keep it concise and don't write more than **50 characters** in the title.
 
-> Fix installation method
+:construction:
+**For Work in Progress (WIP):** If you don’t want your PR to be merged accidentally, add the word "wip" or "WIP" to its title and the [WIP bot](https://github.com/apps/wip) will set its status to error.
 
-> What's the new behaviour?
-> 
-> * Dependencies updated
-> * Documentation improved
+---
+>**Example for `Titles for work in progress (WIP):`**
+>:point_right:WIP Contribution Guideline Improvement.:point_left:
+---
 
-Also, avoid using your branch or the commit guidelines to name your PR, for example:
+:white_check_mark:
+**Finalized Work:** If you are done with your work and want it to be merged, just write a descriptive title with no more than 50 characters.
 
-Bad
+---
+>**Example for `Titles for Finalized Work:`**
+>:point_right:Contribution Guideline Improvement.:point_left:
+---
 
-> feat(private): implement private data method
+### <a name="4.2.5.2"></a> 4.2.5.2 How to Write a Description for a Pull Request.
 
-Good
+We provide a [template](https://github.com/flyve-mdm/android-mdm-agent/community) for Pull Request descriptions. When you're creating a Pull Request it'll be shown automatically. Just fill it out and you're done.
 
-> Feature private information
+### <a name="4.2.5.1"></a> 4.2.5.1 Additional Information.
 
-In case your contribution has to do with reports, remember those are created in the develop branch, nor master or PR's.
+:page_with_curl:
+**Choose the right label**: Look at the [list of available labels.](https://github.com/flyve-mdm/android-mdm-agent/issues/labels)
 
-* If we suggest changes then:
+### <a name="4.2.6"></a> 4.2.6 How to proceed with suggestions.
 
-  * Make the required updates.
+If we suggest changes then:
+* Make the required updates.
+* Re-run the Angular test suites to ensure tests are still passing.
+* Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
 
-  * Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
+    ```shell
+    git rebase develop -i
+    git push -f
+    ```
+* Remove the WIP label.
 
-    **That's it! :tada: Thank you for your contribution!**
+# 5. <a name="5"></a> What to do next?
 
-#### After your pull request is merged
+After your pull request is merged, you can safely delete your branch and pull the changes
+from the main (upstream) repository:
 
-You can safely delete your branch and pull the changes from the main (upstream) repository:
+* Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:
 
-* Delete the remote branch on GitHub either through the GitHub web UI or your local shell as you prefer.
+    ```shell
+    git push origin --delete created-branch
+    ```
 
-## Coding Rules
+* Check out the develop branch:
+
+    ```shell
+    git checkout develop -f
+    ```
+
+* Delete the local branch:
+
+    ```shell
+    git branch -D created-branch
+    ```
+
+* Update your master with the latest upstream version:
+
+    ```shell
+    git pull --ff upstream master
+    ```
+
+# 6. <a name="6"></a> Coding Rules
 
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 
 * All features or bug fixes must be [tested](#test-and-build) by one or more specs (unit-tests).
 * All methods must be documented.
 
-## Test and Build
 
-* Fork and clone the source code from our repo
+# Good luck! :tada:
 
-* Build the app with Android Studio
-
-* Select the AndroidTest folder right-click on the directory and select Run tests
+[![flyve hero](/images/flyve-mdm-banner.png)](https://flyve-mdm.com/)
