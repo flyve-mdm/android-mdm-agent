@@ -219,10 +219,10 @@ public class MQTTService extends Service implements MqttCallback {
                     // main channel
 <span class="nc" id="L220">                    String channel = mTopic + &quot;/#&quot;;</span>
 <span class="nc" id="L221">                    FlyveLog.d(TAG, &quot;MQTT Channel: &quot; + channel);</span>
-<span class="nc" id="L222">                    mqttHelper.suscribe(&quot;#&quot;);</span>
+<span class="nc" id="L222">                    mqttHelper.subscribe(&quot;#&quot;);</span>
 
                     // subscribe to manifest
-<span class="nc" id="L225">                    mqttHelper.suscribe(&quot;/FlyvemdmManifest/Status/Version&quot;);</span>
+<span class="nc" id="L225">                    mqttHelper.subscribe(&quot;/FlyvemdmManifest/Status/Version&quot;);</span>
 
                     // send inventory on connect
 <span class="nc" id="L228">                    mqttHelper.createInventory();</span>
@@ -318,124 +318,400 @@ public class MQTTService extends Service implements MqttCallback {
 
 <span class="nc" id="L319">        storeLog(Helpers.broadCastMessage(&quot;MQTT Message&quot;, &quot;Body&quot;, messageBody));</span>
 
-        try {
-<span class="nc" id="L322">            JSONObject jsonObj = new JSONObject(messageBody);</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">        if(topic.isEmpty()) {</span>
+            // exit if the topic if empty
+<span class="nc" id="L323">            return;</span>
+        }
 
-<span class="nc bnc" id="L324" title="All 2 branches missed.">            if (jsonObj.has(QUERY)) {</span>
-                // PING request
-<span class="nc bnc" id="L326" title="All 2 branches missed.">                if (&quot;Ping&quot;.equalsIgnoreCase(jsonObj.getString(QUERY))) {</span>
-<span class="nc" id="L327">                    mqttHelper.sendKeepAlive();</span>
-<span class="nc" id="L328">                    return;</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">        if(messageBody.isEmpty()) {</span>
+            // exit if the message if empty
+<span class="nc" id="L328">            return;</span>
+        }
+
+        // Command/Ping
+<span class="nc bnc" id="L332" title="All 2 branches missed.">        if(topic.toLowerCase().contains(&quot;ping&quot;)) {</span>
+            try {
+<span class="nc" id="L334">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">                if (jsonObj.has(QUERY)</span>
+<span class="nc bnc" id="L336" title="All 2 branches missed.">                        &amp;&amp; &quot;Ping&quot;.equalsIgnoreCase(jsonObj.getString(QUERY))) {</span>
+<span class="nc" id="L337">                    mqttHelper.sendKeepAlive();</span>
                 }
-                // Inventory Request
-<span class="nc bnc" id="L331" title="All 2 branches missed.">                if(&quot;Inventory&quot;.equalsIgnoreCase(jsonObj.getString(QUERY))) {</span>
-<span class="nc" id="L332">                    mqttHelper.createInventory();</span>
-<span class="nc" id="L333">                    return;</span>
+<span class="nc" id="L339">            } catch (Exception ex) {</span>
+<span class="nc" id="L340">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L341">            }</span>
+        }
+
+        // Command/Geolocate
+<span class="nc bnc" id="L345" title="All 2 branches missed.">        if(topic.toLowerCase().contains(&quot;geolocate&quot;)) {</span>
+            try {
+<span class="nc" id="L347">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+<span class="nc bnc" id="L348" title="All 2 branches missed.">                if (jsonObj.has(QUERY)</span>
+<span class="nc bnc" id="L349" title="All 2 branches missed.">                        &amp;&amp; &quot;Geolocate&quot;.equalsIgnoreCase(jsonObj.getString(QUERY))) {</span>
+<span class="nc" id="L350">                    mqttHelper.sendGPS();</span>
                 }
+<span class="nc" id="L352">            } catch (Exception ex) {</span>
+<span class="nc" id="L353">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L354">            }</span>
+        }
 
-                // Geolocation request
-<span class="nc bnc" id="L337" title="All 2 branches missed.">                if(&quot;Geolocate&quot;.equalsIgnoreCase(jsonObj.getString(QUERY))) {</span>
-<span class="nc" id="L338">                    mqttHelper.sendGPS();</span>
-<span class="nc" id="L339">                    return;</span>
+        // Command/Inventory
+<span class="nc bnc" id="L358" title="All 2 branches missed.">        if(topic.toLowerCase().contains(&quot;inventory&quot;)) {</span>
+            try {
+<span class="nc" id="L360">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">                if (jsonObj.has(QUERY)</span>
+<span class="nc bnc" id="L362" title="All 2 branches missed.">                        &amp;&amp; &quot;Inventory&quot;.equalsIgnoreCase(jsonObj.getString(QUERY))) {</span>
+<span class="nc" id="L363">                    mqttHelper.createInventory();</span>
                 }
-            }
+<span class="nc" id="L365">            } catch (Exception ex) {</span>
+<span class="nc" id="L366">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L367">            }</span>
+        }
 
-            // Wipe Request
-<span class="nc bnc" id="L344" title="All 4 branches missed.">            if(jsonObj.has(&quot;wipe&quot;) &amp;&amp; &quot;NOW&quot;.equalsIgnoreCase(jsonObj.getString(&quot;wipe&quot;)) ) {</span>
-<span class="nc" id="L345">                mqttHelper.wipe();</span>
-<span class="nc" id="L346">                return;</span>
-            }
+        // Command/Lock
+<span class="nc bnc" id="L371" title="All 2 branches missed.">        if(topic.toLowerCase().contains(&quot;lock&quot;)) {</span>
+            try {
+<span class="nc" id="L373">                JSONObject jsonObj = new JSONObject(messageBody);</span>
 
-            // Version Manifest
-<span class="nc bnc" id="L350" title="All 2 branches missed.">            if(jsonObj.has(&quot;version&quot;)) {</span>
-<span class="nc" id="L351">                mqttHelper.addManifest(jsonObj);</span>
-            }
-
-            // Unenroll Request
-<span class="nc bnc" id="L355" title="All 2 branches missed.">            if (jsonObj.has(&quot;unenroll&quot;)) {</span>
-<span class="nc" id="L356">                mqttHelper.unenroll();</span>
-<span class="nc" id="L357">                return;</span>
-            }
-
-            // Unenroll Request
-<span class="nc bnc" id="L361" title="All 2 branches missed.">            if (jsonObj.has(&quot;unenroll&quot;)) {</span>
-<span class="nc" id="L362">                mqttHelper.unenroll();</span>
-<span class="nc" id="L363">                return;</span>
-            }
-
-            // Subscribe a new channel in MQTT
-<span class="nc bnc" id="L367" title="All 2 branches missed.">            if(jsonObj.has(&quot;subscribe&quot;)) {</span>
-<span class="nc" id="L368">                JSONArray jsonTopics = jsonObj.getJSONArray(&quot;subscribe&quot;);</span>
-<span class="nc bnc" id="L369" title="All 2 branches missed.">                for(int i=0; i&lt;jsonTopics.length();i++) {</span>
-<span class="nc" id="L370">                    JSONObject jsonTopic = jsonTopics.getJSONObject(i);</span>
-
-<span class="nc" id="L372">                    String channel = jsonTopic.getString(&quot;topic&quot;)+&quot;/#&quot;;</span>
-<span class="nc" id="L373">                    FlyveLog.d(channel);</span>
-
-                    // Add new channel
-<span class="nc" id="L376">                    mqttHelper.suscribe(channel);</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">                if (jsonObj.has(&quot;lock&quot;)) {</span>
+<span class="nc" id="L376">                    String lock = jsonObj.getString(&quot;lock&quot;);</span>
+<span class="nc" id="L377">                    mqttHelper.lockDevice(lock.equalsIgnoreCase(&quot;now&quot;));</span>
                 }
-<span class="nc" id="L378">                return;</span>
-            }
+<span class="nc" id="L379">            } catch (Exception ex) {</span>
+<span class="nc" id="L380">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L381">            }</span>
+        }
 
-            // MDM
-<span class="nc bnc" id="L382" title="All 2 branches missed.">            if(jsonObj.has(&quot;MDM&quot;)) {</span>
-<span class="nc" id="L383">                mqttHelper.mdm(MQTTService.this, jsonObj);</span>
-<span class="nc" id="L384">                return;</span>
-            }
+        // Command/Wipe
+<span class="nc bnc" id="L385" title="All 2 branches missed.">        if(topic.toLowerCase().contains(&quot;wipe&quot;)) {</span>
+            try {
+<span class="nc" id="L387">                JSONObject jsonObj = new JSONObject(messageBody);</span>
 
-            // Lock
-<span class="nc bnc" id="L388" title="All 2 branches missed.">            if(jsonObj.has(&quot;lock&quot;)) {</span>
-<span class="nc" id="L389">                mqttHelper.lockDevice(MQTTService.this, jsonObj);</span>
-<span class="nc" id="L390">                return;</span>
-            }
+<span class="nc bnc" id="L389" title="All 4 branches missed.">                if(jsonObj.has(&quot;wipe&quot;) &amp;&amp; &quot;NOW&quot;.equalsIgnoreCase(jsonObj.getString(&quot;wipe&quot;)) ) {</span>
+<span class="nc" id="L390">                    mqttHelper.wipe();</span>
+                }
+<span class="nc" id="L392">            } catch (Exception ex) {</span>
+<span class="nc" id="L393">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L394">            }</span>
+        }
 
-            // FLEET Camera
-<span class="nc bnc" id="L394" title="All 2 branches missed.">            if(jsonObj.has(&quot;camera&quot;)) {</span>
-<span class="nc" id="L395">                mqttHelper.disableCamera(jsonObj);</span>
-<span class="nc" id="L396">                return;</span>
-            }
+        // Command/Unenroll
+<span class="nc bnc" id="L398" title="All 2 branches missed.">        if(topic.toLowerCase().contains(&quot;unenroll&quot;)) {</span>
+            try {
+<span class="nc" id="L400">                JSONObject jsonObj = new JSONObject(messageBody);</span>
 
-            // FLEET connectivity
-<span class="nc bnc" id="L400" title="All 2 branches missed.">            if(jsonObj.has(&quot;connectivity&quot;)) {</span>
-<span class="nc" id="L401">                mqttHelper.disableConnectivity(jsonObj);</span>
-<span class="nc" id="L402">                return;</span>
-            }
+<span class="nc bnc" id="L402" title="All 4 branches missed.">                if(jsonObj.has(&quot;unenroll&quot;) &amp;&amp; &quot;NOW&quot;.equalsIgnoreCase(jsonObj.getString(&quot;unenroll&quot;)) ) {</span>
+<span class="nc" id="L403">                    FlyveLog.d(&quot;unroll&quot;);</span>
+<span class="nc" id="L404">                    mqttHelper.unenroll();</span>
+                }
+<span class="nc" id="L406">            } catch (Exception ex) {</span>
+<span class="nc" id="L407">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L408">            }</span>
+        }
 
-            // UI
-<span class="nc bnc" id="L406" title="All 2 branches missed.">            if(jsonObj.has(&quot;ui&quot;)) {</span>
-<span class="nc" id="L407">                mqttHelper.disableUI(jsonObj);</span>
-<span class="nc" id="L408">                return;</span>
-            }
+        // Command/Subscribe
+<span class="nc bnc" id="L412" title="All 2 branches missed.">        if(topic.toLowerCase().contains(&quot;subscribe&quot;)) {</span>
+            try {
+<span class="nc" id="L414">                JSONObject jsonObj = new JSONObject(messageBody);</span>
 
-            // FLEET encryption
-<span class="nc bnc" id="L412" title="All 2 branches missed.">            if(jsonObj.has(&quot;encryption&quot;)) {</span>
-<span class="nc" id="L413">                mqttHelper.storageEncryption(jsonObj);</span>
-<span class="nc" id="L414">                return;</span>
-            }
+<span class="nc bnc" id="L416" title="All 2 branches missed.">                if(jsonObj.has(&quot;subscribe&quot;)) {</span>
+<span class="nc" id="L417">                    JSONArray jsonTopics = jsonObj.getJSONArray(&quot;subscribe&quot;);</span>
+<span class="nc bnc" id="L418" title="All 2 branches missed.">                    for(int i=0; i&lt;jsonTopics.length();i++) {</span>
+<span class="nc" id="L419">                        JSONObject jsonTopic = jsonTopics.getJSONObject(i);</span>
 
-            // FLEET policies
-<span class="nc bnc" id="L418" title="All 2 branches missed.">            if(jsonObj.has(&quot;policies&quot;)) {</span>
-<span class="nc" id="L419">                mqttHelper.policiesDevice(jsonObj);</span>
-<span class="nc" id="L420">                return;</span>
-            }
+<span class="nc" id="L421">                        String channel = jsonTopic.getString(&quot;topic&quot;)+&quot;/#&quot;;</span>
+<span class="nc" id="L422">                        FlyveLog.d(channel);</span>
 
-            // Files
-<span class="nc bnc" id="L424" title="All 2 branches missed.">            if(jsonObj.has(&quot;file&quot;)) {</span>
-<span class="nc" id="L425">                mqttHelper.filesOnDevices(jsonObj);</span>
-<span class="nc" id="L426">                return;</span>
-            }
+                        // Add new channel
+<span class="nc" id="L425">                        mqttHelper.subscribe(channel);</span>
+                    }
+                }
+<span class="nc" id="L428">            } catch (Exception ex) {</span>
+<span class="nc" id="L429">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L430">            }</span>
+        }
 
-            // Applications
-<span class="nc bnc" id="L430" title="All 2 branches missed.">            if(jsonObj.has(&quot;application&quot;)) {</span>
-<span class="nc" id="L431">                mqttHelper.applicationOnDevices(jsonObj);</span>
-<span class="nc" id="L432">                return;</span>
-            }
-<span class="nc" id="L434">        } catch (Exception ex) {</span>
-<span class="nc" id="L435">            FlyveLog.e(TAG, ex.getMessage());</span>
-<span class="nc" id="L436">            storeLog(Helpers.broadCastMessage(ERROR, &quot;Error on messageArrived&quot;, ex.getMessage()));</span>
-<span class="nc" id="L437">        }</span>
-<span class="nc" id="L438">    }</span>
+        // Policy/passwordEnabled
+<span class="nc" id="L434">        String PASSWORD_ENABLE = &quot;passwordEnabled&quot;;</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">        if(topic.toLowerCase().contains(PASSWORD_ENABLE.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L437">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L439" title="All 2 branches missed.">                if(jsonObj.has(PASSWORD_ENABLE)) {</span>
+<span class="nc" id="L440">                    mqttHelper.passwordEnabled();</span>
+                }
+<span class="nc" id="L442">            } catch (Exception ex) {</span>
+<span class="nc" id="L443">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L444">            }</span>
+        }
+
+        // Policy/passwordEnabled
+<span class="nc" id="L448">        String PASSWORD_QUALITY = &quot;passwordQuality&quot;;</span>
+<span class="nc bnc" id="L449" title="All 2 branches missed.">        if(topic.toLowerCase().contains(PASSWORD_QUALITY.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L451">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L453" title="All 2 branches missed.">                if(jsonObj.has(PASSWORD_QUALITY)) {</span>
+<span class="nc" id="L454">                    String quality = jsonObj.getString(PASSWORD_QUALITY);</span>
+<span class="nc" id="L455">                    mqttHelper.passwordQuality(quality);</span>
+                }
+<span class="nc" id="L457">            } catch (Exception ex) {</span>
+<span class="nc" id="L458">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L459">            }</span>
+        }
+
+        // Policy/passwordMinLength
+<span class="nc" id="L463">        String PASSWORD_MIN_LENGTH = &quot;passwordMinLength&quot;;</span>
+<span class="nc bnc" id="L464" title="All 2 branches missed.">        if(topic.toLowerCase().contains(PASSWORD_MIN_LENGTH.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L466">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L468" title="All 2 branches missed.">                if(jsonObj.has(PASSWORD_MIN_LENGTH)) {</span>
+<span class="nc" id="L469">                    int length = jsonObj.getInt(PASSWORD_MIN_LENGTH);</span>
+<span class="nc" id="L470">                    mqttHelper.passwordMinLength(length);</span>
+                }
+<span class="nc" id="L472">            } catch (Exception ex) {</span>
+<span class="nc" id="L473">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L474">            }</span>
+        }
+
+        // Policy/passwordMinLowerCase
+<span class="nc" id="L478">        String PASSWORD_MIN_LOWERCASE = &quot;passwordMinLowerCase&quot;;</span>
+<span class="nc bnc" id="L479" title="All 2 branches missed.">        if(topic.toLowerCase().contains(PASSWORD_MIN_LOWERCASE.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L481">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L483" title="All 2 branches missed.">                if(jsonObj.has(PASSWORD_MIN_LOWERCASE)) {</span>
+<span class="nc" id="L484">                    int minimum = jsonObj.getInt(PASSWORD_MIN_LOWERCASE);</span>
+<span class="nc" id="L485">                    mqttHelper.passwordMinLowerCase(minimum);</span>
+                }
+<span class="nc" id="L487">            } catch (Exception ex) {</span>
+<span class="nc" id="L488">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L489">            }</span>
+        }
+
+        // Policy/passwordMinUpperCase
+<span class="nc" id="L493">        String PASSWORD_MIN_UPPERCASE = &quot;passwordMinUpperCase&quot;;</span>
+<span class="nc bnc" id="L494" title="All 2 branches missed.">        if(topic.toLowerCase().contains(PASSWORD_MIN_UPPERCASE.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L496">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L498" title="All 2 branches missed.">                if(jsonObj.has(PASSWORD_MIN_UPPERCASE)) {</span>
+<span class="nc" id="L499">                    int minimum = jsonObj.getInt(PASSWORD_MIN_UPPERCASE);</span>
+<span class="nc" id="L500">                    mqttHelper.passwordMinUpperCase(minimum);</span>
+                }
+<span class="nc" id="L502">            } catch (Exception ex) {</span>
+<span class="nc" id="L503">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L504">            }</span>
+        }
+
+        // Policy/passwordMinNonLetter
+<span class="nc" id="L508">        String PASSWORD_MIN_NON_LETTER = &quot;passwordMinNonLetter&quot;;</span>
+<span class="nc bnc" id="L509" title="All 2 branches missed.">        if(topic.toLowerCase().contains(PASSWORD_MIN_NON_LETTER.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L511">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L513" title="All 2 branches missed.">                if(jsonObj.has(PASSWORD_MIN_NON_LETTER)) {</span>
+<span class="nc" id="L514">                    int minimum = jsonObj.getInt(PASSWORD_MIN_NON_LETTER);</span>
+<span class="nc" id="L515">                    mqttHelper.passwordMinNonLetter(minimum);</span>
+                }
+<span class="nc" id="L517">            } catch (Exception ex) {</span>
+<span class="nc" id="L518">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L519">            }</span>
+        }
+
+        // Policy/passwordMinLetters
+<span class="nc" id="L523">        String PASSWORD_MIN_LETTERS = &quot;passwordMinLetters&quot;;</span>
+<span class="nc bnc" id="L524" title="All 2 branches missed.">        if(topic.toLowerCase().contains(PASSWORD_MIN_LETTERS.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L526">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L528" title="All 2 branches missed.">                if(jsonObj.has(PASSWORD_MIN_LETTERS)) {</span>
+<span class="nc" id="L529">                    int minimum = jsonObj.getInt(PASSWORD_MIN_LETTERS);</span>
+<span class="nc" id="L530">                    mqttHelper.passwordMinLetter(minimum);</span>
+                }
+<span class="nc" id="L532">            } catch (Exception ex) {</span>
+<span class="nc" id="L533">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L534">            }</span>
+        }
+
+        // Policy/passwordMinNumeric
+<span class="nc" id="L538">        String PASSWORD_MIN_NUMERIC = &quot;passwordMinNumeric&quot;;</span>
+<span class="nc bnc" id="L539" title="All 2 branches missed.">        if(topic.toLowerCase().contains(PASSWORD_MIN_NUMERIC.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L541">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L543" title="All 2 branches missed.">                if(jsonObj.has(PASSWORD_MIN_NUMERIC)) {</span>
+<span class="nc" id="L544">                    int minimum = jsonObj.getInt(PASSWORD_MIN_NUMERIC);</span>
+<span class="nc" id="L545">                    mqttHelper.passwordMinNumeric(minimum);</span>
+                }
+<span class="nc" id="L547">            } catch (Exception ex) {</span>
+<span class="nc" id="L548">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L549">            }</span>
+        }
+
+        // Policy/passwordMinSymbols
+<span class="nc" id="L553">        String PASSWORD_MIN_SYMBOLS = &quot;passwordMinSymbols&quot;;</span>
+<span class="nc bnc" id="L554" title="All 2 branches missed.">        if(topic.toLowerCase().contains(PASSWORD_MIN_SYMBOLS.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L556">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L558" title="All 2 branches missed.">                if(jsonObj.has(PASSWORD_MIN_SYMBOLS)) {</span>
+<span class="nc" id="L559">                    int minimum = jsonObj.getInt(PASSWORD_MIN_SYMBOLS);</span>
+<span class="nc" id="L560">                    mqttHelper.passwordMinSymbols(minimum);</span>
+                }
+<span class="nc" id="L562">            } catch (Exception ex) {</span>
+<span class="nc" id="L563">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L564">            }</span>
+        }
+
+        // Policy/MaximumFailedPasswordsForWipe
+<span class="nc" id="L568">        String MAXIMUM_FAILED_PASSWORDS_FOR_WIPE = &quot;MaximumFailedPasswordsForWipe&quot;;</span>
+<span class="nc bnc" id="L569" title="All 2 branches missed.">        if(topic.toLowerCase().contains(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L571">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L573" title="All 2 branches missed.">                if(jsonObj.has(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE)) {</span>
+<span class="nc" id="L574">                    int max = jsonObj.getInt(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE);</span>
+<span class="nc" id="L575">                    mqttHelper.maximumFailedPasswordsForWipe(max);</span>
+                }
+<span class="nc" id="L577">            } catch (Exception ex) {</span>
+<span class="nc" id="L578">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L579">            }</span>
+        }
+
+        // Policy/MaximumTimeToLock
+<span class="nc" id="L583">        String MAXIMUM_TIME_TO_LOCK = &quot;MaximumTimeToLock&quot;;</span>
+<span class="nc bnc" id="L584" title="All 2 branches missed.">        if(topic.toLowerCase().contains(MAXIMUM_TIME_TO_LOCK.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L586">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L588" title="All 2 branches missed.">                if(jsonObj.has(MAXIMUM_TIME_TO_LOCK)) {</span>
+<span class="nc" id="L589">                    int max = jsonObj.getInt(MAXIMUM_TIME_TO_LOCK);</span>
+<span class="nc" id="L590">                    mqttHelper.maximumTimeToLock(max);</span>
+                }
+<span class="nc" id="L592">            } catch (Exception ex) {</span>
+<span class="nc" id="L593">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L594">            }</span>
+        }
+
+        // Policy/storageEncryption
+<span class="nc" id="L598">        String STORAGE_ENCRYPTION = &quot;storageEncryption&quot;;</span>
+<span class="nc bnc" id="L599" title="All 2 branches missed.">        if(topic.toLowerCase().contains(STORAGE_ENCRYPTION.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L601">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L603" title="All 2 branches missed.">                if(jsonObj.has(STORAGE_ENCRYPTION)) {</span>
+<span class="nc" id="L604">                    boolean enable = jsonObj.getBoolean(STORAGE_ENCRYPTION);</span>
+<span class="nc" id="L605">                    mqttHelper.storageEncryption(enable);</span>
+                }
+<span class="nc" id="L607">            } catch (Exception ex) {</span>
+<span class="nc" id="L608">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L609">            }</span>
+        }
+
+        // Policy/disableCamera
+<span class="nc" id="L613">        String DISABLE_CAMERA = &quot;disableCamera&quot;;</span>
+<span class="nc bnc" id="L614" title="All 2 branches missed.">        if(topic.toLowerCase().contains(DISABLE_CAMERA.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L616">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L618" title="All 2 branches missed.">                if(jsonObj.has(DISABLE_CAMERA)) {</span>
+<span class="nc" id="L619">                    Boolean disable = jsonObj.getBoolean(DISABLE_CAMERA);</span>
+<span class="nc" id="L620">                    mqttHelper.disableCamera(disable);</span>
+                }
+<span class="nc" id="L622">            } catch (Exception ex) {</span>
+<span class="nc" id="L623">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L624">            }</span>
+        }
+
+        // Policy/disableBluetooth
+<span class="nc" id="L628">        String DISABLE_BLUETOOTH = &quot;disableBluetooth&quot;;</span>
+<span class="nc bnc" id="L629" title="All 2 branches missed.">        if(topic.toLowerCase().contains(DISABLE_BLUETOOTH.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L631">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L633" title="All 2 branches missed.">                if(jsonObj.has(DISABLE_BLUETOOTH)) {</span>
+<span class="nc" id="L634">                    Boolean disable = jsonObj.getBoolean(DISABLE_BLUETOOTH);</span>
+<span class="nc" id="L635">                    mqttHelper.disableBluetooth(disable);</span>
+                }
+<span class="nc" id="L637">            } catch (Exception ex) {</span>
+<span class="nc" id="L638">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L639">            }</span>
+        }
+
+        // Policy/deployApp
+<span class="nc" id="L643">        String DEPLOY_APP = &quot;deployApp&quot;;</span>
+<span class="nc bnc" id="L644" title="All 2 branches missed.">        if(topic.toLowerCase().contains(DEPLOY_APP.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L646">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L648" title="All 2 branches missed.">                if(jsonObj.has(DEPLOY_APP)) {</span>
+<span class="nc" id="L649">                    String deployApp = jsonObj.getString(DEPLOY_APP);</span>
+<span class="nc" id="L650">                    String id = jsonObj.getString(&quot;id&quot;);</span>
+<span class="nc" id="L651">                    String versionCode = jsonObj.getString(&quot;versionCode&quot;);</span>
+<span class="nc" id="L652">                    String taskId = jsonObj.getString(&quot;taskId&quot;);</span>
+
+<span class="nc" id="L654">                    mqttHelper.installPackage(deployApp, id, versionCode, taskId);</span>
+                }
+<span class="nc" id="L656">            } catch (Exception ex) {</span>
+<span class="nc" id="L657">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L658">            }</span>
+        }
+
+        // Policy/deployApp
+<span class="nc" id="L662">        String REMOVE_APP = &quot;removeApp&quot;;</span>
+<span class="nc bnc" id="L663" title="All 2 branches missed.">        if(topic.toLowerCase().contains(REMOVE_APP.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L665">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L667" title="All 2 branches missed.">                if(jsonObj.has(REMOVE_APP)) {</span>
+<span class="nc" id="L668">                    String removeApp = jsonObj.getString(REMOVE_APP);</span>
+<span class="nc" id="L669">                    String taskId = jsonObj.getString(&quot;taskId&quot;);</span>
+
+<span class="nc" id="L671">                    mqttHelper.removePackage(removeApp);</span>
+                }
+<span class="nc" id="L673">            } catch (Exception ex) {</span>
+<span class="nc" id="L674">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L675">            }</span>
+        }
+
+        // Policy/deployFile
+<span class="nc" id="L679">        String DEPLOY_FILE = &quot;deployFile&quot;;</span>
+<span class="nc bnc" id="L680" title="All 2 branches missed.">        if(topic.toLowerCase().contains(DEPLOY_FILE.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L682">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L684" title="All 2 branches missed.">                if(jsonObj.has(DEPLOY_FILE)) {</span>
+<span class="nc" id="L685">                    String deployFile = jsonObj.getString(DEPLOY_FILE);</span>
+<span class="nc" id="L686">                    String id = jsonObj.getString(&quot;id&quot;);</span>
+<span class="nc" id="L687">                    String versionCode = jsonObj.getString(&quot;version&quot;);</span>
+<span class="nc" id="L688">                    String taskId = jsonObj.getString(&quot;taskId&quot;);</span>
+
+<span class="nc" id="L690">                    mqttHelper.downloadFile(deployFile, id, versionCode, taskId);</span>
+                }
+<span class="nc" id="L692">            } catch (Exception ex) {</span>
+<span class="nc" id="L693">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L694">            }</span>
+        }
+
+        // Policy/deployFile
+<span class="nc" id="L698">        String REMOVE_FILE = &quot;removeFile&quot;;</span>
+<span class="nc bnc" id="L699" title="All 2 branches missed.">        if(topic.toLowerCase().contains(REMOVE_FILE.toLowerCase())) {</span>
+            try {
+<span class="nc" id="L701">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+
+<span class="nc bnc" id="L703" title="All 2 branches missed.">                if(jsonObj.has(REMOVE_FILE)) {</span>
+<span class="nc" id="L704">                    String removeFile = jsonObj.getString(REMOVE_FILE);</span>
+<span class="nc" id="L705">                    String taskId = jsonObj.getString(&quot;taskId&quot;);</span>
+
+<span class="nc" id="L707">                    mqttHelper.removeFile(removeFile);</span>
+                }
+<span class="nc" id="L709">            } catch (Exception ex) {</span>
+<span class="nc" id="L710">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L711">            }</span>
+        }
+<span class="nc" id="L713">    }</span>
+
 
     /**
      * Send broadcast for log messages from MQTT
@@ -443,8 +719,8 @@ public class MQTTService extends Service implements MqttCallback {
      */
     public void broadcastMessage(String message) {
         //send broadcast
-<span class="nc" id="L446">        Helpers.sendBroadcast(message, Helpers.BROADCAST_MSG, getApplicationContext());</span>
-<span class="nc" id="L447">    }</span>
+<span class="nc" id="L722">        Helpers.sendBroadcast(message, Helpers.BROADCAST_MSG, getApplicationContext());</span>
+<span class="nc" id="L723">    }</span>
 
     /**
      * store log messages from MQTT
@@ -452,8 +728,8 @@ public class MQTTService extends Service implements MqttCallback {
      */
     public void storeLog(String message) {
         // write log file
-<span class="nc" id="L455">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
-<span class="nc" id="L456">    }</span>
+<span class="nc" id="L731">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
+<span class="nc" id="L732">    }</span>
 
     /**
      * Send broadcast for status of the service
@@ -461,17 +737,17 @@ public class MQTTService extends Service implements MqttCallback {
      */
     private void broadcastServiceStatus(boolean status) {
         //send broadcast
-<span class="nc" id="L464">        this.connected = status;</span>
+<span class="nc" id="L740">        this.connected = status;</span>
 
         // reconnect
-<span class="nc bnc" id="L467" title="All 2 branches missed.">        if(!status) {</span>
-<span class="nc" id="L468">            reconnect();</span>
+<span class="nc bnc" id="L743" title="All 2 branches missed.">        if(!status) {</span>
+<span class="nc" id="L744">            reconnect();</span>
         }
 
-<span class="nc" id="L471">        AppData cache = new AppData(this.getApplicationContext());</span>
-<span class="nc" id="L472">        cache.setOnlineStatus(status);</span>
+<span class="nc" id="L747">        AppData cache = new AppData(this.getApplicationContext());</span>
+<span class="nc" id="L748">        cache.setOnlineStatus(status);</span>
 
-<span class="nc" id="L474">        Helpers.sendBroadcast(status, Helpers.BROADCAST_STATUS, getApplicationContext());</span>
-<span class="nc" id="L475">    }</span>
+<span class="nc" id="L750">        Helpers.sendBroadcast(status, Helpers.BROADCAST_STATUS, getApplicationContext());</span>
+<span class="nc" id="L751">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

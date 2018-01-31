@@ -287,21 +287,20 @@ public class PoliciesFiles extends AsyncTask&lt;String, Integer, Integer&gt; {
 
     /**
      * Uninstall the Android Package
-     * @param context
      * @param mPackage to uninstall
      * @return int if it succeed 1, otherwise 0
      */
-    public static int removeApk(Context context, String mPackage){
-<span class="nc" id="L295">        Uri packageUri = Uri.parse(&quot;package:&quot;+mPackage);</span>
-<span class="nc" id="L296">        Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);</span>
-<span class="nc" id="L297">        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
+    public int removeApk(String mPackage){
+<span class="nc" id="L294">        Uri packageUri = Uri.parse(&quot;package:&quot;+mPackage);</span>
+<span class="nc" id="L295">        Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);</span>
+<span class="nc" id="L296">        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
         try {
-<span class="nc" id="L299">            context.startActivity(intent);</span>
-<span class="nc" id="L300">        } catch (ActivityNotFoundException e) {</span>
-<span class="nc" id="L301">            FlyveLog.e(e.getMessage());</span>
-<span class="nc" id="L302">            return 0;</span>
-<span class="nc" id="L303">        }</span>
-<span class="nc" id="L304">        return 1;</span>
+<span class="nc" id="L298">            context.startActivity(intent);</span>
+<span class="nc" id="L299">        } catch (ActivityNotFoundException e) {</span>
+<span class="nc" id="L300">            FlyveLog.e(e.getMessage());</span>
+<span class="nc" id="L301">            return 0;</span>
+<span class="nc" id="L302">        }</span>
+<span class="nc" id="L303">        return 1;</span>
     }
 
     /**
@@ -309,60 +308,60 @@ public class PoliciesFiles extends AsyncTask&lt;String, Integer, Integer&gt; {
      * @param file to install
      */
     public void installApk(String file) {
-<span class="nc" id="L312">        FlyveLog.d(file);</span>
-<span class="nc" id="L313">        Uri uri = Uri.fromFile(new File(file));</span>
-<span class="nc bnc" id="L314" title="All 2 branches missed.">        if (uri == null) {</span>
-<span class="nc" id="L315">            throw new RuntimeException(&quot;Set the data uri to point to an apk location!&quot;);</span>
+<span class="nc" id="L311">        FlyveLog.d(file);</span>
+<span class="nc" id="L312">        Uri uri = Uri.fromFile(new File(file));</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">        if (uri == null) {</span>
+<span class="nc" id="L314">            throw new RuntimeException(&quot;Set the data uri to point to an apk location!&quot;);</span>
         }
         // https://code.google.com/p/android/issues/detail?id=205827
-<span class="nc bnc" id="L318" title="All 2 branches missed.">        if ((Build.VERSION.SDK_INT &lt; 24)</span>
-<span class="nc bnc" id="L319" title="All 2 branches missed.">                &amp;&amp; (!uri.getScheme().equals(&quot;file&quot;))) {</span>
-<span class="nc" id="L320">            throw new RuntimeException(&quot;PackageInstaller &lt; Android N only supports file scheme!&quot;);</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">        if ((Build.VERSION.SDK_INT &lt; 24)</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">                &amp;&amp; (!uri.getScheme().equals(&quot;file&quot;))) {</span>
+<span class="nc" id="L319">            throw new RuntimeException(&quot;PackageInstaller &lt; Android N only supports file scheme!&quot;);</span>
         }
-<span class="nc bnc" id="L322" title="All 2 branches missed.">        if ((Build.VERSION.SDK_INT &gt;= 24)</span>
-<span class="nc bnc" id="L323" title="All 2 branches missed.">                &amp;&amp; (!uri.getScheme().equals(&quot;content&quot;))) {</span>
-<span class="nc" id="L324">            throw new RuntimeException(&quot;PackageInstaller &gt;= Android N only supports content scheme!&quot;);</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">        if ((Build.VERSION.SDK_INT &gt;= 24)</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">                &amp;&amp; (!uri.getScheme().equals(&quot;content&quot;))) {</span>
+<span class="nc" id="L323">            throw new RuntimeException(&quot;PackageInstaller &gt;= Android N only supports content scheme!&quot;);</span>
         }
 
-<span class="nc" id="L327">        Intent intent = new Intent();</span>
+<span class="nc" id="L326">        Intent intent = new Intent();</span>
 
         // Note regarding EXTRA_NOT_UNKNOWN_SOURCE:
         // works only when being installed as system-app
         // https://code.google.com/p/android/issues/detail?id=42253
 
-<span class="nc bnc" id="L333" title="All 2 branches missed.">        if (Build.VERSION.SDK_INT &lt; 14) {</span>
-<span class="nc" id="L334">            intent.setAction(Intent.ACTION_VIEW);</span>
-<span class="nc" id="L335">            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
-<span class="nc" id="L336">            intent.setDataAndType(uri, &quot;application/vnd.android.package-archive&quot;);</span>
-<span class="nc bnc" id="L337" title="All 2 branches missed.">        } else if (Build.VERSION.SDK_INT &lt; 16) {</span>
-<span class="nc" id="L338">            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);</span>
-<span class="nc" id="L339">            intent.setData(uri);</span>
-<span class="nc" id="L340">            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
-<span class="nc" id="L341">            intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);</span>
-<span class="nc" id="L342">            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);</span>
-<span class="nc" id="L343">            intent.putExtra(Intent.EXTRA_ALLOW_REPLACE, true);</span>
-<span class="nc bnc" id="L344" title="All 2 branches missed.">        } else if (Build.VERSION.SDK_INT &lt; 24) {</span>
-<span class="nc" id="L345">            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);</span>
-<span class="nc" id="L346">            intent.setData(uri);</span>
-<span class="nc" id="L347">            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
-<span class="nc" id="L348">            intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);</span>
-<span class="nc" id="L349">            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">        if (Build.VERSION.SDK_INT &lt; 14) {</span>
+<span class="nc" id="L333">            intent.setAction(Intent.ACTION_VIEW);</span>
+<span class="nc" id="L334">            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
+<span class="nc" id="L335">            intent.setDataAndType(uri, &quot;application/vnd.android.package-archive&quot;);</span>
+<span class="nc bnc" id="L336" title="All 2 branches missed.">        } else if (Build.VERSION.SDK_INT &lt; 16) {</span>
+<span class="nc" id="L337">            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);</span>
+<span class="nc" id="L338">            intent.setData(uri);</span>
+<span class="nc" id="L339">            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
+<span class="nc" id="L340">            intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);</span>
+<span class="nc" id="L341">            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);</span>
+<span class="nc" id="L342">            intent.putExtra(Intent.EXTRA_ALLOW_REPLACE, true);</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">        } else if (Build.VERSION.SDK_INT &lt; 24) {</span>
+<span class="nc" id="L344">            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);</span>
+<span class="nc" id="L345">            intent.setData(uri);</span>
+<span class="nc" id="L346">            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
+<span class="nc" id="L347">            intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);</span>
+<span class="nc" id="L348">            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);</span>
         } else { // Android N
-<span class="nc" id="L351">            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);</span>
-<span class="nc" id="L352">            intent.setData(uri);</span>
+<span class="nc" id="L350">            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);</span>
+<span class="nc" id="L351">            intent.setData(uri);</span>
             // grant READ permission for this content Uri
-<span class="nc" id="L354">            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
-<span class="nc" id="L355">            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);</span>
-<span class="nc" id="L356">            intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);</span>
-<span class="nc" id="L357">            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);</span>
+<span class="nc" id="L353">            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
+<span class="nc" id="L354">            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);</span>
+<span class="nc" id="L355">            intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);</span>
+<span class="nc" id="L356">            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);</span>
         }
 
         try {
-<span class="nc" id="L361">            context.startActivity(intent);</span>
-<span class="nc" id="L362">        } catch (ActivityNotFoundException e) {</span>
-<span class="nc" id="L363">            FlyveLog.e(e.getMessage());</span>
-<span class="nc" id="L364">        }</span>
+<span class="nc" id="L360">            context.startActivity(intent);</span>
+<span class="nc" id="L361">        } catch (ActivityNotFoundException e) {</span>
+<span class="nc" id="L362">            FlyveLog.e(e.getMessage());</span>
+<span class="nc" id="L363">        }</span>
 
-<span class="nc" id="L366">    }</span>
+<span class="nc" id="L365">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
