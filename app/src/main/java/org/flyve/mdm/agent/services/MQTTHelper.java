@@ -29,7 +29,6 @@ package org.flyve.mdm.agent.services;
 
 import android.app.Service;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.location.Location;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -235,16 +234,15 @@ public class MQTTHelper {
      * Lock Device
      * Example {"lock":"now|unlock"}
      */
-    public void lockDevice(ContextWrapper context, JSONObject json) {
+    public void lockDevice(Boolean lock) {
         try {
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
 
-            String lock = json.getString("lock");
-            if(lock.equalsIgnoreCase("now")) {
+            if(lock) {
                 mdm.lockScreen();
                 mdm.lockDevice();
                 broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Lock", "Device Lock"));
-            } else if (lock.equalsIgnoreCase("unlock")) {
+            } else {
                 Helpers.sendBroadcast("unlock", "org.flyvemdm.finishlock", context);
             }
         } catch (Exception ex) {
@@ -257,21 +255,10 @@ public class MQTTHelper {
      * FLEET Camera
      * Example {"camera":[{"disableCamera":"true"}]}
      */
-    public void disableCamera(JSONObject json) {
-        try {
-            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-
-            JSONArray jsonCameras = json.getJSONArray("disableCamera");
-            for(int i=0; i<= jsonCameras.length(); i++) {
-                JSONObject jsonCamera = jsonCameras.getJSONObject(0);
-                boolean disable = jsonCamera.getBoolean("disableCamera");
-                mdm.disableCamera(disable);
-                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Camera", "Camera is disable: " + disable));
-            }
-        } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on disableCamera", ex.getMessage()));
-            FlyveLog.e(ex.getCause().getMessage());
-        }
+    public void disableCamera(Boolean disable) {
+        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+        mdm.disableCamera(disable);
+        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Camera", "Camera is disable: " + disable));
     }
 
     public void disableUI(JSONObject json) {
