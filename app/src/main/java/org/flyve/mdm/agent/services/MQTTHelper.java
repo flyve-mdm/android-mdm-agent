@@ -471,18 +471,17 @@ public class MQTTHelper {
      * Files
      * {"file":[{"deployFile":"%SDCARD%/","id":"1","version":"1","taskId":"1"}]}
      */
-    public void filesOnDevices(final JSONObject json) {
+    public void downloadFile(final String deployFile, final String id, final String versionCode, final String taskId) {
 
         EnrollmentHelper sToken = new EnrollmentHelper(this.context);
         sToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
             @Override
-            public void onSuccess(String data) {
-                try {
-                    JSONArray jsonFiles = json.getJSONArray("file");
-                    manageFiles(jsonFiles, data);
-                } catch (Exception ex) {
-                    FlyveLog.e(ex.getMessage());
-                    broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on applicationOnDevices", ex.getMessage()));
+            public void onSuccess(String sessionToken) {
+                PoliciesFiles policiesFiles = new PoliciesFiles(MQTTHelper.this.context);
+
+                if("true".equals(policiesFiles.execute("file", deployFile, id, sessionToken))) {
+                    FlyveLog.d("File was stored on: " + deployFile);
+                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "File was stored on", deployFile));
                 }
             }
 
@@ -494,34 +493,14 @@ public class MQTTHelper {
         });
     }
 
-    /**
-     * Check if the file is to be removed or downloaded
-     * @param jsonFiles if the object has remove or deploy file
-     * @param sessionToken the session token
-     */
-    public void manageFiles(JSONArray jsonFiles, String sessionToken) throws Exception {
+    public void removeFile(String removeFile) {
+        PoliciesFiles policiesFiles = new PoliciesFiles(MQTTHelper.this.context);
+        policiesFiles.removeFile(removeFile);
 
-        for(int i=0; i<=jsonFiles.length();i++) {
-            PoliciesFiles policiesFiles = new PoliciesFiles(this.context);
-
-            JSONObject jsonFile = jsonFiles.getJSONObject(i);
-
-            if(jsonFile.has(REMOVE_FILE)){
-                policiesFiles.removeFile(jsonFile.getString(REMOVE_FILE));
-                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Remove file", jsonFile.getString(REMOVE_FILE)));
-            }
-
-            if(jsonFile.has("deployFile")) {
-                String fileId = jsonFile.getString("id");
-                String filePath = jsonFile.getString("deployFile");
-
-                if("true".equals(policiesFiles.execute("file", filePath, fileId, sessionToken))) {
-                    FlyveLog.v("File was stored on: " + filePath);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Download file", filePath));
-                }
-            }
-        }
+        FlyveLog.d("Remove file: " + removeFile);
+        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Remove file", removeFile));
     }
+
 
     /**
      * FLEET encryption
