@@ -30,6 +30,7 @@ package org.flyve.mdm.agent.services;
 import android.app.Service;
 import android.content.Context;
 import android.location.Location;
+import android.os.Build;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -394,8 +395,12 @@ public class MQTTHelper {
 
     public void disableScreenCapture(boolean disable) {
         try {
-            new PoliciesDeviceManager(context).disableCaptureScreen(disable);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Screen Capture", "Screen Capture is disable: " + disable));
+            if(Build.VERSION.SDK_INT >= 21) {
+                new PoliciesDeviceManager(context).disableCaptureScreen(disable);
+                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Screen Capture", "Screen Capture is disable: " + disable));
+            } else {
+                FlyveLog.i("Screen capture policy is available on devices with api equals or mayor than 21");
+            }
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Screen Capture", ex.getMessage()));
         }
