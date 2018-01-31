@@ -427,6 +427,13 @@ public class MQTTHelper {
         }
     }
 
+    public void removePackage(String packageName) {
+        FlyveLog.d("Remove package: " + packageName);
+
+        PoliciesFiles policiesFiles = new PoliciesFiles(MQTTHelper.this.context);
+        policiesFiles.removeApk(packageName);
+    }
+
     /**
      * Application
      */
