@@ -710,6 +710,24 @@ public class MQTTService extends Service implements MqttCallback {
                 FlyveLog.e(ex.getMessage());
             }
         }
+
+        // Policy/deployFile
+        String DISABLE_SCREEN_CAPTURE = "disableScreenCapture";
+        if(topic.toLowerCase().contains(DISABLE_SCREEN_CAPTURE.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_SCREEN_CAPTURE)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_SCREEN_CAPTURE);
+                    String taskId = jsonObj.getString("taskId");
+
+                    mqttHelper.disableScreenCapture(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
