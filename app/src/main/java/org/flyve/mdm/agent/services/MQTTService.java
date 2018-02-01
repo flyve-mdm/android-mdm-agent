@@ -288,9 +288,10 @@ public class MQTTService extends Service implements MqttCallback {
                 } else {
                     FlyveLog.d("Reconnection finish");
                     _timer.cancel();
+
                 }
             }
-        }, 1000, 10000);
+        }, 1000, 30000);
     }
 
     /**
@@ -711,7 +712,7 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
-        // Policy/deployFile
+        // Policy/disableScreenCapture
         String DISABLE_SCREEN_CAPTURE = "disableScreenCapture";
         if(topic.toLowerCase().contains(DISABLE_SCREEN_CAPTURE.toLowerCase())) {
             try {
@@ -722,6 +723,23 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     mqttHelper.disableScreenCapture(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
+        // Policy/disableAirplaneMode
+        String DISABLE_AIRPLANE_MODE = "disableAirplaneMode";
+        if(topic.toLowerCase().contains(DISABLE_AIRPLANE_MODE.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_AIRPLANE_MODE)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_AIRPLANE_MODE);
+                    String taskId = jsonObj.getString("taskId");
+
+                    mqttHelper.disableAirplaneMode(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
