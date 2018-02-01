@@ -133,8 +133,41 @@ public class PoliciesConnectivity {
         disableBluetooth(disable);
     }
 
-    public static void disableUsbFileTransferProtocols(boolean disable) {
+    public static void disableAllUsbFileTransferProtocols(boolean disable) {
         String value = "mtp,ptp,adb";
+        if(disable) {
+            value = "none";
+        }
+
+        String[] cmds = {"setprop persist.sys.usb.config " + value};
+
+        executecmd(cmds);
+    }
+
+    public static void disableADBUsbFileTransferProtocols(boolean disable) {
+        String value = "adb";
+        if(disable) {
+            value = "none";
+        }
+
+        String[] cmds = {"setprop persist.sys.usb.config " + value};
+
+        executecmd(cmds);
+    }
+
+    public static void disablePTPUsbFileTransferProtocols(boolean disable) {
+        String value = "ptp";
+        if(disable) {
+            value = "none";
+        }
+
+        String[] cmds = {"setprop persist.sys.usb.config " + value};
+
+        executecmd(cmds);
+    }
+
+    public static void disableMTPUsbFileTransferProtocols(boolean disable) {
+        String value = "mtp";
         if(disable) {
             value = "none";
         }
