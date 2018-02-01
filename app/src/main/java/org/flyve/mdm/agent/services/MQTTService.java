@@ -888,6 +888,24 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/resetPassword
+        // ROOT
+        String RESET_PASSWORD = "resetPassword";
+        if(topic.toLowerCase().contains(RESET_PASSWORD.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(RESET_PASSWORD)) {
+                    Boolean disable = jsonObj.getBoolean(RESET_PASSWORD);
+                    String taskId = jsonObj.getString("taskId");
+
+                    //mqttHelper.resetPassword(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
