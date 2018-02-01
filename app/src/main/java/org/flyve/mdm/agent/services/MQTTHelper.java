@@ -364,13 +364,43 @@ public class MQTTHelper {
         }
     }
 
-    public void disableUsbFileTransferProtocols(boolean disable) {
+    public void disableAllUsbFileTransferProtocols(boolean disable) {
         try {
             cache.setConnectivityUsbFileTransferProtocolsDisable(disable);
-            PoliciesConnectivity.disableUsbFileTransferProtocols(disable);
+            PoliciesConnectivity.disableAllUsbFileTransferProtocols(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols", "UsbFileTransferProtocols is disable: " + disable));
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on UsbFileTransferProtocols", ex.getMessage()));
+        }
+    }
+
+    public void disableADBUsbFileTransferProtocols(boolean disable) {
+        try {
+            cache.setConnectivityADBUsbFileTransferProtocolsDisable(disable);
+            PoliciesConnectivity.disableADBUsbFileTransferProtocols(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols ADB", "UsbFileTransferProtocols is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on UsbFileTransferProtocols ADB", ex.getMessage()));
+        }
+    }
+
+    public void disablePTPUsbFileTransferProtocols(boolean disable) {
+        try {
+            cache.setConnectivityPTPUsbFileTransferProtocolsDisable(disable);
+            PoliciesConnectivity.disablePTPUsbFileTransferProtocols(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols PTP", "UsbFileTransferProtocols is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on UsbFileTransferProtocols PTP", ex.getMessage()));
+        }
+    }
+
+    public void disableMTPUsbFileTransferProtocols(boolean disable) {
+        try {
+            cache.setConnectivityMTPUsbFileTransferProtocolsDisable(disable);
+            PoliciesConnectivity.disableMTPUsbFileTransferProtocols(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols MTP", "UsbFileTransferProtocols is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on UsbFileTransferProtocols MTP", ex.getMessage()));
         }
     }
 
