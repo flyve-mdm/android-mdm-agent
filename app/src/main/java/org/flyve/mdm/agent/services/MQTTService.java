@@ -834,6 +834,24 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/disableMobileLine
+        // ROOT
+        String DISABLE_MOBILE_LINE = "disableMobileLine";
+        if(topic.toLowerCase().contains(DISABLE_MOBILE_LINE.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_MOBILE_LINE)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_MOBILE_LINE);
+                    String taskId = jsonObj.getString("taskId");
+
+                    mqttHelper.disableMobileLine(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
