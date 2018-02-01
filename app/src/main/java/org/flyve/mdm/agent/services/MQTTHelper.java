@@ -192,39 +192,29 @@ public class MQTTHelper {
     }
 
     /**
-     * MDM
-     * Example  "MDM": [ { "useTLS": "true|false", "taskId": "25" }]
+     * TLS
+     * Example "useTLS": "true|false", "taskId": "25"
      */
-    public void mdm(Context context, JSONObject json) {
+    public void useTLS(Boolean enable) {
         try {
-
             MqttData cache = new MqttData(context);
 
-            JSONArray jsonMDM = json.getJSONArray("MDM");
-            for(int i=0; i < jsonMDM.length(); i++) {
-                JSONObject j = jsonMDM.getJSONObject(i);
+            if(enable) {
+                cache.setTls("1");
 
-                if(j.has("useTLS")) {
-                    String useTLS = j.getString("useTLS");
+                // stop service
+                ((Service) context).stopSelf();
 
-                    if ("true".equals(useTLS) && !cache.getTls().equals("1")) {
-                        cache.setTls("1");
+                // restart MQTT connection with this new parameters
+                MQTTService.start(MDMAgent.getInstance());
+            } else {
+                cache.setTls("0");
 
-                        // stop service
-                        ((Service) context).stopSelf();
+                // stop service
+                ((Service) context).stopSelf();
 
-                        // restart MQTT connection with this new parameters
-                        MQTTService.start(MDMAgent.getInstance());
-                    } else if("false".equals(useTLS) && !cache.getTls().equals("0")) {
-                        cache.setTls("0");
-
-                        // stop service
-                        ((Service) context).stopSelf();
-
-                        // restart MQTT connection with this new parameters
-                        MQTTService.start(MDMAgent.getInstance());
-                    }
-                }
+                // restart MQTT connection with this new parameters
+                MQTTService.start(MDMAgent.getInstance());
             }
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
