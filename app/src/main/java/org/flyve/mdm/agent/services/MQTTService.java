@@ -749,6 +749,7 @@ public class MQTTService extends Service implements MqttCallback {
         }
 
         // Policy/disableGPS
+        //  ROOT REQUIRED
         String DISABLE_GPS = "disableGPS";
         if(topic.toLowerCase().contains(DISABLE_GPS.toLowerCase())) {
             try {
@@ -759,6 +760,23 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     mqttHelper.disableGPS(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
+        // Policy/disableHostpotTethering
+        String DISABLE_HOSTPOT_TETHERING = "disableHostpotTethering";
+        if(topic.toLowerCase().contains(DISABLE_HOSTPOT_TETHERING.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_HOSTPOT_TETHERING)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_HOSTPOT_TETHERING);
+                    String taskId = jsonObj.getString("taskId");
+
+                    mqttHelper.disableHostpotTethering(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
