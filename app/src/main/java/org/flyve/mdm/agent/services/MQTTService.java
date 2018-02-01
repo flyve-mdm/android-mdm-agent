@@ -713,6 +713,7 @@ public class MQTTService extends Service implements MqttCallback {
         }
 
         // Policy/disableScreenCapture
+        //  ROOT REQUIRED
         String DISABLE_SCREEN_CAPTURE = "disableScreenCapture";
         if(topic.toLowerCase().contains(DISABLE_SCREEN_CAPTURE.toLowerCase())) {
             try {
@@ -730,6 +731,7 @@ public class MQTTService extends Service implements MqttCallback {
         }
 
         // Policy/disableAirplaneMode
+        //  ROOT REQUIRED
         String DISABLE_AIRPLANE_MODE = "disableAirplaneMode";
         if(topic.toLowerCase().contains(DISABLE_AIRPLANE_MODE.toLowerCase())) {
             try {
