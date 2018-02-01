@@ -800,6 +800,23 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/disableWifi
+        String DISABLE_WIFI = "disableWifi";
+        if(topic.toLowerCase().contains(DISABLE_WIFI.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_WIFI)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_WIFI);
+                    String taskId = jsonObj.getString("taskId");
+
+                    mqttHelper.disableWifi(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
