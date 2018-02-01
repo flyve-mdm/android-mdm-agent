@@ -5,6 +5,7 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
 
@@ -55,19 +56,27 @@ public class PoliciesDeviceManager {
 
     @TargetApi(21)
     public void disableRoaming(boolean disable) {
-        try {
-            mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.DATA_ROAMING, disable ? "0" : "1");
-        }catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+        if(Build.VERSION.SDK_INT >= 21) {
+            try {
+                mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.DATA_ROAMING, disable ? "0" : "1");
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        } else {
+            FlyveLog.i("Disable roaming policy is available on devices with api equals or mayor than 21");
         }
     }
 
     @TargetApi(21)
     public void disableCaptureScreen(boolean disable) {
-        try {
-            mDPM.setScreenCaptureDisabled(mDeviceAdmin, disable);
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+        if(Build.VERSION.SDK_INT >= 21) {
+            try {
+                mDPM.setScreenCaptureDisabled(mDeviceAdmin, disable);
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        } else {
+            FlyveLog.i("Screen capture policy is available on devices with api equals or mayor than 21");
         }
     }
 
