@@ -66,7 +66,7 @@ If you want to know all the issues we're dealing with right now, take a look at 
 
 
 ## <a name="1.2"></a> 1.2 Pull Request Dashboard :fire_engine:
-If you want to give us a hand solving issues then great, take a look at our [Pull Request Dashboard](https://github.com/flyve-mdm/android-mdm-agent/issues) and check for an open or closed PR. We don’t want to duplicate efforts.
+If you want to give us a hand solving issues then great, take a look at our [Pull Request Dashboard](https://github.com/flyve-mdm/android-mdm-agent/pulls) and check for an open or closed PR. We don’t want to duplicate efforts.
 
 # <a name="2"></a> 2. Assistance
 
@@ -183,7 +183,7 @@ A scope (optional) may be provided to a commit’s type, to provide additional c
 ---
 
 ### <a name="4.2.3.2.3"></a> 4.2.3.2.3 Header: Writting a `<description>`
-A description must immediately follow the **`<type>(<optional scope>):`** The description is a short description of the pull request.
+A description must immediately follow the **`<type>(<optional scope>):`** The description is a short description of the commit.
 
 **Important**
 * Use the imperative, present tense: "change" not "changed" nor "changes".
@@ -323,7 +323,7 @@ from the main (upstream) repository:
 * Update your master with the latest upstream version:
 
     ```shell
-    git pull --ff upstream master
+    git pull --ff upstream develop
     ```
 
 # 6. <a name="6"></a> Coding Rules
