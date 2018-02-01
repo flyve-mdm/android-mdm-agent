@@ -852,6 +852,24 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/disableNfc
+        // ROOT
+        String DISABLE_NFC = "disableNfc";
+        if(topic.toLowerCase().contains(DISABLE_NFC.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_NFC)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_NFC);
+                    String taskId = jsonObj.getString("taskId");
+
+                    mqttHelper.disableNFC(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
