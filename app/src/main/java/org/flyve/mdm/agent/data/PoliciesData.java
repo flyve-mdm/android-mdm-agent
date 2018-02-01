@@ -143,6 +143,30 @@ public class PoliciesData extends LocalStorage {
         setData("ConnectivityUsbFileTransferProtocolsDisable", String.valueOf(disable));
     }
 
+    public void setConnectivityADBUsbFileTransferProtocolsDisable(boolean disable) {
+        setData("ConnectivityADBUsbFileTransferProtocolsDisable", String.valueOf(disable));
+    }
+
+    public void setConnectivityPTPUsbFileTransferProtocolsDisable(boolean disable) {
+        setData("ConnectivityPTPUsbFileTransferProtocolsDisable", String.valueOf(disable));
+    }
+
+    public void setConnectivityMTPUsbFileTransferProtocolsDisable(boolean disable) {
+        setData("ConnectivityMTPUsbFileTransferProtocolsDisable", String.valueOf(disable));
+    }
+
+    public void getConnectivityADBUsbFileTransferProtocolsDisable() {
+        getData("ConnectivityADBUsbFileTransferProtocolsDisable");
+    }
+
+    public void getConnectivityPTPUsbFileTransferProtocolsDisable() {
+        getData("ConnectivityPTPUsbFileTransferProtocolsDisable");
+    }
+
+    public void getConnectivityMTPUsbFileTransferProtocolsDisable() {
+        getData("ConnectivityMTPUsbFileTransferProtocolsDisable");
+    }
+
     /**
      * Get the state of the Connectivity of the GPS
      * @return boolean the state of the connectivity, true if disabled, false otherwise
