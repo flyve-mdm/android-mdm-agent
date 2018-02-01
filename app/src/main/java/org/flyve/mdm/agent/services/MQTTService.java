@@ -817,6 +817,23 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/useTLS
+        String USE_TLS = "useTLS";
+        if(topic.toLowerCase().contains(USE_TLS.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(USE_TLS)) {
+                    Boolean disable = jsonObj.getBoolean(USE_TLS);
+                    String taskId = jsonObj.getString("taskId");
+
+                    //mqttHelper.(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
