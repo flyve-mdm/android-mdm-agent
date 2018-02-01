@@ -151,7 +151,7 @@ public class FragmentTestPolicies extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 cache.setConnectivityUsbFileTransferProtocolsDisable(isChecked);
                 if(isChecked) {
-                    PoliciesConnectivity.disableUsbFileTransferProtocols(isChecked);
+                    PoliciesConnectivity.disableAllUsbFileTransferProtocols(isChecked);
                 }
             }
         });
