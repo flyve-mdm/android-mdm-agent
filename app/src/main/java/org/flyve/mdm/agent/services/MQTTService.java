@@ -924,6 +924,24 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/disableUsbPtp
+        // ROOT
+        String DISABLE_USB_PTP = "disableUsbPtp";
+        if(topic.toLowerCase().contains(DISABLE_USB_PTP.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_USB_PTP)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_USB_PTP);
+                    String taskId = jsonObj.getString("taskId");
+
+                    mqttHelper.disablePTPUsbFileTransferProtocols(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
