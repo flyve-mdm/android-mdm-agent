@@ -870,6 +870,24 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/disableStatusBar
+        // ROOT
+        String DISABLE_STATUS_BAR = "disableStatusBar";
+        if(topic.toLowerCase().contains(DISABLE_STATUS_BAR.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_STATUS_BAR)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_STATUS_BAR);
+                    String taskId = jsonObj.getString("taskId");
+
+                    mqttHelper.disableStatusBar(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
