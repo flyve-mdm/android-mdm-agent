@@ -67,9 +67,8 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         if("android.hardware.usb.action.USB_DEVICE_ATTACHED".equalsIgnoreCase(action)) {
             FlyveLog.d("USB Device Attached");
             if(cache.getUsbFileTransferProtocols()!=null && !cache.getUsbFileTransferProtocols().equals("")) {
-                PoliciesConnectivity.disableUsbFileTransferProtocols( cache.getConnectivityUsbFileTransferProtocolsDisable() );
+                PoliciesConnectivity.disableAllUsbFileTransferProtocols( cache.getConnectivityUsbFileTransferProtocolsDisable() );
             }
-
         }
 
         if("android.net.conn.CONNECTIVITY_CHANGE".equalsIgnoreCase(action)) {
