@@ -748,6 +748,23 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/disableGPS
+        String DISABLE_GPS = "disableGPS";
+        if(topic.toLowerCase().contains(DISABLE_GPS.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_GPS)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_GPS);
+                    String taskId = jsonObj.getString("taskId");
+
+                    mqttHelper.disableGPS(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
