@@ -783,6 +783,23 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/disableRoaming
+        String DISABLE_ROAMING = "disableRoaming";
+        if(topic.toLowerCase().contains(DISABLE_ROAMING.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_ROAMING)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_ROAMING);
+                    String taskId = jsonObj.getString("taskId");
+
+                    mqttHelper.disableRoaming(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
