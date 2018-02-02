@@ -695,6 +695,10 @@ public class PoliciesController {
         FlyveLog.i("This policy is not implemented");
     }
 
+    public void disableCreateVpnProfiles(Boolean disable) {
+        FlyveLog.i("This policy is not implemented");
+    }
+
     /**
      * Send the Status version of the agent
      * payload: {"version": "0.99.0"}
