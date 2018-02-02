@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.os.Handler;
 import android.telephony.PhoneStateListener;
 
+import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
@@ -42,20 +43,26 @@ public class CustomPhoneStateListener extends PhoneStateListener {
         // 1 = CALL_STATE_RINGING
         // 2 = CALL_STATE_OFFHOOK (At least one call exists that is dialing, active, or on hold, and no calls are ringing or waiting.)
         FlyveLog.d("Status: " + state);
+        final Context context = MDMAgent.getInstance();
+        Boolean disable = new PoliciesData(context).getdisableSpeakerphone();
 
         if (state == 2) {
-            final Handler mHandler = new Handler();
 
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    AudioManager audioManager = (AudioManager)MDMAgent.getInstance().getSystemService(Context.AUDIO_SERVICE);
-                    audioManager.setMode(AudioManager.MODE_IN_CALL);
-                    audioManager.setMode(AudioManager.MODE_NORMAL);
-                    audioManager.setSpeakerphoneOn(false);
-                    FlyveLog.d("incoming_call: speaker_on");
-                }
-            }, 500);
+            // Disable Speaker Phone
+            if(disable) {
+                final Handler mHandler = new Handler();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                        audioManager.setMode(AudioManager.MODE_IN_CALL);
+                        audioManager.setMode(AudioManager.MODE_NORMAL);
+                        audioManager.setSpeakerphoneOn(false);
+                        FlyveLog.d("incoming_call: speaker_off");
+                    }
+                }, 500);
+            }
+
         }
     }
 }
