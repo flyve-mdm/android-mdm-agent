@@ -1011,6 +1011,22 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/disableCallAutoAnswer
+        String DISABLE_CALL_AUTO_ANSWER = "disableCallAutoAnswer";
+        if(topic.toLowerCase().contains(DISABLE_CALL_AUTO_ANSWER.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_CALL_AUTO_ANSWER)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_CALL_AUTO_ANSWER);
+                    String taskId = jsonObj.getString("taskId");
+
+                    policiesController.disableCallAutoAnswer(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
 
 
     }
