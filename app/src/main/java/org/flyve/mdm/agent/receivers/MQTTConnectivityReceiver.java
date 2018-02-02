@@ -29,6 +29,8 @@ package org.flyve.mdm.agent.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 
 import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.services.PoliciesConnectivity;
@@ -55,6 +57,20 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
         if(action==null) {
             return;
+        }
+
+        try {
+            // TELEPHONY MANAGER class object to register one listner
+            TelephonyManager tmgr = (TelephonyManager) context
+                    .getSystemService(Context.TELEPHONY_SERVICE);
+
+            //Create Listener
+            CustomPhoneStateListener phoneListener = new CustomPhoneStateListener();
+
+            // Register listener for LISTEN_CALL_STATE
+            tmgr.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
         }
 
         if("android.provider.Telephony.SMS_RECEIVED".equalsIgnoreCase(action)) {
