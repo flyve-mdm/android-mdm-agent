@@ -52,7 +52,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MQTTHelper {
+public class PoliciesController {
 
     private static final String ERROR = "ERROR";
     private static final String MQTT_SEND = "MQTT Send";
@@ -75,7 +75,7 @@ public class MQTTHelper {
     private MqttData mqttCache;
     private String mTopic;
 
-    public MQTTHelper(Context context, MqttAndroidClient client) {
+    public PoliciesController(Context context, MqttAndroidClient client) {
         this.client = client;
         this.context = context;
         cache = new PoliciesData(context);
@@ -451,7 +451,7 @@ public class MQTTHelper {
     public void removePackage(String packageName) {
         FlyveLog.d("Remove package: " + packageName);
 
-        PoliciesFiles policiesFiles = new PoliciesFiles(MQTTHelper.this.context);
+        PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
         policiesFiles.removeApk(packageName);
     }
 
@@ -467,7 +467,7 @@ public class MQTTHelper {
                 try {
                     FlyveLog.d("Install package: " + deployApp + " id: " + id);
 
-                    PoliciesFiles policiesFiles = new PoliciesFiles(MQTTHelper.this.context);
+                    PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
                     policiesFiles.execute("package", deployApp, id, sessionToken);
 
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Install package", "name: " + deployApp + " id: " + id));
@@ -498,7 +498,7 @@ public class MQTTHelper {
         sToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
             @Override
             public void onSuccess(String sessionToken) {
-                PoliciesFiles policiesFiles = new PoliciesFiles(MQTTHelper.this.context);
+                PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
 
                 if("true".equals(policiesFiles.execute("file", deployFile, id, sessionToken))) {
                     FlyveLog.d("File was stored on: " + deployFile);
@@ -515,7 +515,7 @@ public class MQTTHelper {
     }
 
     public void removeFile(String removeFile) {
-        PoliciesFiles policiesFiles = new PoliciesFiles(MQTTHelper.this.context);
+        PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
         policiesFiles.removeFile(removeFile);
 
         FlyveLog.d("Remove file: " + removeFile);
