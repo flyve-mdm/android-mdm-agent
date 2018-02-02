@@ -994,6 +994,23 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/disableVoiceMail
+        String DISABLE_VOICEMAIL = "disableVoiceMail";
+        if(topic.toLowerCase().contains(DISABLE_VOICEMAIL.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_VOICEMAIL)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_VOICEMAIL);
+                    String taskId = jsonObj.getString("taskId");
+
+                    policiesController.disableVoiceMail(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
 
 
     }
