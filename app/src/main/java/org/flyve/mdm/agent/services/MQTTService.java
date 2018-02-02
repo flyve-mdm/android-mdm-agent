@@ -1079,6 +1079,23 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/disableCreateVpnProfiles
+        String DISABLE_CREATE_VPN_PROFILES = "disableCreateVpnProfiles";
+        if(topic.toLowerCase().contains(DISABLE_CREATE_VPN_PROFILES.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_CREATE_VPN_PROFILES)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_CREATE_VPN_PROFILES);
+                    String taskId = jsonObj.getString("taskId");
+
+                    policiesController.disableCreateVpnProfiles(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
