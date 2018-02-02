@@ -566,7 +566,7 @@ public class MQTTService extends Service implements MqttCallback {
         }
 
         // Policy/MaximumFailedPasswordsForWipe
-        String MAXIMUM_FAILED_PASSWORDS_FOR_WIPE = "MaximumFailedPasswordsForWipe";
+        String MAXIMUM_FAILED_PASSWORDS_FOR_WIPE = "maximumFailedPasswordsForWipe";
         if(topic.toLowerCase().contains(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE.toLowerCase())) {
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
@@ -581,7 +581,7 @@ public class MQTTService extends Service implements MqttCallback {
         }
 
         // Policy/MaximumTimeToLock
-        String MAXIMUM_TIME_TO_LOCK = "MaximumTimeToLock";
+        String MAXIMUM_TIME_TO_LOCK = "maximumTimeToLock";
         if(topic.toLowerCase().contains(MAXIMUM_TIME_TO_LOCK.toLowerCase())) {
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
