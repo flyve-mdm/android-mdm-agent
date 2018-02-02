@@ -1062,6 +1062,22 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/disableUsbOnTheGo
+        String DISABLE_SMSMMS = "disableSmsMms";
+        if(topic.toLowerCase().contains(DISABLE_SMSMMS.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_SMSMMS)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_SMSMMS);
+                    String taskId = jsonObj.getString("taskId");
+
+                    policiesController.disableSmsMms(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
 
     }
 
