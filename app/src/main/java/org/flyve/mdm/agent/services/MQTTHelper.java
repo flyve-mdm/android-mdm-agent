@@ -413,6 +413,15 @@ public class MQTTHelper {
         }
     }
 
+    public void disableSpeakerphone(boolean disable) {
+        try {
+            new PoliciesDeviceManager(context).disableSpeakerphone(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Speaker phone", "Speaker phone is disable: " + disable));
+        } catch (Exception ex) {
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Speaker phone", ex.getMessage()));
+        }
+    }
+
     public void disableScreenCapture(boolean disable) {
         try {
             if(Build.VERSION.SDK_INT >= 21) {
