@@ -151,7 +151,7 @@ import org.flyve.mdm.agent.utils.StorageFolder;
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 <span class="nc" id="L152">                cache.setConnectivityUsbFileTransferProtocolsDisable(isChecked);</span>
 <span class="nc bnc" id="L153" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L154">                    PoliciesConnectivity.disableUsbFileTransferProtocols(isChecked);</span>
+<span class="nc" id="L154">                    PoliciesConnectivity.disableAllUsbFileTransferProtocols(isChecked);</span>
                 }
 <span class="nc" id="L156">            }</span>
         });

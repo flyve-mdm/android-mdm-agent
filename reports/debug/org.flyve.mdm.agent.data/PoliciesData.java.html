@@ -143,195 +143,227 @@ public class PoliciesData extends LocalStorage {
 <span class="nc" id="L143">        setData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;, String.valueOf(disable));</span>
 <span class="nc" id="L144">    }</span>
 
+    public void setConnectivityADBUsbFileTransferProtocolsDisable(boolean disable) {
+<span class="nc" id="L147">        setData(&quot;ConnectivityADBUsbFileTransferProtocolsDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L148">    }</span>
+
+    public void setConnectivityPTPUsbFileTransferProtocolsDisable(boolean disable) {
+<span class="nc" id="L151">        setData(&quot;ConnectivityPTPUsbFileTransferProtocolsDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L152">    }</span>
+
+    public void setConnectivityMTPUsbFileTransferProtocolsDisable(boolean disable) {
+<span class="nc" id="L155">        setData(&quot;ConnectivityMTPUsbFileTransferProtocolsDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L156">    }</span>
+
+    public void setdisableSpeakerphone(boolean disable) {
+<span class="nc" id="L159">        setData(&quot;ConnectivityDisableSpeakerphone&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L160">    }</span>
+
+    public Boolean getdisableSpeakerphone() {
+<span class="nc" id="L163">        return Boolean.valueOf(getData(&quot;ConnectivityDisableSpeakerphone&quot;));</span>
+    }
+
+    public void getConnectivityADBUsbFileTransferProtocolsDisable() {
+<span class="nc" id="L167">        getData(&quot;ConnectivityADBUsbFileTransferProtocolsDisable&quot;);</span>
+<span class="nc" id="L168">    }</span>
+
+    public void getConnectivityPTPUsbFileTransferProtocolsDisable() {
+<span class="nc" id="L171">        getData(&quot;ConnectivityPTPUsbFileTransferProtocolsDisable&quot;);</span>
+<span class="nc" id="L172">    }</span>
+
+    public void getConnectivityMTPUsbFileTransferProtocolsDisable() {
+<span class="nc" id="L175">        getData(&quot;ConnectivityMTPUsbFileTransferProtocolsDisable&quot;);</span>
+<span class="nc" id="L176">    }</span>
+
     /**
      * Get the state of the Connectivity of the GPS
      * @return boolean the state of the connectivity, true if disabled, false otherwise
      */
     public boolean getConnectivityGPSDisable() {
-<span class="nc" id="L151">        return Boolean.valueOf(getData(&quot;ConnectivityGPSDisable&quot;));</span>
+<span class="nc" id="L183">        return Boolean.valueOf(getData(&quot;ConnectivityGPSDisable&quot;));</span>
     }
 
     public String getWifi() {
-<span class="nc" id="L155">        return getData(&quot;ConnectivityWifiDisable&quot;);</span>
+<span class="nc" id="L187">        return getData(&quot;ConnectivityWifiDisable&quot;);</span>
     }
 
     public String getRoaming() {
-<span class="nc" id="L159">        return getData(&quot;ConnectivityRoamingDisable&quot;);</span>
+<span class="nc" id="L191">        return getData(&quot;ConnectivityRoamingDisable&quot;);</span>
     }
 
     public String getNFC() {
-<span class="nc" id="L163">        return getData(&quot;ConnectivityNFCDisable&quot;);</span>
+<span class="nc" id="L195">        return getData(&quot;ConnectivityNFCDisable&quot;);</span>
     }
 
     public String getMobileLine() {
-<span class="nc" id="L167">        return getData(&quot;ConnectivityMobileLineDisable&quot;);</span>
+<span class="nc" id="L199">        return getData(&quot;ConnectivityMobileLineDisable&quot;);</span>
     }
 
     public String getHostpotTethering() {
-<span class="nc" id="L171">        return getData(&quot;ConnectivityHostpotTetheringDisable&quot;);</span>
+<span class="nc" id="L203">        return getData(&quot;ConnectivityHostpotTetheringDisable&quot;);</span>
     }
 
     public String getUsbFileTransferProtocols() {
-<span class="nc" id="L175">        return getData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;);</span>
+<span class="nc" id="L207">        return getData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;);</span>
     }
 
     public String getSmsMms() {
-<span class="nc" id="L179">        return getData(&quot;ConnectivitySmsMmsDisable&quot;);</span>
+<span class="nc" id="L211">        return getData(&quot;ConnectivitySmsMmsDisable&quot;);</span>
     }
     public String getAirplaneMode() {
-<span class="nc" id="L182">        return getData(&quot;ConnectivityAirplaneModeDisable&quot;);</span>
+<span class="nc" id="L214">        return getData(&quot;ConnectivityAirplaneModeDisable&quot;);</span>
     }
 
     /**
      * Get the state of the Roaming enable / disable
      */
     public boolean getConnectivityRoamingDisable() {
-<span class="nc" id="L189">        return Boolean.valueOf(getData(&quot;ConnectivityRoamingDisable&quot;));</span>
+<span class="nc" id="L221">        return Boolean.valueOf(getData(&quot;ConnectivityRoamingDisable&quot;));</span>
     }
 
     /**
      * Get the state of the Radio FM enable / disable
      */
     public boolean getConnectivityRadioFMDisable() {
-<span class="nc" id="L196">        return Boolean.valueOf(getData(&quot;ConnectivityRadioFMDisable&quot;));</span>
+<span class="nc" id="L228">        return Boolean.valueOf(getData(&quot;ConnectivityRadioFMDisable&quot;));</span>
     }
 
     /**
      * Get the state of the Mobile Line enable / disable
      */
     public boolean getConnectivityMobileLineDisable() {
-<span class="nc" id="L203">        return Boolean.valueOf(getData(&quot;ConnectivityMobileLineDisable&quot;));</span>
+<span class="nc" id="L235">        return Boolean.valueOf(getData(&quot;ConnectivityMobileLineDisable&quot;));</span>
     }
 
     /**
      * Get the state of the NFC enable / disable
      */
     public boolean getConnectivityNFCDisable() {
-<span class="nc" id="L210">        return Boolean.valueOf(getData(&quot;ConnectivityNFCDisable&quot;));</span>
+<span class="nc" id="L242">        return Boolean.valueOf(getData(&quot;ConnectivityNFCDisable&quot;));</span>
     }
 
     /**
      * Get the state of the Hostpot Tethering  enable / disable
      */
     public boolean getConnectivityHostpotTetheringDisable() {
-<span class="nc" id="L217">        return Boolean.valueOf(getData(&quot;ConnectivityHostpotTetheringDisable&quot;));</span>
+<span class="nc" id="L249">        return Boolean.valueOf(getData(&quot;ConnectivityHostpotTetheringDisable&quot;));</span>
     }
 
     /**
      * Get the state of the Hostpot Tethering  enable / disable
      */
     public boolean getConnectivityUsbFileTransferProtocolsDisable() {
-<span class="nc" id="L224">        return Boolean.valueOf(getData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;));</span>
+<span class="nc" id="L256">        return Boolean.valueOf(getData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;));</span>
     }
 
     /**
      * Get the state of the Airplane Mode  enable / disable
      */
     public boolean getConnectivityAirplaneModeDisable() {
-<span class="nc" id="L231">        return Boolean.valueOf(getData(&quot;ConnectivityAirplaneModeDisable&quot;));</span>
+<span class="nc" id="L263">        return Boolean.valueOf(getData(&quot;ConnectivityAirplaneModeDisable&quot;));</span>
     }
 
     /**
      * Get the state of SMS / MMS  enable / disable
      */
     public boolean getConnectivitySmsMmsDisable() {
-<span class="nc" id="L238">        return Boolean.valueOf(getData(&quot;ConnectivitySmsMmsDisable&quot;));</span>
+<span class="nc" id="L270">        return Boolean.valueOf(getData(&quot;ConnectivitySmsMmsDisable&quot;));</span>
     }
 
     public void setStorageEncryptionDevice(boolean enable) {
-<span class="nc" id="L242">        setData(&quot;StorageEncryptionDevice&quot;, String.valueOf(enable));</span>
-<span class="nc" id="L243">    }</span>
+<span class="nc" id="L274">        setData(&quot;StorageEncryptionDevice&quot;, String.valueOf(enable));</span>
+<span class="nc" id="L275">    }</span>
 
     public boolean getStorageEncryptionDevice() {
-<span class="nc" id="L246">        return Boolean.valueOf(getData(&quot;StorageEncryptionDevice&quot;));</span>
+<span class="nc" id="L278">        return Boolean.valueOf(getData(&quot;StorageEncryptionDevice&quot;));</span>
     }
 
     public void setDisableCamera(boolean enable) {
-<span class="nc" id="L250">        setData(&quot;DisableCamera&quot;, String.valueOf(enable));</span>
-<span class="nc" id="L251">    }</span>
+<span class="nc" id="L282">        setData(&quot;DisableCamera&quot;, String.valueOf(enable));</span>
+<span class="nc" id="L283">    }</span>
 
     public boolean getDisableCamera() {
-<span class="nc" id="L254">        return Boolean.valueOf(getData(&quot;DisableCamera&quot;));</span>
+<span class="nc" id="L286">        return Boolean.valueOf(getData(&quot;DisableCamera&quot;));</span>
     }
 
     public void setPasswordLength(String value) {
-<span class="nc" id="L258">        setData(&quot;PasswordLength&quot;, value);</span>
-<span class="nc" id="L259">    }</span>
+<span class="nc" id="L290">        setData(&quot;PasswordLength&quot;, value);</span>
+<span class="nc" id="L291">    }</span>
 
     public String getPasswordLength() {
-<span class="nc" id="L262">        return getData(&quot;PasswordLength&quot;);</span>
+<span class="nc" id="L294">        return getData(&quot;PasswordLength&quot;);</span>
     }
 
     public void setPasswordQuality(String value) {
-<span class="nc" id="L266">        setData(&quot;PasswordQuality&quot;, value);</span>
-<span class="nc" id="L267">    }</span>
+<span class="nc" id="L298">        setData(&quot;PasswordQuality&quot;, value);</span>
+<span class="nc" id="L299">    }</span>
 
     public String getPasswordQuality() {
-<span class="nc" id="L270">        return getData(&quot;PasswordQuality&quot;);</span>
+<span class="nc" id="L302">        return getData(&quot;PasswordQuality&quot;);</span>
     }
 
     public void setPasswordMinimumLetters(String value) {
-<span class="nc" id="L274">        setData(&quot;PasswordMinimumLetters&quot;, value);</span>
-<span class="nc" id="L275">    }</span>
+<span class="nc" id="L306">        setData(&quot;PasswordMinimumLetters&quot;, value);</span>
+<span class="nc" id="L307">    }</span>
 
     public String getPasswordMinimumLetters() {
-<span class="nc" id="L278">        return getData(&quot;PasswordMinimumLetters&quot;);</span>
+<span class="nc" id="L310">        return getData(&quot;PasswordMinimumLetters&quot;);</span>
     }
 
     public void setPasswordMinimumLowerCase(String value) {
-<span class="nc" id="L282">        setData(&quot;PasswordMinimumLowerCase&quot;, value);</span>
-<span class="nc" id="L283">    }</span>
+<span class="nc" id="L314">        setData(&quot;PasswordMinimumLowerCase&quot;, value);</span>
+<span class="nc" id="L315">    }</span>
 
     public String getPasswordMinimumLowerCase() {
-<span class="nc" id="L286">        return getData(&quot;PasswordMinimumLowerCase&quot;);</span>
+<span class="nc" id="L318">        return getData(&quot;PasswordMinimumLowerCase&quot;);</span>
     }
 
     public void setPasswordMinimumUpperCase(String value) {
-<span class="nc" id="L290">        setData(&quot;PasswordMinimumUpperCase&quot;, value);</span>
-<span class="nc" id="L291">    }</span>
+<span class="nc" id="L322">        setData(&quot;PasswordMinimumUpperCase&quot;, value);</span>
+<span class="nc" id="L323">    }</span>
 
     public String getPasswordMinimumUpperCase() {
-<span class="nc" id="L294">        return getData(&quot;PasswordMinimumUpperCase&quot;);</span>
+<span class="nc" id="L326">        return getData(&quot;PasswordMinimumUpperCase&quot;);</span>
     }
 
     public void setPasswordMinimumNonLetter(String value) {
-<span class="nc" id="L298">        setData(&quot;PasswordMinimumNonLetter&quot;, value);</span>
-<span class="nc" id="L299">    }</span>
+<span class="nc" id="L330">        setData(&quot;PasswordMinimumNonLetter&quot;, value);</span>
+<span class="nc" id="L331">    }</span>
 
     public String getPasswordMinimumNonLetter() {
-<span class="nc" id="L302">        return getData(&quot;PasswordMinimumNonLetter&quot;);</span>
+<span class="nc" id="L334">        return getData(&quot;PasswordMinimumNonLetter&quot;);</span>
     }
 
     public void setPasswordMinimumNumeric(String value) {
-<span class="nc" id="L306">        setData(&quot;PasswordMinimumNumeric&quot;, value);</span>
-<span class="nc" id="L307">    }</span>
+<span class="nc" id="L338">        setData(&quot;PasswordMinimumNumeric&quot;, value);</span>
+<span class="nc" id="L339">    }</span>
 
     public String getPasswordMinimumNumeric() {
-<span class="nc" id="L310">        return getData(&quot;PasswordMinimumNumeric&quot;);</span>
+<span class="nc" id="L342">        return getData(&quot;PasswordMinimumNumeric&quot;);</span>
     }
 
     public void setPasswordMinimumSymbols(String value) {
-<span class="nc" id="L314">        setData(&quot;PasswordMinimumSymbols&quot;, value);</span>
-<span class="nc" id="L315">    }</span>
+<span class="nc" id="L346">        setData(&quot;PasswordMinimumSymbols&quot;, value);</span>
+<span class="nc" id="L347">    }</span>
 
     public String getPasswordMinimumSymbols() {
-<span class="nc" id="L318">        return getData(&quot;PasswordMinimumSymbols&quot;);</span>
+<span class="nc" id="L350">        return getData(&quot;PasswordMinimumSymbols&quot;);</span>
     }
 
     public void setMaximumFailedPasswordsForWipe(String value) {
-<span class="nc" id="L322">        setData(&quot;MaximumFailedPasswordsForWipe&quot;, value);</span>
-<span class="nc" id="L323">    }</span>
+<span class="nc" id="L354">        setData(&quot;MaximumFailedPasswordsForWipe&quot;, value);</span>
+<span class="nc" id="L355">    }</span>
 
     public String getMaximumFailedPasswordsForWipe() {
-<span class="nc" id="L326">        return getData(&quot;MaximumFailedPasswordsForWipe&quot;);</span>
+<span class="nc" id="L358">        return getData(&quot;MaximumFailedPasswordsForWipe&quot;);</span>
     }
 
     public void setMaximumTimeToLock(String value) {
-<span class="nc" id="L330">        setData(&quot;MaximumTimeToLock&quot;, value);</span>
-<span class="nc" id="L331">    }</span>
+<span class="nc" id="L362">        setData(&quot;MaximumTimeToLock&quot;, value);</span>
+<span class="nc" id="L363">    }</span>
 
     public String getMaximumTimeToLock() {
-<span class="nc" id="L334">        return getData(&quot;MaximumTimeToLock&quot;);</span>
+<span class="nc" id="L366">        return getData(&quot;MaximumTimeToLock&quot;);</span>
     }
 
 }
