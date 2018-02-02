@@ -960,6 +960,23 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/disableUsbAdb
+        String DISABLE_SPEAKER_PHONE = "disableSpeakerphone";
+        if(topic.toLowerCase().contains(DISABLE_SPEAKER_PHONE.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_SPEAKER_PHONE)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_SPEAKER_PHONE);
+                    String taskId = jsonObj.getString("taskId");
+
+                    mqttHelper.disableSpeakerphone(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
