@@ -1028,6 +1028,40 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/disableVoiceDictation
+        String DISABLE_VOICE_DICTATION = "disableVoiceDictation";
+        if(topic.toLowerCase().contains(DISABLE_VOICE_DICTATION.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_VOICE_DICTATION)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_VOICE_DICTATION);
+                    String taskId = jsonObj.getString("taskId");
+
+                    policiesController.disableVoiceDictation(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
+        // Policy/disableUsbOnTheGo
+        String DISABLE_USB_ON_THE_GO = "disableUsbOnTheGo";
+        if(topic.toLowerCase().contains(DISABLE_USB_ON_THE_GO.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_USB_ON_THE_GO)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_USB_ON_THE_GO);
+                    String taskId = jsonObj.getString("taskId");
+
+                    policiesController.disableUsbOnTheGo(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
 
     }
 
