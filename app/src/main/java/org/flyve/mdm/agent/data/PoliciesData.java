@@ -155,6 +155,14 @@ public class PoliciesData extends LocalStorage {
         setData("ConnectivityMTPUsbFileTransferProtocolsDisable", String.valueOf(disable));
     }
 
+    public void setdisableSpeakerphone(boolean disable) {
+        setData("ConnectivityDisableSpeakerphone", String.valueOf(disable));
+    }
+
+    public Boolean getdisableSpeakerphone() {
+        return Boolean.valueOf(getData("ConnectivityDisableSpeakerphone"));
+    }
+
     public void getConnectivityADBUsbFileTransferProtocolsDisable() {
         getData("ConnectivityADBUsbFileTransferProtocolsDisable");
     }
