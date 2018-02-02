@@ -71,7 +71,7 @@ public class MQTTService extends Service implements MqttCallback {
     private Timer _timer;
     private MqttAndroidClient client;
     private Boolean connected = false;
-    private PoliciesController mqttHelper;
+    private PoliciesController policiesController;
 
     public static Intent start(Context context) {
         MQTTService mMQTTService = new MQTTService();
@@ -115,7 +115,7 @@ public class MQTTService extends Service implements MqttCallback {
         }
 
         if(action.equalsIgnoreCase(ACTION_INVENTORY) && connected) {
-            mqttHelper.createInventory();
+            policiesController.createInventory();
         }
 
         return START_STICKY;
@@ -211,21 +211,21 @@ public class MQTTService extends Service implements MqttCallback {
                     FlyveLog.d(TAG, "Success we are online!");
                     broadcastServiceStatus(true);
 
-                    mqttHelper = new PoliciesController(getApplicationContext(), client);
+                    policiesController = new PoliciesController(getApplicationContext(), client);
 
                     // send status online true to MQTT
-                    mqttHelper.sendOnlineStatus(true);
+                    policiesController.sendOnlineStatus(true);
 
                     // main channel
                     String channel = mTopic + "/#";
                     FlyveLog.d(TAG, "MQTT Channel: " + channel);
-                    mqttHelper.subscribe("#");
+                    policiesController.subscribe("#");
 
                     // subscribe to manifest
-                    mqttHelper.subscribe("/FlyvemdmManifest/Status/Version");
+                    policiesController.subscribe("/FlyvemdmManifest/Status/Version");
 
                     // send inventory on connect
-                    mqttHelper.createInventory();
+                    policiesController.createInventory();
                 }
 
                 @Override
@@ -335,7 +335,7 @@ public class MQTTService extends Service implements MqttCallback {
                 JSONObject jsonObj = new JSONObject(messageBody);
                 if (jsonObj.has(QUERY)
                         && "Ping".equalsIgnoreCase(jsonObj.getString(QUERY))) {
-                    mqttHelper.sendKeepAlive();
+                    policiesController.sendKeepAlive();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -348,7 +348,7 @@ public class MQTTService extends Service implements MqttCallback {
                 JSONObject jsonObj = new JSONObject(messageBody);
                 if (jsonObj.has(QUERY)
                         && "Geolocate".equalsIgnoreCase(jsonObj.getString(QUERY))) {
-                    mqttHelper.sendGPS();
+                    policiesController.sendGPS();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -361,7 +361,7 @@ public class MQTTService extends Service implements MqttCallback {
                 JSONObject jsonObj = new JSONObject(messageBody);
                 if (jsonObj.has(QUERY)
                         && "Inventory".equalsIgnoreCase(jsonObj.getString(QUERY))) {
-                    mqttHelper.createInventory();
+                    policiesController.createInventory();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -375,7 +375,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if (jsonObj.has("lock")) {
                     String lock = jsonObj.getString("lock");
-                    mqttHelper.lockDevice(lock.equalsIgnoreCase("now"));
+                    policiesController.lockDevice(lock.equalsIgnoreCase("now"));
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -388,7 +388,7 @@ public class MQTTService extends Service implements MqttCallback {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
                 if(jsonObj.has("wipe") && "NOW".equalsIgnoreCase(jsonObj.getString("wipe")) ) {
-                    mqttHelper.wipe();
+                    policiesController.wipe();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -402,7 +402,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has("unenroll") && "NOW".equalsIgnoreCase(jsonObj.getString("unenroll")) ) {
                     FlyveLog.d("unroll");
-                    mqttHelper.unenroll();
+                    policiesController.unenroll();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -423,7 +423,7 @@ public class MQTTService extends Service implements MqttCallback {
                         FlyveLog.d(channel);
 
                         // Add new channel
-                        mqttHelper.subscribe(channel);
+                        policiesController.subscribe(channel);
                     }
                 }
             } catch (Exception ex) {
@@ -438,7 +438,7 @@ public class MQTTService extends Service implements MqttCallback {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
                 if(jsonObj.has(PASSWORD_ENABLE)) {
-                    mqttHelper.passwordEnabled();
+                    policiesController.passwordEnabled();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -453,7 +453,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(PASSWORD_QUALITY)) {
                     String quality = jsonObj.getString(PASSWORD_QUALITY);
-                    mqttHelper.passwordQuality(quality);
+                    policiesController.passwordQuality(quality);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -468,7 +468,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(PASSWORD_MIN_LENGTH)) {
                     int length = jsonObj.getInt(PASSWORD_MIN_LENGTH);
-                    mqttHelper.passwordMinLength(length);
+                    policiesController.passwordMinLength(length);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -483,7 +483,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(PASSWORD_MIN_LOWERCASE)) {
                     int minimum = jsonObj.getInt(PASSWORD_MIN_LOWERCASE);
-                    mqttHelper.passwordMinLowerCase(minimum);
+                    policiesController.passwordMinLowerCase(minimum);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -498,7 +498,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(PASSWORD_MIN_UPPERCASE)) {
                     int minimum = jsonObj.getInt(PASSWORD_MIN_UPPERCASE);
-                    mqttHelper.passwordMinUpperCase(minimum);
+                    policiesController.passwordMinUpperCase(minimum);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -513,7 +513,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(PASSWORD_MIN_NON_LETTER)) {
                     int minimum = jsonObj.getInt(PASSWORD_MIN_NON_LETTER);
-                    mqttHelper.passwordMinNonLetter(minimum);
+                    policiesController.passwordMinNonLetter(minimum);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -528,7 +528,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(PASSWORD_MIN_LETTERS)) {
                     int minimum = jsonObj.getInt(PASSWORD_MIN_LETTERS);
-                    mqttHelper.passwordMinLetter(minimum);
+                    policiesController.passwordMinLetter(minimum);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -543,7 +543,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(PASSWORD_MIN_NUMERIC)) {
                     int minimum = jsonObj.getInt(PASSWORD_MIN_NUMERIC);
-                    mqttHelper.passwordMinNumeric(minimum);
+                    policiesController.passwordMinNumeric(minimum);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -558,7 +558,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(PASSWORD_MIN_SYMBOLS)) {
                     int minimum = jsonObj.getInt(PASSWORD_MIN_SYMBOLS);
-                    mqttHelper.passwordMinSymbols(minimum);
+                    policiesController.passwordMinSymbols(minimum);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -573,7 +573,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE)) {
                     int max = jsonObj.getInt(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE);
-                    mqttHelper.maximumFailedPasswordsForWipe(max);
+                    policiesController.maximumFailedPasswordsForWipe(max);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -588,7 +588,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(MAXIMUM_TIME_TO_LOCK)) {
                     int max = jsonObj.getInt(MAXIMUM_TIME_TO_LOCK);
-                    mqttHelper.maximumTimeToLock(max);
+                    policiesController.maximumTimeToLock(max);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -603,7 +603,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(STORAGE_ENCRYPTION)) {
                     boolean enable = jsonObj.getBoolean(STORAGE_ENCRYPTION);
-                    mqttHelper.storageEncryption(enable);
+                    policiesController.storageEncryption(enable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -618,7 +618,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(DISABLE_CAMERA)) {
                     Boolean disable = jsonObj.getBoolean(DISABLE_CAMERA);
-                    mqttHelper.disableCamera(disable);
+                    policiesController.disableCamera(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -633,7 +633,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(DISABLE_BLUETOOTH)) {
                     Boolean disable = jsonObj.getBoolean(DISABLE_BLUETOOTH);
-                    mqttHelper.disableBluetooth(disable);
+                    policiesController.disableBluetooth(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -652,7 +652,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String versionCode = jsonObj.getString("versionCode");
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.installPackage(deployApp, id, versionCode, taskId);
+                    policiesController.installPackage(deployApp, id, versionCode, taskId);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -669,7 +669,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String removeApp = jsonObj.getString(REMOVE_APP);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.removePackage(removeApp);
+                    policiesController.removePackage(removeApp);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -688,7 +688,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String versionCode = jsonObj.getString("version");
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.downloadFile(deployFile, id, versionCode, taskId);
+                    policiesController.downloadFile(deployFile, id, versionCode, taskId);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -705,7 +705,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String removeFile = jsonObj.getString(REMOVE_FILE);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.removeFile(removeFile);
+                    policiesController.removeFile(removeFile);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -723,7 +723,7 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_SCREEN_CAPTURE);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.disableScreenCapture(disable);
+                    policiesController.disableScreenCapture(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -741,7 +741,7 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_AIRPLANE_MODE);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.disableAirplaneMode(disable);
+                    policiesController.disableAirplaneMode(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -759,7 +759,7 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_GPS);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.disableGPS(disable);
+                    policiesController.disableGPS(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -776,7 +776,7 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_HOSTPOT_TETHERING);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.disableHostpotTethering(disable);
+                    policiesController.disableHostpotTethering(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -793,7 +793,7 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_ROAMING);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.disableRoaming(disable);
+                    policiesController.disableRoaming(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -810,7 +810,7 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_WIFI);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.disableWifi(disable);
+                    policiesController.disableWifi(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -827,7 +827,7 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean enable = jsonObj.getBoolean(USE_TLS);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.useTLS(enable);
+                    policiesController.useTLS(enable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -845,7 +845,7 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_MOBILE_LINE);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.disableMobileLine(disable);
+                    policiesController.disableMobileLine(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -863,7 +863,7 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_NFC);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.disableNFC(disable);
+                    policiesController.disableNFC(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -881,7 +881,7 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_STATUS_BAR);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.disableStatusBar(disable);
+                    policiesController.disableStatusBar(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -899,7 +899,7 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(RESET_PASSWORD);
                     String taskId = jsonObj.getString("taskId");
 
-                    //mqttHelper.resetPassword(disable);
+                    //policiesController.resetPassword(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -917,7 +917,7 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_USB_MTP);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.disableMTPUsbFileTransferProtocols(disable);
+                    policiesController.disableMTPUsbFileTransferProtocols(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -935,7 +935,7 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_USB_PTP);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.disablePTPUsbFileTransferProtocols(disable);
+                    policiesController.disablePTPUsbFileTransferProtocols(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -953,14 +953,14 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_USB_ADB);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.disableADBUsbFileTransferProtocols(disable);
+                    policiesController.disableADBUsbFileTransferProtocols(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
             }
         }
 
-        // Policy/disableUsbAdb
+        // Policy/disableSpeakerphone
         String DISABLE_SPEAKER_PHONE = "disableSpeakerphone";
         if(topic.toLowerCase().contains(DISABLE_SPEAKER_PHONE.toLowerCase())) {
             try {
@@ -970,12 +970,31 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_SPEAKER_PHONE);
                     String taskId = jsonObj.getString("taskId");
 
-                    mqttHelper.disableSpeakerphone(disable);
+                    policiesController.disableSpeakerphone(disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
             }
         }
+
+        // Policy/disableFmRadio
+        String DISABLE_FMRADIO = "disableFmRadio";
+        if(topic.toLowerCase().contains(DISABLE_FMRADIO.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_FMRADIO)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_FMRADIO);
+                    String taskId = jsonObj.getString("taskId");
+
+                    policiesController.disableFmRadio(disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
+
 
     }
 

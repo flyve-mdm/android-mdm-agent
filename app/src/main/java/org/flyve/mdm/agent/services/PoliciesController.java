@@ -56,16 +56,6 @@ public class PoliciesController {
 
     private static final String ERROR = "ERROR";
     private static final String MQTT_SEND = "MQTT Send";
-    private static final String REMOVE_APP = "removeApp";
-    private static final String REMOVE_FILE = "removeFile";
-    private static final String MIN_LENGTH = "passwordMinLength";
-    private static final String MIN_LETTERS = "passwordMinLetters";
-    private static final String MIN_LOWERCASE = "passwordMinLowerCase";
-    private static final String MIN_NON_LETTER = "passwordMinNonLetter";
-    private static final String MIN_NUMERIC = "passwordMinNumeric";
-    private static final String MIN_SYMBOLS = "passwordMinSymbols";
-    private static final String MIN_UPPERCASE = "passwordMinUpperCase";
-    private static final String MAXIMUM_FAILED_FOR_WIPE = "MaximumFailedPasswordsForWipe";
     private static final String UTF_8 = "UTF-8";
     
     private ArrayList<String> arrTopics;
@@ -683,6 +673,10 @@ public class PoliciesController {
             // send broadcast
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on sendKeepAlive", ex.getMessage()));
         }
+    }
+
+    public void disableFmRadio(Boolean disable) {
+        FlyveLog.i("This policy is not implemented");
     }
 
     /**
