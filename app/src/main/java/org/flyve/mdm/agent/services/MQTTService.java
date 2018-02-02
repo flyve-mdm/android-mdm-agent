@@ -71,7 +71,7 @@ public class MQTTService extends Service implements MqttCallback {
     private Timer _timer;
     private MqttAndroidClient client;
     private Boolean connected = false;
-    private MQTTHelper mqttHelper;
+    private PoliciesController mqttHelper;
 
     public static Intent start(Context context) {
         MQTTService mMQTTService = new MQTTService();
@@ -211,7 +211,7 @@ public class MQTTService extends Service implements MqttCallback {
                     FlyveLog.d(TAG, "Success we are online!");
                     broadcastServiceStatus(true);
 
-                    mqttHelper = new MQTTHelper(getApplicationContext(), client);
+                    mqttHelper = new PoliciesController(getApplicationContext(), client);
 
                     // send status online true to MQTT
                     mqttHelper.sendOnlineStatus(true);
