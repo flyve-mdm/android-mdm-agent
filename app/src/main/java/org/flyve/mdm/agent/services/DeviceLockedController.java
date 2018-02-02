@@ -35,11 +35,11 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class DeviceLockedHelper {
+public class DeviceLockedController {
 
     private Context context;
 
-    public DeviceLockedHelper(Context context) {
+    public DeviceLockedController(Context context) {
         this.context = context;
     }
 

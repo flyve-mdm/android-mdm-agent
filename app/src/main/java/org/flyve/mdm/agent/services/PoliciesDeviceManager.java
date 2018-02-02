@@ -98,7 +98,7 @@ public class PoliciesDeviceManager {
     }
 
     public void enablePassword() {
-        DeviceLockedHelper pwd = new DeviceLockedHelper(context);
+        DeviceLockedController pwd = new DeviceLockedController(context);
         if(pwd.isDeviceScreenLocked()) {
             try {
                 if (!mDPM.isActivePasswordSufficient()) {
