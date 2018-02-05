@@ -696,7 +696,9 @@ public class PoliciesController {
     }
 
     public void disableCreateVpnProfiles(Boolean disable) {
-        FlyveLog.i("This policy is not implemented");
+        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+        mdm.disableVPN(disable);
+        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "maximumTimeToLock", String.valueOf(disable)));
     }
 
     /**
