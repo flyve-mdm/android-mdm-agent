@@ -80,6 +80,19 @@ public class PoliciesDeviceManager {
         }
     }
 
+    @TargetApi(24)
+    public void disableVPN(Boolean disable) {
+        if(Build.VERSION.SDK_INT >= 24) {
+            try {
+                mDPM.setAlwaysOnVpnPackage(mDeviceAdmin, null, !disable);
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        } else {
+            FlyveLog.i("VPN policy is available on devices with api equals or mayor than 24");
+        }
+    }
+
     @TargetApi(23)
     public void disableStatusBar(boolean disable) {
         try {
