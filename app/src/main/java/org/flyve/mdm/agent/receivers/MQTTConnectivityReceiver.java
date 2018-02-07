@@ -73,13 +73,6 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             FlyveLog.e(ex.getMessage());
         }
 
-        if("android.provider.Telephony.SMS_RECEIVED".equalsIgnoreCase(action)) {
-            FlyveLog.d("SMS Received");
-            if(cache.getSmsMms()!=null && !cache.getSmsMms().equals("")) {
-                abortBroadcast();
-            }
-        }
-
         if("android.hardware.usb.action.USB_DEVICE_ATTACHED".equalsIgnoreCase(action)) {
             FlyveLog.d("USB Device Attached");
             if(cache.getUsbFileTransferProtocols()!=null && !cache.getUsbFileTransferProtocols().equals("")) {
