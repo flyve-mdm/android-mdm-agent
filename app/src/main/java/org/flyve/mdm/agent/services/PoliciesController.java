@@ -347,7 +347,6 @@ public class PoliciesController {
     public void disableSmsMms(boolean disable) {
         try {
             cache.setConnectivitySmsMmsDisable(disable);
-            PoliciesConnectivity.disableSMS(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "SMS", "SMS is disable: " + disable));
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on SMS", ex.getMessage()));
