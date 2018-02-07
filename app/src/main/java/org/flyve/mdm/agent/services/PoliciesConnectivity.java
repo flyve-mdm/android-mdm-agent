@@ -193,10 +193,4 @@ public class PoliciesConnectivity {
             wifiManager.setWifiEnabled(!disable);
         }
     }
-
-    public static void disableSMS(boolean disable) {
-
-
-    }
-
 }
