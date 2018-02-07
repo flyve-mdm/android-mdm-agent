@@ -35,6 +35,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -353,6 +354,23 @@ public class Helpers {
 				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))
 				.setAction(action, callback)
 				.show();
+	}
+
+	public static void deleteAllSMS(Context context) {
+		Cursor cursor = context.getContentResolver().query(
+				Uri.parse("content://sms/"),new String[] {
+						"_id", "thread_id", "address", "person", "date","body" }, null, null, null);
+
+		try {
+			while (cursor.moveToNext()) {
+				int id = cursor.getInt(0);
+				int threadId = cursor.getInt(1); // get the thread_id
+				int rowsDeleted = context.getContentResolver().delete(Uri.parse("content://sms/" + id), null, null);
+				FlyveLog.d("Rows deleted: " + rowsDeleted);
+			}
+		} catch (Exception ex) {
+			FlyveLog.e(ex.getMessage());
+		}
 	}
 
 	/**
