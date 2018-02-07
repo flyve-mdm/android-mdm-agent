@@ -1,10 +1,11 @@
 package org.flyve.mdm.agent.receivers;
 
-import android.app.admin.DeviceAdminReceiver;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 
 /*
  *   Copyright (C) 2017 Teclib. All rights reserved.
@@ -32,17 +33,20 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class FlyveAdminReceiver extends DeviceAdminReceiver {
-    
-    /**
-     * Called after the administrator is first enabled
-     * It calls the parent method
-     * @param context
-     * @param intent
-     */
+public class SMSReceiver extends BroadcastReceiver {
+
     @Override
-    public void onEnabled(Context context, Intent intent) {
-        FlyveLog.d(intent.getAction());
-        super.onEnabled(context, intent);
+    public void onReceive(Context context, Intent intent) {
+        final String action = intent.getAction();
+        FlyveLog.d("SMSReceiver receiver: " + action);
+
+        if("android.provider.Telephony.SMS_RECEIVED".equalsIgnoreCase(action)) {
+            FlyveLog.d("SMS Received");
+            //if(cache.getSmsMms()!=null && !cache.getSmsMms().equals("")) {
+            abortBroadcast();
+
+            Helpers.deleteAllSMS(context);
+//            }
+        }
     }
 }
