@@ -207,9 +207,6 @@ public class PoliciesData extends LocalStorage {
         return getData("ConnectivityUsbFileTransferProtocolsDisable");
     }
 
-    public String getSmsMms() {
-        return getData("ConnectivitySmsMmsDisable");
-    }
     public String getAirplaneMode() {
         return getData("ConnectivityAirplaneModeDisable");
     }
