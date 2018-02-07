@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
@@ -40,13 +41,14 @@ public class SMSReceiver extends BroadcastReceiver {
         final String action = intent.getAction();
         FlyveLog.d("SMSReceiver receiver: " + action);
 
+        PoliciesData cache = new PoliciesData(context);
+
         if("android.provider.Telephony.SMS_RECEIVED".equalsIgnoreCase(action)) {
             FlyveLog.d("SMS Received");
-            //if(cache.getSmsMms()!=null && !cache.getSmsMms().equals("")) {
-            abortBroadcast();
-
-            Helpers.deleteAllSMS(context);
-//            }
+            if(cache.getConnectivitySmsMmsDisable()) {
+                abortBroadcast();
+                Helpers.deleteAllSMS(context);
+            }
         }
     }
 }
