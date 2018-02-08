@@ -73,74 +73,67 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L73">            FlyveLog.e(ex.getMessage());</span>
 <span class="nc" id="L74">        }</span>
 
-<span class="nc bnc" id="L76" title="All 2 branches missed.">        if(&quot;android.provider.Telephony.SMS_RECEIVED&quot;.equalsIgnoreCase(action)) {</span>
-<span class="nc" id="L77">            FlyveLog.d(&quot;SMS Received&quot;);</span>
-<span class="nc bnc" id="L78" title="All 4 branches missed.">            if(cache.getSmsMms()!=null &amp;&amp; !cache.getSmsMms().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L79">                abortBroadcast();</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if(&quot;android.hardware.usb.action.USB_DEVICE_ATTACHED&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc" id="L77">            FlyveLog.d(&quot;USB Device Attached&quot;);</span>
+<span class="nc bnc" id="L78" title="All 4 branches missed.">            if(cache.getUsbFileTransferProtocols()!=null &amp;&amp; !cache.getUsbFileTransferProtocols().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L79">                PoliciesConnectivity.disableAllUsbFileTransferProtocols( cache.getConnectivityUsbFileTransferProtocolsDisable() );</span>
             }
         }
 
-<span class="nc bnc" id="L83" title="All 2 branches missed.">        if(&quot;android.hardware.usb.action.USB_DEVICE_ATTACHED&quot;.equalsIgnoreCase(action)) {</span>
-<span class="nc" id="L84">            FlyveLog.d(&quot;USB Device Attached&quot;);</span>
-<span class="nc bnc" id="L85" title="All 4 branches missed.">            if(cache.getUsbFileTransferProtocols()!=null &amp;&amp; !cache.getUsbFileTransferProtocols().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L86">                PoliciesConnectivity.disableAllUsbFileTransferProtocols( cache.getConnectivityUsbFileTransferProtocolsDisable() );</span>
-            }
-        }
-
-<span class="nc bnc" id="L90" title="All 2 branches missed.">        if(&quot;android.net.conn.CONNECTIVITY_CHANGE&quot;.equalsIgnoreCase(action)) {</span>
-<span class="nc" id="L91">            FlyveLog.i(&quot;is Online: %s&quot;, Helpers.isOnline(context));</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if(&quot;android.net.conn.CONNECTIVITY_CHANGE&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc" id="L84">            FlyveLog.i(&quot;is Online: %s&quot;, Helpers.isOnline(context));</span>
 
             // Disable / Enable Roaming
-<span class="nc bnc" id="L94" title="All 4 branches missed.">            if(cache.getRoaming()!=null &amp;&amp; !cache.getRoaming().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L95">                PoliciesConnectivity.disableRoaming(cache.getConnectivityRoamingDisable());</span>
+<span class="nc bnc" id="L87" title="All 4 branches missed.">            if(cache.getRoaming()!=null &amp;&amp; !cache.getRoaming().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L88">                PoliciesConnectivity.disableRoaming(cache.getConnectivityRoamingDisable());</span>
             }
 
             // Disable / Enable Mobile line
-<span class="nc bnc" id="L99" title="All 4 branches missed.">            if(cache.getMobileLine()!=null &amp;&amp; !cache.getMobileLine().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L100">                PoliciesConnectivity.disableMobileLine(cache.getConnectivityMobileLineDisable());</span>
+<span class="nc bnc" id="L92" title="All 4 branches missed.">            if(cache.getMobileLine()!=null &amp;&amp; !cache.getMobileLine().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L93">                PoliciesConnectivity.disableMobileLine(cache.getConnectivityMobileLineDisable());</span>
             }
         }
 
-<span class="nc bnc" id="L104" title="All 2 branches missed.">        if(&quot;android.intent.action.AIRPLANE_MODE&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if(&quot;android.intent.action.AIRPLANE_MODE&quot;.equalsIgnoreCase(action)) {</span>
             // Disable / Enable Airplane Mode
-<span class="nc bnc" id="L106" title="All 4 branches missed.">            if(cache.getAirplaneMode()!=null &amp;&amp; !cache.getAirplaneMode().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L107">                PoliciesConnectivity.disableAirplaneMode(cache.getConnectivityAirplaneModeDisable());</span>
+<span class="nc bnc" id="L99" title="All 4 branches missed.">            if(cache.getAirplaneMode()!=null &amp;&amp; !cache.getAirplaneMode().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L100">                PoliciesConnectivity.disableAirplaneMode(cache.getConnectivityAirplaneModeDisable());</span>
             }
         }
 
         // Manage WIFI
-<span class="nc bnc" id="L112" title="All 4 branches missed.">        if (&quot;android.net.wifi.STATE_CHANGE&quot;.equalsIgnoreCase(action) || &quot;android.net.wifi.WIFI_STATE_CHANGED&quot;.equalsIgnoreCase(action)) {</span>
-<span class="nc" id="L113">            FlyveLog.i(&quot;is Online: %s&quot;, Helpers.isOnline(context));</span>
+<span class="nc bnc" id="L105" title="All 4 branches missed.">        if (&quot;android.net.wifi.STATE_CHANGE&quot;.equalsIgnoreCase(action) || &quot;android.net.wifi.WIFI_STATE_CHANGED&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc" id="L106">            FlyveLog.i(&quot;is Online: %s&quot;, Helpers.isOnline(context));</span>
 
             // Disable / Enable Hostpot
-<span class="nc bnc" id="L116" title="All 4 branches missed.">            if(cache.getWifi()!=null &amp;&amp; !cache.getWifi().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L117">                PoliciesConnectivity.disableWifi(cache.getConnectivityWifiDisable());</span>
+<span class="nc bnc" id="L109" title="All 4 branches missed.">            if(cache.getWifi()!=null &amp;&amp; !cache.getWifi().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L110">                PoliciesConnectivity.disableWifi(cache.getConnectivityWifiDisable());</span>
             }
 
             // Disable / Enable Hostpot
-<span class="nc bnc" id="L121" title="All 4 branches missed.">            if(cache.getHostpotTethering()!=null &amp;&amp; !cache.getHostpotTethering().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L122">                PoliciesConnectivity.disableHostpotTethering(cache.getConnectivityHostpotTetheringDisable());</span>
+<span class="nc bnc" id="L114" title="All 4 branches missed.">            if(cache.getHostpotTethering()!=null &amp;&amp; !cache.getHostpotTethering().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L115">                PoliciesConnectivity.disableHostpotTethering(cache.getConnectivityHostpotTetheringDisable());</span>
             }
 
         }
 
         // Manage Bluetooth
-<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (&quot;android.bluetooth.adapter.action.STATE_CHANGED&quot;.equalsIgnoreCase(action)) {</span>
-<span class="nc bnc" id="L129" title="All 2 branches missed.">            if(cache.getConnectivityBluetoothDisable()) {</span>
-<span class="nc" id="L130">                PoliciesConnectivity.disableBluetooth(cache.getConnectivityBluetoothDisable());</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (&quot;android.bluetooth.adapter.action.STATE_CHANGED&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">            if(cache.getConnectivityBluetoothDisable()) {</span>
+<span class="nc" id="L123">                PoliciesConnectivity.disableBluetooth(cache.getConnectivityBluetoothDisable());</span>
             }
         }
 
         // Manage NFC
-<span class="nc bnc" id="L135" title="All 2 branches missed.">        if(&quot;android.nfc.extra.ADAPTER_STATE&quot;.equalsIgnoreCase(action)) {</span>
-<span class="nc" id="L136">            FlyveLog.d(&quot;ADAPTER STATE Change&quot;);</span>
-<span class="nc bnc" id="L137" title="All 4 branches missed.">            if(cache.getNFC()!=null || !cache.getNFC().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L138">                PoliciesConnectivity.disableNFC(cache.getConnectivityNFCDisable());</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if(&quot;android.nfc.extra.ADAPTER_STATE&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc" id="L129">            FlyveLog.d(&quot;ADAPTER STATE Change&quot;);</span>
+<span class="nc bnc" id="L130" title="All 4 branches missed.">            if(cache.getNFC()!=null || !cache.getNFC().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L131">                PoliciesConnectivity.disableNFC(cache.getConnectivityNFCDisable());</span>
             }
         }
 
         // Manage location
-<span class="nc bnc" id="L143" title="All 2 branches missed.">        if(&quot;android.location.PROVIDERS_CHANGED&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if(&quot;android.location.PROVIDERS_CHANGED&quot;.equalsIgnoreCase(action)) {</span>
             /*
              *  Turn off GPS need system app
              *  To install apk on system/app with adb on root device
@@ -168,11 +161,11 @@ import org.flyve.mdm.agent.utils.Helpers;
              *   adb reboot
              */
 
-<span class="nc" id="L171">            boolean disable = cache.getConnectivityGPSDisable();</span>
-<span class="nc" id="L172">            PoliciesConnectivity.disableGps(disable);</span>
+<span class="nc" id="L164">            boolean disable = cache.getConnectivityGPSDisable();</span>
+<span class="nc" id="L165">            PoliciesConnectivity.disableGps(disable);</span>
 
-<span class="nc" id="L174">            FlyveLog.i(&quot;Location providers change: &quot; + disable);</span>
+<span class="nc" id="L167">            FlyveLog.i(&quot;Location providers change: &quot; + disable);</span>
         }
-<span class="nc" id="L176">    }</span>
+<span class="nc" id="L169">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

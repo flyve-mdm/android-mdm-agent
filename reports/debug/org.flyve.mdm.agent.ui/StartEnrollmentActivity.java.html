@@ -129,49 +129,52 @@ import org.flyve.mdm.agent.utils.Helpers;
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.READ_PHONE_STATE,
                         Manifest.permission.CAMERA,
-                        Manifest.permission.ACCESS_FINE_LOCATION
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.RECEIVE_SMS,
+                        Manifest.permission.READ_SMS,
                 },
                 1);
-<span class="nc" id="L135">    }</span>
+<span class="nc" id="L137">    }</span>
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-<span class="nc bnc" id="L140" title="All 2 branches missed.">        switch (requestCode) {</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        switch (requestCode) {</span>
             case 1: {
 
                 // If request is cancelled, the result arrays are empty.
-<span class="nc bnc" id="L144" title="All 10 branches missed.">                if (grantResults.length &gt; 0</span>
+<span class="nc bnc" id="L146" title="All 12 branches missed.">                if (grantResults.length &gt; 0</span>
                         &amp;&amp; grantResults[0] == PackageManager.PERMISSION_GRANTED
                         &amp;&amp; grantResults[1] == PackageManager.PERMISSION_GRANTED
                         &amp;&amp; grantResults[2] == PackageManager.PERMISSION_GRANTED
-                        &amp;&amp; grantResults[3] == PackageManager.PERMISSION_GRANTED) {
-<span class="nc" id="L149">                    mPermissions = true;</span>
+                        &amp;&amp; grantResults[3] == PackageManager.PERMISSION_GRANTED
+                        &amp;&amp; grantResults[4] == PackageManager.PERMISSION_GRANTED) {
+<span class="nc" id="L152">                    mPermissions = true;</span>
                 } else {
-<span class="nc" id="L151">                    mPermissions = false;</span>
+<span class="nc" id="L154">                    mPermissions = false;</span>
                 }
             }
         }
-<span class="nc" id="L155">    }</span>
+<span class="nc" id="L158">    }</span>
 
     /**
      * Send a Broadcast with the Close Action
      */
     public void sendBroadcast() {
         //send broadcast
-<span class="nc" id="L162">        Intent in = new Intent();</span>
-<span class="nc" id="L163">        in.setAction(&quot;flyve.ACTION_CLOSE&quot;);</span>
-<span class="nc" id="L164">        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);</span>
-<span class="nc" id="L165">    }</span>
+<span class="nc" id="L165">        Intent in = new Intent();</span>
+<span class="nc" id="L166">        in.setAction(&quot;flyve.ACTION_CLOSE&quot;);</span>
+<span class="nc" id="L167">        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);</span>
+<span class="nc" id="L168">    }</span>
 
     /**
      * Open the main activity
      */
     private void openMain() {
-<span class="nc" id="L171">        Intent intent = new Intent(StartEnrollmentActivity.this, MainActivity.class);</span>
-<span class="nc" id="L172">        StartEnrollmentActivity.this.startActivity(intent);</span>
-<span class="nc" id="L173">        StartEnrollmentActivity.this.finish();</span>
-<span class="nc" id="L174">    }</span>
+<span class="nc" id="L174">        Intent intent = new Intent(StartEnrollmentActivity.this, MainActivity.class);</span>
+<span class="nc" id="L175">        StartEnrollmentActivity.this.startActivity(intent);</span>
+<span class="nc" id="L176">        StartEnrollmentActivity.this.finish();</span>
+<span class="nc" id="L177">    }</span>
 
     /**
      * Shows an error message
@@ -179,34 +182,34 @@ import org.flyve.mdm.agent.utils.Helpers;
      */
     @Override
     public void showError(String message) {
-<span class="nc" id="L182">        txtTitle.setText(getResources().getString(R.string.fail_enroll));</span>
-<span class="nc" id="L183">        txtMessage.setText(message);</span>
-<span class="nc" id="L184">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
+<span class="nc" id="L185">        txtTitle.setText(getResources().getString(R.string.fail_enroll));</span>
+<span class="nc" id="L186">        txtMessage.setText(message);</span>
+<span class="nc" id="L187">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L187">            }</span>
+<span class="nc" id="L190">            }</span>
         });
-<span class="nc" id="L189">    }</span>
+<span class="nc" id="L192">    }</span>
 
     @Override
     public void lintSuccess(DeeplinkSchema deeplinkSchema) {
-<span class="nc" id="L193">        presenter.saveMQTTConfig(StartEnrollmentActivity.this, deeplinkSchema.getUrl(), deeplinkSchema.getUserToken(), deeplinkSchema.getInvitationToken());</span>
-<span class="nc" id="L194">        presenter.saveSupervisor(StartEnrollmentActivity.this, deeplinkSchema.getName(), deeplinkSchema.getPhone(), deeplinkSchema.getWebsite(), deeplinkSchema.getEmail());</span>
-<span class="nc" id="L195">    }</span>
+<span class="nc" id="L196">        presenter.saveMQTTConfig(StartEnrollmentActivity.this, deeplinkSchema.getUrl(), deeplinkSchema.getUserToken(), deeplinkSchema.getInvitationToken());</span>
+<span class="nc" id="L197">        presenter.saveSupervisor(StartEnrollmentActivity.this, deeplinkSchema.getName(), deeplinkSchema.getPhone(), deeplinkSchema.getWebsite(), deeplinkSchema.getEmail());</span>
+<span class="nc" id="L198">    }</span>
 
     @Override
     public void openEnrollSuccess() {
-<span class="nc" id="L199">        btnEnroll.setVisibility(View.VISIBLE);</span>
-<span class="nc" id="L200">        pb.setVisibility(View.GONE);</span>
-<span class="nc" id="L201">        txtMessage.setText(getResources().getString(R.string.success));</span>
-<span class="nc" id="L202">        txtTitle.setText(getResources().getString(R.string.start_enroll));</span>
-<span class="nc" id="L203">    }</span>
+<span class="nc" id="L202">        btnEnroll.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L203">        pb.setVisibility(View.GONE);</span>
+<span class="nc" id="L204">        txtMessage.setText(getResources().getString(R.string.success));</span>
+<span class="nc" id="L205">        txtTitle.setText(getResources().getString(R.string.start_enroll));</span>
+<span class="nc" id="L206">    }</span>
 
     @Override
     public void openEnrollFail() {
-<span class="nc" id="L207">        btnEnroll.setVisibility(View.VISIBLE);</span>
-<span class="nc" id="L208">        pb.setVisibility(View.GONE);</span>
-<span class="nc" id="L209">    }</span>
+<span class="nc" id="L210">        btnEnroll.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L211">        pb.setVisibility(View.GONE);</span>
+<span class="nc" id="L212">    }</span>
 
     /**
      * Called when the launched activity exits
@@ -216,9 +219,9 @@ import org.flyve.mdm.agent.utils.Helpers;
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-<span class="nc bnc" id="L219" title="All 4 branches missed.">        if (requestCode == REQUEST_EXIT &amp;&amp; resultCode == RESULT_OK) {</span>
-<span class="nc" id="L220">            this.finish();</span>
+<span class="nc bnc" id="L222" title="All 4 branches missed.">        if (requestCode == REQUEST_EXIT &amp;&amp; resultCode == RESULT_OK) {</span>
+<span class="nc" id="L223">            this.finish();</span>
         }
-<span class="nc" id="L222">    }</span>
+<span class="nc" id="L225">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
