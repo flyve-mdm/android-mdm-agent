@@ -1,5 +1,6 @@
 package org.flyve.mdm.agent.ui;
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +14,7 @@ import org.flyve.mdm.agent.R;
 
 import java.util.HashMap;
 import java.util.List;
+
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -40,6 +42,7 @@ import java.util.List;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
+
 public class FragmentAppList extends Fragment {
 
     private List<HashMap<String, String>> arrData;
