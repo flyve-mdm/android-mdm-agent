@@ -79,6 +79,11 @@ public class FragmentActivity extends Fragment {
         // ----------------
         adapter.addFragment(new FragmentPolicies(), "Policies");
 
+        // ----------------
+        // App
+        // ----------------
+        adapter.addFragment(new FragmentAppList(), "Applications");
+
         viewPager.setAdapter(adapter);
     }
 
