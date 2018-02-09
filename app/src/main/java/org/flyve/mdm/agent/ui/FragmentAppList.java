@@ -1,5 +1,19 @@
 package org.flyve.mdm.agent.ui;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+
+import org.flyve.mdm.agent.R;
+
+import java.util.HashMap;
+import java.util.List;
+
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
  *
@@ -18,7 +32,7 @@ package org.flyve.mdm.agent.ui;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
- * @author    rafaelhernandez
+ * @author    Rafael Hernandez
  * @date      9/2/18
  * @copyright Copyright © 2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
@@ -26,5 +40,38 @@ package org.flyve.mdm.agent.ui;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class FragmentAppList {
+public class FragmentAppList extends Fragment {
+
+    private List<HashMap<String, String>> arrData;
+    private ListView lst;
+    private ProgressBar pb;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_app_list, container, false);
+
+        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(false);
+                arrData.clear();
+                loadData();
+            }
+        });
+
+        lst = (ListView) v.findViewById(R.id.lst);
+
+        loadData();
+
+        return v;
+
+    }
+
+    private void loadData() {
+
+
+
+    }
 }
