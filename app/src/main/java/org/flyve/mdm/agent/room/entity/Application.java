@@ -1,28 +1,22 @@
 package org.flyve.mdm.agent.room.entity;
 
 import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.graphics.Bitmap;
-import android.location.Address;
 
-@Entity (tableName = "person")
-public class Person {
+@Entity (tableName = "applications")
+public class Application {
 
     @PrimaryKey (autoGenerate = true)
     public int id;
 
-    @ColumnInfo (name = "first_name")
-    public String firstName;
+    @ColumnInfo (name = "app_id")
+    public String appId;
 
-    @ColumnInfo (name = "last_name")
-    public String lastName;
+    @ColumnInfo (name = "app_name")
+    public String appName;
 
-    @Ignore
-    public Bitmap picture;
+    @ColumnInfo (name = "app_package")
+    public String appPackage;
 
-    @Embedded
-    public Address address;
 }
