@@ -6,21 +6,21 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import org.flyve.mdm.agent.room.entity.Person;
+import org.flyve.mdm.agent.room.entity.Application;
 
 
 @Dao
-public interface PersonDao {
+public interface ApplicationDao {
 
     @Insert
-    void insert(Person... person);
+    void insert(Application... applications);
 
     @Update
-    void update(Person... person);
+    void update(Application... applications);
 
     @Delete
-    void delete(Person... person);
+    void delete(Application... applications);
 
-    @Query("Select * FROM person")
-    Person[] loadAll();
+    @Query("Select * FROM Application")
+    Application[] loadAll();
 }
