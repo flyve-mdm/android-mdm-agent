@@ -54,11 +54,19 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.9.0'
     androidTestCompile 'org.mockito:mockito-android:2.7.22'
-    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:multidex:1.0.2'
     compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support:support-v4:24.2.1'
+    compile('com.android.support:appcompat-v7:24.2.1', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile('com.android.support:design:24.2.1', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile('com.android.support:support-v4:24.2.1' , {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile "android.arch.persistence.room:runtime:1.0.0"
+    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
     compile 'com.madgag.spongycastle:core:1.54.0.0'
     compile 'com.madgag.spongycastle:prov:1.54.0.0'
     compile 'com.madgag.spongycastle:pkix:1.54.0.0'
