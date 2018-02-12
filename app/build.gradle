@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 27
     buildToolsVersion '27.0.1'
     defaultConfig {
         applicationId "org.flyve.mdm.agent"
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 27
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -56,17 +56,13 @@ dependencies {
     androidTestCompile 'org.mockito:mockito-android:2.7.22'
     compile 'com.android.support:multidex:1.0.2'
     compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
-    compile('com.android.support:appcompat-v7:24.2.1', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile('com.android.support:design:24.2.1', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile('com.android.support:support-v4:24.2.1' , {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:support-v4:27.0.2'
+
     compile "android.arch.persistence.room:runtime:1.0.0"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+
     compile 'com.madgag.spongycastle:core:1.54.0.0'
     compile 'com.madgag.spongycastle:prov:1.54.0.0'
     compile 'com.madgag.spongycastle:pkix:1.54.0.0'
