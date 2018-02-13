@@ -5,11 +5,13 @@ description: contribute guidelines
 tags: contributing, github, flyve, mdm
 ---
 
-[![flyve hero](/images/flyve-mdm-banner.png)](https://flyve-mdm.com/)
+[![flyve hero](/images/header.png)](https://flyve-mdm.com/)
 
 # How to contribute to Flyve MDM Android MDM Agent
 
 Welcome to our ever-growing community :octocat:!
+
+Flyve MDM is an award-winning mobile device management software (MDM) that enables organizations to manage their entire mobile fleet with ease. Broader visibility for the IT security team to proactively work on security weaknesses and manage risk on Apple® iOS and Google Android™ mobile devices.
 
 We are more than happy to accept external contributions to the project in the form of feedback, translations, bug reports and even better, pull requests.
 
@@ -42,12 +44,12 @@ We present you the guidelines to start contributing in any of the Flyve MDM proj
         - 4.2.3 [Commit Your Changes](#4.2.3)
             - 4.2.3.1 [Rules to Follow](#4.2.3.1)
             - 4.2.3.2 [Commit Format](#4.2.3.2)
-                - 4.2.3.2.1 [Header: Writting a `<type>`](#4.2.3.2.1)
-                - 4.2.3.2.2 [Header: Writting the (`<optional scope>`)](#4.2.3.2.2 )
-                - 4.2.3.2.3 [Header: Writting a `<description>`](#4.2.3.2.3)
+                - 4.2.3.2.1 [Header: Writting a `type`](#4.2.3.2.1)
+                - 4.2.3.2.2 [Header: Writting the `(optional scope)`](#4.2.3.2.2 )
+                - 4.2.3.2.3 [Header: Writting a `description`](#4.2.3.2.3)
                 - 4.2.3.2.4 [Header Lenght](#4.2.3.2.4)
-                - 4.2.3.2.5 [Writting the `<optional body>`](#4.2.3.2.5)
-                - 4.2.3.2.6 [Writting the `<optional footer>`](#4.2.3.2.6)
+                - 4.2.3.2.5 [Writting the `optional body`](#4.2.3.2.5)
+                - 4.2.3.2.6 [Writting the `optional footer`](#4.2.3.2.6)
             - 4.2.3.3 [Commit Examples](#4.2.3.3)
         - 4.2.4 [Push your Changes](#4.2.4)
         - 4.2.5 [Create a Pull Request](#4.2.5)
@@ -144,18 +146,20 @@ For commits, we follow the [Conventional Commit](http://conventionalcommits.org/
 Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
 format that includes a **type**, a **scope** and a **description**:
 
+**:warning: Important:** Please avoid generic terms.
+
 The commit message should be structured as follows:
 
 ```
-<type>(<optional scope>): <description>
-<BLANK LINE>
-<optional body>
-<BLANK LINE>
-<optional footer>
+type(optional scope): description
+<blank line>
+optional body
+<blank line>
+optional footer
 ```
 
-### <a name="4.2.3.2.1"></a> 4.2.3.2.1 Header: Writting a `<type>`. 
-Commits must be prefixed with a type, which consists of a verb, **feat, fix, build,** followed by a colon and space.
+### <a name="4.2.3.2.1"></a> 4.2.3.2.1 Header: Writting a `type`. 
+Commits must be prefixed with a type, which consists of a verb, **feat, fix, build,** followed by a colon and space. 
 
 **Your options:**
 
@@ -170,20 +174,20 @@ Commits must be prefixed with a type, which consists of a verb, **feat, fix, bui
 * **test**: Adding missing tests or correcting existing tests.
 
 ---
->**Example for `<type>`:**
+>**Example for `type`:**
 >:point_right:feat:point_left:(parser): add ability to parse arrays
 ---
 
-### <a name="4.2.3.2.2"></a> 4.2.3.2.2 Header: Writting the (`<optional scope>`).
-A scope (optional) may be provided to a commit’s type, to provide additional contextual information and is contained in parenthesis.
+### <a name="4.2.3.2.2"></a> 4.2.3.2.2 Header: Writting the `(optional scope)`.
+Refers to the extent, subject matter or contextual information about your changes. A scope is a phrase describing the file modified or a section of the codebase, it’s always enclosed in parenthesis.
 
 ---
-> **Example for a (`<optional scope>`):**
+> **Example for a `(optional scope)`:**
 > feat:point_right:(parser):point_left:: add ability to parse arrays 
 ---
 
-### <a name="4.2.3.2.3"></a> 4.2.3.2.3 Header: Writting a `<description>`
-A description must immediately follow the **`<type>(<optional scope>):`** The description is a short description of the commit.
+### <a name="4.2.3.2.3"></a> 4.2.3.2.3 Header: Writting a `description`
+A description must immediately follow the **`type(optional scope):`** The description is a short description of the commit.
 
 **Important**
 * Use the imperative, present tense: "change" not "changed" nor "changes".
@@ -198,11 +202,11 @@ A description must immediately follow the **`<type>(<optional scope>):`** The de
 ### <a name="4.2.3.2.4"></a> 4.2.3.2.4 Header Lenght
 The **header** cannot be longer than 100 characters. This allows the message to be easier to read on GitHub as well as in various git tools.
 
-### <a name="4.2.3.2.5"></a> 4.2.3.2.5 Writting the `<optional body>`.
+### <a name="4.2.3.2.5"></a> 4.2.3.2.5 Writting the `optional body`.
 The body should include the motivation for the change and contrast this with previous behavior.
 
 ---
->**Example for `<optional body>`**:
+>**Example for `optional body`**:
 ```
 fix orthography
 remove out of date paragraph
@@ -210,13 +214,13 @@ fix broken links
 ```
 ---
 
-### <a name="4.2.3.2.6"></a> 4.2.3.2.6 Writting the `<optional footer>`.
+### <a name="4.2.3.2.6"></a> 4.2.3.2.6 Writting the `optional footer`.
 The `<optional footer>` should contain a [closing reference to an issue](https://help.github.com/articles/closing-issues-using-keywords/) if any.
 
 For example, to close an issue numbered **`123`**, you could use the phrases **`Closes #123`** in your pull request description or commit message. Once the branch is merged into the default branch, the issue will close.
 
 ---
->**Example for `<optional footer>`**:
+>**Example for `optional footer`**:
 >:point_right:Closes #123:point_left:
 ---
 
@@ -254,7 +258,9 @@ Pull requests or PR are **proposed changes** to a repository submitted by a user
 After all the work being pushed to the newly created branch, In GitHub, send a pull request to our [repository.](https://github.com/flyve-mdm/android-mdm-agent/pulls)
 
 ### <a name="4.2.5.1"></a> 4.2.5.1 How to Write a Title for a Pull Request.
-Pull Request should be named in reference to the main fix or feature you provide, minor information can be added to the description.
+Pull Request should be named in reference to the main fix or feature you provide; minor information can be added to the description. Please be specific and don't use generic terms.
+
+**:warning: Important:** Please avoid generic terms.
 
 :straight_ruler:
 **Title Lenght:** Keep it concise and don't write more than **50 characters** in the title.
@@ -264,7 +270,7 @@ Pull Request should be named in reference to the main fix or feature you provide
 
 ---
 >**Example for `Titles for work in progress (WIP):`**
->:point_right:WIP Contribution Guideline Improvement.:point_left:
+>:point_right:WIP Added a Table of Content for the Contributing Guideline Document.:point_left:
 ---
 
 :white_check_mark:
@@ -272,7 +278,7 @@ Pull Request should be named in reference to the main fix or feature you provide
 
 ---
 >**Example for `Titles for Finalized Work:`**
->:point_right:Contribution Guideline Improvement.:point_left:
+>:point_right:Added a Table of Content for the Contributing Guideline Document.:point_left:
 ---
 
 ### <a name="4.2.5.2"></a> 4.2.5.2 How to Write a Description for a Pull Request.
@@ -288,7 +294,7 @@ We provide a [template](https://github.com/flyve-mdm/android-mdm-agent/community
 
 If we suggest changes then:
 * Make the required updates.
-* Re-run the Angular test suites to ensure tests are still passing.
+* Re-run the test suites to ensure tests are still passing.
 * Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
 
     ```shell
@@ -320,7 +326,7 @@ from the main (upstream) repository:
     git branch -D created-branch
     ```
 
-* Update your master with the latest upstream version:
+* Update develop with the latest upstream version:
 
     ```shell
     git pull --ff upstream develop
@@ -336,4 +342,4 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 
 # Good luck! :tada:
 
-[![flyve hero](/images/flyve-mdm-banner.png)](https://flyve-mdm.com/)
+[![flyve hero](/images/footer.png)](https://flyve-mdm.com/)
