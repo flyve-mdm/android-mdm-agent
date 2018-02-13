@@ -34,17 +34,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.room.entity.Application;
 import org.flyve.mdm.agent.utils.FlyveLog;
-import java.util.HashMap;
-import java.util.List;
 
-public class LogAdapter extends BaseAdapter {
+public class ApplicationsAdapter extends BaseAdapter {
 
-	private List<HashMap<String, String>> data;
+	private Application data[];
 	private LayoutInflater inflater = null;
 
-	public LogAdapter(Activity activity, List<HashMap<String, String>> data) {
+	public ApplicationsAdapter(Activity activity, Application data[]) {
 		FlyveLog.d(activity.getLocalClassName());
 
 		this.data = data;
@@ -57,7 +57,7 @@ public class LogAdapter extends BaseAdapter {
 	 */
 	@Override
 	public int getCount() {
-		return data.size();
+		return data.length;
 	}
 
 	/**
@@ -90,21 +90,18 @@ public class LogAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		HashMap<String, String> hashdata = data.get(position);
+		Application app = data[position];
 
-		View vi = inflater.inflate(R.layout.listitem_main, null);
+		View vi = inflater.inflate(R.layout.list_item_log, null);
 
-		TextView txtType = (TextView) vi.findViewById(R.id.txtType);
-		txtType.setText(hashdata.get("type"));
+		TextView txtId = (TextView) vi.findViewById(R.id.txtId);
+		txtId.setText(app.appId);
 
-		TextView txtDate = (TextView) vi.findViewById(R.id.txtDate);
-		txtDate.setText(hashdata.get("date"));
+		TextView txtAppName = (TextView) vi.findViewById(R.id.txtAppName);
+		txtAppName.setText(app.appName);
 
-		TextView txtTitle = (TextView) vi.findViewById(R.id.txtTitle);
-		txtTitle.setText(hashdata.get("title"));
-
-		TextView txtBody = (TextView) vi.findViewById(R.id.txtBody);
-		txtBody.setText(hashdata.get("body"));
+		TextView txtPackageName = (TextView) vi.findViewById(R.id.txtPackageName);
+		txtPackageName.setText(app.appPackage);
 
 		return vi;
 
