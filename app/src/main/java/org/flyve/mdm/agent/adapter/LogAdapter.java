@@ -92,7 +92,7 @@ public class LogAdapter extends BaseAdapter {
 
 		HashMap<String, String> hashdata = data.get(position);
 
-		View vi = inflater.inflate(R.layout.listitem_main, null);
+		View vi = inflater.inflate(R.layout.list_item_log, null);
 
 		TextView txtType = (TextView) vi.findViewById(R.id.txtType);
 		txtType.setText(hashdata.get("type"));
