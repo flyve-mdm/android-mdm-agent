@@ -10,6 +10,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.room.database.AppDataBase;
+import org.flyve.mdm.agent.room.entity.Application;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,11 +47,14 @@ public class FragmentAppList extends Fragment {
     private List<HashMap<String, String>> arrData;
     private ListView lst;
     private ProgressBar pb;
+    private AppDataBase dataBase;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_app_list, container, false);
+
+        dataBase = AppDataBase.getAppDatabase(this.getActivity());
 
         final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -69,8 +74,40 @@ public class FragmentAppList extends Fragment {
 
     }
 
+    private void makeFakeData() {
+        if (dataBase == null) {
+            return;
+        }
+
+        Application[] apps = new Application[4];
+        apps[0] = appsInstance("1", "Flyve", "org.flyve.mdm");
+        apps[1] = appsInstance("2", "Play Store", "com.google.play");
+        apps[2] = appsInstance("3", "Inventory", "org.flyve.inventory");
+        apps[3] = appsInstance("4", "Telegram", "com.telegram");
+
+
+
+    }
+
+    private Application appsInstance(String id, String appName, String packageName) {
+        Application apps = new Application();
+
+        apps.appId = id;
+        apps.appName = appName;
+        apps.appPackage = packageName;
+
+        dataBase.ApplicationDao().insert(apps);
+
+        return apps;
+    }
+
     private void loadData() {
 
+        if(dataBase.ApplicationDao().loadAll().length <= 0) {
+            makeFakeData();
+        }
+
+        Application apps[] = dataBase.ApplicationDao().loadAll();
 
 
     }
