@@ -35,10 +35,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
@@ -84,6 +86,16 @@ public class Helpers {
 	private Helpers() {
 	}
 
+
+	public static Drawable getApplicationImage(Context context, String packageApp) {
+		try {
+			return context.getPackageManager().getApplicationIcon(packageApp);
+		}
+		catch (PackageManager.NameNotFoundException ex) {
+			FlyveLog.e(ex.getMessage());
+			return null;
+		}
+	}
 	public static void hideKeyboard(Activity activity) {
 		// Hide keyboard
 		View view = activity.getCurrentFocus();
