@@ -33,11 +33,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.room.entity.Application;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 
 public class ApplicationsAdapter extends BaseAdapter {
 
@@ -92,7 +94,7 @@ public class ApplicationsAdapter extends BaseAdapter {
 
 		Application app = data[position];
 
-		View vi = inflater.inflate(R.layout.list_item_log, null);
+		View vi = inflater.inflate(R.layout.list_item_application, null);
 
 		TextView txtId = (TextView) vi.findViewById(R.id.txtId);
 		txtId.setText(app.appId);
@@ -102,6 +104,9 @@ public class ApplicationsAdapter extends BaseAdapter {
 
 		TextView txtPackageName = (TextView) vi.findViewById(R.id.txtPackageName);
 		txtPackageName.setText(app.appPackage);
+
+		ImageView imgApp = vi.findViewById(R.id.imgApp);
+		imgApp.setImageDrawable(Helpers.getApplicationImage(parent.getContext(), app.appPackage));
 
 		return vi;
 
