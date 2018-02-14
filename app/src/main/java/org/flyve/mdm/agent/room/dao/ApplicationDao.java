@@ -21,6 +21,9 @@ public interface ApplicationDao {
     @Delete
     void delete(Application... applications);
 
+    @Query("DELETE FROM applications")
+    void deleteAll();
+
     @Query("Select * FROM applications")
     Application[] loadAll();
 }
