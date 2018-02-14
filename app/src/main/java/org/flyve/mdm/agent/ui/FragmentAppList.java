@@ -13,6 +13,8 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.ApplicationsAdapter;
 import org.flyve.mdm.agent.room.database.AppDataBase;
 import org.flyve.mdm.agent.room.entity.Application;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.StorageFolder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -57,9 +59,9 @@ public class FragmentAppList extends Fragment {
 
         dataBase = AppDataBase.getAppDatabase(this.getActivity());
 
-        pb = (ProgressBar) v.findViewById(R.id.progressBar);
+        pb = v.findViewById(R.id.progressBar);
 
-        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
+        final SwipeRefreshLayout swipeLayout = v.findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -69,7 +71,7 @@ public class FragmentAppList extends Fragment {
             }
         });
 
-        lst = (ListView) v.findViewById(R.id.lst);
+        lst = v.findViewById(R.id.lst);
 
         loadData();
 
@@ -83,21 +85,29 @@ public class FragmentAppList extends Fragment {
         }
 
         Application[] apps = new Application[4];
-        apps[0] = appsInstance("1", "Flyve MDM", "org.flyve.mdm.agent");
-        apps[1] = appsInstance("2", "Google Maps", "com.google.android.apps.maps");
-        apps[2] = appsInstance("3", "Inventory", "org.flyve.inventory");
-        apps[3] = appsInstance("4", "Caliente Radio", "s42.radio.radiocaliente");
 
+        String path = "";
+        try {
+            path = new StorageFolder(FragmentAppList.this.getContext()).getApkDir();
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+
+        apps[0] = appsInstance("1", "Flyve MDM", "org.flyve.mdm.agent", path, "installed");
+        apps[1] = appsInstance("2", "Google Maps", "com.google.android.apps.maps", path, "installed");
+        apps[3] = appsInstance("4", "Caliente Radio", "s42.radio.radiocaliente", path, "pending");
     }
 
-    private Application appsInstance(String id, String appName, String packageName) {
+    private Application appsInstance(String id, String appName, String packageName, String path, String status) {
         Application apps = new Application();
 
         apps.appId = id;
         apps.appName = appName;
         apps.appPackage = packageName;
+        apps.appPath = path;
+        apps.appStatus = status;
 
-        dataBase.ApplicationDao().insert(apps);
+        dataBase.applicationDao().insert(apps);
 
         return apps;
     }
@@ -106,13 +116,13 @@ public class FragmentAppList extends Fragment {
 
         pb.setVisibility(View.VISIBLE);
 
-        dataBase.ApplicationDao().deleteAll();
+        dataBase.applicationDao().deleteAll();
 
-        if(dataBase.ApplicationDao().loadAll().length <= 0) {
+        if(dataBase.applicationDao().loadAll().length <= 0) {
             makeFakeData();
         }
 
-        Application apps[] = dataBase.ApplicationDao().loadAll();
+        Application apps[] = dataBase.applicationDao().loadAll();
 
         ApplicationsAdapter mAdapter = new ApplicationsAdapter(this.getActivity(), apps);
         lst.setAdapter(mAdapter);
