@@ -43,10 +43,10 @@ import org.flyve.mdm.agent.utils.Helpers;
 
 public class ApplicationsAdapter extends BaseAdapter {
 
-	private Application data[];
+	private Application[] data;
 	private LayoutInflater inflater = null;
 
-	public ApplicationsAdapter(Activity activity, Application data[]) {
+	public ApplicationsAdapter(Activity activity, Application[] data) {
 		FlyveLog.d(activity.getLocalClassName());
 
 		this.data = data;
@@ -96,13 +96,13 @@ public class ApplicationsAdapter extends BaseAdapter {
 
 		View vi = inflater.inflate(R.layout.list_item_application, null);
 
-		TextView txtId = (TextView) vi.findViewById(R.id.txtId);
-		txtId.setText(app.appId);
+		TextView txtStatus = vi.findViewById(R.id.txtStatus);
+		txtStatus.setText(app.appStatus);
 
-		TextView txtAppName = (TextView) vi.findViewById(R.id.txtAppName);
+		TextView txtAppName = vi.findViewById(R.id.txtAppName);
 		txtAppName.setText(app.appName);
 
-		TextView txtPackageName = (TextView) vi.findViewById(R.id.txtPackageName);
+		TextView txtPackageName = vi.findViewById(R.id.txtPackageName);
 		txtPackageName.setText(app.appPackage);
 
 		ImageView imgApp = vi.findViewById(R.id.imgApp);
