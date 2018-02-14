@@ -19,4 +19,10 @@ public class Application {
     @ColumnInfo (name = "app_package")
     public String appPackage;
 
+    @ColumnInfo (name = "app_path")
+    public String appPath;
+
+    @ColumnInfo (name = "app_status")
+    public String appStatus;
+
 }
