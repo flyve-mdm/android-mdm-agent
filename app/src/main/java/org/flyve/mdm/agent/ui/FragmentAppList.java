@@ -6,8 +6,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.ApplicationsAdapter;
@@ -72,6 +74,14 @@ public class FragmentAppList extends Fragment {
         });
 
         lst = v.findViewById(R.id.lst);
+        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Toast.makeText(FragmentAppList.this.getContext(), "", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
         loadData();
 

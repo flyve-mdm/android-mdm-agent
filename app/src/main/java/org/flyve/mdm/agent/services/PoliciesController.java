@@ -677,26 +677,6 @@ public class PoliciesController {
         }
     }
 
-    public void disableFmRadio(Boolean disable) {
-        FlyveLog.i("This policy is not implemented");
-    }
-
-    public void disableVoiceMail(Boolean disable) {
-        FlyveLog.i("This policy is not implemented");
-    }
-
-    public void disableCallAutoAnswer(Boolean disable) {
-        FlyveLog.i("This policy is not implemented");
-    }
-
-    public void disableVoiceDictation(Boolean disable) {
-        FlyveLog.i("This policy is not implemented");
-    }
-
-    public void disableUsbOnTheGo(Boolean disable) {
-        FlyveLog.i("This policy is not implemented");
-    }
-
     public void disableCreateVpnProfiles(Boolean disable) {
         PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
         mdm.disableVPN(disable);
