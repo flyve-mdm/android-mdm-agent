@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.adapter.ApplicationsAdapter;
 import org.flyve.mdm.agent.room.database.AppDataBase;
 import org.flyve.mdm.agent.room.entity.Application;
 
@@ -56,6 +57,8 @@ public class FragmentAppList extends Fragment {
 
         dataBase = AppDataBase.getAppDatabase(this.getActivity());
 
+        pb = (ProgressBar) v.findViewById(R.id.progressBar);
+
         final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -80,12 +83,10 @@ public class FragmentAppList extends Fragment {
         }
 
         Application[] apps = new Application[4];
-        apps[0] = appsInstance("1", "Flyve", "org.flyve.mdm");
-        apps[1] = appsInstance("2", "Play Store", "com.google.play");
+        apps[0] = appsInstance("1", "Flyve MDM", "org.flyve.mdm.agent");
+        apps[1] = appsInstance("2", "Google Maps", "com.google.android.apps.maps");
         apps[2] = appsInstance("3", "Inventory", "org.flyve.inventory");
-        apps[3] = appsInstance("4", "Telegram", "com.telegram");
-
-
+        apps[3] = appsInstance("4", "Caliente Radio", "s42.radio.radiocaliente");
 
     }
 
@@ -103,12 +104,19 @@ public class FragmentAppList extends Fragment {
 
     private void loadData() {
 
+        pb.setVisibility(View.VISIBLE);
+
+        dataBase.ApplicationDao().deleteAll();
+
         if(dataBase.ApplicationDao().loadAll().length <= 0) {
             makeFakeData();
         }
 
         Application apps[] = dataBase.ApplicationDao().loadAll();
 
+        ApplicationsAdapter mAdapter = new ApplicationsAdapter(this.getActivity(), apps);
+        lst.setAdapter(mAdapter);
 
+        pb.setVisibility(View.GONE);
     }
 }
