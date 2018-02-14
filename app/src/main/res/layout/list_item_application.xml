@@ -5,13 +5,27 @@
     android:layout_height="match_parent"
     >
 
+    <ImageView
+        android:id="@+id/imgApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Icon App"
+        android:src="@drawable/icon"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        />
+
     <TextView
         android:id="@+id/txtAppName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:text="App Name"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/imgApp"
+        android:layout_toEndOf="@+id/imgApp"
         style="@style/titleText"
         />
 
@@ -21,7 +35,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:text="Id"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
         android:layout_margin="10dp"
         style="@style/regularText"
         />
@@ -31,6 +49,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtAppName"
+        android:layout_toRightOf="@+id/imgApp"
+        android:layout_toEndOf="@+id/imgApp"
         android:text="Package Name"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
