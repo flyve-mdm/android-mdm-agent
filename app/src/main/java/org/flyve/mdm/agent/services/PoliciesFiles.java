@@ -159,13 +159,13 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
 
     /**
      * Download, save and install app
-     * @param packageFile String package of the app
+     * @param appName String package of the app
      * @param id String Id from
      * @param sessionToken
      */
-    public Boolean downloadApk(String packageFile, String id, String sessionToken) {
+    public Boolean downloadApk(String appName, String id, String sessionToken) {
 
-        FlyveLog.d("packageFile: " + packageFile);
+        FlyveLog.d("Application name: " + appName);
 
         //prevent CPU from going off if the user presses the power button during download
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -184,12 +184,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         if(completeFilePath.equalsIgnoreCase("")) {
             return false;
         } else {
-            String[] apk = completeFilePath.split("$$");
-            for(int i=0; i<apk.length;i++) {
-                if(!apk[i].equals("")) {
-                    installApk(apk[i]);
-                }
-            }
+            installApk(completeFilePath);
             return true;
         }
     }
