@@ -1,5 +1,10 @@
 package org.flyve.mdm.agent.ui;
 
+import android.app.Activity;
+import android.os.Bundle;
+
+import org.flyve.mdm.agent.R;
+
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
  *
@@ -18,7 +23,7 @@ package org.flyve.mdm.agent.ui;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
- * @author    rafaelhernandez
+ * @author    Rafael Hernandez
  * @date      15/2/18
  * @copyright Copyright © 2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
@@ -26,5 +31,16 @@ package org.flyve.mdm.agent.ui;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class InstallAppActivity {
+public class InstallAppActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_install_app);
+
+
+
+    }
+
 }
