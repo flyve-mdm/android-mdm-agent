@@ -3,11 +3,15 @@ package org.flyve.mdm.agent.ui;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.room.database.AppDataBase;
+import org.flyve.mdm.agent.room.entity.Application;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.io.File;
@@ -41,6 +45,8 @@ import java.io.File;
 public class InstallAppActivity extends Activity {
 
     private static final int APP_INSTALL_REQUEST = 1010;
+    private String id;
+    private String appPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +56,8 @@ public class InstallAppActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String id = extras.getString("APP_ID");
-            String appPath = extras.getString("APP_PATH");
+            id = extras.getString("APP_ID");
+            appPath = extras.getString("APP_PATH");
 
             installApk(appPath);
         } else {
@@ -89,26 +95,26 @@ public class InstallAppActivity extends Activity {
 
         if (Build.VERSION.SDK_INT < 14) {
             intent.setAction(Intent.ACTION_VIEW);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setDataAndType(uri, "application/vnd.android.package-archive");
         } else if (Build.VERSION.SDK_INT < 16) {
             intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
             intent.setData(uri);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
             intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
             intent.putExtra(Intent.EXTRA_ALLOW_REPLACE, true);
         } else if (Build.VERSION.SDK_INT < 24) {
             intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
             intent.setData(uri);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
             intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
         } else { // Android N
             intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
             intent.setData(uri);
             // grant READ permission for this content Uri
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
             intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
@@ -123,16 +129,37 @@ public class InstallAppActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String status = "1"; // pending
         switch (requestCode) {
             case APP_INSTALL_REQUEST:
                 if (resultCode == RESULT_OK) {
                     FlyveLog.d("Package Installation Success");
-                } else if (resultCode == RESULT_FIRST_USER) {
-                    FlyveLog.e("Package Installation Cancelled by USER");
+                    status = "2"; // installed
                 } else {
-                    FlyveLog.e("Something went wrong - INSTALLATION FAILED");
+                    FlyveLog.d("Installation failed");
                 }
         }
+
+        PackageManager packageManager = InstallAppActivity.this.getPackageManager();
+
+        PackageInfo packageInfo = packageManager.getPackageArchiveInfo(appPath, 0);
+        packageInfo.applicationInfo.sourceDir = appPath;
+        packageInfo.applicationInfo.publicSourceDir = appPath;
+
+        String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
+        String appPackage = packageInfo.packageName;
+
+
+        AppDataBase dataBase = AppDataBase.getAppDatabase(InstallAppActivity.this);
+        Application apps = new Application();
+
+        apps.appId = id;
+        apps.appName = appName;
+        apps.appPath = appPath;
+        apps.appStatus = status; // 1 pending | 2 installed
+        apps.appPackage = appPackage;
+
+        dataBase.applicationDao().insert(apps);
     }
 
 }
