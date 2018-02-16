@@ -13,8 +13,6 @@ import android.support.v4.app.NotificationCompat.Builder;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
-import org.flyve.mdm.agent.room.database.AppDataBase;
-import org.flyve.mdm.agent.room.entity.Application;
 import org.flyve.mdm.agent.ui.InstallAppActivity;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -187,17 +185,9 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         if(completeFilePath.equalsIgnoreCase("")) {
             return false;
         } else {
-            AppDataBase dataBase = AppDataBase.getAppDatabase(context);
-            Application apps = new Application();
-
-            apps.appId = id;
-            apps.appName = appName;
-            apps.appPath = completeFilePath;
-            apps.appStatus = "1"; // 1 pending | 2 installed
-
-            dataBase.applicationDao().insert(apps);
 
             Intent intent = new Intent(context, InstallAppActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("APP_ID", id);
             intent.putExtra("APP_PATH", completeFilePath);
             context.startActivity(intent);
