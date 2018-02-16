@@ -126,12 +126,6 @@ public class FragmentAppList extends Fragment {
 
         pb.setVisibility(View.VISIBLE);
 
-        dataBase.applicationDao().deleteAll();
-
-        if(dataBase.applicationDao().loadAll().length <= 0) {
-            makeFakeData();
-        }
-
         Application apps[] = dataBase.applicationDao().loadAll();
 
         ApplicationsAdapter mAdapter = new ApplicationsAdapter(this.getActivity(), apps);
