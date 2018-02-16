@@ -160,6 +160,8 @@ public class InstallAppActivity extends Activity {
         apps.appPackage = appPackage;
 
         dataBase.applicationDao().insert(apps);
+
+        finish();
     }
 
 }
