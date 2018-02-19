@@ -29,4 +29,8 @@ public interface ApplicationDao {
 
     @Query("SELECT * FROM applications WHERE app_id = :id")
     Application[] getApplicationById(String id);
+
+    @Query("UPDATE applications SET app_status = :status WHERE app_id = :id")
+    int updateStatus(String id, String status);
+
 }
