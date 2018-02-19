@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.ApplicationsAdapter;
@@ -48,6 +49,7 @@ public class FragmentAppList extends Fragment {
     private ProgressBar pb;
     private AppDataBase dataBase;
     private Application[] apps;
+    private TextView txtNoData;
 
     @Override
     public void onResume(){
@@ -63,6 +65,7 @@ public class FragmentAppList extends Fragment {
         dataBase = AppDataBase.getAppDatabase(this.getActivity());
 
         pb = v.findViewById(R.id.progressBar);
+        txtNoData = v.findViewById(R.id.txtNoData);
 
         final SwipeRefreshLayout swipeLayout = v.findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -101,8 +104,13 @@ public class FragmentAppList extends Fragment {
 
         apps = dataBase.applicationDao().loadAll();
 
-        ApplicationsAdapter mAdapter = new ApplicationsAdapter(this.getActivity(), apps);
-        lst.setAdapter(mAdapter);
+        if(apps.length>0) {
+            ApplicationsAdapter mAdapter = new ApplicationsAdapter(this.getActivity(), apps);
+            lst.setAdapter(mAdapter);
+            txtNoData.setVisibility(View.GONE);
+        } else {
+            txtNoData.setVisibility(View.VISIBLE);
+        }
 
         pb.setVisibility(View.GONE);
     }
