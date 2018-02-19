@@ -151,16 +151,20 @@ public class InstallAppActivity extends Activity {
             String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
             String appPackage = packageInfo.packageName;
 
+
             AppDataBase dataBase = AppDataBase.getAppDatabase(InstallAppActivity.this);
-            Application apps = new Application();
+            if(dataBase.applicationDao().getApplicationById(id).length <= 0) {
+                Application apps = new Application();
 
-            apps.appId = id;
-            apps.appName = appName;
-            apps.appPath = appPath;
-            apps.appStatus = status; // 1 pending | 2 installed
-            apps.appPackage = appPackage;
+                apps.appId = id;
+                apps.appName = appName;
+                apps.appPath = appPath;
+                apps.appStatus = status; // 1 pending | 2 installed
+                apps.appPackage = appPackage;
 
-            dataBase.applicationDao().insert(apps);
+                dataBase.applicationDao().insert(apps);
+            }
+
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
