@@ -1,7 +1,9 @@
 package org.flyve.mdm.agent.ui;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -13,6 +15,7 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.room.database.AppDataBase;
 import org.flyve.mdm.agent.room.entity.Application;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 
 import java.io.File;
 
@@ -137,7 +140,7 @@ public class InstallAppActivity extends Activity {
                     status = "2"; // installed
                 } else {
                     FlyveLog.d("Installation failed");
-                    finish();
+                    status = "0"; // fail
                 }
         }
 
@@ -151,6 +154,10 @@ public class InstallAppActivity extends Activity {
             String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
             String appPackage = packageInfo.packageName;
 
+            if(status.equals("0")) {
+                Helpers.sendToNotificationBar(InstallAppActivity.this, Integer.parseInt(id), "Pending for install", appName, true);
+            }
+
             AppDataBase dataBase = AppDataBase.getAppDatabase(InstallAppActivity.this);
             if(dataBase.applicationDao().getApplicationById(id).length <= 0) {
                 Application apps = new Application();
@@ -163,6 +170,10 @@ public class InstallAppActivity extends Activity {
 
                 dataBase.applicationDao().insert(apps);
             } else {
+                // remove notifications
+                NotificationManager notificationManager = (NotificationManager) InstallAppActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(Integer.parseInt(id));
+
                 // update status to installed
                 dataBase.applicationDao().updateStatus(id, "2");
             }
