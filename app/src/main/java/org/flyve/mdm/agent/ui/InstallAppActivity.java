@@ -137,29 +137,33 @@ public class InstallAppActivity extends Activity {
                     status = "2"; // installed
                 } else {
                     FlyveLog.d("Installation failed");
+                    finish();
                 }
         }
 
-        PackageManager packageManager = InstallAppActivity.this.getPackageManager();
+        try {
+            PackageManager packageManager = InstallAppActivity.this.getPackageManager();
 
-        PackageInfo packageInfo = packageManager.getPackageArchiveInfo(appPath, 0);
-        packageInfo.applicationInfo.sourceDir = appPath;
-        packageInfo.applicationInfo.publicSourceDir = appPath;
+            PackageInfo packageInfo = packageManager.getPackageArchiveInfo(appPath, 0);
+            packageInfo.applicationInfo.sourceDir = appPath;
+            packageInfo.applicationInfo.publicSourceDir = appPath;
 
-        String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
-        String appPackage = packageInfo.packageName;
+            String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
+            String appPackage = packageInfo.packageName;
 
+            AppDataBase dataBase = AppDataBase.getAppDatabase(InstallAppActivity.this);
+            Application apps = new Application();
 
-        AppDataBase dataBase = AppDataBase.getAppDatabase(InstallAppActivity.this);
-        Application apps = new Application();
+            apps.appId = id;
+            apps.appName = appName;
+            apps.appPath = appPath;
+            apps.appStatus = status; // 1 pending | 2 installed
+            apps.appPackage = appPackage;
 
-        apps.appId = id;
-        apps.appName = appName;
-        apps.appPath = appPath;
-        apps.appStatus = status; // 1 pending | 2 installed
-        apps.appPackage = appPackage;
-
-        dataBase.applicationDao().insert(apps);
+            dataBase.applicationDao().insert(apps);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
 
         finish();
     }
