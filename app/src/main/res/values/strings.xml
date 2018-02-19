@@ -130,6 +130,9 @@
     <string name="drawer_help">Help</string>
     <string name="drawer_about">About</string>
 
+    <string name="app_pending">Pending</string>
+    <string name="app_installed">Installed</string>
+
     <string-array name="email_array">
         <item>home</item>
         <item>work</item>
