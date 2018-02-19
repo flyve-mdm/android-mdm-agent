@@ -26,4 +26,7 @@ public interface ApplicationDao {
 
     @Query("Select * FROM applications")
     Application[] loadAll();
+
+    @Query("SELECT * FROM applications WHERE app_id = :id")
+    Application[] getApplicationById(String id);
 }
