@@ -151,7 +151,6 @@ public class InstallAppActivity extends Activity {
             String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
             String appPackage = packageInfo.packageName;
 
-
             AppDataBase dataBase = AppDataBase.getAppDatabase(InstallAppActivity.this);
             if(dataBase.applicationDao().getApplicationById(id).length <= 0) {
                 Application apps = new Application();
@@ -163,6 +162,9 @@ public class InstallAppActivity extends Activity {
                 apps.appPackage = appPackage;
 
                 dataBase.applicationDao().insert(apps);
+            } else {
+                // update status to installed
+                dataBase.applicationDao().updateStatus(id, "2");
             }
 
         } catch (Exception ex) {
