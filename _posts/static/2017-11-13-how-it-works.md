@@ -6,13 +6,14 @@ title: How it works
 permalink: howtos/how-it-works
 description: A brief introduction
 ---
-The Agent will take control of the Android devices of your fleet allowing you to manage all the terminals by implementing the commands given through the dashboard.
 
-Therefore the Agent must be installed in the devices of your IT Infrastructure, you send an invitation to enroll and after the process is finished, you will be able to control the fleet through the dashboard.
+The Android Agent works in conjuction with the [Web MDM Dashboard](http://flyve.org/web-mdm-dashboard/) and [Flyve MDM plugin](http://flyve.org/glpi-plugin/) for GLPI.
 
-Thanks to the MQTT, a Machine to Machine protocol, the Agent is capable of maintaining a connection with the backend, which gives you remote control of your fleet.
+The Agent will take control of the Android devices in your IT Infrastructure while from the Web Dashboard and GLPI plugin the Administrator will be able to manage all the terminals, once these are enrolled.
 
-The Agent counts with an intuitive and simple User Interface which will help you through the enrollment process.
+Thanks to the MQTT, a Machine to Machine protocol, the Agent is capable of maintaining a connection with the backend, which gives you remote control over your fleet.
+
+The Agent counts with an intuitive and simple User Interface that helps you through the enrollment process.
 
 <br>
 
