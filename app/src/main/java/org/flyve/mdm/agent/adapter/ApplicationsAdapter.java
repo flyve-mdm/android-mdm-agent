@@ -97,7 +97,13 @@ public class ApplicationsAdapter extends BaseAdapter {
 		View vi = inflater.inflate(R.layout.list_item_application, null);
 
 		TextView txtStatus = vi.findViewById(R.id.txtStatus);
-		txtStatus.setText(app.appStatus);
+
+		String status = parent.getResources().getString(R.string.app_installed);
+		if(app.appStatus.equals("1")) {
+			status = parent.getResources().getString(R.string.app_pending);
+		}
+
+		txtStatus.setText(status);
 
 		TextView txtAppName = vi.findViewById(R.id.txtAppName);
 		txtAppName.setText(app.appName);
