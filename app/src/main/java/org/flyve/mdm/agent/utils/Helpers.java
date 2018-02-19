@@ -162,7 +162,7 @@ public class Helpers {
 		}
 	}
 
-	public static void sendToNotificationBar(Context context, String message) {
+	public static void sendToNotificationBar(Context context, int id, String title, String message, boolean isPersistence) {
 		Intent resultIntent = new Intent(context, MainActivity.class);
 		resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		PendingIntent piResult = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_ONE_SHOT);
@@ -171,12 +171,17 @@ public class Helpers {
 
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 				.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.icon))
-				.setContentTitle(context.getResources().getString(R.string.app_name))
+				.setContentTitle(title)
 				.setContentText(message)
 				.setSound(defaultSoundUri)
-				.setAutoCancel(true)
 				.setContentIntent(piResult)
 				.setPriority(Notification.PRIORITY_HIGH);
+
+		if(isPersistence) {
+			builder.setOngoing(true);
+		} else {
+			builder.setAutoCancel(true);
+		}
 
 		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			builder.setSmallIcon(R.drawable.ic_notification_white);
@@ -188,7 +193,11 @@ public class Helpers {
 		builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 
 		NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManager.notify(getIntID(), builder.build());
+		notificationManager.notify(id, builder.build());
+	}
+
+	public static void sendToNotificationBar(Context context, String message) {
+		sendToNotificationBar(context, getIntID(), context.getResources().getString(R.string.app_name), message, false);
 	}
 
 	private final static AtomicInteger c = new AtomicInteger(0);
