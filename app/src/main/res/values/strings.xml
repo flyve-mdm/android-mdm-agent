@@ -132,6 +132,7 @@
 
     <string name="app_pending">Pending</string>
     <string name="app_installed">Installed</string>
+    <string name="app_no_data">No applications available</string>
 
     <string-array name="email_array">
         <item>home</item>
