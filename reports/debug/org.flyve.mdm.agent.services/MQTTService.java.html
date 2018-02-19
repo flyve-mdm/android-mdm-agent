@@ -977,126 +977,41 @@ public class MQTTService extends Service implements MqttCallback {
 <span class="nc" id="L977">            }</span>
         }
 
-        // Policy/disableFmRadio
-<span class="nc" id="L981">        String DISABLE_FMRADIO = &quot;disableFmRadio&quot;;</span>
-<span class="nc bnc" id="L982" title="All 2 branches missed.">        if(topic.toLowerCase().contains(DISABLE_FMRADIO.toLowerCase())) {</span>
+        // Policy/disableUsbOnTheGo
+<span class="nc" id="L981">        String DISABLE_SMSMMS = &quot;disableSmsMms&quot;;</span>
+<span class="nc bnc" id="L982" title="All 2 branches missed.">        if(topic.toLowerCase().contains(DISABLE_SMSMMS.toLowerCase())) {</span>
             try {
 <span class="nc" id="L984">                JSONObject jsonObj = new JSONObject(messageBody);</span>
 
-<span class="nc bnc" id="L986" title="All 2 branches missed.">                if(jsonObj.has(DISABLE_FMRADIO)) {</span>
-<span class="nc" id="L987">                    Boolean disable = jsonObj.getBoolean(DISABLE_FMRADIO);</span>
+<span class="nc bnc" id="L986" title="All 2 branches missed.">                if(jsonObj.has(DISABLE_SMSMMS)) {</span>
+<span class="nc" id="L987">                    Boolean disable = jsonObj.getBoolean(DISABLE_SMSMMS);</span>
 <span class="nc" id="L988">                    String taskId = jsonObj.getString(&quot;taskId&quot;);</span>
 
-<span class="nc" id="L990">                    policiesController.disableFmRadio(disable);</span>
+<span class="nc" id="L990">                    policiesController.disableSmsMms(disable);</span>
                 }
 <span class="nc" id="L992">            } catch (Exception ex) {</span>
 <span class="nc" id="L993">                FlyveLog.e(ex.getMessage());</span>
 <span class="nc" id="L994">            }</span>
         }
 
-        // Policy/disableVoiceMail
-<span class="nc" id="L998">        String DISABLE_VOICEMAIL = &quot;disableVoiceMail&quot;;</span>
-<span class="nc bnc" id="L999" title="All 2 branches missed.">        if(topic.toLowerCase().contains(DISABLE_VOICEMAIL.toLowerCase())) {</span>
+        // Policy/disableCreateVpnProfiles
+<span class="nc" id="L998">        String DISABLE_CREATE_VPN_PROFILES = &quot;disableCreateVpnProfiles&quot;;</span>
+<span class="nc bnc" id="L999" title="All 2 branches missed.">        if(topic.toLowerCase().contains(DISABLE_CREATE_VPN_PROFILES.toLowerCase())) {</span>
             try {
 <span class="nc" id="L1001">                JSONObject jsonObj = new JSONObject(messageBody);</span>
 
-<span class="nc bnc" id="L1003" title="All 2 branches missed.">                if(jsonObj.has(DISABLE_VOICEMAIL)) {</span>
-<span class="nc" id="L1004">                    Boolean disable = jsonObj.getBoolean(DISABLE_VOICEMAIL);</span>
+<span class="nc bnc" id="L1003" title="All 2 branches missed.">                if(jsonObj.has(DISABLE_CREATE_VPN_PROFILES)) {</span>
+<span class="nc" id="L1004">                    Boolean disable = jsonObj.getBoolean(DISABLE_CREATE_VPN_PROFILES);</span>
 <span class="nc" id="L1005">                    String taskId = jsonObj.getString(&quot;taskId&quot;);</span>
 
-<span class="nc" id="L1007">                    policiesController.disableVoiceMail(disable);</span>
+<span class="nc" id="L1007">                    policiesController.disableCreateVpnProfiles(disable);</span>
                 }
 <span class="nc" id="L1009">            } catch (Exception ex) {</span>
 <span class="nc" id="L1010">                FlyveLog.e(ex.getMessage());</span>
 <span class="nc" id="L1011">            }</span>
         }
 
-        // Policy/disableCallAutoAnswer
-<span class="nc" id="L1015">        String DISABLE_CALL_AUTO_ANSWER = &quot;disableCallAutoAnswer&quot;;</span>
-<span class="nc bnc" id="L1016" title="All 2 branches missed.">        if(topic.toLowerCase().contains(DISABLE_CALL_AUTO_ANSWER.toLowerCase())) {</span>
-            try {
-<span class="nc" id="L1018">                JSONObject jsonObj = new JSONObject(messageBody);</span>
-
-<span class="nc bnc" id="L1020" title="All 2 branches missed.">                if(jsonObj.has(DISABLE_CALL_AUTO_ANSWER)) {</span>
-<span class="nc" id="L1021">                    Boolean disable = jsonObj.getBoolean(DISABLE_CALL_AUTO_ANSWER);</span>
-<span class="nc" id="L1022">                    String taskId = jsonObj.getString(&quot;taskId&quot;);</span>
-
-<span class="nc" id="L1024">                    policiesController.disableCallAutoAnswer(disable);</span>
-                }
-<span class="nc" id="L1026">            } catch (Exception ex) {</span>
-<span class="nc" id="L1027">                FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L1028">            }</span>
-        }
-
-        // Policy/disableVoiceDictation
-<span class="nc" id="L1032">        String DISABLE_VOICE_DICTATION = &quot;disableVoiceDictation&quot;;</span>
-<span class="nc bnc" id="L1033" title="All 2 branches missed.">        if(topic.toLowerCase().contains(DISABLE_VOICE_DICTATION.toLowerCase())) {</span>
-            try {
-<span class="nc" id="L1035">                JSONObject jsonObj = new JSONObject(messageBody);</span>
-
-<span class="nc bnc" id="L1037" title="All 2 branches missed.">                if(jsonObj.has(DISABLE_VOICE_DICTATION)) {</span>
-<span class="nc" id="L1038">                    Boolean disable = jsonObj.getBoolean(DISABLE_VOICE_DICTATION);</span>
-<span class="nc" id="L1039">                    String taskId = jsonObj.getString(&quot;taskId&quot;);</span>
-
-<span class="nc" id="L1041">                    policiesController.disableVoiceDictation(disable);</span>
-                }
-<span class="nc" id="L1043">            } catch (Exception ex) {</span>
-<span class="nc" id="L1044">                FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L1045">            }</span>
-        }
-
-        // Policy/disableUsbOnTheGo
-<span class="nc" id="L1049">        String DISABLE_USB_ON_THE_GO = &quot;disableUsbOnTheGo&quot;;</span>
-<span class="nc bnc" id="L1050" title="All 2 branches missed.">        if(topic.toLowerCase().contains(DISABLE_USB_ON_THE_GO.toLowerCase())) {</span>
-            try {
-<span class="nc" id="L1052">                JSONObject jsonObj = new JSONObject(messageBody);</span>
-
-<span class="nc bnc" id="L1054" title="All 2 branches missed.">                if(jsonObj.has(DISABLE_USB_ON_THE_GO)) {</span>
-<span class="nc" id="L1055">                    Boolean disable = jsonObj.getBoolean(DISABLE_USB_ON_THE_GO);</span>
-<span class="nc" id="L1056">                    String taskId = jsonObj.getString(&quot;taskId&quot;);</span>
-
-<span class="nc" id="L1058">                    policiesController.disableUsbOnTheGo(disable);</span>
-                }
-<span class="nc" id="L1060">            } catch (Exception ex) {</span>
-<span class="nc" id="L1061">                FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L1062">            }</span>
-        }
-
-        // Policy/disableUsbOnTheGo
-<span class="nc" id="L1066">        String DISABLE_SMSMMS = &quot;disableSmsMms&quot;;</span>
-<span class="nc bnc" id="L1067" title="All 2 branches missed.">        if(topic.toLowerCase().contains(DISABLE_SMSMMS.toLowerCase())) {</span>
-            try {
-<span class="nc" id="L1069">                JSONObject jsonObj = new JSONObject(messageBody);</span>
-
-<span class="nc bnc" id="L1071" title="All 2 branches missed.">                if(jsonObj.has(DISABLE_SMSMMS)) {</span>
-<span class="nc" id="L1072">                    Boolean disable = jsonObj.getBoolean(DISABLE_SMSMMS);</span>
-<span class="nc" id="L1073">                    String taskId = jsonObj.getString(&quot;taskId&quot;);</span>
-
-<span class="nc" id="L1075">                    policiesController.disableSmsMms(disable);</span>
-                }
-<span class="nc" id="L1077">            } catch (Exception ex) {</span>
-<span class="nc" id="L1078">                FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L1079">            }</span>
-        }
-
-        // Policy/disableCreateVpnProfiles
-<span class="nc" id="L1083">        String DISABLE_CREATE_VPN_PROFILES = &quot;disableCreateVpnProfiles&quot;;</span>
-<span class="nc bnc" id="L1084" title="All 2 branches missed.">        if(topic.toLowerCase().contains(DISABLE_CREATE_VPN_PROFILES.toLowerCase())) {</span>
-            try {
-<span class="nc" id="L1086">                JSONObject jsonObj = new JSONObject(messageBody);</span>
-
-<span class="nc bnc" id="L1088" title="All 2 branches missed.">                if(jsonObj.has(DISABLE_CREATE_VPN_PROFILES)) {</span>
-<span class="nc" id="L1089">                    Boolean disable = jsonObj.getBoolean(DISABLE_CREATE_VPN_PROFILES);</span>
-<span class="nc" id="L1090">                    String taskId = jsonObj.getString(&quot;taskId&quot;);</span>
-
-<span class="nc" id="L1092">                    policiesController.disableCreateVpnProfiles(disable);</span>
-                }
-<span class="nc" id="L1094">            } catch (Exception ex) {</span>
-<span class="nc" id="L1095">                FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L1096">            }</span>
-        }
-
-<span class="nc" id="L1099">    }</span>
+<span class="nc" id="L1014">    }</span>
 
 
     /**
@@ -1105,8 +1020,8 @@ public class MQTTService extends Service implements MqttCallback {
      */
     public void broadcastMessage(String message) {
         //send broadcast
-<span class="nc" id="L1108">        Helpers.sendBroadcast(message, Helpers.BROADCAST_MSG, getApplicationContext());</span>
-<span class="nc" id="L1109">    }</span>
+<span class="nc" id="L1023">        Helpers.sendBroadcast(message, Helpers.BROADCAST_MSG, getApplicationContext());</span>
+<span class="nc" id="L1024">    }</span>
 
     /**
      * store log messages from MQTT
@@ -1114,8 +1029,8 @@ public class MQTTService extends Service implements MqttCallback {
      */
     public void storeLog(String message) {
         // write log file
-<span class="nc" id="L1117">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
-<span class="nc" id="L1118">    }</span>
+<span class="nc" id="L1032">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
+<span class="nc" id="L1033">    }</span>
 
     /**
      * Send broadcast for status of the service
@@ -1123,17 +1038,17 @@ public class MQTTService extends Service implements MqttCallback {
      */
     private void broadcastServiceStatus(boolean status) {
         //send broadcast
-<span class="nc" id="L1126">        this.connected = status;</span>
+<span class="nc" id="L1041">        this.connected = status;</span>
 
         // reconnect
-<span class="nc bnc" id="L1129" title="All 2 branches missed.">        if(!status) {</span>
-<span class="nc" id="L1130">            reconnect();</span>
+<span class="nc bnc" id="L1044" title="All 2 branches missed.">        if(!status) {</span>
+<span class="nc" id="L1045">            reconnect();</span>
         }
 
-<span class="nc" id="L1133">        AppData cache = new AppData(this.getApplicationContext());</span>
-<span class="nc" id="L1134">        cache.setOnlineStatus(status);</span>
+<span class="nc" id="L1048">        AppData cache = new AppData(this.getApplicationContext());</span>
+<span class="nc" id="L1049">        cache.setOnlineStatus(status);</span>
 
-<span class="nc" id="L1136">        Helpers.sendBroadcast(status, Helpers.BROADCAST_STATUS, getApplicationContext());</span>
-<span class="nc" id="L1137">    }</span>
+<span class="nc" id="L1051">        Helpers.sendBroadcast(status, Helpers.BROADCAST_STATUS, getApplicationContext());</span>
+<span class="nc" id="L1052">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

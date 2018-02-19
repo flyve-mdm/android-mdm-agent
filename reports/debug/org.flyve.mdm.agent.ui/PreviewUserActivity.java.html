@@ -100,12 +100,12 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L100">                return;</span>
             }
 
-<span class="nc" id="L103">            ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);</span>
+<span class="nc" id="L103">            ImageView imgPhoto = findViewById(R.id.imgPhoto);</span>
 <span class="nc bnc" id="L104" title="All 4 branches missed.">            if (user.getPicture() != null &amp;&amp; !user.getPicture().equals(&quot;&quot;)) {</span>
 <span class="nc" id="L105">                imgPhoto.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));</span>
             }
 
-<span class="nc" id="L108">            LinearLayout lnEmail = (LinearLayout) findViewById(R.id.lnEmails);</span>
+<span class="nc" id="L108">            LinearLayout lnEmail = findViewById(R.id.lnEmails);</span>
 <span class="nc" id="L109">            lnEmail.removeAllViews();</span>
 
 <span class="nc bnc" id="L111" title="All 2 branches missed.">            for (int i = 0; i &lt; user.getEmails().size(); i++) {</span>
@@ -114,37 +114,37 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L114">                lnEmail.addView(txtEmail);</span>
             }
 
-<span class="nc" id="L117">            TextView txtFirstName = (TextView) findViewById(R.id.txtFirstName);</span>
+<span class="nc" id="L117">            TextView txtFirstName = findViewById(R.id.txtFirstName);</span>
 <span class="nc" id="L118">            txtFirstName.setText(user.getFirstName() + &quot; &quot; + user.getLastName());</span>
 
-<span class="nc" id="L120">            TextView txtPhone = (TextView) findViewById(R.id.txtPhone);</span>
-<span class="nc bnc" id="L121" title="All 2 branches missed.">            if (!user.getPhone().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L120">            TextView txtPhone = findViewById(R.id.txtPhone);</span>
+<span class="nc bnc" id="L121" title="All 4 branches missed.">            if (user.getPhone() != null &amp;&amp; !user.getPhone().equals(&quot;&quot;)) {</span>
 <span class="nc" id="L122">                txtPhone.setText(user.getPhone());</span>
 <span class="nc" id="L123">                txtPhone.setVisibility(View.VISIBLE);</span>
             } else {
 <span class="nc" id="L125">                txtPhone.setVisibility(View.GONE);</span>
             }
 
-<span class="nc" id="L128">            TextView txtPhoneMobile = (TextView) findViewById(R.id.txtPhoneMobile);</span>
-<span class="nc bnc" id="L129" title="All 2 branches missed.">            if (!user.getMobilePhone().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L128">            TextView txtPhoneMobile = findViewById(R.id.txtPhoneMobile);</span>
+<span class="nc bnc" id="L129" title="All 4 branches missed.">            if (user.getMobilePhone() != null &amp;&amp; !user.getMobilePhone().equals(&quot;&quot;)) {</span>
 <span class="nc" id="L130">                txtPhoneMobile.setText(user.getMobilePhone());</span>
 <span class="nc" id="L131">                txtPhoneMobile.setVisibility(View.VISIBLE);</span>
             } else {
 <span class="nc" id="L133">                txtPhoneMobile.setVisibility(View.GONE);</span>
             }
 
-<span class="nc" id="L136">            TextView txtPhone2 = (TextView) findViewById(R.id.txtPhone2);</span>
-<span class="nc bnc" id="L137" title="All 2 branches missed.">            if (!user.getMobilePhone().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L136">            TextView txtPhone2 = findViewById(R.id.txtPhone2);</span>
+<span class="nc bnc" id="L137" title="All 4 branches missed.">            if (user.getPhone2() != null &amp;&amp; !user.getPhone2().equals(&quot;&quot;)) {</span>
 <span class="nc" id="L138">                txtPhone2.setText(user.getPhone2());</span>
 <span class="nc" id="L139">                txtPhone2.setVisibility(View.VISIBLE);</span>
             } else {
 <span class="nc" id="L141">                txtPhone2.setVisibility(View.GONE);</span>
             }
 
-<span class="nc" id="L144">            TextView txtLanguage = (TextView) findViewById(R.id.txtLanguage);</span>
+<span class="nc" id="L144">            TextView txtLanguage = findViewById(R.id.txtLanguage);</span>
 <span class="nc" id="L145">            txtLanguage.setText(user.getLanguage());</span>
 
-<span class="nc" id="L147">            TextView txtAdministrativeNumber = (TextView) findViewById(R.id.txtAdministrativeNumber);</span>
+<span class="nc" id="L147">            TextView txtAdministrativeNumber = findViewById(R.id.txtAdministrativeNumber);</span>
 <span class="nc" id="L148">            txtAdministrativeNumber.setText(user.getAdministrativeNumber());</span>
 <span class="nc" id="L149">        } catch (Exception ex) {</span>
 <span class="nc" id="L150">            FlyveLog.e(ex.getMessage());</span>

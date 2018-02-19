@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FragmentAppList.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">FragmentAppList.java</span></div><h1>FragmentAppList.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import org.flyve.mdm.agent.R;
-
-import java.util.HashMap;
-import java.util.List;
+import org.flyve.mdm.agent.adapter.ApplicationsAdapter;
+import org.flyve.mdm.agent.room.database.AppDataBase;
+import org.flyve.mdm.agent.room.entity.Application;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -40,39 +42,69 @@ import java.util.List;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-<span class="nc" id="L43">public class FragmentAppList extends Fragment {</span>
+<span class="nc" id="L45">public class FragmentAppList extends Fragment {</span>
 
-    private List&lt;HashMap&lt;String, String&gt;&gt; arrData;
     private ListView lst;
     private ProgressBar pb;
+    private AppDataBase dataBase;
+    private Application[] apps;
+
+    @Override
+    public void onResume(){
+<span class="nc" id="L54">        super.onResume();</span>
+<span class="nc" id="L55">        loadData();</span>
+<span class="nc" id="L56">    }</span>
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-<span class="nc" id="L52">        View v = inflater.inflate(R.layout.fragment_app_list, container, false);</span>
+<span class="nc" id="L61">        View v = inflater.inflate(R.layout.fragment_app_list, container, false);</span>
 
-<span class="nc" id="L54">        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);</span>
-<span class="nc" id="L55">        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {</span>
+<span class="nc" id="L63">        dataBase = AppDataBase.getAppDatabase(this.getActivity());</span>
+
+<span class="nc" id="L65">        pb = v.findViewById(R.id.progressBar);</span>
+
+<span class="nc" id="L67">        final SwipeRefreshLayout swipeLayout = v.findViewById(R.id.swipe_container);</span>
+<span class="nc" id="L68">        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {</span>
             @Override
             public void onRefresh() {
-<span class="nc" id="L58">                swipeLayout.setRefreshing(false);</span>
-<span class="nc" id="L59">                arrData.clear();</span>
-<span class="nc" id="L60">                loadData();</span>
-<span class="nc" id="L61">            }</span>
+<span class="nc" id="L71">                swipeLayout.setRefreshing(false);</span>
+<span class="nc" id="L72">                loadData();</span>
+<span class="nc" id="L73">            }</span>
         });
 
-<span class="nc" id="L64">        lst = (ListView) v.findViewById(R.id.lst);</span>
+<span class="nc" id="L76">        lst = v.findViewById(R.id.lst);</span>
+<span class="nc" id="L77">        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {</span>
+            @Override
+            public void onItemClick(AdapterView&lt;?&gt; adapterView, View view, int i, long l) {
+<span class="nc" id="L80">                Application app = apps[i];</span>
 
-<span class="nc" id="L66">        loadData();</span>
+                // Pending
+<span class="nc bnc" id="L83" title="All 2 branches missed.">                if(app.appStatus.equals(&quot;1&quot;)) {</span>
+<span class="nc" id="L84">                    Intent intent = new Intent(FragmentAppList.this.getContext(), InstallAppActivity.class);</span>
+<span class="nc" id="L85">                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
+<span class="nc" id="L86">                    intent.putExtra(&quot;APP_ID&quot;, app.appId);</span>
+<span class="nc" id="L87">                    intent.putExtra(&quot;APP_PATH&quot;, app.appPath);</span>
+<span class="nc" id="L88">                    FragmentAppList.this.getContext().startActivity(intent);</span>
+                }
+<span class="nc" id="L90">            }</span>
+        });
 
-<span class="nc" id="L68">        return v;</span>
+<span class="nc" id="L93">        loadData();</span>
 
+<span class="nc" id="L95">        return v;</span>
     }
 
     private void loadData() {
 
+<span class="nc" id="L100">        pb.setVisibility(View.VISIBLE);</span>
 
+<span class="nc" id="L102">        apps = dataBase.applicationDao().loadAll();</span>
 
-<span class="nc" id="L76">    }</span>
+<span class="nc" id="L104">        ApplicationsAdapter mAdapter = new ApplicationsAdapter(this.getActivity(), apps);</span>
+<span class="nc" id="L105">        lst.setAdapter(mAdapter);</span>
+
+<span class="nc" id="L107">        pb.setVisibility(View.GONE);</span>
+<span class="nc" id="L108">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
