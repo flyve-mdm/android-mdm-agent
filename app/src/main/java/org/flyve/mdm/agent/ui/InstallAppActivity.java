@@ -155,7 +155,7 @@ public class InstallAppActivity extends Activity {
             String appPackage = packageInfo.packageName;
 
             if(status.equals("0")) {
-                Helpers.sendToNotificationBar(InstallAppActivity.this, Integer.parseInt(id), "Pending for install", appName, true);
+                Helpers.sendToNotificationBar(InstallAppActivity.this, Integer.parseInt(id), getString(R.string.app_pending_to_install), appName, true);
             }
 
             AppDataBase dataBase = AppDataBase.getAppDatabase(InstallAppActivity.this);
