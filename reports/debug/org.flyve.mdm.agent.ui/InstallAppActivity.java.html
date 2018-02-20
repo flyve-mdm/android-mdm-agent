@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>InstallAppActivity.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">InstallAppActivity.java</span></div><h1>InstallAppActivity.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.ui;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -13,6 +15,7 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.room.database.AppDataBase;
 import org.flyve.mdm.agent.room.entity.Application;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 
 import java.io.File;
 
@@ -42,7 +45,7 @@ import java.io.File;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-<span class="nc" id="L45">public class InstallAppActivity extends Activity {</span>
+<span class="nc" id="L48">public class InstallAppActivity extends Activity {</span>
 
     private static final int APP_INSTALL_REQUEST = 1010;
     private String id;
@@ -50,21 +53,21 @@ import java.io.File;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-<span class="nc" id="L53">        super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L56">        super.onCreate(savedInstanceState);</span>
 
-<span class="nc" id="L55">        setContentView(R.layout.activity_install_app);</span>
+<span class="nc" id="L58">        setContentView(R.layout.activity_install_app);</span>
 
-<span class="nc" id="L57">        Bundle extras = getIntent().getExtras();</span>
-<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (extras != null) {</span>
-<span class="nc" id="L59">            id = extras.getString(&quot;APP_ID&quot;);</span>
-<span class="nc" id="L60">            appPath = extras.getString(&quot;APP_PATH&quot;);</span>
+<span class="nc" id="L60">        Bundle extras = getIntent().getExtras();</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (extras != null) {</span>
+<span class="nc" id="L62">            id = extras.getString(&quot;APP_ID&quot;);</span>
+<span class="nc" id="L63">            appPath = extras.getString(&quot;APP_PATH&quot;);</span>
 
-<span class="nc" id="L62">            installApk(appPath);</span>
+<span class="nc" id="L65">            installApk(appPath);</span>
         } else {
-<span class="nc" id="L64">            finish();</span>
+<span class="nc" id="L67">            finish();</span>
         }
 
-<span class="nc" id="L67">    }</span>
+<span class="nc" id="L70">    }</span>
 
     /**
      * Install the Android Package
@@ -72,107 +75,115 @@ import java.io.File;
      */
     public void installApk(String file) {
 
-<span class="nc" id="L75">        FlyveLog.d(file);</span>
-<span class="nc" id="L76">        Uri uri = Uri.fromFile(new File(file));</span>
-<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (uri == null) {</span>
-<span class="nc" id="L78">            throw new RuntimeException(&quot;Set the data uri to point to an apk location!&quot;);</span>
+<span class="nc" id="L78">        FlyveLog.d(file);</span>
+<span class="nc" id="L79">        Uri uri = Uri.fromFile(new File(file));</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (uri == null) {</span>
+<span class="nc" id="L81">            throw new RuntimeException(&quot;Set the data uri to point to an apk location!&quot;);</span>
         }
         // https://code.google.com/p/android/issues/detail?id=205827
-<span class="nc bnc" id="L81" title="All 2 branches missed.">        if ((Build.VERSION.SDK_INT &lt; 24)</span>
-<span class="nc bnc" id="L82" title="All 2 branches missed.">                &amp;&amp; (!uri.getScheme().equals(&quot;file&quot;))) {</span>
-<span class="nc" id="L83">            throw new RuntimeException(&quot;PackageInstaller &lt; Android N only supports file scheme!&quot;);</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if ((Build.VERSION.SDK_INT &lt; 24)</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">                &amp;&amp; (!uri.getScheme().equals(&quot;file&quot;))) {</span>
+<span class="nc" id="L86">            throw new RuntimeException(&quot;PackageInstaller &lt; Android N only supports file scheme!&quot;);</span>
         }
-<span class="nc bnc" id="L85" title="All 2 branches missed.">        if ((Build.VERSION.SDK_INT &gt;= 24)</span>
-<span class="nc bnc" id="L86" title="All 2 branches missed.">                &amp;&amp; (!uri.getScheme().equals(&quot;content&quot;))) {</span>
-<span class="nc" id="L87">            throw new RuntimeException(&quot;PackageInstaller &gt;= Android N only supports content scheme!&quot;);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if ((Build.VERSION.SDK_INT &gt;= 24)</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">                &amp;&amp; (!uri.getScheme().equals(&quot;content&quot;))) {</span>
+<span class="nc" id="L90">            throw new RuntimeException(&quot;PackageInstaller &gt;= Android N only supports content scheme!&quot;);</span>
         }
 
-<span class="nc" id="L90">        Intent intent = new Intent();</span>
+<span class="nc" id="L93">        Intent intent = new Intent();</span>
 
         // Note regarding EXTRA_NOT_UNKNOWN_SOURCE:
         // works only when being installed as system-app
         // https://code.google.com/p/android/issues/detail?id=42253
 
-<span class="nc bnc" id="L96" title="All 2 branches missed.">        if (Build.VERSION.SDK_INT &lt; 14) {</span>
-<span class="nc" id="L97">            intent.setAction(Intent.ACTION_VIEW);</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (Build.VERSION.SDK_INT &lt; 14) {</span>
+<span class="nc" id="L100">            intent.setAction(Intent.ACTION_VIEW);</span>
             //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-<span class="nc" id="L99">            intent.setDataAndType(uri, &quot;application/vnd.android.package-archive&quot;);</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">        } else if (Build.VERSION.SDK_INT &lt; 16) {</span>
-<span class="nc" id="L101">            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);</span>
-<span class="nc" id="L102">            intent.setData(uri);</span>
+<span class="nc" id="L102">            intent.setDataAndType(uri, &quot;application/vnd.android.package-archive&quot;);</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        } else if (Build.VERSION.SDK_INT &lt; 16) {</span>
+<span class="nc" id="L104">            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);</span>
+<span class="nc" id="L105">            intent.setData(uri);</span>
             //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-<span class="nc" id="L104">            intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);</span>
-<span class="nc" id="L105">            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);</span>
-<span class="nc" id="L106">            intent.putExtra(Intent.EXTRA_ALLOW_REPLACE, true);</span>
-<span class="nc bnc" id="L107" title="All 2 branches missed.">        } else if (Build.VERSION.SDK_INT &lt; 24) {</span>
-<span class="nc" id="L108">            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);</span>
-<span class="nc" id="L109">            intent.setData(uri);</span>
+<span class="nc" id="L107">            intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);</span>
+<span class="nc" id="L108">            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);</span>
+<span class="nc" id="L109">            intent.putExtra(Intent.EXTRA_ALLOW_REPLACE, true);</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        } else if (Build.VERSION.SDK_INT &lt; 24) {</span>
+<span class="nc" id="L111">            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);</span>
+<span class="nc" id="L112">            intent.setData(uri);</span>
             //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-<span class="nc" id="L111">            intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);</span>
-<span class="nc" id="L112">            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);</span>
+<span class="nc" id="L114">            intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);</span>
+<span class="nc" id="L115">            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);</span>
         } else { // Android N
-<span class="nc" id="L114">            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);</span>
-<span class="nc" id="L115">            intent.setData(uri);</span>
+<span class="nc" id="L117">            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);</span>
+<span class="nc" id="L118">            intent.setData(uri);</span>
             // grant READ permission for this content Uri
             //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-<span class="nc" id="L118">            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);</span>
-<span class="nc" id="L119">            intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);</span>
-<span class="nc" id="L120">            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);</span>
+<span class="nc" id="L121">            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);</span>
+<span class="nc" id="L122">            intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);</span>
+<span class="nc" id="L123">            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);</span>
         }
 
         try {
-<span class="nc" id="L124">            startActivityForResult(intent, APP_INSTALL_REQUEST);</span>
-<span class="nc" id="L125">        } catch (ActivityNotFoundException e) {</span>
-<span class="nc" id="L126">            FlyveLog.e(e.getMessage());</span>
-<span class="nc" id="L127">        }</span>
-<span class="nc" id="L128">    }</span>
+<span class="nc" id="L127">            startActivityForResult(intent, APP_INSTALL_REQUEST);</span>
+<span class="nc" id="L128">        } catch (ActivityNotFoundException e) {</span>
+<span class="nc" id="L129">            FlyveLog.e(e.getMessage());</span>
+<span class="nc" id="L130">        }</span>
+<span class="nc" id="L131">    }</span>
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-<span class="nc" id="L132">        String status = &quot;1&quot;; // pending</span>
-<span class="nc bnc" id="L133" title="All 2 branches missed.">        switch (requestCode) {</span>
+<span class="nc" id="L135">        String status = &quot;1&quot;; // pending</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        switch (requestCode) {</span>
             case APP_INSTALL_REQUEST:
-<span class="nc bnc" id="L135" title="All 2 branches missed.">                if (resultCode == RESULT_OK) {</span>
-<span class="nc" id="L136">                    FlyveLog.d(&quot;Package Installation Success&quot;);</span>
-<span class="nc" id="L137">                    status = &quot;2&quot;; // installed</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">                if (resultCode == RESULT_OK) {</span>
+<span class="nc" id="L139">                    FlyveLog.d(&quot;Package Installation Success&quot;);</span>
+<span class="nc" id="L140">                    status = &quot;2&quot;; // installed</span>
                 } else {
-<span class="nc" id="L139">                    FlyveLog.d(&quot;Installation failed&quot;);</span>
-<span class="nc" id="L140">                    finish();</span>
+<span class="nc" id="L142">                    FlyveLog.d(&quot;Installation failed&quot;);</span>
                 }
         }
 
         try {
-<span class="nc" id="L145">            PackageManager packageManager = InstallAppActivity.this.getPackageManager();</span>
+<span class="nc" id="L147">            PackageManager packageManager = InstallAppActivity.this.getPackageManager();</span>
 
-<span class="nc" id="L147">            PackageInfo packageInfo = packageManager.getPackageArchiveInfo(appPath, 0);</span>
-<span class="nc" id="L148">            packageInfo.applicationInfo.sourceDir = appPath;</span>
-<span class="nc" id="L149">            packageInfo.applicationInfo.publicSourceDir = appPath;</span>
+<span class="nc" id="L149">            PackageInfo packageInfo = packageManager.getPackageArchiveInfo(appPath, 0);</span>
+<span class="nc" id="L150">            packageInfo.applicationInfo.sourceDir = appPath;</span>
+<span class="nc" id="L151">            packageInfo.applicationInfo.publicSourceDir = appPath;</span>
 
-<span class="nc" id="L151">            String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();</span>
-<span class="nc" id="L152">            String appPackage = packageInfo.packageName;</span>
+<span class="nc" id="L153">            String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();</span>
+<span class="nc" id="L154">            String appPackage = packageInfo.packageName;</span>
 
-<span class="nc" id="L154">            AppDataBase dataBase = AppDataBase.getAppDatabase(InstallAppActivity.this);</span>
-<span class="nc bnc" id="L155" title="All 2 branches missed.">            if(dataBase.applicationDao().getApplicationById(id).length &lt;= 0) {</span>
-<span class="nc" id="L156">                Application apps = new Application();</span>
+<span class="nc" id="L156">            AppDataBase dataBase = AppDataBase.getAppDatabase(InstallAppActivity.this);</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">            if(dataBase.applicationDao().getApplicationById(id).length &lt;= 0) {</span>
+<span class="nc" id="L158">                Application apps = new Application();</span>
 
-<span class="nc" id="L158">                apps.appId = id;</span>
-<span class="nc" id="L159">                apps.appName = appName;</span>
-<span class="nc" id="L160">                apps.appPath = appPath;</span>
-<span class="nc" id="L161">                apps.appStatus = status; // 1 pending | 2 installed</span>
-<span class="nc" id="L162">                apps.appPackage = appPackage;</span>
+<span class="nc" id="L160">                apps.appId = id;</span>
+<span class="nc" id="L161">                apps.appName = appName;</span>
+<span class="nc" id="L162">                apps.appPath = appPath;</span>
+<span class="nc" id="L163">                apps.appStatus = status; // 1 pending | 2 installed</span>
+<span class="nc" id="L164">                apps.appPackage = appPackage;</span>
 
-<span class="nc" id="L164">                dataBase.applicationDao().insert(apps);</span>
-<span class="nc" id="L165">            } else {</span>
+<span class="nc" id="L166">                dataBase.applicationDao().insert(apps);</span>
+<span class="nc" id="L167">            } else {</span>
                 // update status to installed
-<span class="nc" id="L167">                dataBase.applicationDao().updateStatus(id, &quot;2&quot;);</span>
+<span class="nc" id="L169">                dataBase.applicationDao().updateStatus(id, &quot;2&quot;);</span>
             }
 
-<span class="nc" id="L170">        } catch (Exception ex) {</span>
-<span class="nc" id="L171">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L172">        }</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">            if(status.equals(&quot;2&quot;)) {</span>
+                // remove notifications if exists
+<span class="nc" id="L174">                NotificationManager notificationManager = (NotificationManager) InstallAppActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);</span>
+<span class="nc" id="L175">                notificationManager.cancel(Integer.parseInt(id));</span>
 
-<span class="nc" id="L174">        finish();</span>
-<span class="nc" id="L175">    }</span>
+<span class="nc" id="L177">            } else {</span>
+<span class="nc" id="L178">                Helpers.sendToNotificationBar(InstallAppActivity.this, Integer.parseInt(id), getString(R.string.app_pending_to_install), appName, true);</span>
+            }
+
+<span class="nc" id="L181">        } catch (Exception ex) {</span>
+<span class="nc" id="L182">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L183">        }</span>
+
+<span class="nc" id="L185">        finish();</span>
+<span class="nc" id="L186">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
