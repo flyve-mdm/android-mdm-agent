@@ -140,7 +140,6 @@ public class InstallAppActivity extends Activity {
                     status = "2"; // installed
                 } else {
                     FlyveLog.d("Installation failed");
-                    status = "0"; // fail
                 }
         }
 
@@ -154,10 +153,6 @@ public class InstallAppActivity extends Activity {
             String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
             String appPackage = packageInfo.packageName;
 
-            if(status.equals("0")) {
-                Helpers.sendToNotificationBar(InstallAppActivity.this, Integer.parseInt(id), getString(R.string.app_pending_to_install), appName, true);
-            }
-
             AppDataBase dataBase = AppDataBase.getAppDatabase(InstallAppActivity.this);
             if(dataBase.applicationDao().getApplicationById(id).length <= 0) {
                 Application apps = new Application();
@@ -170,12 +165,17 @@ public class InstallAppActivity extends Activity {
 
                 dataBase.applicationDao().insert(apps);
             } else {
-                // remove notifications
+                // update status to installed
+                dataBase.applicationDao().updateStatus(id, "2");
+            }
+
+            if(status.equals("2")) {
+                // remove notifications if exists
                 NotificationManager notificationManager = (NotificationManager) InstallAppActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(Integer.parseInt(id));
 
-                // update status to installed
-                dataBase.applicationDao().updateStatus(id, "2");
+            } else {
+                Helpers.sendToNotificationBar(InstallAppActivity.this, Integer.parseInt(id), getString(R.string.app_pending_to_install), appName, true);
             }
 
         } catch (Exception ex) {
