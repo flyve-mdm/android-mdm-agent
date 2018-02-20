@@ -1,3 +1,5 @@
+$white: #fff;
+
 html {
   min-height: 100%;
   position: relative;
@@ -8,25 +10,30 @@ body {
 }
 
 code {
-  white-space: pre !important;
+  white-space: pre;
 }
 
 hr {
-  margin: 20px 0 !important;
+  margin: 20px 0;
 }
 
 img {
-  max-width: 100% !important;
+  max-width: 100%;
 }
 
-.jumbotron.theme-default {
-    background-color: #fff;
-}
-.jumbotron.theme-dark {
+.jumbotron {
+
+  &.theme-default {
+    background-color: $white;
+  }
+
+  &.theme-dark {
     h3 {
-        padding-top: 0;
+      padding-top: 0;
     }
+  }
 }
+
 .article-wiki {
   margin-left: 40px;
 }
