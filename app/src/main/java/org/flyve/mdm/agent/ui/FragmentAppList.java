@@ -82,14 +82,11 @@ public class FragmentAppList extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Application app = apps[i];
 
-                // Pending
-                if(app.appStatus.equals("1")) {
-                    Intent intent = new Intent(FragmentAppList.this.getContext(), InstallAppActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("APP_ID", app.appId);
-                    intent.putExtra("APP_PATH", app.appPath);
-                    FragmentAppList.this.getContext().startActivity(intent);
-                }
+                Intent intent = new Intent(FragmentAppList.this.getContext(), InstallAppActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("APP_ID", app.appId);
+                intent.putExtra("APP_PATH", app.appPath);
+                FragmentAppList.this.getContext().startActivity(intent);
             }
         });
 
