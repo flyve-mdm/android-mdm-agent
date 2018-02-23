@@ -1,8 +1,11 @@
 package org.flyve.mdm.agent.receivers;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -34,7 +37,24 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  * ------------------------------------------------------------------------------
  */
 public class AppsReceiver extends BroadcastReceiver {
-    
+
+    private MQTTService mqttService;
+
+    ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mqttService = null;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MQTTService.LocalBinder mLocalBinder = (MQTTService.LocalBinder)service;
+            mqttService = mLocalBinder.getServerInstance();
+            mqttService.sendInventory();
+        }
+    };
+
+
     /**
      * It starts the MQTT service
      * @param context in which the receiver is running
@@ -43,8 +63,8 @@ public class AppsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
-            Intent mIntent = new Intent(MQTTService.ACTION_INVENTORY);
-            context.startService(mIntent);
+            Intent mIntent = new Intent(context, MQTTService.class);
+            context.bindService(mIntent, mConnection, Context.BIND_AUTO_CREATE);
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
