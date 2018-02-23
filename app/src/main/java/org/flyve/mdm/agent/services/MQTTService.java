@@ -30,6 +30,7 @@ package org.flyve.mdm.agent.services;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
@@ -72,6 +73,7 @@ public class MQTTService extends Service implements MqttCallback {
     private MqttAndroidClient client;
     private Boolean connected = false;
     private PoliciesController policiesController;
+    IBinder mBinder = new LocalBinder();
 
     public static Intent start(Context context) {
         MQTTService mMQTTService = new MQTTService();
@@ -90,6 +92,30 @@ public class MQTTService extends Service implements MqttCallback {
         FlyveLog.d("MQTT Service Constructor");
     }
 
+    public class LocalBinder extends Binder {
+        public MQTTService getServerInstance() {
+            return MQTTService.this;
+        }
+    }
+
+    public void sendInventory() {
+        if(connected) {
+            policiesController.createInventory();
+        } else {
+            FlyveLog.i("Cannot sent the inventory the device is offline");
+        }
+    }
+
+    /**
+     * Return the communication channel to the service
+     * @param intent that was used to bind to this service
+     * @return IBinder null if clients cannot bind to the service
+     */
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mBinder;
+    }
     /**
      * Called by the system every time a client explicitly starts the service by calling the method startService(Intent)
      * https://developer.android.com/reference/android/app/Service.html#START_STICKY Documentation of the Constant
@@ -114,10 +140,6 @@ public class MQTTService extends Service implements MqttCallback {
             connect();
         }
 
-        if(action.equalsIgnoreCase(ACTION_INVENTORY) && connected) {
-            policiesController.createInventory();
-        }
-
         return START_STICKY;
     }
 
@@ -130,17 +152,6 @@ public class MQTTService extends Service implements MqttCallback {
         super.onDestroy();
         Helpers.deleteMQTTCache(getApplicationContext());
         getApplicationContext().startService(new Intent(getApplicationContext(), MQTTService.class));
-    }
-
-    /**
-     * Return the communication channel to the service
-     * @param intent that was used to bind to this service
-     * @return IBinder null if clients cannot bind to the service 
-     */
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     /**
