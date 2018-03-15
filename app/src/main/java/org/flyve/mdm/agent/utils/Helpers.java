@@ -142,9 +142,13 @@ public class Helpers {
 
 
 	public static void deleteMQTTCache(Context context) {
-		File path = context.getExternalFilesDir("MqttConnection");
-		FlyveLog.d(path.getAbsolutePath());
-		deleteFolder(path.getAbsolutePath());
+		try {
+            File path = context.getExternalFilesDir("MqttConnection");
+            FlyveLog.d(path.getAbsolutePath());
+            deleteFolder(path.getAbsolutePath());
+        } catch (Exception ex) {
+		    FlyveLog.e(ex.getMessage());
+        }
 	}
 
 	public static void deleteFolder(String path) {
