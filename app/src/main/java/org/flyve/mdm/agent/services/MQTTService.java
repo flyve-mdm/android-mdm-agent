@@ -612,9 +612,14 @@ public class MQTTService extends Service implements MqttCallback {
         if(topic.toLowerCase().contains(STORAGE_ENCRYPTION.toLowerCase())) {
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
-
                 if(jsonObj.has(STORAGE_ENCRYPTION)) {
                     boolean enable = jsonObj.getBoolean(STORAGE_ENCRYPTION);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // return the status of the task
+                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+
+                    // execute the policy
                     policiesController.storageEncryption(enable);
                 }
             } catch (Exception ex) {
