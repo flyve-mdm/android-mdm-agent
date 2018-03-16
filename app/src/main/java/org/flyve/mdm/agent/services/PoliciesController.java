@@ -677,6 +677,26 @@ public class PoliciesController {
         }
     }
 
+    public void sendTaskStatus(String taskId, String status) {
+        String topic = mTopic + "/Status/Task/" + taskId;
+        byte[] encodedPayload;
+        try {
+            String payload = "{ \"status\": \"" + status + "\" }";
+
+            encodedPayload = payload.getBytes(UTF_8);
+            MqttMessage message = new MqttMessage(encodedPayload);
+            IMqttDeliveryToken token = client.publish(topic, message);
+
+            // send broadcast
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Send Inventory", "ID: " + token.getMessageId()));
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // send broadcast
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on sendKeepAlive", ex.getMessage()));
+        }
+    }
+
     public void disableCreateVpnProfiles(Boolean disable) {
         PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
         mdm.disableVPN(disable);
