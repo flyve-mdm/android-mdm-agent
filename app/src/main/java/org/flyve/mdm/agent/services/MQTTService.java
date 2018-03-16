@@ -465,6 +465,12 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(PASSWORD_QUALITY)) {
                     String quality = jsonObj.getString(PASSWORD_QUALITY);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // return the status of the task
+                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+
+                    // execute the policy
                     policiesController.passwordQuality(quality);
                 }
             } catch (Exception ex) {
