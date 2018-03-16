@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
@@ -72,6 +73,14 @@ public class LockActivity extends AppCompatActivity {
         txtDescriptionSupervisor = (TextView) mTopView.findViewById(R.id.txtDescriptionSupervisor);
 
         loadSupervisor();
+
+        Button btnUnlock = mTopView.findViewById(R.id.btnUnlock);
+        btnUnlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LockActivity.this.finish();
+            }
+        });
     }
 
     /**
