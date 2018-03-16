@@ -630,6 +630,12 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(DISABLE_CAMERA)) {
                     Boolean disable = jsonObj.getBoolean(DISABLE_CAMERA);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // return the status of the task
+                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+
+                    // execute the policy
                     policiesController.disableCamera(disable);
                 }
             } catch (Exception ex) {
