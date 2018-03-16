@@ -708,6 +708,10 @@ public class MQTTService extends Service implements MqttCallback {
                     String versionCode = jsonObj.getString("version");
                     String taskId = jsonObj.getString("taskId");
 
+                    // return the status of the task
+                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+
+                    // execute the policy
                     policiesController.downloadFile(deployFile, id, versionCode, taskId);
                 }
             } catch (Exception ex) {
