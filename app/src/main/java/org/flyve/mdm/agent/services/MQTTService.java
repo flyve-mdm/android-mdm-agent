@@ -585,6 +585,12 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE)) {
                     int max = jsonObj.getInt(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // return the status of the task
+                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+
+                    // execute the policy
                     policiesController.maximumFailedPasswordsForWipe(max);
                 }
             } catch (Exception ex) {
