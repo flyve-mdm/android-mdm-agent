@@ -858,6 +858,10 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_WIFI);
                     String taskId = jsonObj.getString("taskId");
 
+                    // return the status of the task
+                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+
+                    // execute the policy
                     policiesController.disableWifi(disable);
                 }
             } catch (Exception ex) {
