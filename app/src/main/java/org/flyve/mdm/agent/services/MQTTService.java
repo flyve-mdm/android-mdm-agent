@@ -570,6 +570,12 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(PASSWORD_MIN_SYMBOLS)) {
                     int minimum = jsonObj.getInt(PASSWORD_MIN_SYMBOLS);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // return the status of the task
+                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+
+                    // execute the policy
                     policiesController.passwordMinSymbols(minimum);
                 }
             } catch (Exception ex) {
