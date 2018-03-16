@@ -68,6 +68,7 @@ public class MQTTService extends Service implements MqttCallback {
     private static final String ERROR = "ERROR";
     private static final String QUERY = "query";
     private static final String TAG = "MQTT - %s";
+    private static final String DEFAULT_TASK_ESTATUS = "Received";
 
     private Timer _timer;
     private MqttAndroidClient client;
@@ -663,6 +664,10 @@ public class MQTTService extends Service implements MqttCallback {
                     String versionCode = jsonObj.getString("versionCode");
                     String taskId = jsonObj.getString("taskId");
 
+                    // return the status of the task
+                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+
+                    // execute the policy
                     policiesController.installPackage(deployApp, id, versionCode, taskId);
                 }
             } catch (Exception ex) {
