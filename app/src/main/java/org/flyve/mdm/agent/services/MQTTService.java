@@ -600,6 +600,12 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has(MAXIMUM_TIME_TO_LOCK)) {
                     int max = jsonObj.getInt(MAXIMUM_TIME_TO_LOCK);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // return the status of the task
+                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+
+                    // execute the policy
                     policiesController.maximumTimeToLock(max);
                 }
             } catch (Exception ex) {
