@@ -685,6 +685,10 @@ public class MQTTService extends Service implements MqttCallback {
                     String removeApp = jsonObj.getString(REMOVE_APP);
                     String taskId = jsonObj.getString("taskId");
 
+                    // return the status of the task
+                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+
+                    // execute the policy
                     policiesController.removePackage(removeApp);
                 }
             } catch (Exception ex) {
