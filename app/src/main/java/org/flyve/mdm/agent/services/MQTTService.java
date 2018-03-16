@@ -1033,6 +1033,10 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_USB_ADB);
                     String taskId = jsonObj.getString("taskId");
 
+                    // return the status of the task
+                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+
+                    // execute the policy
                     policiesController.disableADBUsbFileTransferProtocols(disable);
                 }
             } catch (Exception ex) {
