@@ -677,48 +677,68 @@ public class PoliciesController {
 <span class="nc" id="L677">        }</span>
 <span class="nc" id="L678">    }</span>
 
+    public void sendTaskStatus(String taskId, String status) {
+<span class="nc" id="L681">        String topic = mTopic + &quot;/Status/Task/&quot; + taskId;</span>
+        byte[] encodedPayload;
+        try {
+<span class="nc" id="L684">            String payload = &quot;{ \&quot;status\&quot;: \&quot;&quot; + status + &quot;\&quot; }&quot;;</span>
+
+<span class="nc" id="L686">            encodedPayload = payload.getBytes(UTF_8);</span>
+<span class="nc" id="L687">            MqttMessage message = new MqttMessage(encodedPayload);</span>
+<span class="nc" id="L688">            IMqttDeliveryToken token = client.publish(topic, message);</span>
+
+            // send broadcast
+<span class="nc" id="L691">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Inventory&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
+<span class="nc" id="L692">        } catch (Exception ex) {</span>
+<span class="nc" id="L693">            FlyveLog.e(ex.getMessage());</span>
+
+            // send broadcast
+<span class="nc" id="L696">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendKeepAlive&quot;, ex.getMessage()));</span>
+<span class="nc" id="L697">        }</span>
+<span class="nc" id="L698">    }</span>
+
     public void disableCreateVpnProfiles(Boolean disable) {
-<span class="nc" id="L681">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L682">        mdm.disableVPN(disable);</span>
-<span class="nc" id="L683">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;maximumTimeToLock&quot;, String.valueOf(disable)));</span>
-<span class="nc" id="L684">    }</span>
+<span class="nc" id="L701">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L702">        mdm.disableVPN(disable);</span>
+<span class="nc" id="L703">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;maximumTimeToLock&quot;, String.valueOf(disable)));</span>
+<span class="nc" id="L704">    }</span>
 
     /**
      * Send the Status version of the agent
      * payload: {&quot;version&quot;: &quot;0.99.0&quot;}
      */
     public void sendStatusVersion() {
-<span class="nc" id="L691">        String topic = mTopic + &quot;/FlyvemdmManifest/Status/Version&quot;;</span>
-<span class="nc" id="L692">        String payload = &quot;{\&quot;version\&quot;:\&quot;&quot; + BuildConfig.VERSION_NAME + &quot;\&quot;}&quot;;</span>
-<span class="nc" id="L693">        byte[] encodedPayload = new byte[0];</span>
+<span class="nc" id="L711">        String topic = mTopic + &quot;/FlyvemdmManifest/Status/Version&quot;;</span>
+<span class="nc" id="L712">        String payload = &quot;{\&quot;version\&quot;:\&quot;&quot; + BuildConfig.VERSION_NAME + &quot;\&quot;}&quot;;</span>
+<span class="nc" id="L713">        byte[] encodedPayload = new byte[0];</span>
         try {
-<span class="nc" id="L695">            encodedPayload = payload.getBytes(UTF_8);</span>
-<span class="nc" id="L696">            MqttMessage message = new MqttMessage(encodedPayload);</span>
-<span class="nc" id="L697">            IMqttDeliveryToken token = client.publish(topic, message);</span>
-<span class="nc" id="L698">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Status Version&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
-<span class="nc" id="L699">        } catch (Exception ex) {</span>
-<span class="nc" id="L700">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L701">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendStatusVersion&quot;, ex.getMessage()));</span>
-<span class="nc" id="L702">        }</span>
-<span class="nc" id="L703">    }</span>
+<span class="nc" id="L715">            encodedPayload = payload.getBytes(UTF_8);</span>
+<span class="nc" id="L716">            MqttMessage message = new MqttMessage(encodedPayload);</span>
+<span class="nc" id="L717">            IMqttDeliveryToken token = client.publish(topic, message);</span>
+<span class="nc" id="L718">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Status Version&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
+<span class="nc" id="L719">        } catch (Exception ex) {</span>
+<span class="nc" id="L720">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L721">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendStatusVersion&quot;, ex.getMessage()));</span>
+<span class="nc" id="L722">        }</span>
+<span class="nc" id="L723">    }</span>
 
     /**
      * Send the Status version of the agent
      * payload: {&quot;online&quot;: &quot;true&quot;}
      */
     public void sendOnlineStatus(Boolean status) {
-<span class="nc" id="L710">        String topic = mTopic + &quot;/Status/Online&quot;;</span>
-<span class="nc" id="L711">        String payload = &quot;{\&quot;online\&quot;: \&quot;&quot; + Boolean.toString( status ) + &quot;\&quot;}&quot;;</span>
-<span class="nc" id="L712">        byte[] encodedPayload = new byte[0];</span>
+<span class="nc" id="L730">        String topic = mTopic + &quot;/Status/Online&quot;;</span>
+<span class="nc" id="L731">        String payload = &quot;{\&quot;online\&quot;: \&quot;&quot; + Boolean.toString( status ) + &quot;\&quot;}&quot;;</span>
+<span class="nc" id="L732">        byte[] encodedPayload = new byte[0];</span>
         try {
-<span class="nc" id="L714">            encodedPayload = payload.getBytes(UTF_8);</span>
-<span class="nc" id="L715">            MqttMessage message = new MqttMessage(encodedPayload);</span>
-<span class="nc" id="L716">            IMqttDeliveryToken token = client.publish(topic, message);</span>
-<span class="nc" id="L717">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Online Status&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
-<span class="nc" id="L718">        } catch (Exception ex) {</span>
-<span class="nc" id="L719">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendStatusVersion&quot;, ex.getMessage()));</span>
-<span class="nc" id="L720">        }</span>
-<span class="nc" id="L721">    }</span>
+<span class="nc" id="L734">            encodedPayload = payload.getBytes(UTF_8);</span>
+<span class="nc" id="L735">            MqttMessage message = new MqttMessage(encodedPayload);</span>
+<span class="nc" id="L736">            IMqttDeliveryToken token = client.publish(topic, message);</span>
+<span class="nc" id="L737">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Online Status&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
+<span class="nc" id="L738">        } catch (Exception ex) {</span>
+<span class="nc" id="L739">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendStatusVersion&quot;, ex.getMessage()));</span>
+<span class="nc" id="L740">        }</span>
+<span class="nc" id="L741">    }</span>
 
     /**
      * Send the GPS information to MQTT
@@ -726,42 +746,42 @@ public class PoliciesController {
      */
     public void sendGPS() {
 
-<span class="nc" id="L729">        new FastLocationProvider().getLocation(context, new FastLocationProvider.LocationResult() {</span>
+<span class="nc" id="L749">        new FastLocationProvider().getLocation(context, new FastLocationProvider.LocationResult() {</span>
             @Override
             public void gotLocation(Location location) {
-<span class="nc bnc" id="L732" title="All 2 branches missed.">                if(location == null) {</span>
-<span class="nc" id="L733">                    FlyveLog.d(&quot;without location yet...&quot;);</span>
+<span class="nc bnc" id="L752" title="All 2 branches missed.">                if(location == null) {</span>
+<span class="nc" id="L753">                    FlyveLog.d(&quot;without location yet...&quot;);</span>
                 } else {
-<span class="nc" id="L735">                    FlyveLog.d(&quot;lat: &quot; + location.getLatitude() + &quot; lon: &quot; + location.getLongitude());</span>
+<span class="nc" id="L755">                    FlyveLog.d(&quot;lat: &quot; + location.getLatitude() + &quot; lon: &quot; + location.getLongitude());</span>
 
                     try {
-<span class="nc" id="L738">                        String latitude = String.valueOf(location.getLatitude());</span>
-<span class="nc" id="L739">                        String longitude = String.valueOf(location.getLongitude());</span>
+<span class="nc" id="L758">                        String latitude = String.valueOf(location.getLatitude());</span>
+<span class="nc" id="L759">                        String longitude = String.valueOf(location.getLongitude());</span>
 
-<span class="nc" id="L741">                        JSONObject jsonGPS = new JSONObject();</span>
+<span class="nc" id="L761">                        JSONObject jsonGPS = new JSONObject();</span>
 
-<span class="nc" id="L743">                        jsonGPS.put(&quot;latitude&quot;, latitude);</span>
-<span class="nc" id="L744">                        jsonGPS.put(&quot;longitude&quot;, longitude);</span>
-<span class="nc" id="L745">                        jsonGPS.put(&quot;datetime&quot;, Helpers.getUnixTime());</span>
+<span class="nc" id="L763">                        jsonGPS.put(&quot;latitude&quot;, latitude);</span>
+<span class="nc" id="L764">                        jsonGPS.put(&quot;longitude&quot;, longitude);</span>
+<span class="nc" id="L765">                        jsonGPS.put(&quot;datetime&quot;, Helpers.getUnixTime());</span>
 
-<span class="nc" id="L747">                        String topic = mTopic + &quot;/Status/Geolocation&quot;;</span>
-<span class="nc" id="L748">                        String payload = jsonGPS.toString();</span>
+<span class="nc" id="L767">                        String topic = mTopic + &quot;/Status/Geolocation&quot;;</span>
+<span class="nc" id="L768">                        String payload = jsonGPS.toString();</span>
                         byte[] encodedPayload;
 
-<span class="nc" id="L751">                        encodedPayload = payload.getBytes(UTF_8);</span>
-<span class="nc" id="L752">                        MqttMessage message = new MqttMessage(encodedPayload);</span>
-<span class="nc" id="L753">                        IMqttDeliveryToken token = client.publish(topic, message);</span>
+<span class="nc" id="L771">                        encodedPayload = payload.getBytes(UTF_8);</span>
+<span class="nc" id="L772">                        MqttMessage message = new MqttMessage(encodedPayload);</span>
+<span class="nc" id="L773">                        IMqttDeliveryToken token = client.publish(topic, message);</span>
 
                         // send broadcast
-<span class="nc" id="L756">                        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Geolocation&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
-<span class="nc" id="L757">                    } catch (Exception ex) {</span>
-<span class="nc" id="L758">                        FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L759">                        broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on GPS location&quot;, ex.getMessage()));</span>
-<span class="nc" id="L760">                    }</span>
+<span class="nc" id="L776">                        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Geolocation&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
+<span class="nc" id="L777">                    } catch (Exception ex) {</span>
+<span class="nc" id="L778">                        FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L779">                        broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on GPS location&quot;, ex.getMessage()));</span>
+<span class="nc" id="L780">                    }</span>
                 }
-<span class="nc" id="L762">            }</span>
+<span class="nc" id="L782">            }</span>
         });
-<span class="nc" id="L764">    }</span>
+<span class="nc" id="L784">    }</span>
 
     /**
      * Broadcast the received log
@@ -769,8 +789,8 @@ public class PoliciesController {
      */
     private void broadcastReceivedLog(String message){
         // write log file
-<span class="nc" id="L772">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
-<span class="nc" id="L773">    }</span>
+<span class="nc" id="L792">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
+<span class="nc" id="L793">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
