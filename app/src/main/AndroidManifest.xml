@@ -79,6 +79,12 @@
             android:screenOrientation="portrait"
             >
         </activity>
+        <activity android:name=".ui.PermissionEnrollmentActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/NoActionBar"
+            >
+        </activity>
         <activity
             android:name=".ui.SplashActivity"
             android:configChanges="orientation|screenSize"
