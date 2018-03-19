@@ -2,4 +2,73 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logoflyve"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Permissions"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/imgLogo"
+        />
+
+    <TextView
+        android:id="@+id/txtMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="This application requires special permits to work properly, then if required we will request you to approve them, we will also generate an inventory of your device that you will be able to review and share"
+        android:layout_below="@+id/txtTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        />
+
+    <Button
+        android:id="@+id/btnPermission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Request Permisssion"
+        android:layout_below="@+id/txtMessage"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        style="?android:attr/borderlessButtonStyle"
+        />
+
+    <LinearLayout
+        android:id="@+id/lnButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/txtMessage"
+        android:layout_margin="20dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        >
+
+        <Button
+            android:id="@+id/btnShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Share the inventory"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <Button
+            android:id="@+id/btnContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Continue"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_gravity="center_horizontal"
+            />
+    </LinearLayout>
+
 </RelativeLayout>
