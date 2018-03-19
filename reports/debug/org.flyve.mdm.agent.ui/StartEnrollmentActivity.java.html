@@ -27,14 +27,10 @@
 
 package org.flyve.mdm.agent.ui;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -50,7 +46,7 @@ import org.flyve.mdm.agent.core.deeplink.DeeplinkSchema;
 import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.utils.Helpers;
 
-<span class="nc" id="L53">public class StartEnrollmentActivity extends Activity implements Deeplink.View {</span>
+<span class="nc" id="L49">public class StartEnrollmentActivity extends Activity implements Deeplink.View {</span>
 
     private static final int REQUEST_EXIT = 1;
 
@@ -59,7 +55,6 @@ import org.flyve.mdm.agent.utils.Helpers;
     private TextView txtMessage;
     private TextView txtTitle;
     private ProgressBar pb;
-<span class="nc" id="L62">    private boolean mPermissions = false;</span>
 
     /**
      * Called when the activity is starting
@@ -68,113 +63,68 @@ import org.flyve.mdm.agent.utils.Helpers;
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-<span class="nc" id="L71">        super.onCreate(savedInstanceState);</span>
-<span class="nc" id="L72">        setContentView(R.layout.activity_start_enrollment);</span>
+<span class="nc" id="L66">        super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L67">        setContentView(R.layout.activity_start_enrollment);</span>
 
-<span class="nc" id="L74">        sendBroadcast();</span>
+<span class="nc" id="L69">        sendBroadcast();</span>
 
-<span class="nc" id="L76">        presenter = new DeeplinkPresenter(this);</span>
+<span class="nc" id="L71">        presenter = new DeeplinkPresenter(this);</span>
 
         // check if broker is on cache open the main activity
-<span class="nc" id="L79">        MqttData cache = new MqttData( StartEnrollmentActivity.this );</span>
+<span class="nc" id="L74">        MqttData cache = new MqttData( StartEnrollmentActivity.this );</span>
 
-<span class="nc" id="L81">        String broker = cache.getBroker();</span>
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        if(broker != null) {</span>
-<span class="nc" id="L83">            openMain();</span>
+<span class="nc" id="L76">        String broker = cache.getBroker();</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if(broker != null) {</span>
+<span class="nc" id="L78">            openMain();</span>
         }
 
-<span class="nc" id="L86">        TextView txtIntro = (TextView) findViewById(R.id.txtIntro);</span>
-<span class="nc" id="L87">        txtIntro.setText( Html.fromHtml(StartEnrollmentActivity.this.getResources().getString(R.string.walkthrough_step_1)) );</span>
-<span class="nc" id="L88">        txtIntro.setMovementMethod(LinkMovementMethod.getInstance());</span>
-<span class="nc" id="L89">        txtMessage = (TextView) findViewById(R.id.txtMessage);</span>
-<span class="nc" id="L90">        txtTitle = (TextView) findViewById(R.id.txtTitle);</span>
-<span class="nc" id="L91">        pb = (ProgressBar) findViewById(R.id.progressBar);</span>
+<span class="nc" id="L81">        TextView txtIntro = (TextView) findViewById(R.id.txtIntro);</span>
+<span class="nc" id="L82">        txtIntro.setText( Html.fromHtml(StartEnrollmentActivity.this.getResources().getString(R.string.walkthrough_step_1)) );</span>
+<span class="nc" id="L83">        txtIntro.setMovementMethod(LinkMovementMethod.getInstance());</span>
+<span class="nc" id="L84">        txtMessage = (TextView) findViewById(R.id.txtMessage);</span>
+<span class="nc" id="L85">        txtTitle = (TextView) findViewById(R.id.txtTitle);</span>
+<span class="nc" id="L86">        pb = (ProgressBar) findViewById(R.id.progressBar);</span>
 
         // get the deeplink
-<span class="nc" id="L94">        Intent intent = getIntent();</span>
-<span class="nc" id="L95">        Uri data = intent.getData();</span>
+<span class="nc" id="L89">        Intent intent = getIntent();</span>
+<span class="nc" id="L90">        Uri data = intent.getData();</span>
         try {
-<span class="nc" id="L97">            String deeplink = data.getQueryParameter(&quot;data&quot;);</span>
-<span class="nc" id="L98">            presenter.lint(StartEnrollmentActivity.this, deeplink);</span>
-<span class="nc" id="L99">        } catch (Exception ex) {</span>
-<span class="nc" id="L100">            showError(ex.getMessage());</span>
-<span class="nc" id="L101">        }</span>
+<span class="nc" id="L92">            String deeplink = data.getQueryParameter(&quot;data&quot;);</span>
+<span class="nc" id="L93">            presenter.lint(StartEnrollmentActivity.this, deeplink);</span>
+<span class="nc" id="L94">        } catch (Exception ex) {</span>
+<span class="nc" id="L95">            showError(ex.getMessage());</span>
+<span class="nc" id="L96">        }</span>
 
-<span class="nc" id="L103">        requestPermission();</span>
-
-<span class="nc" id="L105">        btnEnroll = (RelativeLayout) findViewById(R.id.btnEnroll);</span>
-<span class="nc" id="L106">        btnEnroll.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L98">        btnEnroll = (RelativeLayout) findViewById(R.id.btnEnroll);</span>
+<span class="nc" id="L99">        btnEnroll.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc bnc" id="L109" title="All 2 branches missed.">                if(Build.VERSION.SDK_INT &lt; 23) {</span>
-<span class="nc" id="L110">                    mPermissions = true;</span>
-                }
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">                if(mPermissions) {</span>
-<span class="nc" id="L114">                    btnEnroll.setVisibility(View.GONE);</span>
-<span class="nc" id="L115">                    txtMessage.setText(getResources().getString(R.string.please_wait));</span>
-<span class="nc" id="L116">                    pb.setVisibility(View.VISIBLE);</span>
-
-<span class="nc" id="L118">                    presenter.openEnrollment(StartEnrollmentActivity.this, REQUEST_EXIT);</span>
-                } else {
-<span class="nc" id="L120">                    showError(&quot;All permissions are require&quot;);</span>
-<span class="nc" id="L121">                    requestPermission();</span>
-                }
-<span class="nc" id="L123">            }</span>
+<span class="nc" id="L103">                Intent miIntent = new Intent(StartEnrollmentActivity.this, PermissionEnrollmentActivity.class);</span>
+<span class="nc" id="L104">                StartEnrollmentActivity.this.startActivity(miIntent);</span>
+<span class="nc" id="L105">                StartEnrollmentActivity.this.finish();</span>
+<span class="nc" id="L106">            }</span>
         });
-<span class="nc" id="L125">    }</span>
-
-    private void requestPermission() {
-<span class="nc" id="L128">        ActivityCompat.requestPermissions(StartEnrollmentActivity.this,</span>
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_PHONE_STATE,
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.RECEIVE_SMS,
-                        Manifest.permission.READ_SMS,
-                },
-                1);
-<span class="nc" id="L137">    }</span>
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-<span class="nc bnc" id="L142" title="All 2 branches missed.">        switch (requestCode) {</span>
-            case 1: {
-
-                // If request is cancelled, the result arrays are empty.
-<span class="nc bnc" id="L146" title="All 12 branches missed.">                if (grantResults.length &gt; 0</span>
-                        &amp;&amp; grantResults[0] == PackageManager.PERMISSION_GRANTED
-                        &amp;&amp; grantResults[1] == PackageManager.PERMISSION_GRANTED
-                        &amp;&amp; grantResults[2] == PackageManager.PERMISSION_GRANTED
-                        &amp;&amp; grantResults[3] == PackageManager.PERMISSION_GRANTED
-                        &amp;&amp; grantResults[4] == PackageManager.PERMISSION_GRANTED) {
-<span class="nc" id="L152">                    mPermissions = true;</span>
-                } else {
-<span class="nc" id="L154">                    mPermissions = false;</span>
-                }
-            }
-        }
-<span class="nc" id="L158">    }</span>
+<span class="nc" id="L108">    }</span>
 
     /**
      * Send a Broadcast with the Close Action
      */
     public void sendBroadcast() {
         //send broadcast
-<span class="nc" id="L165">        Intent in = new Intent();</span>
-<span class="nc" id="L166">        in.setAction(&quot;flyve.ACTION_CLOSE&quot;);</span>
-<span class="nc" id="L167">        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);</span>
-<span class="nc" id="L168">    }</span>
+<span class="nc" id="L115">        Intent in = new Intent();</span>
+<span class="nc" id="L116">        in.setAction(&quot;flyve.ACTION_CLOSE&quot;);</span>
+<span class="nc" id="L117">        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);</span>
+<span class="nc" id="L118">    }</span>
 
     /**
      * Open the main activity
      */
     private void openMain() {
-<span class="nc" id="L174">        Intent intent = new Intent(StartEnrollmentActivity.this, MainActivity.class);</span>
-<span class="nc" id="L175">        StartEnrollmentActivity.this.startActivity(intent);</span>
-<span class="nc" id="L176">        StartEnrollmentActivity.this.finish();</span>
-<span class="nc" id="L177">    }</span>
+<span class="nc" id="L124">        Intent intent = new Intent(StartEnrollmentActivity.this, MainActivity.class);</span>
+<span class="nc" id="L125">        StartEnrollmentActivity.this.startActivity(intent);</span>
+<span class="nc" id="L126">        StartEnrollmentActivity.this.finish();</span>
+<span class="nc" id="L127">    }</span>
 
     /**
      * Shows an error message
@@ -182,34 +132,34 @@ import org.flyve.mdm.agent.utils.Helpers;
      */
     @Override
     public void showError(String message) {
-<span class="nc" id="L185">        txtTitle.setText(getResources().getString(R.string.fail_enroll));</span>
-<span class="nc" id="L186">        txtMessage.setText(message);</span>
-<span class="nc" id="L187">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
+<span class="nc" id="L135">        txtTitle.setText(getResources().getString(R.string.fail_enroll));</span>
+<span class="nc" id="L136">        txtMessage.setText(message);</span>
+<span class="nc" id="L137">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L190">            }</span>
+<span class="nc" id="L140">            }</span>
         });
-<span class="nc" id="L192">    }</span>
+<span class="nc" id="L142">    }</span>
 
     @Override
     public void lintSuccess(DeeplinkSchema deeplinkSchema) {
-<span class="nc" id="L196">        presenter.saveMQTTConfig(StartEnrollmentActivity.this, deeplinkSchema.getUrl(), deeplinkSchema.getUserToken(), deeplinkSchema.getInvitationToken());</span>
-<span class="nc" id="L197">        presenter.saveSupervisor(StartEnrollmentActivity.this, deeplinkSchema.getName(), deeplinkSchema.getPhone(), deeplinkSchema.getWebsite(), deeplinkSchema.getEmail());</span>
-<span class="nc" id="L198">    }</span>
+<span class="nc" id="L146">        presenter.saveMQTTConfig(StartEnrollmentActivity.this, deeplinkSchema.getUrl(), deeplinkSchema.getUserToken(), deeplinkSchema.getInvitationToken());</span>
+<span class="nc" id="L147">        presenter.saveSupervisor(StartEnrollmentActivity.this, deeplinkSchema.getName(), deeplinkSchema.getPhone(), deeplinkSchema.getWebsite(), deeplinkSchema.getEmail());</span>
+<span class="nc" id="L148">    }</span>
 
     @Override
     public void openEnrollSuccess() {
-<span class="nc" id="L202">        btnEnroll.setVisibility(View.VISIBLE);</span>
-<span class="nc" id="L203">        pb.setVisibility(View.GONE);</span>
-<span class="nc" id="L204">        txtMessage.setText(getResources().getString(R.string.success));</span>
-<span class="nc" id="L205">        txtTitle.setText(getResources().getString(R.string.start_enroll));</span>
-<span class="nc" id="L206">    }</span>
+<span class="nc" id="L152">        btnEnroll.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L153">        pb.setVisibility(View.GONE);</span>
+<span class="nc" id="L154">        txtMessage.setText(getResources().getString(R.string.success));</span>
+<span class="nc" id="L155">        txtTitle.setText(getResources().getString(R.string.start_enroll));</span>
+<span class="nc" id="L156">    }</span>
 
     @Override
     public void openEnrollFail() {
-<span class="nc" id="L210">        btnEnroll.setVisibility(View.VISIBLE);</span>
-<span class="nc" id="L211">        pb.setVisibility(View.GONE);</span>
-<span class="nc" id="L212">    }</span>
+<span class="nc" id="L160">        btnEnroll.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L161">        pb.setVisibility(View.GONE);</span>
+<span class="nc" id="L162">    }</span>
 
     /**
      * Called when the launched activity exits
@@ -219,9 +169,9 @@ import org.flyve.mdm.agent.utils.Helpers;
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-<span class="nc bnc" id="L222" title="All 4 branches missed.">        if (requestCode == REQUEST_EXIT &amp;&amp; resultCode == RESULT_OK) {</span>
-<span class="nc" id="L223">            this.finish();</span>
+<span class="nc bnc" id="L172" title="All 4 branches missed.">        if (requestCode == REQUEST_EXIT &amp;&amp; resultCode == RESULT_OK) {</span>
+<span class="nc" id="L173">            this.finish();</span>
         }
-<span class="nc" id="L225">    }</span>
+<span class="nc" id="L175">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

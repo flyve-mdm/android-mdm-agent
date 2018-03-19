@@ -151,90 +151,102 @@ public class Helpers {
 <span class="nc" id="L151">        }</span>
 <span class="nc" id="L152">	}</span>
 
+	public static void share(Context context, String message, int type){
+<span class="nc" id="L155">		Intent intent = new Intent(Intent.ACTION_SEND);</span>
+<span class="nc" id="L156">		intent.setType(&quot;text/plain&quot;);</span>
+<span class="nc" id="L157">		intent.putExtra(Intent.EXTRA_TEXT, message);</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		if(type==1) {</span>
+<span class="nc" id="L159">			intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(&quot;file:///sdcard/FlyveMDM/Inventory.json&quot;));</span>
+		} else {
+<span class="nc" id="L161">			intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(&quot;file:///sdcard/FlyveMDM/Inventory.xml&quot;));</span>
+		}
+<span class="nc" id="L163">		context.startActivity(Intent.createChooser(intent, &quot;Share your inventory&quot;));</span>
+<span class="nc" id="L164">	}</span>
+
 	public static void deleteFolder(String path) {
 
-<span class="nc" id="L156">		File file = new File(path);</span>
+<span class="nc" id="L168">		File file = new File(path);</span>
 
-<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (file.exists()) {</span>
-<span class="nc" id="L159">			String deleteCmd = &quot;rm -r &quot; + path;</span>
-<span class="nc" id="L160">			Runtime runtime = Runtime.getRuntime();</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">		if (file.exists()) {</span>
+<span class="nc" id="L171">			String deleteCmd = &quot;rm -r &quot; + path;</span>
+<span class="nc" id="L172">			Runtime runtime = Runtime.getRuntime();</span>
 			try {
-<span class="nc" id="L162">				runtime.exec(deleteCmd);</span>
-<span class="nc" id="L163">			} catch (IOException ex) {</span>
-<span class="nc" id="L164">				FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L165">			}</span>
+<span class="nc" id="L174">				runtime.exec(deleteCmd);</span>
+<span class="nc" id="L175">			} catch (IOException ex) {</span>
+<span class="nc" id="L176">				FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L177">			}</span>
 		}
-<span class="nc" id="L167">	}</span>
+<span class="nc" id="L179">	}</span>
 
 	public static void sendToNotificationBar(Context context, int id, String title, String message, boolean isPersistence) {
-<span class="nc" id="L170">		Intent resultIntent = new Intent(context, MainActivity.class);</span>
-<span class="nc" id="L171">		resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);</span>
-<span class="nc" id="L172">		PendingIntent piResult = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_ONE_SHOT);</span>
+<span class="nc" id="L182">		Intent resultIntent = new Intent(context, MainActivity.class);</span>
+<span class="nc" id="L183">		resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);</span>
+<span class="nc" id="L184">		PendingIntent piResult = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_ONE_SHOT);</span>
 
-<span class="nc" id="L174">		Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);</span>
+<span class="nc" id="L186">		Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);</span>
 
-<span class="nc" id="L176">		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)</span>
-<span class="nc" id="L177">				.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.icon))</span>
-<span class="nc" id="L178">				.setContentTitle(title)</span>
-<span class="nc" id="L179">				.setContentText(message)</span>
-<span class="nc" id="L180">				.setSound(defaultSoundUri)</span>
-<span class="nc" id="L181">				.setContentIntent(piResult)</span>
-<span class="nc" id="L182">				.setPriority(Notification.PRIORITY_HIGH);</span>
+<span class="nc" id="L188">		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)</span>
+<span class="nc" id="L189">				.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.icon))</span>
+<span class="nc" id="L190">				.setContentTitle(title)</span>
+<span class="nc" id="L191">				.setContentText(message)</span>
+<span class="nc" id="L192">				.setSound(defaultSoundUri)</span>
+<span class="nc" id="L193">				.setContentIntent(piResult)</span>
+<span class="nc" id="L194">				.setPriority(Notification.PRIORITY_HIGH);</span>
 
-<span class="nc bnc" id="L184" title="All 2 branches missed.">		if(isPersistence) {</span>
-<span class="nc" id="L185">			builder.setOngoing(true);</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		if(isPersistence) {</span>
+<span class="nc" id="L197">			builder.setOngoing(true);</span>
 		} else {
-<span class="nc" id="L187">			builder.setAutoCancel(true);</span>
+<span class="nc" id="L199">			builder.setAutoCancel(true);</span>
 		}
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">		if (android.os.Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) {</span>
-<span class="nc" id="L191">			builder.setSmallIcon(R.drawable.ic_notification_white);</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">		if (android.os.Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) {</span>
+<span class="nc" id="L203">			builder.setSmallIcon(R.drawable.ic_notification_white);</span>
 		} else {
-<span class="nc" id="L193">			builder.setSmallIcon(R.drawable.icon);</span>
+<span class="nc" id="L205">			builder.setSmallIcon(R.drawable.icon);</span>
 		}
 
 
-<span class="nc" id="L197">		builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));</span>
+<span class="nc" id="L209">		builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));</span>
 
-<span class="nc" id="L199">		NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);</span>
-<span class="nc" id="L200">		notificationManager.notify(id, builder.build());</span>
-<span class="nc" id="L201">	}</span>
+<span class="nc" id="L211">		NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);</span>
+<span class="nc" id="L212">		notificationManager.notify(id, builder.build());</span>
+<span class="nc" id="L213">	}</span>
 
 	public static void sendToNotificationBar(Context context, String message) {
-<span class="nc" id="L204">		sendToNotificationBar(context, getIntID(), context.getResources().getString(R.string.app_name), message, false);</span>
-<span class="nc" id="L205">	}</span>
+<span class="nc" id="L216">		sendToNotificationBar(context, getIntID(), context.getResources().getString(R.string.app_name), message, false);</span>
+<span class="nc" id="L217">	}</span>
 
-<span class="nc" id="L207">	private final static AtomicInteger c = new AtomicInteger(0);</span>
+<span class="nc" id="L219">	private final static AtomicInteger c = new AtomicInteger(0);</span>
 	public static int getIntID() {
-<span class="nc" id="L209">		return c.incrementAndGet();</span>
+<span class="nc" id="L221">		return c.incrementAndGet();</span>
 	}
 
 	public static String isSystemApp(Context context) {
 
 		try {
-<span class="nc" id="L215">			ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getApplicationContext().getPackageName(), 0);</span>
+<span class="nc" id="L227">			ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getApplicationContext().getPackageName(), 0);</span>
 
-<span class="nc bnc" id="L217" title="All 2 branches missed.">			if (appInfo.sourceDir.startsWith(&quot;/data/app/&quot;)) {</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">			if (appInfo.sourceDir.startsWith(&quot;/data/app/&quot;)) {</span>
 				//Non-system app
-<span class="nc" id="L219">				return &quot;0&quot;;</span>
+<span class="nc" id="L231">				return &quot;0&quot;;</span>
 			} else {
 				//System app
-<span class="nc" id="L222">				return &quot;1&quot;;</span>
+<span class="nc" id="L234">				return &quot;1&quot;;</span>
 			}
-<span class="nc" id="L224">		} catch (Exception ex) {</span>
-<span class="nc" id="L225">			FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L226">			return &quot;0&quot;;</span>
+<span class="nc" id="L236">		} catch (Exception ex) {</span>
+<span class="nc" id="L237">			FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L238">			return &quot;0&quot;;</span>
 		}
 	}
 
 	public static boolean isOnline(Context context) {
 		try {
-<span class="nc" id="L232">			ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);</span>
-<span class="nc" id="L233">			NetworkInfo netInfo = cm.getActiveNetworkInfo();</span>
+<span class="nc" id="L244">			ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);</span>
+<span class="nc" id="L245">			NetworkInfo netInfo = cm.getActiveNetworkInfo();</span>
 			//should check null because in airplane mode it will be null
-<span class="nc bnc" id="L235" title="All 4 branches missed.">			return (netInfo != null &amp;&amp; netInfo.isConnected());</span>
-<span class="nc" id="L236">		} catch (Exception ex) {</span>
-<span class="nc" id="L237">			return false;</span>
+<span class="nc bnc" id="L247" title="All 4 branches missed.">			return (netInfo != null &amp;&amp; netInfo.isConnected());</span>
+<span class="nc" id="L248">		} catch (Exception ex) {</span>
+<span class="nc" id="L249">			return false;</span>
 		}
 	}
 
@@ -245,15 +257,15 @@ public class Helpers {
 	 * @return boolean
 	 */
 	public static boolean isMyServiceRunning(Class&lt;?&gt; serviceClass, Context context) {
-<span class="nc" id="L248">		ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);</span>
-<span class="nc bnc" id="L249" title="All 2 branches missed.">		for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {</span>
-<span class="nc bnc" id="L250" title="All 2 branches missed.">			if (serviceClass.getName().equals(service.service.getClassName())) {</span>
-<span class="nc" id="L251">				FlyveLog.i (&quot;isMyServiceRunning? %s&quot;, Boolean.toString( true ));</span>
-<span class="nc" id="L252">				return true;</span>
+<span class="nc" id="L260">		ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">		for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">			if (serviceClass.getName().equals(service.service.getClassName())) {</span>
+<span class="nc" id="L263">				FlyveLog.i (&quot;isMyServiceRunning? %s&quot;, Boolean.toString( true ));</span>
+<span class="nc" id="L264">				return true;</span>
 			}
-<span class="nc" id="L254">		}</span>
-<span class="nc" id="L255">		FlyveLog.i (&quot;isMyServiceRunning? %s&quot;, Boolean.toString( false ));</span>
-<span class="nc" id="L256">		return false;</span>
+<span class="nc" id="L266">		}</span>
+<span class="nc" id="L267">		FlyveLog.i (&quot;isMyServiceRunning? %s&quot;, Boolean.toString( false ));</span>
+<span class="nc" id="L268">		return false;</span>
 	}
 
 	/**
@@ -262,15 +274,15 @@ public class Helpers {
 	 * @return String with a plain text
 	 */
 	public static String base64decode(String text) {
-<span class="nc" id="L265">		String rtext = &quot;&quot;;</span>
-<span class="nc bnc" id="L266" title="All 2 branches missed.">		if(text == null) { return &quot;&quot;; }</span>
+<span class="nc" id="L277">		String rtext = &quot;&quot;;</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">		if(text == null) { return &quot;&quot;; }</span>
 		try {
-<span class="nc" id="L268">			byte[] bdata = Base64.decode(text, Base64.DEFAULT);</span>
-<span class="nc" id="L269">			rtext = new String(bdata, &quot;UTF-8&quot;);</span>
-<span class="nc" id="L270">		} catch (UnsupportedEncodingException e) {</span>
-<span class="nc" id="L271">			FlyveLog.e(e.getMessage());</span>
-<span class="nc" id="L272">		}</span>
-<span class="nc" id="L273">		return rtext.trim();</span>
+<span class="nc" id="L280">			byte[] bdata = Base64.decode(text, Base64.DEFAULT);</span>
+<span class="nc" id="L281">			rtext = new String(bdata, &quot;UTF-8&quot;);</span>
+<span class="nc" id="L282">		} catch (UnsupportedEncodingException e) {</span>
+<span class="nc" id="L283">			FlyveLog.e(e.getMessage());</span>
+<span class="nc" id="L284">		}</span>
+<span class="nc" id="L285">		return rtext.trim();</span>
 	}
 
 	/**
@@ -279,17 +291,17 @@ public class Helpers {
 	 * @return String with a base64 encode
 	 */
 	public static String base64encode(String text) {
-<span class="nc" id="L282">		String rtext = &quot;&quot;;</span>
-<span class="nc bnc" id="L283" title="All 2 branches missed.">		if(text == null) { return &quot;&quot;; }</span>
+<span class="nc" id="L294">		String rtext = &quot;&quot;;</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">		if(text == null) { return &quot;&quot;; }</span>
 		try {
-<span class="nc" id="L285">			byte[] data = text.getBytes(&quot;UTF-8&quot;);</span>
-<span class="nc" id="L286">			rtext = Base64.encodeToString(data, Base64.NO_WRAP | Base64.URL_SAFE);</span>
-<span class="nc" id="L287">			rtext = rtext.replaceAll(&quot;-&quot;, &quot;+&quot;);</span>
-<span class="nc" id="L288">		} catch (UnsupportedEncodingException e) {</span>
-<span class="nc" id="L289">			FlyveLog.e(e.getMessage());</span>
-<span class="nc" id="L290">		}</span>
+<span class="nc" id="L297">			byte[] data = text.getBytes(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L298">			rtext = Base64.encodeToString(data, Base64.NO_WRAP | Base64.URL_SAFE);</span>
+<span class="nc" id="L299">			rtext = rtext.replaceAll(&quot;-&quot;, &quot;+&quot;);</span>
+<span class="nc" id="L300">		} catch (UnsupportedEncodingException e) {</span>
+<span class="nc" id="L301">			FlyveLog.e(e.getMessage());</span>
+<span class="nc" id="L302">		}</span>
 		
-<span class="nc" id="L292">		return rtext;</span>
+<span class="nc" id="L304">		return rtext;</span>
 	}
 
 	/**
@@ -298,13 +310,13 @@ public class Helpers {
 	 */
 	public static String getDeviceSerial() {
 		String serial;
-<span class="nc bnc" id="L301" title="All 2 branches missed.">		if(Build.SERIAL.equalsIgnoreCase(&quot;unknown&quot;)) {</span>
-<span class="nc" id="L302">			serial = &quot;Unknown&quot;;</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">		if(Build.SERIAL.equalsIgnoreCase(&quot;unknown&quot;)) {</span>
+<span class="nc" id="L314">			serial = &quot;Unknown&quot;;</span>
 		} else {
-<span class="nc" id="L304">			serial = Build.SERIAL;</span>
+<span class="nc" id="L316">			serial = Build.SERIAL;</span>
 		}
 
-<span class="nc" id="L307">		return serial;</span>
+<span class="nc" id="L319">		return serial;</span>
 	}
 
 	/**
@@ -312,12 +324,12 @@ public class Helpers {
 	 * @return int unix time
 	 */
 	public static int getUnixTime() {
-<span class="nc" id="L315">		TimeZone timeZone = TimeZone.getTimeZone(&quot;UTC&quot;);</span>
-<span class="nc" id="L316">		Calendar calendar = Calendar.getInstance(timeZone);</span>
-<span class="nc" id="L317">		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(&quot;yyyy/MM/dd HH:mm:ss&quot;, Locale.US);</span>
-<span class="nc" id="L318">		simpleDateFormat.setTimeZone(timeZone);</span>
+<span class="nc" id="L327">		TimeZone timeZone = TimeZone.getTimeZone(&quot;UTC&quot;);</span>
+<span class="nc" id="L328">		Calendar calendar = Calendar.getInstance(timeZone);</span>
+<span class="nc" id="L329">		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(&quot;yyyy/MM/dd HH:mm:ss&quot;, Locale.US);</span>
+<span class="nc" id="L330">		simpleDateFormat.setTimeZone(timeZone);</span>
 
-<span class="nc" id="L320">		return ((int) (calendar.getTimeInMillis() / 1000));</span>
+<span class="nc" id="L332">		return ((int) (calendar.getTimeInMillis() / 1000));</span>
 	}
 
 	/**
@@ -326,9 +338,9 @@ public class Helpers {
 	 * @param url String the url to display
 	 */
 	public static void openURL(Context context, String url) {
-<span class="nc" id="L329">		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));</span>
-<span class="nc" id="L330">		context.startActivity(browserIntent);</span>
-<span class="nc" id="L331">	}</span>
+<span class="nc" id="L341">		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));</span>
+<span class="nc" id="L342">		context.startActivity(browserIntent);</span>
+<span class="nc" id="L343">	}</span>
 
 	/**
 	 * Generates a JSONOBject with the message
@@ -339,19 +351,19 @@ public class Helpers {
 	 */
 	public static String broadCastMessage(String type, String title, String body) {
 		try {
-<span class="nc" id="L342">			JSONObject json = new JSONObject();</span>
-<span class="nc" id="L343">			json.put(&quot;type&quot;, type);</span>
-<span class="nc" id="L344">			json.put(&quot;title&quot;, title);</span>
-<span class="nc" id="L345">			json.put(&quot;body&quot;, body);</span>
+<span class="nc" id="L354">			JSONObject json = new JSONObject();</span>
+<span class="nc" id="L355">			json.put(&quot;type&quot;, type);</span>
+<span class="nc" id="L356">			json.put(&quot;title&quot;, title);</span>
+<span class="nc" id="L357">			json.put(&quot;body&quot;, body);</span>
 
-<span class="nc" id="L347">			SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span>
-<span class="nc" id="L348">			String currentDateTime = sdf.format(new Date());</span>
-<span class="nc" id="L349">			json.put(&quot;date&quot;, currentDateTime);</span>
+<span class="nc" id="L359">			SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span>
+<span class="nc" id="L360">			String currentDateTime = sdf.format(new Date());</span>
+<span class="nc" id="L361">			json.put(&quot;date&quot;, currentDateTime);</span>
 
-<span class="nc" id="L351">			return json.toString();</span>
+<span class="nc" id="L363">			return json.toString();</span>
 
-<span class="nc" id="L353">		} catch(Exception ex) {</span>
-<span class="nc" id="L354">			return null;</span>
+<span class="nc" id="L365">		} catch(Exception ex) {</span>
+<span class="nc" id="L366">			return null;</span>
 		}
 	}
 
@@ -362,10 +374,10 @@ public class Helpers {
 	 * @param message to display
 	 */
 	public static void snack(Activity activity, String message) {
-<span class="nc" id="L365">		Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)</span>
-<span class="nc" id="L366">				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))</span>
-<span class="nc" id="L367">				.show();</span>
-<span class="nc" id="L368">	}</span>
+<span class="nc" id="L377">		Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)</span>
+<span class="nc" id="L378">				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))</span>
+<span class="nc" id="L379">				.show();</span>
+<span class="nc" id="L380">	}</span>
 
 	/**
 	 * Generate a snackbar with the given arguments
@@ -375,28 +387,28 @@ public class Helpers {
 	 * @param callback to be invoked when the action is clicked
 	 */
 	public static void snack(Activity activity, String message, String action,  View.OnClickListener callback) {
-<span class="nc" id="L378">		Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)</span>
-<span class="nc" id="L379">				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))</span>
-<span class="nc" id="L380">				.setAction(action, callback)</span>
-<span class="nc" id="L381">				.show();</span>
-<span class="nc" id="L382">	}</span>
+<span class="nc" id="L390">		Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)</span>
+<span class="nc" id="L391">				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))</span>
+<span class="nc" id="L392">				.setAction(action, callback)</span>
+<span class="nc" id="L393">				.show();</span>
+<span class="nc" id="L394">	}</span>
 
 	public static void deleteAllSMS(Context context) {
-<span class="nc" id="L385">		Cursor cursor = context.getContentResolver().query(</span>
-<span class="nc" id="L386">				Uri.parse(&quot;content://sms/&quot;),new String[] {</span>
+<span class="nc" id="L397">		Cursor cursor = context.getContentResolver().query(</span>
+<span class="nc" id="L398">				Uri.parse(&quot;content://sms/&quot;),new String[] {</span>
 						&quot;_id&quot;, &quot;thread_id&quot;, &quot;address&quot;, &quot;person&quot;, &quot;date&quot;,&quot;body&quot; }, null, null, null);
 
 		try {
-<span class="nc bnc" id="L390" title="All 2 branches missed.">			while (cursor.moveToNext()) {</span>
-<span class="nc" id="L391">				int id = cursor.getInt(0);</span>
-<span class="nc" id="L392">				int threadId = cursor.getInt(1); // get the thread_id</span>
-<span class="nc" id="L393">				int rowsDeleted = context.getContentResolver().delete(Uri.parse(&quot;content://sms/&quot; + id), null, null);</span>
-<span class="nc" id="L394">				FlyveLog.d(&quot;Rows deleted: &quot; + rowsDeleted);</span>
-<span class="nc" id="L395">			}</span>
-<span class="nc" id="L396">		} catch (Exception ex) {</span>
-<span class="nc" id="L397">			FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L398">		}</span>
-<span class="nc" id="L399">	}</span>
+<span class="nc bnc" id="L402" title="All 2 branches missed.">			while (cursor.moveToNext()) {</span>
+<span class="nc" id="L403">				int id = cursor.getInt(0);</span>
+<span class="nc" id="L404">				int threadId = cursor.getInt(1); // get the thread_id</span>
+<span class="nc" id="L405">				int rowsDeleted = context.getContentResolver().delete(Uri.parse(&quot;content://sms/&quot; + id), null, null);</span>
+<span class="nc" id="L406">				FlyveLog.d(&quot;Rows deleted: &quot; + rowsDeleted);</span>
+<span class="nc" id="L407">			}</span>
+<span class="nc" id="L408">		} catch (Exception ex) {</span>
+<span class="nc" id="L409">			FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L410">		}</span>
+<span class="nc" id="L411">	}</span>
 
 	/**
 	 * Send broadcast
@@ -405,13 +417,13 @@ public class Helpers {
 	 * @param context String context
 	 */
 	public static void sendBroadcast(String message, String action, Context context) {
-<span class="nc" id="L408">		FlyveLog.i(message);</span>
+<span class="nc" id="L420">		FlyveLog.i(message);</span>
 		//send broadcast
-<span class="nc" id="L410">		Intent in = new Intent();</span>
-<span class="nc" id="L411">		in.setAction(action);</span>
-<span class="nc" id="L412">		in.putExtra(&quot;message&quot;, message);</span>
-<span class="nc" id="L413">		context.sendBroadcast(in);</span>
-<span class="nc" id="L414">	}</span>
+<span class="nc" id="L422">		Intent in = new Intent();</span>
+<span class="nc" id="L423">		in.setAction(action);</span>
+<span class="nc" id="L424">		in.putExtra(&quot;message&quot;, message);</span>
+<span class="nc" id="L425">		context.sendBroadcast(in);</span>
+<span class="nc" id="L426">	}</span>
 
 	/**
 	 * Send broadcast
@@ -421,11 +433,11 @@ public class Helpers {
 	 */
 	public static void sendBroadcast(Boolean message, String action, Context context) {
 		//send broadcast
-<span class="nc" id="L424">		Intent in = new Intent();</span>
-<span class="nc" id="L425">		in.setAction(action);</span>
-<span class="nc" id="L426">		in.putExtra(&quot;message&quot;, Boolean.toString( message ) );</span>
-<span class="nc" id="L427">		LocalBroadcastManager.getInstance(context).sendBroadcast(in);</span>
-<span class="nc" id="L428">	}</span>
+<span class="nc" id="L436">		Intent in = new Intent();</span>
+<span class="nc" id="L437">		in.setAction(action);</span>
+<span class="nc" id="L438">		in.putExtra(&quot;message&quot;, Boolean.toString( message ) );</span>
+<span class="nc" id="L439">		LocalBroadcastManager.getInstance(context).sendBroadcast(in);</span>
+<span class="nc" id="L440">	}</span>
 
 	/**
 	 * Convert the Bitmap to string
@@ -433,10 +445,10 @@ public class Helpers {
 	 * @return string the image Bitmap
 	 */
 	public static String bitmapToString(Bitmap bitmap){
-<span class="nc" id="L436">		ByteArrayOutputStream baos=new  ByteArrayOutputStream();</span>
-<span class="nc" id="L437">		bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);</span>
-<span class="nc" id="L438">		byte [] b=baos.toByteArray();</span>
-<span class="nc" id="L439">		return Base64.encodeToString(b, Base64.DEFAULT);</span>
+<span class="nc" id="L448">		ByteArrayOutputStream baos=new  ByteArrayOutputStream();</span>
+<span class="nc" id="L449">		bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);</span>
+<span class="nc" id="L450">		byte [] b=baos.toByteArray();</span>
+<span class="nc" id="L451">		return Base64.encodeToString(b, Base64.DEFAULT);</span>
 	}
 
 	/**
@@ -445,11 +457,11 @@ public class Helpers {
 	 */
 	public static Bitmap stringToBitmap(String encodedString){
 		try {
-<span class="nc" id="L448">			byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);</span>
-<span class="nc" id="L449">			return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);</span>
-<span class="nc" id="L450">		} catch(Exception e) {</span>
-<span class="nc" id="L451">			FlyveLog.e(e.getMessage());</span>
-<span class="nc" id="L452">			return null;</span>
+<span class="nc" id="L460">			byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);</span>
+<span class="nc" id="L461">			return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);</span>
+<span class="nc" id="L462">		} catch(Exception e) {</span>
+<span class="nc" id="L463">			FlyveLog.e(e.getMessage());</span>
+<span class="nc" id="L464">			return null;</span>
 		}
 	}
 
@@ -460,27 +472,27 @@ public class Helpers {
 	 * @return Bitmap the modificated image
 	 */
 	public static Bitmap modifyOrientation(Bitmap bitmap, String imageAbsolutePath) throws IOException {
-<span class="nc" id="L463">		ExifInterface ei = new ExifInterface(imageAbsolutePath);</span>
-<span class="nc" id="L464">		int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);</span>
+<span class="nc" id="L475">		ExifInterface ei = new ExifInterface(imageAbsolutePath);</span>
+<span class="nc" id="L476">		int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);</span>
 
-<span class="nc bnc" id="L466" title="All 6 branches missed.">		switch (orientation) {</span>
+<span class="nc bnc" id="L478" title="All 6 branches missed.">		switch (orientation) {</span>
 			case ExifInterface.ORIENTATION_ROTATE_90:
-<span class="nc" id="L468">				return rotate(bitmap, 90);</span>
+<span class="nc" id="L480">				return rotate(bitmap, 90);</span>
 
 			case ExifInterface.ORIENTATION_ROTATE_180:
-<span class="nc" id="L471">				return rotate(bitmap, 180);</span>
+<span class="nc" id="L483">				return rotate(bitmap, 180);</span>
 
 			case ExifInterface.ORIENTATION_ROTATE_270:
-<span class="nc" id="L474">				return rotate(bitmap, 270);</span>
+<span class="nc" id="L486">				return rotate(bitmap, 270);</span>
 
 			case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
-<span class="nc" id="L477">				return flip(bitmap, true, false);</span>
+<span class="nc" id="L489">				return flip(bitmap, true, false);</span>
 
 			case ExifInterface.ORIENTATION_FLIP_VERTICAL:
-<span class="nc" id="L480">				return flip(bitmap, false, true);</span>
+<span class="nc" id="L492">				return flip(bitmap, false, true);</span>
 
 			default:
-<span class="nc" id="L483">				return bitmap;</span>
+<span class="nc" id="L495">				return bitmap;</span>
 		}
 	}
 
@@ -491,9 +503,9 @@ public class Helpers {
 	 * @return Bitmap the image rotated
 	 */
 	public static Bitmap rotate(Bitmap bitmap, float degrees) {
-<span class="nc" id="L494">		Matrix matrix = new Matrix();</span>
-<span class="nc" id="L495">		matrix.postRotate(degrees);</span>
-<span class="nc" id="L496">		return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);</span>
+<span class="nc" id="L506">		Matrix matrix = new Matrix();</span>
+<span class="nc" id="L507">		matrix.postRotate(degrees);</span>
+<span class="nc" id="L508">		return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);</span>
 	}
 
 	/**
@@ -504,9 +516,9 @@ public class Helpers {
 	 * @return Bitmap the flipped image
 	 */
 	public static Bitmap flip(Bitmap bitmap, boolean horizontal, boolean vertical) {
-<span class="nc" id="L507">		Matrix matrix = new Matrix();</span>
-<span class="nc bnc" id="L508" title="All 4 branches missed.">		matrix.preScale(horizontal ? -1 : 1, vertical ? -1 : 1);</span>
-<span class="nc" id="L509">		return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);</span>
+<span class="nc" id="L519">		Matrix matrix = new Matrix();</span>
+<span class="nc bnc" id="L520" title="All 4 branches missed.">		matrix.preScale(horizontal ? -1 : 1, vertical ? -1 : 1);</span>
+<span class="nc" id="L521">		return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
