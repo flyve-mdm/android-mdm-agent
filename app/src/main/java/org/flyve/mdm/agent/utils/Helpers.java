@@ -178,8 +178,8 @@ public class Helpers {
 		}
 	}
 
-	public static void sendToNotificationBar(Context context, int id, String title, String message, boolean isPersistence) {
-		Intent resultIntent = new Intent(context, MainActivity.class);
+	public static void sendToNotificationBar(Context context, int id, String title, String message, boolean isPersistence, Class<?> cls) {
+		Intent resultIntent = new Intent(context, cls);
 		resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		PendingIntent piResult = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -205,7 +205,6 @@ public class Helpers {
 			builder.setSmallIcon(R.drawable.icon);
 		}
 
-
 		builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 
 		NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -213,7 +212,7 @@ public class Helpers {
 	}
 
 	public static void sendToNotificationBar(Context context, String message) {
-		sendToNotificationBar(context, getIntID(), context.getResources().getString(R.string.app_name), message, false);
+		sendToNotificationBar(context, getIntID(), context.getResources().getString(R.string.app_name), message, false, MainActivity.class);
 	}
 
 	private final static AtomicInteger c = new AtomicInteger(0);
