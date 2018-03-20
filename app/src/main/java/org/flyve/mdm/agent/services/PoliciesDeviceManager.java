@@ -12,7 +12,9 @@ import android.provider.Settings;
 import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.ui.LockActivity;
+import org.flyve.mdm.agent.ui.MainActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 
 /*
  *   Copyright (C) 2017 Teclib. All rights reserved.
@@ -126,6 +128,8 @@ public class PoliciesDeviceManager {
             Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
+
+            Helpers.sendToNotificationBar(context, 1009, "MDM Agent","Please create a password", true, MainActivity.class);
         }
     }
 
