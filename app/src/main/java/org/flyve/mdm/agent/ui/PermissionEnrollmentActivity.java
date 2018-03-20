@@ -2,21 +2,17 @@ package org.flyve.mdm.agent.ui;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-
-import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
+import org.flyve.mdm.agent.core.permission.Permission;
+import org.flyve.mdm.agent.core.permission.PermissionPresenter;
 import org.flyve.mdm.agent.utils.Helpers;
 
 /*
@@ -45,16 +41,18 @@ import org.flyve.mdm.agent.utils.Helpers;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class PermissionEnrollmentActivity extends Activity {
-    private ProgressDialog progress;
+public class PermissionEnrollmentActivity extends Activity implements Permission.View {
     private static final int REQUEST_EXIT = 1;
     private LinearLayout lnButtons;
     private Button btnPermission;
+    private Permission.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission_enrollment);
+
+        presenter = new PermissionPresenter(this);
 
         lnButtons = findViewById(R.id.lnButtons);
 
@@ -65,7 +63,7 @@ public class PermissionEnrollmentActivity extends Activity {
                 if(Build.VERSION.SDK_INT >= 23) {
                     requestPermission();
                 } else {
-                    generateInventory();
+                    presenter.generateInventory(PermissionEnrollmentActivity.this);
                 }
             }
         });
@@ -74,7 +72,7 @@ public class PermissionEnrollmentActivity extends Activity {
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialogShare();
+                presenter.showDialogShare(PermissionEnrollmentActivity.this);
             }
         });
 
@@ -84,82 +82,6 @@ public class PermissionEnrollmentActivity extends Activity {
             public void onClick(View view) {
                 Intent miIntent = new Intent(PermissionEnrollmentActivity.this, EnrollmentActivity.class);
                 PermissionEnrollmentActivity.this.startActivityForResult(miIntent, REQUEST_EXIT);
-            }
-        });
-    }
-
-    public void showDialogShare() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(PermissionEnrollmentActivity.this);
-        builder.setTitle(R.string.dialog_share_title);
-
-        final int[] type = new int[1];
-
-        //list of items
-        String[] items = getResources().getStringArray(R.array.export_list);
-        builder.setSingleChoiceItems(items, 0,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        type[0] = which;
-                    }
-                });
-
-        String positiveText = getString(android.R.string.ok);
-        builder.setPositiveButton(positiveText,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // positive button logic
-                        Helpers.share( PermissionEnrollmentActivity.this, "Inventory File", type[0] );
-                    }
-                });
-
-        String negativeText = getString(android.R.string.cancel);
-        builder.setNegativeButton(negativeText,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // negative button logic
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        // display dialog
-        dialog.show();
-    }
-
-    private void generateInventory() {
-        progress = ProgressDialog.show(this, "MDM Agent",
-                "Creating inventory...", true);
-
-        InventoryTask inventoryTask = new InventoryTask(PermissionEnrollmentActivity.this, "", true);
-        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
-            @Override
-            public void onTaskSuccess(String s) {
-                progress.setMessage("Creating session...");
-
-                EnrollmentHelper sessionToken = new EnrollmentHelper(PermissionEnrollmentActivity.this);
-                sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
-                    @Override
-                    public void onSuccess(String data) {
-                        // Active EnrollmentHelper Token is stored on cache
-                        progress.dismiss();
-
-                        lnButtons.setVisibility(View.VISIBLE);
-                        btnPermission.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        showError(error);
-                    }
-                });
-
-            }
-
-            @Override
-            public void onTaskError(Throwable throwable) {
-                showError("The inventory fail");
             }
         });
     }
@@ -183,12 +105,19 @@ public class PermissionEnrollmentActivity extends Activity {
                 1);
     }
 
+    @Override
     public void showError(String message) {
         Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
         });
+    }
+
+    @Override
+    public void inventorySuccess() {
+        lnButtons.setVisibility(View.VISIBLE);
+        btnPermission.setVisibility(View.GONE);
     }
 
     @Override
@@ -203,9 +132,9 @@ public class PermissionEnrollmentActivity extends Activity {
                         && grantResults[2] == PackageManager.PERMISSION_GRANTED
                         && grantResults[3] == PackageManager.PERMISSION_GRANTED
                         && grantResults[4] == PackageManager.PERMISSION_GRANTED) {
-                    generateInventory();
+                    presenter.generateInventory(PermissionEnrollmentActivity.this);
                 } else {
-                    showError("All the permissions are required");
+                    presenter.showError(getString(R.string.permission_error_result));
                 }
             }
         }
