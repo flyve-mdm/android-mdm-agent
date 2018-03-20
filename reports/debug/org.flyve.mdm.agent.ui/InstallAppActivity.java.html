@@ -175,7 +175,7 @@ import java.io.File;
 <span class="nc" id="L175">                notificationManager.cancel(Integer.parseInt(id));</span>
 
 <span class="nc" id="L177">            } else {</span>
-<span class="nc" id="L178">                Helpers.sendToNotificationBar(InstallAppActivity.this, Integer.parseInt(id), getString(R.string.app_pending_to_install), appName, true);</span>
+<span class="nc" id="L178">                Helpers.sendToNotificationBar(InstallAppActivity.this, Integer.parseInt(id), getString(R.string.app_pending_to_install), appName, true, MainActivity.class);</span>
             }
 
 <span class="nc" id="L181">        } catch (Exception ex) {</span>

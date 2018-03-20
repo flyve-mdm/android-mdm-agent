@@ -264,7 +264,16 @@ import org.flyve.mdm.agent.utils.StorageFolder;
 <span class="nc" id="L264">            }</span>
         });
 
-<span class="nc" id="L267">        return v;</span>
+<span class="nc" id="L267">        Button btnEnablePassword = v.findViewById(R.id.btnEnablePassword);</span>
+<span class="nc" id="L268">        btnEnablePassword.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View view) {
+<span class="nc" id="L271">                Helpers.sendToNotificationBar(getContext(), 1009, &quot;MDM Agent&quot;, &quot;Please create a new password&quot;, true, MainActivity.class);</span>
+<span class="nc" id="L272">            }</span>
+        });
+
+
+<span class="nc" id="L276">        return v;</span>
     }
 
     }

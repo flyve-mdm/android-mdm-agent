@@ -27,6 +27,8 @@
 
 package org.flyve.mdm.agent.ui;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -42,13 +44,14 @@ import android.widget.TextView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.DrawerAdapter;
 import org.flyve.mdm.agent.data.AppData;
+import org.flyve.mdm.agent.services.DeviceLockedController;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-<span class="nc" id="L51">public class MainActivity extends AppCompatActivity {</span>
+<span class="nc" id="L54">public class MainActivity extends AppCompatActivity {</span>
 
     private DrawerLayout mDrawerLayout;
     private FragmentManager mFragmentManager;
@@ -65,14 +68,14 @@ import java.util.HashMap;
     @Override
     public void onDestroy() {
         // stop the service
-<span class="nc bnc" id="L68" title="All 2 branches missed.">        if(mServiceIntent!=null) {</span>
-<span class="nc" id="L69">            stopService(mServiceIntent);</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if(mServiceIntent!=null) {</span>
+<span class="nc" id="L72">            stopService(mServiceIntent);</span>
         }
 
-<span class="nc" id="L72">        FlyveLog.i(&quot;onDestroy!&quot;);</span>
+<span class="nc" id="L75">        FlyveLog.i(&quot;onDestroy!&quot;);</span>
 
-<span class="nc" id="L74">        super.onDestroy();</span>
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L77">        super.onDestroy();</span>
+<span class="nc" id="L78">    }</span>
 
     /**
      * Called when the activity is starting 
@@ -80,42 +83,55 @@ import java.util.HashMap;
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-<span class="nc" id="L83">        super.onCreate(savedInstanceState);</span>
-<span class="nc" id="L84">        setContentView(R.layout.activity_main);</span>
+<span class="nc" id="L86">        super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L87">        setContentView(R.layout.activity_main);</span>
 
         // start MQTT
-<span class="nc" id="L87">        globalStartMQTT();</span>
+<span class="nc" id="L90">        globalStartMQTT();</span>
 
-<span class="nc" id="L89">        cache = new AppData(this);</span>
+<span class="nc" id="L92">        cache = new AppData(this);</span>
 
          // Setup the DrawerLayout and NavigationView
-<span class="nc" id="L92">        txtToolbarTitle = (TextView) findViewById(R.id.txtToolbarTitle);</span>
-<span class="nc" id="L93">        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);</span>
+<span class="nc" id="L95">        txtToolbarTitle = (TextView) findViewById(R.id.txtToolbarTitle);</span>
+<span class="nc" id="L96">        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);</span>
 
-<span class="nc" id="L95">        lstDrawer = (ListView) findViewById(R.id.lstNV);</span>
-<span class="nc" id="L96">        lstDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {</span>
+<span class="nc" id="L98">        lstDrawer = (ListView) findViewById(R.id.lstNV);</span>
+<span class="nc" id="L99">        lstDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {</span>
             @Override
             public void onItemClick(AdapterView&lt;?&gt; parent, View view, int position, long id) {
-<span class="nc" id="L99">            mDrawerLayout.closeDrawers();</span>
-<span class="nc" id="L100">            selectedItem = arrDrawer.get(position);</span>
-<span class="nc" id="L101">            loadFragment(selectedItem);</span>
-<span class="nc" id="L102">            }</span>
+<span class="nc" id="L102">            mDrawerLayout.closeDrawers();</span>
+<span class="nc" id="L103">            selectedItem = arrDrawer.get(position);</span>
+<span class="nc" id="L104">            loadFragment(selectedItem);</span>
+<span class="nc" id="L105">            }</span>
         });
 
-<span class="nc" id="L105">        mFragmentManager = getSupportFragmentManager();</span>
+<span class="nc" id="L108">        mFragmentManager = getSupportFragmentManager();</span>
 
         // Setup Drawer Toggle of the Toolbar
-<span class="nc" id="L108">        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);</span>
-<span class="nc" id="L109">        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout, toolbar,R.string.app_name,</span>
+<span class="nc" id="L111">        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);</span>
+<span class="nc" id="L112">        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout, toolbar,R.string.app_name,</span>
                 R.string.app_name);
 
-<span class="nc" id="L112">        mDrawerLayout.setDrawerListener(mDrawerToggle);</span>
+<span class="nc" id="L115">        mDrawerLayout.setDrawerListener(mDrawerToggle);</span>
 
-<span class="nc" id="L114">        mDrawerToggle.syncState();</span>
+<span class="nc" id="L117">        mDrawerToggle.syncState();</span>
 
-<span class="nc" id="L116">        loadListDrawer();</span>
+<span class="nc" id="L119">        loadListDrawer();</span>
 
-<span class="nc" id="L118">    }</span>
+<span class="nc" id="L121">        checkNotifications();</span>
+<span class="nc" id="L122">    }</span>
+
+    private void checkNotifications() {
+<span class="nc" id="L125">        DeviceLockedController pwd = new DeviceLockedController(this);</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if(pwd.isDeviceScreenLocked()) {</span>
+            try {
+<span class="nc" id="L128">                NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);</span>
+<span class="nc" id="L129">                notificationManager.cancel(1009);</span>
+<span class="nc" id="L130">            } catch (Exception ex) {</span>
+<span class="nc" id="L131">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L132">            }</span>
+        }
+<span class="nc" id="L134">    }</span>
 
     /**
      * if you need restart MQTT connection you need call this method
@@ -124,8 +140,8 @@ import java.util.HashMap;
         // ------------------
         // MQTT SERVICE
         // ------------------
-<span class="nc" id="L127">        mServiceIntent = MQTTService.start( this.getApplicationContext() );</span>
-<span class="nc" id="L128">    }</span>
+<span class="nc" id="L143">        mServiceIntent = MQTTService.start( this.getApplicationContext() );</span>
+<span class="nc" id="L144">    }</span>
 
     /**
      * Loads the Fragment
@@ -133,118 +149,118 @@ import java.util.HashMap;
      */
     private void loadFragment(HashMap&lt;String, String&gt; item) {
 
-<span class="nc" id="L136">        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();</span>
+<span class="nc" id="L152">        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();</span>
 
-<span class="nc" id="L138">        txtToolbarTitle.setText(item.get(&quot;name&quot;).toUpperCase());</span>
+<span class="nc" id="L154">        txtToolbarTitle.setText(item.get(&quot;name&quot;).toUpperCase());</span>
 
         // Information
-<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;1&quot;)) {</span>
-<span class="nc" id="L142">            FragmentInformation f = new FragmentInformation();</span>
-<span class="nc" id="L143">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
-<span class="nc" id="L144">            return;</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;1&quot;)) {</span>
+<span class="nc" id="L158">            FragmentInformation f = new FragmentInformation();</span>
+<span class="nc" id="L159">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
+<span class="nc" id="L160">            return;</span>
         }
 
         // Activity
-<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;2&quot;)) {</span>
-<span class="nc" id="L149">            FragmentActivity f = new FragmentActivity();</span>
-<span class="nc" id="L150">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
-<span class="nc" id="L151">            return;</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;2&quot;)) {</span>
+<span class="nc" id="L165">            FragmentActivity f = new FragmentActivity();</span>
+<span class="nc" id="L166">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
+<span class="nc" id="L167">            return;</span>
         }
 
         // MQTT Configuration
-<span class="nc bnc" id="L155" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;3&quot;)) {</span>
-<span class="nc" id="L156">            FragmentMQTTConfig f = new FragmentMQTTConfig();</span>
-<span class="nc" id="L157">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
-<span class="nc" id="L158">            return;</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;3&quot;)) {</span>
+<span class="nc" id="L172">            FragmentMQTTConfig f = new FragmentMQTTConfig();</span>
+<span class="nc" id="L173">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
+<span class="nc" id="L174">            return;</span>
         }
 
         // Test Policies
-<span class="nc bnc" id="L162" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;6&quot;)) {</span>
-<span class="nc" id="L163">            FragmentTestPolicies f = new FragmentTestPolicies();</span>
-<span class="nc" id="L164">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
-<span class="nc" id="L165">            return;</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;6&quot;)) {</span>
+<span class="nc" id="L179">            FragmentTestPolicies f = new FragmentTestPolicies();</span>
+<span class="nc" id="L180">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
+<span class="nc" id="L181">            return;</span>
         }
 
         // Help
-<span class="nc bnc" id="L169" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;4&quot;)) {</span>
-<span class="nc" id="L170">            FragmentHelp f = new FragmentHelp();</span>
-<span class="nc" id="L171">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
-<span class="nc" id="L172">            return;</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;4&quot;)) {</span>
+<span class="nc" id="L186">            FragmentHelp f = new FragmentHelp();</span>
+<span class="nc" id="L187">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
+<span class="nc" id="L188">            return;</span>
         }
 
         // About
-<span class="nc bnc" id="L176" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;5&quot;)) {</span>
-<span class="nc" id="L177">            FragmentAbout f = new FragmentAbout();</span>
-<span class="nc" id="L178">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;5&quot;)) {</span>
+<span class="nc" id="L193">            FragmentAbout f = new FragmentAbout();</span>
+<span class="nc" id="L194">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
         }
-<span class="nc" id="L180">    }</span>
+<span class="nc" id="L196">    }</span>
 
     /**
      * Load the list drawer
      */
     public void loadListDrawer() {
 
-<span class="nc" id="L187">        arrDrawer = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L203">        arrDrawer = new ArrayList&lt;&gt;();</span>
 
         // Information
-<span class="nc" id="L190">        HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L191">        map.put(&quot;id&quot;, &quot;1&quot;);</span>
-<span class="nc" id="L192">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_information));</span>
-<span class="nc" id="L193">        map.put(&quot;img&quot;, &quot;ic_info&quot;);</span>
-<span class="nc" id="L194">        arrDrawer.add(map);</span>
+<span class="nc" id="L206">        HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L207">        map.put(&quot;id&quot;, &quot;1&quot;);</span>
+<span class="nc" id="L208">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_information));</span>
+<span class="nc" id="L209">        map.put(&quot;img&quot;, &quot;ic_info&quot;);</span>
+<span class="nc" id="L210">        arrDrawer.add(map);</span>
 
         // if easterEgg is active
-<span class="nc bnc" id="L197" title="All 2 branches missed.">        if(cache.getEasterEgg()) {</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">        if(cache.getEasterEgg()) {</span>
 
             // MQTT Configuration
-<span class="nc" id="L200">            map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L201">            map.put(&quot;id&quot;, &quot;3&quot;);</span>
-<span class="nc" id="L202">            map.put(&quot;name&quot;, getResources().getString(R.string.drawer_mqtt_config));</span>
-<span class="nc" id="L203">            map.put(&quot;img&quot;, &quot;ic_config&quot;);</span>
-<span class="nc" id="L204">            arrDrawer.add(map);</span>
+<span class="nc" id="L216">            map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L217">            map.put(&quot;id&quot;, &quot;3&quot;);</span>
+<span class="nc" id="L218">            map.put(&quot;name&quot;, getResources().getString(R.string.drawer_mqtt_config));</span>
+<span class="nc" id="L219">            map.put(&quot;img&quot;, &quot;ic_config&quot;);</span>
+<span class="nc" id="L220">            arrDrawer.add(map);</span>
 
             // Test Policies
-<span class="nc" id="L207">            map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L208">            map.put(&quot;id&quot;, &quot;6&quot;);</span>
-<span class="nc" id="L209">            map.put(&quot;name&quot;, getResources().getString(R.string.drawer_test_policies));</span>
-<span class="nc" id="L210">            map.put(&quot;img&quot;, &quot;ic_config&quot;);</span>
-<span class="nc" id="L211">            arrDrawer.add(map);</span>
+<span class="nc" id="L223">            map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L224">            map.put(&quot;id&quot;, &quot;6&quot;);</span>
+<span class="nc" id="L225">            map.put(&quot;name&quot;, getResources().getString(R.string.drawer_test_policies));</span>
+<span class="nc" id="L226">            map.put(&quot;img&quot;, &quot;ic_config&quot;);</span>
+<span class="nc" id="L227">            arrDrawer.add(map);</span>
 
         }
 
         // Activity
-<span class="nc" id="L216">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L217">        map.put(&quot;id&quot;, &quot;2&quot;);</span>
-<span class="nc" id="L218">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_activity));</span>
-<span class="nc" id="L219">        map.put(&quot;img&quot;, &quot;ic_log&quot;);</span>
-<span class="nc" id="L220">        map.put(&quot;separator&quot;, &quot;true&quot;);</span>
-<span class="nc" id="L221">        arrDrawer.add(map);</span>
+<span class="nc" id="L232">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L233">        map.put(&quot;id&quot;, &quot;2&quot;);</span>
+<span class="nc" id="L234">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_activity));</span>
+<span class="nc" id="L235">        map.put(&quot;img&quot;, &quot;ic_log&quot;);</span>
+<span class="nc" id="L236">        map.put(&quot;separator&quot;, &quot;true&quot;);</span>
+<span class="nc" id="L237">        arrDrawer.add(map);</span>
 
         // Help
-<span class="nc" id="L224">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L225">        map.put(&quot;id&quot;, &quot;4&quot;);</span>
-<span class="nc" id="L226">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_help));</span>
-<span class="nc" id="L227">        map.put(&quot;img&quot;, &quot;ic_help&quot;);</span>
-<span class="nc" id="L228">        arrDrawer.add(map);</span>
+<span class="nc" id="L240">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L241">        map.put(&quot;id&quot;, &quot;4&quot;);</span>
+<span class="nc" id="L242">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_help));</span>
+<span class="nc" id="L243">        map.put(&quot;img&quot;, &quot;ic_help&quot;);</span>
+<span class="nc" id="L244">        arrDrawer.add(map);</span>
 
         // About
-<span class="nc" id="L231">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L232">        map.put(&quot;id&quot;, &quot;5&quot;);</span>
-<span class="nc" id="L233">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_about));</span>
-<span class="nc" id="L234">        map.put(&quot;img&quot;, &quot;ic_about&quot;);</span>
-<span class="nc" id="L235">        arrDrawer.add(map);</span>
+<span class="nc" id="L247">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L248">        map.put(&quot;id&quot;, &quot;5&quot;);</span>
+<span class="nc" id="L249">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_about));</span>
+<span class="nc" id="L250">        map.put(&quot;img&quot;, &quot;ic_about&quot;);</span>
+<span class="nc" id="L251">        arrDrawer.add(map);</span>
 
         try {
             // lad adapter
-<span class="nc" id="L239">            DrawerAdapter adapter = new DrawerAdapter(this, arrDrawer);</span>
-<span class="nc" id="L240">            lstDrawer.setAdapter(adapter);</span>
+<span class="nc" id="L255">            DrawerAdapter adapter = new DrawerAdapter(this, arrDrawer);</span>
+<span class="nc" id="L256">            lstDrawer.setAdapter(adapter);</span>
 
             // Select Information on load //
-<span class="nc" id="L243">            selectedItem = arrDrawer.get(0);</span>
-<span class="nc" id="L244">            loadFragment(selectedItem);</span>
-<span class="nc" id="L245">        } catch(Exception ex) {</span>
-<span class="nc" id="L246">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L247">        }</span>
-<span class="nc" id="L248">    }</span>
+<span class="nc" id="L259">            selectedItem = arrDrawer.get(0);</span>
+<span class="nc" id="L260">            loadFragment(selectedItem);</span>
+<span class="nc" id="L261">        } catch(Exception ex) {</span>
+<span class="nc" id="L262">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L263">        }</span>
+<span class="nc" id="L264">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
