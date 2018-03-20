@@ -1,11 +1,6 @@
-package org.flyve.mdm.agent.core.enrollment;
+package org.flyve.mdm.agent.core.permission;
 
-import android.app.Activity;
 import android.content.Context;
-
-import org.flyve.mdm.agent.data.UserData;
-
-import java.util.List;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -33,68 +28,37 @@ import java.util.List;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class EnrollmentPresenter implements Enrollment.Presenter {
+public class PermissionPresenter implements Permission.Presenter {
 
-    private Enrollment.View view;
-    private Enrollment.Model model;
+    private Permission.View view;
+    private Permission.Model model;
 
-    public EnrollmentPresenter(Enrollment.View view){
+    public PermissionPresenter(Permission.View view){
         this.view = view;
-        model = new EnrollmentModel(this);
+        model = new PermissionModel(this);
     }
 
     @Override
-    public void showDetailError(String message) {
+    public void showError(String message) {
         if(view!=null) {
-            view.showDetailError(message);
+            view.showError(message);
         }
     }
 
     @Override
-    public void showSnackError(String message) {
+    public void inventorySuccess() {
         if(view!=null) {
-            view.showSnackError(message);
+            view.inventorySuccess();
         }
     }
 
     @Override
-    public void enrollSuccess() {
-        if(view!=null) {
-            view.enrollSuccess();
-        }
+    public void showDialogShare(Context context) {
+        model.showDialogShare(context);
     }
 
     @Override
-    public void certificationX509Success() {
-        if(view!=null) {
-            view.certificationX509Success();
-        }
-    }
-
-    @Override
-    public void inventorySuccess(String inventory) {
-        if(view!=null) {
-            view.inventorySuccess(inventory);
-        }
-    }
-
-    @Override
-    public void createInventory(Context context) {
-        model.createInventory(context);
-    }
-
-    @Override
-    public void createX509certification(Context context) {
-        model.createX509certification(context);
-    }
-
-    @Override
-    public void selectPhoto(Activity activity, int requestCamera, int requestFile) {
-        model.selectPhoto(activity, requestCamera, requestFile);
-    }
-
-    @Override
-    public void enroll(Activity activity, List<UserData.EmailsData> arrEmails, String firstName, String lastName, String phone, String phone2, String mobilePhone, String inventory, String photo, String language, String administrativeNumber) {
-        model.enroll(activity, arrEmails, firstName, lastName, phone, phone2, mobilePhone, inventory, photo, language, administrativeNumber);
+    public void generateInventory(Context context) {
+        model.generateInventory(context);
     }
 }
