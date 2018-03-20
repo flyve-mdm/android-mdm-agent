@@ -27,18 +27,13 @@
 
 package org.flyve.mdm.agent.ui;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -117,14 +112,6 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
 
         presenter = new EnrollmentPresenter(EnrollmentActivity.this);
 
-        // Request all the permissions that the library need
-        int permissionAll = 1;
-        String[] permissions = { Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA };
-
-        if(!hasPermissions(this, permissions)){
-            ActivityCompat.requestPermissions(this, permissions, permissionAll);
-        }
-
         pbx509 = (ProgressBar) findViewById(R.id.progressBarX509);
 
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
@@ -198,23 +185,6 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
         // starting inventory
         presenter.createInventory(EnrollmentActivity.this);
 
-    }
-
-    /**
-     * This function request the permission needed on Android 6.0 and above
-     * @param context The context of the app
-     * @param permissions The list of permissions needed
-     * @return true or false
-     */
-    public static boolean hasPermissions(Context context, String... permissions) {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     /**

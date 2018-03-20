@@ -164,6 +164,12 @@
         <item>JSON</item>
     </string-array>
 
+    <string name="permission_title">Permissions</string>
+    <string name="permission_message">This application requires special permits to work properly, then if required we will request you to approve them, we will also generate an inventory of your device that you will be able to review and share</string>
+    <string name="permission_button_request">Request Permisssion</string>
+    <string name="permission_button_share">Share the inventory</string>
+    <string name="permission_button_continue">Continue</string>
+
     <string name="MQTT_ERROR_CONNECTION">Please check your connectivity</string>
     <string name="ERROR_INTERNAL">Internal Error, please try again</string>
     <string name="ERROR_DEEP_LINK">Problems with deep link</string>
