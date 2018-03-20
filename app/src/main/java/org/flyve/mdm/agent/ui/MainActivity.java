@@ -27,6 +27,8 @@
 
 package org.flyve.mdm.agent.ui;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -42,6 +44,7 @@ import android.widget.TextView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.DrawerAdapter;
 import org.flyve.mdm.agent.data.AppData;
+import org.flyve.mdm.agent.services.DeviceLockedController;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
@@ -115,6 +118,19 @@ public class MainActivity extends AppCompatActivity {
 
         loadListDrawer();
 
+        checkNotifications();
+    }
+
+    private void checkNotifications() {
+        DeviceLockedController pwd = new DeviceLockedController(this);
+        if(pwd.isDeviceScreenLocked()) {
+            try {
+                NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(1009);
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
     }
 
     /**
