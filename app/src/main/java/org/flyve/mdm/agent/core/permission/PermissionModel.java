@@ -1,23 +1,14 @@
-package org.flyve.mdm.agent.core.enrollment;
+package org.flyve.mdm.agent.core.permission;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
 import org.flyve.inventory.InventoryTask;
-import org.flyve.inventory.categories.Hardware;
-import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.MqttData;
-import org.flyve.mdm.agent.data.UserData;
-import org.flyve.mdm.agent.security.AndroidCryptoProvider;
-import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.json.JSONObject;
-
-import java.net.URLEncoder;
-import java.util.List;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -45,175 +36,90 @@ import java.util.List;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class EnrollmentModel implements Enrollment.Model {
+public class PermissionModel implements Permission.Model {
 
-    private Enrollment.Presenter presenter;
+    private Permission.Presenter presenter;
 
-    public EnrollmentModel(Enrollment.Presenter presenter) {
+    public PermissionModel(Permission.Presenter presenter) {
         this.presenter = presenter;
     }
 
+
     @Override
-    public void createInventory(Context context) {
-        InventoryTask inventoryTask = new InventoryTask(context, "FlyveMDM-Agent");
+    public void showDialogShare(final Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context );
+        builder.setTitle(R.string.dialog_share_title);
+
+        final int[] type = new int[1];
+
+        //list of items
+        String[] items = context.getResources().getStringArray(R.array.export_list);
+        builder.setSingleChoiceItems(items, 0,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        type[0] = which;
+                    }
+                });
+
+        String positiveText = context.getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // positive button logic
+                        Helpers.share(context, "Inventory File", type[0] );
+                    }
+                });
+
+        String negativeText = context.getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
+
+    }
+
+    @Override
+    public void generateInventory(final Context context) {
+        final ProgressDialog progress = ProgressDialog.show(context, "MDM Agent",
+                "Creating inventory...", true);
+
+        InventoryTask inventoryTask = new InventoryTask(context, "", true);
         inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
             @Override
             public void onTaskSuccess(String s) {
-                // String str = s.replaceAll("<\\?xml version='1.0' encoding='utf-8' standalone='yes' \\?>", "");
-                // String str = s.replaceAll("\\n|\\r", "");
-                // str = str.replaceAll(" ", "");
-                presenter.inventorySuccess(s);
+                progress.setMessage("Creating session...");
+
+                EnrollmentHelper sessionToken = new EnrollmentHelper(context);
+                sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
+                    @Override
+                    public void onSuccess(String data) {
+                        // Active EnrollmentHelper Token is stored on cache
+                        progress.dismiss();
+
+                        presenter.inventorySuccess();
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        presenter.showError(error);
+                    }
+                });
             }
 
             @Override
             public void onTaskError(Throwable throwable) {
-                presenter.showSnackError("Inventory fail");
+                presenter.showError("The inventory fail");
             }
         });
 
-    }
-
-    @Override
-    public void createX509certification(Context context) {
-        EnrollmentHelper enroll = new EnrollmentHelper(context);
-        enroll.createX509cert(new EnrollmentHelper.EnrollCallBack() {
-            @Override
-            public void onSuccess(String data) {
-                presenter.certificationX509Success();
-            }
-
-            @Override
-            public void onError(String error) {
-                presenter.showSnackError(error);
-            }
-        });
-    }
-
-    @Override
-    public void selectPhoto(final Activity activity, final int requestCamera, final int requestFile) {
-        final CharSequence[] items = {
-                activity.getResources().getString(R.string.take_photo),
-                activity.getResources().getString(R.string.choose_from_library),
-                activity.getResources().getString(R.string.cancel)
-        };
-
-        Helpers.hideKeyboard(activity);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(activity.getResources().getString(R.string.add_photo) );
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-
-                if (items[item].equals(activity.getResources().getString(R.string.take_photo))) {
-                    Helpers.cameraIntent(activity, requestCamera);
-
-                } else if (items[item].equals(activity.getResources().getString(R.string.choose_from_library))) {
-                    Helpers.galleryIntent(activity, requestFile);
-
-                } else if (items[item].equals(activity.getResources().getString(R.string.cancel) )) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-
-    @Override
-    public void enroll(final Activity activity, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber) {
-
-        StringBuilder errMsg = new StringBuilder(activity.getResources().getString(R.string.validate_error) );
-        boolean allow = true;
-
-        Helpers.hideKeyboard(activity);
-
-        if(arrEmails.isEmpty() || arrEmails.get(0).getEmail().equals("")) {
-            errMsg.append(activity.getResources().getString(R.string.validate_email_at_least_one) );
-            allow = false;
-        }
-
-        if(firstName.trim().equals("")) {
-            errMsg.append(activity.getResources().getString(R.string.validate_first_name) );
-            allow = false;
-        }
-
-        if(lastName.trim().equals("")) {
-            errMsg.append(activity.getResources().getString(R.string.validate_last_name) );
-            allow = false;
-        }
-
-        if(inventory.contains("fail")) {
-            errMsg.append(activity.getResources().getString(R.string.validate_inventory) );
-            allow = false;
-        }
-
-        // inventory running
-        if(inventory.equals("")) {
-            errMsg.append(activity.getResources().getString(R.string.validate_inventory_wait) );
-            allow = false;
-        }
-
-        if(!allow) {
-            presenter.showSnackError(activity.getResources().getString(R.string.validate_check_details));
-            presenter.showDetailError(errMsg.toString());
-            return;
-        }
-
-        try {
-            AndroidCryptoProvider csr = new AndroidCryptoProvider(activity);
-            String requestCSR = "";
-            if( csr.getlCsr() != null ) {
-                requestCSR = URLEncoder.encode(csr.getlCsr(), "UTF-8");
-            }
-
-            MqttData cache = new MqttData(activity);
-            String invitationToken = cache.getInvitationToken();
-
-            JSONObject payload = new JSONObject();
-
-            String mInventory = Helpers.base64encode( inventory );
-
-            payload.put("_email", arrEmails.get(0).getEmail()); // get first email
-            payload.put("_invitation_token", invitationToken);
-            payload.put("_serial", Helpers.getDeviceSerial());
-            payload.put("_uuid", new Hardware(activity).getUUID());
-            payload.put("csr", requestCSR);
-            payload.put("firstname", firstName);
-            payload.put("lastname", lastName);
-            payload.put("phone", phone);
-            payload.put("version", BuildConfig.VERSION_NAME);
-            payload.put("type", "android");
-            payload.put("has_system_permission", Helpers.isSystemApp(activity));
-            payload.put("inventory", mInventory);
-
-            FlyveLog.d(mInventory);
-
-            EnrollmentHelper enroll = new EnrollmentHelper(activity);
-            enroll.enrollment(payload, new EnrollmentHelper.EnrollCallBack() {
-                @Override
-                public void onSuccess(String data) {
-
-                    // -------------------------------
-                    // Store user information
-                    // -------------------------------
-                    UserData userData = new UserData(activity);
-                    userData.setFirstName(firstName);
-                    userData.setLastName(lastName);
-                    userData.setEmails(arrEmails);
-                    userData.setPicture(photo);
-                    userData.setLanguage(language);
-                    userData.setAdministrativeNumber(administrativeNumber);
-
-                    presenter.enrollSuccess();
-                }
-
-                @Override
-                public void onError(String error) {
-                    presenter.showSnackError(error);
-                }
-            });
-        } catch (Exception ex) {
-            presenter.showSnackError(ex.getMessage());
-        }
     }
 }
