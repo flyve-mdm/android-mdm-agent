@@ -169,6 +169,7 @@
     <string name="permission_button_request">Request Permission</string>
     <string name="permission_button_share">Share the inventory</string>
     <string name="permission_button_continue">Continue</string>
+    <string name="permission_error_result">All the permissions are required</string>
 
     <string name="MQTT_ERROR_CONNECTION">Please check your connectivity</string>
     <string name="ERROR_INTERNAL">Internal Error, please try again</string>
