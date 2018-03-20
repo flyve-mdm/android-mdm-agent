@@ -2,21 +2,17 @@
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-
-import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
+import org.flyve.mdm.agent.core.permission.Permission;
+import org.flyve.mdm.agent.core.permission.PermissionPresenter;
 import org.flyve.mdm.agent.utils.Helpers;
 
 /*
@@ -45,134 +41,60 @@ import org.flyve.mdm.agent.utils.Helpers;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-<span class="nc" id="L48">public class PermissionEnrollmentActivity extends Activity {</span>
-    private ProgressDialog progress;
+<span class="nc" id="L44">public class PermissionEnrollmentActivity extends Activity implements Permission.View {</span>
     private static final int REQUEST_EXIT = 1;
     private LinearLayout lnButtons;
     private Button btnPermission;
+    private Permission.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-<span class="nc" id="L56">        super.onCreate(savedInstanceState);</span>
-<span class="nc" id="L57">        setContentView(R.layout.activity_permission_enrollment);</span>
+<span class="nc" id="L52">        super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L53">        setContentView(R.layout.activity_permission_enrollment);</span>
 
-<span class="nc" id="L59">        lnButtons = findViewById(R.id.lnButtons);</span>
+<span class="nc" id="L55">        presenter = new PermissionPresenter(this);</span>
 
-<span class="nc" id="L61">        btnPermission = findViewById(R.id.btnPermission);</span>
-<span class="nc" id="L62">        btnPermission.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L57">        lnButtons = findViewById(R.id.lnButtons);</span>
+
+<span class="nc" id="L59">        btnPermission = findViewById(R.id.btnPermission);</span>
+<span class="nc" id="L60">        btnPermission.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View view) {
-<span class="nc bnc" id="L65" title="All 2 branches missed.">                if(Build.VERSION.SDK_INT &gt;= 23) {</span>
-<span class="nc" id="L66">                    requestPermission();</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">                if(Build.VERSION.SDK_INT &gt;= 23) {</span>
+<span class="nc" id="L64">                    requestPermission();</span>
                 } else {
-<span class="nc" id="L68">                    generateInventory();</span>
+<span class="nc" id="L66">                    presenter.generateInventory(PermissionEnrollmentActivity.this);</span>
                 }
-<span class="nc" id="L70">            }</span>
+<span class="nc" id="L68">            }</span>
         });
 
-<span class="nc" id="L73">        Button btnShare = findViewById(R.id.btnShare);</span>
-<span class="nc" id="L74">        btnShare.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L71">        Button btnShare = findViewById(R.id.btnShare);</span>
+<span class="nc" id="L72">        btnShare.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View view) {
-<span class="nc" id="L77">                showDialogShare();</span>
-<span class="nc" id="L78">            }</span>
+<span class="nc" id="L75">                presenter.showDialogShare(PermissionEnrollmentActivity.this);</span>
+<span class="nc" id="L76">            }</span>
         });
 
-<span class="nc" id="L81">        Button btnContinue = findViewById(R.id.btnContinue);</span>
-<span class="nc" id="L82">        btnContinue.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L79">        Button btnContinue = findViewById(R.id.btnContinue);</span>
+<span class="nc" id="L80">        btnContinue.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View view) {
-<span class="nc" id="L85">                Intent miIntent = new Intent(PermissionEnrollmentActivity.this, EnrollmentActivity.class);</span>
-<span class="nc" id="L86">                PermissionEnrollmentActivity.this.startActivityForResult(miIntent, REQUEST_EXIT);</span>
-<span class="nc" id="L87">            }</span>
+<span class="nc" id="L83">                Intent miIntent = new Intent(PermissionEnrollmentActivity.this, EnrollmentActivity.class);</span>
+<span class="nc" id="L84">                PermissionEnrollmentActivity.this.startActivityForResult(miIntent, REQUEST_EXIT);</span>
+<span class="nc" id="L85">            }</span>
         });
-<span class="nc" id="L89">    }</span>
-
-    public void showDialogShare() {
-<span class="nc" id="L92">        AlertDialog.Builder builder = new AlertDialog.Builder(PermissionEnrollmentActivity.this);</span>
-<span class="nc" id="L93">        builder.setTitle(R.string.dialog_share_title);</span>
-
-<span class="nc" id="L95">        final int[] type = new int[1];</span>
-
-        //list of items
-<span class="nc" id="L98">        String[] items = getResources().getStringArray(R.array.export_list);</span>
-<span class="nc" id="L99">        builder.setSingleChoiceItems(items, 0,</span>
-<span class="nc" id="L100">                new DialogInterface.OnClickListener() {</span>
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-<span class="nc" id="L103">                        type[0] = which;</span>
-<span class="nc" id="L104">                    }</span>
-                });
-
-<span class="nc" id="L107">        String positiveText = getString(android.R.string.ok);</span>
-<span class="nc" id="L108">        builder.setPositiveButton(positiveText,</span>
-<span class="nc" id="L109">                new DialogInterface.OnClickListener() {</span>
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // positive button logic
-<span class="nc" id="L113">                        Helpers.share( PermissionEnrollmentActivity.this, &quot;Inventory File&quot;, type[0] );</span>
-<span class="nc" id="L114">                    }</span>
-                });
-
-<span class="nc" id="L117">        String negativeText = getString(android.R.string.cancel);</span>
-<span class="nc" id="L118">        builder.setNegativeButton(negativeText,</span>
-<span class="nc" id="L119">                new DialogInterface.OnClickListener() {</span>
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // negative button logic
-<span class="nc" id="L123">                    }</span>
-                });
-
-<span class="nc" id="L126">        AlertDialog dialog = builder.create();</span>
-        // display dialog
-<span class="nc" id="L128">        dialog.show();</span>
-<span class="nc" id="L129">    }</span>
-
-    private void generateInventory() {
-<span class="nc" id="L132">        progress = ProgressDialog.show(this, &quot;MDM Agent&quot;,</span>
-                &quot;Creating inventory...&quot;, true);
-
-<span class="nc" id="L135">        InventoryTask inventoryTask = new InventoryTask(PermissionEnrollmentActivity.this, &quot;&quot;, true);</span>
-<span class="nc" id="L136">        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {</span>
-            @Override
-            public void onTaskSuccess(String s) {
-<span class="nc" id="L139">                progress.setMessage(&quot;Creating session...&quot;);</span>
-
-<span class="nc" id="L141">                EnrollmentHelper sessionToken = new EnrollmentHelper(PermissionEnrollmentActivity.this);</span>
-<span class="nc" id="L142">                sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {</span>
-                    @Override
-                    public void onSuccess(String data) {
-                        // Active EnrollmentHelper Token is stored on cache
-<span class="nc" id="L146">                        progress.dismiss();</span>
-
-<span class="nc" id="L148">                        lnButtons.setVisibility(View.VISIBLE);</span>
-<span class="nc" id="L149">                        btnPermission.setVisibility(View.GONE);</span>
-<span class="nc" id="L150">                    }</span>
-
-                    @Override
-                    public void onError(String error) {
-<span class="nc" id="L154">                        showError(error);</span>
-<span class="nc" id="L155">                    }</span>
-                });
-
-<span class="nc" id="L158">            }</span>
-
-            @Override
-            public void onTaskError(Throwable throwable) {
-<span class="nc" id="L162">                showError(&quot;The inventory fail&quot;);</span>
-<span class="nc" id="L163">            }</span>
-        });
-<span class="nc" id="L165">    }</span>
+<span class="nc" id="L87">    }</span>
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-<span class="nc bnc" id="L169" title="All 4 branches missed.">        if (requestCode == REQUEST_EXIT &amp;&amp; resultCode == RESULT_OK) {</span>
-<span class="nc" id="L170">            this.finish();</span>
+<span class="nc bnc" id="L91" title="All 4 branches missed.">        if (requestCode == REQUEST_EXIT &amp;&amp; resultCode == RESULT_OK) {</span>
+<span class="nc" id="L92">            this.finish();</span>
         }
-<span class="nc" id="L172">    }</span>
+<span class="nc" id="L94">    }</span>
 
     private void requestPermission() {
-<span class="nc" id="L175">        ActivityCompat.requestPermissions(PermissionEnrollmentActivity.this,</span>
+<span class="nc" id="L97">        ActivityCompat.requestPermissions(PermissionEnrollmentActivity.this,</span>
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.READ_PHONE_STATE,
                         Manifest.permission.CAMERA,
@@ -181,34 +103,41 @@ import org.flyve.mdm.agent.utils.Helpers;
                         Manifest.permission.READ_SMS,
                 },
                 1);
-<span class="nc" id="L184">    }</span>
+<span class="nc" id="L106">    }</span>
 
+    @Override
     public void showError(String message) {
-<span class="nc" id="L187">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
+<span class="nc" id="L110">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L190">            }</span>
+<span class="nc" id="L113">            }</span>
         });
-<span class="nc" id="L192">    }</span>
+<span class="nc" id="L115">    }</span>
+
+    @Override
+    public void inventorySuccess() {
+<span class="nc" id="L119">        lnButtons.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L120">        btnPermission.setVisibility(View.GONE);</span>
+<span class="nc" id="L121">    }</span>
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-<span class="nc bnc" id="L196" title="All 2 branches missed.">        switch (requestCode) {</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        switch (requestCode) {</span>
             case 1: {
 
                 // If request is cancelled, the result arrays are empty.
-<span class="nc bnc" id="L200" title="All 12 branches missed.">                if (grantResults.length &gt; 0</span>
+<span class="nc bnc" id="L129" title="All 12 branches missed.">                if (grantResults.length &gt; 0</span>
                         &amp;&amp; grantResults[0] == PackageManager.PERMISSION_GRANTED
                         &amp;&amp; grantResults[1] == PackageManager.PERMISSION_GRANTED
                         &amp;&amp; grantResults[2] == PackageManager.PERMISSION_GRANTED
                         &amp;&amp; grantResults[3] == PackageManager.PERMISSION_GRANTED
                         &amp;&amp; grantResults[4] == PackageManager.PERMISSION_GRANTED) {
-<span class="nc" id="L206">                    generateInventory();</span>
+<span class="nc" id="L135">                    presenter.generateInventory(PermissionEnrollmentActivity.this);</span>
                 } else {
-<span class="nc" id="L208">                    showError(&quot;All the permissions are required&quot;);</span>
+<span class="nc" id="L137">                    presenter.showError(getString(R.string.permission_error_result));</span>
                 }
             }
         }
-<span class="nc" id="L212">    }</span>
+<span class="nc" id="L141">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
