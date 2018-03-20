@@ -264,6 +264,15 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
+        Button btnEnablePassword = v.findViewById(R.id.btnEnablePassword);
+        btnEnablePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Helpers.sendToNotificationBar(getContext(), 1009, "MDM Agent", "Please create a new password", true, MainActivity.class);
+            }
+        });
+
+
         return v;
     }
 
