@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:text="Enable Dark Theme"
             android:layout_margin="5dp"
+            android:visibility="gone"
             />
     </LinearLayout>
 </ScrollView>
