@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,209 +12,19 @@
         android:id="@+id/linearLayout">
 
         <Switch
-            android:id="@+id/swGPS"
-            android:layout_width="wrap_content"
+            android:id="@+id/swNotifications"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Disable GPS  " />
+            android:text="Disable Notifications"
+            android:layout_margin="5dp"
+            />
 
         <Switch
-            android:id="@+id/swAirplane"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Disable Airplane Mode" />
-
-        <Switch
-            android:id="@+id/swBluetooth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Disable Bluetooth" />
-
-        <Switch
-            android:id="@+id/swWifi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Disable Wifi" />
-
-        <Switch
-            android:id="@+id/swRoaming"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Disable Roaming" />
-
-        <Switch
-            android:id="@+id/swNFC"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Disable NFC" />
-
-        <Switch
-            android:id="@+id/swHostpot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Disable Hostpot/Tethering" />
-
-        <Switch
-            android:id="@+id/swMobileLine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Disable Mobile Line" />
-
-        <Switch
-            android:id="@+id/swUsbOnTheGo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Disable Usb On The Go" />
-
-        <Switch
-            android:id="@+id/swDisableCamera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Disable Camera" />
-
-        <Switch
-            android:id="@+id/swStorageEncryptionDevice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Storage Encryption Device" />
-
-        <EditText
-            android:id="@+id/edtPasswordQuality"
+            android:id="@+id/swDarkTheme"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Password Quality"
-            />
-
-        <EditText
-            android:id="@+id/edtPasswordLength"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Password Length"
-            android:inputType="number"
-            />
-
-        <EditText
-            android:id="@+id/edtPasswordMinimumLetters"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Password Minimum Letters"
-            android:inputType="number"
-            />
-
-        <EditText
-            android:id="@+id/edtPasswordMinimumLowerCase"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Password Minimum Lower Case"
-            android:inputType="number"
-            />
-
-        <EditText
-            android:id="@+id/edtPasswordMinimumUpperCase"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Password Minimum Upper Case"
-            android:inputType="number"
-            />
-
-        <EditText
-            android:id="@+id/edtPasswordMinimumNonLetter"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Password Minimum Non Letter"
-            android:inputType="number"
-            />
-
-        <EditText
-            android:id="@+id/edtPasswordMinimumNumeric"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Password Minimum Numeric"
-            android:inputType="number"
-            />
-
-        <EditText
-            android:id="@+id/edtPasswordMinimumSymbols"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Password Minimum Symbols"
-            android:inputType="number"
-            />
-
-        <EditText
-            android:id="@+id/edtMaximumFailedPasswordsForWipe"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Maximum Failed Passwords For Wipe"
-            android:inputType="number"
-            />
-
-        <EditText
-            android:id="@+id/edtMaximumTimeToLock"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Maximum Time To Lock"
-            android:inputType="number"
-            />
-
-
-        <Button
-            android:id="@+id/btnPassword"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Send Password Policy"
+            android:text="Enable Dark Theme"
+            android:layout_margin="5dp"
             />
-
-
-        <Button
-            android:id="@+id/btnPasswordEnable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enable Password"
-            />
-
-        <Button
-            android:id="@+id/btnLock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lock Screen"
-            android:layout_marginTop="20dp"
-            />
-
-        <Button
-            android:id="@+id/btnCleatMQTT"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Clear MQTT Cache"
-            />
-
-        <Button
-            android:id="@+id/btnReboot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Reboot"
-            />
-
-        <Button
-            android:id="@+id/btnDownloadFile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Download File"
-            />
-
-        <Button
-            android:id="@+id/btnDownloadAPK"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Download APK"
-            />
-
-        <Button
-            android:id="@+id/btnEnablePassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enable Password"
-            />
-
     </LinearLayout>
-    </ScrollView>
-</RelativeLayout>
+</ScrollView>
