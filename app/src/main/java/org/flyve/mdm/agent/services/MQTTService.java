@@ -51,6 +51,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.time.Period;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -70,7 +71,11 @@ public class MQTTService extends Service implements MqttCallback {
     private static final String TAG = "MQTT - %s";
     private static final String DEFAULT_TASK_ESTATUS = "Received";
 
-    private Timer _timer;
+    private Timer reconnectionTimer = null;
+    private int reconnectionCounter = 0;
+    private int reconnectionPeriod = 60000; //time in milliseconds between successive task executions.
+    private int reconnectionDelay = 30000; //delay in milliseconds before task is to be executed.
+
     private MqttAndroidClient client;
     private Boolean connected = false;
     private PoliciesController policiesController;
@@ -290,20 +295,33 @@ public class MQTTService extends Service implements MqttCallback {
     }
 
     public void reconnect() {
-        _timer = new Timer();
-        _timer.schedule(new TimerTask() {
+        if(reconnectionTimer ==null) {
+            reconnectionTimer = new Timer();
+        }
+
+        // every 10 times the reconnection Period increase twice
+        if((reconnectionCounter % 10)==0) {
+            // stop increase in 5 minutes
+            if(reconnectionPeriod <= 300000) {
+                reconnectionPeriod *= 2;
+            }
+        }
+
+        reconnectionTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 if(!MQTTService.this.connected) {
-                    FlyveLog.d("Reconnecting...");
+                    reconnectionCounter++;
+                    FlyveLog.d( "Reconnecting " + reconnectionCounter + " times");
                     connect();
                 } else {
                     FlyveLog.d("Reconnection finish");
-                    _timer.cancel();
+                    reconnectionTimer.cancel();
+                    reconnectionTimer = null;
 
                 }
             }
-        }, 1000, 30000);
+        }, reconnectionDelay, reconnectionPeriod);
     }
 
     /**
