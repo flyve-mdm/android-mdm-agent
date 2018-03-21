@@ -5,8 +5,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.data.AppData;
 
 /*
  *   Copyright © 2017 Teclib. All rights reserved.
@@ -34,17 +37,36 @@ import org.flyve.mdm.agent.R;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class FragmenConfiguration extends Fragment {
+public class FragmentConfiguration extends Fragment {
 
+    private AppData cache;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_test_policies, container, false);
+        View v = inflater.inflate(R.layout.fragment_configuration, container, false);
 
+        cache = new AppData(FragmentConfiguration.this.getContext());
 
+        Switch swNotifications = v.findViewById(R.id.swNotifications);
+        swNotifications.setChecked(cache.getDisableNotification());
+        swNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                cache.setDisableNotification(b);
+            }
+        });
+
+        Switch swDarkTheme = v.findViewById(R.id.swDarkTheme);
+        swDarkTheme.setChecked(cache.getDarkTheme());
+        swDarkTheme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                cache.setDarkTheme(b);
+            }
+        });
 
         return v;
     }
