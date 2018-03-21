@@ -129,6 +129,7 @@
     <string name="drawer_test_policies">Test Policies</string>
     <string name="drawer_help">Help</string>
     <string name="drawer_about">About</string>
+    <string name="drawer_configuration">Configuration</string>
 
     <string name="app_pending">Pending</string>
     <string name="app_installed">Installed</string>
