@@ -70,4 +70,21 @@ public class AppData extends LocalStorage {
         setData("onlineStatus", String.valueOf(status));
     }
 
+    /**
+     * Get if the notifications are disable
+     * @return boolean the value represented by the string
+     */
+    public boolean getDisableNotification() {
+        return Boolean.valueOf(getData("disableNotification"));
+    }
+
+    /**
+     * Set if the notifications are disable
+     * @param status enable / disable
+     */
+    public void setDisableNotification(boolean status) {
+        setData("disableNotification", String.valueOf(status));
+    }
+
+
 }
