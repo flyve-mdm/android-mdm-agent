@@ -86,5 +86,20 @@ public class AppData extends LocalStorage {
         setData("disableNotification", String.valueOf(status));
     }
 
+    /**
+     * Get if dark theme enable
+     * @return boolean the value represented by the string
+     */
+    public boolean getDarkTheme() {
+        return Boolean.valueOf(getData("darkTheme"));
+    }
+
+    /**
+     * Set if dark theme enable
+     * @param status enable / disable
+     */
+    public void setDarkTheme(boolean status) {
+        setData("darkTheme", String.valueOf(status));
+    }
 
 }
