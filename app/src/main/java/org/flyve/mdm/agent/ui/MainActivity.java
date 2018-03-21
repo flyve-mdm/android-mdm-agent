@@ -193,6 +193,13 @@ public class MainActivity extends AppCompatActivity {
             FragmentAbout f = new FragmentAbout();
             fragmentTransaction.replace(R.id.containerView, f).commit();
         }
+
+        // Configuration
+        if (item.get("id").equals("7")) {
+            FragmentConfiguration f = new FragmentConfiguration();
+            fragmentTransaction.replace(R.id.containerView, f).commit();
+        }
+
     }
 
     /**
@@ -241,6 +248,13 @@ public class MainActivity extends AppCompatActivity {
         map.put("id", "4");
         map.put("name", getResources().getString(R.string.drawer_help));
         map.put("img", "ic_help");
+        arrDrawer.add(map);
+
+        // Configuration
+        map = new HashMap<>();
+        map.put("id", "7");
+        map.put("name", getResources().getString(R.string.drawer_configuration));
+        map.put("img", "ic_config");
         arrDrawer.add(map);
 
         // About
