@@ -57,6 +57,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.ui.MainActivity;
 import org.json.JSONObject;
 
@@ -179,6 +180,11 @@ public class Helpers {
 	}
 
 	public static void sendToNotificationBar(Context context, int id, String title, String message, boolean isPersistence, Class<?> cls) {
+		AppData cache = new AppData(context);
+		if(cache.getDisableNotification()) {
+			return;
+		}
+
 		Intent resultIntent = new Intent(context, cls);
 		resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		PendingIntent piResult = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_ONE_SHOT);
