@@ -295,9 +295,7 @@ public class MQTTService extends Service implements MqttCallback {
     }
 
     public void reconnect() {
-        if(reconnectionTimer ==null) {
-            reconnectionTimer = new Timer();
-        }
+        reconnectionTimer = new Timer();
 
         // every 10 times the reconnection Period increase twice
         if((reconnectionCounter % 10)==0) {
@@ -318,7 +316,6 @@ public class MQTTService extends Service implements MqttCallback {
                     FlyveLog.d("Reconnection finish");
                     reconnectionTimer.cancel();
                     reconnectionTimer = null;
-
                 }
             }
         }, reconnectionDelay, reconnectionPeriod);
