@@ -163,16 +163,16 @@ public class PoliciesData extends LocalStorage {
         return Boolean.valueOf(getData("ConnectivityDisableSpeakerphone"));
     }
 
-    public void getConnectivityADBUsbFileTransferProtocolsDisable() {
-        getData("ConnectivityADBUsbFileTransferProtocolsDisable");
+    public Boolean getConnectivityADBUsbFileTransferProtocolsDisable() {
+        return Boolean.valueOf(getData("ConnectivityADBUsbFileTransferProtocolsDisable"));
     }
 
-    public void getConnectivityPTPUsbFileTransferProtocolsDisable() {
-        getData("ConnectivityPTPUsbFileTransferProtocolsDisable");
+    public Boolean getConnectivityPTPUsbFileTransferProtocolsDisable() {
+        return Boolean.valueOf(getData("ConnectivityPTPUsbFileTransferProtocolsDisable"));
     }
 
-    public void getConnectivityMTPUsbFileTransferProtocolsDisable() {
-        getData("ConnectivityMTPUsbFileTransferProtocolsDisable");
+    public Boolean getConnectivityMTPUsbFileTransferProtocolsDisable() {
+        return Boolean.valueOf(getData("ConnectivityMTPUsbFileTransferProtocolsDisable"));
     }
 
     /**
