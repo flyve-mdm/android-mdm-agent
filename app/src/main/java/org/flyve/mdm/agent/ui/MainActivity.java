@@ -200,6 +200,12 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.replace(R.id.containerView, f).commit();
         }
 
+        // Feedback
+        if (item.get("id").equals("8")) {
+            FragmentFeedback f = new FragmentFeedback();
+            fragmentTransaction.replace(R.id.containerView, f).commit();
+        }
+
     }
 
     /**
@@ -262,6 +268,13 @@ public class MainActivity extends AppCompatActivity {
         map.put("id", "5");
         map.put("name", getResources().getString(R.string.drawer_about));
         map.put("img", "ic_about");
+        arrDrawer.add(map);
+
+        // Feedback
+        map = new HashMap<>();
+        map.put("id", "8");
+        map.put("name", getResources().getString(R.string.drawer_feedback));
+        map.put("img", "ic_feedback");
         arrDrawer.add(map);
 
         try {
