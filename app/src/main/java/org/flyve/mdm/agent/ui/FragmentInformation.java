@@ -82,7 +82,7 @@ public class FragmentInformation extends Fragment {
 
         cache = new AppData(FragmentInformation.this.getActivity());
 
-        ImageView imgLogo = (ImageView) v.findViewById(R.id.imgLogo);
+        ImageView imgLogo = v.findViewById(R.id.imgLogo);
         imgLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,14 +100,14 @@ public class FragmentInformation extends Fragment {
             }
         });
 
-        txtNameUser = (TextView) v.findViewById(R.id.txtNameUser);
-        txtEmailUser = (TextView) v.findViewById(R.id.txtDescriptionUser);
-        imgUser = (ImageView) v.findViewById(R.id.imgLogoUser);
+        txtNameUser = v.findViewById(R.id.txtNameUser);
+        txtEmailUser = v.findViewById(R.id.txtDescriptionUser);
+        imgUser = v.findViewById(R.id.imgLogoUser);
 
-        txtNameSupervisor = (TextView) v.findViewById(R.id.txtNameSupervisor);
-        txtDescriptionSupervisor = (TextView) v.findViewById(R.id.txtDescriptionSupervisor);
+        txtNameSupervisor = v.findViewById(R.id.txtNameSupervisor);
+        txtDescriptionSupervisor = v.findViewById(R.id.txtDescriptionSupervisor);
 
-        RelativeLayout layoutSupervisor = (RelativeLayout) v.findViewById(R.id.rlSupervisor);
+        RelativeLayout layoutSupervisor = v.findViewById(R.id.rlSupervisor);
         layoutSupervisor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +115,7 @@ public class FragmentInformation extends Fragment {
             }
         });
 
-        RelativeLayout layoutUser = (RelativeLayout) v.findViewById(R.id.rlUser);
+        RelativeLayout layoutUser = v.findViewById(R.id.rlUser);
         layoutUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,8 +123,8 @@ public class FragmentInformation extends Fragment {
             }
         });
 
-        txtOnline = (TextView) v.findViewById(R.id.txtOnline);
-        imgOnline = (ImageView) v.findViewById(R.id.imgOnline);
+        txtOnline = v.findViewById(R.id.txtOnline);
+        imgOnline = v.findViewById(R.id.imgOnline);
 
         statusMQTT(cache.getOnlineStatus());
         loadSupervisor();
