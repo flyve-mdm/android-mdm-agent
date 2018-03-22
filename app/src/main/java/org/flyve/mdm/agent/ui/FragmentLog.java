@@ -71,10 +71,10 @@ public class FragmentLog extends Fragment  {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_log, container, false);
 
-        txtMessage = (TextView) v.findViewById(R.id.txtMessage);
-        pb = (ProgressBar) v.findViewById(R.id.progressBar);
+        txtMessage = v.findViewById(R.id.txtMessage);
+        pb = v.findViewById(R.id.progressBar);
 
-        FloatingActionButton btnDelete = (FloatingActionButton) v.findViewById(R.id.btnDelete);
+        FloatingActionButton btnDelete = v.findViewById(R.id.btnDelete);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +86,7 @@ public class FragmentLog extends Fragment  {
 
         arrData = new ArrayList<>();
 
-        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
+        final SwipeRefreshLayout swipeLayout = v.findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -96,7 +96,7 @@ public class FragmentLog extends Fragment  {
             }
         });
 
-        lst = (ListView) v.findViewById(R.id.lst);
+        lst = v.findViewById(R.id.lst);
         loadLogFile();
 
         return v;
