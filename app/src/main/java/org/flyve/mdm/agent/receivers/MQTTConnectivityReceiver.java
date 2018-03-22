@@ -1,26 +1,23 @@
 /*
- * Copyright (C) 2016-2017 Teclib'
+ * Copyright Teclib. All rights reserved.
  *
- * This file is part of Flyve MDM Android.
+ * Flyve MDM is a mobile device management software.
  *
- * Flyve MDM Android is a subproject of Flyve MDM. Flyve MDM is a mobile
- * device management software.
- *
- * Flyve MDM Android is free software: you can redistribute it and/or
+ * Flyve MDM is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
  *
- * Flyve MDM Android is distributed in the hope that it will be useful,
+ * Flyve MDM is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
- * @author    Dorian LARGET
- * @copyright Copyright (c) 2016 Flyve MDM
+ * @author    Rafael Hernandez
+ * @copyright Copyright Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyvemdm/flyvemdm-android
- * @link      http://www.glpi-project.org/
+ * @link      https://github.com/flyve-mdm/android-mdm-agent
+ * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
 
