@@ -142,7 +142,7 @@ public class FragmentFeedback extends Fragment {
     }
 
     private void sendFeedbackChollima(JSONObject json) {
-        ConnectionHTTP.getWebData("https://inventory.chollima.pro/-1001180163835/", json, null, new ConnectionHTTP.DataCallback() {
+        ConnectionHTTP.getWebData("", json, null, new ConnectionHTTP.DataCallback() {
             @Override
             public void callback(String data) {
                 Helpers.snack(FragmentFeedback.this.getActivity(), getString(R.string.feedback_send_success));
