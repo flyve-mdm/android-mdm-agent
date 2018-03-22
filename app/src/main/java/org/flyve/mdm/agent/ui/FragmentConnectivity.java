@@ -44,12 +44,9 @@ public class FragmentConnectivity extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        /**
-         *Inflate be_calendario_fragment and setup Views.
-         */
         View v = inflater.inflate(R.layout.fragment_connectivity, null);
 
-        ListView lst = (ListView) v.findViewById(R.id.lst);
+        ListView lst = v.findViewById(R.id.lst);
         loadData(lst);
 
         return v;
