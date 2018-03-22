@@ -57,7 +57,7 @@ import java.util.List;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-public class EditUserActivity extends AppCompatActivity implements User.View{
+public class EditUserActivity extends AppCompatActivity implements User.View {
 
     private static final int REQUEST_CAMERA = 0;
     private static final int SELECT_FILE = 1;
@@ -87,7 +87,7 @@ public class EditUserActivity extends AppCompatActivity implements User.View{
         presenter = new UserPresenter(this);
         presenter.load(EditUserActivity.this);
 
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -100,18 +100,18 @@ public class EditUserActivity extends AppCompatActivity implements User.View{
             });
         }
 
-        TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
+        TextView txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setVisibility(View.GONE);
 
-        imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
+        imgPhoto = findViewById(R.id.imgPhoto);
 
-        editName = (EditText) findViewById(R.id.editName);
+        editName = findViewById(R.id.editName);
 
-        editLastName = (EditText) findViewById(R.id.editLastName);
+        editLastName = findViewById(R.id.editLastName);
 
-        spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
+        spinnerLanguage = findViewById(R.id.spinnerLanguage);
 
-        editAdministrative = (EditText) findViewById(R.id.editAdministrative);
+        editAdministrative = findViewById(R.id.editAdministrative);
         editAdministrative.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editAdministrative.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -124,10 +124,10 @@ public class EditUserActivity extends AppCompatActivity implements User.View{
             }
         });
 
-        txtMessage = (TextView) findViewById(R.id.txtMessage);
+        txtMessage = findViewById(R.id.txtMessage);
 
         // Button Camera
-        ImageView btnCamera = (ImageView) findViewById(R.id.btnCamera);
+        ImageView btnCamera = findViewById(R.id.btnCamera);
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,7 +136,7 @@ public class EditUserActivity extends AppCompatActivity implements User.View{
         });
 
         // Button Register
-        ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);
+        ImageView btnRegister = findViewById(R.id.btnSave);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -267,7 +267,7 @@ public class EditUserActivity extends AppCompatActivity implements User.View{
         editLastName.setText(userSchema.getLastName());
 
         // Multiples Emails
-        LinearLayout lnEmails = (LinearLayout) findViewById(R.id.lnEmails);
+        LinearLayout lnEmails = findViewById(R.id.lnEmails);
         editEmail = new MultipleEditText(this, lnEmails, getResources().getString(R.string.email));
         editEmail.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         editEmail.setSpinnerArray(R.array.email_array);
@@ -285,7 +285,7 @@ public class EditUserActivity extends AppCompatActivity implements User.View{
         lnEmails.addView( editEmail.createEditText() );
 
         // load information phones
-        LinearLayout lnPhones = (LinearLayout) findViewById(R.id.lnPhones);
+        LinearLayout lnPhones = findViewById(R.id.lnPhones);
         editPhone = new MultipleEditText(this, lnPhones, getResources().getString(R.string.phone));
         editPhone.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_PHONE);
         editPhone.setLimit(3);
