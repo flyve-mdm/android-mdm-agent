@@ -163,17 +163,17 @@ public class PoliciesData extends LocalStorage {
 <span class="nc" id="L163">        return Boolean.valueOf(getData(&quot;ConnectivityDisableSpeakerphone&quot;));</span>
     }
 
-    public void getConnectivityADBUsbFileTransferProtocolsDisable() {
-<span class="nc" id="L167">        getData(&quot;ConnectivityADBUsbFileTransferProtocolsDisable&quot;);</span>
-<span class="nc" id="L168">    }</span>
+    public Boolean getConnectivityADBUsbFileTransferProtocolsDisable() {
+<span class="nc" id="L167">        return Boolean.valueOf(getData(&quot;ConnectivityADBUsbFileTransferProtocolsDisable&quot;));</span>
+    }
 
-    public void getConnectivityPTPUsbFileTransferProtocolsDisable() {
-<span class="nc" id="L171">        getData(&quot;ConnectivityPTPUsbFileTransferProtocolsDisable&quot;);</span>
-<span class="nc" id="L172">    }</span>
+    public Boolean getConnectivityPTPUsbFileTransferProtocolsDisable() {
+<span class="nc" id="L171">        return Boolean.valueOf(getData(&quot;ConnectivityPTPUsbFileTransferProtocolsDisable&quot;));</span>
+    }
 
-    public void getConnectivityMTPUsbFileTransferProtocolsDisable() {
-<span class="nc" id="L175">        getData(&quot;ConnectivityMTPUsbFileTransferProtocolsDisable&quot;);</span>
-<span class="nc" id="L176">    }</span>
+    public Boolean getConnectivityMTPUsbFileTransferProtocolsDisable() {
+<span class="nc" id="L175">        return Boolean.valueOf(getData(&quot;ConnectivityMTPUsbFileTransferProtocolsDisable&quot;));</span>
+    }
 
     /**
      * Get the state of the Connectivity of the GPS

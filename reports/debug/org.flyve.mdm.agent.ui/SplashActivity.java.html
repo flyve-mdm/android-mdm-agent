@@ -89,36 +89,36 @@ import java.util.ArrayList;
 <span class="fc" id="L89">        String broker = cache.getBroker();</span>
 <span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if(broker != null) {</span>
             // if user is enrolled show landing screen
-<span class="nc" id="L92">            FlyveLog.d(cache.getSessionToken());</span>
+<span class="fc" id="L92">            FlyveLog.d(cache.getSessionToken());</span>
 
-<span class="nc" id="L94">            setContentView(R.layout.activity_splash_enrolled);</span>
-<span class="nc" id="L95">            new Handler().postDelayed(new Runnable() {</span>
+<span class="fc" id="L94">            setContentView(R.layout.activity_splash_enrolled);</span>
+<span class="fc" id="L95">            new Handler().postDelayed(new Runnable() {</span>
                 @Override
                 public void run() {
 <span class="nc" id="L98">                    openMain();</span>
 <span class="nc" id="L99">                }</span>
             }, TIME);
 
-<span class="nc" id="L102">            return;</span>
+<span class="fc" id="L102">            return;</span>
        }
 
         // if user is not enrolled show help
-<span class="fc" id="L106">        setContentView(R.layout.activity_splash);</span>
-<span class="fc" id="L107">        presenter = new WalkthroughPresenter(this);</span>
+<span class="nc" id="L106">        setContentView(R.layout.activity_splash);</span>
+<span class="nc" id="L107">        presenter = new WalkthroughPresenter(this);</span>
 
-<span class="fc" id="L109">        ArrayList&lt;WalkthroughData&gt; walkthrough = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L110">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));</span>
-<span class="fc" id="L111">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));</span>
-<span class="fc" id="L112">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));</span>
+<span class="nc" id="L109">        ArrayList&lt;WalkthroughData&gt; walkthrough = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L110">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));</span>
+<span class="nc" id="L111">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));</span>
+<span class="nc" id="L112">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));</span>
 
-<span class="fc" id="L114">        presenter.createSlides(walkthrough, getSupportFragmentManager());</span>
-<span class="fc" id="L115">    }</span>
+<span class="nc" id="L114">        presenter.createSlides(walkthrough, getSupportFragmentManager());</span>
+<span class="nc" id="L115">    }</span>
 
     @Override
     public void addSlides(PagerAdapter mPagerAdapter) {
-<span class="fc" id="L119">        ViewPager mPager = (ViewPager) findViewById(R.id.pager);</span>
-<span class="fc" id="L120">        mPager.setAdapter(mPagerAdapter);</span>
-<span class="fc" id="L121">    }</span>
+<span class="nc" id="L119">        ViewPager mPager = (ViewPager) findViewById(R.id.pager);</span>
+<span class="nc" id="L120">        mPager.setAdapter(mPagerAdapter);</span>
+<span class="nc" id="L121">    }</span>
 
     /**
      * Open the main activity

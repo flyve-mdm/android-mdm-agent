@@ -200,81 +200,94 @@ import java.util.HashMap;
 <span class="nc" id="L200">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
         }
 
-<span class="nc" id="L203">    }</span>
+        // Feedback
+<span class="nc bnc" id="L204" title="All 2 branches missed.">        if (item.get(&quot;id&quot;).equals(&quot;8&quot;)) {</span>
+<span class="nc" id="L205">            FragmentFeedback f = new FragmentFeedback();</span>
+<span class="nc" id="L206">            fragmentTransaction.replace(R.id.containerView, f).commit();</span>
+        }
+
+<span class="nc" id="L209">    }</span>
 
     /**
      * Load the list drawer
      */
     public void loadListDrawer() {
 
-<span class="nc" id="L210">        arrDrawer = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L216">        arrDrawer = new ArrayList&lt;&gt;();</span>
 
         // Information
-<span class="nc" id="L213">        HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L214">        map.put(&quot;id&quot;, &quot;1&quot;);</span>
-<span class="nc" id="L215">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_information));</span>
-<span class="nc" id="L216">        map.put(&quot;img&quot;, &quot;ic_info&quot;);</span>
-<span class="nc" id="L217">        arrDrawer.add(map);</span>
+<span class="nc" id="L219">        HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L220">        map.put(&quot;id&quot;, &quot;1&quot;);</span>
+<span class="nc" id="L221">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_information));</span>
+<span class="nc" id="L222">        map.put(&quot;img&quot;, &quot;ic_info&quot;);</span>
+<span class="nc" id="L223">        arrDrawer.add(map);</span>
 
         // if easterEgg is active
-<span class="nc bnc" id="L220" title="All 2 branches missed.">        if(cache.getEasterEgg()) {</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        if(cache.getEasterEgg()) {</span>
 
             // MQTT Configuration
-<span class="nc" id="L223">            map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L224">            map.put(&quot;id&quot;, &quot;3&quot;);</span>
-<span class="nc" id="L225">            map.put(&quot;name&quot;, getResources().getString(R.string.drawer_mqtt_config));</span>
-<span class="nc" id="L226">            map.put(&quot;img&quot;, &quot;ic_config&quot;);</span>
-<span class="nc" id="L227">            arrDrawer.add(map);</span>
+<span class="nc" id="L229">            map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L230">            map.put(&quot;id&quot;, &quot;3&quot;);</span>
+<span class="nc" id="L231">            map.put(&quot;name&quot;, getResources().getString(R.string.drawer_mqtt_config));</span>
+<span class="nc" id="L232">            map.put(&quot;img&quot;, &quot;ic_config&quot;);</span>
+<span class="nc" id="L233">            arrDrawer.add(map);</span>
 
             // Test Policies
-<span class="nc" id="L230">            map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L231">            map.put(&quot;id&quot;, &quot;6&quot;);</span>
-<span class="nc" id="L232">            map.put(&quot;name&quot;, getResources().getString(R.string.drawer_test_policies));</span>
-<span class="nc" id="L233">            map.put(&quot;img&quot;, &quot;ic_config&quot;);</span>
-<span class="nc" id="L234">            arrDrawer.add(map);</span>
+<span class="nc" id="L236">            map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L237">            map.put(&quot;id&quot;, &quot;6&quot;);</span>
+<span class="nc" id="L238">            map.put(&quot;name&quot;, getResources().getString(R.string.drawer_test_policies));</span>
+<span class="nc" id="L239">            map.put(&quot;img&quot;, &quot;ic_config&quot;);</span>
+<span class="nc" id="L240">            arrDrawer.add(map);</span>
 
         }
 
         // Activity
-<span class="nc" id="L239">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L240">        map.put(&quot;id&quot;, &quot;2&quot;);</span>
-<span class="nc" id="L241">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_activity));</span>
-<span class="nc" id="L242">        map.put(&quot;img&quot;, &quot;ic_log&quot;);</span>
-<span class="nc" id="L243">        map.put(&quot;separator&quot;, &quot;true&quot;);</span>
-<span class="nc" id="L244">        arrDrawer.add(map);</span>
+<span class="nc" id="L245">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L246">        map.put(&quot;id&quot;, &quot;2&quot;);</span>
+<span class="nc" id="L247">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_activity));</span>
+<span class="nc" id="L248">        map.put(&quot;img&quot;, &quot;ic_log&quot;);</span>
+<span class="nc" id="L249">        map.put(&quot;separator&quot;, &quot;true&quot;);</span>
+<span class="nc" id="L250">        arrDrawer.add(map);</span>
+
+        // Feedback
+<span class="nc" id="L253">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L254">        map.put(&quot;id&quot;, &quot;8&quot;);</span>
+<span class="nc" id="L255">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_feedback));</span>
+<span class="nc" id="L256">        map.put(&quot;img&quot;, &quot;ic_feedback&quot;);</span>
+<span class="nc" id="L257">        arrDrawer.add(map);</span>
 
         // Help
-<span class="nc" id="L247">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L248">        map.put(&quot;id&quot;, &quot;4&quot;);</span>
-<span class="nc" id="L249">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_help));</span>
-<span class="nc" id="L250">        map.put(&quot;img&quot;, &quot;ic_help&quot;);</span>
-<span class="nc" id="L251">        arrDrawer.add(map);</span>
+<span class="nc" id="L260">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L261">        map.put(&quot;id&quot;, &quot;4&quot;);</span>
+<span class="nc" id="L262">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_help));</span>
+<span class="nc" id="L263">        map.put(&quot;img&quot;, &quot;ic_help&quot;);</span>
+<span class="nc" id="L264">        arrDrawer.add(map);</span>
 
         // Configuration
-<span class="nc" id="L254">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L255">        map.put(&quot;id&quot;, &quot;7&quot;);</span>
-<span class="nc" id="L256">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_configuration));</span>
-<span class="nc" id="L257">        map.put(&quot;img&quot;, &quot;ic_config&quot;);</span>
-<span class="nc" id="L258">        arrDrawer.add(map);</span>
+<span class="nc" id="L267">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L268">        map.put(&quot;id&quot;, &quot;7&quot;);</span>
+<span class="nc" id="L269">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_configuration));</span>
+<span class="nc" id="L270">        map.put(&quot;img&quot;, &quot;ic_config&quot;);</span>
+<span class="nc" id="L271">        arrDrawer.add(map);</span>
 
         // About
-<span class="nc" id="L261">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L262">        map.put(&quot;id&quot;, &quot;5&quot;);</span>
-<span class="nc" id="L263">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_about));</span>
-<span class="nc" id="L264">        map.put(&quot;img&quot;, &quot;ic_about&quot;);</span>
-<span class="nc" id="L265">        arrDrawer.add(map);</span>
+<span class="nc" id="L274">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L275">        map.put(&quot;id&quot;, &quot;5&quot;);</span>
+<span class="nc" id="L276">        map.put(&quot;name&quot;, getResources().getString(R.string.drawer_about));</span>
+<span class="nc" id="L277">        map.put(&quot;img&quot;, &quot;ic_about&quot;);</span>
+<span class="nc" id="L278">        arrDrawer.add(map);</span>
 
         try {
             // lad adapter
-<span class="nc" id="L269">            DrawerAdapter adapter = new DrawerAdapter(this, arrDrawer);</span>
-<span class="nc" id="L270">            lstDrawer.setAdapter(adapter);</span>
+<span class="nc" id="L282">            DrawerAdapter adapter = new DrawerAdapter(this, arrDrawer);</span>
+<span class="nc" id="L283">            lstDrawer.setAdapter(adapter);</span>
 
             // Select Information on load //
-<span class="nc" id="L273">            selectedItem = arrDrawer.get(0);</span>
-<span class="nc" id="L274">            loadFragment(selectedItem);</span>
-<span class="nc" id="L275">        } catch(Exception ex) {</span>
-<span class="nc" id="L276">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L277">        }</span>
-<span class="nc" id="L278">    }</span>
+<span class="nc" id="L286">            selectedItem = arrDrawer.get(0);</span>
+<span class="nc" id="L287">            loadFragment(selectedItem);</span>
+<span class="nc" id="L288">        } catch(Exception ex) {</span>
+<span class="nc" id="L289">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L290">        }</span>
+<span class="nc" id="L291">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
