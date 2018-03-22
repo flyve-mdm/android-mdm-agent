@@ -61,7 +61,7 @@ public class FragmentTestPolicies extends Fragment {
         cache = new PoliciesData(FragmentTestPolicies.this.getContext());
         mdm = new PoliciesDeviceManager(FragmentTestPolicies.this.getContext());
 
-        Switch swGPS = (Switch) v.findViewById(R.id.swGPS);
+        Switch swGPS = v.findViewById(R.id.swGPS);
 
         swGPS.setChecked(cache.getConnectivityGPSDisable());
         swGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -74,7 +74,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        Switch swAirplane = (Switch) v.findViewById(R.id.swAirplane);
+        Switch swAirplane = v.findViewById(R.id.swAirplane);
         swAirplane.setChecked(cache.getConnectivityAirplaneModeDisable());
         swAirplane.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -84,7 +84,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        Switch swBluetooth = (Switch) v.findViewById(R.id.swBluetooth);
+        Switch swBluetooth = v.findViewById(R.id.swBluetooth);
         swBluetooth.setChecked(cache.getConnectivityBluetoothDisable());
         swBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -96,7 +96,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        Switch swWifi = (Switch) v.findViewById(R.id.swWifi);
+        Switch swWifi = v.findViewById(R.id.swWifi);
         swWifi.setChecked(cache.getConnectivityWifiDisable());
         swWifi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -108,7 +108,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        Switch swNFC = (Switch) v.findViewById(R.id.swNFC);
+        Switch swNFC = v.findViewById(R.id.swNFC);
         swNFC.setChecked(cache.getConnectivityRoamingDisable());
         swNFC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -120,7 +120,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        Switch swHostpot = (Switch) v.findViewById(R.id.swHostpot);
+        Switch swHostpot = v.findViewById(R.id.swHostpot);
         swHostpot.setChecked(cache.getConnectivityHostpotTetheringDisable());
         swHostpot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -132,7 +132,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        Switch swMobileLine = (Switch) v.findViewById(R.id.swMobileLine);
+        Switch swMobileLine = v.findViewById(R.id.swMobileLine);
         swMobileLine.setChecked(cache.getConnectivityMobileLineDisable());
         swMobileLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -144,7 +144,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        Switch swUsbOnTheGo = (Switch) v.findViewById(R.id.swUsbOnTheGo);
+        Switch swUsbOnTheGo = v.findViewById(R.id.swUsbOnTheGo);
         swUsbOnTheGo.setChecked(cache.getConnectivityUsbFileTransferProtocolsDisable());
         swUsbOnTheGo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -156,7 +156,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        Button btnLock = (Button) v.findViewById(R.id.btnLock);
+        Button btnLock = v.findViewById(R.id.btnLock);
         btnLock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,7 +164,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        Switch swDisableCamera = (Switch) v.findViewById(R.id.swDisableCamera);
+        Switch swDisableCamera = v.findViewById(R.id.swDisableCamera);
         swDisableCamera.setChecked(cache.getDisableCamera());
         swDisableCamera.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -173,7 +173,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        Switch swStorageEncryptionDevice = (Switch) v.findViewById(R.id.swStorageEncryptionDevice);
+        Switch swStorageEncryptionDevice = v.findViewById(R.id.swStorageEncryptionDevice);
         swStorageEncryptionDevice.setChecked(cache.getStorageEncryptionDevice());
         swStorageEncryptionDevice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -182,7 +182,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        Button btnReboot = (Button) v.findViewById(R.id.btnReboot);
+        Button btnReboot = v.findViewById(R.id.btnReboot);
         btnReboot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,7 +190,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        Button btnClearMQTT = (Button) v.findViewById(R.id.btnCleatMQTT);
+        Button btnClearMQTT = v.findViewById(R.id.btnCleatMQTT);
         btnClearMQTT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,17 +202,17 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        final EditText edtPasswordLength = (EditText) v.findViewById(R.id.edtPasswordLength);
-        final EditText edtPasswordMinimumLetters = (EditText) v.findViewById(R.id.edtPasswordMinimumLetters);
-        final EditText edtPasswordMinimumLowerCase = (EditText) v.findViewById(R.id.edtPasswordMinimumLowerCase);
-        final EditText edtPasswordMinimumUpperCase = (EditText) v.findViewById(R.id.edtPasswordMinimumUpperCase);
-        final EditText edtPasswordMinimumNonLetter = (EditText) v.findViewById(R.id.edtPasswordMinimumNonLetter);
-        final EditText edtPasswordMinimumNumeric = (EditText) v.findViewById(R.id.edtPasswordMinimumNumeric);
-        final EditText edtPasswordMinimumSymbols = (EditText) v.findViewById(R.id.edtPasswordMinimumSymbols);
-        final EditText edtMaximumFailedPasswordsForWipe = (EditText) v.findViewById(R.id.edtMaximumFailedPasswordsForWipe);
-        final EditText edtMaximumTimeToLock = (EditText) v.findViewById(R.id.edtMaximumTimeToLock);
+        final EditText edtPasswordLength = v.findViewById(R.id.edtPasswordLength);
+        final EditText edtPasswordMinimumLetters = v.findViewById(R.id.edtPasswordMinimumLetters);
+        final EditText edtPasswordMinimumLowerCase =  v.findViewById(R.id.edtPasswordMinimumLowerCase);
+        final EditText edtPasswordMinimumUpperCase =  v.findViewById(R.id.edtPasswordMinimumUpperCase);
+        final EditText edtPasswordMinimumNonLetter = v.findViewById(R.id.edtPasswordMinimumNonLetter);
+        final EditText edtPasswordMinimumNumeric = v.findViewById(R.id.edtPasswordMinimumNumeric);
+        final EditText edtPasswordMinimumSymbols = v.findViewById(R.id.edtPasswordMinimumSymbols);
+        final EditText edtMaximumFailedPasswordsForWipe = v.findViewById(R.id.edtMaximumFailedPasswordsForWipe);
+        final EditText edtMaximumTimeToLock = v.findViewById(R.id.edtMaximumTimeToLock);
 
-        Button btnPassword = (Button) v.findViewById(R.id.btnPassword);
+        Button btnPassword = v.findViewById(R.id.btnPassword);
         btnPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,8 +228,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-
-        Button btnPasswordEnable = (Button) v.findViewById(R.id.btnPasswordEnable);
+        Button btnPasswordEnable = v.findViewById(R.id.btnPasswordEnable);
         btnPasswordEnable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -237,7 +236,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        Button btnDownloadFile = (Button) v.findViewById(R.id.btnDownloadFile);
+        Button btnDownloadFile = v.findViewById(R.id.btnDownloadFile);
         btnDownloadFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -254,7 +253,7 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-        Button btnDownloadAPK = (Button) v.findViewById(R.id.btnDownloadAPK);
+        Button btnDownloadAPK = v.findViewById(R.id.btnDownloadAPK);
         btnDownloadAPK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -272,8 +271,6 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
-
         return v;
     }
-
-    }
+}
