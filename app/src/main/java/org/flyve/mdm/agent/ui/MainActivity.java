@@ -249,6 +249,13 @@ public class MainActivity extends AppCompatActivity {
         map.put("separator", "true");
         arrDrawer.add(map);
 
+        // Feedback
+        map = new HashMap<>();
+        map.put("id", "8");
+        map.put("name", getResources().getString(R.string.drawer_feedback));
+        map.put("img", "ic_feedback");
+        arrDrawer.add(map);
+
         // Help
         map = new HashMap<>();
         map.put("id", "4");
@@ -268,13 +275,6 @@ public class MainActivity extends AppCompatActivity {
         map.put("id", "5");
         map.put("name", getResources().getString(R.string.drawer_about));
         map.put("img", "ic_about");
-        arrDrawer.add(map);
-
-        // Feedback
-        map = new HashMap<>();
-        map.put("id", "8");
-        map.put("name", getResources().getString(R.string.drawer_feedback));
-        map.put("img", "ic_feedback");
         arrDrawer.add(map);
 
         try {
