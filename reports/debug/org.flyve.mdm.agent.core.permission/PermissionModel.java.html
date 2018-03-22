@@ -1,22 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PermissionModel.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.core.permission</a> &gt; <span class="el_source">PermissionModel.java</span></div><h1>PermissionModel.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.core.permission;
-
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-
-import org.flyve.inventory.InventoryTask;
-import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
-import org.flyve.mdm.agent.utils.Helpers;
-
-/*
- *   Copyright © 2018 Teclib. All rights reserved.
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PermissionModel.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.core.permission</a> &gt; <span class="el_source">PermissionModel.java</span></div><h1>PermissionModel.java</h1><pre class="source lang-java linenums">/*
+ * Copyright Teclib. All rights reserved.
  *
- *   This file is part of flyve-mdm-android
- *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
- * device management software.
+ * Flyve MDM is a mobile device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,98 +14,110 @@ import org.flyve.mdm.agent.utils.Helpers;
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
- * @date      4/1/18
- * @copyright Copyright © 2018 Teclib. All rights reserved.
+ * @copyright Copyright Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/android-mdm-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
+
+package org.flyve.mdm.agent.core.permission;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+
+import org.flyve.inventory.InventoryTask;
+import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
+import org.flyve.mdm.agent.utils.Helpers;
+
 public class PermissionModel implements Permission.Model {
 
     private Permission.Presenter presenter;
 
-<span class="nc" id="L43">    public PermissionModel(Permission.Presenter presenter) {</span>
-<span class="nc" id="L44">        this.presenter = presenter;</span>
-<span class="nc" id="L45">    }</span>
+<span class="nc" id="L40">    public PermissionModel(Permission.Presenter presenter) {</span>
+<span class="nc" id="L41">        this.presenter = presenter;</span>
+<span class="nc" id="L42">    }</span>
 
 
     @Override
     public void showDialogShare(final Context context) {
-<span class="nc" id="L50">        AlertDialog.Builder builder = new AlertDialog.Builder(context );</span>
-<span class="nc" id="L51">        builder.setTitle(R.string.dialog_share_title);</span>
+<span class="nc" id="L47">        AlertDialog.Builder builder = new AlertDialog.Builder(context );</span>
+<span class="nc" id="L48">        builder.setTitle(R.string.dialog_share_title);</span>
 
-<span class="nc" id="L53">        final int[] type = new int[1];</span>
+<span class="nc" id="L50">        final int[] type = new int[1];</span>
 
         //list of items
-<span class="nc" id="L56">        String[] items = context.getResources().getStringArray(R.array.export_list);</span>
-<span class="nc" id="L57">        builder.setSingleChoiceItems(items, 0,</span>
-<span class="nc" id="L58">                new DialogInterface.OnClickListener() {</span>
+<span class="nc" id="L53">        String[] items = context.getResources().getStringArray(R.array.export_list);</span>
+<span class="nc" id="L54">        builder.setSingleChoiceItems(items, 0,</span>
+<span class="nc" id="L55">                new DialogInterface.OnClickListener() {</span>
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-<span class="nc" id="L61">                        type[0] = which;</span>
-<span class="nc" id="L62">                    }</span>
+<span class="nc" id="L58">                        type[0] = which;</span>
+<span class="nc" id="L59">                    }</span>
                 });
 
-<span class="nc" id="L65">        String positiveText = context.getString(android.R.string.ok);</span>
-<span class="nc" id="L66">        builder.setPositiveButton(positiveText,</span>
-<span class="nc" id="L67">                new DialogInterface.OnClickListener() {</span>
+<span class="nc" id="L62">        String positiveText = context.getString(android.R.string.ok);</span>
+<span class="nc" id="L63">        builder.setPositiveButton(positiveText,</span>
+<span class="nc" id="L64">                new DialogInterface.OnClickListener() {</span>
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // positive button logic
-<span class="nc" id="L71">                        Helpers.share(context, &quot;Inventory File&quot;, type[0] );</span>
-<span class="nc" id="L72">                    }</span>
+<span class="nc" id="L68">                        Helpers.share(context, &quot;Inventory File&quot;, type[0] );</span>
+<span class="nc" id="L69">                    }</span>
                 });
 
-<span class="nc" id="L75">        String negativeText = context.getString(android.R.string.cancel);</span>
-<span class="nc" id="L76">        builder.setNegativeButton(negativeText,</span>
-<span class="nc" id="L77">                new DialogInterface.OnClickListener() {</span>
+<span class="nc" id="L72">        String negativeText = context.getString(android.R.string.cancel);</span>
+<span class="nc" id="L73">        builder.setNegativeButton(negativeText,</span>
+<span class="nc" id="L74">                new DialogInterface.OnClickListener() {</span>
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // negative button logic
-<span class="nc" id="L81">                    }</span>
+<span class="nc" id="L78">                    }</span>
                 });
 
-<span class="nc" id="L84">        AlertDialog dialog = builder.create();</span>
+<span class="nc" id="L81">        AlertDialog dialog = builder.create();</span>
         // display dialog
-<span class="nc" id="L86">        dialog.show();</span>
+<span class="nc" id="L83">        dialog.show();</span>
 
-<span class="nc" id="L88">    }</span>
+<span class="nc" id="L85">    }</span>
 
     @Override
     public void generateInventory(final Context context) {
-<span class="nc" id="L92">        final ProgressDialog progress = ProgressDialog.show(context, &quot;MDM Agent&quot;,</span>
+<span class="nc" id="L89">        final ProgressDialog progress = ProgressDialog.show(context, &quot;MDM Agent&quot;,</span>
                 &quot;Creating inventory...&quot;, true);
 
-<span class="nc" id="L95">        InventoryTask inventoryTask = new InventoryTask(context, &quot;&quot;, true);</span>
-<span class="nc" id="L96">        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {</span>
+<span class="nc" id="L92">        InventoryTask inventoryTask = new InventoryTask(context, &quot;&quot;, true);</span>
+<span class="nc" id="L93">        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {</span>
             @Override
             public void onTaskSuccess(String s) {
-<span class="nc" id="L99">                progress.setMessage(&quot;Creating session...&quot;);</span>
+<span class="nc" id="L96">                progress.setMessage(&quot;Creating session...&quot;);</span>
 
-<span class="nc" id="L101">                EnrollmentHelper sessionToken = new EnrollmentHelper(context);</span>
-<span class="nc" id="L102">                sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {</span>
+<span class="nc" id="L98">                EnrollmentHelper sessionToken = new EnrollmentHelper(context);</span>
+<span class="nc" id="L99">                sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {</span>
                     @Override
                     public void onSuccess(String data) {
                         // Active EnrollmentHelper Token is stored on cache
-<span class="nc" id="L106">                        progress.dismiss();</span>
+<span class="nc" id="L103">                        progress.dismiss();</span>
 
-<span class="nc" id="L108">                        presenter.inventorySuccess();</span>
-<span class="nc" id="L109">                    }</span>
+<span class="nc" id="L105">                        presenter.inventorySuccess();</span>
+<span class="nc" id="L106">                    }</span>
 
                     @Override
                     public void onError(String error) {
-<span class="nc" id="L113">                        presenter.showError(error);</span>
-<span class="nc" id="L114">                    }</span>
+<span class="nc" id="L110">                        presenter.showError(error);</span>
+<span class="nc" id="L111">                    }</span>
                 });
-<span class="nc" id="L116">            }</span>
+<span class="nc" id="L113">            }</span>
 
             @Override
             public void onTaskError(Throwable throwable) {
-<span class="nc" id="L120">                presenter.showError(&quot;The inventory fail&quot;);</span>
-<span class="nc" id="L121">            }</span>
+<span class="nc" id="L117">                presenter.showError(&quot;The inventory fail&quot;);</span>
+<span class="nc" id="L118">            }</span>
         });
 
-<span class="nc" id="L124">    }</span>
+<span class="nc" id="L121">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

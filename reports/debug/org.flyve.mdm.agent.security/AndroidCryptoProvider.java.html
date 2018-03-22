@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AndroidCryptoProvider.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.security</a> &gt; <span class="el_source">AndroidCryptoProvider.java</span></div><h1>AndroidCryptoProvider.java</h1><pre class="source lang-java linenums">/*
- * Copyright (C) 2016 Teclib'
+ * Copyright Teclib. All rights reserved.
  *
- * This file is part of Flyve MDM Android Agent.
+ * Flyve MDM is a mobile device management software.
  *
- * Flyve MDM Android Agent is a subproject of Flyve MDM. Flyve MDM is a mobile
- * device management software.
- *
- * Flyve MDM Android is free software: you can redistribute it and/or
+ * Flyve MDM is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
  *
- * Flyve MDM Android is distributed in the hope that it will be useful,
+ * Flyve MDM is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
  * @author    Dorian LARGET
- * @copyright Copyright (c) 2016 Flyve MDM
+ * @copyright Copyright Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyvemdm/flyvemdm-android-agent
- * @link      http://www.glpi-project.org/
+ * @link      https://github.com/flyve-mdm/android-mdm-agent
+ * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-
 package org.flyve.mdm.agent.security;
 
 import android.content.Context;
@@ -62,20 +58,20 @@ public class AndroidCryptoProvider {
     private RSAPrivateKey key;
 
     static {
-<span class="nc" id="L65">        Security.addProvider(new BouncyCastleProvider());</span>
-<span class="nc" id="L66">    }</span>
+<span class="nc" id="L61">        Security.addProvider(new BouncyCastleProvider());</span>
+<span class="nc" id="L62">    }</span>
 
     /**
      * This Constructor gets the absolute path to the directory where the files are stored
      * @param c
      */
-<span class="nc" id="L72">    public AndroidCryptoProvider(Context c) {</span>
-<span class="nc" id="L73">        String dataPath = c.getFilesDir().getAbsolutePath();</span>
+<span class="nc" id="L68">    public AndroidCryptoProvider(Context c) {</span>
+<span class="nc" id="L69">        String dataPath = c.getFilesDir().getAbsolutePath();</span>
 
-<span class="nc" id="L75">        csrFile = new File(dataPath + File.separator + &quot;client.csr&quot;);</span>
-<span class="nc" id="L76">        keyFile = new File(dataPath + File.separator + &quot;client.key&quot;);</span>
-<span class="nc" id="L77">        certFile = new File(dataPath + File.separator + &quot;client.crt&quot;);</span>
-<span class="nc" id="L78">    }</span>
+<span class="nc" id="L71">        csrFile = new File(dataPath + File.separator + &quot;client.csr&quot;);</span>
+<span class="nc" id="L72">        keyFile = new File(dataPath + File.separator + &quot;client.key&quot;);</span>
+<span class="nc" id="L73">        certFile = new File(dataPath + File.separator + &quot;client.crt&quot;);</span>
+<span class="nc" id="L74">    }</span>
 
     /**
      * Load the file  in bytes
@@ -84,29 +80,29 @@ public class AndroidCryptoProvider {
      * @throws IOException Error message 
      */
     private byte[] loadFileToBytes(File f) {
-<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (!f.exists()) {</span>
-<span class="nc" id="L88">            return new byte[0];</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (!f.exists()) {</span>
+<span class="nc" id="L84">            return new byte[0];</span>
         }
-<span class="nc" id="L90">        FileInputStream fin = null;</span>
+<span class="nc" id="L86">        FileInputStream fin = null;</span>
         try {
-<span class="nc" id="L92">            fin = new FileInputStream(f);</span>
-<span class="nc" id="L93">            byte[] fileData = new byte[(int) f.length()];</span>
-<span class="nc bnc" id="L94" title="All 2 branches missed.">            if (fin.read(fileData) != f.length()) {</span>
+<span class="nc" id="L88">            fin = new FileInputStream(f);</span>
+<span class="nc" id="L89">            byte[] fileData = new byte[(int) f.length()];</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">            if (fin.read(fileData) != f.length()) {</span>
                 // Failed to read
-<span class="nc" id="L96">                fileData = null;</span>
+<span class="nc" id="L92">                fileData = null;</span>
             }
-<span class="nc" id="L98">            return fileData;</span>
-<span class="nc" id="L99">        } catch (IOException e) {</span>
-<span class="nc" id="L100">            FlyveLog.e(&quot;loadFileToBytes IOException&quot;,e);</span>
-<span class="nc" id="L101">            return new byte[0];</span>
+<span class="nc" id="L94">            return fileData;</span>
+<span class="nc" id="L95">        } catch (IOException e) {</span>
+<span class="nc" id="L96">            FlyveLog.e(&quot;loadFileToBytes IOException&quot;,e);</span>
+<span class="nc" id="L97">            return new byte[0];</span>
         } finally {
-<span class="nc" id="L103">            try {</span>
-<span class="nc bnc" id="L104" title="All 6 branches missed.">                if(fin!=null) {</span>
-<span class="nc" id="L105">                    fin.close();</span>
+<span class="nc" id="L99">            try {</span>
+<span class="nc bnc" id="L100" title="All 6 branches missed.">                if(fin!=null) {</span>
+<span class="nc" id="L101">                    fin.close();</span>
                 }
-<span class="nc" id="L107">            } catch (Exception e) {</span>
-<span class="nc" id="L108">                FlyveLog.e(&quot;close FileInputStream, IO exception&quot;, e);</span>
-<span class="nc" id="L109">            }</span>
+<span class="nc" id="L103">            } catch (Exception e) {</span>
+<span class="nc" id="L104">                FlyveLog.e(&quot;close FileInputStream, IO exception&quot;, e);</span>
+<span class="nc" id="L105">            }</span>
         }
     }
 
@@ -115,14 +111,14 @@ public class AndroidCryptoProvider {
      * @return string the Certificate Signing Request (CSR)
      */
     public String getlCsr() {
-<span class="nc" id="L118">        byte[] csrBytes = loadFileToBytes(csrFile);</span>
-<span class="nc" id="L119">        String strCsr = new String(csrBytes);</span>
+<span class="nc" id="L114">        byte[] csrBytes = loadFileToBytes(csrFile);</span>
+<span class="nc" id="L115">        String strCsr = new String(csrBytes);</span>
         // If either file was missing, we definitely can't succeed
-<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (csrBytes == new byte[0]) {</span>
-<span class="nc" id="L122">            FlyveLog.i(&quot;loadCsr: Missing csr need to generate a new one&quot;);</span>
-<span class="nc" id="L123">            return &quot;&quot;;</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (csrBytes == new byte[0]) {</span>
+<span class="nc" id="L118">            FlyveLog.i(&quot;loadCsr: Missing csr need to generate a new one&quot;);</span>
+<span class="nc" id="L119">            return &quot;&quot;;</span>
         }
-<span class="nc" id="L125">        return strCsr;</span>
+<span class="nc" id="L121">        return strCsr;</span>
     }
 
     /**
@@ -130,13 +126,13 @@ public class AndroidCryptoProvider {
      * @return boolean true if succeed, false otherwise
      */
     public boolean loadCsr() {
-<span class="nc" id="L133">        byte[] csrBytes = loadFileToBytes(csrFile);</span>
+<span class="nc" id="L129">        byte[] csrBytes = loadFileToBytes(csrFile);</span>
         // If either file was missing, we definitely can't succeed
-<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (csrBytes == new byte[0]) {</span>
-<span class="nc" id="L136">            FlyveLog.i(&quot;loadCsr: Missing csr need to generate a new one&quot;);</span>
-<span class="nc" id="L137">            return false;</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (csrBytes == new byte[0]) {</span>
+<span class="nc" id="L132">            FlyveLog.i(&quot;loadCsr: Missing csr need to generate a new one&quot;);</span>
+<span class="nc" id="L133">            return false;</span>
         }
-<span class="nc" id="L139">        return true;</span>
+<span class="nc" id="L135">        return true;</span>
     }
 
     /**
@@ -144,153 +140,153 @@ public class AndroidCryptoProvider {
      * @param callback
      */
     public void generateRequest(GenerateCallback callback) {
-<span class="nc" id="L147">        byte[] snBytes = new byte[8];</span>
-<span class="nc" id="L148">        new SecureRandom().nextBytes(snBytes);</span>
+<span class="nc" id="L143">        byte[] snBytes = new byte[8];</span>
+<span class="nc" id="L144">        new SecureRandom().nextBytes(snBytes);</span>
 
-<span class="nc" id="L150">        KeyPair keyPair = null;</span>
+<span class="nc" id="L146">        KeyPair keyPair = null;</span>
         try {
-<span class="nc" id="L152">            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(&quot;RSA&quot;, &quot;BC&quot;);</span>
-<span class="nc" id="L153">            keyPairGenerator.initialize(4096);</span>
-<span class="nc" id="L154">            keyPair = keyPairGenerator.generateKeyPair();</span>
-<span class="nc bnc" id="L155" title="All 2 branches missed.">            if(keyPair==null) {</span>
-<span class="nc" id="L156">                callback.onGenerate(false);</span>
-<span class="nc" id="L157">                return;</span>
+<span class="nc" id="L148">            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(&quot;RSA&quot;, &quot;BC&quot;);</span>
+<span class="nc" id="L149">            keyPairGenerator.initialize(4096);</span>
+<span class="nc" id="L150">            keyPair = keyPairGenerator.generateKeyPair();</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">            if(keyPair==null) {</span>
+<span class="nc" id="L152">                callback.onGenerate(false);</span>
+<span class="nc" id="L153">                return;</span>
             }
-<span class="nc" id="L159">        } catch (Exception ex) {</span>
-<span class="nc" id="L160">            FlyveLog.wtf(&quot;KeyPairGenerator fail: %s&quot;, ex.getMessage());</span>
-<span class="nc" id="L161">            callback.onGenerate(false);</span>
-<span class="nc" id="L162">            return;</span>
-<span class="nc" id="L163">        }</span>
+<span class="nc" id="L155">        } catch (Exception ex) {</span>
+<span class="nc" id="L156">            FlyveLog.wtf(&quot;KeyPairGenerator fail: %s&quot;, ex.getMessage());</span>
+<span class="nc" id="L157">            callback.onGenerate(false);</span>
+<span class="nc" id="L158">            return;</span>
+<span class="nc" id="L159">        }</span>
 
-<span class="nc" id="L165">        X500Principal subjectName = new X500Principal(&quot;CN=mydevice.stork-mdm.com&quot;);</span>
+<span class="nc" id="L161">        X500Principal subjectName = new X500Principal(&quot;CN=mydevice.stork-mdm.com&quot;);</span>
 
         ContentSigner signGen;
         try {
-<span class="nc" id="L169">            signGen = new JcaContentSignerBuilder(&quot;SHA1withRSA&quot;).build(keyPair.getPrivate());</span>
-<span class="nc bnc" id="L170" title="All 2 branches missed.">            if (signGen == null) {</span>
-<span class="nc" id="L171">                callback.onGenerate(false);</span>
-<span class="nc" id="L172">                return;</span>
+<span class="nc" id="L165">            signGen = new JcaContentSignerBuilder(&quot;SHA1withRSA&quot;).build(keyPair.getPrivate());</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">            if (signGen == null) {</span>
+<span class="nc" id="L167">                callback.onGenerate(false);</span>
+<span class="nc" id="L168">                return;</span>
             }
-<span class="nc" id="L174">        } catch (Exception ex) {</span>
-<span class="nc" id="L175">            FlyveLog.e(&quot;generateRequest&quot;,ex);</span>
-<span class="nc" id="L176">            callback.onGenerate(false);</span>
-<span class="nc" id="L177">            return;</span>
-<span class="nc" id="L178">        }</span>
+<span class="nc" id="L170">        } catch (Exception ex) {</span>
+<span class="nc" id="L171">            FlyveLog.e(&quot;generateRequest&quot;,ex);</span>
+<span class="nc" id="L172">            callback.onGenerate(false);</span>
+<span class="nc" id="L173">            return;</span>
+<span class="nc" id="L174">        }</span>
 
-<span class="nc" id="L180">        PKCS10CertificationRequestBuilder builder = new JcaPKCS10CertificationRequestBuilder(subjectName, keyPair.getPublic());</span>
-<span class="nc" id="L181">        csr = builder.build(signGen);</span>
+<span class="nc" id="L176">        PKCS10CertificationRequestBuilder builder = new JcaPKCS10CertificationRequestBuilder(subjectName, keyPair.getPublic());</span>
+<span class="nc" id="L177">        csr = builder.build(signGen);</span>
 
         try {
-<span class="nc" id="L184">            key = (RSAPrivateKey) keyPair.getPrivate();</span>
-<span class="nc" id="L185">        } catch (Exception ex) {</span>
-<span class="nc" id="L186">            FlyveLog.wtf(&quot;generateRequest&quot;,ex);</span>
-<span class="nc" id="L187">            callback.onGenerate(false);</span>
-<span class="nc" id="L188">            return;</span>
-<span class="nc" id="L189">        }</span>
+<span class="nc" id="L180">            key = (RSAPrivateKey) keyPair.getPrivate();</span>
+<span class="nc" id="L181">        } catch (Exception ex) {</span>
+<span class="nc" id="L182">            FlyveLog.wtf(&quot;generateRequest&quot;,ex);</span>
+<span class="nc" id="L183">            callback.onGenerate(false);</span>
+<span class="nc" id="L184">            return;</span>
+<span class="nc" id="L185">        }</span>
 
         // Save the resulting pair
-<span class="nc" id="L192">        saveCsrKey();</span>
+<span class="nc" id="L188">        saveCsrKey();</span>
 
         // true or false
-<span class="nc" id="L195">        boolean bvar = loadCsr();</span>
-<span class="nc" id="L196">        callback.onGenerate(bvar);</span>
-<span class="nc" id="L197">    }</span>
+<span class="nc" id="L191">        boolean bvar = loadCsr();</span>
+<span class="nc" id="L192">        callback.onGenerate(bvar);</span>
+<span class="nc" id="L193">    }</span>
 
     /**
      * Save the Certificate Signing Request (CSR)
      */
     private void saveCsrKey() {
-<span class="nc" id="L203">        FileOutputStream csrOut = null;</span>
-<span class="nc" id="L204">        FileOutputStream keyOut = null;</span>
+<span class="nc" id="L199">        FileOutputStream csrOut = null;</span>
+<span class="nc" id="L200">        FileOutputStream keyOut = null;</span>
         try {
-<span class="nc" id="L206">            csrOut = new FileOutputStream(csrFile);</span>
-<span class="nc" id="L207">            keyOut = new FileOutputStream(keyFile);</span>
+<span class="nc" id="L202">            csrOut = new FileOutputStream(csrFile);</span>
+<span class="nc" id="L203">            keyOut = new FileOutputStream(keyFile);</span>
 
             // Write the certificate in OpenSSL PEM format (important for the server)
-<span class="nc" id="L210">            StringWriter strWriter = new StringWriter();</span>
-<span class="nc" id="L211">            JcaPEMWriter pemWriter = new JcaPEMWriter(strWriter);</span>
-<span class="nc" id="L212">            pemWriter.writeObject(csr);</span>
-<span class="nc" id="L213">            pemWriter.close();</span>
+<span class="nc" id="L206">            StringWriter strWriter = new StringWriter();</span>
+<span class="nc" id="L207">            JcaPEMWriter pemWriter = new JcaPEMWriter(strWriter);</span>
+<span class="nc" id="L208">            pemWriter.writeObject(csr);</span>
+<span class="nc" id="L209">            pemWriter.close();</span>
 
             // Line endings MUST be UNIX for the PC to accept the cert properly
-<span class="nc" id="L216">            OutputStreamWriter csrWriter = new OutputStreamWriter(csrOut);</span>
-<span class="nc" id="L217">            String pemStr = strWriter.getBuffer().toString();</span>
-<span class="nc bnc" id="L218" title="All 2 branches missed.">            for (int i = 0; i &lt; pemStr.length(); i++) {</span>
-<span class="nc" id="L219">                char c = pemStr.charAt(i);</span>
-<span class="nc bnc" id="L220" title="All 2 branches missed.">                if (c != '\r')</span>
-<span class="nc" id="L221">                    csrWriter.append(c);</span>
+<span class="nc" id="L212">            OutputStreamWriter csrWriter = new OutputStreamWriter(csrOut);</span>
+<span class="nc" id="L213">            String pemStr = strWriter.getBuffer().toString();</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">            for (int i = 0; i &lt; pemStr.length(); i++) {</span>
+<span class="nc" id="L215">                char c = pemStr.charAt(i);</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">                if (c != '\r')</span>
+<span class="nc" id="L217">                    csrWriter.append(c);</span>
             }
-<span class="nc" id="L223">            csrWriter.close();</span>
+<span class="nc" id="L219">            csrWriter.close();</span>
 
             // Write the private out in PKCS8 format
-<span class="nc" id="L226">            keyOut.write(key.getEncoded());</span>
-<span class="nc" id="L227">        } catch (IOException e) {</span>
-<span class="nc" id="L228">            FlyveLog.e(&quot;saveCsrKey: %s&quot;, e.getMessage());</span>
+<span class="nc" id="L222">            keyOut.write(key.getEncoded());</span>
+<span class="nc" id="L223">        } catch (IOException e) {</span>
+<span class="nc" id="L224">            FlyveLog.e(&quot;saveCsrKey: %s&quot;, e.getMessage());</span>
         } finally {
 
-<span class="nc bnc" id="L231" title="All 6 branches missed.">            if(keyOut!=null) {</span>
+<span class="nc bnc" id="L227" title="All 6 branches missed.">            if(keyOut!=null) {</span>
                 try {
-<span class="nc" id="L233">                    keyOut.close();</span>
-<span class="nc" id="L234">                } catch (IOException e){</span>
-<span class="nc" id="L235">                    FlyveLog.e(&quot;keyOut: %s&quot;, e.getMessage());</span>
-<span class="nc" id="L236">                }</span>
+<span class="nc" id="L229">                    keyOut.close();</span>
+<span class="nc" id="L230">                } catch (IOException e){</span>
+<span class="nc" id="L231">                    FlyveLog.e(&quot;keyOut: %s&quot;, e.getMessage());</span>
+<span class="nc" id="L232">                }</span>
             }
 
-<span class="nc bnc" id="L239" title="All 6 branches missed.">            if(csrOut!=null) {</span>
+<span class="nc bnc" id="L235" title="All 6 branches missed.">            if(csrOut!=null) {</span>
                 try {
-<span class="nc" id="L241">                    csrOut.close();</span>
-<span class="nc" id="L242">                } catch (IOException e){</span>
-<span class="nc" id="L243">                    FlyveLog.e(&quot;csrOut: %s&quot;, e.getMessage());</span>
-<span class="nc" id="L244">                }</span>
+<span class="nc" id="L237">                    csrOut.close();</span>
+<span class="nc" id="L238">                } catch (IOException e){</span>
+<span class="nc" id="L239">                    FlyveLog.e(&quot;csrOut: %s&quot;, e.getMessage());</span>
+<span class="nc" id="L240">                }</span>
             }
 
         }
-<span class="nc" id="L248">    }</span>
+<span class="nc" id="L244">    }</span>
 
     /**
      * Save the certificate key
      * @param certString the certificate
      */
     public void saveCertKey(String certString) {
-<span class="nc" id="L255">        FileOutputStream certOut = null;</span>
+<span class="nc" id="L251">        FileOutputStream certOut = null;</span>
 
         try {
-<span class="nc" id="L258">            certOut = new FileOutputStream(certFile);</span>
+<span class="nc" id="L254">            certOut = new FileOutputStream(certFile);</span>
 
-<span class="nc" id="L260">            byte[] certBytes = certString.getBytes();</span>
+<span class="nc" id="L256">            byte[] certBytes = certString.getBytes();</span>
 
-<span class="nc" id="L262">            CertificateFactory certFactory = null;</span>
-<span class="nc" id="L263">            certFactory = CertificateFactory.getInstance(&quot;X.509&quot;, &quot;BC&quot;);</span>
-<span class="nc" id="L264">            X509Certificate cert = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(certBytes));</span>
+<span class="nc" id="L258">            CertificateFactory certFactory = null;</span>
+<span class="nc" id="L259">            certFactory = CertificateFactory.getInstance(&quot;X.509&quot;, &quot;BC&quot;);</span>
+<span class="nc" id="L260">            X509Certificate cert = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(certBytes));</span>
 
             // Write the certificate in OpenSSL PEM format (important for the server)
-<span class="nc" id="L267">            StringWriter strWriter = new StringWriter();</span>
-<span class="nc" id="L268">            JcaPEMWriter pemWriter = new JcaPEMWriter(strWriter);</span>
-<span class="nc" id="L269">            pemWriter.writeObject(cert);</span>
-<span class="nc" id="L270">            pemWriter.close();</span>
+<span class="nc" id="L263">            StringWriter strWriter = new StringWriter();</span>
+<span class="nc" id="L264">            JcaPEMWriter pemWriter = new JcaPEMWriter(strWriter);</span>
+<span class="nc" id="L265">            pemWriter.writeObject(cert);</span>
+<span class="nc" id="L266">            pemWriter.close();</span>
 
             // Line endings MUST be UNIX for the PC to accept the cert properly
-<span class="nc" id="L273">            OutputStreamWriter certWriter = new OutputStreamWriter(certOut);</span>
-<span class="nc" id="L274">            String pemStr = strWriter.getBuffer().toString();</span>
-<span class="nc bnc" id="L275" title="All 2 branches missed.">            for (int i = 0; i &lt; pemStr.length(); i++) {</span>
-<span class="nc" id="L276">                char c = pemStr.charAt(i);</span>
-<span class="nc bnc" id="L277" title="All 2 branches missed.">                if (c != '\r')</span>
-<span class="nc" id="L278">                    certWriter.append(c);</span>
+<span class="nc" id="L269">            OutputStreamWriter certWriter = new OutputStreamWriter(certOut);</span>
+<span class="nc" id="L270">            String pemStr = strWriter.getBuffer().toString();</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">            for (int i = 0; i &lt; pemStr.length(); i++) {</span>
+<span class="nc" id="L272">                char c = pemStr.charAt(i);</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">                if (c != '\r')</span>
+<span class="nc" id="L274">                    certWriter.append(c);</span>
             }
-<span class="nc" id="L280">            certWriter.close();</span>
+<span class="nc" id="L276">            certWriter.close();</span>
 
-<span class="nc" id="L282">        } catch (Exception e) {</span>
-<span class="nc" id="L283">            FlyveLog.e(&quot;saveCertKey&quot;,e);</span>
+<span class="nc" id="L278">        } catch (Exception e) {</span>
+<span class="nc" id="L279">            FlyveLog.e(&quot;saveCertKey&quot;,e);</span>
         } finally {
-<span class="nc" id="L285">            try {</span>
-<span class="nc bnc" id="L286" title="All 6 branches missed.">                if(certOut!=null) {</span>
-<span class="nc" id="L287">                    certOut.close();</span>
+<span class="nc" id="L281">            try {</span>
+<span class="nc bnc" id="L282" title="All 6 branches missed.">                if(certOut!=null) {</span>
+<span class="nc" id="L283">                    certOut.close();</span>
                 }
-<span class="nc" id="L289">            } catch (Exception e){</span>
-<span class="nc" id="L290">                FlyveLog.e(&quot;saveCertKey, IOException&quot;, e);</span>
-<span class="nc" id="L291">            }</span>
-<span class="nc" id="L292">        }</span>
-<span class="nc" id="L293">    }</span>
+<span class="nc" id="L285">            } catch (Exception e){</span>
+<span class="nc" id="L286">                FlyveLog.e(&quot;saveCertKey, IOException&quot;, e);</span>
+<span class="nc" id="L287">            }</span>
+<span class="nc" id="L288">        }</span>
+<span class="nc" id="L289">    }</span>
 
     /**
      * Base64-encode the given data
@@ -298,7 +294,7 @@ public class AndroidCryptoProvider {
      * @return string the resulting encoded data
      */
     public String encodeBase64String(byte[] data) {
-<span class="nc" id="L301">        return Base64.encodeToString(data, Base64.NO_WRAP);</span>
+<span class="nc" id="L297">        return Base64.encodeToString(data, Base64.NO_WRAP);</span>
     }
 
     public interface GenerateCallback {

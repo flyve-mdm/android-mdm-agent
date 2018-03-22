@@ -1,21 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FastLocationProvider.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.utils</a> &gt; <span class="el_source">FastLocationProvider.java</span></div><h1>FastLocationProvider.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.utils;
-
-import android.content.Context;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
-/*
- *   Copyright (C) 2017 Teclib. All rights reserved.
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FastLocationProvider.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.utils</a> &gt; <span class="el_source">FastLocationProvider.java</span></div><h1>FastLocationProvider.java</h1><pre class="source lang-java linenums">/*
+ * Copyright Teclib. All rights reserved.
  *
- *   This file is part of flyve-mdm-android-agent
- *
- * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
- * device management software.
+ * Flyve MDM is a mobile device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,152 +14,162 @@ import java.util.TimerTask;
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
- * @date      6/7/17
- * @copyright Copyright (C) 2017 Teclib. All rights reserved.
+ * @copyright Copyright Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://github.com/flyve-mdm/android-mdm-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
 
+package org.flyve.mdm.agent.utils;
+
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Get location fast and easy way
  */
-<span class="nc" id="L42">public class FastLocationProvider {</span>
+<span class="nc" id="L38">public class FastLocationProvider {</span>
 
     private Timer timer;
     private LocationManager locationManager;
     private LocationResult locationResult;
-<span class="nc" id="L47">    private boolean gpsEnabled = false;</span>
-<span class="nc" id="L48">    private boolean networkEnabled = false;</span>
+<span class="nc" id="L43">    private boolean gpsEnabled = false;</span>
+<span class="nc" id="L44">    private boolean networkEnabled = false;</span>
 
     public boolean getLocation(Context context, LocationResult result) {
         //I use LocationResult callback class to pass location value from MyLocation to user code.
-<span class="nc" id="L52">        locationResult = result;</span>
-<span class="nc bnc" id="L53" title="All 2 branches missed.">        if(locationManager == null) {</span>
-<span class="nc" id="L54">            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);</span>
+<span class="nc" id="L48">        locationResult = result;</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if(locationManager == null) {</span>
+<span class="nc" id="L50">            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);</span>
         }
 
         //exceptions will be thrown if provider is not permitted.
         try {
-<span class="nc" id="L59">            gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);}</span>
-<span class="nc" id="L60">        catch(Exception ex){</span>
-<span class="nc" id="L61">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L62">        }</span>
+<span class="nc" id="L55">            gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);}</span>
+<span class="nc" id="L56">        catch(Exception ex){</span>
+<span class="nc" id="L57">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L58">        }</span>
 
         try {
-<span class="nc" id="L65">            networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);</span>
-<span class="nc" id="L66">        } catch(Exception ex){</span>
-<span class="nc" id="L67">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L68">        }</span>
+<span class="nc" id="L61">            networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);</span>
+<span class="nc" id="L62">        } catch(Exception ex){</span>
+<span class="nc" id="L63">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L64">        }</span>
 
         //don't start listeners if no provider is enabled
-<span class="nc bnc" id="L71" title="All 4 branches missed.">        if(!gpsEnabled &amp;&amp; !networkEnabled) {</span>
-<span class="nc" id="L72">            return false;</span>
+<span class="nc bnc" id="L67" title="All 4 branches missed.">        if(!gpsEnabled &amp;&amp; !networkEnabled) {</span>
+<span class="nc" id="L68">            return false;</span>
         }
 
         try {
-<span class="nc bnc" id="L76" title="All 2 branches missed.">            if (gpsEnabled) {</span>
-<span class="nc" id="L77">                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListenerGps);</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">            if (gpsEnabled) {</span>
+<span class="nc" id="L73">                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListenerGps);</span>
             }
 
-<span class="nc bnc" id="L80" title="All 2 branches missed.">            if (networkEnabled) {</span>
-<span class="nc" id="L81">                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">            if (networkEnabled) {</span>
+<span class="nc" id="L77">                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);</span>
             }
-<span class="nc" id="L83">        } catch (SecurityException ex) {</span>
-<span class="nc" id="L84">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L85">        }</span>
+<span class="nc" id="L79">        } catch (SecurityException ex) {</span>
+<span class="nc" id="L80">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L81">        }</span>
 
-<span class="nc" id="L87">        timer = new Timer();</span>
-<span class="nc" id="L88">        timer.schedule(new GetLastLocation(), 10000);</span>
+<span class="nc" id="L83">        timer = new Timer();</span>
+<span class="nc" id="L84">        timer.schedule(new GetLastLocation(), 10000);</span>
 
-<span class="nc" id="L90">        return true;</span>
+<span class="nc" id="L86">        return true;</span>
     }
 
-<span class="nc" id="L93">    private LocationListener locationListenerGps = new LocationListener() {</span>
+<span class="nc" id="L89">    private LocationListener locationListenerGps = new LocationListener() {</span>
         public void onLocationChanged(Location location) {
-<span class="nc" id="L95">            timer.cancel();</span>
-<span class="nc" id="L96">            locationResult.gotLocation(location);</span>
-<span class="nc" id="L97">            locationManager.removeUpdates(this);</span>
-<span class="nc" id="L98">            locationManager.removeUpdates(locationListenerNetwork);</span>
+<span class="nc" id="L91">            timer.cancel();</span>
+<span class="nc" id="L92">            locationResult.gotLocation(location);</span>
+<span class="nc" id="L93">            locationManager.removeUpdates(this);</span>
+<span class="nc" id="L94">            locationManager.removeUpdates(locationListenerNetwork);</span>
+<span class="nc" id="L95">        }</span>
+
+        public void onProviderDisabled(String provider) {
+<span class="nc" id="L98">            FlyveLog.d(&quot;onProviderDisabled&quot;);</span>
 <span class="nc" id="L99">        }</span>
 
-        public void onProviderDisabled(String provider) {
-<span class="nc" id="L102">            FlyveLog.d(&quot;onProviderDisabled&quot;);</span>
+        public void onProviderEnabled(String provider) {
+<span class="nc" id="L102">            FlyveLog.d(&quot;onProviderEnabled&quot;);</span>
 <span class="nc" id="L103">        }</span>
 
-        public void onProviderEnabled(String provider) {
-<span class="nc" id="L106">            FlyveLog.d(&quot;onProviderEnabled&quot;);</span>
-<span class="nc" id="L107">        }</span>
-
         public void onStatusChanged(String provider, int status, Bundle extras) {
-<span class="nc" id="L110">            FlyveLog.d(&quot;onStatusChanged&quot;);</span>
-<span class="nc" id="L111">        }</span>
+<span class="nc" id="L106">            FlyveLog.d(&quot;onStatusChanged&quot;);</span>
+<span class="nc" id="L107">        }</span>
     };
 
-<span class="nc" id="L114">    private LocationListener locationListenerNetwork = new LocationListener() {</span>
+<span class="nc" id="L110">    private LocationListener locationListenerNetwork = new LocationListener() {</span>
         public void onLocationChanged(Location location) {
-<span class="nc" id="L116">            timer.cancel();</span>
-<span class="nc" id="L117">            locationResult.gotLocation(location);</span>
-<span class="nc" id="L118">            locationManager.removeUpdates(this);</span>
-<span class="nc" id="L119">            locationManager.removeUpdates(locationListenerGps);</span>
-<span class="nc" id="L120">        }</span>
+<span class="nc" id="L112">            timer.cancel();</span>
+<span class="nc" id="L113">            locationResult.gotLocation(location);</span>
+<span class="nc" id="L114">            locationManager.removeUpdates(this);</span>
+<span class="nc" id="L115">            locationManager.removeUpdates(locationListenerGps);</span>
+<span class="nc" id="L116">        }</span>
 
         public void onProviderDisabled(String provider) {
-<span class="nc" id="L123">            FlyveLog.d(&quot;onProviderDisabled&quot;);</span>
-<span class="nc" id="L124">        }</span>
+<span class="nc" id="L119">            FlyveLog.d(&quot;onProviderDisabled&quot;);</span>
+<span class="nc" id="L120">        }</span>
 
         public void onProviderEnabled(String provider) {
-<span class="nc" id="L127">            FlyveLog.d(&quot;onProviderEnabled&quot;);</span>
-<span class="nc" id="L128">        }</span>
+<span class="nc" id="L123">            FlyveLog.d(&quot;onProviderEnabled&quot;);</span>
+<span class="nc" id="L124">        }</span>
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
-<span class="nc" id="L131">            FlyveLog.d(&quot;onStatusChanged&quot;);</span>
-<span class="nc" id="L132">        }</span>
+<span class="nc" id="L127">            FlyveLog.d(&quot;onStatusChanged&quot;);</span>
+<span class="nc" id="L128">        }</span>
     };
 
-<span class="nc" id="L135">    class GetLastLocation extends TimerTask {</span>
+<span class="nc" id="L131">    class GetLastLocation extends TimerTask {</span>
         @Override
         public void run() {
-<span class="nc" id="L138">            Location netLocation = null;</span>
-<span class="nc" id="L139">            Location gpsLocation = null;</span>
+<span class="nc" id="L134">            Location netLocation = null;</span>
+<span class="nc" id="L135">            Location gpsLocation = null;</span>
 
             try {
-<span class="nc bnc" id="L142" title="All 2 branches missed.">                if (gpsEnabled) {</span>
-<span class="nc" id="L143">                    gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">                if (gpsEnabled) {</span>
+<span class="nc" id="L139">                    gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);</span>
                 }
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">                if (networkEnabled) {</span>
-<span class="nc" id="L147">                    netLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                if (networkEnabled) {</span>
+<span class="nc" id="L143">                    netLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);</span>
                 }
-<span class="nc" id="L149">            } catch (SecurityException ex) {</span>
-<span class="nc" id="L150">                FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L151">            }</span>
+<span class="nc" id="L145">            } catch (SecurityException ex) {</span>
+<span class="nc" id="L146">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L147">            }</span>
 
             //if there are both values use the latest one
-<span class="nc bnc" id="L154" title="All 4 branches missed.">            if(gpsLocation!=null &amp;&amp; netLocation!=null){</span>
-<span class="nc bnc" id="L155" title="All 2 branches missed.">                if(gpsLocation.getTime()&gt;netLocation.getTime())</span>
-<span class="nc" id="L156">                    locationResult.gotLocation(gpsLocation);</span>
+<span class="nc bnc" id="L150" title="All 4 branches missed.">            if(gpsLocation!=null &amp;&amp; netLocation!=null){</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">                if(gpsLocation.getTime()&gt;netLocation.getTime())</span>
+<span class="nc" id="L152">                    locationResult.gotLocation(gpsLocation);</span>
                 else
-<span class="nc" id="L158">                    locationResult.gotLocation(netLocation);</span>
-<span class="nc" id="L159">                return;</span>
+<span class="nc" id="L154">                    locationResult.gotLocation(netLocation);</span>
+<span class="nc" id="L155">                return;</span>
             }
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">            if(gpsLocation!=null) {</span>
-<span class="nc" id="L163">                locationResult.gotLocation(gpsLocation);</span>
-<span class="nc" id="L164">                return;</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">            if(gpsLocation!=null) {</span>
+<span class="nc" id="L159">                locationResult.gotLocation(gpsLocation);</span>
+<span class="nc" id="L160">                return;</span>
             }
 
-<span class="nc bnc" id="L167" title="All 2 branches missed.">            if(netLocation!=null) {</span>
-<span class="nc" id="L168">                locationResult.gotLocation(netLocation);</span>
-<span class="nc" id="L169">                return;</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">            if(netLocation!=null) {</span>
+<span class="nc" id="L164">                locationResult.gotLocation(netLocation);</span>
+<span class="nc" id="L165">                return;</span>
             }
 
-<span class="nc" id="L172">            locationResult.gotLocation(null);</span>
-<span class="nc" id="L173">        }</span>
+<span class="nc" id="L168">            locationResult.gotLocation(null);</span>
+<span class="nc" id="L169">        }</span>
     }
 
-<span class="nc" id="L176">    public abstract static class LocationResult {</span>
+<span class="nc" id="L172">    public abstract static class LocationResult {</span>
         public abstract void gotLocation(Location location);
     }
 }

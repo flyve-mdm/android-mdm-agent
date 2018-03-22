@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FragmentLog.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">FragmentLog.java</span></div><h1>FragmentLog.java</h1><pre class="source lang-java linenums">/*
- *   Copyright (C) 2017 Teclib. All rights reserved.
+ * Copyright Teclib. All rights reserved.
  *
- * This file is part of flyve-mdm-android-agent
- *
- * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
- * device management software.
+ * Flyve MDM is a mobile device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,10 +14,9 @@
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
- * @date      02/06/2017
- * @copyright Copyright (C) ${YEAR} Teclib. All rights reserved.
+ * @copyright Copyright Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://github.com/flyve-mdm/android-mdm-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
@@ -48,11 +44,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-
-/**
- * This is the main activity of the app
- */
-<span class="nc" id="L55">public class FragmentLog extends Fragment  {</span>
+<span class="nc" id="L47">public class FragmentLog extends Fragment  {</span>
 
     private TextView txtMessage;
     private List&lt;HashMap&lt;String, String&gt;&gt; arrData;
@@ -69,69 +61,69 @@ import java.util.List;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-<span class="nc" id="L72">        View v = inflater.inflate(R.layout.fragment_log, container, false);</span>
+<span class="nc" id="L64">        View v = inflater.inflate(R.layout.fragment_log, container, false);</span>
 
-<span class="nc" id="L74">        txtMessage = v.findViewById(R.id.txtMessage);</span>
-<span class="nc" id="L75">        pb = v.findViewById(R.id.progressBar);</span>
+<span class="nc" id="L66">        txtMessage = v.findViewById(R.id.txtMessage);</span>
+<span class="nc" id="L67">        pb = v.findViewById(R.id.progressBar);</span>
 
-<span class="nc" id="L77">        FloatingActionButton btnDelete = v.findViewById(R.id.btnDelete);</span>
-<span class="nc" id="L78">        btnDelete.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L69">        FloatingActionButton btnDelete = v.findViewById(R.id.btnDelete);</span>
+<span class="nc" id="L70">        btnDelete.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L81">                FlyveLog.clearLog( FlyveLog.FILE_NAME_LOG );</span>
-<span class="nc" id="L82">                arrData.clear();</span>
-<span class="nc" id="L83">                loadLogFile();</span>
-<span class="nc" id="L84">            }</span>
+<span class="nc" id="L73">                FlyveLog.clearLog( FlyveLog.FILE_NAME_LOG );</span>
+<span class="nc" id="L74">                arrData.clear();</span>
+<span class="nc" id="L75">                loadLogFile();</span>
+<span class="nc" id="L76">            }</span>
         });
 
-<span class="nc" id="L87">        arrData = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L79">        arrData = new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L89">        final SwipeRefreshLayout swipeLayout = v.findViewById(R.id.swipe_container);</span>
-<span class="nc" id="L90">        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {</span>
+<span class="nc" id="L81">        final SwipeRefreshLayout swipeLayout = v.findViewById(R.id.swipe_container);</span>
+<span class="nc" id="L82">        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {</span>
             @Override
             public void onRefresh() {
-<span class="nc" id="L93">                swipeLayout.setRefreshing(false);</span>
-<span class="nc" id="L94">                arrData.clear();</span>
-<span class="nc" id="L95">                loadLogFile();</span>
-<span class="nc" id="L96">            }</span>
+<span class="nc" id="L85">                swipeLayout.setRefreshing(false);</span>
+<span class="nc" id="L86">                arrData.clear();</span>
+<span class="nc" id="L87">                loadLogFile();</span>
+<span class="nc" id="L88">            }</span>
         });
 
-<span class="nc" id="L99">        lst = v.findViewById(R.id.lst);</span>
-<span class="nc" id="L100">        loadLogFile();</span>
+<span class="nc" id="L91">        lst = v.findViewById(R.id.lst);</span>
+<span class="nc" id="L92">        loadLogFile();</span>
 
-<span class="nc" id="L102">        return v;</span>
+<span class="nc" id="L94">        return v;</span>
     }
 
     /**
      * Load Log from files
      */
     private void loadLogFile() {
-<span class="nc" id="L109">        pb.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L101">        pb.setVisibility(View.VISIBLE);</span>
 
-<span class="nc" id="L111">        LogFileReader.loadLog(FlyveLog.FILE_NAME_LOG, new LogFileReader.LogFileCallback() {</span>
+<span class="nc" id="L103">        LogFileReader.loadLog(FlyveLog.FILE_NAME_LOG, new LogFileReader.LogFileCallback() {</span>
             @Override
             public void onSuccess(List&lt;HashMap&lt;String, String&gt;&gt; data) {
-<span class="nc" id="L114">                pb.setVisibility(View.GONE);</span>
+<span class="nc" id="L106">                pb.setVisibility(View.GONE);</span>
 
                 // order data last first
-<span class="nc" id="L117">                Collections.reverse(data);</span>
-<span class="nc" id="L118">                arrData = data;</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">                if(arrData.isEmpty()) {</span>
-<span class="nc" id="L120">                    txtMessage.setText(getResources().getString(R.string.without_data_to_show));</span>
+<span class="nc" id="L109">                Collections.reverse(data);</span>
+<span class="nc" id="L110">                arrData = data;</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">                if(arrData.isEmpty()) {</span>
+<span class="nc" id="L112">                    txtMessage.setText(getResources().getString(R.string.without_data_to_show));</span>
                 } else {
-<span class="nc" id="L122">                    txtMessage.setText(&quot;&quot;);</span>
+<span class="nc" id="L114">                    txtMessage.setText(&quot;&quot;);</span>
                 }
 
-<span class="nc" id="L125">                LogAdapter mAdapter = new LogAdapter(FragmentLog.this.getActivity(), arrData);</span>
-<span class="nc" id="L126">                lst.setAdapter(mAdapter);</span>
-<span class="nc" id="L127">            }</span>
+<span class="nc" id="L117">                LogAdapter mAdapter = new LogAdapter(FragmentLog.this.getActivity(), arrData);</span>
+<span class="nc" id="L118">                lst.setAdapter(mAdapter);</span>
+<span class="nc" id="L119">            }</span>
 
             @Override
             public void onError(String error) {
-<span class="nc" id="L131">                pb.setVisibility(View.GONE);</span>
-<span class="nc" id="L132">                txtMessage.setText(getResources().getString(R.string.we_can_not_show_the_log));</span>
-<span class="nc" id="L133">            }</span>
+<span class="nc" id="L123">                pb.setVisibility(View.GONE);</span>
+<span class="nc" id="L124">                txtMessage.setText(getResources().getString(R.string.we_can_not_show_the_log));</span>
+<span class="nc" id="L125">            }</span>
         });
-<span class="nc" id="L135">    }</span>
+<span class="nc" id="L127">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

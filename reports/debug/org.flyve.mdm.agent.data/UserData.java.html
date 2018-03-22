@@ -1,19 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>UserData.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.data</a> &gt; <span class="el_source">UserData.java</span></div><h1>UserData.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.data;
-
-import android.content.Context;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.List;
-
-/*
- *   Copyright (C) 2017 Teclib. All rights reserved.
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>UserData.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.data</a> &gt; <span class="el_source">UserData.java</span></div><h1>UserData.java</h1><pre class="source lang-java linenums">/*
+ * Copyright Teclib. All rights reserved.
  *
- *   This file is part of flyve-mdm-android-agent
- *
- * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
- * device management software.
+ * Flyve MDM is a mobile device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,26 +14,35 @@ import java.util.List;
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
- * @date      9/8/17
- * @copyright Copyright (C) 2017 Teclib. All rights reserved.
+ * @copyright Copyright Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://github.com/flyve-mdm/android-mdm-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
+
+package org.flyve.mdm.agent.data;
+
+import android.content.Context;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
+
 public class UserData extends LocalStorage {
 
-<span class="nc" id="L38">    private static String local = &quot;FlyveMDMUserObject_&quot;;</span>
+<span class="nc" id="L35">    private static String local = &quot;FlyveMDMUserObject_&quot;;</span>
 
-<span class="nc" id="L40">    private static final String FIRST_NAME = local + &quot;firstName&quot;;</span>
-<span class="nc" id="L41">    private static final String LAST_NAME = local + &quot;lastName&quot;;</span>
-<span class="nc" id="L42">    private static final String LANGUAGE = local + &quot;language&quot;;</span>
-<span class="nc" id="L43">    private static final String PHONE = local + &quot;phone&quot;;</span>
-<span class="nc" id="L44">    private static final String MOBILE_PHONE = local + &quot;mobilePhone&quot;;</span>
-<span class="nc" id="L45">    private static final String PHONE2 = local + &quot;phone2&quot;;</span>
-<span class="nc" id="L46">    private static final String ADMINISTRATIVE_NUMBER = local + &quot;administrativeNumber&quot;;</span>
-<span class="nc" id="L47">    private static final String PICTURE = local + &quot;picture&quot;;</span>
-<span class="nc" id="L48">    private static final String EMAIL = local + &quot;email&quot;;</span>
+<span class="nc" id="L37">    private static final String FIRST_NAME = local + &quot;firstName&quot;;</span>
+<span class="nc" id="L38">    private static final String LAST_NAME = local + &quot;lastName&quot;;</span>
+<span class="nc" id="L39">    private static final String LANGUAGE = local + &quot;language&quot;;</span>
+<span class="nc" id="L40">    private static final String PHONE = local + &quot;phone&quot;;</span>
+<span class="nc" id="L41">    private static final String MOBILE_PHONE = local + &quot;mobilePhone&quot;;</span>
+<span class="nc" id="L42">    private static final String PHONE2 = local + &quot;phone2&quot;;</span>
+<span class="nc" id="L43">    private static final String ADMINISTRATIVE_NUMBER = local + &quot;administrativeNumber&quot;;</span>
+<span class="nc" id="L44">    private static final String PICTURE = local + &quot;picture&quot;;</span>
+<span class="nc" id="L45">    private static final String EMAIL = local + &quot;email&quot;;</span>
 
     /**
      * Constructor
@@ -53,15 +50,15 @@ public class UserData extends LocalStorage {
      * @param context
      */
     public UserData(Context context) {
-<span class="nc" id="L56">        super(context);</span>
-<span class="nc" id="L57">    }</span>
+<span class="nc" id="L53">        super(context);</span>
+<span class="nc" id="L54">    }</span>
 
     /**
      * Get the first name of the user
      * @return the first name
      */
     public String getFirstName() {
-<span class="nc" id="L64">        return getData(FIRST_NAME);</span>
+<span class="nc" id="L61">        return getData(FIRST_NAME);</span>
     }
 
     /**
@@ -69,15 +66,15 @@ public class UserData extends LocalStorage {
      * @param firstName the first name
      */
     public void setFirstName(String firstName) {
-<span class="nc" id="L72">        setData(FIRST_NAME, firstName);</span>
-<span class="nc" id="L73">    }</span>
+<span class="nc" id="L69">        setData(FIRST_NAME, firstName);</span>
+<span class="nc" id="L70">    }</span>
 
     /**
      * Get the last name of the user
      * @return the last name
      */
     public String getLastName() {
-<span class="nc" id="L80">        return getData(LAST_NAME);</span>
+<span class="nc" id="L77">        return getData(LAST_NAME);</span>
     }
 
     /**
@@ -85,15 +82,15 @@ public class UserData extends LocalStorage {
      * @param lastName the last name
      */
     public void setLastName(String lastName) {
-<span class="nc" id="L88">        setData(LAST_NAME, lastName);</span>
-<span class="nc" id="L89">    }</span>
+<span class="nc" id="L85">        setData(LAST_NAME, lastName);</span>
+<span class="nc" id="L86">    }</span>
 
     /**
      * Get the language of the user
      * @return the language
      */
     public String getLanguage() {
-<span class="nc" id="L96">        return getData(LANGUAGE);</span>
+<span class="nc" id="L93">        return getData(LANGUAGE);</span>
     }
 
     /**
@@ -101,15 +98,15 @@ public class UserData extends LocalStorage {
      * @param language
      */
     public void setLanguage(String language) {
-<span class="nc" id="L104">        setData(LANGUAGE, language);</span>
-<span class="nc" id="L105">    }</span>
+<span class="nc" id="L101">        setData(LANGUAGE, language);</span>
+<span class="nc" id="L102">    }</span>
 
     /**
      * Get the phone of the user
      * @return the phone
      */
     public String getPhone() {
-<span class="nc" id="L112">        return getData(PHONE);</span>
+<span class="nc" id="L109">        return getData(PHONE);</span>
     }
 
     /**
@@ -117,15 +114,15 @@ public class UserData extends LocalStorage {
      * @param phone
      */
     public void setPhone(String phone) {
-<span class="nc" id="L120">        setData(PHONE, phone);</span>
-<span class="nc" id="L121">    }</span>
+<span class="nc" id="L117">        setData(PHONE, phone);</span>
+<span class="nc" id="L118">    }</span>
 
     /**
      * Get the mobile phone of the user
      * @return the mobile phone
      */
     public String getMobilePhone() {
-<span class="nc" id="L128">        return getData(MOBILE_PHONE);</span>
+<span class="nc" id="L125">        return getData(MOBILE_PHONE);</span>
     }
 
     /**
@@ -133,15 +130,15 @@ public class UserData extends LocalStorage {
      * @param mobilePhone
      */
     public void setMobilePhone(String mobilePhone) {
-<span class="nc" id="L136">        setData(MOBILE_PHONE, mobilePhone);</span>
-<span class="nc" id="L137">    }</span>
+<span class="nc" id="L133">        setData(MOBILE_PHONE, mobilePhone);</span>
+<span class="nc" id="L134">    }</span>
 
     /**
      * Get a second phone of the user
      * @return the second phone
      */
     public String getPhone2() {
-<span class="nc" id="L144">        return getData(PHONE2);</span>
+<span class="nc" id="L141">        return getData(PHONE2);</span>
     }
 
     /**
@@ -149,15 +146,15 @@ public class UserData extends LocalStorage {
      * @param phone2
      */
     public void setPhone2(String phone2) {
-<span class="nc" id="L152">        setData(PHONE2, phone2);</span>
-<span class="nc" id="L153">    }</span>
+<span class="nc" id="L149">        setData(PHONE2, phone2);</span>
+<span class="nc" id="L150">    }</span>
 
     /**
      * Get the administrative number of the user
      * @return the administrative number
      */
     public String getAdministrativeNumber() {
-<span class="nc" id="L160">        return getData(ADMINISTRATIVE_NUMBER);</span>
+<span class="nc" id="L157">        return getData(ADMINISTRATIVE_NUMBER);</span>
     }
 
     /**
@@ -165,15 +162,15 @@ public class UserData extends LocalStorage {
      * @param administrativeNumber
      */
     public void setAdministrativeNumber(String administrativeNumber) {
-<span class="nc" id="L168">        setData(ADMINISTRATIVE_NUMBER, administrativeNumber);</span>
-<span class="nc" id="L169">    }</span>
+<span class="nc" id="L165">        setData(ADMINISTRATIVE_NUMBER, administrativeNumber);</span>
+<span class="nc" id="L166">    }</span>
 
     /**
      * Get the picture of the user
      * @return the picture
      */
     public String getPicture() {
-<span class="nc" id="L176">        return getData(PICTURE);</span>
+<span class="nc" id="L173">        return getData(PICTURE);</span>
     }
 
     /**
@@ -181,17 +178,17 @@ public class UserData extends LocalStorage {
      * @param picture
      */
     public void setPicture(String picture) {
-<span class="nc" id="L184">        setData(PICTURE, picture);</span>
-<span class="nc" id="L185">    }</span>
+<span class="nc" id="L181">        setData(PICTURE, picture);</span>
+<span class="nc" id="L182">    }</span>
 
     /**
      * Get the emails of the list
      * @return the emails
      */
     public List&lt;EmailsData&gt; getEmails() {
-<span class="nc" id="L192">        String json = getData(EMAIL);</span>
-<span class="nc" id="L193">        Gson gson = new Gson();</span>
-<span class="nc" id="L194">        return gson.fromJson(json, new TypeToken&lt;List&lt;EmailsData&gt;&gt;(){}.getType());</span>
+<span class="nc" id="L189">        String json = getData(EMAIL);</span>
+<span class="nc" id="L190">        Gson gson = new Gson();</span>
+<span class="nc" id="L191">        return gson.fromJson(json, new TypeToken&lt;List&lt;EmailsData&gt;&gt;(){}.getType());</span>
     }
 
     /**
@@ -199,12 +196,12 @@ public class UserData extends LocalStorage {
      * @param emails
      */
     public void setEmails(List&lt;EmailsData&gt; emails) {
-<span class="nc" id="L202">        Gson gson = new Gson();</span>
-<span class="nc" id="L203">        String json = gson.toJson(emails);</span>
-<span class="nc" id="L204">        setData(EMAIL, json);</span>
-<span class="nc" id="L205">    }</span>
+<span class="nc" id="L199">        Gson gson = new Gson();</span>
+<span class="nc" id="L200">        String json = gson.toJson(emails);</span>
+<span class="nc" id="L201">        setData(EMAIL, json);</span>
+<span class="nc" id="L202">    }</span>
 
-<span class="nc" id="L207">    public class EmailsData {</span>
+<span class="nc" id="L204">    public class EmailsData {</span>
 
         private String email;
         private String type;
@@ -214,7 +211,7 @@ public class UserData extends LocalStorage {
          * @return the email
          */
         public String getEmail() {
-<span class="nc" id="L217">            return email;</span>
+<span class="nc" id="L214">            return email;</span>
         }
 
         /**
@@ -222,15 +219,15 @@ public class UserData extends LocalStorage {
          * @param email
          */
         public void setEmail(String email) {
-<span class="nc" id="L225">            this.email = email;</span>
-<span class="nc" id="L226">        }</span>
+<span class="nc" id="L222">            this.email = email;</span>
+<span class="nc" id="L223">        }</span>
 
         /**
          * Get the type of the email
          * @return string the type
          */
         public String getType() {
-<span class="nc" id="L233">            return type;</span>
+<span class="nc" id="L230">            return type;</span>
         }
 
         /**
@@ -238,8 +235,8 @@ public class UserData extends LocalStorage {
          * @param type
          */
         public void setType(String type) {
-<span class="nc" id="L241">            this.type = type;</span>
-<span class="nc" id="L242">        }</span>
+<span class="nc" id="L238">            this.type = type;</span>
+<span class="nc" id="L239">        }</span>
     }
 
 }

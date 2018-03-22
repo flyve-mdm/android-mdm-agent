@@ -1,4 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FragmentConnectivity.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">FragmentConnectivity.java</span></div><h1>FragmentConnectivity.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.ui;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FragmentConnectivity.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">FragmentConnectivity.java</span></div><h1>FragmentConnectivity.java</h1><pre class="source lang-java linenums">/*
+ * Copyright Teclib. All rights reserved.
+ *
+ * Flyve MDM is a mobile device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @copyright Copyright Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/android-mdm-agent
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+
+package org.flyve.mdm.agent.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,78 +37,52 @@ import org.flyve.mdm.agent.data.PoliciesData;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/*
- *   Copyright © 2017 Teclib. All rights reserved.
- *
- *   This file is part of flyve-mdm-android
- *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
- * device management software.
- *
- * Flyve MDM is free software: you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 3
- * of the License, or (at your option) any later version.
- *
- * Flyve MDM is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * ------------------------------------------------------------------------------
- * @author    Rafael Hernandez
- * @date      18/12/17
- * @copyright Copyright © 2017 Teclib. All rights reserved.
- * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
- * @link      https://flyve-mdm.com
- * ------------------------------------------------------------------------------
- */
-<span class="nc" id="L43">public class FragmentConnectivity extends Fragment {</span>
+<span class="nc" id="L40">public class FragmentConnectivity extends Fragment {</span>
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-<span class="nc" id="L47">        View v = inflater.inflate(R.layout.fragment_connectivity, null);</span>
+<span class="nc" id="L44">        View v = inflater.inflate(R.layout.fragment_connectivity, null);</span>
 
-<span class="nc" id="L49">        ListView lst = v.findViewById(R.id.lst);</span>
-<span class="nc" id="L50">        loadData(lst);</span>
+<span class="nc" id="L46">        ListView lst = v.findViewById(R.id.lst);</span>
+<span class="nc" id="L47">        loadData(lst);</span>
 
-<span class="nc" id="L52">        return v;</span>
+<span class="nc" id="L49">        return v;</span>
     }
 
     private void loadData(ListView lst) {
 
-<span class="nc" id="L57">        PoliciesData cache = new PoliciesData(FragmentConnectivity.this.getContext());</span>
+<span class="nc" id="L54">        PoliciesData cache = new PoliciesData(FragmentConnectivity.this.getContext());</span>
 
-<span class="nc" id="L59">        ArrayList arr = new ArrayList&lt;HashMap&lt;String, Boolean&gt;&gt;();</span>
+<span class="nc" id="L56">        ArrayList arr = new ArrayList&lt;HashMap&lt;String, Boolean&gt;&gt;();</span>
 
-<span class="nc" id="L61">        HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L62">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_airplane_mode));</span>
-<span class="nc" id="L63">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityAirplaneModeDisable()));</span>
-<span class="nc" id="L64">        arr.add(map);</span>
+<span class="nc" id="L58">        HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L59">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_airplane_mode));</span>
+<span class="nc" id="L60">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityAirplaneModeDisable()));</span>
+<span class="nc" id="L61">        arr.add(map);</span>
 
-<span class="nc" id="L66">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L67">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_bluetooth));</span>
-<span class="nc" id="L68">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityBluetoothDisable()));</span>
-<span class="nc" id="L69">        arr.add(map);</span>
+<span class="nc" id="L63">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L64">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_bluetooth));</span>
+<span class="nc" id="L65">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityBluetoothDisable()));</span>
+<span class="nc" id="L66">        arr.add(map);</span>
 
-<span class="nc" id="L71">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L72">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_gps));</span>
-<span class="nc" id="L73">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityGPSDisable()));</span>
-<span class="nc" id="L74">        arr.add(map);</span>
+<span class="nc" id="L68">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L69">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_gps));</span>
+<span class="nc" id="L70">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityGPSDisable()));</span>
+<span class="nc" id="L71">        arr.add(map);</span>
 
-<span class="nc" id="L76">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L77">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_mobile_line));</span>
-<span class="nc" id="L78">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityMobileLineDisable()));</span>
-<span class="nc" id="L79">        arr.add(map);</span>
+<span class="nc" id="L73">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L74">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_mobile_line));</span>
+<span class="nc" id="L75">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityMobileLineDisable()));</span>
+<span class="nc" id="L76">        arr.add(map);</span>
 
-<span class="nc" id="L81">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L82">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_wifi));</span>
-<span class="nc" id="L83">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityWifiDisable()));</span>
-<span class="nc" id="L84">        arr.add(map);</span>
+<span class="nc" id="L78">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L79">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_wifi));</span>
+<span class="nc" id="L80">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityWifiDisable()));</span>
+<span class="nc" id="L81">        arr.add(map);</span>
 
-<span class="nc" id="L86">        lst.setAdapter( new ConnectivityAdapter(FragmentConnectivity.this.getActivity(), arr));</span>
+<span class="nc" id="L83">        lst.setAdapter( new ConnectivityAdapter(FragmentConnectivity.this.getActivity(), arr));</span>
 
-<span class="nc" id="L88">    }</span>
+<span class="nc" id="L85">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

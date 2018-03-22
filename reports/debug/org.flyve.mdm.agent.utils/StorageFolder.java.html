@@ -1,23 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>StorageFolder.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.utils</a> &gt; <span class="el_source">StorageFolder.java</span></div><h1>StorageFolder.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.utils;
-
-import android.content.Context;
-import android.os.Build;
-import android.os.Environment;
-import android.os.StatFs;
-
-import org.flyve.mdm.agent.R;
-
-import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-/*
- *   Copyright © 2018 Teclib. All rights reserved.
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>StorageFolder.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.utils</a> &gt; <span class="el_source">StorageFolder.java</span></div><h1>StorageFolder.java</h1><pre class="source lang-java linenums">/*
+ * Copyright Teclib. All rights reserved.
  *
- *   This file is part of flyve-mdm-android
- *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
- * device management software.
+ * Flyve MDM is a mobile device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,34 +14,47 @@ import java.util.regex.Pattern;
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
- * @date      15/1/18
- * @copyright Copyright © 2018 Teclib. All rights reserved.
+ * @copyright Copyright Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/android-mdm-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
+
+package org.flyve.mdm.agent.utils;
+
+import android.content.Context;
+import android.os.Build;
+import android.os.Environment;
+import android.os.StatFs;
+
+import org.flyve.mdm.agent.R;
+
+import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class StorageFolder {
 
     private static final String EXTERNAL_STORAGE = &quot;EXTERNAL_STORAGE&quot;;
 
     private Context context;
-<span class="nc" id="L45">    private Boolean isSDMemory = true;</span>
+<span class="nc" id="L42">    private Boolean isSDMemory = true;</span>
 
-<span class="nc" id="L47">    public StorageFolder(Context context){</span>
-<span class="nc" id="L48">        this.context = context;</span>
-<span class="nc" id="L49">    }</span>
+<span class="nc" id="L44">    public StorageFolder(Context context){</span>
+<span class="nc" id="L45">        this.context = context;</span>
+<span class="nc" id="L46">    }</span>
 
     /**
      * Get the directory of the apk
      * @return string the apk directory
      */
     public String getApkDir() throws Exception {
-<span class="nc" id="L56">        String path = getFolderPath(Environment.DIRECTORY_DOWNLOADS);</span>
-<span class="nc bnc" id="L57" title="All 2 branches missed.">        if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }</span>
+<span class="nc" id="L53">        String path = getFolderPath(Environment.DIRECTORY_DOWNLOADS);</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }</span>
 
-<span class="nc" id="L59">        FlyveLog.d(path);</span>
-<span class="nc" id="L60">        return path;</span>
+<span class="nc" id="L56">        FlyveLog.d(path);</span>
+<span class="nc" id="L57">        return path;</span>
     }
 
     /**
@@ -65,11 +62,11 @@ public class StorageFolder {
      * @return string the UPK directory
      */
     public String getUpkDir() {
-<span class="nc" id="L68">        String path = getFolderPath(Environment.DIRECTORY_DOWNLOADS) + &quot;/.fdroid/&quot;;</span>
-<span class="nc bnc" id="L69" title="All 2 branches missed.">        if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }</span>
+<span class="nc" id="L65">        String path = getFolderPath(Environment.DIRECTORY_DOWNLOADS) + &quot;/.fdroid/&quot;;</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }</span>
 
-<span class="nc" id="L71">        FlyveLog.d(path);</span>
-<span class="nc" id="L72">        return path;</span>
+<span class="nc" id="L68">        FlyveLog.d(path);</span>
+<span class="nc" id="L69">        return path;</span>
     }
 
     /**
@@ -77,11 +74,11 @@ public class StorageFolder {
      * @return string the SD card directory
      */
     public String getSDcardDir() {
-<span class="nc" id="L80">        String path = System.getenv(EXTERNAL_STORAGE);</span>
-<span class="nc bnc" id="L81" title="All 2 branches missed.">        if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }</span>
+<span class="nc" id="L77">        String path = System.getenv(EXTERNAL_STORAGE);</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }</span>
 
-<span class="nc" id="L83">        FlyveLog.d(path);</span>
-<span class="nc" id="L84">        return path;</span>
+<span class="nc" id="L80">        FlyveLog.d(path);</span>
+<span class="nc" id="L81">        return path;</span>
     }
 
     /**
@@ -89,11 +86,11 @@ public class StorageFolder {
      * @return string the pictures directory
      */
     public String getPicturesDir() {
-<span class="nc" id="L92">        String path = getFolderPath(Environment.DIRECTORY_DCIM);</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">        if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }</span>
+<span class="nc" id="L89">        String path = getFolderPath(Environment.DIRECTORY_DCIM);</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }</span>
 
-<span class="nc" id="L95">        FlyveLog.d(path);</span>
-<span class="nc" id="L96">        return path;</span>
+<span class="nc" id="L92">        FlyveLog.d(path);</span>
+<span class="nc" id="L93">        return path;</span>
     }
 
     /**
@@ -102,15 +99,15 @@ public class StorageFolder {
      */
     public String getDocumentsDir() {
         String path;
-<span class="nc bnc" id="L105" title="All 2 branches missed.">        if(Build.VERSION.SDK_INT &gt;= 19) {</span>
-<span class="nc" id="L106">            path = getFolderPath(Environment.DIRECTORY_DOCUMENTS);</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if(Build.VERSION.SDK_INT &gt;= 19) {</span>
+<span class="nc" id="L103">            path = getFolderPath(Environment.DIRECTORY_DOCUMENTS);</span>
         } else {
-<span class="nc" id="L108">            path = getSDcardDir() + &quot;/Documents&quot;;</span>
+<span class="nc" id="L105">            path = getSDcardDir() + &quot;/Documents&quot;;</span>
         }
-<span class="nc bnc" id="L110" title="All 2 branches missed.">        if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }</span>
 
-<span class="nc" id="L112">        FlyveLog.d(path);</span>
-<span class="nc" id="L113">        return path;</span>
+<span class="nc" id="L109">        FlyveLog.d(path);</span>
+<span class="nc" id="L110">        return path;</span>
     }
 
     /**
@@ -118,11 +115,11 @@ public class StorageFolder {
      * @return string the music directory
      */
     public String getMusicsDir() {
-<span class="nc" id="L121">        String path = getFolderPath(Environment.DIRECTORY_MUSIC);</span>
-<span class="nc bnc" id="L122" title="All 2 branches missed.">        if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }</span>
+<span class="nc" id="L118">        String path = getFolderPath(Environment.DIRECTORY_MUSIC);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }</span>
 
-<span class="nc" id="L124">        FlyveLog.d(path);</span>
-<span class="nc" id="L125">        return path;</span>
+<span class="nc" id="L121">        FlyveLog.d(path);</span>
+<span class="nc" id="L122">        return path;</span>
     }
 
     /**
@@ -132,92 +129,92 @@ public class StorageFolder {
      */
     public String convertPath(String receivePath) {
 
-<span class="nc" id="L135">        String sreturn = receivePath;</span>
+<span class="nc" id="L132">        String sreturn = receivePath;</span>
 
-<span class="nc" id="L137">        Pattern sdcard = Pattern.compile(&quot;%SDCARD%&quot;);</span>
-<span class="nc" id="L138">        Pattern document = Pattern.compile(&quot;%DOCUMENTS%&quot;);</span>
-<span class="nc" id="L139">        Pattern music = Pattern.compile(&quot;%MUSIC%&quot;);</span>
-<span class="nc" id="L140">        Pattern photo = Pattern.compile(&quot;%PHOTOS%&quot;);</span>
+<span class="nc" id="L134">        Pattern sdcard = Pattern.compile(&quot;%SDCARD%&quot;);</span>
+<span class="nc" id="L135">        Pattern document = Pattern.compile(&quot;%DOCUMENTS%&quot;);</span>
+<span class="nc" id="L136">        Pattern music = Pattern.compile(&quot;%MUSIC%&quot;);</span>
+<span class="nc" id="L137">        Pattern photo = Pattern.compile(&quot;%PHOTOS%&quot;);</span>
 
-<span class="nc" id="L142">        Matcher msdcard = sdcard.matcher(receivePath);</span>
-<span class="nc" id="L143">        Matcher mdocument = document.matcher(receivePath);</span>
-<span class="nc" id="L144">        Matcher mmusic = music.matcher(receivePath);</span>
-<span class="nc" id="L145">        Matcher mphoto = photo.matcher(receivePath);</span>
+<span class="nc" id="L139">        Matcher msdcard = sdcard.matcher(receivePath);</span>
+<span class="nc" id="L140">        Matcher mdocument = document.matcher(receivePath);</span>
+<span class="nc" id="L141">        Matcher mmusic = music.matcher(receivePath);</span>
+<span class="nc" id="L142">        Matcher mphoto = photo.matcher(receivePath);</span>
 
         //Find the sequence that matches the pattern
-<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (msdcard.find()) {</span>
-<span class="nc" id="L149">            sreturn = receivePath;</span>
-<span class="nc" id="L150">            sreturn = sreturn.replace(&quot;%SDCARD%&quot;, getSDcardDir());</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (msdcard.find()) {</span>
+<span class="nc" id="L146">            sreturn = receivePath;</span>
+<span class="nc" id="L147">            sreturn = sreturn.replace(&quot;%SDCARD%&quot;, getSDcardDir());</span>
         }
 
-<span class="nc bnc" id="L153" title="All 2 branches missed.">        if (mdocument.find()) {</span>
-<span class="nc" id="L154">            sreturn = receivePath;</span>
-<span class="nc" id="L155">            sreturn = sreturn.replace(&quot;%DOCUMENTS%&quot;, getDocumentsDir());</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        if (mdocument.find()) {</span>
+<span class="nc" id="L151">            sreturn = receivePath;</span>
+<span class="nc" id="L152">            sreturn = sreturn.replace(&quot;%DOCUMENTS%&quot;, getDocumentsDir());</span>
         }
 
-<span class="nc bnc" id="L158" title="All 2 branches missed.">        if (mmusic.find()) {</span>
-<span class="nc" id="L159">            sreturn = receivePath;</span>
-<span class="nc" id="L160">            sreturn = sreturn.replace(&quot;%MUSIC%&quot;, getMusicsDir());</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        if (mmusic.find()) {</span>
+<span class="nc" id="L156">            sreturn = receivePath;</span>
+<span class="nc" id="L157">            sreturn = sreturn.replace(&quot;%MUSIC%&quot;, getMusicsDir());</span>
         }
 
-<span class="nc bnc" id="L163" title="All 2 branches missed.">        if (mphoto.find()) {</span>
-<span class="nc" id="L164">            sreturn = receivePath;</span>
-<span class="nc" id="L165">            sreturn = sreturn.replace(&quot;%PHOTOS%&quot;, getPicturesDir());</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        if (mphoto.find()) {</span>
+<span class="nc" id="L161">            sreturn = receivePath;</span>
+<span class="nc" id="L162">            sreturn = sreturn.replace(&quot;%PHOTOS%&quot;, getPicturesDir());</span>
         }
 
-<span class="nc" id="L168">        FlyveLog.d(&quot;convertPath return = &quot; + sreturn);</span>
-<span class="nc" id="L169">        return sreturn;</span>
+<span class="nc" id="L165">        FlyveLog.d(&quot;convertPath return = &quot; + sreturn);</span>
+<span class="nc" id="L166">        return sreturn;</span>
     }
 
     private String getFolderPath(String folderName) {
-<span class="nc" id="L173">        return Environment.getExternalStoragePublicDirectory(folderName).getAbsolutePath() + &quot;/&quot;;</span>
+<span class="nc" id="L170">        return Environment.getExternalStoragePublicDirectory(folderName).getAbsolutePath() + &quot;/&quot;;</span>
     }
 
     private Boolean checkPath(String path) {
         // Check if storage is writable
-<span class="nc bnc" id="L178" title="All 2 branches missed.">        if(!isExternalStorageWritable()) {</span>
-<span class="nc" id="L179">            return false;</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">        if(!isExternalStorageWritable()) {</span>
+<span class="nc" id="L176">            return false;</span>
         }
 
         // check if the folder exists if not try to create
-<span class="nc" id="L183">        File folder = new File(path);</span>
+<span class="nc" id="L180">        File folder = new File(path);</span>
 
-<span class="nc" id="L185">        boolean success = true;</span>
-<span class="nc bnc" id="L186" title="All 2 branches missed.">        if (!folder.exists()) {</span>
-<span class="nc" id="L187">            success = folder.mkdir();</span>
+<span class="nc" id="L182">        boolean success = true;</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">        if (!folder.exists()) {</span>
+<span class="nc" id="L184">            success = folder.mkdir();</span>
         }
 
-<span class="nc" id="L190">        return success;</span>
+<span class="nc" id="L187">        return success;</span>
     }
 
     /* Checks if external storage is available for read and write */
     private boolean isExternalStorageWritable() {
-<span class="nc" id="L195">        String state = Environment.getExternalStorageState();</span>
-<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (Environment.MEDIA_MOUNTED.equals(state)) {</span>
-<span class="nc" id="L197">            return true;</span>
+<span class="nc" id="L192">        String state = Environment.getExternalStorageState();</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (Environment.MEDIA_MOUNTED.equals(state)) {</span>
+<span class="nc" id="L194">            return true;</span>
         }
-<span class="nc" id="L199">        return false;</span>
+<span class="nc" id="L196">        return false;</span>
     }
 
     /* Checks if external storage is available to at least read */
     private boolean isExternalStorageReadable() {
-<span class="nc" id="L204">        String state = Environment.getExternalStorageState();</span>
-<span class="nc bnc" id="L205" title="All 2 branches missed.">        if (Environment.MEDIA_MOUNTED.equals(state) ||</span>
-<span class="nc bnc" id="L206" title="All 2 branches missed.">                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {</span>
-<span class="nc" id="L207">            return true;</span>
+<span class="nc" id="L201">        String state = Environment.getExternalStorageState();</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">        if (Environment.MEDIA_MOUNTED.equals(state) ||</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {</span>
+<span class="nc" id="L204">            return true;</span>
         }
-<span class="nc" id="L209">        return false;</span>
+<span class="nc" id="L206">        return false;</span>
     }
 
     public static long getFreeExternalMemorySize() {
-<span class="nc" id="L213">        String secStore = System.getenv(&quot;SECONDARY_STORAGE&quot;);</span>
-<span class="nc" id="L214">        File path = new File(secStore);</span>
-<span class="nc" id="L215">        StatFs stat = new StatFs(path.getPath());</span>
+<span class="nc" id="L210">        String secStore = System.getenv(&quot;SECONDARY_STORAGE&quot;);</span>
+<span class="nc" id="L211">        File path = new File(secStore);</span>
+<span class="nc" id="L212">        StatFs stat = new StatFs(path.getPath());</span>
 
-<span class="nc" id="L217">        long blockSize = stat.getBlockSize();</span>
-<span class="nc" id="L218">        long availableBlocks = stat.getAvailableBlocks();</span>
+<span class="nc" id="L214">        long blockSize = stat.getBlockSize();</span>
+<span class="nc" id="L215">        long availableBlocks = stat.getAvailableBlocks();</span>
 
-<span class="nc" id="L220">        return availableBlocks * blockSize;</span>
+<span class="nc" id="L217">        return availableBlocks * blockSize;</span>
     }
 
 }

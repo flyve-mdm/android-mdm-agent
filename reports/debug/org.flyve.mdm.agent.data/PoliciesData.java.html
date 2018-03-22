@@ -1,14 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PoliciesData.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.data</a> &gt; <span class="el_source">PoliciesData.java</span></div><h1>PoliciesData.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.data;
-
-import android.content.Context;
-
-/*
- *   Copyright © 2018 Teclib. All rights reserved.
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PoliciesData.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.data</a> &gt; <span class="el_source">PoliciesData.java</span></div><h1>PoliciesData.java</h1><pre class="source lang-java linenums">/*
+ * Copyright Teclib. All rights reserved.
  *
- *   This file is part of flyve-mdm-android
- *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
- * device management software.
+ * Flyve MDM is a mobile device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,14 +13,18 @@ import android.content.Context;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
- * @author    rafaelhernandez
- * @date      8/1/18
- * @copyright Copyright © 2018 Teclib. All rights reserved.
+ * @author    Rafael Hernandez
+ * @copyright Copyright Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
+ * @link      https://github.com/flyve-mdm/android-mdm-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
+
+package org.flyve.mdm.agent.data;
+
+import android.content.Context;
+
 public class PoliciesData extends LocalStorage {
 
     /**
@@ -36,23 +33,23 @@ public class PoliciesData extends LocalStorage {
      * @param context
      */
     public PoliciesData(Context context) {
-<span class="nc" id="L39">        super(context);</span>
-<span class="nc" id="L40">    }</span>
+<span class="nc" id="L36">        super(context);</span>
+<span class="nc" id="L37">    }</span>
 
     /**
      * Set the state of the Connectivity of the Wifi
      * @param disable the state of the connectivity, true if disabled, false otherwise
      */
     public void setConnectivityWifiDisable(boolean disable) {
-<span class="nc" id="L47">        setData(&quot;ConnectivityWifiDisable&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L48">    }</span>
+<span class="nc" id="L44">        setData(&quot;ConnectivityWifiDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L45">    }</span>
 
     /**
      * Get the state of the Connectivity of the Wifi
      * @return boolean the state of the connectivity, true if disabled, false otherwise
      */
     public boolean getConnectivityWifiDisable() {
-<span class="nc" id="L55">        return Boolean.valueOf(getData(&quot;ConnectivityWifiDisable&quot;));</span>
+<span class="nc" id="L52">        return Boolean.valueOf(getData(&quot;ConnectivityWifiDisable&quot;));</span>
     }
 
     /**
@@ -60,15 +57,15 @@ public class PoliciesData extends LocalStorage {
      * @param disable the state of the connectivity, true if disabled, false otherwise
      */
     public void setConnectivityBluetoothDisable(boolean disable) {
-<span class="nc" id="L63">        setData(&quot;ConnectivityBluetoothDisable&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L64">    }</span>
+<span class="nc" id="L60">        setData(&quot;ConnectivityBluetoothDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L61">    }</span>
 
     /**
      * Get the state of the Connectivity of the Bluetooth
      * @return boolean the state of the connectivity, true if disabled, false otherwise
      */
     public boolean getConnectivityBluetoothDisable() {
-<span class="nc" id="L71">        return Boolean.valueOf(getData(&quot;ConnectivityBluetoothDisable&quot;));</span>
+<span class="nc" id="L68">        return Boolean.valueOf(getData(&quot;ConnectivityBluetoothDisable&quot;));</span>
     }
 
     /**
@@ -76,103 +73,103 @@ public class PoliciesData extends LocalStorage {
      * @param disable the state of the connectivity, true if disabled, false otherwise
      */
     public void setConnectivityGPSDisable(boolean disable) {
-<span class="nc" id="L79">        setData(&quot;ConnectivityGPSDisable&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L80">    }</span>
+<span class="nc" id="L76">        setData(&quot;ConnectivityGPSDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L77">    }</span>
 
     /**
      * Set the state of the Roaming enable / disable
      * @param disable
      */
     public void setConnectivityRoamingDisable(boolean disable) {
-<span class="nc" id="L87">        setData(&quot;ConnectivityRoamingDisable&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L88">    }</span>
+<span class="nc" id="L84">        setData(&quot;ConnectivityRoamingDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L85">    }</span>
 
     /**
      * Set the state of the Airplane mode disable
      * @param disable
      */
     public void setConnectivityAirplaneModeDisable(boolean disable) {
-<span class="nc" id="L95">        setData(&quot;ConnectivityAirplaneModeDisable&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L96">    }</span>
+<span class="nc" id="L92">        setData(&quot;ConnectivityAirplaneModeDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L93">    }</span>
 
     /**
      * Set the state of the Radio FM enable / disable
      * @param disable
      */
     public void setConnectivityRadioFMDisable(boolean disable) {
-<span class="nc" id="L103">        setData(&quot;ConnectivityRadioFMDisable&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L104">    }</span>
+<span class="nc" id="L100">        setData(&quot;ConnectivityRadioFMDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L101">    }</span>
 
     /**
      * Set the state of the Mobile Line enable / disable
      * @param disable
      */
     public void setConnectivityMobileLineDisable(boolean disable) {
-<span class="nc" id="L111">        setData(&quot;ConnectivityMobileLineDisable&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L112">    }</span>
+<span class="nc" id="L108">        setData(&quot;ConnectivityMobileLineDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L109">    }</span>
 
     /**
      * Set the state of the NFC enable / disable
      * @param disable
      */
     public void setConnectivityNFCDisable(boolean disable) {
-<span class="nc" id="L119">        setData(&quot;ConnectivityNFCDisable&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L120">    }</span>
+<span class="nc" id="L116">        setData(&quot;ConnectivityNFCDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L117">    }</span>
 
     /**
      * Set the state of the Hostpot Tethering  enable / disable
      * @param disable
      */
     public void setConnectivityHostpotTetheringDisable(boolean disable) {
-<span class="nc" id="L127">        setData(&quot;ConnectivityHostpotTetheringDisable&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L128">    }</span>
+<span class="nc" id="L124">        setData(&quot;ConnectivityHostpotTetheringDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L125">    }</span>
 
     /**
      * Set SMS / MMS  enable / disable
      * @param disable
      */
     public void setConnectivitySmsMmsDisable(boolean disable) {
-<span class="nc" id="L135">        setData(&quot;ConnectivitySmsMmsDisable&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L136">    }</span>
+<span class="nc" id="L132">        setData(&quot;ConnectivitySmsMmsDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L133">    }</span>
 
     /**
      * Set Usb File Transfer Protocols  enable / disable
      * @param disable
      */
     public void setConnectivityUsbFileTransferProtocolsDisable(boolean disable) {
-<span class="nc" id="L143">        setData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L144">    }</span>
+<span class="nc" id="L140">        setData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L141">    }</span>
 
     public void setConnectivityADBUsbFileTransferProtocolsDisable(boolean disable) {
-<span class="nc" id="L147">        setData(&quot;ConnectivityADBUsbFileTransferProtocolsDisable&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L148">    }</span>
+<span class="nc" id="L144">        setData(&quot;ConnectivityADBUsbFileTransferProtocolsDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L145">    }</span>
 
     public void setConnectivityPTPUsbFileTransferProtocolsDisable(boolean disable) {
-<span class="nc" id="L151">        setData(&quot;ConnectivityPTPUsbFileTransferProtocolsDisable&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L152">    }</span>
+<span class="nc" id="L148">        setData(&quot;ConnectivityPTPUsbFileTransferProtocolsDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L149">    }</span>
 
     public void setConnectivityMTPUsbFileTransferProtocolsDisable(boolean disable) {
-<span class="nc" id="L155">        setData(&quot;ConnectivityMTPUsbFileTransferProtocolsDisable&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L156">    }</span>
+<span class="nc" id="L152">        setData(&quot;ConnectivityMTPUsbFileTransferProtocolsDisable&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L153">    }</span>
 
     public void setdisableSpeakerphone(boolean disable) {
-<span class="nc" id="L159">        setData(&quot;ConnectivityDisableSpeakerphone&quot;, String.valueOf(disable));</span>
-<span class="nc" id="L160">    }</span>
+<span class="nc" id="L156">        setData(&quot;ConnectivityDisableSpeakerphone&quot;, String.valueOf(disable));</span>
+<span class="nc" id="L157">    }</span>
 
     public Boolean getdisableSpeakerphone() {
-<span class="nc" id="L163">        return Boolean.valueOf(getData(&quot;ConnectivityDisableSpeakerphone&quot;));</span>
+<span class="nc" id="L160">        return Boolean.valueOf(getData(&quot;ConnectivityDisableSpeakerphone&quot;));</span>
     }
 
     public Boolean getConnectivityADBUsbFileTransferProtocolsDisable() {
-<span class="nc" id="L167">        return Boolean.valueOf(getData(&quot;ConnectivityADBUsbFileTransferProtocolsDisable&quot;));</span>
+<span class="nc" id="L164">        return Boolean.valueOf(getData(&quot;ConnectivityADBUsbFileTransferProtocolsDisable&quot;));</span>
     }
 
     public Boolean getConnectivityPTPUsbFileTransferProtocolsDisable() {
-<span class="nc" id="L171">        return Boolean.valueOf(getData(&quot;ConnectivityPTPUsbFileTransferProtocolsDisable&quot;));</span>
+<span class="nc" id="L168">        return Boolean.valueOf(getData(&quot;ConnectivityPTPUsbFileTransferProtocolsDisable&quot;));</span>
     }
 
     public Boolean getConnectivityMTPUsbFileTransferProtocolsDisable() {
-<span class="nc" id="L175">        return Boolean.valueOf(getData(&quot;ConnectivityMTPUsbFileTransferProtocolsDisable&quot;));</span>
+<span class="nc" id="L172">        return Boolean.valueOf(getData(&quot;ConnectivityMTPUsbFileTransferProtocolsDisable&quot;));</span>
     }
 
     /**
@@ -180,187 +177,187 @@ public class PoliciesData extends LocalStorage {
      * @return boolean the state of the connectivity, true if disabled, false otherwise
      */
     public boolean getConnectivityGPSDisable() {
-<span class="nc" id="L183">        return Boolean.valueOf(getData(&quot;ConnectivityGPSDisable&quot;));</span>
+<span class="nc" id="L180">        return Boolean.valueOf(getData(&quot;ConnectivityGPSDisable&quot;));</span>
     }
 
     public String getWifi() {
-<span class="nc" id="L187">        return getData(&quot;ConnectivityWifiDisable&quot;);</span>
+<span class="nc" id="L184">        return getData(&quot;ConnectivityWifiDisable&quot;);</span>
     }
 
     public String getRoaming() {
-<span class="nc" id="L191">        return getData(&quot;ConnectivityRoamingDisable&quot;);</span>
+<span class="nc" id="L188">        return getData(&quot;ConnectivityRoamingDisable&quot;);</span>
     }
 
     public String getNFC() {
-<span class="nc" id="L195">        return getData(&quot;ConnectivityNFCDisable&quot;);</span>
+<span class="nc" id="L192">        return getData(&quot;ConnectivityNFCDisable&quot;);</span>
     }
 
     public String getMobileLine() {
-<span class="nc" id="L199">        return getData(&quot;ConnectivityMobileLineDisable&quot;);</span>
+<span class="nc" id="L196">        return getData(&quot;ConnectivityMobileLineDisable&quot;);</span>
     }
 
     public String getHostpotTethering() {
-<span class="nc" id="L203">        return getData(&quot;ConnectivityHostpotTetheringDisable&quot;);</span>
+<span class="nc" id="L200">        return getData(&quot;ConnectivityHostpotTetheringDisable&quot;);</span>
     }
 
     public String getUsbFileTransferProtocols() {
-<span class="nc" id="L207">        return getData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;);</span>
+<span class="nc" id="L204">        return getData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;);</span>
     }
 
     public String getAirplaneMode() {
-<span class="nc" id="L211">        return getData(&quot;ConnectivityAirplaneModeDisable&quot;);</span>
+<span class="nc" id="L208">        return getData(&quot;ConnectivityAirplaneModeDisable&quot;);</span>
     }
 
     /**
      * Get the state of the Roaming enable / disable
      */
     public boolean getConnectivityRoamingDisable() {
-<span class="nc" id="L218">        return Boolean.valueOf(getData(&quot;ConnectivityRoamingDisable&quot;));</span>
+<span class="nc" id="L215">        return Boolean.valueOf(getData(&quot;ConnectivityRoamingDisable&quot;));</span>
     }
 
     /**
      * Get the state of the Radio FM enable / disable
      */
     public boolean getConnectivityRadioFMDisable() {
-<span class="nc" id="L225">        return Boolean.valueOf(getData(&quot;ConnectivityRadioFMDisable&quot;));</span>
+<span class="nc" id="L222">        return Boolean.valueOf(getData(&quot;ConnectivityRadioFMDisable&quot;));</span>
     }
 
     /**
      * Get the state of the Mobile Line enable / disable
      */
     public boolean getConnectivityMobileLineDisable() {
-<span class="nc" id="L232">        return Boolean.valueOf(getData(&quot;ConnectivityMobileLineDisable&quot;));</span>
+<span class="nc" id="L229">        return Boolean.valueOf(getData(&quot;ConnectivityMobileLineDisable&quot;));</span>
     }
 
     /**
      * Get the state of the NFC enable / disable
      */
     public boolean getConnectivityNFCDisable() {
-<span class="nc" id="L239">        return Boolean.valueOf(getData(&quot;ConnectivityNFCDisable&quot;));</span>
+<span class="nc" id="L236">        return Boolean.valueOf(getData(&quot;ConnectivityNFCDisable&quot;));</span>
     }
 
     /**
      * Get the state of the Hostpot Tethering  enable / disable
      */
     public boolean getConnectivityHostpotTetheringDisable() {
-<span class="nc" id="L246">        return Boolean.valueOf(getData(&quot;ConnectivityHostpotTetheringDisable&quot;));</span>
+<span class="nc" id="L243">        return Boolean.valueOf(getData(&quot;ConnectivityHostpotTetheringDisable&quot;));</span>
     }
 
     /**
      * Get the state of the Hostpot Tethering  enable / disable
      */
     public boolean getConnectivityUsbFileTransferProtocolsDisable() {
-<span class="nc" id="L253">        return Boolean.valueOf(getData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;));</span>
+<span class="nc" id="L250">        return Boolean.valueOf(getData(&quot;ConnectivityUsbFileTransferProtocolsDisable&quot;));</span>
     }
 
     /**
      * Get the state of the Airplane Mode  enable / disable
      */
     public boolean getConnectivityAirplaneModeDisable() {
-<span class="nc" id="L260">        return Boolean.valueOf(getData(&quot;ConnectivityAirplaneModeDisable&quot;));</span>
+<span class="nc" id="L257">        return Boolean.valueOf(getData(&quot;ConnectivityAirplaneModeDisable&quot;));</span>
     }
 
     /**
      * Get the state of SMS / MMS  enable / disable
      */
     public boolean getConnectivitySmsMmsDisable() {
-<span class="nc" id="L267">        return Boolean.valueOf(getData(&quot;ConnectivitySmsMmsDisable&quot;));</span>
+<span class="nc" id="L264">        return Boolean.valueOf(getData(&quot;ConnectivitySmsMmsDisable&quot;));</span>
     }
 
     public void setStorageEncryptionDevice(boolean enable) {
-<span class="nc" id="L271">        setData(&quot;StorageEncryptionDevice&quot;, String.valueOf(enable));</span>
-<span class="nc" id="L272">    }</span>
+<span class="nc" id="L268">        setData(&quot;StorageEncryptionDevice&quot;, String.valueOf(enable));</span>
+<span class="nc" id="L269">    }</span>
 
     public boolean getStorageEncryptionDevice() {
-<span class="nc" id="L275">        return Boolean.valueOf(getData(&quot;StorageEncryptionDevice&quot;));</span>
+<span class="nc" id="L272">        return Boolean.valueOf(getData(&quot;StorageEncryptionDevice&quot;));</span>
     }
 
     public void setDisableCamera(boolean enable) {
-<span class="nc" id="L279">        setData(&quot;DisableCamera&quot;, String.valueOf(enable));</span>
-<span class="nc" id="L280">    }</span>
+<span class="nc" id="L276">        setData(&quot;DisableCamera&quot;, String.valueOf(enable));</span>
+<span class="nc" id="L277">    }</span>
 
     public boolean getDisableCamera() {
-<span class="nc" id="L283">        return Boolean.valueOf(getData(&quot;DisableCamera&quot;));</span>
+<span class="nc" id="L280">        return Boolean.valueOf(getData(&quot;DisableCamera&quot;));</span>
     }
 
     public void setPasswordLength(String value) {
-<span class="nc" id="L287">        setData(&quot;PasswordLength&quot;, value);</span>
-<span class="nc" id="L288">    }</span>
+<span class="nc" id="L284">        setData(&quot;PasswordLength&quot;, value);</span>
+<span class="nc" id="L285">    }</span>
 
     public String getPasswordLength() {
-<span class="nc" id="L291">        return getData(&quot;PasswordLength&quot;);</span>
+<span class="nc" id="L288">        return getData(&quot;PasswordLength&quot;);</span>
     }
 
     public void setPasswordQuality(String value) {
-<span class="nc" id="L295">        setData(&quot;PasswordQuality&quot;, value);</span>
-<span class="nc" id="L296">    }</span>
+<span class="nc" id="L292">        setData(&quot;PasswordQuality&quot;, value);</span>
+<span class="nc" id="L293">    }</span>
 
     public String getPasswordQuality() {
-<span class="nc" id="L299">        return getData(&quot;PasswordQuality&quot;);</span>
+<span class="nc" id="L296">        return getData(&quot;PasswordQuality&quot;);</span>
     }
 
     public void setPasswordMinimumLetters(String value) {
-<span class="nc" id="L303">        setData(&quot;PasswordMinimumLetters&quot;, value);</span>
-<span class="nc" id="L304">    }</span>
+<span class="nc" id="L300">        setData(&quot;PasswordMinimumLetters&quot;, value);</span>
+<span class="nc" id="L301">    }</span>
 
     public String getPasswordMinimumLetters() {
-<span class="nc" id="L307">        return getData(&quot;PasswordMinimumLetters&quot;);</span>
+<span class="nc" id="L304">        return getData(&quot;PasswordMinimumLetters&quot;);</span>
     }
 
     public void setPasswordMinimumLowerCase(String value) {
-<span class="nc" id="L311">        setData(&quot;PasswordMinimumLowerCase&quot;, value);</span>
-<span class="nc" id="L312">    }</span>
+<span class="nc" id="L308">        setData(&quot;PasswordMinimumLowerCase&quot;, value);</span>
+<span class="nc" id="L309">    }</span>
 
     public String getPasswordMinimumLowerCase() {
-<span class="nc" id="L315">        return getData(&quot;PasswordMinimumLowerCase&quot;);</span>
+<span class="nc" id="L312">        return getData(&quot;PasswordMinimumLowerCase&quot;);</span>
     }
 
     public void setPasswordMinimumUpperCase(String value) {
-<span class="nc" id="L319">        setData(&quot;PasswordMinimumUpperCase&quot;, value);</span>
-<span class="nc" id="L320">    }</span>
+<span class="nc" id="L316">        setData(&quot;PasswordMinimumUpperCase&quot;, value);</span>
+<span class="nc" id="L317">    }</span>
 
     public String getPasswordMinimumUpperCase() {
-<span class="nc" id="L323">        return getData(&quot;PasswordMinimumUpperCase&quot;);</span>
+<span class="nc" id="L320">        return getData(&quot;PasswordMinimumUpperCase&quot;);</span>
     }
 
     public void setPasswordMinimumNonLetter(String value) {
-<span class="nc" id="L327">        setData(&quot;PasswordMinimumNonLetter&quot;, value);</span>
-<span class="nc" id="L328">    }</span>
+<span class="nc" id="L324">        setData(&quot;PasswordMinimumNonLetter&quot;, value);</span>
+<span class="nc" id="L325">    }</span>
 
     public String getPasswordMinimumNonLetter() {
-<span class="nc" id="L331">        return getData(&quot;PasswordMinimumNonLetter&quot;);</span>
+<span class="nc" id="L328">        return getData(&quot;PasswordMinimumNonLetter&quot;);</span>
     }
 
     public void setPasswordMinimumNumeric(String value) {
-<span class="nc" id="L335">        setData(&quot;PasswordMinimumNumeric&quot;, value);</span>
-<span class="nc" id="L336">    }</span>
+<span class="nc" id="L332">        setData(&quot;PasswordMinimumNumeric&quot;, value);</span>
+<span class="nc" id="L333">    }</span>
 
     public String getPasswordMinimumNumeric() {
-<span class="nc" id="L339">        return getData(&quot;PasswordMinimumNumeric&quot;);</span>
+<span class="nc" id="L336">        return getData(&quot;PasswordMinimumNumeric&quot;);</span>
     }
 
     public void setPasswordMinimumSymbols(String value) {
-<span class="nc" id="L343">        setData(&quot;PasswordMinimumSymbols&quot;, value);</span>
-<span class="nc" id="L344">    }</span>
+<span class="nc" id="L340">        setData(&quot;PasswordMinimumSymbols&quot;, value);</span>
+<span class="nc" id="L341">    }</span>
 
     public String getPasswordMinimumSymbols() {
-<span class="nc" id="L347">        return getData(&quot;PasswordMinimumSymbols&quot;);</span>
+<span class="nc" id="L344">        return getData(&quot;PasswordMinimumSymbols&quot;);</span>
     }
 
     public void setMaximumFailedPasswordsForWipe(String value) {
-<span class="nc" id="L351">        setData(&quot;MaximumFailedPasswordsForWipe&quot;, value);</span>
-<span class="nc" id="L352">    }</span>
+<span class="nc" id="L348">        setData(&quot;MaximumFailedPasswordsForWipe&quot;, value);</span>
+<span class="nc" id="L349">    }</span>
 
     public String getMaximumFailedPasswordsForWipe() {
-<span class="nc" id="L355">        return getData(&quot;MaximumFailedPasswordsForWipe&quot;);</span>
+<span class="nc" id="L352">        return getData(&quot;MaximumFailedPasswordsForWipe&quot;);</span>
     }
 
     public void setMaximumTimeToLock(String value) {
-<span class="nc" id="L359">        setData(&quot;MaximumTimeToLock&quot;, value);</span>
-<span class="nc" id="L360">    }</span>
+<span class="nc" id="L356">        setData(&quot;MaximumTimeToLock&quot;, value);</span>
+<span class="nc" id="L357">    }</span>
 
     public String getMaximumTimeToLock() {
-<span class="nc" id="L363">        return getData(&quot;MaximumTimeToLock&quot;);</span>
+<span class="nc" id="L360">        return getData(&quot;MaximumTimeToLock&quot;);</span>
     }
 
 }

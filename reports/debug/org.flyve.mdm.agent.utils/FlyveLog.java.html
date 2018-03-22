@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FlyveLog.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.utils</a> &gt; <span class="el_source">FlyveLog.java</span></div><h1>FlyveLog.java</h1><pre class="source lang-java linenums">/*
- * Copyright (C) 2016 Teclib'
+ * Copyright Teclib. All rights reserved.
  *
- * This file is part of Flyve MDM Android.
+ * Flyve MDM is a mobile device management software.
  *
- * Flyve MDM Android is a subproject of Flyve MDM. Flyve MDM is a mobile
- * device management software.
- *
- * Flyve MDM Android is free software: you can redistribute it and/or
+ * Flyve MDM is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
  *
- * Flyve MDM Android is distributed in the hope that it will be useful,
+ * Flyve MDM is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
  * @author    Dorian LARGET
- * @copyright Copyright (c) 2016 Flyve MDM
+ * @copyright Copyright Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyvemdm/flyvemdm-android-agent
- * @link      http://www.glpi-project.org/
+ * @link      https://github.com/flyve-mdm/android-mdm-agent
+ * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
+
 package org.flyve.mdm.agent.utils;
 
 import android.os.Environment;
@@ -44,23 +42,23 @@ public class FlyveLog {
 
     private static final String FILE_NAME_FEEDBACK = &quot;FlyveMDMFeedback.txt&quot;;
     public static final String FILE_NAME_LOG = &quot;FlyveMDMLog.txt&quot;;
-<span class="fc" id="L47">    public static final String FLYVE_PATH = Environment.getExternalStorageDirectory().getPath() + &quot;/FlyveMDM/&quot;;</span>
+<span class="fc" id="L45">    public static final String FLYVE_PATH = Environment.getExternalStorageDirectory().getPath() + &quot;/FlyveMDM/&quot;;</span>
 
     /**
      * private constructor to prevent instances of this class
      */
-<span class="nc" id="L52">    private FlyveLog() {</span>
-<span class="nc" id="L53">    }</span>
+<span class="nc" id="L50">    private FlyveLog() {</span>
+<span class="nc" id="L51">    }</span>
 
     /**
      * Send a DEBUG log message
      * @param object Object to write
      */
     public static void d(Object object) {
-<span class="pc bpc" id="L60" title="1 of 2 branches missed.">        if(MDMAgent.getIsDebuggable()){</span>
-<span class="fc" id="L61">            Logger.d(object);</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if(MDMAgent.getIsDebuggable()){</span>
+<span class="fc" id="L59">            Logger.d(object);</span>
         }
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L61">    }</span>
 
     /**
      * Send a DEBUG log message
@@ -68,11 +66,11 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void d(String message, Object... args) {
-<span class="nc bnc" id="L71" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; message != null){</span>
+<span class="nc bnc" id="L69" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; message != null){</span>
             // do something for a debug build
-<span class="nc" id="L73">            Logger.d(message,args);</span>
+<span class="nc" id="L71">            Logger.d(message,args);</span>
         }
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L73">    }</span>
 
     /**
      * Send a VERBOSE log message
@@ -80,10 +78,10 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void v(String message, Object... args) {
-<span class="nc bnc" id="L83" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; message != null){</span>
-<span class="nc" id="L84">            Logger.v(message, args);</span>
+<span class="nc bnc" id="L81" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; message != null){</span>
+<span class="nc" id="L82">            Logger.v(message, args);</span>
         }
-<span class="nc" id="L86">    }</span>
+<span class="nc" id="L84">    }</span>
 
     /**
      * Send INFORMATION log message
@@ -91,10 +89,10 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void i(String message, Object... args) {
-<span class="nc bnc" id="L94" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; message != null) {</span>
-<span class="nc" id="L95">            Logger.i(message, args);</span>
+<span class="nc bnc" id="L92" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; message != null) {</span>
+<span class="nc" id="L93">            Logger.i(message, args);</span>
         }
-<span class="nc" id="L97">    }</span>
+<span class="nc" id="L95">    }</span>
 
     /**
      * Send ERROR log message
@@ -103,11 +101,11 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void e(Throwable throwable, String message, Object... args) {
-<span class="nc bnc" id="L106" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; message != null) {</span>
-<span class="nc" id="L107">            Logger.e(throwable, message, args);</span>
-<span class="nc" id="L108">            f(message, FILE_NAME_FEEDBACK);</span>
+<span class="nc bnc" id="L104" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; message != null) {</span>
+<span class="nc" id="L105">            Logger.e(throwable, message, args);</span>
+<span class="nc" id="L106">            f(message, FILE_NAME_FEEDBACK);</span>
         }
-<span class="nc" id="L110">    }</span>
+<span class="nc" id="L108">    }</span>
 
     /**
      * Send Error log message
@@ -115,11 +113,11 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void e(String message, Object... args) {
-<span class="nc bnc" id="L118" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; message != null) {</span>
-<span class="nc" id="L119">            Logger.e(message, args);</span>
-<span class="nc" id="L120">            f(message, FILE_NAME_FEEDBACK);</span>
+<span class="nc bnc" id="L116" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; message != null) {</span>
+<span class="nc" id="L117">            Logger.e(message, args);</span>
+<span class="nc" id="L118">            f(message, FILE_NAME_FEEDBACK);</span>
         }
-<span class="nc" id="L122">    }</span>
+<span class="nc" id="L120">    }</span>
 
     /**
      * send What a Terrible Failure log message
@@ -127,30 +125,30 @@ public class FlyveLog {
      * @param args Objects
      */
     public static void wtf(String message, Object... args) {
-<span class="nc bnc" id="L130" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; message != null) {</span>
-<span class="nc" id="L131">            Logger.wtf(message, args);</span>
+<span class="nc bnc" id="L128" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; message != null) {</span>
+<span class="nc" id="L129">            Logger.wtf(message, args);</span>
         }
-<span class="nc" id="L133">    }</span>
+<span class="nc" id="L131">    }</span>
 
     /**
      * Send a JSON log message
      * @param json String the json to show
      */
     public static void json(String json) {
-<span class="nc bnc" id="L140" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; json != null) {</span>
-<span class="nc" id="L141">            Logger.json(json);</span>
+<span class="nc bnc" id="L138" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; json != null) {</span>
+<span class="nc" id="L139">            Logger.json(json);</span>
         }
-<span class="nc" id="L143">    }</span>
+<span class="nc" id="L141">    }</span>
 
     /**
      * Send a XML log message
      * @param xml String the xml to show
      */
     public static void xml(String xml) {
-<span class="nc bnc" id="L150" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; xml != null) {</span>
-<span class="nc" id="L151">            Logger.xml(xml);</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">        if(MDMAgent.getIsDebuggable() &amp;&amp; xml != null) {</span>
+<span class="nc" id="L149">            Logger.xml(xml);</span>
         }
-<span class="nc" id="L153">    }</span>
+<span class="nc" id="L151">    }</span>
 
     /**
      * Logs the message in a directory
@@ -158,99 +156,99 @@ public class FlyveLog {
      * @param filename
      */
     public static void f(String message, String filename) {
-<span class="nc" id="L161">        String state = Environment.getExternalStorageState();</span>
+<span class="nc" id="L159">        String state = Environment.getExternalStorageState();</span>
         File logFile;
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">        if (Environment.MEDIA_MOUNTED.equals(state)) {</span>
-<span class="nc" id="L165">            File dir = new File(FLYVE_PATH);</span>
-<span class="nc bnc" id="L166" title="All 2 branches missed.">            if (!dir.exists()) {</span>
-<span class="nc" id="L167">                FlyveLog.d(&quot;Create directory&quot;);</span>
-<span class="nc" id="L168">                dir.mkdirs();</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        if (Environment.MEDIA_MOUNTED.equals(state)) {</span>
+<span class="nc" id="L163">            File dir = new File(FLYVE_PATH);</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">            if (!dir.exists()) {</span>
+<span class="nc" id="L165">                FlyveLog.d(&quot;Create directory&quot;);</span>
+<span class="nc" id="L166">                dir.mkdirs();</span>
             }
 
-<span class="nc" id="L171">            logFile = new File(FLYVE_PATH + filename);</span>
-<span class="nc" id="L172">        } else {</span>
-<span class="nc" id="L173">            logFile = new File(MDMAgent.getInstance().getCacheDir(),  filename);</span>
+<span class="nc" id="L169">            logFile = new File(FLYVE_PATH + filename);</span>
+<span class="nc" id="L170">        } else {</span>
+<span class="nc" id="L171">            logFile = new File(MDMAgent.getInstance().getCacheDir(),  filename);</span>
         }
 
-<span class="nc bnc" id="L176" title="All 2 branches missed.">        if (!logFile.exists()) {</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        if (!logFile.exists()) {</span>
             try {
-<span class="nc" id="L178">                Boolean log = logFile.createNewFile();</span>
-<span class="nc" id="L179">                FlyveLog.d(&quot;Create File on f %s&quot;, log);</span>
-<span class="nc" id="L180">            } catch (IOException ex) {</span>
-<span class="nc" id="L181">                FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L182">            }</span>
+<span class="nc" id="L176">                Boolean log = logFile.createNewFile();</span>
+<span class="nc" id="L177">                FlyveLog.d(&quot;Create File on f %s&quot;, log);</span>
+<span class="nc" id="L178">            } catch (IOException ex) {</span>
+<span class="nc" id="L179">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L180">            }</span>
         }
 
-<span class="nc" id="L185">        FileWriter fw = null;</span>
+<span class="nc" id="L183">        FileWriter fw = null;</span>
 
         try {
             //BufferedWriter for performance, true to set append to file flag
-<span class="nc" id="L189">            fw = new FileWriter(logFile, true);</span>
-<span class="nc" id="L190">            BufferedWriter buf = new BufferedWriter(fw);</span>
+<span class="nc" id="L187">            fw = new FileWriter(logFile, true);</span>
+<span class="nc" id="L188">            BufferedWriter buf = new BufferedWriter(fw);</span>
 
-<span class="nc" id="L192">            buf.write(message);</span>
-<span class="nc" id="L193">            buf.newLine();</span>
-<span class="nc" id="L194">            buf.flush();</span>
-<span class="nc" id="L195">            buf.close();</span>
-<span class="nc" id="L196">            fw.close();</span>
+<span class="nc" id="L190">            buf.write(message);</span>
+<span class="nc" id="L191">            buf.newLine();</span>
+<span class="nc" id="L192">            buf.flush();</span>
+<span class="nc" id="L193">            buf.close();</span>
+<span class="nc" id="L194">            fw.close();</span>
         }
-<span class="nc" id="L198">        catch (IOException ex) {</span>
-<span class="nc" id="L199">            e(ex.getMessage());</span>
+<span class="nc" id="L196">        catch (IOException ex) {</span>
+<span class="nc" id="L197">            e(ex.getMessage());</span>
         }
         finally {
-<span class="nc bnc" id="L202" title="All 6 branches missed.">            if(fw!=null) {</span>
+<span class="nc bnc" id="L200" title="All 6 branches missed.">            if(fw!=null) {</span>
                 try {
-<span class="nc" id="L204">                    fw.close();</span>
-<span class="nc" id="L205">                } catch(Exception ex) {</span>
-<span class="nc" id="L206">                    FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L207">                }</span>
+<span class="nc" id="L202">                    fw.close();</span>
+<span class="nc" id="L203">                } catch(Exception ex) {</span>
+<span class="nc" id="L204">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L205">                }</span>
             }
         }
 
-<span class="nc" id="L211">    }</span>
+<span class="nc" id="L209">    }</span>
 
     /**
      * Clear the log
      * @param filename
      */
     public static void clearLog(String filename) {
-<span class="nc" id="L218">        String state = Environment.getExternalStorageState();</span>
+<span class="nc" id="L216">        String state = Environment.getExternalStorageState();</span>
         File logFile;
 
-<span class="nc bnc" id="L221" title="All 2 branches missed.">        if (Environment.MEDIA_MOUNTED.equals(state)) {</span>
-<span class="nc" id="L222">            File dir = new File(FLYVE_PATH);</span>
-<span class="nc bnc" id="L223" title="All 2 branches missed.">            if (!dir.exists()) {</span>
-<span class="nc" id="L224">                FlyveLog.d(&quot;Created Directory&quot;);</span>
-<span class="nc" id="L225">                dir.mkdirs();</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">        if (Environment.MEDIA_MOUNTED.equals(state)) {</span>
+<span class="nc" id="L220">            File dir = new File(FLYVE_PATH);</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">            if (!dir.exists()) {</span>
+<span class="nc" id="L222">                FlyveLog.d(&quot;Created Directory&quot;);</span>
+<span class="nc" id="L223">                dir.mkdirs();</span>
             }
 
-<span class="nc" id="L228">            logFile = new File(FLYVE_PATH + filename);</span>
-<span class="nc" id="L229">        } else {</span>
-<span class="nc" id="L230">            logFile = new File(MDMAgent.getInstance().getCacheDir(),  filename);</span>
+<span class="nc" id="L226">            logFile = new File(FLYVE_PATH + filename);</span>
+<span class="nc" id="L227">        } else {</span>
+<span class="nc" id="L228">            logFile = new File(MDMAgent.getInstance().getCacheDir(),  filename);</span>
         }
 
-<span class="nc" id="L233">        FileWriter fw = null;</span>
+<span class="nc" id="L231">        FileWriter fw = null;</span>
         try {
             //BufferedWriter for performance, true to set append to file flag
-<span class="nc" id="L236">            fw = new FileWriter(logFile, false);</span>
-<span class="nc" id="L237">            PrintWriter pwOb = new PrintWriter(fw, false);</span>
-<span class="nc" id="L238">            pwOb.flush();</span>
-<span class="nc" id="L239">            pwOb.close();</span>
+<span class="nc" id="L234">            fw = new FileWriter(logFile, false);</span>
+<span class="nc" id="L235">            PrintWriter pwOb = new PrintWriter(fw, false);</span>
+<span class="nc" id="L236">            pwOb.flush();</span>
+<span class="nc" id="L237">            pwOb.close();</span>
         }
-<span class="nc" id="L241">        catch (IOException ex) {</span>
-<span class="nc" id="L242">            e(ex.getMessage());</span>
+<span class="nc" id="L239">        catch (IOException ex) {</span>
+<span class="nc" id="L240">            e(ex.getMessage());</span>
         }
         finally {
-<span class="nc bnc" id="L245" title="All 6 branches missed.">            if(fw!=null) {</span>
+<span class="nc bnc" id="L243" title="All 6 branches missed.">            if(fw!=null) {</span>
                 try {
-<span class="nc" id="L247">                    fw.close();</span>
-<span class="nc" id="L248">                } catch(Exception ex) {</span>
-<span class="nc" id="L249">                    FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L250">                }</span>
+<span class="nc" id="L245">                    fw.close();</span>
+<span class="nc" id="L246">                } catch(Exception ex) {</span>
+<span class="nc" id="L247">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L248">                }</span>
             }
         }
-<span class="nc" id="L253">    }</span>
+<span class="nc" id="L251">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

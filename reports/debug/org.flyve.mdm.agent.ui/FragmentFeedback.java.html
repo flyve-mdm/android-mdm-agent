@@ -1,4 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FragmentFeedback.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">FragmentFeedback.java</span></div><h1>FragmentFeedback.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.ui;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FragmentFeedback.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">FragmentFeedback.java</span></div><h1>FragmentFeedback.java</h1><pre class="source lang-java linenums">/*
+ * Copyright Teclib. All rights reserved.
+ *
+ * Flyve MDM is a mobile device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @copyright Copyright Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/android-mdm-agent
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+
+package org.flyve.mdm.agent.ui;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -23,33 +46,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-/*
- *   Copyright © 2017 Teclib. All rights reserved.
- *
- *   This file is part of flyve-mdm-android
- *
- * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
- * device management software.
- *
- * Flyve MDM is free software: you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 3
- * of the License, or (at your option) any later version.
- *
- * Flyve MDM is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * ------------------------------------------------------------------------------
- * @author    Rafael Hernandez
- * @date      25/11/17
- * @copyright Copyright © 2017 Teclib. All rights reserved.
- * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android
- * @link      https://flyve-mdm.com
- * ------------------------------------------------------------------------------
- */
-<span class="nc" id="L52">public class FragmentFeedback extends Fragment {</span>
+<span class="nc" id="L49">public class FragmentFeedback extends Fragment {</span>
 
     private Switch[] swPolicy;
     private EditText editMessage;
@@ -59,116 +56,116 @@ import java.util.TreeMap;
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-<span class="nc" id="L62">        View v = inflater.inflate(R.layout.fragment_feedback, container, false);</span>
+<span class="nc" id="L59">        View v = inflater.inflate(R.layout.fragment_feedback, container, false);</span>
 
-<span class="nc" id="L64">        HashMap&lt;String, Boolean&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L61">        HashMap&lt;String, Boolean&gt; map = new HashMap&lt;&gt;();</span>
 
-<span class="nc" id="L66">        PoliciesData cache = new PoliciesData(FragmentFeedback.this.getContext());</span>
+<span class="nc" id="L63">        PoliciesData cache = new PoliciesData(FragmentFeedback.this.getContext());</span>
 
-<span class="nc" id="L68">        map.put(&quot;Ping&quot;,false);</span>
-<span class="nc" id="L69">        map.put(&quot;Geolocate&quot;,false);</span>
-<span class="nc" id="L70">        map.put(&quot;Inventory&quot;,false);</span>
-<span class="nc" id="L71">        map.put(&quot;Lock&quot;,false);</span>
-<span class="nc" id="L72">        map.put(&quot;Wipe&quot;,false);</span>
-<span class="nc" id="L73">        map.put(&quot;Unenroll&quot;,false);</span>
-<span class="nc" id="L74">        map.put(&quot;Password enabled&quot;, false);</span>
-<span class="nc bnc" id="L75" title="All 2 branches missed.">        map.put(&quot;Password quality&quot;, !cache.getPasswordQuality().isEmpty() );</span>
-<span class="nc bnc" id="L76" title="All 2 branches missed.">        map.put(&quot;Password minimum length&quot;, !cache.getPasswordLength().isEmpty() );</span>
-<span class="nc bnc" id="L77" title="All 2 branches missed.">        map.put(&quot;Password minimum lower case&quot;, !cache.getPasswordMinimumLowerCase().isEmpty() );</span>
-<span class="nc bnc" id="L78" title="All 2 branches missed.">        map.put(&quot;Password minimum upper case&quot;, !cache.getPasswordMinimumUpperCase().isEmpty() );</span>
-<span class="nc bnc" id="L79" title="All 2 branches missed.">        map.put(&quot;Password minimum non letter&quot;,!cache.getPasswordMinimumNonLetter().isEmpty() );</span>
-<span class="nc bnc" id="L80" title="All 2 branches missed.">        map.put(&quot;Password minimum letters&quot;, !cache.getPasswordMinimumLetters().isEmpty() );</span>
-<span class="nc bnc" id="L81" title="All 2 branches missed.">        map.put(&quot;Password minimum numeric&quot;, !cache.getPasswordMinimumNumeric().isEmpty() );</span>
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        map.put(&quot;Password minimum symbols&quot;, !cache.getPasswordMinimumSymbols().isEmpty() );</span>
-<span class="nc bnc" id="L83" title="All 2 branches missed.">        map.put(&quot;Maximum failed passwords for wipe&quot;, !cache.getMaximumFailedPasswordsForWipe().isEmpty() );</span>
-<span class="nc bnc" id="L84" title="All 2 branches missed.">        map.put(&quot;Maximum time to lock&quot;, !cache.getMaximumTimeToLock().isEmpty());</span>
-<span class="nc bnc" id="L85" title="All 2 branches missed.">        map.put(&quot;Storage encryption&quot;, !cache.getStorageEncryptionDevice());</span>
-<span class="nc bnc" id="L86" title="All 2 branches missed.">        map.put(&quot;Disable camera&quot;, !cache.getDisableCamera());</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">        map.put(&quot;Disable bluetooth&quot;, !cache.getConnectivityBluetoothDisable());</span>
-<span class="nc" id="L88">        map.put(&quot;Deploy app&quot;, false);</span>
-<span class="nc" id="L89">        map.put(&quot;Remove app&quot;,false);</span>
-<span class="nc" id="L90">        map.put(&quot;Deploy file&quot;,true);</span>
-<span class="nc" id="L91">        map.put(&quot;Remove file&quot;,false);</span>
-<span class="nc" id="L92">        map.put(&quot;Disable screen capture&quot;, false);</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">        map.put(&quot;Disable airplane mode&quot;,!cache.getConnectivityAirplaneModeDisable());</span>
-<span class="nc bnc" id="L94" title="All 2 branches missed.">        map.put(&quot;Disable GPS&quot;, !cache.getConnectivityGPSDisable());</span>
-<span class="nc bnc" id="L95" title="All 2 branches missed.">        map.put(&quot;Disable Hostpot/Tethering&quot;, !cache.getConnectivityHostpotTetheringDisable());</span>
-<span class="nc bnc" id="L96" title="All 2 branches missed.">        map.put(&quot;Disable roaming&quot;, !cache.getConnectivityRoamingDisable());</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">        map.put(&quot;Disable wifi&quot;, !cache.getConnectivityWifiDisable());</span>
-<span class="nc" id="L98">        map.put(&quot;Use TLS&quot;, false);</span>
-<span class="nc bnc" id="L99" title="All 2 branches missed.">        map.put(&quot;Disable mobile line&quot;, !cache.getConnectivityMobileLineDisable());</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">        map.put(&quot;Disable NFC&quot;, !cache.getConnectivityNFCDisable());</span>
-<span class="nc" id="L101">        map.put(&quot;Disable statusbar&quot;, false);</span>
+<span class="nc" id="L65">        map.put(&quot;Ping&quot;,false);</span>
+<span class="nc" id="L66">        map.put(&quot;Geolocate&quot;,false);</span>
+<span class="nc" id="L67">        map.put(&quot;Inventory&quot;,false);</span>
+<span class="nc" id="L68">        map.put(&quot;Lock&quot;,false);</span>
+<span class="nc" id="L69">        map.put(&quot;Wipe&quot;,false);</span>
+<span class="nc" id="L70">        map.put(&quot;Unenroll&quot;,false);</span>
+<span class="nc" id="L71">        map.put(&quot;Password enabled&quot;, false);</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        map.put(&quot;Password quality&quot;, !cache.getPasswordQuality().isEmpty() );</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        map.put(&quot;Password minimum length&quot;, !cache.getPasswordLength().isEmpty() );</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        map.put(&quot;Password minimum lower case&quot;, !cache.getPasswordMinimumLowerCase().isEmpty() );</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        map.put(&quot;Password minimum upper case&quot;, !cache.getPasswordMinimumUpperCase().isEmpty() );</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        map.put(&quot;Password minimum non letter&quot;,!cache.getPasswordMinimumNonLetter().isEmpty() );</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        map.put(&quot;Password minimum letters&quot;, !cache.getPasswordMinimumLetters().isEmpty() );</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        map.put(&quot;Password minimum numeric&quot;, !cache.getPasswordMinimumNumeric().isEmpty() );</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        map.put(&quot;Password minimum symbols&quot;, !cache.getPasswordMinimumSymbols().isEmpty() );</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        map.put(&quot;Maximum failed passwords for wipe&quot;, !cache.getMaximumFailedPasswordsForWipe().isEmpty() );</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        map.put(&quot;Maximum time to lock&quot;, !cache.getMaximumTimeToLock().isEmpty());</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        map.put(&quot;Storage encryption&quot;, !cache.getStorageEncryptionDevice());</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        map.put(&quot;Disable camera&quot;, !cache.getDisableCamera());</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        map.put(&quot;Disable bluetooth&quot;, !cache.getConnectivityBluetoothDisable());</span>
+<span class="nc" id="L85">        map.put(&quot;Deploy app&quot;, false);</span>
+<span class="nc" id="L86">        map.put(&quot;Remove app&quot;,false);</span>
+<span class="nc" id="L87">        map.put(&quot;Deploy file&quot;,true);</span>
+<span class="nc" id="L88">        map.put(&quot;Remove file&quot;,false);</span>
+<span class="nc" id="L89">        map.put(&quot;Disable screen capture&quot;, false);</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        map.put(&quot;Disable airplane mode&quot;,!cache.getConnectivityAirplaneModeDisable());</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        map.put(&quot;Disable GPS&quot;, !cache.getConnectivityGPSDisable());</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        map.put(&quot;Disable Hostpot/Tethering&quot;, !cache.getConnectivityHostpotTetheringDisable());</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        map.put(&quot;Disable roaming&quot;, !cache.getConnectivityRoamingDisable());</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        map.put(&quot;Disable wifi&quot;, !cache.getConnectivityWifiDisable());</span>
+<span class="nc" id="L95">        map.put(&quot;Use TLS&quot;, false);</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        map.put(&quot;Disable mobile line&quot;, !cache.getConnectivityMobileLineDisable());</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        map.put(&quot;Disable NFC&quot;, !cache.getConnectivityNFCDisable());</span>
+<span class="nc" id="L98">        map.put(&quot;Disable statusbar&quot;, false);</span>
 //        map.put(&quot;ResetPassword&quot;,false);
-<span class="nc bnc" id="L103" title="All 2 branches missed.">        map.put(&quot;Disable Usb Mtp&quot;, !cache.getConnectivityMTPUsbFileTransferProtocolsDisable() );</span>
-<span class="nc bnc" id="L104" title="All 2 branches missed.">        map.put(&quot;Disable Usb Ptp&quot;, !cache.getConnectivityPTPUsbFileTransferProtocolsDisable() );</span>
-<span class="nc bnc" id="L105" title="All 2 branches missed.">        map.put(&quot;Disable Usb Adb&quot;, !cache.getConnectivityADBUsbFileTransferProtocolsDisable() );</span>
-<span class="nc bnc" id="L106" title="All 2 branches missed.">        map.put(&quot;Disable speakerphone&quot;, !cache.getdisableSpeakerphone());</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        map.put(&quot;Disable Usb Mtp&quot;, !cache.getConnectivityMTPUsbFileTransferProtocolsDisable() );</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        map.put(&quot;Disable Usb Ptp&quot;, !cache.getConnectivityPTPUsbFileTransferProtocolsDisable() );</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        map.put(&quot;Disable Usb Adb&quot;, !cache.getConnectivityADBUsbFileTransferProtocolsDisable() );</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        map.put(&quot;Disable speakerphone&quot;, !cache.getdisableSpeakerphone());</span>
 //        map.put(&quot;DisableSmsMms&quot;,false);
-<span class="nc" id="L108">        map.put(&quot;Disable create VPN Profiles&quot;, false);</span>
+<span class="nc" id="L105">        map.put(&quot;Disable create VPN Profiles&quot;, false);</span>
 
-<span class="nc" id="L110">        LinearLayout ln = v.findViewById(R.id.lnFields);</span>
-<span class="nc" id="L111">        editMessage = v.findViewById(R.id.editMessage);</span>
+<span class="nc" id="L107">        LinearLayout ln = v.findViewById(R.id.lnFields);</span>
+<span class="nc" id="L108">        editMessage = v.findViewById(R.id.editMessage);</span>
 
-<span class="nc" id="L113">        Map&lt;String, Boolean&gt; treeMap = new TreeMap&lt;&gt;(map);</span>
-<span class="nc" id="L114">        createField(FragmentFeedback.this.getContext(), treeMap, ln);</span>
+<span class="nc" id="L110">        Map&lt;String, Boolean&gt; treeMap = new TreeMap&lt;&gt;(map);</span>
+<span class="nc" id="L111">        createField(FragmentFeedback.this.getContext(), treeMap, ln);</span>
 
-<span class="nc" id="L116">        Button btnSend = v.findViewById(R.id.btnSend);</span>
-<span class="nc" id="L117">        btnSend.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L113">        Button btnSend = v.findViewById(R.id.btnSend);</span>
+<span class="nc" id="L114">        btnSend.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View view) {
-<span class="nc" id="L120">                sendFeedbackChollima(createFeedbackJSON(swPolicy));</span>
-<span class="nc" id="L121">            }</span>
+<span class="nc" id="L117">                sendFeedbackChollima(createFeedbackJSON(swPolicy));</span>
+<span class="nc" id="L118">            }</span>
         });
 
-<span class="nc" id="L124">        return v;</span>
+<span class="nc" id="L121">        return v;</span>
     }
 
     private JSONObject createFeedbackJSON(Switch[] sw){
-<span class="nc" id="L128">        JSONObject jsonFeedback = new JSONObject();</span>
-<span class="nc" id="L129">        JSONObject jsonPolicy = new JSONObject();</span>
+<span class="nc" id="L125">        JSONObject jsonFeedback = new JSONObject();</span>
+<span class="nc" id="L126">        JSONObject jsonPolicy = new JSONObject();</span>
 
         try {
-<span class="nc bnc" id="L132" title="All 2 branches missed.">            for (int i=0; i &lt; sw.length; i++) {</span>
-<span class="nc" id="L133">                jsonPolicy.put(sw[i].getText().toString(), String.valueOf(sw[i].isChecked()));</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">            for (int i=0; i &lt; sw.length; i++) {</span>
+<span class="nc" id="L130">                jsonPolicy.put(sw[i].getText().toString(), String.valueOf(sw[i].isChecked()));</span>
             }
-<span class="nc" id="L135">            jsonPolicy.put(&quot;message&quot;, editMessage.getText().toString());</span>
-<span class="nc" id="L136">            jsonFeedback.put(&quot;feedback&quot;, jsonPolicy);</span>
-<span class="nc" id="L137">        } catch (Exception ex) {</span>
-<span class="nc" id="L138">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L139">        }</span>
+<span class="nc" id="L132">            jsonPolicy.put(&quot;message&quot;, editMessage.getText().toString());</span>
+<span class="nc" id="L133">            jsonFeedback.put(&quot;feedback&quot;, jsonPolicy);</span>
+<span class="nc" id="L134">        } catch (Exception ex) {</span>
+<span class="nc" id="L135">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L136">        }</span>
 
-<span class="nc" id="L141">        return jsonFeedback;</span>
+<span class="nc" id="L138">        return jsonFeedback;</span>
     }
 
     private void sendFeedbackChollima(JSONObject json) {
-<span class="nc" id="L145">        ConnectionHTTP.getWebData(&quot;&quot;, json, null, new ConnectionHTTP.DataCallback() {</span>
+<span class="nc" id="L142">        ConnectionHTTP.getWebData(&quot;&quot;, json, null, new ConnectionHTTP.DataCallback() {</span>
             @Override
             public void callback(String data) {
-<span class="nc" id="L148">                Helpers.snack(FragmentFeedback.this.getActivity(), getString(R.string.feedback_send_success));</span>
-<span class="nc" id="L149">            }</span>
+<span class="nc" id="L145">                Helpers.snack(FragmentFeedback.this.getActivity(), getString(R.string.feedback_send_success));</span>
+<span class="nc" id="L146">            }</span>
         });
-<span class="nc" id="L151">    }</span>
+<span class="nc" id="L148">    }</span>
 
     private void createField(Context context, Map&lt;String, Boolean&gt; map, LinearLayout ln) {
-<span class="nc" id="L154">        swPolicy = new Switch[map.size()];</span>
-<span class="nc" id="L155">        int index = 0;</span>
+<span class="nc" id="L151">        swPolicy = new Switch[map.size()];</span>
+<span class="nc" id="L152">        int index = 0;</span>
 
-<span class="nc bnc" id="L157" title="All 2 branches missed.">        for(Map.Entry&lt;String, Boolean&gt; entry : map.entrySet()) {</span>
-<span class="nc" id="L158">            String policy = entry.getKey();</span>
-<span class="nc" id="L159">            Boolean highlight = entry.getValue();</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        for(Map.Entry&lt;String, Boolean&gt; entry : map.entrySet()) {</span>
+<span class="nc" id="L155">            String policy = entry.getKey();</span>
+<span class="nc" id="L156">            Boolean highlight = entry.getValue();</span>
 
-<span class="nc" id="L161">            swPolicy[index] = new Switch(context);</span>
-<span class="nc" id="L162">            swPolicy[index].setText(policy);</span>
-<span class="nc bnc" id="L163" title="All 2 branches missed.">            if(highlight) {</span>
-<span class="nc" id="L164">                swPolicy[index].setTextColor(Color.DKGRAY);</span>
+<span class="nc" id="L158">            swPolicy[index] = new Switch(context);</span>
+<span class="nc" id="L159">            swPolicy[index].setText(policy);</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">            if(highlight) {</span>
+<span class="nc" id="L161">                swPolicy[index].setTextColor(Color.DKGRAY);</span>
             } else {
-<span class="nc" id="L166">                swPolicy[index].setTextColor(Color.GRAY);</span>
+<span class="nc" id="L163">                swPolicy[index].setTextColor(Color.GRAY);</span>
             }
 
-<span class="nc" id="L169">            ln.addView(swPolicy[index]);</span>
-<span class="nc" id="L170">            index++;</span>
-<span class="nc" id="L171">        }</span>
-<span class="nc" id="L172">    }</span>
+<span class="nc" id="L166">            ln.addView(swPolicy[index]);</span>
+<span class="nc" id="L167">            index++;</span>
+<span class="nc" id="L168">        }</span>
+<span class="nc" id="L169">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
