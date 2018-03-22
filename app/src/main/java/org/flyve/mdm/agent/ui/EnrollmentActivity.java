@@ -100,7 +100,11 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            try {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
 
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
