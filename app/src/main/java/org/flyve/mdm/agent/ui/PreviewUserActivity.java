@@ -54,7 +54,7 @@ public class PreviewUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_preview);
 
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             try {
@@ -73,7 +73,7 @@ public class PreviewUserActivity extends AppCompatActivity {
 
         loadData();
 
-        ImageView btnEdit = (ImageView) findViewById(R.id.btnEdit);
+        ImageView btnEdit = findViewById(R.id.btnEdit);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
