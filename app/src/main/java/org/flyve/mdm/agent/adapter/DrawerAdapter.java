@@ -99,8 +99,8 @@ public class DrawerAdapter extends BaseAdapter {
 			viewSeparator.setVisibility(View.GONE);
 		}
 
-		TextView txtTitle = (TextView)vi.findViewById(R.id.txtTitle);
-        ImageView img = (ImageView) vi.findViewById(R.id.img);
+		TextView txtTitle = vi.findViewById(R.id.txtTitle);
+        ImageView img = vi.findViewById(R.id.img);
 
 		Context context = img.getContext();
 		int iddw = context.getResources().getIdentifier(hashdata.get("img"), "drawable", context.getPackageName());

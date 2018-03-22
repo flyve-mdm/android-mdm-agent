@@ -94,16 +94,16 @@ public class LogAdapter extends BaseAdapter {
 
 		View vi = inflater.inflate(R.layout.list_item_log, null);
 
-		TextView txtType = (TextView) vi.findViewById(R.id.txtType);
+		TextView txtType = vi.findViewById(R.id.txtType);
 		txtType.setText(hashdata.get("type"));
 
-		TextView txtDate = (TextView) vi.findViewById(R.id.txtDate);
+		TextView txtDate = vi.findViewById(R.id.txtDate);
 		txtDate.setText(hashdata.get("date"));
 
-		TextView txtTitle = (TextView) vi.findViewById(R.id.txtTitle);
+		TextView txtTitle = vi.findViewById(R.id.txtTitle);
 		txtTitle.setText(hashdata.get("title"));
 
-		TextView txtBody = (TextView) vi.findViewById(R.id.txtBody);
+		TextView txtBody = vi.findViewById(R.id.txtBody);
 		txtBody.setText(hashdata.get("body"));
 
 		return vi;
