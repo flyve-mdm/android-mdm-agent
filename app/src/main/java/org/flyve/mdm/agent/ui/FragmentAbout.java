@@ -52,7 +52,7 @@ public class FragmentAbout extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.activity_about, container, false);
 
-        TextView txtAbout = (TextView) v.findViewById(R.id.txtAbout);
+        TextView txtAbout = v.findViewById(R.id.txtAbout);
 
         EnvInfoAbout enviromentInfo = new EnvInfoAbout(FragmentAbout.this.getContext());
 
