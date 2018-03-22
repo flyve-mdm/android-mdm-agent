@@ -64,22 +64,22 @@ public class FragmentMQTTConfig extends Fragment {
         final String mPassword = cache.getMqttpasswd();
         final String mTopic = cache.getTopic();
 
-        final EditText editBroker = (EditText) v.findViewById(R.id.editBroker);
+        final EditText editBroker = v.findViewById(R.id.editBroker);
         editBroker.setText( mBroker );
 
-        final EditText editPort = (EditText) v.findViewById(R.id.editPort);
+        final EditText editPort = v.findViewById(R.id.editPort);
         editPort.setText( mPort );
 
-        final EditText editUser = (EditText) v.findViewById(R.id.editUser);
+        final EditText editUser = v.findViewById(R.id.editUser);
         editUser.setText( mUser );
 
-        final EditText editPassword = (EditText) v.findViewById(R.id.editPassword);
+        final EditText editPassword = v.findViewById(R.id.editPassword);
         editPassword.setText( mPassword );
 
-        final EditText editTopic = (EditText) v.findViewById(R.id.editTopic);
+        final EditText editTopic = v.findViewById(R.id.editTopic);
         editTopic.setText( mTopic );
 
-        FloatingActionButton btnSave = (FloatingActionButton) v.findViewById(R.id.btnSave);
+        FloatingActionButton btnSave = v.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
