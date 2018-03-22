@@ -94,16 +94,16 @@ public class LogAdapter extends BaseAdapter {
 
 <span class="nc" id="L95">		View vi = inflater.inflate(R.layout.list_item_log, null);</span>
 
-<span class="nc" id="L97">		TextView txtType = (TextView) vi.findViewById(R.id.txtType);</span>
+<span class="nc" id="L97">		TextView txtType = vi.findViewById(R.id.txtType);</span>
 <span class="nc" id="L98">		txtType.setText(hashdata.get(&quot;type&quot;));</span>
 
-<span class="nc" id="L100">		TextView txtDate = (TextView) vi.findViewById(R.id.txtDate);</span>
+<span class="nc" id="L100">		TextView txtDate = vi.findViewById(R.id.txtDate);</span>
 <span class="nc" id="L101">		txtDate.setText(hashdata.get(&quot;date&quot;));</span>
 
-<span class="nc" id="L103">		TextView txtTitle = (TextView) vi.findViewById(R.id.txtTitle);</span>
+<span class="nc" id="L103">		TextView txtTitle = vi.findViewById(R.id.txtTitle);</span>
 <span class="nc" id="L104">		txtTitle.setText(hashdata.get(&quot;title&quot;));</span>
 
-<span class="nc" id="L106">		TextView txtBody = (TextView) vi.findViewById(R.id.txtBody);</span>
+<span class="nc" id="L106">		TextView txtBody = vi.findViewById(R.id.txtBody);</span>
 <span class="nc" id="L107">		txtBody.setText(hashdata.get(&quot;body&quot;));</span>
 
 <span class="nc" id="L109">		return vi;</span>

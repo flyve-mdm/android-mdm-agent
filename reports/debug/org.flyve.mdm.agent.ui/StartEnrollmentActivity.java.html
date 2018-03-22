@@ -78,12 +78,12 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L78">            openMain();</span>
         }
 
-<span class="nc" id="L81">        TextView txtIntro = (TextView) findViewById(R.id.txtIntro);</span>
+<span class="nc" id="L81">        TextView txtIntro = findViewById(R.id.txtIntro);</span>
 <span class="nc" id="L82">        txtIntro.setText( Html.fromHtml(StartEnrollmentActivity.this.getResources().getString(R.string.walkthrough_step_1)) );</span>
 <span class="nc" id="L83">        txtIntro.setMovementMethod(LinkMovementMethod.getInstance());</span>
-<span class="nc" id="L84">        txtMessage = (TextView) findViewById(R.id.txtMessage);</span>
-<span class="nc" id="L85">        txtTitle = (TextView) findViewById(R.id.txtTitle);</span>
-<span class="nc" id="L86">        pb = (ProgressBar) findViewById(R.id.progressBar);</span>
+<span class="nc" id="L84">        txtMessage = findViewById(R.id.txtMessage);</span>
+<span class="nc" id="L85">        txtTitle = findViewById(R.id.txtTitle);</span>
+<span class="nc" id="L86">        pb = findViewById(R.id.progressBar);</span>
 
         // get the deeplink
 <span class="nc" id="L89">        Intent intent = getIntent();</span>
@@ -95,7 +95,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L95">            showError(ex.getMessage());</span>
 <span class="nc" id="L96">        }</span>
 
-<span class="nc" id="L98">        btnEnroll = (RelativeLayout) findViewById(R.id.btnEnroll);</span>
+<span class="nc" id="L98">        btnEnroll = findViewById(R.id.btnEnroll);</span>
 <span class="nc" id="L99">        btnEnroll.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {

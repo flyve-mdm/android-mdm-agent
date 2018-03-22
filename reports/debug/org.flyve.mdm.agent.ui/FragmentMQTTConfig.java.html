@@ -64,22 +64,22 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L64">        final String mPassword = cache.getMqttpasswd();</span>
 <span class="nc" id="L65">        final String mTopic = cache.getTopic();</span>
 
-<span class="nc" id="L67">        final EditText editBroker = (EditText) v.findViewById(R.id.editBroker);</span>
+<span class="nc" id="L67">        final EditText editBroker = v.findViewById(R.id.editBroker);</span>
 <span class="nc" id="L68">        editBroker.setText( mBroker );</span>
 
-<span class="nc" id="L70">        final EditText editPort = (EditText) v.findViewById(R.id.editPort);</span>
+<span class="nc" id="L70">        final EditText editPort = v.findViewById(R.id.editPort);</span>
 <span class="nc" id="L71">        editPort.setText( mPort );</span>
 
-<span class="nc" id="L73">        final EditText editUser = (EditText) v.findViewById(R.id.editUser);</span>
+<span class="nc" id="L73">        final EditText editUser = v.findViewById(R.id.editUser);</span>
 <span class="nc" id="L74">        editUser.setText( mUser );</span>
 
-<span class="nc" id="L76">        final EditText editPassword = (EditText) v.findViewById(R.id.editPassword);</span>
+<span class="nc" id="L76">        final EditText editPassword = v.findViewById(R.id.editPassword);</span>
 <span class="nc" id="L77">        editPassword.setText( mPassword );</span>
 
-<span class="nc" id="L79">        final EditText editTopic = (EditText) v.findViewById(R.id.editTopic);</span>
+<span class="nc" id="L79">        final EditText editTopic = v.findViewById(R.id.editTopic);</span>
 <span class="nc" id="L80">        editTopic.setText( mTopic );</span>
 
-<span class="nc" id="L82">        FloatingActionButton btnSave = (FloatingActionButton) v.findViewById(R.id.btnSave);</span>
+<span class="nc" id="L82">        FloatingActionButton btnSave = v.findViewById(R.id.btnSave);</span>
 <span class="nc" id="L83">        btnSave.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {

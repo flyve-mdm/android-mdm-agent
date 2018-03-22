@@ -82,7 +82,7 @@ import org.json.JSONObject;
 
 <span class="nc" id="L83">        cache = new AppData(FragmentInformation.this.getActivity());</span>
 
-<span class="nc" id="L85">        ImageView imgLogo = (ImageView) v.findViewById(R.id.imgLogo);</span>
+<span class="nc" id="L85">        ImageView imgLogo = v.findViewById(R.id.imgLogo);</span>
 <span class="nc" id="L86">        imgLogo.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
@@ -100,14 +100,14 @@ import org.json.JSONObject;
 <span class="nc" id="L100">            }</span>
         });
 
-<span class="nc" id="L103">        txtNameUser = (TextView) v.findViewById(R.id.txtNameUser);</span>
-<span class="nc" id="L104">        txtEmailUser = (TextView) v.findViewById(R.id.txtDescriptionUser);</span>
-<span class="nc" id="L105">        imgUser = (ImageView) v.findViewById(R.id.imgLogoUser);</span>
+<span class="nc" id="L103">        txtNameUser = v.findViewById(R.id.txtNameUser);</span>
+<span class="nc" id="L104">        txtEmailUser = v.findViewById(R.id.txtDescriptionUser);</span>
+<span class="nc" id="L105">        imgUser = v.findViewById(R.id.imgLogoUser);</span>
 
-<span class="nc" id="L107">        txtNameSupervisor = (TextView) v.findViewById(R.id.txtNameSupervisor);</span>
-<span class="nc" id="L108">        txtDescriptionSupervisor = (TextView) v.findViewById(R.id.txtDescriptionSupervisor);</span>
+<span class="nc" id="L107">        txtNameSupervisor = v.findViewById(R.id.txtNameSupervisor);</span>
+<span class="nc" id="L108">        txtDescriptionSupervisor = v.findViewById(R.id.txtDescriptionSupervisor);</span>
 
-<span class="nc" id="L110">        RelativeLayout layoutSupervisor = (RelativeLayout) v.findViewById(R.id.rlSupervisor);</span>
+<span class="nc" id="L110">        RelativeLayout layoutSupervisor = v.findViewById(R.id.rlSupervisor);</span>
 <span class="nc" id="L111">        layoutSupervisor.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
@@ -115,7 +115,7 @@ import org.json.JSONObject;
 <span class="nc" id="L115">            }</span>
         });
 
-<span class="nc" id="L118">        RelativeLayout layoutUser = (RelativeLayout) v.findViewById(R.id.rlUser);</span>
+<span class="nc" id="L118">        RelativeLayout layoutUser = v.findViewById(R.id.rlUser);</span>
 <span class="nc" id="L119">        layoutUser.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
@@ -123,8 +123,8 @@ import org.json.JSONObject;
 <span class="nc" id="L123">            }</span>
         });
 
-<span class="nc" id="L126">        txtOnline = (TextView) v.findViewById(R.id.txtOnline);</span>
-<span class="nc" id="L127">        imgOnline = (ImageView) v.findViewById(R.id.imgOnline);</span>
+<span class="nc" id="L126">        txtOnline = v.findViewById(R.id.txtOnline);</span>
+<span class="nc" id="L127">        imgOnline = v.findViewById(R.id.imgOnline);</span>
 
 <span class="nc" id="L129">        statusMQTT(cache.getOnlineStatus());</span>
 <span class="nc" id="L130">        loadSupervisor();</span>

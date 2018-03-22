@@ -44,86 +44,83 @@ import java.util.HashMap;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        /**
-         *Inflate be_calendario_fragment and setup Views.
-         */
-<span class="nc" id="L50">        View v = inflater.inflate(R.layout.fragment_policies, null);</span>
+<span class="nc" id="L47">        View v = inflater.inflate(R.layout.fragment_policies, null);</span>
 
-<span class="nc" id="L52">        ListView lst = (ListView) v.findViewById(R.id.lst);</span>
-<span class="nc" id="L53">        loadData(lst);</span>
+<span class="nc" id="L49">        ListView lst = v.findViewById(R.id.lst);</span>
+<span class="nc" id="L50">        loadData(lst);</span>
 
-<span class="nc" id="L55">        return v;</span>
+<span class="nc" id="L52">        return v;</span>
     }
 
     private void loadData(ListView lst) {
 
-<span class="nc" id="L60">        PoliciesData cache = new PoliciesData(FragmentPolicies.this.getContext());</span>
+<span class="nc" id="L57">        PoliciesData cache = new PoliciesData(FragmentPolicies.this.getContext());</span>
 
-<span class="nc" id="L62">        ArrayList arr = new ArrayList&lt;HashMap&lt;String, Boolean&gt;&gt;();</span>
+<span class="nc" id="L59">        ArrayList arr = new ArrayList&lt;HashMap&lt;String, Boolean&gt;&gt;();</span>
 
-<span class="nc" id="L64">        HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L65">        map.put(&quot;description&quot;, getResources().getString(R.string.storage_encryption_device));</span>
-<span class="nc" id="L66">        map.put(&quot;value&quot;, String.valueOf(cache.getStorageEncryptionDevice()));</span>
-<span class="nc" id="L67">        arr.add(map);</span>
+<span class="nc" id="L61">        HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L62">        map.put(&quot;description&quot;, getResources().getString(R.string.storage_encryption_device));</span>
+<span class="nc" id="L63">        map.put(&quot;value&quot;, String.valueOf(cache.getStorageEncryptionDevice()));</span>
+<span class="nc" id="L64">        arr.add(map);</span>
 
-<span class="nc" id="L69">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L70">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_camera));</span>
-<span class="nc" id="L71">        map.put(&quot;value&quot;, String.valueOf(cache.getDisableCamera()));</span>
-<span class="nc" id="L72">        arr.add(map);</span>
+<span class="nc" id="L66">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L67">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_camera));</span>
+<span class="nc" id="L68">        map.put(&quot;value&quot;, String.valueOf(cache.getDisableCamera()));</span>
+<span class="nc" id="L69">        arr.add(map);</span>
 
-<span class="nc" id="L74">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L75">        map.put(&quot;description&quot;, getResources().getString(R.string.password_length));</span>
-<span class="nc" id="L76">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordLength()));</span>
-<span class="nc" id="L77">        arr.add(map);</span>
+<span class="nc" id="L71">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L72">        map.put(&quot;description&quot;, getResources().getString(R.string.password_length));</span>
+<span class="nc" id="L73">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordLength()));</span>
+<span class="nc" id="L74">        arr.add(map);</span>
 
-<span class="nc" id="L79">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L80">        map.put(&quot;description&quot;, getResources().getString(R.string.password_quality));</span>
-<span class="nc" id="L81">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordQuality()));</span>
-<span class="nc" id="L82">        arr.add(map);</span>
+<span class="nc" id="L76">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L77">        map.put(&quot;description&quot;, getResources().getString(R.string.password_quality));</span>
+<span class="nc" id="L78">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordQuality()));</span>
+<span class="nc" id="L79">        arr.add(map);</span>
 
-<span class="nc" id="L84">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L85">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_letters));</span>
-<span class="nc" id="L86">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumLetters()));</span>
-<span class="nc" id="L87">        arr.add(map);</span>
+<span class="nc" id="L81">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L82">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_letters));</span>
+<span class="nc" id="L83">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumLetters()));</span>
+<span class="nc" id="L84">        arr.add(map);</span>
 
-<span class="nc" id="L89">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L90">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_lower_case));</span>
-<span class="nc" id="L91">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumLowerCase()));</span>
-<span class="nc" id="L92">        arr.add(map);</span>
+<span class="nc" id="L86">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L87">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_lower_case));</span>
+<span class="nc" id="L88">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumLowerCase()));</span>
+<span class="nc" id="L89">        arr.add(map);</span>
 
-<span class="nc" id="L94">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L95">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_upper_case));</span>
-<span class="nc" id="L96">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumUpperCase()));</span>
-<span class="nc" id="L97">        arr.add(map);</span>
+<span class="nc" id="L91">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L92">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_upper_case));</span>
+<span class="nc" id="L93">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumUpperCase()));</span>
+<span class="nc" id="L94">        arr.add(map);</span>
 
-<span class="nc" id="L99">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L100">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_non_letter));</span>
-<span class="nc" id="L101">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumNonLetter()));</span>
-<span class="nc" id="L102">        arr.add(map);</span>
+<span class="nc" id="L96">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L97">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_non_letter));</span>
+<span class="nc" id="L98">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumNonLetter()));</span>
+<span class="nc" id="L99">        arr.add(map);</span>
 
-<span class="nc" id="L104">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L105">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_numeric));</span>
-<span class="nc" id="L106">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumNumeric()));</span>
-<span class="nc" id="L107">        arr.add(map);</span>
+<span class="nc" id="L101">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L102">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_numeric));</span>
+<span class="nc" id="L103">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumNumeric()));</span>
+<span class="nc" id="L104">        arr.add(map);</span>
 
-<span class="nc" id="L109">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L110">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_symbols));</span>
-<span class="nc" id="L111">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumSymbols()));</span>
-<span class="nc" id="L112">        arr.add(map);</span>
+<span class="nc" id="L106">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L107">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_symbols));</span>
+<span class="nc" id="L108">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumSymbols()));</span>
+<span class="nc" id="L109">        arr.add(map);</span>
 
-<span class="nc" id="L114">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L115">        map.put(&quot;description&quot;, getResources().getString(R.string.maximum_failed_passwords_for_wipe));</span>
-<span class="nc" id="L116">        map.put(&quot;value&quot;, String.valueOf(cache.getMaximumFailedPasswordsForWipe()));</span>
-<span class="nc" id="L117">        arr.add(map);</span>
+<span class="nc" id="L111">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L112">        map.put(&quot;description&quot;, getResources().getString(R.string.maximum_failed_passwords_for_wipe));</span>
+<span class="nc" id="L113">        map.put(&quot;value&quot;, String.valueOf(cache.getMaximumFailedPasswordsForWipe()));</span>
+<span class="nc" id="L114">        arr.add(map);</span>
 
-<span class="nc" id="L119">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L120">        map.put(&quot;description&quot;, getResources().getString(R.string.maximum_time_to_lock));</span>
-<span class="nc" id="L121">        map.put(&quot;value&quot;, String.valueOf(cache.getMaximumTimeToLock()));</span>
-<span class="nc" id="L122">        arr.add(map);</span>
+<span class="nc" id="L116">        map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L117">        map.put(&quot;description&quot;, getResources().getString(R.string.maximum_time_to_lock));</span>
+<span class="nc" id="L118">        map.put(&quot;value&quot;, String.valueOf(cache.getMaximumTimeToLock()));</span>
+<span class="nc" id="L119">        arr.add(map);</span>
 
-<span class="nc" id="L124">        lst.setAdapter( new PoliciesAdapter(FragmentPolicies.this.getActivity(), arr));</span>
+<span class="nc" id="L121">        lst.setAdapter( new PoliciesAdapter(FragmentPolicies.this.getActivity(), arr));</span>
 
-<span class="nc" id="L126">    }</span>
+<span class="nc" id="L123">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

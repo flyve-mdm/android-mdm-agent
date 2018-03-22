@@ -53,10 +53,10 @@ import java.util.List;
          */
 <span class="nc" id="L54">        View v = inflater.inflate(R.layout.fragment_activity, null);</span>
 
-<span class="nc" id="L56">        viewPager = (ViewPager) v.findViewById(R.id.viewpager);</span>
+<span class="nc" id="L56">        viewPager = v.findViewById(R.id.viewpager);</span>
 <span class="nc" id="L57">        setupViewPager(viewPager);</span>
 
-<span class="nc" id="L59">        tabLayout = (TabLayout) v.findViewById(R.id.tabs);</span>
+<span class="nc" id="L59">        tabLayout = v.findViewById(R.id.tabs);</span>
 <span class="nc" id="L60">        tabLayout.setupWithViewPager(viewPager);</span>
 <span class="nc" id="L61">        return v;</span>
     }

@@ -60,7 +60,7 @@ import org.flyve.mdm.agent.utils.Helpers;
         // Inflate the layout for this fragment
 <span class="nc" id="L61">        View v =  inflater.inflate(R.layout.fragment_help, container, false);</span>
 
-<span class="nc" id="L63">        WebView wv = (WebView) v.findViewById(R.id.webview);</span>
+<span class="nc" id="L63">        WebView wv = v.findViewById(R.id.webview);</span>
 
 <span class="nc" id="L65">        WebSettings settings = wv.getSettings();</span>
 <span class="nc" id="L66">        settings.setJavaScriptEnabled(true);</span>

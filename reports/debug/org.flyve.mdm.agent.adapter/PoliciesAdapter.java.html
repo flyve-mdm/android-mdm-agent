@@ -93,10 +93,10 @@ public class PoliciesAdapter extends BaseAdapter {
 		
 <span class="nc" id="L94">		View vi = inflater.inflate(R.layout.list_item_policies, null);</span>
 
-<span class="nc" id="L96">		TextView lblDescription = (TextView) vi.findViewById(R.id.lblDescription);</span>
+<span class="nc" id="L96">		TextView lblDescription = vi.findViewById(R.id.lblDescription);</span>
 <span class="nc" id="L97">		lblDescription.setText(hashdata.get(&quot;description&quot;));</span>
 
-<span class="nc" id="L99">		TextView lblValue = (TextView) vi.findViewById(R.id.lblValue);</span>
+<span class="nc" id="L99">		TextView lblValue = vi.findViewById(R.id.lblValue);</span>
 
 <span class="nc" id="L101">		String value = hashdata.get(&quot;value&quot;);</span>
 

@@ -71,10 +71,10 @@ import java.util.List;
                              Bundle savedInstanceState) {
 <span class="nc" id="L72">        View v = inflater.inflate(R.layout.fragment_log, container, false);</span>
 
-<span class="nc" id="L74">        txtMessage = (TextView) v.findViewById(R.id.txtMessage);</span>
-<span class="nc" id="L75">        pb = (ProgressBar) v.findViewById(R.id.progressBar);</span>
+<span class="nc" id="L74">        txtMessage = v.findViewById(R.id.txtMessage);</span>
+<span class="nc" id="L75">        pb = v.findViewById(R.id.progressBar);</span>
 
-<span class="nc" id="L77">        FloatingActionButton btnDelete = (FloatingActionButton) v.findViewById(R.id.btnDelete);</span>
+<span class="nc" id="L77">        FloatingActionButton btnDelete = v.findViewById(R.id.btnDelete);</span>
 <span class="nc" id="L78">        btnDelete.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
@@ -86,7 +86,7 @@ import java.util.List;
 
 <span class="nc" id="L87">        arrData = new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L89">        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);</span>
+<span class="nc" id="L89">        final SwipeRefreshLayout swipeLayout = v.findViewById(R.id.swipe_container);</span>
 <span class="nc" id="L90">        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {</span>
             @Override
             public void onRefresh() {
@@ -96,7 +96,7 @@ import java.util.List;
 <span class="nc" id="L96">            }</span>
         });
 
-<span class="nc" id="L99">        lst = (ListView) v.findViewById(R.id.lst);</span>
+<span class="nc" id="L99">        lst = v.findViewById(R.id.lst);</span>
 <span class="nc" id="L100">        loadLogFile();</span>
 
 <span class="nc" id="L102">        return v;</span>

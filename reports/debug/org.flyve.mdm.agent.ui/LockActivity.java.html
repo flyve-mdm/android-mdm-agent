@@ -69,8 +69,8 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 <span class="nc" id="L69">        getWindow().setAttributes(params);</span>
 <span class="nc" id="L70">        wm.addView(mTopView, params);</span>
 
-<span class="nc" id="L72">        txtNameSupervisor = (TextView) mTopView.findViewById(R.id.txtNameSupervisor);</span>
-<span class="nc" id="L73">        txtDescriptionSupervisor = (TextView) mTopView.findViewById(R.id.txtDescriptionSupervisor);</span>
+<span class="nc" id="L72">        txtNameSupervisor = mTopView.findViewById(R.id.txtNameSupervisor);</span>
+<span class="nc" id="L73">        txtDescriptionSupervisor = mTopView.findViewById(R.id.txtDescriptionSupervisor);</span>
 
 <span class="nc" id="L75">        loadSupervisor();</span>
 

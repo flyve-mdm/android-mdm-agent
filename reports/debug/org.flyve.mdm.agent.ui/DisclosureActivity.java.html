@@ -54,7 +54,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L54">        super.onCreate(savedInstanceState);</span>
 <span class="nc" id="L55">        setContentView(R.layout.activity_disclosure);</span>
 
-<span class="nc" id="L57">        Button btnAccept = (Button) findViewById(R.id.btnAccept);</span>
+<span class="nc" id="L57">        Button btnAccept = findViewById(R.id.btnAccept);</span>
 <span class="nc" id="L58">        btnAccept.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
@@ -68,7 +68,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L68">            }</span>
         });
 
-<span class="nc" id="L71">        Button btnCancel = (Button) findViewById(R.id.btnCancel);</span>
+<span class="nc" id="L71">        Button btnCancel = findViewById(R.id.btnCancel);</span>
 <span class="nc" id="L72">        btnCancel.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {

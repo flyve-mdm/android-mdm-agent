@@ -49,50 +49,53 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L49">        super.onCreate(savedInstanceState);</span>
 <span class="nc" id="L50">        setContentView(R.layout.activity_supervisor_preview);</span>
 
-<span class="nc" id="L52">        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);</span>
+<span class="nc" id="L52">        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);</span>
 <span class="nc bnc" id="L53" title="All 2 branches missed.">        if (toolbar != null) {</span>
 <span class="nc" id="L54">            setSupportActionBar(toolbar);</span>
-<span class="nc" id="L55">            getSupportActionBar().setDisplayHomeAsUpEnabled(true);</span>
+            try {
+<span class="nc" id="L56">                getSupportActionBar().setDisplayHomeAsUpEnabled(true);</span>
+<span class="nc" id="L57">            } catch (Exception ex) {</span>
+<span class="nc" id="L58">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L59">            }</span>
 
-<span class="nc" id="L57">            toolbar.setNavigationOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L61">            toolbar.setNavigationOnClickListener(new View.OnClickListener() {</span>
                 @Override
                 public void onClick(View v) {
-<span class="nc" id="L60">                    onBackPressed();</span>
-<span class="nc" id="L61">                }</span>
+<span class="nc" id="L64">                    onBackPressed();</span>
+<span class="nc" id="L65">                }</span>
             });
         }
 
         try {
-<span class="nc" id="L66">            SupervisorData supervisor = new SupervisorData(PreviewSupervisorActivity.this);</span>
+<span class="nc" id="L70">            SupervisorData supervisor = new SupervisorData(PreviewSupervisorActivity.this);</span>
 
-<span class="nc" id="L68">            ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);</span>
-<span class="nc bnc" id="L69" title="All 4 branches missed.">            if (supervisor.getPicture() != null &amp;&amp; !supervisor.getPicture().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L70">                imgPhoto.setImageBitmap(Helpers.stringToBitmap(supervisor.getPicture()));</span>
+<span class="nc" id="L72">            ImageView imgPhoto = findViewById(R.id.imgPhoto);</span>
+<span class="nc bnc" id="L73" title="All 4 branches missed.">            if (supervisor.getPicture() != null &amp;&amp; !supervisor.getPicture().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L74">                imgPhoto.setImageBitmap(Helpers.stringToBitmap(supervisor.getPicture()));</span>
             }
 
-<span class="nc" id="L73">            TextView txtName = (TextView) findViewById(R.id.txtName);</span>
-<span class="nc bnc" id="L74" title="All 4 branches missed.">            if (supervisor.getName() != null &amp;&amp; !supervisor.getName().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L75">                txtName.setText(supervisor.getName());</span>
+<span class="nc" id="L77">            TextView txtName = findViewById(R.id.txtName);</span>
+<span class="nc bnc" id="L78" title="All 4 branches missed.">            if (supervisor.getName() != null &amp;&amp; !supervisor.getName().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L79">                txtName.setText(supervisor.getName());</span>
             }
 
-<span class="nc" id="L78">            TextView txtEmail = (TextView) findViewById(R.id.txtEmail);</span>
-<span class="nc bnc" id="L79" title="All 4 branches missed.">            if (supervisor.getEmail() != null &amp;&amp; !supervisor.getEmail().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L80">                txtEmail.setText(supervisor.getEmail());</span>
+<span class="nc" id="L82">            TextView txtEmail = findViewById(R.id.txtEmail);</span>
+<span class="nc bnc" id="L83" title="All 4 branches missed.">            if (supervisor.getEmail() != null &amp;&amp; !supervisor.getEmail().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L84">                txtEmail.setText(supervisor.getEmail());</span>
             }
 
-<span class="nc" id="L83">            TextView txtPhone = (TextView) findViewById(R.id.txtPhone);</span>
-<span class="nc bnc" id="L84" title="All 4 branches missed.">            if (supervisor.getPhone() != null &amp;&amp; !supervisor.getPhone().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L85">                txtPhone.setText(supervisor.getPhone());</span>
+<span class="nc" id="L87">            TextView txtPhone = findViewById(R.id.txtPhone);</span>
+<span class="nc bnc" id="L88" title="All 4 branches missed.">            if (supervisor.getPhone() != null &amp;&amp; !supervisor.getPhone().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L89">                txtPhone.setText(supervisor.getPhone());</span>
             }
 
-<span class="nc" id="L88">            TextView txtWebsite = (TextView) findViewById(R.id.txtWebsite);</span>
-<span class="nc bnc" id="L89" title="All 4 branches missed.">            if (supervisor.getWebsite() != null &amp;&amp; !supervisor.getWebsite().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L90">                txtWebsite.setText(supervisor.getWebsite());</span>
+<span class="nc" id="L92">            TextView txtWebsite = findViewById(R.id.txtWebsite);</span>
+<span class="nc bnc" id="L93" title="All 4 branches missed.">            if (supervisor.getWebsite() != null &amp;&amp; !supervisor.getWebsite().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L94">                txtWebsite.setText(supervisor.getWebsite());</span>
             }
-<span class="nc" id="L92">        } catch (Exception ex) {</span>
-<span class="nc" id="L93">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L94">        }</span>
-
-<span class="nc" id="L96">    }</span>
+<span class="nc" id="L96">        } catch (Exception ex) {</span>
+<span class="nc" id="L97">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L98">        }</span>
+<span class="nc" id="L99">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
