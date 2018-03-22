@@ -92,10 +92,10 @@ public class MainActivity extends AppCompatActivity {
         cache = new AppData(this);
 
          // Setup the DrawerLayout and NavigationView
-        txtToolbarTitle = (TextView) findViewById(R.id.txtToolbarTitle);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        txtToolbarTitle = findViewById(R.id.txtToolbarTitle);
+        mDrawerLayout = findViewById(R.id.drawerLayout);
 
-        lstDrawer = (ListView) findViewById(R.id.lstNV);
+        lstDrawer = findViewById(R.id.lstNV);
         lstDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         mFragmentManager = getSupportFragmentManager();
 
         // Setup Drawer Toggle of the Toolbar
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout, toolbar,R.string.app_name,
                 R.string.app_name);
 
