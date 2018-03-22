@@ -176,6 +176,7 @@
     <string name="feedback_message_hint">Add any additional message</string>
     <string name="feedback_title">Please help us to confirm if the policies are working correctly on your device\n\n <b>Important: if you check the policy is working fine for you</b></string>
     <string name="feedback_send">Send</string>
+    <string name="feedback_send_success">Feedback sent</string>
 
     <string name="MQTT_ERROR_CONNECTION">Please check your connectivity</string>
     <string name="ERROR_INTERNAL">Internal Error, please try again</string>
