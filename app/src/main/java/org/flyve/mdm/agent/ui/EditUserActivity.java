@@ -90,7 +90,11 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            try {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
 
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
