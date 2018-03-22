@@ -60,7 +60,7 @@ public class FragmentHelp extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_help, container, false);
 
-        WebView wv = (WebView) v.findViewById(R.id.webview);
+        WebView wv = v.findViewById(R.id.webview);
 
         WebSettings settings = wv.getSettings();
         settings.setJavaScriptEnabled(true);
