@@ -65,6 +65,9 @@ public class LocalStorage {
 		SharedPreferences sp = getSettings();
 		if(sp != null) {
 			data = sp.getString(key, null);
+			if(data==null) {
+				data = "";
+			}
 		}
 		return data;
 	}
