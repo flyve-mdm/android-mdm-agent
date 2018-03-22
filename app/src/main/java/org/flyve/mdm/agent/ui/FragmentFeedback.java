@@ -8,12 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.data.PoliciesData;
+import org.flyve.mdm.agent.utils.ConnectionHTTP;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +51,8 @@ import java.util.TreeMap;
  */
 public class FragmentFeedback extends Fragment {
 
-    private AppData cache;
+    private Switch[] swPolicy;
+    private EditText editMessage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,6 +108,7 @@ public class FragmentFeedback extends Fragment {
         map.put("Disable create VPN Profiles", false);
 
         LinearLayout ln = v.findViewById(R.id.lnFields);
+        editMessage = v.findViewById(R.id.editMessage);
 
         Map<String, Boolean> treeMap = new TreeMap<>(map);
         createField(FragmentFeedback.this.getContext(), treeMap, ln);
@@ -111,15 +117,41 @@ public class FragmentFeedback extends Fragment {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                sendFeedbackChollima(createFeedbackJSON(swPolicy));
             }
         });
 
         return v;
     }
 
+    private JSONObject createFeedbackJSON(Switch[] sw){
+        JSONObject jsonFeedback = new JSONObject();
+        JSONObject jsonPolicy = new JSONObject();
+
+        try {
+            for (int i=0; i < sw.length; i++) {
+                jsonPolicy.put(sw[i].getText().toString(), String.valueOf(sw[i].isChecked()));
+            }
+            jsonPolicy.put("message", editMessage.getText().toString());
+            jsonFeedback.put("feedback", jsonPolicy);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+
+        return jsonFeedback;
+    }
+
+    private void sendFeedbackChollima(JSONObject json) {
+        ConnectionHTTP.getWebData("https://inventory.chollima.pro/-1001180163835/", json, null, new ConnectionHTTP.DataCallback() {
+            @Override
+            public void callback(String data) {
+                Helpers.snack(FragmentFeedback.this.getActivity(), getString(R.string.feedback_send_success));
+            }
+        });
+    }
+
     private void createField(Context context, Map<String, Boolean> map, LinearLayout ln) {
-        Switch[] swPolicy = new Switch[map.size()];
+        swPolicy = new Switch[map.size()];
         int index = 0;
 
         for(Map.Entry<String, Boolean> entry : map.entrySet()) {
