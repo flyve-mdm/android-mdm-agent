@@ -94,10 +94,10 @@ public class ConnectivityAdapter extends BaseAdapter {
 		
 		View vi = inflater.inflate(R.layout.list_item_connectivity, null);
 
-		TextView lblDescription = (TextView) vi.findViewById(R.id.lblDescription);
+		TextView lblDescription = vi.findViewById(R.id.lblDescription);
 		lblDescription.setText(hashdata.get("description"));
 
-		Switch swDisable = (Switch) vi.findViewById(R.id.swDisable);
+		Switch swDisable = vi.findViewById(R.id.swDisable);
 		swDisable.setChecked(Boolean.parseBoolean(hashdata.get("disable")));
 
 		return vi;
