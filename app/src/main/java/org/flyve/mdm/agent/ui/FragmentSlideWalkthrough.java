@@ -49,7 +49,6 @@ public class FragmentSlideWalkthrough extends Fragment {
     private int mMessage = 0;
     private int mImage = 0;
 
-
     /**
      * Set the properties to equal the given arguments
      * @param walkthroughData the walkthroug Model class
@@ -85,17 +84,17 @@ public class FragmentSlideWalkthrough extends Fragment {
         }
 
 
-        ImageView imgStep = (ImageView) v.findViewById(R.id.imgStep);
+        ImageView imgStep = v.findViewById(R.id.imgStep);
         if (mImage>0) {
             imgStep.setImageResource(mImage);
         }
 
-        ImageView imgMessage = (ImageView) v.findViewById(R.id.imgDescription);
+        ImageView imgMessage = v.findViewById(R.id.imgDescription);
         if (mMessage>0) {
             imgMessage.setImageResource(mMessage);
         }
 
-        ImageView imgMore = (ImageView) v.findViewById(R.id.imgMore);
+        ImageView imgMore = v.findViewById(R.id.imgMore);
         imgMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,7 +113,7 @@ public class FragmentSlideWalkthrough extends Fragment {
      */
     private void slideDots(ViewGroup v) {
 
-        LinearLayout ln = (LinearLayout) v.findViewById(R.id.lnSliders);
+        LinearLayout ln = v.findViewById(R.id.lnSliders);
 
         for(int i=0; i<this.slides; i++) {
 
@@ -127,8 +126,5 @@ public class FragmentSlideWalkthrough extends Fragment {
             }
             ln.addView(img);
         }
-
     }
-
-
 }
