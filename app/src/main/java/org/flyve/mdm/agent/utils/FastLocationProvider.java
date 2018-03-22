@@ -1,21 +1,7 @@
-package org.flyve.mdm.agent.utils;
-
-import android.content.Context;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
 /*
- *   Copyright (C) 2017 Teclib. All rights reserved.
+ * Copyright Teclib. All rights reserved.
  *
- *   This file is part of flyve-mdm-android-agent
- *
- * flyve-mdm-android-agent is a subproject of Flyve MDM. Flyve MDM is a mobile
- * device management software.
+ * Flyve MDM is a mobile device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,13 +14,23 @@ import java.util.TimerTask;
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
- * @date      6/7/17
- * @copyright Copyright (C) 2017 Teclib. All rights reserved.
+ * @copyright Copyright Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/flyve-mdm-android-agent
+ * @link      https://github.com/flyve-mdm/android-mdm-agent
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
+
+package org.flyve.mdm.agent.utils;
+
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Get location fast and easy way
