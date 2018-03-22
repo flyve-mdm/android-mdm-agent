@@ -27,7 +27,7 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/txtMessage"
+            android:id="@+id/editMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
