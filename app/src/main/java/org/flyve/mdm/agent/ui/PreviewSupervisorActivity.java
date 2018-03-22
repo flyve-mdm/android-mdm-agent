@@ -49,7 +49,7 @@ public class PreviewSupervisorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_supervisor_preview);
 
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -65,33 +65,32 @@ public class PreviewSupervisorActivity extends AppCompatActivity {
         try {
             SupervisorData supervisor = new SupervisorData(PreviewSupervisorActivity.this);
 
-            ImageView imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
+            ImageView imgPhoto = findViewById(R.id.imgPhoto);
             if (supervisor.getPicture() != null && !supervisor.getPicture().equals("")) {
                 imgPhoto.setImageBitmap(Helpers.stringToBitmap(supervisor.getPicture()));
             }
 
-            TextView txtName = (TextView) findViewById(R.id.txtName);
+            TextView txtName = findViewById(R.id.txtName);
             if (supervisor.getName() != null && !supervisor.getName().equals("")) {
                 txtName.setText(supervisor.getName());
             }
 
-            TextView txtEmail = (TextView) findViewById(R.id.txtEmail);
+            TextView txtEmail = findViewById(R.id.txtEmail);
             if (supervisor.getEmail() != null && !supervisor.getEmail().equals("")) {
                 txtEmail.setText(supervisor.getEmail());
             }
 
-            TextView txtPhone = (TextView) findViewById(R.id.txtPhone);
+            TextView txtPhone = findViewById(R.id.txtPhone);
             if (supervisor.getPhone() != null && !supervisor.getPhone().equals("")) {
                 txtPhone.setText(supervisor.getPhone());
             }
 
-            TextView txtWebsite = (TextView) findViewById(R.id.txtWebsite);
+            TextView txtWebsite = findViewById(R.id.txtWebsite);
             if (supervisor.getWebsite() != null && !supervisor.getWebsite().equals("")) {
                 txtWebsite.setText(supervisor.getWebsite());
             }
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
-
     }
 }
