@@ -78,12 +78,12 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
             openMain();
         }
 
-        TextView txtIntro = (TextView) findViewById(R.id.txtIntro);
+        TextView txtIntro = findViewById(R.id.txtIntro);
         txtIntro.setText( Html.fromHtml(StartEnrollmentActivity.this.getResources().getString(R.string.walkthrough_step_1)) );
         txtIntro.setMovementMethod(LinkMovementMethod.getInstance());
-        txtMessage = (TextView) findViewById(R.id.txtMessage);
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
-        pb = (ProgressBar) findViewById(R.id.progressBar);
+        txtMessage = findViewById(R.id.txtMessage);
+        txtTitle = findViewById(R.id.txtTitle);
+        pb = findViewById(R.id.progressBar);
 
         // get the deeplink
         Intent intent = getIntent();
@@ -95,7 +95,7 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
             showError(ex.getMessage());
         }
 
-        btnEnroll = (RelativeLayout) findViewById(R.id.btnEnroll);
+        btnEnroll = findViewById(R.id.btnEnroll);
         btnEnroll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
