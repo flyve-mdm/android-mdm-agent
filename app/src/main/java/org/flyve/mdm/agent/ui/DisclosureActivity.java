@@ -54,7 +54,7 @@ public class DisclosureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disclosure);
 
-        Button btnAccept = (Button) findViewById(R.id.btnAccept);
+        Button btnAccept = findViewById(R.id.btnAccept);
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +68,7 @@ public class DisclosureActivity extends AppCompatActivity {
             }
         });
 
-        Button btnCancel = (Button) findViewById(R.id.btnCancel);
+        Button btnCancel = findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
