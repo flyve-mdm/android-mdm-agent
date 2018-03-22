@@ -69,8 +69,8 @@ public class LockActivity extends AppCompatActivity {
         getWindow().setAttributes(params);
         wm.addView(mTopView, params);
 
-        txtNameSupervisor = (TextView) mTopView.findViewById(R.id.txtNameSupervisor);
-        txtDescriptionSupervisor = (TextView) mTopView.findViewById(R.id.txtDescriptionSupervisor);
+        txtNameSupervisor = mTopView.findViewById(R.id.txtNameSupervisor);
+        txtDescriptionSupervisor = mTopView.findViewById(R.id.txtDescriptionSupervisor);
 
         loadSupervisor();
 
