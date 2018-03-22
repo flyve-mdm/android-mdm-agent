@@ -116,7 +116,7 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
 
     @Override
     public void addSlides(PagerAdapter mPagerAdapter) {
-        ViewPager mPager = (ViewPager) findViewById(R.id.pager);
+        ViewPager mPager = findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
     }
 
