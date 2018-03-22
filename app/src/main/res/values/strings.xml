@@ -130,6 +130,7 @@
     <string name="drawer_help">Help</string>
     <string name="drawer_about">About</string>
     <string name="drawer_configuration">Configuration</string>
+    <string name="drawer_feedback">Feedback</string>
 
     <string name="app_pending">Pending</string>
     <string name="app_installed">Installed</string>
@@ -171,6 +172,10 @@
     <string name="permission_button_share">Share the inventory</string>
     <string name="permission_button_continue">Continue</string>
     <string name="permission_error_result">All the permissions are required</string>
+
+    <string name="feedback_message_hint">Add any additional message</string>
+    <string name="feedback_title">Please help us to confirm if the policies are working correctly on your device\n\n <b>Important: if you check the policy is working fine for you</b></string>
+    <string name="feedback_send">Send</string>
 
     <string name="MQTT_ERROR_CONNECTION">Please check your connectivity</string>
     <string name="ERROR_INTERNAL">Internal Error, please try again</string>
