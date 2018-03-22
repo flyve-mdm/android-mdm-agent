@@ -8,24 +8,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:id="@+id/linearLayout">
+        >
 
-        <Switch
-            android:id="@+id/swNotifications"
+        <TextView
+            android:id="@+id/txtTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Disable Notifications"
-            android:layout_margin="5dp"
+            android:text="@string/feedback_title"
+            android:layout_margin="20dp"
             />
 
-        <Switch
-            android:id="@+id/swDarkTheme"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enable Dark Theme"
-            android:layout_margin="5dp"
-            android:visibility="gone"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:id="@+id/lnFields">
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/txtMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:hint="@string/feedback_message_hint"
             />
+
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/feedback_send"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="20dp"
+            style="?android:attr/borderlessButtonStyle"
+            />
+
     </LinearLayout>
 </ScrollView>
