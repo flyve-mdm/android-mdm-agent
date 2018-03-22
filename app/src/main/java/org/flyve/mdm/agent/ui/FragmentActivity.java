@@ -53,10 +53,10 @@ public class FragmentActivity extends Fragment {
          */
         View v = inflater.inflate(R.layout.fragment_activity, null);
 
-        viewPager = (ViewPager) v.findViewById(R.id.viewpager);
+        viewPager = v.findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) v.findViewById(R.id.tabs);
+        tabLayout = v.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         return v;
     }
