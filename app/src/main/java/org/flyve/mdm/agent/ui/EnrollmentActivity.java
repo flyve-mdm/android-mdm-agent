@@ -97,7 +97,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_form);
 
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             try {
@@ -116,11 +116,11 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
 
         presenter = new EnrollmentPresenter(EnrollmentActivity.this);
 
-        pbx509 = (ProgressBar) findViewById(R.id.progressBarX509);
+        pbx509 = findViewById(R.id.progressBarX509);
 
-        imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
+        imgPhoto = findViewById(R.id.imgPhoto);
 
-        ImageView btnCamera = (ImageView) findViewById(R.id.btnCamera);
+        ImageView btnCamera = findViewById(R.id.btnCamera);
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,20 +128,20 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
             }
         });
 
-        txtMessage = (TextView) findViewById(R.id.txtMessage);
+        txtMessage = findViewById(R.id.txtMessage);
 
-        editName = (EditText) findViewById(R.id.editName);
-        editLastName = (EditText) findViewById(R.id.editLastName);
+        editName = findViewById(R.id.editName);
+        editLastName = findViewById(R.id.editLastName);
 
         // Multiples Emails
-        LinearLayout lnEmails = (LinearLayout) findViewById(R.id.lnEmails);
+        LinearLayout lnEmails = findViewById(R.id.lnEmails);
         editEmail = new MultipleEditText(this, lnEmails, getResources().getString(email));
         editEmail.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         editEmail.setSpinnerArray(R.array.email_array);
         lnEmails.addView( editEmail.createEditText() );
 
         // 3 Phones
-        LinearLayout lnPhones = (LinearLayout) findViewById(R.id.lnPhones);
+        LinearLayout lnPhones = findViewById(R.id.lnPhones);
         editPhone = new MultipleEditText(this, lnPhones, getResources().getString(R.string.phone));
         editPhone.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_PHONE);
         editPhone.setLimit(3);
@@ -149,7 +149,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
         lnPhones.addView( editPhone.createEditText() );
 
         // Language
-        spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
+        spinnerLanguage = findViewById(R.id.spinnerLanguage);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -161,7 +161,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
         // Apply the adapter to the spinner
         spinnerLanguage.setAdapter(adapter);
 
-        editAdministrative = (EditText) findViewById(R.id.editAdministrative);
+        editAdministrative = findViewById(R.id.editAdministrative);
         editAdministrative.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editAdministrative.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -174,7 +174,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
             }
         });
 
-        ImageView btnRegister = (ImageView) findViewById(R.id.btnSave);
+        ImageView btnRegister = findViewById(R.id.btnSave);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
