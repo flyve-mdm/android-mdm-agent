@@ -219,6 +219,13 @@
             android:text="Enable Password"
             />
 
+        <Button
+            android:id="@+id/btnInstallSilently"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Install Silently"
+            />
+
     </LinearLayout>
     </ScrollView>
 </RelativeLayout>
