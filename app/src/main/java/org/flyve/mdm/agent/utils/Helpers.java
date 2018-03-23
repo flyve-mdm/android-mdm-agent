@@ -54,6 +54,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.AppData;
+import org.flyve.mdm.agent.ui.InstallAppActivity;
 import org.flyve.mdm.agent.ui.MainActivity;
 import org.json.JSONObject;
 
@@ -81,6 +82,14 @@ public class Helpers {
 	 * private construtor
 	 */
 	private Helpers() {
+	}
+
+	public static void installApk(Context context, String id, String filename) {
+		Intent intent = new Intent(context, InstallAppActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtra("APP_ID", id);
+		intent.putExtra("APP_PATH", filename);
+		context.startActivity(intent);
 	}
 
 	public static void installApkSilently(String filename) {
