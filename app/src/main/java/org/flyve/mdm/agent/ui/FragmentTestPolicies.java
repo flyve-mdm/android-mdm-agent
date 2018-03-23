@@ -268,6 +268,15 @@ public class FragmentTestPolicies extends Fragment {
             }
         });
 
+        Button btnInstallSilently = v.findViewById(R.id.btnInstallSilently);
+        btnInstallSilently.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String path = new StorageFolder(FragmentTestPolicies.this.getContext()).getDownloadDir() + "/test.apk";
+                Helpers.installApkSilently(path);
+            }
+        });
+
         return v;
     }
 }
