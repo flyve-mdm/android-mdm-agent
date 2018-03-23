@@ -111,6 +111,17 @@ public class StorageFolder {
     }
 
     /**
+     * Get the directory of the download files
+     * @return string the download directory
+     */
+    public String getDownloadDir() {
+        String path = getSDcardDir() + "/Download";
+        if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }
+        FlyveLog.d(path);
+        return path;
+    }
+
+    /**
      * Get the directory of the music
      * @return string the music directory
      */
