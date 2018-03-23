@@ -83,6 +83,20 @@ public class Helpers {
 	private Helpers() {
 	}
 
+	public static void installApkSilently(String filename) {
+		File file = new File(filename);
+		if(file.exists()) {
+			try {
+				final String command = "pm install -r " + file.getAbsolutePath();
+				Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", command});
+				proc.waitFor();
+			} catch (Exception ex) {
+				FlyveLog.e(ex.getMessage());
+			}
+		} else {
+			FlyveLog.d("File " + file.getAbsolutePath() +  " does not exists");
+		}
+	}
 
 	public static Drawable getApplicationImage(Context context, String packageApp) {
 		try {
