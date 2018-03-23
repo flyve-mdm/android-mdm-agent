@@ -36,7 +36,6 @@ import android.support.v4.app.NotificationCompat.Builder;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
-import org.flyve.mdm.agent.ui.InstallAppActivity;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -184,13 +183,11 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         } else {
 
             if(Helpers.isSystemApp(context).equalsIgnoreCase("1")) {
+                // Silently for System apps
                 Helpers.installApkSilently(completeFilePath);
             } else {
-                Intent intent = new Intent(context, InstallAppActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("APP_ID", id);
-                intent.putExtra("APP_PATH", completeFilePath);
-                context.startActivity(intent);
+                // Regular app
+                Helpers.installApk(context, id, completeFilePath);
             }
 
             return true;
