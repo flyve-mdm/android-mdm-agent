@@ -53,7 +53,14 @@ public class PoliciesController {
     private static final String ERROR = &quot;ERROR&quot;;
     private static final String MQTT_SEND = &quot;MQTT Send&quot;;
     private static final String UTF_8 = &quot;UTF-8&quot;;
-    
+
+    private static final String FEEDBACK_PENDING = &quot;pending&quot;;
+    private static final String FEEDBACK_RECEIVED = &quot;received&quot;;
+    private static final String FEEDBACK_DONE = &quot;done&quot;;
+    private static final String FEEDBACK_FAILED = &quot;failed&quot;;
+    private static final String FEEDBACK_CANCELED = &quot;canceled&quot;;
+    private static final String FEEDBACK_WAITING = &quot;waiting&quot;;
+
     private ArrayList&lt;String&gt; arrTopics;
     private MqttAndroidClient client;
     private Context context;
@@ -61,14 +68,14 @@ public class PoliciesController {
     private MqttData mqttCache;
     private String mTopic;
 
-<span class="nc" id="L64">    public PoliciesController(Context context, MqttAndroidClient client) {</span>
-<span class="nc" id="L65">        this.client = client;</span>
-<span class="nc" id="L66">        this.context = context;</span>
-<span class="nc" id="L67">        cache = new PoliciesData(context);</span>
-<span class="nc" id="L68">        mqttCache = new MqttData(context);</span>
-<span class="nc" id="L69">        mTopic = mqttCache.getTopic();</span>
-<span class="nc" id="L70">        arrTopics = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L71">    }</span>
+<span class="nc" id="L71">    public PoliciesController(Context context, MqttAndroidClient client) {</span>
+<span class="nc" id="L72">        this.client = client;</span>
+<span class="nc" id="L73">        this.context = context;</span>
+<span class="nc" id="L74">        cache = new PoliciesData(context);</span>
+<span class="nc" id="L75">        mqttCache = new MqttData(context);</span>
+<span class="nc" id="L76">        mTopic = mqttCache.getTopic();</span>
+<span class="nc" id="L77">        arrTopics = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L78">    }</span>
 
     /**
      * Prevent duplicated topic and create String array with all the topic available
@@ -76,13 +83,13 @@ public class PoliciesController {
      * @return String array
      */
     public String[] addTopic(String channel) {
-<span class="nc bnc" id="L79" title="All 2 branches missed.">        for(int i=0; i&lt;arrTopics.size();i++) {</span>
-<span class="nc bnc" id="L80" title="All 2 branches missed.">            if(channel.equalsIgnoreCase(arrTopics.get(i))) {</span>
-<span class="nc" id="L81">                return new String[0];</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        for(int i=0; i&lt;arrTopics.size();i++) {</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">            if(channel.equalsIgnoreCase(arrTopics.get(i))) {</span>
+<span class="nc" id="L88">                return new String[0];</span>
             }
         }
-<span class="nc" id="L84">        arrTopics.add(channel);</span>
-<span class="nc" id="L85">        return arrTopics.toArray(new String[arrTopics.size()]);</span>
+<span class="nc" id="L91">        arrTopics.add(channel);</span>
+<span class="nc" id="L92">        return arrTopics.toArray(new String[arrTopics.size()]);</span>
     }
 
     /**
@@ -91,121 +98,131 @@ public class PoliciesController {
      */
     public void addManifest(JSONObject json) {
         try {
-<span class="nc" id="L94">            String version = json.getString(&quot;version&quot;);</span>
-<span class="nc" id="L95">            mqttCache.setManifestVersion(version);</span>
-<span class="nc" id="L96">        } catch (Exception ex) {</span>
-<span class="nc" id="L97">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L98">        }</span>
-<span class="nc" id="L99">    }</span>
+<span class="nc" id="L101">            String version = json.getString(&quot;version&quot;);</span>
+<span class="nc" id="L102">            mqttCache.setManifestVersion(version);</span>
+<span class="nc" id="L103">        } catch (Exception ex) {</span>
+<span class="nc" id="L104">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L105">        }</span>
+<span class="nc" id="L106">    }</span>
 
     /**
      * Subscribe to the topic
      * When come from MQTT has a format like this {&quot;subscribe&quot;:[{&quot;topic&quot;:&quot;/2/fleet/22&quot;}]}
      */
     public void subscribe(final String channel) {
-<span class="nc" id="L106">        String[] topics = addTopic(channel);</span>
+<span class="nc" id="L113">        String[] topics = addTopic(channel);</span>
 
         // if topic null
-<span class="nc bnc" id="L109" title="All 4 branches missed.">        if(topics==null || topics.length == 0) {</span>
-<span class="nc" id="L110">            return;</span>
+<span class="nc bnc" id="L116" title="All 4 branches missed.">        if(topics==null || topics.length == 0) {</span>
+<span class="nc" id="L117">            return;</span>
         }
 
-<span class="nc" id="L113">        int[] qos = new int[arrTopics.size()];</span>
+<span class="nc" id="L120">        int[] qos = new int[arrTopics.size()];</span>
 
         try {
-<span class="nc bnc" id="L116" title="All 2 branches missed.">            for (int k = 0; k &lt; qos.length; k++) {</span>
-<span class="nc" id="L117">                qos[k] = 0;</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            for (int k = 0; k &lt; qos.length; k++) {</span>
+<span class="nc" id="L124">                qos[k] = 0;</span>
             }
-<span class="nc" id="L119">        } catch (Exception ex) {</span>
-<span class="nc" id="L120">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L121">        }</span>
+<span class="nc" id="L126">        } catch (Exception ex) {</span>
+<span class="nc" id="L127">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L128">        }</span>
 
-<span class="nc" id="L123">        String str = Arrays.toString(topics);</span>
-<span class="nc" id="L124">        FlyveLog.i(&quot;Topics: &quot; + str + &quot; Qos: &quot; + qos.length);</span>
+<span class="nc" id="L130">        String str = Arrays.toString(topics);</span>
+<span class="nc" id="L131">        FlyveLog.i(&quot;Topics: &quot; + str + &quot; Qos: &quot; + qos.length);</span>
 
         try {
-<span class="nc" id="L127">            IMqttToken subToken = client.subscribe(topics, qos);</span>
-<span class="nc" id="L128">            subToken.setActionCallback(new IMqttActionListener() {</span>
+<span class="nc" id="L134">            IMqttToken subToken = client.subscribe(topics, qos);</span>
+<span class="nc" id="L135">            subToken.setActionCallback(new IMqttActionListener() {</span>
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // The message was published
-<span class="nc" id="L132">                    FlyveLog.d(&quot;Subscribed&quot;);</span>
-<span class="nc" id="L133">                    broadcastReceivedLog(Helpers.broadCastMessage(&quot;TOPIC&quot;, &quot;Subscribed&quot;, channel));</span>
-<span class="nc" id="L134">                }</span>
+<span class="nc" id="L139">                    FlyveLog.d(&quot;Subscribed&quot;);</span>
+<span class="nc" id="L140">                    broadcastReceivedLog(Helpers.broadCastMessage(&quot;TOPIC&quot;, &quot;Subscribed&quot;, channel));</span>
+<span class="nc" id="L141">                }</span>
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken,
                                       Throwable exception) {
                     // The subscription could not be performed, maybe the user was not
                     // authorized to subscribe on the specified topic e.g. using wildcards
-<span class="nc" id="L141">                    String errorMessage = &quot; unknown&quot;;</span>
-<span class="nc bnc" id="L142" title="All 2 branches missed.">                    if(exception != null) {</span>
-<span class="nc" id="L143">                        errorMessage = exception.getMessage();</span>
+<span class="nc" id="L148">                    String errorMessage = &quot; unknown&quot;;</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">                    if(exception != null) {</span>
+<span class="nc" id="L150">                        errorMessage = exception.getMessage();</span>
                     }
-<span class="nc" id="L145">                    FlyveLog.e(&quot;ERROR on subscribe: &quot; + errorMessage);</span>
-<span class="nc" id="L146">                    broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on subscribe&quot;, errorMessage));</span>
-<span class="nc" id="L147">                }</span>
+<span class="nc" id="L152">                    FlyveLog.e(&quot;ERROR on subscribe: &quot; + errorMessage);</span>
+<span class="nc" id="L153">                    broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on subscribe&quot;, errorMessage));</span>
+<span class="nc" id="L154">                }</span>
             });
-<span class="nc" id="L149">        } catch (Exception ex) {</span>
-<span class="nc" id="L150">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L151">        }</span>
-<span class="nc" id="L152">    }</span>
+<span class="nc" id="L156">        } catch (Exception ex) {</span>
+<span class="nc" id="L157">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L158">        }</span>
+<span class="nc" id="L159">    }</span>
 
     /**
      * Create Device Inventory
      * Example {&quot;query&quot;: &quot;inventory&quot;}
      */
     public void createInventory() {
-<span class="nc" id="L159">        InventoryTask inventoryTask = new InventoryTask(this.context, &quot;FlyveMDM-Agent_v1.0&quot;);</span>
-<span class="nc" id="L160">        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {</span>
+<span class="nc" id="L166">        InventoryTask inventoryTask = new InventoryTask(this.context, &quot;FlyveMDM-Agent_v1.0&quot;);</span>
+<span class="nc" id="L167">        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {</span>
             @Override
             public void onTaskSuccess(String data) {
-<span class="nc" id="L163">                FlyveLog.xml(data);</span>
+<span class="nc" id="L170">                FlyveLog.xml(data);</span>
 
                 // send inventory to MQTT
-<span class="nc" id="L166">                sendInventory(data);</span>
+<span class="nc" id="L173">                sendInventory(data);</span>
 
-<span class="nc" id="L168">                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Inventory&quot;, &quot;Inventory Send&quot;));</span>
-<span class="nc" id="L169">            }</span>
+<span class="nc" id="L175">                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Inventory&quot;, &quot;Inventory Send&quot;));</span>
+<span class="nc" id="L176">            }</span>
 
             @Override
             public void onTaskError(Throwable error) {
-<span class="nc" id="L173">                FlyveLog.e(error.getMessage());</span>
+<span class="nc" id="L180">                FlyveLog.e(error.getMessage());</span>
                 //send broadcast
-<span class="nc" id="L175">                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on createInventory&quot;, error.getMessage()));</span>
-<span class="nc" id="L176">            }</span>
+<span class="nc" id="L182">                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on createInventory&quot;, error.getMessage()));</span>
+<span class="nc" id="L183">            }</span>
         });
-<span class="nc" id="L178">    }</span>
+<span class="nc" id="L185">    }</span>
 
     /**
      * TLS
      * Example &quot;useTLS&quot;: &quot;true|false&quot;, &quot;taskId&quot;: &quot;25&quot;
      */
-    public void useTLS(Boolean enable) {
+    public void useTLS(String taskId, Boolean enable) {
         try {
-<span class="nc" id="L186">            MqttData cache = new MqttData(context);</span>
+<span class="nc" id="L193">            MqttData cache = new MqttData(context);</span>
 
-<span class="nc bnc" id="L188" title="All 2 branches missed.">            if(enable) {</span>
-<span class="nc" id="L189">                cache.setTls(&quot;1&quot;);</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">            if(enable) {</span>
+<span class="nc" id="L196">                cache.setTls(&quot;1&quot;);</span>
 
                 // stop service
-<span class="nc" id="L192">                ((Service) context).stopSelf();</span>
+<span class="nc" id="L199">                ((Service) context).stopSelf();</span>
 
                 // restart MQTT connection with this new parameters
-<span class="nc" id="L195">                MQTTService.start(MDMAgent.getInstance());</span>
+<span class="nc" id="L202">                MQTTService.start(MDMAgent.getInstance());</span>
+
+                // return the status of the task
+<span class="nc" id="L205">                sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+
             } else {
-<span class="nc" id="L197">                cache.setTls(&quot;0&quot;);</span>
+<span class="nc" id="L208">                cache.setTls(&quot;0&quot;);</span>
 
                 // stop service
-<span class="nc" id="L200">                ((Service) context).stopSelf();</span>
+<span class="nc" id="L211">                ((Service) context).stopSelf();</span>
 
                 // restart MQTT connection with this new parameters
-<span class="nc" id="L203">                MQTTService.start(MDMAgent.getInstance());</span>
+<span class="nc" id="L214">                MQTTService.start(MDMAgent.getInstance());</span>
+
+                // return the status of the task
+<span class="nc" id="L217">                sendTaskStatus(taskId, FEEDBACK_DONE);</span>
             }
-<span class="nc" id="L205">        } catch (Exception ex) {</span>
-<span class="nc" id="L206">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L207">        }</span>
-<span class="nc" id="L208">    }</span>
+<span class="nc" id="L219">        } catch (Exception ex) {</span>
+<span class="nc" id="L220">            FlyveLog.e(ex.getMessage());</span>
+
+            // return the status of the task
+<span class="nc" id="L223">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L224">        }</span>
+<span class="nc" id="L225">    }</span>
 
     /**
      * Lock Device
@@ -213,268 +230,388 @@ public class PoliciesController {
      */
     public void lockDevice(Boolean lock) {
         try {
-<span class="nc" id="L216">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L233">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
 
-<span class="nc bnc" id="L218" title="All 2 branches missed.">            if(lock) {</span>
-<span class="nc" id="L219">                mdm.lockScreen();</span>
-<span class="nc" id="L220">                mdm.lockDevice();</span>
-<span class="nc" id="L221">                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Lock&quot;, &quot;Device Lock&quot;));</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">            if(lock) {</span>
+<span class="nc" id="L236">                mdm.lockScreen();</span>
+<span class="nc" id="L237">                mdm.lockDevice();</span>
+<span class="nc" id="L238">                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Lock&quot;, &quot;Device Lock&quot;));</span>
             } else {
-<span class="nc" id="L223">                Helpers.sendBroadcast(&quot;unlock&quot;, &quot;org.flyvemdm.finishlock&quot;, context);</span>
+<span class="nc" id="L240">                Helpers.sendBroadcast(&quot;unlock&quot;, &quot;org.flyvemdm.finishlock&quot;, context);</span>
             }
-<span class="nc" id="L225">        } catch (Exception ex) {</span>
-<span class="nc" id="L226">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on lockDevice&quot;, ex.getMessage()));</span>
-<span class="nc" id="L227">            FlyveLog.e(ex.getCause().getMessage());</span>
-<span class="nc" id="L228">        }</span>
-<span class="nc" id="L229">    }</span>
+<span class="nc" id="L242">        } catch (Exception ex) {</span>
+<span class="nc" id="L243">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on lockDevice&quot;, ex.getMessage()));</span>
+<span class="nc" id="L244">            FlyveLog.e(ex.getCause().getMessage());</span>
+<span class="nc" id="L245">        }</span>
+<span class="nc" id="L246">    }</span>
 
     /**
      * FLEET Camera
      * Example {&quot;camera&quot;:[{&quot;disableCamera&quot;:&quot;true&quot;}]}
      */
-    public void disableCamera(Boolean disable) {
-<span class="nc" id="L236">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L237">        mdm.disableCamera(disable);</span>
-<span class="nc" id="L238">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Camera&quot;, &quot;Camera is disable: &quot; + disable));</span>
-<span class="nc" id="L239">    }</span>
+    public void disableCamera(String taskId, Boolean disable) {
+        try {
+<span class="nc" id="L254">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L255">            mdm.disableCamera(disable);</span>
+<span class="nc" id="L256">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Camera&quot;, &quot;Camera is disable: &quot; + disable));</span>
+
+            // return the status of the task
+<span class="nc" id="L259">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L260">        } catch (Exception ex) {</span>
+<span class="nc" id="L261">            FlyveLog.e(ex.getMessage());</span>
+
+            // return the status of the task
+<span class="nc" id="L264">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L265">        }</span>
+<span class="nc" id="L266">    }</span>
 
     public void disableUI(JSONObject json) {
         try {
-<span class="nc" id="L243">            JSONArray jsonConnectivities = json.getJSONArray(&quot;connectivity&quot;);</span>
-<span class="nc bnc" id="L244" title="All 2 branches missed.">            for (int i = 0; i &lt;= jsonConnectivities.length(); i++) {</span>
-<span class="nc" id="L245">                JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);</span>
+<span class="nc" id="L270">            JSONArray jsonConnectivities = json.getJSONArray(&quot;connectivity&quot;);</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">            for (int i = 0; i &lt;= jsonConnectivities.length(); i++) {</span>
+<span class="nc" id="L272">                JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);</span>
 
-<span class="nc bnc" id="L247" title="All 2 branches missed.">                if (jsonConnectivity.has(&quot;disableScreenCapture&quot;)) {</span>
-<span class="nc" id="L248">                    boolean disable = jsonConnectivity.getBoolean(&quot;disableScreenCapture&quot;);</span>
-<span class="nc" id="L249">                    new PoliciesDeviceManager(context).disableCaptureScreen(disable);</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">                if (jsonConnectivity.has(&quot;disableScreenCapture&quot;)) {</span>
+<span class="nc" id="L275">                    boolean disable = jsonConnectivity.getBoolean(&quot;disableScreenCapture&quot;);</span>
+<span class="nc" id="L276">                    new PoliciesDeviceManager(context).disableCaptureScreen(disable);</span>
                 }
 
-<span class="nc bnc" id="L252" title="All 2 branches missed.">                if (jsonConnectivity.has(&quot;disableStatusBar&quot;)) {</span>
-<span class="nc" id="L253">                    boolean disable = jsonConnectivity.getBoolean(&quot;disableStatusBar&quot;);</span>
-<span class="nc" id="L254">                    new PoliciesDeviceManager(context).disableCaptureScreen(disable);</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">                if (jsonConnectivity.has(&quot;disableStatusBar&quot;)) {</span>
+<span class="nc" id="L280">                    boolean disable = jsonConnectivity.getBoolean(&quot;disableStatusBar&quot;);</span>
+<span class="nc" id="L281">                    new PoliciesDeviceManager(context).disableCaptureScreen(disable);</span>
                 }
 
             }
-<span class="nc" id="L258">        } catch (Exception ex) {</span>
-<span class="nc" id="L259">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L260">        }</span>
-<span class="nc" id="L261">    }</span>
+<span class="nc" id="L285">        } catch (Exception ex) {</span>
+<span class="nc" id="L286">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L287">        }</span>
+<span class="nc" id="L288">    }</span>
 
-    public void disableBluetooth(boolean disable) {
+    public void disableBluetooth(String taskId, boolean disable) {
         try {
-<span class="nc" id="L265">            cache.setConnectivityBluetoothDisable(disable);</span>
-<span class="nc" id="L266">            PoliciesConnectivity.disableBluetooth(disable);</span>
-<span class="nc" id="L267">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Bluetooth&quot;, &quot;Bluetooth is disable: &quot; + disable));</span>
-<span class="nc" id="L268">        } catch (Exception ex) {</span>
-<span class="nc" id="L269">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on Bluetooth&quot;, ex.getMessage()));</span>
-<span class="nc" id="L270">        }</span>
-<span class="nc" id="L271">    }</span>
+<span class="nc" id="L292">            cache.setConnectivityBluetoothDisable(disable);</span>
+<span class="nc" id="L293">            PoliciesConnectivity.disableBluetooth(disable);</span>
+<span class="nc" id="L294">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Bluetooth&quot;, &quot;Bluetooth is disable: &quot; + disable));</span>
 
-    public void disableWifi(boolean disable) {
-        try {
-<span class="nc" id="L275">            cache.setConnectivityWifiDisable(disable);</span>
-<span class="nc" id="L276">            PoliciesConnectivity.disableWifi(disable);</span>
-<span class="nc" id="L277">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Wifi&quot;, &quot;Wifi is disable: &quot; + disable));</span>
-<span class="nc" id="L278">        } catch (Exception ex) {</span>
-<span class="nc" id="L279">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on Wifi&quot;, ex.getMessage()));</span>
-<span class="nc" id="L280">        }</span>
-<span class="nc" id="L281">    }</span>
-
-    public void disableGPS(boolean disable) {
-        try {
-<span class="nc" id="L285">            cache.setConnectivityGPSDisable(disable);</span>
-<span class="nc" id="L286">            PoliciesConnectivity.disableGps(disable);</span>
-<span class="nc" id="L287">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;GPS&quot;, &quot;GPS is disable: &quot; + disable));</span>
-<span class="nc" id="L288">        } catch (Exception ex) {</span>
-<span class="nc" id="L289">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on GPS&quot;, ex.getMessage()));</span>
-<span class="nc" id="L290">        }</span>
-<span class="nc" id="L291">    }</span>
-
-    public void disableRoaming(boolean disable) {
-        try {
-<span class="nc" id="L295">            cache.setConnectivityRoamingDisable(disable);</span>
-<span class="nc" id="L296">            PoliciesConnectivity.disableRoaming(disable);</span>
-<span class="nc" id="L297">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Roaming&quot;, &quot;Roaming is disable: &quot; + disable));</span>
+            // return the status of the task
+<span class="nc" id="L297">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
 <span class="nc" id="L298">        } catch (Exception ex) {</span>
-<span class="nc" id="L299">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on Roaming&quot;, ex.getMessage()));</span>
-<span class="nc" id="L300">        }</span>
-<span class="nc" id="L301">    }</span>
+<span class="nc" id="L299">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on Bluetooth&quot;, ex.getMessage()));</span>
 
-    public void disableAirplaneMode(boolean disable) {
+            // return the status of the task
+<span class="nc" id="L302">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L303">        }</span>
+<span class="nc" id="L304">    }</span>
+
+    public void disableWifi(String taskId, boolean disable) {
         try {
-<span class="nc" id="L305">            cache.setConnectivityAirplaneModeDisable(disable);</span>
-<span class="nc" id="L306">            PoliciesConnectivity.disableAirplaneMode(disable);</span>
-<span class="nc" id="L307">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;AirplaneMode&quot;, &quot;AirplaneMode is disable: &quot; + disable));</span>
-<span class="nc" id="L308">        } catch (Exception ex) {</span>
-<span class="nc" id="L309">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on AirplaneMode&quot;, ex.getMessage()));</span>
-<span class="nc" id="L310">        }</span>
-<span class="nc" id="L311">    }</span>
+<span class="nc" id="L308">            cache.setConnectivityWifiDisable(disable);</span>
+<span class="nc" id="L309">            PoliciesConnectivity.disableWifi(disable);</span>
+<span class="nc" id="L310">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Wifi&quot;, &quot;Wifi is disable: &quot; + disable));</span>
 
-    public void disableMobileLine(boolean disable) {
+            // return the status of the task
+<span class="nc" id="L313">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L314">        } catch (Exception ex) {</span>
+<span class="nc" id="L315">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on Wifi&quot;, ex.getMessage()));</span>
+
+            // return the status of the task
+<span class="nc" id="L318">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L319">        }</span>
+<span class="nc" id="L320">    }</span>
+
+    public void disableGPS(String taskId, boolean disable) {
         try {
-<span class="nc" id="L315">            cache.setConnectivityMobileLineDisable(disable);</span>
-<span class="nc" id="L316">            PoliciesConnectivity.disableMobileLine(disable);</span>
-<span class="nc" id="L317">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;MobileLine&quot;, &quot;MobileLine is disable: &quot; + disable));</span>
-<span class="nc" id="L318">        } catch (Exception ex) {</span>
-<span class="nc" id="L319">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on MobileLine&quot;, ex.getMessage()));</span>
-<span class="nc" id="L320">        }</span>
-<span class="nc" id="L321">    }</span>
+<span class="nc" id="L324">            cache.setConnectivityGPSDisable(disable);</span>
+<span class="nc" id="L325">            PoliciesConnectivity.disableGps(disable);</span>
+<span class="nc" id="L326">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;GPS&quot;, &quot;GPS is disable: &quot; + disable));</span>
 
-    public void disableNFC(boolean disable) {
+            // return the status of the task
+<span class="nc" id="L329">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L330">        } catch (Exception ex) {</span>
+<span class="nc" id="L331">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on GPS&quot;, ex.getMessage()));</span>
+
+            // return the status of the task
+<span class="nc" id="L334">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L335">        }</span>
+<span class="nc" id="L336">    }</span>
+
+    public void disableRoaming(String taskId, boolean disable) {
         try {
-<span class="nc" id="L325">            cache.setConnectivityNFCDisable(disable);</span>
-<span class="nc" id="L326">            PoliciesConnectivity.disableNFC(disable);</span>
-<span class="nc" id="L327">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;NFC&quot;, &quot;NFC is disable: &quot; + disable));</span>
-<span class="nc" id="L328">        } catch (Exception ex) {</span>
-<span class="nc" id="L329">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on NFC&quot;, ex.getMessage()));</span>
-<span class="nc" id="L330">        }</span>
-<span class="nc" id="L331">    }</span>
+<span class="nc" id="L340">            cache.setConnectivityRoamingDisable(disable);</span>
+<span class="nc" id="L341">            PoliciesConnectivity.disableRoaming(disable);</span>
+<span class="nc" id="L342">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Roaming&quot;, &quot;Roaming is disable: &quot; + disable));</span>
 
-    public void disableHostpotTethering(boolean disable) {
+            // return the status of the task
+<span class="nc" id="L345">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L346">        } catch (Exception ex) {</span>
+<span class="nc" id="L347">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on Roaming&quot;, ex.getMessage()));</span>
+
+            // return the status of the task
+<span class="nc" id="L350">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L351">        }</span>
+<span class="nc" id="L352">    }</span>
+
+    public void disableAirplaneMode(String taskId, boolean disable) {
         try {
-<span class="nc" id="L335">            cache.setConnectivityHostpotTetheringDisable(disable);</span>
-<span class="nc" id="L336">            PoliciesConnectivity.disableHostpotTethering(disable);</span>
-<span class="nc" id="L337">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;HostpotTethering&quot;, &quot;HostpotTethering is disable: &quot; + disable));</span>
-<span class="nc" id="L338">        } catch (Exception ex) {</span>
-<span class="nc" id="L339">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on HostpotTethering&quot;, ex.getMessage()));</span>
-<span class="nc" id="L340">        }</span>
-<span class="nc" id="L341">    }</span>
+<span class="nc" id="L356">            cache.setConnectivityAirplaneModeDisable(disable);</span>
+<span class="nc" id="L357">            PoliciesConnectivity.disableAirplaneMode(disable);</span>
+<span class="nc" id="L358">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;AirplaneMode&quot;, &quot;AirplaneMode is disable: &quot; + disable));</span>
 
-    public void disableSmsMms(boolean disable) {
+            // return the status of the task
+<span class="nc" id="L361">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L362">        } catch (Exception ex) {</span>
+<span class="nc" id="L363">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on AirplaneMode&quot;, ex.getMessage()));</span>
+
+            // return the status of the task
+<span class="nc" id="L366">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L367">        }</span>
+<span class="nc" id="L368">    }</span>
+
+    public void disableMobileLine(String taskId, boolean disable) {
+        try {
+<span class="nc" id="L372">            cache.setConnectivityMobileLineDisable(disable);</span>
+<span class="nc" id="L373">            PoliciesConnectivity.disableMobileLine(disable);</span>
+<span class="nc" id="L374">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;MobileLine&quot;, &quot;MobileLine is disable: &quot; + disable));</span>
+
+            // return the status of the task
+<span class="nc" id="L377">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L378">        } catch (Exception ex) {</span>
+<span class="nc" id="L379">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on MobileLine&quot;, ex.getMessage()));</span>
+
+            // return the status of the task
+<span class="nc" id="L382">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L383">        }</span>
+<span class="nc" id="L384">    }</span>
+
+    public void disableNFC(String taskId, boolean disable) {
+        try {
+<span class="nc" id="L388">            cache.setConnectivityNFCDisable(disable);</span>
+<span class="nc" id="L389">            PoliciesConnectivity.disableNFC(disable);</span>
+<span class="nc" id="L390">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;NFC&quot;, &quot;NFC is disable: &quot; + disable));</span>
+
+            // return the status of the task
+<span class="nc" id="L393">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L394">        } catch (Exception ex) {</span>
+<span class="nc" id="L395">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on NFC&quot;, ex.getMessage()));</span>
+
+            // return the status of the task
+<span class="nc" id="L398">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L399">        }</span>
+<span class="nc" id="L400">    }</span>
+
+    public void disableHostpotTethering(String taskId, boolean disable) {
+        try {
+<span class="nc" id="L404">            cache.setConnectivityHostpotTetheringDisable(disable);</span>
+<span class="nc" id="L405">            PoliciesConnectivity.disableHostpotTethering(disable);</span>
+<span class="nc" id="L406">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;HostpotTethering&quot;, &quot;HostpotTethering is disable: &quot; + disable));</span>
+
+            // return the status of the task
+<span class="nc" id="L409">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L410">        } catch (Exception ex) {</span>
+<span class="nc" id="L411">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on HostpotTethering&quot;, ex.getMessage()));</span>
+
+            // return the status of the task
+<span class="nc" id="L414">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L415">        }</span>
+<span class="nc" id="L416">    }</span>
+
+    public void disableSmsMms(String taskId, boolean disable) {
         // to change the behavior of this policy check
         // SMSReceiver
 
         try {
-<span class="nc" id="L348">            cache.setConnectivitySmsMmsDisable(disable);</span>
-<span class="nc" id="L349">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;SMS&quot;, &quot;SMS is disable: &quot; + disable));</span>
-<span class="nc" id="L350">        } catch (Exception ex) {</span>
-<span class="nc" id="L351">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on SMS&quot;, ex.getMessage()));</span>
-<span class="nc" id="L352">        }</span>
-<span class="nc" id="L353">    }</span>
+<span class="nc" id="L423">            cache.setConnectivitySmsMmsDisable(disable);</span>
+<span class="nc" id="L424">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;SMS&quot;, &quot;SMS is disable: &quot; + disable));</span>
+
+            // return the status of the task
+<span class="nc" id="L427">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L428">        } catch (Exception ex) {</span>
+<span class="nc" id="L429">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on SMS&quot;, ex.getMessage()));</span>
+
+            // return the status of the task
+<span class="nc" id="L432">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L433">        }</span>
+<span class="nc" id="L434">    }</span>
 
     public void disableAllUsbFileTransferProtocols(boolean disable) {
         try {
-<span class="nc" id="L357">            cache.setConnectivityUsbFileTransferProtocolsDisable(disable);</span>
-<span class="nc" id="L358">            PoliciesConnectivity.disableAllUsbFileTransferProtocols(disable);</span>
-<span class="nc" id="L359">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;UsbFileTransferProtocols&quot;, &quot;UsbFileTransferProtocols is disable: &quot; + disable));</span>
-<span class="nc" id="L360">        } catch (Exception ex) {</span>
-<span class="nc" id="L361">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on UsbFileTransferProtocols&quot;, ex.getMessage()));</span>
-<span class="nc" id="L362">        }</span>
-<span class="nc" id="L363">    }</span>
+<span class="nc" id="L438">            cache.setConnectivityUsbFileTransferProtocolsDisable(disable);</span>
+<span class="nc" id="L439">            PoliciesConnectivity.disableAllUsbFileTransferProtocols(disable);</span>
+<span class="nc" id="L440">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;UsbFileTransferProtocols&quot;, &quot;UsbFileTransferProtocols is disable: &quot; + disable));</span>
+<span class="nc" id="L441">        } catch (Exception ex) {</span>
+<span class="nc" id="L442">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on UsbFileTransferProtocols&quot;, ex.getMessage()));</span>
+<span class="nc" id="L443">        }</span>
+<span class="nc" id="L444">    }</span>
 
-    public void disableADBUsbFileTransferProtocols(boolean disable) {
+    public void disableADBUsbFileTransferProtocols(String taskId, boolean disable) {
         try {
-<span class="nc" id="L367">            cache.setConnectivityADBUsbFileTransferProtocolsDisable(disable);</span>
-<span class="nc" id="L368">            PoliciesConnectivity.disableADBUsbFileTransferProtocols(disable);</span>
-<span class="nc" id="L369">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;UsbFileTransferProtocols ADB&quot;, &quot;UsbFileTransferProtocols is disable: &quot; + disable));</span>
-<span class="nc" id="L370">        } catch (Exception ex) {</span>
-<span class="nc" id="L371">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on UsbFileTransferProtocols ADB&quot;, ex.getMessage()));</span>
-<span class="nc" id="L372">        }</span>
-<span class="nc" id="L373">    }</span>
+<span class="nc" id="L448">            cache.setConnectivityADBUsbFileTransferProtocolsDisable(disable);</span>
+<span class="nc" id="L449">            PoliciesConnectivity.disableADBUsbFileTransferProtocols(disable);</span>
+<span class="nc" id="L450">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;UsbFileTransferProtocols ADB&quot;, &quot;UsbFileTransferProtocols is disable: &quot; + disable));</span>
 
-    public void disablePTPUsbFileTransferProtocols(boolean disable) {
-        try {
-<span class="nc" id="L377">            cache.setConnectivityPTPUsbFileTransferProtocolsDisable(disable);</span>
-<span class="nc" id="L378">            PoliciesConnectivity.disablePTPUsbFileTransferProtocols(disable);</span>
-<span class="nc" id="L379">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;UsbFileTransferProtocols PTP&quot;, &quot;UsbFileTransferProtocols is disable: &quot; + disable));</span>
-<span class="nc" id="L380">        } catch (Exception ex) {</span>
-<span class="nc" id="L381">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on UsbFileTransferProtocols PTP&quot;, ex.getMessage()));</span>
-<span class="nc" id="L382">        }</span>
-<span class="nc" id="L383">    }</span>
+            // return the status of the task
+<span class="nc" id="L453">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L454">        } catch (Exception ex) {</span>
+<span class="nc" id="L455">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on UsbFileTransferProtocols ADB&quot;, ex.getMessage()));</span>
 
-    public void disableMTPUsbFileTransferProtocols(boolean disable) {
-        try {
-<span class="nc" id="L387">            cache.setConnectivityMTPUsbFileTransferProtocolsDisable(disable);</span>
-<span class="nc" id="L388">            PoliciesConnectivity.disableMTPUsbFileTransferProtocols(disable);</span>
-<span class="nc" id="L389">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;UsbFileTransferProtocols MTP&quot;, &quot;UsbFileTransferProtocols is disable: &quot; + disable));</span>
-<span class="nc" id="L390">        } catch (Exception ex) {</span>
-<span class="nc" id="L391">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on UsbFileTransferProtocols MTP&quot;, ex.getMessage()));</span>
-<span class="nc" id="L392">        }</span>
-<span class="nc" id="L393">    }</span>
+            // return the status of the task
+<span class="nc" id="L458">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L459">        }</span>
+<span class="nc" id="L460">    }</span>
 
-    public void disableStatusBar(boolean disable) {
+    public void disablePTPUsbFileTransferProtocols(String taskId, boolean disable) {
         try {
-<span class="nc" id="L397">            new PoliciesDeviceManager(context).disableStatusBar(disable);</span>
-<span class="nc" id="L398">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;status bar&quot;, &quot;status bar is disable: &quot; + disable));</span>
-<span class="nc" id="L399">        } catch (Exception ex) {</span>
-<span class="nc" id="L400">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on status bar&quot;, ex.getMessage()));</span>
-<span class="nc" id="L401">        }</span>
-<span class="nc" id="L402">    }</span>
+<span class="nc" id="L464">            cache.setConnectivityPTPUsbFileTransferProtocolsDisable(disable);</span>
+<span class="nc" id="L465">            PoliciesConnectivity.disablePTPUsbFileTransferProtocols(disable);</span>
+<span class="nc" id="L466">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;UsbFileTransferProtocols PTP&quot;, &quot;UsbFileTransferProtocols is disable: &quot; + disable));</span>
 
-    public void disableSpeakerphone(boolean disable) {
-        try {
-<span class="nc" id="L406">            new PoliciesDeviceManager(context).disableSpeakerphone(disable);</span>
-<span class="nc" id="L407">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Speaker phone&quot;, &quot;Speaker phone is disable: &quot; + disable));</span>
-<span class="nc" id="L408">        } catch (Exception ex) {</span>
-<span class="nc" id="L409">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on Speaker phone&quot;, ex.getMessage()));</span>
-<span class="nc" id="L410">        }</span>
-<span class="nc" id="L411">    }</span>
+            // return the status of the task
+<span class="nc" id="L469">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L470">        } catch (Exception ex) {</span>
+<span class="nc" id="L471">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on UsbFileTransferProtocols PTP&quot;, ex.getMessage()));</span>
 
-    public void disableScreenCapture(boolean disable) {
+            // return the status of the task
+<span class="nc" id="L474">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L475">        }</span>
+<span class="nc" id="L476">    }</span>
+
+    public void disableMTPUsbFileTransferProtocols(String taskId, boolean disable) {
         try {
-<span class="nc bnc" id="L415" title="All 2 branches missed.">            if(Build.VERSION.SDK_INT &gt;= 21) {</span>
-<span class="nc" id="L416">                new PoliciesDeviceManager(context).disableCaptureScreen(disable);</span>
-<span class="nc" id="L417">                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Screen Capture&quot;, &quot;Screen Capture is disable: &quot; + disable));</span>
+<span class="nc" id="L480">            cache.setConnectivityMTPUsbFileTransferProtocolsDisable(disable);</span>
+<span class="nc" id="L481">            PoliciesConnectivity.disableMTPUsbFileTransferProtocols(disable);</span>
+<span class="nc" id="L482">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;UsbFileTransferProtocols MTP&quot;, &quot;UsbFileTransferProtocols is disable: &quot; + disable));</span>
+
+            // return the status of the task
+<span class="nc" id="L485">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L486">        } catch (Exception ex) {</span>
+<span class="nc" id="L487">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on UsbFileTransferProtocols MTP&quot;, ex.getMessage()));</span>
+
+            // return the status of the task
+<span class="nc" id="L490">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L491">        }</span>
+<span class="nc" id="L492">    }</span>
+
+    public void disableStatusBar(String taskId, boolean disable) {
+        try {
+<span class="nc" id="L496">            new PoliciesDeviceManager(context).disableStatusBar(disable);</span>
+<span class="nc" id="L497">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;status bar&quot;, &quot;status bar is disable: &quot; + disable));</span>
+
+            // return the status of the task
+<span class="nc" id="L500">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L501">        } catch (Exception ex) {</span>
+<span class="nc" id="L502">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on status bar&quot;, ex.getMessage()));</span>
+
+            // return the status of the task
+<span class="nc" id="L505">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L506">        }</span>
+<span class="nc" id="L507">    }</span>
+
+    public void disableSpeakerphone(String taskId, boolean disable) {
+        try {
+<span class="nc" id="L511">            new PoliciesDeviceManager(context).disableSpeakerphone(disable);</span>
+<span class="nc" id="L512">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Speaker phone&quot;, &quot;Speaker phone is disable: &quot; + disable));</span>
+
+            // return the status of the task
+<span class="nc" id="L515">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L516">        } catch (Exception ex) {</span>
+<span class="nc" id="L517">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on Speaker phone&quot;, ex.getMessage()));</span>
+
+            // return the status of the task
+<span class="nc" id="L520">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L521">        }</span>
+<span class="nc" id="L522">    }</span>
+
+    public void disableScreenCapture(String taskId, boolean disable) {
+        try {
+<span class="nc bnc" id="L526" title="All 2 branches missed.">            if(Build.VERSION.SDK_INT &gt;= 21) {</span>
+<span class="nc" id="L527">                new PoliciesDeviceManager(context).disableCaptureScreen(disable);</span>
+<span class="nc" id="L528">                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Screen Capture&quot;, &quot;Screen Capture is disable: &quot; + disable));</span>
+
+                // return the status of the task
+<span class="nc" id="L531">                sendTaskStatus(taskId, FEEDBACK_DONE);</span>
             } else {
-<span class="nc" id="L419">                FlyveLog.i(&quot;Screen capture policy is available on devices with api equals or mayor than 21&quot;);</span>
+<span class="nc" id="L533">                FlyveLog.i(&quot;Screen capture policy is available on devices with api equals or mayor than 21&quot;);</span>
+
+                // return the status of the task
+<span class="nc" id="L536">                sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
             }
-<span class="nc" id="L421">        } catch (Exception ex) {</span>
-<span class="nc" id="L422">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on Screen Capture&quot;, ex.getMessage()));</span>
-<span class="nc" id="L423">        }</span>
-<span class="nc" id="L424">    }</span>
+<span class="nc" id="L538">        } catch (Exception ex) {</span>
+<span class="nc" id="L539">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on Screen Capture&quot;, ex.getMessage()));</span>
+
+            // return the status of the task
+<span class="nc" id="L542">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L543">        }</span>
+<span class="nc" id="L544">    }</span>
 
     public void resetPassword(String newPassword) {
         try {
-<span class="nc bnc" id="L428" title="All 2 branches missed.">            if(!newPassword.isEmpty()) {</span>
-<span class="nc" id="L429">                new PoliciesDeviceManager(context).resetPassword(newPassword);</span>
-<span class="nc" id="L430">                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Reset Password&quot;, &quot;Reset Password : ****&quot;));</span>
+<span class="nc bnc" id="L548" title="All 2 branches missed.">            if(!newPassword.isEmpty()) {</span>
+<span class="nc" id="L549">                new PoliciesDeviceManager(context).resetPassword(newPassword);</span>
+<span class="nc" id="L550">                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Reset Password&quot;, &quot;Reset Password : ****&quot;));</span>
             } else {
-<span class="nc" id="L432">                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on Reset Password&quot;, &quot;the new password is empty&quot;));</span>
+<span class="nc" id="L552">                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on Reset Password&quot;, &quot;the new password is empty&quot;));</span>
             }
-<span class="nc" id="L434">        } catch (Exception ex) {</span>
-<span class="nc" id="L435">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on Reset Password&quot;, ex.getMessage()));</span>
-<span class="nc" id="L436">        }</span>
-<span class="nc" id="L437">    }</span>
+<span class="nc" id="L554">        } catch (Exception ex) {</span>
+<span class="nc" id="L555">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on Reset Password&quot;, ex.getMessage()));</span>
+<span class="nc" id="L556">        }</span>
+<span class="nc" id="L557">    }</span>
 
-    public void removePackage(String packageName) {
-<span class="nc" id="L440">        FlyveLog.d(&quot;Remove package: &quot; + packageName);</span>
+    public void removePackage(String taskId, String packageName) {
+        try {
+<span class="nc" id="L561">            PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);</span>
+<span class="nc" id="L562">            policiesFiles.removeApk(packageName);</span>
 
-<span class="nc" id="L442">        PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);</span>
-<span class="nc" id="L443">        policiesFiles.removeApk(packageName);</span>
-<span class="nc" id="L444">    }</span>
+            // return the status of the task
+<span class="nc" id="L565">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L566">        } catch (Exception ex) {</span>
+<span class="nc" id="L567">            FlyveLog.e(ex.getMessage());</span>
+
+            // return the status of the task
+<span class="nc" id="L570">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L571">        }</span>
+<span class="nc" id="L572">    }</span>
 
     /**
      * Application
      */
     public void installPackage(final String deployApp, final String id, final String versionCode, final String taskId) {
 
-<span class="nc" id="L451">        EnrollmentHelper sToken = new EnrollmentHelper(this.context);</span>
-<span class="nc" id="L452">        sToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {</span>
+<span class="nc" id="L579">        EnrollmentHelper sToken = new EnrollmentHelper(this.context);</span>
+<span class="nc" id="L580">        sToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {</span>
             @Override
             public void onSuccess(String sessionToken) {
                 try {
-<span class="nc" id="L456">                    FlyveLog.d(&quot;Install package: &quot; + deployApp + &quot; id: &quot; + id);</span>
+<span class="nc" id="L584">                    FlyveLog.d(&quot;Install package: &quot; + deployApp + &quot; id: &quot; + id);</span>
 
-<span class="nc" id="L458">                    PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);</span>
-<span class="nc" id="L459">                    policiesFiles.execute(&quot;package&quot;, deployApp, id, sessionToken);</span>
+<span class="nc" id="L586">                    PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);</span>
+<span class="nc" id="L587">                    policiesFiles.execute(&quot;package&quot;, deployApp, id, sessionToken);</span>
 
-<span class="nc" id="L461">                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Install package&quot;, &quot;name: &quot; + deployApp + &quot; id: &quot; + id));</span>
-<span class="nc" id="L462">                } catch (Exception ex) {</span>
-<span class="nc" id="L463">                    FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L464">                    broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on getActiveSessionToken&quot;, ex.getMessage()));</span>
-<span class="nc" id="L465">                }</span>
-<span class="nc" id="L466">            }</span>
+<span class="nc" id="L589">                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Install package&quot;, &quot;name: &quot; + deployApp + &quot; id: &quot; + id));</span>
+
+                    // return the status of the task
+<span class="nc" id="L592">                    sendTaskStatus(taskId, FEEDBACK_RECEIVED);</span>
+<span class="nc" id="L593">                } catch (Exception ex) {</span>
+<span class="nc" id="L594">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L595">                    broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on getActiveSessionToken&quot;, ex.getMessage()));</span>
+
+                    // return the status of the task
+<span class="nc" id="L598">                    sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L599">                }</span>
+<span class="nc" id="L600">            }</span>
 
             @Override
             public void onError(String error) {
-<span class="nc" id="L470">                FlyveLog.e(error);</span>
-<span class="nc" id="L471">                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, ERROR, error));</span>
-<span class="nc" id="L472">                broadcastReceivedLog(&quot;Application fail: &quot; + error);</span>
-<span class="nc" id="L473">            }</span>
+<span class="nc" id="L604">                FlyveLog.e(error);</span>
+<span class="nc" id="L605">                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, ERROR, error));</span>
+<span class="nc" id="L606">                broadcastReceivedLog(&quot;Application fail: &quot; + error);</span>
+
+                // return the status of the task
+<span class="nc" id="L609">                sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L610">            }</span>
         });
 
 
-<span class="nc" id="L477">    }</span>
+<span class="nc" id="L614">    }</span>
 
     /**
      * Files
@@ -482,153 +619,290 @@ public class PoliciesController {
      */
     public void downloadFile(final String deployFile, final String id, final String versionCode, final String taskId) {
 
-<span class="nc" id="L485">        EnrollmentHelper sToken = new EnrollmentHelper(this.context);</span>
-<span class="nc" id="L486">        sToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {</span>
+<span class="nc" id="L622">        EnrollmentHelper sToken = new EnrollmentHelper(this.context);</span>
+<span class="nc" id="L623">        sToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {</span>
             @Override
             public void onSuccess(String sessionToken) {
-<span class="nc" id="L489">                PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);</span>
+<span class="nc" id="L626">                PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);</span>
 
-<span class="nc bnc" id="L491" title="All 2 branches missed.">                if(&quot;true&quot;.equals(policiesFiles.execute(&quot;file&quot;, deployFile, id, sessionToken))) {</span>
-<span class="nc" id="L492">                    FlyveLog.d(&quot;File was stored on: &quot; + deployFile);</span>
-<span class="nc" id="L493">                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;File was stored on&quot;, deployFile));</span>
+<span class="nc bnc" id="L628" title="All 2 branches missed.">                if(&quot;true&quot;.equals(policiesFiles.execute(&quot;file&quot;, deployFile, id, sessionToken))) {</span>
+<span class="nc" id="L629">                    FlyveLog.d(&quot;File was stored on: &quot; + deployFile);</span>
+<span class="nc" id="L630">                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;File was stored on&quot;, deployFile));</span>
+
+                    // return the status of the task
+<span class="nc" id="L633">                    sendTaskStatus(taskId, FEEDBACK_DONE);</span>
                 }
-<span class="nc" id="L495">            }</span>
+<span class="nc" id="L635">            }</span>
 
             @Override
             public void onError(String error) {
-<span class="nc" id="L499">                FlyveLog.e(error);</span>
-<span class="nc" id="L500">                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on applicationOnDevices&quot;, error));</span>
-<span class="nc" id="L501">            }</span>
+<span class="nc" id="L639">                FlyveLog.e(error);</span>
+<span class="nc" id="L640">                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on applicationOnDevices&quot;, error));</span>
+
+                // return the status of the task
+<span class="nc" id="L643">                sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L644">            }</span>
         });
-<span class="nc" id="L503">    }</span>
+<span class="nc" id="L646">    }</span>
 
-    public void removeFile(String removeFile) {
-<span class="nc" id="L506">        PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);</span>
-<span class="nc" id="L507">        policiesFiles.removeFile(removeFile);</span>
+    public void removeFile(String taskId, String removeFile) {
+        try {
+<span class="nc" id="L650">            PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);</span>
+<span class="nc" id="L651">            policiesFiles.removeFile(removeFile);</span>
 
-<span class="nc" id="L509">        FlyveLog.d(&quot;Remove file: &quot; + removeFile);</span>
-<span class="nc" id="L510">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Remove file&quot;, removeFile));</span>
-<span class="nc" id="L511">    }</span>
+<span class="nc" id="L653">            FlyveLog.d(&quot;Remove file: &quot; + removeFile);</span>
+<span class="nc" id="L654">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Remove file&quot;, removeFile));</span>
+
+            // return the status of the task
+<span class="nc" id="L657">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L658">        } catch (Exception ex) {</span>
+<span class="nc" id="L659">            FlyveLog.e(ex.getMessage());</span>
+
+            // return the status of the task
+<span class="nc" id="L662">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L663">        }</span>
+<span class="nc" id="L664">    }</span>
 
 
     /**
      * FLEET encryption
      * Example {&quot;encryption&quot;:[{&quot;storageEncryption&quot;:&quot;false&quot;}]}
      */
-    public void storageEncryption(Boolean enable) {
-<span class="nc" id="L519">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L520">        mdm.storageEncryptionDevice(enable);</span>
-<span class="nc" id="L521">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;storage Encryption&quot;, &quot;storage Encryption: &quot; + enable));</span>
-<span class="nc" id="L522">    }</span>
+    public void storageEncryption(String taskId, Boolean enable) {
+        try {
+<span class="nc" id="L673">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L674">            mdm.storageEncryptionDevice(enable);</span>
+<span class="nc" id="L675">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;storage Encryption&quot;, &quot;storage Encryption: &quot; + enable));</span>
 
-    public void passwordEnabled() {
-<span class="nc" id="L525">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L526">        mdm.enablePassword();</span>
-<span class="nc" id="L527">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordEnabled&quot;, &quot;true&quot;));</span>
-<span class="nc" id="L528">    }</span>
+            // return the status of the task
+<span class="nc" id="L678">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L679">        } catch (Exception ex) {</span>
+<span class="nc" id="L680">            FlyveLog.e(ex.getMessage());</span>
 
-    public void passwordQuality(String quality) {
-<span class="nc" id="L531">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L532">        mdm.setPasswordQuality(quality);</span>
-<span class="nc" id="L533">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordQuality&quot;, quality));</span>
-<span class="nc" id="L534">    }</span>
+            // return the status of the task
+<span class="nc" id="L683">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L684">        }</span>
+<span class="nc" id="L685">    }</span>
 
-    public void passwordMinLength(int length) {
-<span class="nc" id="L537">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L538">        mdm.setPasswordLength(length);</span>
-<span class="nc" id="L539">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordMinLength&quot;, String.valueOf(length)));</span>
-<span class="nc" id="L540">    }</span>
+    public void passwordEnabled(String taskId) {
+        try {
+<span class="nc" id="L689">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L690">            mdm.enablePassword();</span>
+<span class="nc" id="L691">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordEnabled&quot;, &quot;true&quot;));</span>
 
-    public void passwordMinNonLetter(int length) {
-<span class="nc" id="L543">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L544">        mdm.setPasswordMinimumNonLetter(length);</span>
-<span class="nc" id="L545">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordMinNonLetter&quot;, String.valueOf(length)));</span>
-<span class="nc" id="L546">    }</span>
+            // return the status of the task
+<span class="nc" id="L694">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L695">        } catch (Exception ex) {</span>
+<span class="nc" id="L696">            FlyveLog.e(ex.getMessage());</span>
 
-    public void passwordMinLetter(int length) {
-<span class="nc" id="L549">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L550">        mdm.setPasswordMinimumLetters(length);</span>
-<span class="nc" id="L551">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordMinLetter&quot;, String.valueOf(length)));</span>
-<span class="nc" id="L552">    }</span>
+            // return the status of the task
+<span class="nc" id="L699">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L700">        }</span>
+<span class="nc" id="L701">    }</span>
 
-    public void passwordMinNumeric(int minimum) {
-<span class="nc" id="L555">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L556">        mdm.setPasswordMinimumNumeric(minimum);</span>
-<span class="nc" id="L557">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordMinNumeric&quot;, String.valueOf(minimum)));</span>
-<span class="nc" id="L558">    }</span>
+    public void passwordQuality(String taskId, String quality) {
+        try {
+<span class="nc" id="L705">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L706">            mdm.setPasswordQuality(quality);</span>
+<span class="nc" id="L707">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordQuality&quot;, quality));</span>
 
-    public void passwordMinSymbols(int minimum) {
-<span class="nc" id="L561">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L562">        mdm.setPasswordMinimumSymbols(minimum);</span>
-<span class="nc" id="L563">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordMinSymbols&quot;, String.valueOf(minimum)));</span>
-<span class="nc" id="L564">    }</span>
+            // return the status of the task
+<span class="nc" id="L710">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L711">        } catch (Exception ex) {</span>
+<span class="nc" id="L712">            FlyveLog.e(ex.getMessage());</span>
 
-    public void passwordMinLowerCase(int minimum) {
-<span class="nc" id="L567">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L568">        mdm.setPasswordMinimumLowerCase(minimum);</span>
-<span class="nc" id="L569">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordMinLowerCase&quot;, String.valueOf(minimum)));</span>
-<span class="nc" id="L570">    }</span>
+            // return the status of the task
+<span class="nc" id="L715">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L716">        }</span>
+<span class="nc" id="L717">    }</span>
 
-    public void passwordMinUpperCase(int minimum) {
-<span class="nc" id="L573">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L574">        mdm.setPasswordMinimumUpperCase(minimum);</span>
-<span class="nc" id="L575">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordMinUpperCase&quot;, String.valueOf(minimum)));</span>
-<span class="nc" id="L576">    }</span>
+    public void passwordMinLength(String taskId, int length) {
+        try {
+<span class="nc" id="L721">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L722">            mdm.setPasswordLength(length);</span>
+<span class="nc" id="L723">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordMinLength&quot;, String.valueOf(length)));</span>
 
-    public void maximumFailedPasswordsForWipe(int maximum) {
-<span class="nc" id="L579">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L580">        mdm.setMaximumFailedPasswordsForWipe(maximum);</span>
-<span class="nc" id="L581">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;MaximumFailedPasswordsForWipe&quot;, String.valueOf(maximum)));</span>
-<span class="nc" id="L582">    }</span>
+            // return the status of the task
+<span class="nc" id="L726">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L727">        } catch (Exception ex) {</span>
+<span class="nc" id="L728">            FlyveLog.e(ex.getMessage());</span>
 
-    public void maximumTimeToLock(int maximum) {
-<span class="nc" id="L585">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L586">        mdm.setMaximumTimeToLock(maximum);</span>
-<span class="nc" id="L587">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;maximumTimeToLock&quot;, String.valueOf(maximum)));</span>
-<span class="nc" id="L588">    }</span>
+            // return the status of the task
+<span class="nc" id="L731">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L732">        }</span>
+<span class="nc" id="L733">    }</span>
+
+    public void passwordMinNonLetter(String taskId, int length) {
+        try {
+<span class="nc" id="L737">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L738">            mdm.setPasswordMinimumNonLetter(length);</span>
+<span class="nc" id="L739">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordMinNonLetter&quot;, String.valueOf(length)));</span>
+
+            // return the status of the task
+<span class="nc" id="L742">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L743">        } catch (Exception ex) {</span>
+<span class="nc" id="L744">            FlyveLog.e(ex.getMessage());</span>
+
+            // return the status of the task
+<span class="nc" id="L747">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L748">        }</span>
+<span class="nc" id="L749">    }</span>
+
+    public void passwordMinLetter(String taskId, int length) {
+        try {
+<span class="nc" id="L753">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L754">            mdm.setPasswordMinimumLetters(length);</span>
+<span class="nc" id="L755">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordMinLetter&quot;, String.valueOf(length)));</span>
+
+            // return the status of the task
+<span class="nc" id="L758">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L759">        } catch (Exception ex) {</span>
+<span class="nc" id="L760">            FlyveLog.e(ex.getMessage());</span>
+
+            // return the status of the task
+<span class="nc" id="L763">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L764">        }</span>
+<span class="nc" id="L765">    }</span>
+
+    public void passwordMinNumeric(String taskId, int minimum) {
+        try {
+<span class="nc" id="L769">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L770">            mdm.setPasswordMinimumNumeric(minimum);</span>
+<span class="nc" id="L771">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordMinNumeric&quot;, String.valueOf(minimum)));</span>
+
+            // return the status of the task
+<span class="nc" id="L774">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L775">        } catch (Exception ex) {</span>
+<span class="nc" id="L776">            FlyveLog.e(ex.getMessage());</span>
+
+            // return the status of the task
+<span class="nc" id="L779">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L780">        }</span>
+<span class="nc" id="L781">    }</span>
+
+    public void passwordMinSymbols(String taskId, int minimum) {
+        try {
+<span class="nc" id="L785">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L786">            mdm.setPasswordMinimumSymbols(minimum);</span>
+<span class="nc" id="L787">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordMinSymbols&quot;, String.valueOf(minimum)));</span>
+
+            // return the status of the task
+<span class="nc" id="L790">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L791">        } catch (Exception ex) {</span>
+<span class="nc" id="L792">            FlyveLog.e(ex.getMessage());</span>
+
+            // return the status of the task
+<span class="nc" id="L795">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L796">        }</span>
+<span class="nc" id="L797">    }</span>
+
+    public void passwordMinLowerCase(String taskId, int minimum) {
+        try {
+<span class="nc" id="L801">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L802">            mdm.setPasswordMinimumLowerCase(minimum);</span>
+<span class="nc" id="L803">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordMinLowerCase&quot;, String.valueOf(minimum)));</span>
+
+            // return the status of the task
+<span class="nc" id="L806">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L807">        } catch (Exception ex) {</span>
+<span class="nc" id="L808">            FlyveLog.e(ex.getMessage());</span>
+
+            // return the status of the task
+<span class="nc" id="L811">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L812">        }</span>
+<span class="nc" id="L813">    }</span>
+
+    public void passwordMinUpperCase(String taskId, int minimum) {
+        try {
+<span class="nc" id="L817">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L818">            mdm.setPasswordMinimumUpperCase(minimum);</span>
+<span class="nc" id="L819">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;passwordMinUpperCase&quot;, String.valueOf(minimum)));</span>
+
+            // return the status of the task
+<span class="nc" id="L822">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L823">        } catch (Exception ex) {</span>
+<span class="nc" id="L824">            FlyveLog.e(ex.getMessage());</span>
+
+            // return the status of the task
+<span class="nc" id="L827">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L828">        }</span>
+<span class="nc" id="L829">    }</span>
+
+    public void maximumFailedPasswordsForWipe(String taskId, int maximum) {
+        try {
+<span class="nc" id="L833">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L834">            mdm.setMaximumFailedPasswordsForWipe(maximum);</span>
+<span class="nc" id="L835">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;MaximumFailedPasswordsForWipe&quot;, String.valueOf(maximum)));</span>
+
+            // return the status of the task
+<span class="nc" id="L838">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L839">        } catch (Exception ex) {</span>
+<span class="nc" id="L840">            FlyveLog.e(ex.getMessage());</span>
+
+            // return the status of the task
+<span class="nc" id="L843">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L844">        }</span>
+<span class="nc" id="L845">    }</span>
+
+    public void maximumTimeToLock(String taskId, int maximum) {
+        try {
+<span class="nc" id="L849">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L850">            mdm.setMaximumTimeToLock(maximum);</span>
+<span class="nc" id="L851">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;maximumTimeToLock&quot;, String.valueOf(maximum)));</span>
+
+            // return the status of the task
+<span class="nc" id="L854">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L855">        } catch (Exception ex) {</span>
+<span class="nc" id="L856">            FlyveLog.e(ex.getMessage());</span>
+
+            // return the status of the task
+<span class="nc" id="L859">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L860">        }</span>
+
+<span class="nc" id="L862">    }</span>
 
     /**
      * Erase all device data include SDCard
      */
     public void wipe() {
         try {
-<span class="nc" id="L595">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L596">            mdm.wipe();</span>
-<span class="nc" id="L597">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Wipe&quot;, &quot;Wipe success&quot;));</span>
-<span class="nc" id="L598">        } catch (Exception ex) {</span>
-<span class="nc" id="L599">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L600">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on wipe&quot;, ex.getMessage()));</span>
-<span class="nc" id="L601">        }</span>
-<span class="nc" id="L602">    }</span>
+<span class="nc" id="L869">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L870">            mdm.wipe();</span>
+<span class="nc" id="L871">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Wipe&quot;, &quot;Wipe success&quot;));</span>
+<span class="nc" id="L872">        } catch (Exception ex) {</span>
+<span class="nc" id="L873">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L874">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on wipe&quot;, ex.getMessage()));</span>
+<span class="nc" id="L875">        }</span>
+<span class="nc" id="L876">    }</span>
 
     /**
      * Unenroll the device
      */
     public boolean unenroll() {
         // Send message with unenroll
-<span class="nc" id="L609">        String topic = mTopic + &quot;/Status/Unenroll&quot;;</span>
-<span class="nc" id="L610">        String payload = &quot;{\&quot;unenroll\&quot;: \&quot;unenrolled\&quot;}&quot;;</span>
-<span class="nc" id="L611">        byte[] encodedPayload = new byte[0];</span>
+<span class="nc" id="L883">        String topic = mTopic + &quot;/Status/Unenroll&quot;;</span>
+<span class="nc" id="L884">        String payload = &quot;{\&quot;unenroll\&quot;: \&quot;unenrolled\&quot;}&quot;;</span>
+<span class="nc" id="L885">        byte[] encodedPayload = new byte[0];</span>
         try {
-<span class="nc" id="L613">            encodedPayload = payload.getBytes(UTF_8);</span>
-<span class="nc" id="L614">            MqttMessage message = new MqttMessage(encodedPayload);</span>
-<span class="nc" id="L615">            client.publish(topic, message);</span>
-<span class="nc" id="L616">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Unenroll&quot;, &quot;Unenroll success&quot;));</span>
+<span class="nc" id="L887">            encodedPayload = payload.getBytes(UTF_8);</span>
+<span class="nc" id="L888">            MqttMessage message = new MqttMessage(encodedPayload);</span>
+<span class="nc" id="L889">            client.publish(topic, message);</span>
+<span class="nc" id="L890">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Unenroll&quot;, &quot;Unenroll success&quot;));</span>
 
             // clear cache
-<span class="nc" id="L619">            cache.clearSettings();</span>
+<span class="nc" id="L893">            cache.clearSettings();</span>
 
             // send message
-<span class="nc" id="L622">            Helpers.sendBroadcast(Helpers.broadCastMessage(&quot;action&quot;, &quot;open&quot;, &quot;splash&quot;), Helpers.BROADCAST_MSG, this.context);</span>
+<span class="nc" id="L896">            Helpers.sendBroadcast(Helpers.broadCastMessage(&quot;action&quot;, &quot;open&quot;, &quot;splash&quot;), Helpers.BROADCAST_MSG, this.context);</span>
 
             // show offline
-<span class="nc" id="L625">            Helpers.sendBroadcast(false, Helpers.BROADCAST_STATUS, this.context);</span>
+<span class="nc" id="L899">            Helpers.sendBroadcast(false, Helpers.BROADCAST_STATUS, this.context);</span>
 
-<span class="nc" id="L627">            return true;</span>
-<span class="nc" id="L628">        } catch (Exception ex) {</span>
-<span class="nc" id="L629">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L630">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on unenroll&quot;, ex.getMessage()));</span>
-<span class="nc" id="L631">            return false;</span>
+<span class="nc" id="L901">            return true;</span>
+<span class="nc" id="L902">        } catch (Exception ex) {</span>
+<span class="nc" id="L903">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L904">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on unenroll&quot;, ex.getMessage()));</span>
+<span class="nc" id="L905">            return false;</span>
         }
     }
 
@@ -637,104 +911,114 @@ public class PoliciesController {
      * payload: !
      */
     public void sendKeepAlive() {
-<span class="nc" id="L640">        String topic = mTopic + &quot;/Status/Ping&quot;;</span>
-<span class="nc" id="L641">        String payload = &quot;!&quot;;</span>
-<span class="nc" id="L642">        byte[] encodedPayload = new byte[0];</span>
+<span class="nc" id="L914">        String topic = mTopic + &quot;/Status/Ping&quot;;</span>
+<span class="nc" id="L915">        String payload = &quot;!&quot;;</span>
+<span class="nc" id="L916">        byte[] encodedPayload = new byte[0];</span>
         try {
-<span class="nc" id="L644">            encodedPayload = payload.getBytes(UTF_8);</span>
-<span class="nc" id="L645">            MqttMessage message = new MqttMessage(encodedPayload);</span>
-<span class="nc" id="L646">            IMqttDeliveryToken token = client.publish(topic, message);</span>
-<span class="nc" id="L647">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;PING&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
-<span class="nc" id="L648">        } catch (Exception ex) {</span>
-<span class="nc" id="L649">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L650">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendKeepAlive&quot;, ex.getMessage()));</span>
-<span class="nc" id="L651">        }</span>
-<span class="nc" id="L652">    }</span>
+<span class="nc" id="L918">            encodedPayload = payload.getBytes(UTF_8);</span>
+<span class="nc" id="L919">            MqttMessage message = new MqttMessage(encodedPayload);</span>
+<span class="nc" id="L920">            IMqttDeliveryToken token = client.publish(topic, message);</span>
+<span class="nc" id="L921">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;PING&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
+<span class="nc" id="L922">        } catch (Exception ex) {</span>
+<span class="nc" id="L923">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L924">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendKeepAlive&quot;, ex.getMessage()));</span>
+<span class="nc" id="L925">        }</span>
+<span class="nc" id="L926">    }</span>
 
     /**
      * Send INVENTORY to the MQTT server
      * payload: XML FusionInventory
      */
     public void sendInventory(String payload) {
-<span class="nc" id="L659">        String topic = mTopic + &quot;/Status/Inventory&quot;;</span>
-<span class="nc" id="L660">        byte[] encodedPayload = new byte[0];</span>
+<span class="nc" id="L933">        String topic = mTopic + &quot;/Status/Inventory&quot;;</span>
+<span class="nc" id="L934">        byte[] encodedPayload = new byte[0];</span>
         try {
-<span class="nc" id="L662">            encodedPayload = payload.getBytes(UTF_8);</span>
-<span class="nc" id="L663">            MqttMessage message = new MqttMessage(encodedPayload);</span>
-<span class="nc" id="L664">            IMqttDeliveryToken token = client.publish(topic, message);</span>
+<span class="nc" id="L936">            encodedPayload = payload.getBytes(UTF_8);</span>
+<span class="nc" id="L937">            MqttMessage message = new MqttMessage(encodedPayload);</span>
+<span class="nc" id="L938">            IMqttDeliveryToken token = client.publish(topic, message);</span>
 
             // send broadcast
-<span class="nc" id="L667">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Inventory&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
-<span class="nc" id="L668">        } catch (Exception ex) {</span>
-<span class="nc" id="L669">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L941">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Inventory&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
+<span class="nc" id="L942">        } catch (Exception ex) {</span>
+<span class="nc" id="L943">            FlyveLog.e(ex.getMessage());</span>
 
             // send broadcast
-<span class="nc" id="L672">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendKeepAlive&quot;, ex.getMessage()));</span>
-<span class="nc" id="L673">        }</span>
-<span class="nc" id="L674">    }</span>
+<span class="nc" id="L946">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendKeepAlive&quot;, ex.getMessage()));</span>
+<span class="nc" id="L947">        }</span>
+<span class="nc" id="L948">    }</span>
 
     public void sendTaskStatus(String taskId, String status) {
-<span class="nc" id="L677">        String topic = mTopic + &quot;/Status/Task/&quot; + taskId;</span>
+<span class="nc" id="L951">        String topic = mTopic + &quot;/Status/Task/&quot; + taskId;</span>
         byte[] encodedPayload;
         try {
-<span class="nc" id="L680">            String payload = &quot;{ \&quot;status\&quot;: \&quot;&quot; + status + &quot;\&quot; }&quot;;</span>
+<span class="nc" id="L954">            String payload = &quot;{ \&quot;status\&quot;: \&quot;&quot; + status + &quot;\&quot; }&quot;;</span>
 
-<span class="nc" id="L682">            encodedPayload = payload.getBytes(UTF_8);</span>
-<span class="nc" id="L683">            MqttMessage message = new MqttMessage(encodedPayload);</span>
-<span class="nc" id="L684">            IMqttDeliveryToken token = client.publish(topic, message);</span>
-
-            // send broadcast
-<span class="nc" id="L687">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Inventory&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
-<span class="nc" id="L688">        } catch (Exception ex) {</span>
-<span class="nc" id="L689">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L956">            encodedPayload = payload.getBytes(UTF_8);</span>
+<span class="nc" id="L957">            MqttMessage message = new MqttMessage(encodedPayload);</span>
+<span class="nc" id="L958">            IMqttDeliveryToken token = client.publish(topic, message);</span>
 
             // send broadcast
-<span class="nc" id="L692">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendKeepAlive&quot;, ex.getMessage()));</span>
-<span class="nc" id="L693">        }</span>
-<span class="nc" id="L694">    }</span>
+<span class="nc" id="L961">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Inventory&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
+<span class="nc" id="L962">        } catch (Exception ex) {</span>
+<span class="nc" id="L963">            FlyveLog.e(ex.getMessage());</span>
 
-    public void disableCreateVpnProfiles(Boolean disable) {
-<span class="nc" id="L697">        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
-<span class="nc" id="L698">        mdm.disableVPN(disable);</span>
-<span class="nc" id="L699">        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;maximumTimeToLock&quot;, String.valueOf(disable)));</span>
-<span class="nc" id="L700">    }</span>
+            // send broadcast
+<span class="nc" id="L966">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendKeepAlive&quot;, ex.getMessage()));</span>
+<span class="nc" id="L967">        }</span>
+<span class="nc" id="L968">    }</span>
+
+    public void disableCreateVpnProfiles(String taskId, Boolean disable) {
+        try {
+<span class="nc" id="L972">            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);</span>
+<span class="nc" id="L973">            mdm.disableVPN(disable);</span>
+<span class="nc" id="L974">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;maximumTimeToLock&quot;, String.valueOf(disable)));</span>
+
+            // return the status of the task
+<span class="nc" id="L977">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>
+<span class="nc" id="L978">        } catch (Exception ex) {</span>
+<span class="nc" id="L979">            FlyveLog.e(ex.getMessage());</span>
+
+            // return the status of the task
+<span class="nc" id="L982">            sendTaskStatus(taskId, FEEDBACK_FAILED);</span>
+<span class="nc" id="L983">        }</span>
+<span class="nc" id="L984">    }</span>
 
     /**
      * Send the Status version of the agent
      * payload: {&quot;version&quot;: &quot;0.99.0&quot;}
      */
     public void sendStatusVersion() {
-<span class="nc" id="L707">        String topic = mTopic + &quot;/FlyvemdmManifest/Status/Version&quot;;</span>
-<span class="nc" id="L708">        String payload = &quot;{\&quot;version\&quot;:\&quot;&quot; + BuildConfig.VERSION_NAME + &quot;\&quot;}&quot;;</span>
-<span class="nc" id="L709">        byte[] encodedPayload = new byte[0];</span>
+<span class="nc" id="L991">        String topic = mTopic + &quot;/FlyvemdmManifest/Status/Version&quot;;</span>
+<span class="nc" id="L992">        String payload = &quot;{\&quot;version\&quot;:\&quot;&quot; + BuildConfig.VERSION_NAME + &quot;\&quot;}&quot;;</span>
+<span class="nc" id="L993">        byte[] encodedPayload = new byte[0];</span>
         try {
-<span class="nc" id="L711">            encodedPayload = payload.getBytes(UTF_8);</span>
-<span class="nc" id="L712">            MqttMessage message = new MqttMessage(encodedPayload);</span>
-<span class="nc" id="L713">            IMqttDeliveryToken token = client.publish(topic, message);</span>
-<span class="nc" id="L714">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Status Version&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
-<span class="nc" id="L715">        } catch (Exception ex) {</span>
-<span class="nc" id="L716">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L717">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendStatusVersion&quot;, ex.getMessage()));</span>
-<span class="nc" id="L718">        }</span>
-<span class="nc" id="L719">    }</span>
+<span class="nc" id="L995">            encodedPayload = payload.getBytes(UTF_8);</span>
+<span class="nc" id="L996">            MqttMessage message = new MqttMessage(encodedPayload);</span>
+<span class="nc" id="L997">            IMqttDeliveryToken token = client.publish(topic, message);</span>
+<span class="nc" id="L998">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Status Version&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
+<span class="nc" id="L999">        } catch (Exception ex) {</span>
+<span class="nc" id="L1000">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L1001">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendStatusVersion&quot;, ex.getMessage()));</span>
+<span class="nc" id="L1002">        }</span>
+<span class="nc" id="L1003">    }</span>
 
     /**
      * Send the Status version of the agent
      * payload: {&quot;online&quot;: &quot;true&quot;}
      */
     public void sendOnlineStatus(Boolean status) {
-<span class="nc" id="L726">        String topic = mTopic + &quot;/Status/Online&quot;;</span>
-<span class="nc" id="L727">        String payload = &quot;{\&quot;online\&quot;: \&quot;&quot; + Boolean.toString( status ) + &quot;\&quot;}&quot;;</span>
-<span class="nc" id="L728">        byte[] encodedPayload = new byte[0];</span>
+<span class="nc" id="L1010">        String topic = mTopic + &quot;/Status/Online&quot;;</span>
+<span class="nc" id="L1011">        String payload = &quot;{\&quot;online\&quot;: \&quot;&quot; + Boolean.toString( status ) + &quot;\&quot;}&quot;;</span>
+<span class="nc" id="L1012">        byte[] encodedPayload = new byte[0];</span>
         try {
-<span class="nc" id="L730">            encodedPayload = payload.getBytes(UTF_8);</span>
-<span class="nc" id="L731">            MqttMessage message = new MqttMessage(encodedPayload);</span>
-<span class="nc" id="L732">            IMqttDeliveryToken token = client.publish(topic, message);</span>
-<span class="nc" id="L733">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Online Status&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
-<span class="nc" id="L734">        } catch (Exception ex) {</span>
-<span class="nc" id="L735">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendStatusVersion&quot;, ex.getMessage()));</span>
-<span class="nc" id="L736">        }</span>
-<span class="nc" id="L737">    }</span>
+<span class="nc" id="L1014">            encodedPayload = payload.getBytes(UTF_8);</span>
+<span class="nc" id="L1015">            MqttMessage message = new MqttMessage(encodedPayload);</span>
+<span class="nc" id="L1016">            IMqttDeliveryToken token = client.publish(topic, message);</span>
+<span class="nc" id="L1017">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Online Status&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
+<span class="nc" id="L1018">        } catch (Exception ex) {</span>
+<span class="nc" id="L1019">            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on sendStatusVersion&quot;, ex.getMessage()));</span>
+<span class="nc" id="L1020">        }</span>
+<span class="nc" id="L1021">    }</span>
 
     /**
      * Send the GPS information to MQTT
@@ -742,42 +1026,42 @@ public class PoliciesController {
      */
     public void sendGPS() {
 
-<span class="nc" id="L745">        new FastLocationProvider().getLocation(context, new FastLocationProvider.LocationResult() {</span>
+<span class="nc" id="L1029">        new FastLocationProvider().getLocation(context, new FastLocationProvider.LocationResult() {</span>
             @Override
             public void gotLocation(Location location) {
-<span class="nc bnc" id="L748" title="All 2 branches missed.">                if(location == null) {</span>
-<span class="nc" id="L749">                    FlyveLog.d(&quot;without location yet...&quot;);</span>
+<span class="nc bnc" id="L1032" title="All 2 branches missed.">                if(location == null) {</span>
+<span class="nc" id="L1033">                    FlyveLog.d(&quot;without location yet...&quot;);</span>
                 } else {
-<span class="nc" id="L751">                    FlyveLog.d(&quot;lat: &quot; + location.getLatitude() + &quot; lon: &quot; + location.getLongitude());</span>
+<span class="nc" id="L1035">                    FlyveLog.d(&quot;lat: &quot; + location.getLatitude() + &quot; lon: &quot; + location.getLongitude());</span>
 
                     try {
-<span class="nc" id="L754">                        String latitude = String.valueOf(location.getLatitude());</span>
-<span class="nc" id="L755">                        String longitude = String.valueOf(location.getLongitude());</span>
+<span class="nc" id="L1038">                        String latitude = String.valueOf(location.getLatitude());</span>
+<span class="nc" id="L1039">                        String longitude = String.valueOf(location.getLongitude());</span>
 
-<span class="nc" id="L757">                        JSONObject jsonGPS = new JSONObject();</span>
+<span class="nc" id="L1041">                        JSONObject jsonGPS = new JSONObject();</span>
 
-<span class="nc" id="L759">                        jsonGPS.put(&quot;latitude&quot;, latitude);</span>
-<span class="nc" id="L760">                        jsonGPS.put(&quot;longitude&quot;, longitude);</span>
-<span class="nc" id="L761">                        jsonGPS.put(&quot;datetime&quot;, Helpers.getUnixTime());</span>
+<span class="nc" id="L1043">                        jsonGPS.put(&quot;latitude&quot;, latitude);</span>
+<span class="nc" id="L1044">                        jsonGPS.put(&quot;longitude&quot;, longitude);</span>
+<span class="nc" id="L1045">                        jsonGPS.put(&quot;datetime&quot;, Helpers.getUnixTime());</span>
 
-<span class="nc" id="L763">                        String topic = mTopic + &quot;/Status/Geolocation&quot;;</span>
-<span class="nc" id="L764">                        String payload = jsonGPS.toString();</span>
+<span class="nc" id="L1047">                        String topic = mTopic + &quot;/Status/Geolocation&quot;;</span>
+<span class="nc" id="L1048">                        String payload = jsonGPS.toString();</span>
                         byte[] encodedPayload;
 
-<span class="nc" id="L767">                        encodedPayload = payload.getBytes(UTF_8);</span>
-<span class="nc" id="L768">                        MqttMessage message = new MqttMessage(encodedPayload);</span>
-<span class="nc" id="L769">                        IMqttDeliveryToken token = client.publish(topic, message);</span>
+<span class="nc" id="L1051">                        encodedPayload = payload.getBytes(UTF_8);</span>
+<span class="nc" id="L1052">                        MqttMessage message = new MqttMessage(encodedPayload);</span>
+<span class="nc" id="L1053">                        IMqttDeliveryToken token = client.publish(topic, message);</span>
 
                         // send broadcast
-<span class="nc" id="L772">                        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Geolocation&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
-<span class="nc" id="L773">                    } catch (Exception ex) {</span>
-<span class="nc" id="L774">                        FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L775">                        broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on GPS location&quot;, ex.getMessage()));</span>
-<span class="nc" id="L776">                    }</span>
+<span class="nc" id="L1056">                        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Send Geolocation&quot;, &quot;ID: &quot; + token.getMessageId()));</span>
+<span class="nc" id="L1057">                    } catch (Exception ex) {</span>
+<span class="nc" id="L1058">                        FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L1059">                        broadcastReceivedLog(Helpers.broadCastMessage(ERROR, &quot;Error on GPS location&quot;, ex.getMessage()));</span>
+<span class="nc" id="L1060">                    }</span>
                 }
-<span class="nc" id="L778">            }</span>
+<span class="nc" id="L1062">            }</span>
         });
-<span class="nc" id="L780">    }</span>
+<span class="nc" id="L1064">    }</span>
 
     /**
      * Broadcast the received log
@@ -785,8 +1069,8 @@ public class PoliciesController {
      */
     private void broadcastReceivedLog(String message){
         // write log file
-<span class="nc" id="L788">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
-<span class="nc" id="L789">    }</span>
+<span class="nc" id="L1072">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
+<span class="nc" id="L1073">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
