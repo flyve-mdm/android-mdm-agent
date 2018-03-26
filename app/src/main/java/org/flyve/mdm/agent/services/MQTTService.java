@@ -1013,11 +1013,8 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_USB_PTP);
                     String taskId = jsonObj.getString("taskId");
 
-                    // return the status of the task
-                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
-
                     // execute the policy
-                    policiesController.disablePTPUsbFileTransferProtocols(disable);
+                    policiesController.disablePTPUsbFileTransferProtocols(taskId, disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
