@@ -672,10 +672,20 @@ public class PoliciesController {
         }
     }
 
-    public void maximumFailedPasswordsForWipe(int maximum) {
-        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-        mdm.setMaximumFailedPasswordsForWipe(maximum);
-        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MaximumFailedPasswordsForWipe", String.valueOf(maximum)));
+    public void maximumFailedPasswordsForWipe(String taskId, int maximum) {
+        try {
+            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+            mdm.setMaximumFailedPasswordsForWipe(maximum);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MaximumFailedPasswordsForWipe", String.valueOf(maximum)));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
+        }
     }
 
     public void maximumTimeToLock(int maximum) {
