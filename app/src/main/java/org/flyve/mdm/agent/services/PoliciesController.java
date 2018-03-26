@@ -365,13 +365,19 @@ public class PoliciesController {
         }
     }
 
-    public void disableHostpotTethering(boolean disable) {
+    public void disableHostpotTethering(String taskId, boolean disable) {
         try {
             cache.setConnectivityHostpotTetheringDisable(disable);
             PoliciesConnectivity.disableHostpotTethering(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "HostpotTethering", "HostpotTethering is disable: " + disable));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on HostpotTethering", ex.getMessage()));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
         }
     }
 
