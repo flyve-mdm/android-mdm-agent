@@ -500,12 +500,18 @@ public class PoliciesController {
         }
     }
 
-    public void disableSpeakerphone(boolean disable) {
+    public void disableSpeakerphone(String taskId, boolean disable) {
         try {
             new PoliciesDeviceManager(context).disableSpeakerphone(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Speaker phone", "Speaker phone is disable: " + disable));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Speaker phone", ex.getMessage()));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
         }
     }
 
