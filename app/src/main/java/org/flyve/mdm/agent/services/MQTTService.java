@@ -937,11 +937,8 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_NFC);
                     String taskId = jsonObj.getString("taskId");
 
-                    // return the status of the task
-                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
-
                     // execute the policy
-                    policiesController.disableNFC(disable);
+                    policiesController.disableNFC(taskId, disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
