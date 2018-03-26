@@ -459,11 +459,19 @@ public class PoliciesController {
         }
     }
 
-    public void removePackage(String packageName) {
-        FlyveLog.d("Remove package: " + packageName);
+    public void removePackage(String taskId, String packageName) {
+        try {
+            PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
+            policiesFiles.removeApk(packageName);
 
-        PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
-        policiesFiles.removeApk(packageName);
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
+        }
     }
 
     /**
