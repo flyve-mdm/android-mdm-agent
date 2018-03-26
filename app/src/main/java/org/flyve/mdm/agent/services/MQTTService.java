@@ -1068,11 +1068,8 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_SMSMMS);
                     String taskId = jsonObj.getString("taskId");
 
-                    // return the status of the task
-                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
-
                     // execute the policy
-                    policiesController.disableSmsMms(disable);
+                    policiesController.disableSmsMms(taskId, disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
