@@ -323,13 +323,19 @@ public class PoliciesController {
         }
     }
 
-    public void disableAirplaneMode(boolean disable) {
+    public void disableAirplaneMode(String taskId, boolean disable) {
         try {
             cache.setConnectivityAirplaneModeDisable(disable);
             PoliciesConnectivity.disableAirplaneMode(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "AirplaneMode", "AirplaneMode is disable: " + disable));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on AirplaneMode", ex.getMessage()));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
         }
     }
 
