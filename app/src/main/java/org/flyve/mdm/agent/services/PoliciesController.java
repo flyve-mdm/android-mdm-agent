@@ -457,13 +457,19 @@ public class PoliciesController {
         }
     }
 
-    public void disableMTPUsbFileTransferProtocols(boolean disable) {
+    public void disableMTPUsbFileTransferProtocols(String taskId, boolean disable) {
         try {
             cache.setConnectivityMTPUsbFileTransferProtocolsDisable(disable);
             PoliciesConnectivity.disableMTPUsbFileTransferProtocols(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols MTP", "UsbFileTransferProtocols is disable: " + disable));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on UsbFileTransferProtocols MTP", ex.getMessage()));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
         }
     }
 
