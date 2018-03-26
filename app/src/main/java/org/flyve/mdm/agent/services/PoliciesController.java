@@ -467,12 +467,18 @@ public class PoliciesController {
         }
     }
 
-    public void disableStatusBar(boolean disable) {
+    public void disableStatusBar(String taskId, boolean disable) {
         try {
             new PoliciesDeviceManager(context).disableStatusBar(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "status bar", "status bar is disable: " + disable));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on status bar", ex.getMessage()));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
         }
     }
 
