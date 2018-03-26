@@ -864,7 +864,7 @@ public class PoliciesController {
     /**
      * Erase all device data include SDCard
      */
-    public void wipe(String taskId) {
+    public void wipe() {
         try {
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.wipe();
