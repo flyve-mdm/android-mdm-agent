@@ -482,9 +482,15 @@ public class PoliciesController {
                     policiesFiles.execute("package", deployApp, id, sessionToken);
 
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Install package", "name: " + deployApp + " id: " + id));
+
+                    // return the status of the task
+                    sendTaskStatus(taskId, FEEDBACK_RECEIVED);
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
                     broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on getActiveSessionToken", ex.getMessage()));
+
+                    // return the status of the task
+                    sendTaskStatus(taskId, FEEDBACK_FAILED);
                 }
             }
 
@@ -493,6 +499,9 @@ public class PoliciesController {
                 FlyveLog.e(error);
                 broadcastReceivedLog(Helpers.broadCastMessage(ERROR, ERROR, error));
                 broadcastReceivedLog("Application fail: " + error);
+
+                // return the status of the task
+                sendTaskStatus(taskId, FEEDBACK_FAILED);
             }
         });
 
