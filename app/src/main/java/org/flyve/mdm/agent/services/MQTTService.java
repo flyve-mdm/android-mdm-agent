@@ -918,11 +918,8 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean disable = jsonObj.getBoolean(DISABLE_MOBILE_LINE);
                     String taskId = jsonObj.getString("taskId");
 
-                    // return the status of the task
-                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
-
                     // execute the policy
-                    policiesController.disableMobileLine(disable);
+                    policiesController.disableMobileLine(taskId, disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
