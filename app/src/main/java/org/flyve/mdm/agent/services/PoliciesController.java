@@ -531,6 +531,9 @@ public class PoliciesController {
                 if("true".equals(policiesFiles.execute("file", deployFile, id, sessionToken))) {
                     FlyveLog.d("File was stored on: " + deployFile);
                     broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "File was stored on", deployFile));
+
+                    // return the status of the task
+                    sendTaskStatus(taskId, FEEDBACK_DONE);
                 }
             }
 
@@ -538,6 +541,9 @@ public class PoliciesController {
             public void onError(String error) {
                 FlyveLog.e(error);
                 broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on applicationOnDevices", error));
+
+                // return the status of the task
+                sendTaskStatus(taskId, FEEDBACK_FAILED);
             }
         });
     }
