@@ -688,10 +688,21 @@ public class PoliciesController {
         }
     }
 
-    public void maximumTimeToLock(int maximum) {
-        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-        mdm.setMaximumTimeToLock(maximum);
-        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "maximumTimeToLock", String.valueOf(maximum)));
+    public void maximumTimeToLock(String taskId, int maximum) {
+        try {
+            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+            mdm.setMaximumTimeToLock(maximum);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "maximumTimeToLock", String.valueOf(maximum)));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
+        }
+
     }
 
     /**
