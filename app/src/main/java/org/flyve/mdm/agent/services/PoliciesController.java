@@ -608,10 +608,20 @@ public class PoliciesController {
         }
     }
 
-    public void passwordMinNumeric(int minimum) {
-        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-        mdm.setPasswordMinimumNumeric(minimum);
-        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinNumeric", String.valueOf(minimum)));
+    public void passwordMinNumeric(String taskId, int minimum) {
+        try {
+            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+            mdm.setPasswordMinimumNumeric(minimum);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinNumeric", String.valueOf(minimum)));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
+        }
     }
 
     public void passwordMinSymbols(int minimum) {
