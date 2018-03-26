@@ -47,7 +47,6 @@ import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.time.Period;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -65,7 +64,13 @@ public class MQTTService extends Service implements MqttCallback {
     private static final String ERROR = "ERROR";
     private static final String QUERY = "query";
     private static final String TAG = "MQTT - %s";
-    private static final String DEFAULT_TASK_ESTATUS = "Received";
+
+    private static final String FEEDBACK_PENDING = "pending";
+    private static final String FEEDBACK_RECEIVED = "received";
+    private static final String FEEDBACK_DONE = "done";
+    private static final String FEEDBACK_FAILED = "failed";
+    private static final String FEEDBACK_CANCELED = "canceled";
+    private static final String FEEDBACK_WAITING = "waiting";
 
     private Timer reconnectionTimer = null;
     private int reconnectionCounter = 0;
@@ -464,7 +469,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.passwordEnabled();
@@ -485,7 +490,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.passwordQuality(quality);
@@ -506,7 +511,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.passwordMinLength(length);
@@ -527,7 +532,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.passwordMinLowerCase(minimum);
@@ -548,7 +553,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.passwordMinUpperCase(minimum);
@@ -569,7 +574,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.passwordMinNonLetter(minimum);
@@ -590,7 +595,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.passwordMinLetter(minimum);
@@ -611,7 +616,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.passwordMinNumeric(minimum);
@@ -632,7 +637,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.passwordMinSymbols(minimum);
@@ -653,7 +658,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.maximumFailedPasswordsForWipe(max);
@@ -674,7 +679,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.maximumTimeToLock(max);
@@ -694,7 +699,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.storageEncryption(enable);
@@ -715,7 +720,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableCamera(disable);
@@ -736,7 +741,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableBluetooth(disable);
@@ -759,7 +764,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.installPackage(deployApp, id, versionCode, taskId);
@@ -780,7 +785,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.removePackage(removeApp);
@@ -803,7 +808,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.downloadFile(deployFile, id, versionCode, taskId);
@@ -824,7 +829,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.removeFile(removeFile);
@@ -846,7 +851,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableScreenCapture(disable);
@@ -868,7 +873,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableAirplaneMode(disable);
@@ -890,7 +895,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableGPS(disable);
@@ -911,7 +916,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableHostpotTethering(disable);
@@ -932,7 +937,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableRoaming(disable);
@@ -953,7 +958,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableWifi(disable);
@@ -974,7 +979,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.useTLS(enable);
@@ -996,7 +1001,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableMobileLine(disable);
@@ -1018,7 +1023,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableNFC(disable);
@@ -1040,7 +1045,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableStatusBar(disable);
@@ -1062,7 +1067,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     //policiesController.resetPassword(disable);
@@ -1084,7 +1089,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableMTPUsbFileTransferProtocols(disable);
@@ -1106,7 +1111,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disablePTPUsbFileTransferProtocols(disable);
@@ -1128,7 +1133,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableADBUsbFileTransferProtocols(disable);
@@ -1149,7 +1154,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableSpeakerphone(disable);
@@ -1170,7 +1175,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableSmsMms(disable);
@@ -1191,7 +1196,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // return the status of the task
-                    policiesController.sendTaskStatus(taskId, DEFAULT_TASK_ESTATUS);
+                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
 
                     // execute the policy
                     policiesController.disableCreateVpnProfiles(disable);
