@@ -437,13 +437,19 @@ public class PoliciesController {
         }
     }
 
-    public void disableADBUsbFileTransferProtocols(boolean disable) {
+    public void disableADBUsbFileTransferProtocols(String taskId, boolean disable) {
         try {
             cache.setConnectivityADBUsbFileTransferProtocolsDisable(disable);
             PoliciesConnectivity.disableADBUsbFileTransferProtocols(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols ADB", "UsbFileTransferProtocols is disable: " + disable));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on UsbFileTransferProtocols ADB", ex.getMessage()));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
         }
     }
 
