@@ -65,13 +65,6 @@ public class MQTTService extends Service implements MqttCallback {
     private static final String QUERY = "query";
     private static final String TAG = "MQTT - %s";
 
-    private static final String FEEDBACK_PENDING = "pending";
-    private static final String FEEDBACK_RECEIVED = "received";
-    private static final String FEEDBACK_DONE = "done";
-    private static final String FEEDBACK_FAILED = "failed";
-    private static final String FEEDBACK_CANCELED = "canceled";
-    private static final String FEEDBACK_WAITING = "waiting";
-
     private Timer reconnectionTimer = null;
     private int reconnectionCounter = 0;
     private int reconnectionPeriod = 60000; //time in milliseconds between successive task executions.
@@ -468,11 +461,8 @@ public class MQTTService extends Service implements MqttCallback {
                 if(jsonObj.has(PASSWORD_ENABLE)) {
                     String taskId = jsonObj.getString("taskId");
 
-                    // return the status of the task
-                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
-
                     // execute the policy
-                    policiesController.passwordEnabled();
+                    policiesController.passwordEnabled(taskId);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
