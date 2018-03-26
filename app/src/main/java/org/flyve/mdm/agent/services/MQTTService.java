@@ -641,11 +641,8 @@ public class MQTTService extends Service implements MqttCallback {
                     int max = jsonObj.getInt(MAXIMUM_TIME_TO_LOCK);
                     String taskId = jsonObj.getString("taskId");
 
-                    // return the status of the task
-                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
-
                     // execute the policy
-                    policiesController.maximumTimeToLock(max);
+                    policiesController.maximumTimeToLock(taskId, max);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
