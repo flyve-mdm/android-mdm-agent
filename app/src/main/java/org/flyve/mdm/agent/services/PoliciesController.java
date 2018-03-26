@@ -967,10 +967,20 @@ public class PoliciesController {
         }
     }
 
-    public void disableCreateVpnProfiles(Boolean disable) {
-        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-        mdm.disableVPN(disable);
-        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "maximumTimeToLock", String.valueOf(disable)));
+    public void disableCreateVpnProfiles(String taskId, Boolean disable) {
+        try {
+            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+            mdm.disableVPN(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "maximumTimeToLock", String.valueOf(disable)));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
+        }
     }
 
     /**
