@@ -658,11 +658,8 @@ public class MQTTService extends Service implements MqttCallback {
                     boolean enable = jsonObj.getBoolean(STORAGE_ENCRYPTION);
                     String taskId = jsonObj.getString("taskId");
 
-                    // return the status of the task
-                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
-
                     // execute the policy
-                    policiesController.storageEncryption(enable);
+                    policiesController.storageEncryption(taskId, enable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
