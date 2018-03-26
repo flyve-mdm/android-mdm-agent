@@ -548,12 +548,22 @@ public class PoliciesController {
         });
     }
 
-    public void removeFile(String removeFile) {
-        PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
-        policiesFiles.removeFile(removeFile);
+    public void removeFile(String taskId, String removeFile) {
+        try {
+            PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
+            policiesFiles.removeFile(removeFile);
 
-        FlyveLog.d("Remove file: " + removeFile);
-        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Remove file", removeFile));
+            FlyveLog.d("Remove file: " + removeFile);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Remove file", removeFile));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
+        }
     }
 
 
