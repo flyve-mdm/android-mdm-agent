@@ -544,10 +544,20 @@ public class PoliciesController {
         }
     }
 
-    public void passwordQuality(String quality) {
-        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-        mdm.setPasswordQuality(quality);
-        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordQuality", quality));
+    public void passwordQuality(String taskId, String quality) {
+        try {
+            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+            mdm.setPasswordQuality(quality);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordQuality", quality));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
+        }
     }
 
     public void passwordMinLength(int length) {
