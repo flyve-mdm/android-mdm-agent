@@ -383,13 +383,19 @@ public class PoliciesController {
         }
     }
 
-    public void disableNFC(boolean disable) {
+    public void disableNFC(String taskId, boolean disable) {
         try {
             cache.setConnectivityNFCDisable(disable);
             PoliciesConnectivity.disableNFC(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "NFC", "NFC is disable: " + disable));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on NFC", ex.getMessage()));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
         }
     }
 
