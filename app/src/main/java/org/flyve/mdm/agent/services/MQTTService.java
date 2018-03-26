@@ -551,11 +551,8 @@ public class MQTTService extends Service implements MqttCallback {
                     int minimum = jsonObj.getInt(PASSWORD_MIN_NON_LETTER);
                     String taskId = jsonObj.getString("taskId");
 
-                    // return the status of the task
-                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
-
                     // execute the policy
-                    policiesController.passwordMinNonLetter(minimum);
+                    policiesController.passwordMinNonLetter(taskId, minimum);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
