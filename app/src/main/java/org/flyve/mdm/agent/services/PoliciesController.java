@@ -303,13 +303,19 @@ public class PoliciesController {
         }
     }
 
-    public void disableGPS(boolean disable) {
+    public void disableGPS(String taskId, boolean disable) {
         try {
             cache.setConnectivityGPSDisable(disable);
             PoliciesConnectivity.disableGps(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "GPS", "GPS is disable: " + disable));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on GPS", ex.getMessage()));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
         }
     }
 
