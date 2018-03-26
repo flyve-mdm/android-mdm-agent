@@ -53,7 +53,14 @@ public class PoliciesController {
     private static final String ERROR = "ERROR";
     private static final String MQTT_SEND = "MQTT Send";
     private static final String UTF_8 = "UTF-8";
-    
+
+    private static final String FEEDBACK_PENDING = "pending";
+    private static final String FEEDBACK_RECEIVED = "received";
+    private static final String FEEDBACK_DONE = "done";
+    private static final String FEEDBACK_FAILED = "failed";
+    private static final String FEEDBACK_CANCELED = "canceled";
+    private static final String FEEDBACK_WAITING = "waiting";
+
     private ArrayList<String> arrTopics;
     private MqttAndroidClient client;
     private Context context;
@@ -521,10 +528,20 @@ public class PoliciesController {
         broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "storage Encryption", "storage Encryption: " + enable));
     }
 
-    public void passwordEnabled() {
-        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-        mdm.enablePassword();
-        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordEnabled", "true"));
+    public void passwordEnabled(String taskId) {
+        try {
+            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+            mdm.enablePassword();
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordEnabled", "true"));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
+        }
     }
 
     public void passwordQuality(String quality) {
