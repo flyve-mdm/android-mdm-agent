@@ -319,13 +319,19 @@ public class PoliciesController {
         }
     }
 
-    public void disableRoaming(boolean disable) {
+    public void disableRoaming(String taskId, boolean disable) {
         try {
             cache.setConnectivityRoamingDisable(disable);
             PoliciesConnectivity.disableRoaming(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Roaming", "Roaming is disable: " + disable));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Roaming", ex.getMessage()));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
         }
     }
 
