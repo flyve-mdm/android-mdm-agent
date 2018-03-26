@@ -277,13 +277,19 @@ public class PoliciesController {
         }
     }
 
-    public void disableBluetooth(boolean disable) {
+    public void disableBluetooth(String taskId, boolean disable) {
         try {
             cache.setConnectivityBluetoothDisable(disable);
             PoliciesConnectivity.disableBluetooth(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Bluetooth", "Bluetooth is disable: " + disable));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Bluetooth", ex.getMessage()));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
         }
     }
 
