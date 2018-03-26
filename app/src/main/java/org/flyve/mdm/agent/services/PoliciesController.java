@@ -522,10 +522,20 @@ public class PoliciesController {
      * FLEET encryption
      * Example {"encryption":[{"storageEncryption":"false"}]}
      */
-    public void storageEncryption(Boolean enable) {
-        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-        mdm.storageEncryptionDevice(enable);
-        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "storage Encryption", "storage Encryption: " + enable));
+    public void storageEncryption(String taskId, Boolean enable) {
+        try {
+            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+            mdm.storageEncryptionDevice(enable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "storage Encryption", "storage Encryption: " + enable));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
+        }
     }
 
     public void passwordEnabled(String taskId) {
@@ -708,7 +718,7 @@ public class PoliciesController {
     /**
      * Erase all device data include SDCard
      */
-    public void wipe() {
+    public void wipe(String taskId) {
         try {
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.wipe();
