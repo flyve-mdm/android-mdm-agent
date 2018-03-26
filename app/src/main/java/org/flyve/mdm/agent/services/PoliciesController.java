@@ -188,7 +188,7 @@ public class PoliciesController {
      * TLS
      * Example "useTLS": "true|false", "taskId": "25"
      */
-    public void useTLS(Boolean enable) {
+    public void useTLS(String taskId, Boolean enable) {
         try {
             MqttData cache = new MqttData(context);
 
@@ -200,6 +200,10 @@ public class PoliciesController {
 
                 // restart MQTT connection with this new parameters
                 MQTTService.start(MDMAgent.getInstance());
+
+                // return the status of the task
+                sendTaskStatus(taskId, FEEDBACK_DONE);
+
             } else {
                 cache.setTls("0");
 
@@ -208,9 +212,15 @@ public class PoliciesController {
 
                 // restart MQTT connection with this new parameters
                 MQTTService.start(MDMAgent.getInstance());
+
+                // return the status of the task
+                sendTaskStatus(taskId, FEEDBACK_DONE);
             }
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
         }
     }
 

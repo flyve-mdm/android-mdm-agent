@@ -899,11 +899,8 @@ public class MQTTService extends Service implements MqttCallback {
                     Boolean enable = jsonObj.getBoolean(USE_TLS);
                     String taskId = jsonObj.getString("taskId");
 
-                    // return the status of the task
-                    policiesController.sendTaskStatus(taskId, FEEDBACK_RECEIVED);
-
                     // execute the policy
-                    policiesController.useTLS(enable);
+                    policiesController.useTLS(taskId, enable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
