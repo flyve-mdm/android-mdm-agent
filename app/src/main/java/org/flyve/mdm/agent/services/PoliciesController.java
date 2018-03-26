@@ -560,10 +560,20 @@ public class PoliciesController {
         }
     }
 
-    public void passwordMinLength(int length) {
-        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-        mdm.setPasswordLength(length);
-        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLength", String.valueOf(length)));
+    public void passwordMinLength(String taskId, int length) {
+        try {
+            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+            mdm.setPasswordLength(length);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLength", String.valueOf(length)));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
+        }
     }
 
     public void passwordMinNonLetter(int length) {
