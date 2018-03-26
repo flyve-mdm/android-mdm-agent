@@ -239,10 +239,20 @@ public class PoliciesController {
      * FLEET Camera
      * Example {"camera":[{"disableCamera":"true"}]}
      */
-    public void disableCamera(Boolean disable) {
-        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-        mdm.disableCamera(disable);
-        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Camera", "Camera is disable: " + disable));
+    public void disableCamera(String taskId, Boolean disable) {
+        try {
+            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+            mdm.disableCamera(disable);
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Camera", "Camera is disable: " + disable));
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_DONE);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // return the status of the task
+            sendTaskStatus(taskId, FEEDBACK_FAILED);
+        }
     }
 
     public void disableUI(JSONObject json) {
