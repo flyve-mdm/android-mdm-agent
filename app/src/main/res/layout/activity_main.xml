@@ -20,24 +20,6 @@
             android:id="@+id/toolbar"
             android:background="@color/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
-
-                <TextView
-                    android:id="@+id/txtToolbarTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_name"
-                    android:layout_centerVertical="true"
-                    style="@style/titleText"
-                    android:textColor="@color/white"
-                    />
-
-            </RelativeLayout>
-
         </android.support.v7.widget.Toolbar>
 
         <FrameLayout
@@ -74,7 +56,7 @@
                 />
 
             <ListView
-                android:id="@+id/lstNV"
+                android:id="@+id/lst"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:dividerHeight="0dp"
