@@ -396,7 +396,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if (jsonObj.has("lock")) {
                     String lock = jsonObj.getString("lock");
-                    policiesController.lockDevice(lock.equalsIgnoreCase("now"));
+                    //policiesController.lockDevice(lock.equalsIgnoreCase("now"));
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -409,7 +409,7 @@ public class MQTTService extends Service implements MqttCallback {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
                 if(jsonObj.has("wipe") && "NOW".equalsIgnoreCase(jsonObj.getString("wipe")) ) {
-                    policiesController.wipe();
+                    //policiesController.wipe();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -423,7 +423,7 @@ public class MQTTService extends Service implements MqttCallback {
 
                 if(jsonObj.has("unenroll") && "NOW".equalsIgnoreCase(jsonObj.getString("unenroll")) ) {
                     FlyveLog.d("unroll");
-                    policiesController.unenroll();
+                    //policiesController.unenroll();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
