@@ -27,10 +27,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.UserData;
 import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.mdm.agent.utils.MultipleEditText;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserModel implements User.Model {
 
@@ -89,24 +95,84 @@ public class UserModel implements User.Model {
     }
 
     @Override
-    public void save(Activity activity, UserSchema schema) {
+    public void save(Activity activity,
+                     EditText editName,
+                     EditText editLastName,
+                     EditText editAdministrative,
+                     Spinner spinnerLanguage,
+                     MultipleEditText editEmail,
+                     MultipleEditText editPhone,
+                     String strPicture) {
+
+        UserSchema userSchema = new UserSchema();
+
+        // -------------
+        // Emails
+        // -------------
+        ArrayList<UserData.EmailsData> arrEmails = new ArrayList<>();
+
+        List<EditText> emailEdit = editEmail.getEditList();
+        List<Spinner> emailTypeEdit = editEmail.getSpinnList();
+
+        for (int i=0; i<emailEdit.size(); i++) {
+            UserData.EmailsData emails = new UserData(activity).new EmailsData();
+            EditText editText = emailEdit.get(i);
+            Spinner spinner = emailTypeEdit.get(i);
+
+            if(!editText.getText().toString().equals("")) {
+                emails.setEmail(editText.getText().toString());
+                emails.setType(spinner.getSelectedItem().toString());
+                arrEmails.add(emails);
+            }
+        }
+
+        userSchema.setEmails(arrEmails);
+        userSchema.setFirstName(editName.getText().toString());
+        userSchema.setLastName(editLastName.getText().toString());
+        userSchema.setPicture(strPicture);
+        userSchema.setLanguage(spinnerLanguage.getSelectedItem().toString());
+        userSchema.setAdministrativeNumber(editAdministrative.getText().toString());
+
+        // Mobile Phone
+        if(!editPhone.getEditList().isEmpty()) {
+            String mobilePhone = editPhone.getEditList().get(0).getText().toString();
+            if (!mobilePhone.equals("")) {
+                userSchema.setMobilePhone(mobilePhone);
+            }
+        }
+
+        // Phone
+        if(editPhone.getEditList().size() > 1) {
+            String phone = editPhone.getEditList().get(1).getText().toString();
+            if (!phone.equals("")) {
+                userSchema.setPhone(phone);
+            }
+        }
+
+        // Phone 2
+        if(editPhone.getEditList().size() > 2) {
+            String phone2 = editPhone.getEditList().get(2).getText().toString();
+            if (!phone2.equals("")) {
+                userSchema.setPhone2(phone2);
+            }
+        }
 
         StringBuilder errMsg = new StringBuilder(activity.getResources().getString(R.string.validate_error) );
         boolean allow = true;
 
         Helpers.hideKeyboard(activity);
 
-        if(schema.getEmails().isEmpty() || schema.getEmails().get(0).getEmail().equals("")) {
+        if(userSchema.getEmails().isEmpty() || userSchema.getEmails().get(0).getEmail().equals("")) {
             errMsg.append(activity.getResources().getString(R.string.validate_email_at_least_one) );
             allow = false;
         }
 
-        if(schema.getFirstName().trim().equals("")) {
+        if(userSchema.getFirstName().trim().equals("")) {
             errMsg.append(activity.getResources().getString(R.string.validate_first_name) );
             allow = false;
         }
 
-        if(schema.getLastName().trim().equals("")) {
+        if(userSchema.getLastName().trim().equals("")) {
             errMsg.append(activity.getResources().getString(R.string.validate_last_name) );
             allow = false;
         }
@@ -121,15 +187,15 @@ public class UserModel implements User.Model {
         // -------------
         UserData user = new UserData(activity);
 
-        user.setFirstName(schema.getFirstName());
-        user.setLastName(schema.getLastName());
-        user.setEmails(schema.getEmails());
-        user.setPhone(schema.getPhone());
-        user.setPhone2(schema.getPhone2());
-        user.setMobilePhone(schema.getMobilePhone());
-        user.setPicture(schema.getPicture());
-        user.setLanguage(schema.getLanguage());
-        user.setAdministrativeNumber(schema.getAdministrativeNumber());
+        user.setFirstName(userSchema.getFirstName());
+        user.setLastName(userSchema.getLastName());
+        user.setEmails(userSchema.getEmails());
+        user.setPhone(userSchema.getPhone());
+        user.setPhone2(userSchema.getPhone2());
+        user.setMobilePhone(userSchema.getMobilePhone());
+        user.setPicture(userSchema.getPicture());
+        user.setLanguage(userSchema.getLanguage());
+        user.setAdministrativeNumber(userSchema.getAdministrativeNumber());
 
         presenter.saveSuccess();
     }

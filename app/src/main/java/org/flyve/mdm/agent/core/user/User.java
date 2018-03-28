@@ -25,6 +25,10 @@ package org.flyve.mdm.agent.core.user;
 
 import android.app.Activity;
 import android.content.Context;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import org.flyve.mdm.agent.utils.MultipleEditText;
 
 public interface User {
 
@@ -43,12 +47,12 @@ public interface User {
         // Models
         void load(Context context);
         void selectPhoto(final Activity activity, final int requestCamera, final int requestFile);
-        void save(Activity activity, UserSchema userSchema);
+        void save(Activity activity, EditText editName, EditText editLastName, EditText editAdministrative, Spinner spinnerLanguage, MultipleEditText editEmail, MultipleEditText editPhone, String strPicture);
     }
 
     interface Model {
         void load(Context context);
         void selectPhoto(final Activity activity, final int requestCamera, final int requestFile);
-        void save(Activity activity, UserSchema userSchema);
+        void save(Activity activity, EditText editName, EditText editLastName, EditText editAdministrative, Spinner spinnerLanguage, MultipleEditText editEmail, MultipleEditText editPhone, String strPicture);
     }
 }

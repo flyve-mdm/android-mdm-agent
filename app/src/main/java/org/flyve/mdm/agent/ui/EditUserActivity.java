@@ -45,7 +45,6 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.user.User;
 import org.flyve.mdm.agent.core.user.UserPresenter;
 import org.flyve.mdm.agent.core.user.UserSchema;
-import org.flyve.mdm.agent.data.UserData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.MultipleEditText;
@@ -105,13 +104,9 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
         txtTitle.setVisibility(View.GONE);
 
         imgPhoto = findViewById(R.id.imgPhoto);
-
         editName = findViewById(R.id.editName);
-
         editLastName = findViewById(R.id.editLastName);
-
         spinnerLanguage = findViewById(R.id.spinnerLanguage);
-
         editAdministrative = findViewById(R.id.editAdministrative);
         editAdministrative.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editAdministrative.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -150,60 +145,15 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
      * Storage information
      */
     private void save() {
-        UserSchema userSchema = new UserSchema();
-
-        // -------------
-        // Emails
-        // -------------
-        ArrayList<UserData.EmailsData> arrEmails = new ArrayList<>();
-
-        List<EditText> emailEdit = editEmail.getEditList();
-        List<Spinner> emailTypeEdit = editEmail.getSpinnList();
-
-        for (int i=0; i<emailEdit.size(); i++) {
-            UserData.EmailsData emails = new UserData(EditUserActivity.this).new EmailsData();
-            EditText editText = emailEdit.get(i);
-            Spinner spinner = emailTypeEdit.get(i);
-
-            if(!editText.getText().toString().equals("")) {
-                emails.setEmail(editText.getText().toString());
-                emails.setType(spinner.getSelectedItem().toString());
-                arrEmails.add(emails);
-            }
-        }
-
-        userSchema.setEmails(arrEmails);
-        userSchema.setFirstName(editName.getText().toString());
-        userSchema.setLastName(editLastName.getText().toString());
-        userSchema.setPicture(strPicture);
-        userSchema.setLanguage(spinnerLanguage.getSelectedItem().toString());
-        userSchema.setAdministrativeNumber(editAdministrative.getText().toString());
-
-        // Mobile Phone
-        if(!editPhone.getEditList().isEmpty()) {
-            String mobilePhone = editPhone.getEditList().get(0).getText().toString();
-            if (!mobilePhone.equals("")) {
-                userSchema.setMobilePhone(mobilePhone);
-            }
-        }
-
-        // Phone
-        if(editPhone.getEditList().size() > 1) {
-            String phone = editPhone.getEditList().get(1).getText().toString();
-            if (!phone.equals("")) {
-                userSchema.setPhone(phone);
-            }
-        }
-
-        // Phone 2
-        if(editPhone.getEditList().size() > 2) {
-            String phone2 = editPhone.getEditList().get(2).getText().toString();
-            if (!phone2.equals("")) {
-                userSchema.setPhone2(phone2);
-            }
-        }
-
-        presenter.save(EditUserActivity.this, userSchema);
+        presenter.save(EditUserActivity.this,
+                editName,
+                editLastName,
+                editAdministrative,
+                spinnerLanguage,
+                editEmail,
+                editPhone,
+                strPicture
+                );
     }
 
     /**
