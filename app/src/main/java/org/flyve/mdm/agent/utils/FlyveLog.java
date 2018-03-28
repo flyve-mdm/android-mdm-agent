@@ -24,6 +24,7 @@
 package org.flyve.mdm.agent.utils;
 
 import android.os.Environment;
+import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 
@@ -194,14 +195,14 @@ public class FlyveLog {
             fw.close();
         }
         catch (IOException ex) {
-            e(ex.getMessage());
+            Log.e("", ex.getMessage());
         }
         finally {
             if(fw!=null) {
                 try {
                     fw.close();
                 } catch(Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                    Log.e("", ex.getMessage());
                 }
             }
         }
