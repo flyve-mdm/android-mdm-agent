@@ -36,15 +36,15 @@ import org.flyve.mdm.agent.data.WalkthroughData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
-<span class="nc" id="L39">public class FragmentSlideWalkthrough extends Fragment {</span>
+<span class="fc" id="L39">public class FragmentSlideWalkthrough extends Fragment {</span>
 
     private WalkthroughData walkthroughData;
     private int slides;
     private int position;
 
-<span class="nc" id="L45">    private String mLink = &quot;&quot;;</span>
-<span class="nc" id="L46">    private int mMessage = 0;</span>
-<span class="nc" id="L47">    private int mImage = 0;</span>
+<span class="fc" id="L45">    private String mLink = &quot;&quot;;</span>
+<span class="fc" id="L46">    private int mMessage = 0;</span>
+<span class="fc" id="L47">    private int mImage = 0;</span>
 
     /**
      * Set the properties to equal the given arguments
@@ -53,10 +53,10 @@ import org.flyve.mdm.agent.utils.Helpers;
      * @param position the user is currently on
      */
     public void config(WalkthroughData walkthroughData, int slides, int position) {
-<span class="nc" id="L56">        this.walkthroughData = walkthroughData;</span>
-<span class="nc" id="L57">        this.slides = slides;</span>
-<span class="nc" id="L58">        this.position = position;</span>
-<span class="nc" id="L59">    }</span>
+<span class="fc" id="L56">        this.walkthroughData = walkthroughData;</span>
+<span class="fc" id="L57">        this.slides = slides;</span>
+<span class="fc" id="L58">        this.position = position;</span>
+<span class="fc" id="L59">    }</span>
 
     /**
      * Called to have the fragments instantiate its user interface View
@@ -69,39 +69,39 @@ import org.flyve.mdm.agent.utils.Helpers;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-<span class="nc" id="L72">        ViewGroup v = (ViewGroup) inflater.inflate(</span>
+<span class="fc" id="L72">        ViewGroup v = (ViewGroup) inflater.inflate(</span>
                 R.layout.fragment_walkthrough_step, container, false);
 
         try {
-<span class="nc" id="L76">            mLink = walkthroughData.getLink();</span>
-<span class="nc" id="L77">            mMessage = walkthroughData.getMessage();</span>
-<span class="nc" id="L78">            mImage = walkthroughData.getImage();</span>
+<span class="fc" id="L76">            mLink = walkthroughData.getLink();</span>
+<span class="fc" id="L77">            mMessage = walkthroughData.getMessage();</span>
+<span class="fc" id="L78">            mImage = walkthroughData.getImage();</span>
 <span class="nc" id="L79">        } catch (Exception ex) {</span>
 <span class="nc" id="L80">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L81">        }</span>
+<span class="fc" id="L81">        }</span>
 
 
-<span class="nc" id="L84">        ImageView imgStep = v.findViewById(R.id.imgStep);</span>
-<span class="nc bnc" id="L85" title="All 2 branches missed.">        if (mImage&gt;0) {</span>
-<span class="nc" id="L86">            imgStep.setImageResource(mImage);</span>
+<span class="fc" id="L84">        ImageView imgStep = v.findViewById(R.id.imgStep);</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (mImage&gt;0) {</span>
+<span class="fc" id="L86">            imgStep.setImageResource(mImage);</span>
         }
 
-<span class="nc" id="L89">        ImageView imgMessage = v.findViewById(R.id.imgDescription);</span>
-<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (mMessage&gt;0) {</span>
-<span class="nc" id="L91">            imgMessage.setImageResource(mMessage);</span>
+<span class="fc" id="L89">        ImageView imgMessage = v.findViewById(R.id.imgDescription);</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if (mMessage&gt;0) {</span>
+<span class="fc" id="L91">            imgMessage.setImageResource(mMessage);</span>
         }
 
-<span class="nc" id="L94">        ImageView imgMore = v.findViewById(R.id.imgMore);</span>
-<span class="nc" id="L95">        imgMore.setOnClickListener(new View.OnClickListener() {</span>
+<span class="fc" id="L94">        ImageView imgMore = v.findViewById(R.id.imgMore);</span>
+<span class="fc" id="L95">        imgMore.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
 <span class="nc" id="L98">                Helpers.openURL( FragmentSlideWalkthrough.this.getActivity(), mLink );</span>
 <span class="nc" id="L99">            }</span>
         });
 
-<span class="nc" id="L102">        slideDots(v);</span>
+<span class="fc" id="L102">        slideDots(v);</span>
 
-<span class="nc" id="L104">        return v;</span>
+<span class="fc" id="L104">        return v;</span>
     }
 
     /**
@@ -110,19 +110,19 @@ import org.flyve.mdm.agent.utils.Helpers;
      */
     private void slideDots(ViewGroup v) {
 
-<span class="nc" id="L113">        LinearLayout ln = v.findViewById(R.id.lnSliders);</span>
+<span class="fc" id="L113">        LinearLayout ln = v.findViewById(R.id.lnSliders);</span>
 
-<span class="nc bnc" id="L115" title="All 2 branches missed.">        for(int i=0; i&lt;this.slides; i++) {</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        for(int i=0; i&lt;this.slides; i++) {</span>
 
-<span class="nc" id="L117">            ImageView img = new ImageView(FragmentSlideWalkthrough.this.getContext());</span>
-<span class="nc" id="L118">            img.setPadding(7,0,7,0);</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">            if(i==this.position) {</span>
-<span class="nc" id="L120">                img.setImageResource(R.drawable.ic_dot_selected);</span>
+<span class="fc" id="L117">            ImageView img = new ImageView(FragmentSlideWalkthrough.this.getContext());</span>
+<span class="fc" id="L118">            img.setPadding(7,0,7,0);</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">            if(i==this.position) {</span>
+<span class="fc" id="L120">                img.setImageResource(R.drawable.ic_dot_selected);</span>
             } else {
-<span class="nc" id="L122">                img.setImageResource(R.drawable.ic_dot);</span>
+<span class="fc" id="L122">                img.setImageResource(R.drawable.ic_dot);</span>
             }
-<span class="nc" id="L124">            ln.addView(img);</span>
+<span class="fc" id="L124">            ln.addView(img);</span>
         }
-<span class="nc" id="L126">    }</span>
+<span class="fc" id="L126">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

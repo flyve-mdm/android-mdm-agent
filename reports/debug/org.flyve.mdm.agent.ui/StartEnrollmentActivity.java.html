@@ -70,7 +70,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L70">        MqttData cache = new MqttData( StartEnrollmentActivity.this );</span>
 
 <span class="nc" id="L72">        String broker = cache.getBroker();</span>
-<span class="nc bnc" id="L73" title="All 2 branches missed.">        if(broker != null) {</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if(!broker.isEmpty()) {</span>
 <span class="nc" id="L74">            openMain();</span>
         }
 

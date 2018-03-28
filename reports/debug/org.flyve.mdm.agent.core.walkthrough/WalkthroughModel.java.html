@@ -38,36 +38,36 @@ public class WalkthroughModel implements Walkthrough.Model {
     private Walkthrough.Presenter Presenter;
     private ArrayList&lt;WalkthroughData&gt; data;
 
-<span class="nc" id="L41">    public WalkthroughModel(Walkthrough.Presenter Presenter) {</span>
-<span class="nc" id="L42">        this.Presenter = Presenter;</span>
-<span class="nc" id="L43">    }</span>
+<span class="fc" id="L41">    public WalkthroughModel(Walkthrough.Presenter Presenter) {</span>
+<span class="fc" id="L42">        this.Presenter = Presenter;</span>
+<span class="fc" id="L43">    }</span>
 
     @Override
     public void createSlides(ArrayList&lt;WalkthroughData&gt; data, FragmentManager fm) {
-<span class="nc" id="L47">        this.data = data;</span>
+<span class="fc" id="L47">        this.data = data;</span>
 
-<span class="nc" id="L49">        PagerAdapter mPagerAdapter = new SimpleSlidePagerAdapter(fm);</span>
-<span class="nc" id="L50">        Presenter.addSlides(mPagerAdapter);</span>
-<span class="nc" id="L51">    }</span>
+<span class="fc" id="L49">        PagerAdapter mPagerAdapter = new SimpleSlidePagerAdapter(fm);</span>
+<span class="fc" id="L50">        Presenter.addSlides(mPagerAdapter);</span>
+<span class="fc" id="L51">    }</span>
 
     /**
      * A simple pager adapter
      */
     private class SimpleSlidePagerAdapter extends FragmentStatePagerAdapter {
-<span class="nc" id="L57">        public SimpleSlidePagerAdapter(FragmentManager fm) {</span>
-<span class="nc" id="L58">            super(fm);</span>
-<span class="nc" id="L59">        }</span>
+<span class="fc" id="L57">        public SimpleSlidePagerAdapter(FragmentManager fm) {</span>
+<span class="fc" id="L58">            super(fm);</span>
+<span class="fc" id="L59">        }</span>
 
         @Override
         public Fragment getItem(int position) {
-<span class="nc" id="L63">            FragmentSlideWalkthrough f = new FragmentSlideWalkthrough();</span>
-<span class="nc" id="L64">            f.config(data.get(position), data.size(), position);</span>
-<span class="nc" id="L65">            return f;</span>
+<span class="fc" id="L63">            FragmentSlideWalkthrough f = new FragmentSlideWalkthrough();</span>
+<span class="fc" id="L64">            f.config(data.get(position), data.size(), position);</span>
+<span class="fc" id="L65">            return f;</span>
         }
 
         @Override
         public int getCount() {
-<span class="nc" id="L70">            return data.size();</span>
+<span class="fc" id="L70">            return data.size();</span>
         }
     }
 
