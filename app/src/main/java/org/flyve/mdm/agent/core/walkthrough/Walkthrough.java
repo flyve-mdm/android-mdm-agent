@@ -23,25 +23,28 @@
 
 package org.flyve.mdm.agent.core.walkthrough;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.PagerAdapter;
-
-import org.flyve.mdm.agent.data.WalkthroughData;
-
-import java.util.ArrayList;
+import android.support.v4.view.ViewPager;
 
 public interface Walkthrough {
 
     interface View {
-        void addSlides(PagerAdapter mPagerAdapter);
     }
 
     interface Presenter {
-        void addSlides(PagerAdapter mPagerAdapter);
-        void createSlides(ArrayList<WalkthroughData> data, FragmentManager fm);
+        //View
+
+        //Model
+        void setupSlides(Context context, FragmentManager fm, ViewPager viewPager);
+        void goToMainWithDelay(final Activity activity, int delay);
+        boolean checkIfLogged(Context context);
     }
 
     interface Model {
-        void createSlides(ArrayList<WalkthroughData> data, FragmentManager fm);
+        void setupSlides(Context context, FragmentManager fm, ViewPager viewPager);
+        void goToMainWithDelay(final Activity activity, int delay);
+        boolean checkIfLogged(Context context);
     }
 }

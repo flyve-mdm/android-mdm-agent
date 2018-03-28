@@ -23,12 +23,10 @@
 
 package org.flyve.mdm.agent.core.walkthrough;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.PagerAdapter;
-
-import org.flyve.mdm.agent.data.WalkthroughData;
-
-import java.util.ArrayList;
+import android.support.v4.view.ViewPager;
 
 public class WalkthroughPresenter implements Walkthrough.Presenter {
 
@@ -41,14 +39,17 @@ public class WalkthroughPresenter implements Walkthrough.Presenter {
     }
 
     @Override
-    public void addSlides(PagerAdapter mPagerAdapter) {
-        if(view != null) {
-            view.addSlides(mPagerAdapter);
-        }
+    public void setupSlides(Context context, FragmentManager fm, ViewPager viewPager) {
+        model.setupSlides(context, fm, viewPager);
     }
 
     @Override
-    public void createSlides(ArrayList<WalkthroughData> data, FragmentManager fm) {
-        model.createSlides(data, fm);
+    public void goToMainWithDelay(Activity activity, int delay) {
+        model.goToMainWithDelay(activity, delay);
+    }
+
+    @Override
+    public boolean checkIfLogged(Context context) {
+        return model.checkIfLogged(context);
     }
 }

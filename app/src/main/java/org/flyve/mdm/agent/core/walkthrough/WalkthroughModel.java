@@ -23,13 +23,22 @@
 
 package org.flyve.mdm.agent.core.walkthrough;
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 
+import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.data.WalkthroughData;
 import org.flyve.mdm.agent.ui.FragmentSlideWalkthrough;
+import org.flyve.mdm.agent.ui.MainActivity;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 
 import java.util.ArrayList;
 
@@ -42,12 +51,37 @@ public class WalkthroughModel implements Walkthrough.Model {
         this.Presenter = Presenter;
     }
 
-    @Override
-    public void createSlides(ArrayList<WalkthroughData> data, FragmentManager fm) {
-        this.data = data;
+    public boolean checkIfLogged(Context context) {
+        MqttData cache = new MqttData(context);
+
+        // if broker is on cache open the main activity
+        String broker = cache.getBroker();
+        if(broker != null) {
+            // if user is enrolled show landing screen
+            FlyveLog.d(cache.getSessionToken());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void goToMainWithDelay(final Activity activity, int delay) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Helpers.openActivity(activity, MainActivity.class, true);
+            }
+        }, delay);
+    }
+
+    public void setupSlides(Context context, FragmentManager fm, ViewPager viewPager) {
+        data = new ArrayList<>();
+        data.add(new WalkthroughData(R.drawable.wt_text_1, context.getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
+        data.add(new WalkthroughData(R.drawable.wt_text_2, context.getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));
+        data.add(new WalkthroughData(R.drawable.wt_text_3, context.getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));
 
         PagerAdapter mPagerAdapter = new SimpleSlidePagerAdapter(fm);
-        Presenter.addSlides(mPagerAdapter);
+        viewPager.setAdapter(mPagerAdapter);
     }
 
     /**

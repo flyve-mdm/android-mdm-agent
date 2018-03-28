@@ -28,20 +28,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.Walkthrough;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughPresenter;
-import org.flyve.mdm.agent.data.MqttData;
-import org.flyve.mdm.agent.data.WalkthroughData;
-import org.flyve.mdm.agent.utils.FlyveLog;
-
-import java.util.ArrayList;
 
 /**
  * This is the first screen of the app here you can get information about flyve-mdm-agent
@@ -49,7 +42,8 @@ import java.util.ArrayList;
  */
 public class SplashActivity extends FragmentActivity implements Walkthrough.View {
 
-    private static final int TIME = 3000;
+    private static final int SPLASH_DELAY = 3000;
+
     private IntentFilter mIntent;
     private Walkthrough.Presenter presenter;
 
@@ -78,51 +72,19 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        presenter = new WalkthroughPresenter(this);
 
-        MqttData cache = new MqttData( SplashActivity.this );
-
-        // if broker is on cache open the main activity
-        String broker = cache.getBroker();
-        if(broker != null) {
-            // if user is enrolled show landing screen
-            FlyveLog.d(cache.getSessionToken());
-
+        if(presenter.checkIfLogged(SplashActivity.this)) {
             setContentView(R.layout.activity_splash_enrolled);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    openMain();
-                }
-            }, TIME);
-
+            presenter.goToMainWithDelay(this, SPLASH_DELAY);
             return;
-       }
+        }
 
         // if user is not enrolled show help
         setContentView(R.layout.activity_splash);
-        presenter = new WalkthroughPresenter(this);
+        ViewPager viewPager = findViewById(R.id.viewpager);
 
-        ArrayList<WalkthroughData> walkthrough = new ArrayList<>();
-        walkthrough.add(new WalkthroughData(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
-        walkthrough.add(new WalkthroughData(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));
-        walkthrough.add(new WalkthroughData(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));
-
-        presenter.createSlides(walkthrough, getSupportFragmentManager());
-    }
-
-    @Override
-    public void addSlides(PagerAdapter mPagerAdapter) {
-        ViewPager mPager = findViewById(R.id.pager);
-        mPager.setAdapter(mPagerAdapter);
-    }
-
-    /**
-     * Open the main activity
-     */
-    private void openMain() {
-        Intent miIntent = new Intent(SplashActivity.this, MainActivity.class);
-        SplashActivity.this.startActivity(miIntent);
-        SplashActivity.this.finish();
+        presenter.setupSlides(this, getSupportFragmentManager(), viewPager);
     }
 
     private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {
@@ -136,6 +98,4 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
             }
         }
     };
-
-
 }

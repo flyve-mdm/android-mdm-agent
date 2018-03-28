@@ -92,6 +92,14 @@ public class Helpers {
 		context.startActivity(intent);
 	}
 
+	public static void openActivity(Activity activity, Class<?> classToOpen, boolean closeThisActivity) {
+		Intent miIntent = new Intent(activity, classToOpen);
+		activity.startActivity(miIntent);
+		if(closeThisActivity) {
+			activity.finish();
+		}
+	}
+
 	public static void installApkSilently(String filename) {
 		File file = new File(filename);
 		if(file.exists()) {
