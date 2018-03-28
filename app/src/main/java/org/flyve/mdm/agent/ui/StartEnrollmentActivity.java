@@ -70,7 +70,7 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
         MqttData cache = new MqttData( StartEnrollmentActivity.this );
 
         String broker = cache.getBroker();
-        if(broker != null) {
+        if(!broker.isEmpty()) {
             openMain();
         }
 
