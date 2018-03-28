@@ -83,7 +83,7 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
 
         // if broker is on cache open the main activity
         String broker = cache.getBroker();
-        if(broker != null) {
+        if(!broker.isEmpty()) {
             // if user is enrolled show landing screen
             FlyveLog.d(cache.getSessionToken());
 
