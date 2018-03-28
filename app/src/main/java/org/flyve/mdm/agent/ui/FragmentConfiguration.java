@@ -23,16 +23,20 @@
 
 package org.flyve.mdm.agent.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.AppData;
+import org.flyve.mdm.agent.data.LocalStorage;
 
 public class FragmentConfiguration extends Fragment {
 
@@ -65,7 +69,39 @@ public class FragmentConfiguration extends Fragment {
             }
         });
 
+        Button btnClear = v.findViewById(R.id.btnClear);
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(FragmentConfiguration.this.getContext());
+
+                builder.setTitle("DANGER");
+                builder.setMessage("Are you sure do you want erase all the data?");
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        LocalStorage localStorage = new LocalStorage(FragmentConfiguration.this.getContext());
+                        localStorage.clearSettings();
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+
         return v;
     }
-
-    }
+}
