@@ -69,11 +69,9 @@ public class MainActivity extends AppCompatActivity implements Main.View {
         toolbar = findViewById(R.id.toolbar);
         lst = findViewById(R.id.lst);
         mDrawerLayout = findViewById(R.id.drawerLayout);
-
-        // start MQTT service
-        presenter.startMQTTService(MainActivity.this);
-
         mFragmentManager = getSupportFragmentManager();
+
+        startMQTTService();
 
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -92,6 +90,11 @@ public class MainActivity extends AppCompatActivity implements Main.View {
 
         // This method check if we can close any persistent notification
         presenter.checkNotifications(MainActivity.this);
+    }
+
+    public void startMQTTService() {
+        // start MQTT service
+        presenter.startMQTTService(MainActivity.this);
     }
 
     // This method is implemented to reload the menu from outside this class too

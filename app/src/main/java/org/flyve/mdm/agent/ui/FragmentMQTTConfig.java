@@ -88,7 +88,7 @@ public class FragmentMQTTConfig extends Fragment {
                 cache.setTopic( editTopic.getText().toString() );
 
                 // restart MQTT connection with this new parameters
-                ((MainActivity)FragmentMQTTConfig.this.getActivity()).globalStartMQTT();
+                ((MainActivity)FragmentMQTTConfig.this.getActivity()).startMQTTService();
 
                 Helpers.snack(FragmentMQTTConfig.this.getActivity(), getString(R.string.mqtt_save_message));
             }
