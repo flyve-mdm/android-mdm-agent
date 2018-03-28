@@ -23,8 +23,6 @@
 
 package org.flyve.mdm.agent.ui;
 
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,13 +30,13 @@ import android.view.View;
 import android.widget.Button;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
+import org.flyve.mdm.agent.core.disclosure.Disclosure;
+import org.flyve.mdm.agent.core.disclosure.DisclosurePresenter;
 import org.flyve.mdm.agent.utils.Helpers;
 
-public class DisclosureActivity extends AppCompatActivity {
+public class DisclosureActivity extends AppCompatActivity implements Disclosure.View {
 
-    private static final int REQUEST_CODE_ENABLE_ADMIN = 1;
-    private ComponentName mDeviceAdmin;
+    private Disclosure.Presenter presenter;
 
     /**
      * This method is called when the activity is starting
@@ -50,17 +48,13 @@ public class DisclosureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disclosure);
 
+        presenter = new DisclosurePresenter(this);
+
         Button btnAccept = findViewById(R.id.btnAccept);
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Device Admin
-                mDeviceAdmin = new ComponentName(DisclosureActivity.this, FlyveAdminReceiver.class);
-
-                Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-                intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
-                intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "EXPLANATION");
-                startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
+                presenter.requestDeviceAdmin(DisclosureActivity.this);
             }
         });
 
@@ -82,19 +76,12 @@ public class DisclosureActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_ENABLE_ADMIN && resultCode==RESULT_OK) {
-            nextStep();
-        } else {
-            Helpers.snack(DisclosureActivity.this, getResources().getString(R.string.disclosure_decline));
-        }
+
+        presenter.checkDeviceAdminResult(DisclosureActivity.this, requestCode, resultCode);
     }
 
-    /**
-     * Open the next activity
-     */
-    private void nextStep() {
-        Intent intent = new Intent(DisclosureActivity.this, MainActivity.class);
-        DisclosureActivity.this.startActivity(intent);
-        DisclosureActivity.this.finish();
+    @Override
+    public void showError(String message) {
+        Helpers.snack(DisclosureActivity.this, message);
     }
 }
