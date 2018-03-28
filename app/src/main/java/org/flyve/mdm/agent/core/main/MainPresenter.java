@@ -24,6 +24,7 @@
 package org.flyve.mdm.agent.core.main;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
@@ -62,5 +63,20 @@ public class MainPresenter implements Main.Presenter {
     @Override
     public List<HashMap<String, String>> getMenuItem() {
         return model.getMenuItem();
+    }
+
+    @Override
+    public void startMQTTService(Context context) {
+        model.startMQTTService(context);
+    }
+
+    @Override
+    public void closeMQTTService(Context context) {
+        model.closeMQTTService(context);
+    }
+
+    @Override
+    public void checkNotifications(Context context) {
+        model.checkNotifications(context);
     }
 }

@@ -23,9 +23,6 @@
 
 package org.flyve.mdm.agent.ui;
 
-import android.app.NotificationManager;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -38,9 +35,6 @@ import android.widget.ListView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.main.Main;
 import org.flyve.mdm.agent.core.main.MainPresenter;
-import org.flyve.mdm.agent.services.DeviceLockedController;
-import org.flyve.mdm.agent.services.MQTTService;
-import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
 import java.util.HashMap;
@@ -51,23 +45,13 @@ public class MainActivity extends AppCompatActivity implements Main.View {
     private DrawerLayout mDrawerLayout;
     private FragmentManager mFragmentManager;
     private ListView lst;
-    private HashMap<String, String> selectedItem;
-    private Intent mServiceIntent;
-    private Main.Presenter presenter;
     private android.support.v7.widget.Toolbar toolbar;
+    private Main.Presenter presenter;
 
-    /**
-     * Perform the final clenup before the activity is destroyed
-     */
     @Override
     public void onDestroy() {
-        // stop the service
-        if(mServiceIntent!=null) {
-            stopService(mServiceIntent);
-        }
-
-        FlyveLog.i("onDestroy!");
-
+        // Stop MQTT service
+        presenter.closeMQTTService(MainActivity.this);
         super.onDestroy();
     }
 
@@ -82,65 +66,38 @@ public class MainActivity extends AppCompatActivity implements Main.View {
 
         presenter = new MainPresenter(this);
 
-        // start MQTT
-        globalStartMQTT();
-
-         // Setup the DrawerLayout and NavigationView
+        toolbar = findViewById(R.id.toolbar);
+        lst = findViewById(R.id.lst);
         mDrawerLayout = findViewById(R.id.drawerLayout);
 
-        // Setup Drawer Toggle of the Toolbar
-        toolbar = findViewById(R.id.toolbar);
-
-        lst = findViewById(R.id.lst);
+        // start MQTT service
+        presenter.startMQTTService(MainActivity.this);
 
         mFragmentManager = getSupportFragmentManager();
 
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout, toolbar,R.string.app_name,
-                R.string.app_name);
-
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
         mDrawerToggle.syncState();
 
         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mDrawerLayout.closeDrawers();
-                selectedItem = presenter.getMenuItem().get(position);
+                HashMap<String, String> selectedItem = presenter.getMenuItem().get(position);
                 presenter.onClickItem(mFragmentManager, toolbar, selectedItem);
             }
         });
 
         loadMenu();
 
-        checkNotifications();
+        // This method check if we can close any persistent notification
+        presenter.checkNotifications(MainActivity.this);
     }
 
+    // This method is implemented to reload the menu from outside this class too
     public void loadMenu() {
         Map<String, String> menuItem = presenter.setupDrawer(MainActivity.this, lst);
         presenter.onClickItem(mFragmentManager, toolbar, menuItem);
-    }
-
-    private void checkNotifications() {
-        DeviceLockedController pwd = new DeviceLockedController(this);
-        if(pwd.isDeviceScreenLocked()) {
-            try {
-                NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.cancel(1009);
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-    }
-
-    /**
-     * if you need restart MQTT connection you need call this method
-     */
-    public void globalStartMQTT() {
-        // ------------------
-        // MQTT SERVICE
-        // ------------------
-        mServiceIntent = MQTTService.start( this.getApplicationContext() );
     }
 
     @Override

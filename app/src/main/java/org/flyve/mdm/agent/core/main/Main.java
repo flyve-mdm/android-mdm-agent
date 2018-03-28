@@ -24,6 +24,7 @@
 package org.flyve.mdm.agent.core.main;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.widget.ListView;
 
@@ -45,11 +46,17 @@ public interface Main {
         Map<String, String> setupDrawer(Activity activity, ListView lst);
         void onClickItem(FragmentManager fragmentManager, android.support.v7.widget.Toolbar toolbar, Map<String, String> item);
         List<HashMap<String, String>> getMenuItem();
+        void startMQTTService(Context context);
+        void closeMQTTService(Context context);
+        void checkNotifications(Context context);
     }
 
     interface Model {
         Map<String, String> setupDrawer(Activity activity, ListView lst);
         void onClickItem(FragmentManager fragmentManager, android.support.v7.widget.Toolbar toolbar, Map<String, String> item);
         List<HashMap<String, String>> getMenuItem();
+        void startMQTTService(Context context);
+        void closeMQTTService(Context context);
+        void checkNotifications(Context context);
     }
 }

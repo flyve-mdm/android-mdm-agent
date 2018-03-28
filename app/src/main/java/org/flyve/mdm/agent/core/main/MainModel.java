@@ -24,6 +24,9 @@
 package org.flyve.mdm.agent.core.main;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.ListView;
@@ -31,6 +34,8 @@ import android.widget.ListView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.DrawerAdapter;
 import org.flyve.mdm.agent.data.AppData;
+import org.flyve.mdm.agent.services.DeviceLockedController;
+import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.ui.FragmentAbout;
 import org.flyve.mdm.agent.ui.FragmentActivity;
 import org.flyve.mdm.agent.ui.FragmentConfiguration;
@@ -50,6 +55,30 @@ public class MainModel implements Main.Model {
 
     private Main.Presenter presenter;
     private ArrayList<HashMap<String, String>> arrDrawer;
+    private Intent mServiceIntent;
+
+    public void startMQTTService(Context context) {
+        mServiceIntent = MQTTService.start(context);
+    }
+
+    public void closeMQTTService(Context context) {
+        if(mServiceIntent!=null) {
+            context.stopService(mServiceIntent);
+        }
+    }
+
+    public void checkNotifications(Context context) {
+        DeviceLockedController pwd = new DeviceLockedController(context);
+        if(pwd.isDeviceScreenLocked()) {
+            try {
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(1009);
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+    }
+
 
     public MainModel(Main.Presenter presenter) {
         this.presenter = presenter;
