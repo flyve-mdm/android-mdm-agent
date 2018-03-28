@@ -25,7 +25,6 @@ package org.flyve.mdm.agent.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
@@ -39,7 +38,6 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.deeplink.Deeplink;
 import org.flyve.mdm.agent.core.deeplink.DeeplinkPresenter;
 import org.flyve.mdm.agent.core.deeplink.DeeplinkSchema;
-import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.utils.Helpers;
 
 public class StartEnrollmentActivity extends Activity implements Deeplink.View {
@@ -47,10 +45,10 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
     private static final int REQUEST_EXIT = 1;
 
     private Deeplink.Presenter presenter;
-    private RelativeLayout btnEnroll;
     private TextView txtMessage;
     private TextView txtTitle;
     private ProgressBar pb;
+    RelativeLayout btnEnroll;
 
     /**
      * Called when the activity is starting
@@ -66,39 +64,22 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
 
         presenter = new DeeplinkPresenter(this);
 
-        // check if broker is on cache open the main activity
-        MqttData cache = new MqttData( StartEnrollmentActivity.this );
-
-        String broker = cache.getBroker();
-        if(broker != null) {
-            openMain();
-        }
-
         TextView txtIntro = findViewById(R.id.txtIntro);
         txtIntro.setText( Html.fromHtml(StartEnrollmentActivity.this.getResources().getString(R.string.walkthrough_step_1)) );
         txtIntro.setMovementMethod(LinkMovementMethod.getInstance());
+
         txtMessage = findViewById(R.id.txtMessage);
         txtTitle = findViewById(R.id.txtTitle);
         pb = findViewById(R.id.progressBar);
 
         // get the deeplink
-        Intent intent = getIntent();
-        Uri data = intent.getData();
-        try {
-            String deeplink = data.getQueryParameter("data");
-            presenter.lint(StartEnrollmentActivity.this, deeplink);
-        } catch (Exception ex) {
-            showError(ex.getMessage());
-        }
+        presenter.lint(StartEnrollmentActivity.this);
 
         btnEnroll = findViewById(R.id.btnEnroll);
         btnEnroll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent miIntent = new Intent(StartEnrollmentActivity.this, PermissionEnrollmentActivity.class);
-                StartEnrollmentActivity.this.startActivity(miIntent);
-                StartEnrollmentActivity.this.finish();
+                Helpers.openActivity(StartEnrollmentActivity.this, PermissionEnrollmentActivity.class, true);
             }
         });
     }
@@ -111,15 +92,6 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
         Intent in = new Intent();
         in.setAction("flyve.ACTION_CLOSE");
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
-    }
-
-    /**
-     * Open the main activity
-     */
-    private void openMain() {
-        Intent intent = new Intent(StartEnrollmentActivity.this, MainActivity.class);
-        StartEnrollmentActivity.this.startActivity(intent);
-        StartEnrollmentActivity.this.finish();
     }
 
     /**

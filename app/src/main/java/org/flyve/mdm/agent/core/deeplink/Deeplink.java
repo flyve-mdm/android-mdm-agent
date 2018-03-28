@@ -44,14 +44,14 @@ public interface Deeplink {
         void openEnrollFail();
 
         // Models
-        void lint(Context context, String deeplink);
+        void lint(Activity activity);
         void saveSupervisor(Context context, String name, String phone, String webSite, String email);
         void saveMQTTConfig(Context context, String url, String userToken, String invitationToken);
         void openEnrollment(final Activity activity, final int request);
     }
 
     interface Model {
-        void lint(Context context, String deeplink);
+        void lint(Activity activity);
         void saveSupervisor(Context context, String name, String phone, String webSite, String email);
         void saveMQTTConfig(Context context, String url, String userToken, String invitationToken);
         void openEnrollment(final Activity activity, final int request);

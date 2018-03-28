@@ -66,8 +66,8 @@ public class DeeplinkPresenter implements Deeplink.Presenter {
     }
 
     @Override
-    public void lint(Context context, String deeplink) {
-        model.lint(context, deeplink);
+    public void lint(Activity activity) {
+        model.lint(activity);
     }
 
     @Override

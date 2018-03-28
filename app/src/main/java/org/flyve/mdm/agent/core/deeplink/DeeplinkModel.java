@@ -26,6 +26,7 @@ package org.flyve.mdm.agent.core.deeplink;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
@@ -44,12 +45,23 @@ public class DeeplinkModel implements Deeplink.Model {
     }
 
     @Override
-    public void lint(Context context, String deeplink) {
-        String deepLinkErrorMessage = context.getResources().getString(R.string.ERROR_DEEP_LINK);
+    public void lint(Activity activity) {
+
+        Intent intent = activity.getIntent();
+        Uri data = intent.getData();
+        String deepLink;
+        try {
+            deepLink = data.getQueryParameter("data");
+        } catch (Exception ex) {
+            presenter.showError(ex.getMessage());
+            return;
+        }
+
+        String deepLinkErrorMessage = activity.getResources().getString(R.string.ERROR_DEEP_LINK);
         String deepLinkData;
 
         try {
-            deepLinkData = Helpers.base64decode(deeplink);
+            deepLinkData = Helpers.base64decode(deepLink);
         } catch(Exception ex) {
             presenter.showError( deepLinkErrorMessage );
             FlyveLog.e(deepLinkErrorMessage + " - " + ex.getMessage());
