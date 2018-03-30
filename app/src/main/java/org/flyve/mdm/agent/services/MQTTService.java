@@ -47,6 +47,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -65,10 +66,13 @@ public class MQTTService extends Service implements MqttCallback {
     private static final String QUERY = "query";
     private static final String TAG = "MQTT - %s";
 
-    private Timer reconnectionTimer = null;
     private int reconnectionCounter = 0;
-    private int reconnectionPeriod = 60000; //time in milliseconds between successive task executions.
-    private int reconnectionDelay = 30000; //delay in milliseconds before task is to be executed.
+    private int reconnectionPeriod = 1000;
+    private int reconnectionDelay = 5; //delay in milliseconds before task is to be executed.
+    private long timeLastReconnection = 0;
+    private Timer reconnectionTimer;
+    private Boolean executeConnection = true;
+    private int tryEverySeconds = 30;
 
     private MqttAndroidClient client;
     private Boolean connected = false;
@@ -289,23 +293,42 @@ public class MQTTService extends Service implements MqttCallback {
     }
 
     public void reconnect() {
-        reconnectionTimer = new Timer();
-
-        // every 10 times the reconnection Period increase twice
-        if((reconnectionCounter % 10)==0) {
-            // stop increase in 5 minutes
-            if(reconnectionPeriod <= 300000) {
-                reconnectionPeriod *= 2;
-            }
+        if(reconnectionTimer==null) {
+            reconnectionTimer = new Timer();
         }
 
-        reconnectionTimer.schedule(new TimerTask() {
+        reconnectionTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+
+                // Check the reconnection every 30 seconds
+                if(timeLastReconnection>0) {
+                    long currentDate = new Date().getTime();
+                    long diff = (currentDate - timeLastReconnection);
+                    long seconds = diff / 1000 % 60;
+                    if(seconds>=tryEverySeconds) {
+                        timeLastReconnection = currentDate;
+                        executeConnection = true;
+                    } else {
+                        executeConnection = false;
+                    }
+
+                } else {
+                    timeLastReconnection = new Date().getTime();
+                    executeConnection = true;
+                }
+
                 if(!MQTTService.this.connected) {
-                    reconnectionCounter++;
-                    FlyveLog.d( "Reconnecting " + reconnectionCounter + " times");
-                    connect();
+                    if(executeConnection) {
+                        reconnectionCounter++;
+
+                        if((reconnectionCounter % 10)==0) {
+                            tryEverySeconds *= 2;
+                        }
+
+                        FlyveLog.d("Reconnecting " + reconnectionCounter + " times");
+                        connect();
+                    }
                 } else {
                     FlyveLog.d("Reconnection finish");
                     reconnectionTimer.cancel();
