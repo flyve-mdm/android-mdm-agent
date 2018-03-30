@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.1'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "org.flyve.mdm.agent"
         minSdkVersion 16
@@ -40,36 +40,36 @@ sonarqube {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
         exclude module: 'support-v4'
         transitive = true
     }
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestCompile('tools.fastlane:screengrab:1.1.0', {
+    androidTestImplementation('tools.fastlane:screengrab:1.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.9.0'
-    androidTestCompile 'org.mockito:mockito-android:2.7.22'
-    compile 'com.android.support:multidex:1.0.2'
-    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:design:27.0.2'
-    compile 'com.android.support:support-v4:27.0.2'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.9.0'
+    androidTestImplementation 'org.mockito:mockito-android:2.7.22'
+    implementation 'com.android.support:multidex:1.0.2'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:design:27.1.0'
+    implementation 'com.android.support:support-v4:27.1.0'
 
-    compile "android.arch.persistence.room:runtime:1.0.0"
+    implementation "android.arch.persistence.room:runtime:1.0.0"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
 
-    compile 'com.madgag.spongycastle:core:1.54.0.0'
-    compile 'com.madgag.spongycastle:prov:1.54.0.0'
-    compile 'com.madgag.spongycastle:pkix:1.54.0.0'
-    compile 'com.orhanobut:logger:2.1.1'
-    compile 'com.google.code.gson:gson:2.8.1'
-    compile 'org.flyve:inventory:0.6.2@aar'
-    compile 'com.bugsnag:bugsnag-android:4.1.3'
+    implementation 'com.madgag.spongycastle:core:1.54.0.0'
+    implementation 'com.madgag.spongycastle:prov:1.54.0.0'
+    implementation 'com.madgag.spongycastle:pkix:1.54.0.0'
+    implementation 'com.orhanobut:logger:2.1.1'
+    implementation 'com.google.code.gson:gson:2.8.1'
+    implementation 'org.flyve:inventory:0.6.2@aar'
+    implementation 'com.bugsnag:bugsnag-android:4.1.3'
 }
 
 import java.util.regex.Pattern
