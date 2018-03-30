@@ -396,7 +396,7 @@ public class MQTTService extends Service implements MqttCallback {
 
 <span class="nc bnc" id="L397" title="All 2 branches missed.">                if (jsonObj.has(&quot;lock&quot;)) {</span>
 <span class="nc" id="L398">                    String lock = jsonObj.getString(&quot;lock&quot;);</span>
-                    //policiesController.lockDevice(lock.equalsIgnoreCase(&quot;now&quot;));
+<span class="nc" id="L399">                    policiesController.lockDevice(lock.equalsIgnoreCase(&quot;now&quot;));</span>
                 }
 <span class="nc" id="L401">            } catch (Exception ex) {</span>
 <span class="nc" id="L402">                FlyveLog.e(ex.getMessage());</span>
@@ -409,7 +409,7 @@ public class MQTTService extends Service implements MqttCallback {
 <span class="nc" id="L409">                JSONObject jsonObj = new JSONObject(messageBody);</span>
 
 <span class="nc bnc" id="L411" title="All 4 branches missed.">                if(jsonObj.has(&quot;wipe&quot;) &amp;&amp; &quot;NOW&quot;.equalsIgnoreCase(jsonObj.getString(&quot;wipe&quot;)) ) {</span>
-                    //policiesController.wipe();
+<span class="nc" id="L412">                    policiesController.wipe();</span>
                 }
 <span class="nc" id="L414">            } catch (Exception ex) {</span>
 <span class="nc" id="L415">                FlyveLog.e(ex.getMessage());</span>
@@ -423,7 +423,7 @@ public class MQTTService extends Service implements MqttCallback {
 
 <span class="nc bnc" id="L424" title="All 4 branches missed.">                if(jsonObj.has(&quot;unenroll&quot;) &amp;&amp; &quot;NOW&quot;.equalsIgnoreCase(jsonObj.getString(&quot;unenroll&quot;)) ) {</span>
 <span class="nc" id="L425">                    FlyveLog.d(&quot;unroll&quot;);</span>
-                    //policiesController.unenroll();
+<span class="nc" id="L426">                    policiesController.unenroll();</span>
                 }
 <span class="nc" id="L428">            } catch (Exception ex) {</span>
 <span class="nc" id="L429">                FlyveLog.e(ex.getMessage());</span>
