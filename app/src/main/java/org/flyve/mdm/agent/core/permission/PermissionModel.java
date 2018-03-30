@@ -101,12 +101,12 @@ public class PermissionModel implements Permission.Model {
                     public void onSuccess(String data) {
                         // Active EnrollmentHelper Token is stored on cache
                         progress.dismiss();
-
                         presenter.inventorySuccess();
                     }
 
                     @Override
                     public void onError(String error) {
+                        progress.dismiss();
                         presenter.showError(error);
                     }
                 });
@@ -114,6 +114,7 @@ public class PermissionModel implements Permission.Model {
 
             @Override
             public void onTaskError(Throwable throwable) {
+                progress.dismiss();
                 presenter.showError("The inventory fail");
             }
         });
