@@ -163,7 +163,9 @@ public class InstallAppActivity extends Activity {
                 dataBase.applicationDao().insert(apps);
             } else {
                 // update status to installed
-                dataBase.applicationDao().updateStatus(id, "2");
+                if(isPackageInstalled(appPackage, packageManager)) {
+                    dataBase.applicationDao().updateStatus(id, "2");
+                }
             }
 
             if(status.equals("2")) {
@@ -182,4 +184,12 @@ public class InstallAppActivity extends Activity {
         finish();
     }
 
+    private boolean isPackageInstalled(String packagename, PackageManager packageManager) {
+        try {
+            packageManager.getPackageInfo(packagename, 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
 }
