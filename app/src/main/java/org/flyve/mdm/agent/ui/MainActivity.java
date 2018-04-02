@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         if (type != null) {
             switch (type) {
                 case "DeployApp":
-                    menuItemSelected = 2;
+                    menuItemSelected = 1;
                     extra = "DeployApp";
                     break;
             }
@@ -231,25 +231,6 @@ public class MainActivity extends AppCompatActivity {
         map.put("img", "ic_info");
         arrDrawer.add(map);
 
-        // if easterEgg is active
-        if(cache.getEasterEgg()) {
-
-            // MQTT Configuration
-            map = new HashMap<>();
-            map.put("id", "3");
-            map.put("name", getResources().getString(R.string.drawer_mqtt_config));
-            map.put("img", "ic_config");
-            arrDrawer.add(map);
-
-            // Test Policies
-            map = new HashMap<>();
-            map.put("id", "6");
-            map.put("name", getResources().getString(R.string.drawer_test_policies));
-            map.put("img", "ic_config");
-            arrDrawer.add(map);
-
-        }
-
         // Activity
         map = new HashMap<>();
         map.put("id", "2");
@@ -285,6 +266,26 @@ public class MainActivity extends AppCompatActivity {
         map.put("name", getResources().getString(R.string.drawer_about));
         map.put("img", "ic_about");
         arrDrawer.add(map);
+
+        // if easterEgg is active
+        if(cache.getEasterEgg()) {
+
+            // MQTT Configuration
+            map = new HashMap<>();
+            map.put("id", "3");
+            map.put("name", getResources().getString(R.string.drawer_mqtt_config));
+            map.put("img", "ic_config");
+            arrDrawer.add(map);
+
+            // Test Policies
+            map = new HashMap<>();
+            map.put("id", "6");
+            map.put("name", getResources().getString(R.string.drawer_test_policies));
+            map.put("img", "ic_config");
+            arrDrawer.add(map);
+
+        }
+
 
         try {
             // lad adapter
