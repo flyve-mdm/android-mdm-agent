@@ -42,12 +42,10 @@ public class FragmentActivity extends Fragment {
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
+    private int selectTab = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        /**
-         *Inflate be_calendario_fragment and setup Views.
-         */
         View v = inflater.inflate(R.layout.fragment_activity, null);
 
         viewPager = v.findViewById(R.id.viewpager);
@@ -55,7 +53,16 @@ public class FragmentActivity extends Fragment {
 
         tabLayout = v.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        viewPager.setCurrentItem(selectTab);
+
         return v;
+    }
+
+    public void setup(String extra) {
+        if(extra.equalsIgnoreCase("DeployApp")) {
+            selectTab = 3;
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -113,6 +120,4 @@ public class FragmentActivity extends Fragment {
             return mFragmentTitleList.get(position);
         }
     }
-
-
 }

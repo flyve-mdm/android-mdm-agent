@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             mDrawerLayout.closeDrawers();
             selectedItem = arrDrawer.get(position);
-            loadFragment(selectedItem);
+            loadFragment(selectedItem, "");
             }
         });
 
@@ -112,7 +112,19 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerToggle.syncState();
 
-        loadListDrawer();
+        // check if come from notification like DeployApp
+        int menuItemSelected = 0;
+        String extra = "";
+        String type = getIntent().getStringExtra("From");
+        if (type != null) {
+            switch (type) {
+                case "DeployApp":
+                    menuItemSelected = 2;
+                    extra = "DeployApp";
+                    break;
+            }
+        }
+        loadListDrawer(menuItemSelected, extra);
 
         checkNotifications();
     }
@@ -143,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
      * Loads the Fragment
      * @param item
      */
-    private void loadFragment(HashMap<String, String> item) {
+    private void loadFragment(HashMap<String, String> item, String extra) {
 
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 
@@ -159,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
         // Activity
         if (item.get("id").equals("2")) {
             FragmentActivity f = new FragmentActivity();
+            f.setup(extra);
             fragmentTransaction.replace(R.id.containerView, f).commit();
             return;
         }
@@ -207,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Load the list drawer
      */
-    public void loadListDrawer() {
+    public void loadListDrawer(int menuItemSelected, String extra) {
 
         arrDrawer = new ArrayList<>();
 
@@ -279,8 +292,8 @@ public class MainActivity extends AppCompatActivity {
             lstDrawer.setAdapter(adapter);
 
             // Select Information on load //
-            selectedItem = arrDrawer.get(0);
-            loadFragment(selectedItem);
+            selectedItem = arrDrawer.get(menuItemSelected);
+            loadFragment(selectedItem, extra);
         } catch(Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
