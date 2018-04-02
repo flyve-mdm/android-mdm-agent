@@ -264,7 +264,7 @@ public class FragmentTestPolicies extends Fragment {
         btnEnablePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Helpers.sendToNotificationBar(getContext(), 1009, "MDM Agent", "Please create a new password", true, MainActivity.class);
+                Helpers.sendToNotificationBar(getContext(), 1009, "MDM Agent", "Please create a new password", true, MainActivity.class, "TestPolicies");
             }
         });
 
