@@ -126,7 +126,7 @@ public class PoliciesDeviceManager {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
 
-            Helpers.sendToNotificationBar(context, 1009, "MDM Agent","Please create a password", true, MainActivity.class);
+            Helpers.sendToNotificationBar(context, 1009, "MDM Agent","Please create a password", true, MainActivity.class, "PasswordPolicy");
         }
     }
 

@@ -198,13 +198,14 @@ public class Helpers {
 		}
 	}
 
-	public static void sendToNotificationBar(Context context, int id, String title, String message, boolean isPersistence, Class<?> cls) {
+	public static void sendToNotificationBar(Context context, int id, String title, String message, boolean isPersistence, Class<?> cls, String from) {
 		AppData cache = new AppData(context);
 		if(cache.getDisableNotification()) {
 			return;
 		}
 
 		Intent resultIntent = new Intent(context, cls);
+		resultIntent.putExtra("From", from);
 		resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		PendingIntent piResult = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -233,11 +234,16 @@ public class Helpers {
 		builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 
 		NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManager.notify(id, builder.build());
+
+		try {
+			notificationManager.notify(id, builder.build());
+		} catch (Exception ex) {
+			FlyveLog.e(ex.getMessage());
+		}
 	}
 
 	public static void sendToNotificationBar(Context context, String message) {
-		sendToNotificationBar(context, getIntID(), context.getResources().getString(R.string.app_name), message, false, MainActivity.class);
+		sendToNotificationBar(context, getIntID(), context.getResources().getString(R.string.app_name), message, false, MainActivity.class, "");
 	}
 
 	private final static AtomicInteger c = new AtomicInteger(0);

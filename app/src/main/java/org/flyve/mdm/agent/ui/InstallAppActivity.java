@@ -174,7 +174,7 @@ public class InstallAppActivity extends Activity {
                 notificationManager.cancel(Integer.parseInt(id));
 
             } else {
-                Helpers.sendToNotificationBar(InstallAppActivity.this, Integer.parseInt(id), getString(R.string.app_pending_to_install), appName, true, MainActivity.class);
+                Helpers.sendToNotificationBar(InstallAppActivity.this, Integer.parseInt(id), getString(R.string.app_pending_to_install), appName, true, MainActivity.class, "DeployApp");
             }
 
         } catch (Exception ex) {
