@@ -5,6 +5,7 @@ published: true
 title: Join our Community!
 permalink: howtos/contribute
 description: Be part of our awesome team
+category: contributing
 ---
 
 Welcome to our ever growing community! We are more than happy to accept external contributions to the project in the form of feedback, [translations](http://flyve.org/android-mdm-agent/howtos/contribute-translating), bug reports and even better, pull requests!
