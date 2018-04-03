@@ -5,6 +5,7 @@ published: true
 title: Installation
 permalink: howtos/installation
 description: Get it now
+category: user
 ---
 
 ## Download

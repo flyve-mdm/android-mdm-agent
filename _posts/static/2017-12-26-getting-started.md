@@ -5,6 +5,8 @@ published: true
 title: Getting Started
 permalink: howtos/getting-started
 description: Welcome to Flyve MDM
+category: user
+date: 2017-12-20
 ---
 Flyve MDM is a Mobile device management software that enables you to secure and manage all the mobile devices of your business or family.
 
