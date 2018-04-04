@@ -30,8 +30,27 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity (tableName = "mqtt")
 public class MQTT {
 
-    @PrimaryKey (autoGenerate = true)
-    public int id;
+    @PrimaryKey
+    @ColumnInfo (name = "id")
+    public int id = 1;
+
+    @ColumnInfo (name = "url")
+    public String url;
+
+    @ColumnInfo (name = "manifestVersion")
+    public String manifestVersion;
+
+    @ColumnInfo (name = "userToken")
+    public String userToken;
+
+    @ColumnInfo (name = "invitationToken")
+    public String invitationToken;
+
+    @ColumnInfo (name = "sessionToken")
+    public String sessionToken;
+
+    @ColumnInfo (name = "profileId")
+    public String profileId;
 
     @ColumnInfo (name = "agentId")
     public String agentId;
