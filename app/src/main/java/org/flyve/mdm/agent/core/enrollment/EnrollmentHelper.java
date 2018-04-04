@@ -30,6 +30,8 @@ import android.os.Looper;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.room.database.AppDataBase;
+import org.flyve.mdm.agent.room.entity.MQTT;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -65,6 +67,7 @@ public class EnrollmentHelper {
     private Context context;
     private MqttData cache;
     private Routes routes;
+    private MQTT mqtt;
 
     /**
      * This constructor loads the context of the current class
@@ -74,6 +77,7 @@ public class EnrollmentHelper {
         this.context = context;
         cache = new MqttData(context);
         routes = new Routes(context);
+        mqtt = new MQTT();
     }
 
     /**
@@ -137,7 +141,7 @@ public class EnrollmentHelper {
                     }
 
                     JSONObject jsonSession = new JSONObject(data);
-                    cache.setSessionToken(jsonSession.getString("session_token"));
+                    mqtt.sessionToken = jsonSession.getString("session_token");
 
                     // STEP 2 get full session information
                     HashMap<String, String> header = new HashMap();
@@ -162,7 +166,7 @@ public class EnrollmentHelper {
                     jsonSession = jsonFullSession.getJSONObject("session");
                     String profileId = jsonSession.getString("plugin_flyvemdm_guest_profiles_id");
 
-                    cache.setProfileId( profileId );
+                    mqtt.profileId = profileId;
 
                     // STEP 3 Activated the profile
                     final String dataActiveProfile = getSyncWebData(routes.changeActiveProfile(cache.getProfileId()), "POST", header);
@@ -227,7 +231,6 @@ public class EnrollmentHelper {
                         });
                     } else {
                         JSONObject jsonAgent = new JSONObject(data);
-                        cache.setAgentId(jsonAgent.getString("id"));
 
                         header = new HashMap();
                         header.put(SESSION_TOKEN,cache.getSessionToken());
@@ -253,18 +256,23 @@ public class EnrollmentHelper {
                         int mEntitiesId = jsonObject.getInt("entities_id");
                         int mFleetId = jsonObject.getInt("plugin_flyvemdm_fleets_id");
 
-                        // Agent information
-                        cache.setBroker( mbroker );
-                        cache.setPort( mport );
-                        cache.setTls( mssl );
-                        cache.setTopic( mtopic );
-                        cache.setMqttuser( Helpers.getDeviceSerial() );
-                        cache.setMqttpasswd( mpassword );
-                        cache.setCertificate( mcert );
-                        cache.setName( mNameEmail );
-                        cache.setComputersId( String.valueOf(mComputersId) );
-                        cache.setEntitiesId( String.valueOf(mEntitiesId) );
-                        cache.setPluginFlyvemdmFleetsId( String.valueOf(mFleetId) );
+                        AppDataBase dataBase = AppDataBase.getAppDatabase(context);
+
+                        mqtt.id = 1;
+                        mqtt.agentId = jsonAgent.getString("id");
+                        mqtt.broker = mbroker;
+                        mqtt.port = mport;
+                        mqtt.tls = mssl;
+                        mqtt.topic = mtopic;
+                        mqtt.mqttuser = Helpers.getDeviceSerial();
+                        mqtt.mqttpasswd = mpassword;
+                        mqtt.certificate = mcert;
+                        mqtt.name = mNameEmail;
+                        mqtt.computersId = String.valueOf(mComputersId);
+                        mqtt.entitiesId = String.valueOf(mEntitiesId);
+                        mqtt.pluginFlyvemdmFleetsId = String.valueOf(mFleetId);
+
+                        dataBase.MQTTDao().update(mqtt);
 
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
