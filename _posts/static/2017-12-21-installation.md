@@ -4,7 +4,7 @@ howtos: true
 published: true
 title: Installation
 permalink: howtos/installation
-description: Get it now
+description: Install it as System App!
 category: user
 ---
 
@@ -27,6 +27,8 @@ Or get the APK from the **Release** page on Github
 This simple guide asumes that you have some basic knowledge about command line, Android and ADB tool if not please feel free to review the ADB official information:
 
 [Android Debug Bridge](https://developer.android.com/studio/command-line/adb.html?hl=es-419)
+
+<img src="{{ '/images/picto-information.png' | absolute_url }}" alt="Good to know: " height="16px">  If the App is installed as System App it will be able to apply policies without requiring the user consent, like deploying apps and files directly to the device.
 
 #### Requirement:
 
