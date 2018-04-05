@@ -8,68 +8,127 @@ description: Welcome to Flyve MDM
 category: user
 date: 2017-12-20
 ---
+
 Flyve MDM is a Mobile device management software that enables you to secure and manage all the mobile devices of your business or family.
 
-The Android Agent works in conjuction with the [Web MDM Dashboard](http://flyve.org/web-mdm-dashboard/) and [Flyve MDM plugin](http://flyve.org/glpi-plugin/) for GLPI.
+## Introduction
 
-## 1. User invitation
+Here you'll learn everything you need to start using your brand new MDM Agent.
 
-In order to enroll the devices, they must be invited firts, either from the Web Dashboard or Flyve MDM plugin for GLPI, once the user receives the invitation link in his email account and opens it:
+The Android MDM Agent works in conjunction with the [Web MDM Dashboard](http://flyve.org/web-mdm-dashboard/) and [Flyve MDM plugin](http://flyve.org/glpi-plugin/) for GLPI.
 
-* If the MDM Agent is installed in the device, it will Open the link with the App.
+The Agent will take control of the Android devices applying the commands given through the Dashboard or plugin for GLPI.
 
-<img src="https://raw.githubusercontent.com/Naylin15/Screenshots/8a9c071d160f7a2cec5e9604dea8289662e6f176/Android-Agent/open-with.png" alt="Open with MDM Agent" width="300">
+## Index
+
+* [Enrollment](#1)
+* [Learn what is happening in Activity](#2)
+* [How to know if the policies are working with Feedback](#3)
+* [Configuration](#4)
+* [For the Administrators only, Easter Egg](#5)
+
+## <a name="1"></a> 1. Enrollment Process
+
+### 1.1. Invitation
+
+In order to enroll the devices, it is required to invite the user of the device. This can be done either from the Web Dashboard or Flyve MDM plugin for GLPI.
+
+Once the user receives the email with the invitation and clicks on the link or scan the QR code that comes within:
+
+* If the MDM Agent is [installed in the device](http://flyve.org/android-mdm-agent/howtos/installation), it will ask to Open with the App.
+
+<img src="https://raw.githubusercontent.com/Naylin15/Screenshots/master/android-mdm-agent/open-with.png" alt="Open with MDM Agent" width="300">
 
 <br>
 
 * If the MDM Agent isn't installed, it will take the user to the [PlayStore](https://play.google.com/store/apps/details?id=org.flyve.mdm.agent) to download it.
 
-## 2. Enrollment
+### 1.2. Permissions
 
-The Agent counts with an intuitive and simple User Interface through all the enrollment process, just fill the blanks and everything will be set.
-
-<br>
-
-<div>
-<img src="https://raw.githubusercontent.com/Naylin15/Screenshots/8a9c071d160f7a2cec5e9604dea8289662e6f176/Android-Agent/start-enrollment.png" alt="Start Enrollment" width="300">
-
-<img src="https://raw.githubusercontent.com/Naylin15/Screenshots/8a9c071d160f7a2cec5e9604dea8289662e6f176/Android-Agent/enrollment.png" alt="Enrollment" width="300">
-</div>
-
-## 3. Manage your fleet
-
-From there on the Agent will implement in the device the commands given from the Dashboard to:
-
-* Configure and deploy your fleet
-* Control Connectivity Access
-* Implement Security Features
-* Get Mobile Fleet Inventory
-* Applications management
-
-### MQ Telemetry Transport
-
-We implemented the MQTT protocol, which is useful for connections with remote locations since it was designed as an extremely lightweight message transport. It is also ideal for mobile applications because of its small size, low power usage, minimised data packets and efficient distribution of information to one or many receivers. Thanks to it, the Agent is capable of maintaining a connection with the backend.
+Once the enrollment starts, the Agent will ask you to Allow the permissions it requires to work properly.
 
 <br>
 
 <div>
-<img src="https://raw.githubusercontent.com/Naylin15/Screenshots/8a9c071d160f7a2cec5e9604dea8289662e6f176/Android-Agent/mqtt-info.png" alt="MQTT Log" width="300">
+<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/start-enrollment.png?raw=true" alt="Start Enrollment" width="300">
 
-<img src="https://raw.githubusercontent.com/Naylin15/Screenshots/8a9c071d160f7a2cec5e9604dea8289662e6f176/Android-Agent/mqtt-config.png" alt="MQTT Configuration" width="300">
+<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/permission.gif?raw=true" alt="Permission request" width="300">
 </div>
 
-### Information
+### 1.3. Inventory
 
-The Agent will display the relevant information for the user, it will show the Supervisor information and edit his own.
+The Agent must send an inventory of the device, you will be able to view and share it before continuing with the enrollment.
 
-<br>
+<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/inventory.gif?raw=true" alt="Inventory" width="300">
+
+### 1.4. User information
+
+Add your information to finish the enrollment.
+
+<img src="{{ '/images/picto-information.png' | absolute_url }}" alt="Good to know:" height="16px"> The email must be the same in which the invitation was sent.
+
+<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/enrollment.png?raw=true" alt="Fill the form" width="300">
+
+## Success!
+
+Your device is enrolled! You can now see its online status and navigate through the menu.
 
 <div>
-<img src="https://raw.githubusercontent.com/Naylin15/Screenshots/8a9c071d160f7a2cec5e9604dea8289662e6f176/Android-Agent/information.png" alt="Information" width="300">
-    
-<img src="https://raw.githubusercontent.com/Naylin15/Screenshots/8a9c071d160f7a2cec5e9604dea8289662e6f176/Android-Agent/supervisor-information.png" alt="Supervisor Information" width="300">
+<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/information.png?raw=true" alt="Information" width="300">
 
-<img src="https://raw.githubusercontent.com/Naylin15/Screenshots/8a9c071d160f7a2cec5e9604dea8289662e6f176/Android-Agent/user-information.png" alt="User Information" width="300">
+<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/menu.png?raw=true" alt="Menu" width="300">
 </div>
+
+## <a name="2"></a> 2. Activity
+
+In the Activity section you'll be able to see the different actions taken place in the MDM Agent:
+
+### 2.1 Log
+
+Here you'll be able to see the MQTT Messages.
+
+<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/activity-log.png?raw=true" alt="Log" width="300">
+
+#### MQTT (MQ Telemetry Transport)
+
+The MQTT is a Machine to Machine protocol we implemented, is useful for connections with remote locations due to its design as an extremely lightweight message transport. Ideal for mobile applications due to its small size, low power usage and efficient distribution of information to one or many receivers.
+
+Thanks to it, the Agent is capable of maintaining a connection with the backend.
+
+### 2.2 Connectivity & Policies
+
+Here you will be able to see which policies are assigned and the value it has.
+
+<div>
+<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/activity-connectivity.png?raw=true" alt="Connectivity" width="300">
+
+<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/activity-policies.png?raw=true" alt="Policies" width="300">
+</div>
+
+### 2.3 Applications
+
+All the applications deployed will be listed here.
+
+<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/activity-applications.png?raw=true" alt="Applications" width="300">
+
+## <a name="3"></a> 3. Feedback
+
+You can send a feedback about which policies are working perfectly on the device, additionally with a message.
+
+<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/feedback.gif?raw=true" alt="Applications" width="300">
+
+## <a name="4"></a> 4. Configuration
+
+Disable the notifications and the log data.
+
+<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/configuration.png?raw=true" alt="Applications" width="300">
+
+## <a name="5"></a> 5. Easter Egg
+
+To access special features touch ten times the Flyve MDM in the Information section.
+
+In MQTT Configuration you will be able to edit the parameters, we really hope you know what you are doing here since any change may cause the lost of connection with the backend.
+
+<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/easteregg.gif?raw=true" alt="Easter Egg" width="300">
 
 You can join the community in GitHub and participate to contribute, test and correct bugs: [Flyve MDM on GitHub](https://github.com/flyve-mdm)!
