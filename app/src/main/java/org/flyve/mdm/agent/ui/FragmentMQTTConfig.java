@@ -33,6 +33,8 @@ import android.widget.EditText;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.room.database.AppDataBase;
+import org.flyve.mdm.agent.room.entity.MQTT;
 import org.flyve.mdm.agent.utils.Helpers;
 
 public class FragmentMQTTConfig extends Fragment {
@@ -81,11 +83,18 @@ public class FragmentMQTTConfig extends Fragment {
             @Override
             public void onClick(View v) {
 
-                cache.setBroker( editBroker.getText().toString() );
-                cache.setPort( editPort.getText().toString() );
-                cache.setMqttuser( editUser.getText().toString() );
-                cache.setMqttpasswd( editPassword.getText().toString() );
-                cache.setTopic( editTopic.getText().toString() );
+                AppDataBase dataBase = AppDataBase.getAppDatabase(FragmentMQTTConfig.this.getContext());
+
+                MQTT mqtt = new MQTT();
+
+                mqtt.id = 1;
+                mqtt.broker = editBroker.getText().toString();
+                mqtt.port = editPort.getText().toString();
+                mqtt.mqttuser = editUser.getText().toString();
+                mqtt.mqttpasswd = editPassword.getText().toString();
+                mqtt.topic = editTopic.getText().toString();
+
+                dataBase.MQTTDao().update(mqtt);
 
                 // restart MQTT connection with this new parameters
                 ((MainActivity)FragmentMQTTConfig.this.getActivity()).globalStartMQTT();
