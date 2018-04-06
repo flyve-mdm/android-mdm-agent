@@ -68,6 +68,7 @@ public class EnrollmentHelper {
     private MqttData cache;
     private Routes routes;
     private MQTT mqtt;
+    private AppDataBase dataBase;
 
     /**
      * This constructor loads the context of the current class
@@ -78,6 +79,7 @@ public class EnrollmentHelper {
         cache = new MqttData(context);
         routes = new Routes(context);
         mqtt = new MQTT();
+        dataBase = AppDataBase.getAppDatabase(context);
     }
 
     /**
@@ -145,7 +147,7 @@ public class EnrollmentHelper {
 
                     // STEP 2 get full session information
                     HashMap<String, String> header = new HashMap();
-                    header.put(SESSION_TOKEN,cache.getSessionToken());
+                    header.put(SESSION_TOKEN, mqtt.sessionToken);
                     header.put(ACCEPT,APPLICATION_JSON);
                     header.put(CONTENT_TYPE,APPLICATION_JSON + ";" + CHARSET);
                     header.put(USER_AGENT,FLYVE_MDM);
@@ -169,7 +171,7 @@ public class EnrollmentHelper {
                     mqtt.profileId = profileId;
 
                     // STEP 3 Activated the profile
-                    final String dataActiveProfile = getSyncWebData(routes.changeActiveProfile(cache.getProfileId()), "POST", header);
+                    final String dataActiveProfile = getSyncWebData(routes.changeActiveProfile(mqtt.profileId), "POST", header);
                     final String errorActiveProfile = manageError(dataActiveProfile);
                     if(!errorActiveProfile.equals("")) {
                         EnrollmentHelper.runOnUI(new Runnable() {
@@ -181,10 +183,12 @@ public class EnrollmentHelper {
                         // Success
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
-                                callback.onSuccess(cache.getSessionToken());
+                                callback.onSuccess(mqtt.sessionToken);
                             }
                         });
                     }
+
+                    dataBase.MQTTDao().update(mqtt);
                 } catch (final Exception ex) {
                     FlyveLog.e(ex.getMessage());
                     EnrollmentHelper.runOnUI(new Runnable() {
@@ -210,7 +214,7 @@ public class EnrollmentHelper {
             {
                 try {
                     HashMap<String, String> header = new HashMap();
-                    header.put(SESSION_TOKEN,cache.getSessionToken());
+                    header.put(SESSION_TOKEN, cache.getSessionToken());
 
                     header.put(ACCEPT,APPLICATION_JSON);
                     header.put(CONTENT_TYPE,APPLICATION_JSON + ";" + CHARSET);
@@ -233,7 +237,7 @@ public class EnrollmentHelper {
                         JSONObject jsonAgent = new JSONObject(data);
 
                         header = new HashMap();
-                        header.put(SESSION_TOKEN,cache.getSessionToken());
+                        header.put(SESSION_TOKEN, cache.getSessionToken());
                         header.put(ACCEPT,APPLICATION_JSON);
                         header.put(CONTENT_TYPE,APPLICATION_JSON + ";" + CHARSET);
                         header.put(USER_AGENT,FLYVE_MDM);
@@ -256,9 +260,6 @@ public class EnrollmentHelper {
                         int mEntitiesId = jsonObject.getInt("entities_id");
                         int mFleetId = jsonObject.getInt("plugin_flyvemdm_fleets_id");
 
-                        AppDataBase dataBase = AppDataBase.getAppDatabase(context);
-
-                        mqtt.id = 1;
                         mqtt.agentId = jsonAgent.getString("id");
                         mqtt.broker = mbroker;
                         mqtt.port = mport;
