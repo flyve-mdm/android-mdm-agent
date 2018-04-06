@@ -152,12 +152,20 @@ public class DeeplinkModel implements Deeplink.Model {
     @Override
     public void saveMQTTConfig(Context context, String url, String userToken, String invitationToken) {
         AppDataBase dataBase = AppDataBase.getAppDatabase(context);
-        MQTT mqtt = new MQTT();
-        mqtt.id = 1;
-        mqtt.url = url;
-        mqtt.userToken = userToken;
-        mqtt.invitationToken = invitationToken;
-        dataBase.MQTTDao().insert(mqtt);
+        if(dataBase.MQTTDao().loadAll().isEmpty()) {
+            MQTT mqtt = new MQTT();
+            mqtt.id = 1;
+            mqtt.url = url;
+            mqtt.userToken = userToken;
+            mqtt.invitationToken = invitationToken;
+            dataBase.MQTTDao().insert(mqtt);
+        } else {
+            MQTT mqtt = new MQTT();
+            mqtt.url = url;
+            mqtt.userToken = userToken;
+            mqtt.invitationToken = invitationToken;
+            dataBase.MQTTDao().update(mqtt);
+        }
     }
 
     @Override
