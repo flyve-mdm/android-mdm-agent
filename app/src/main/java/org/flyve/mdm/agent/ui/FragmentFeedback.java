@@ -68,41 +68,41 @@ public class FragmentFeedback extends Fragment {
         map.put("Lock",false);
         map.put("Wipe",false);
         map.put("Unenroll",false);
-        map.put("Password enabled", false);
+        map.put("Password enabled", cache.getPasswordEnabled());
         map.put("Password quality", !cache.getPasswordQuality().isEmpty() );
-        map.put("Password minimum length", !cache.getPasswordLength().isEmpty() );
-        map.put("Password minimum lower case", !cache.getPasswordMinimumLowerCase().isEmpty() );
-        map.put("Password minimum upper case", !cache.getPasswordMinimumUpperCase().isEmpty() );
-        map.put("Password minimum non letter",!cache.getPasswordMinimumNonLetter().isEmpty() );
-        map.put("Password minimum letters", !cache.getPasswordMinimumLetters().isEmpty() );
-        map.put("Password minimum numeric", !cache.getPasswordMinimumNumeric().isEmpty() );
-        map.put("Password minimum symbols", !cache.getPasswordMinimumSymbols().isEmpty() );
-        map.put("Maximum failed passwords for wipe", !cache.getMaximumFailedPasswordsForWipe().isEmpty() );
-        map.put("Maximum time to lock", !cache.getMaximumTimeToLock().isEmpty());
-        map.put("Storage encryption", !cache.getStorageEncryptionDevice());
-        map.put("Disable camera", !cache.getDisableCamera());
-        map.put("Disable bluetooth", !cache.getConnectivityBluetoothDisable());
+        map.put("Password minimum length", moreThanCero(cache.getPasswordMinimumLength()) );
+        map.put("Password minimum lower case", moreThanCero(cache.getPasswordMinimumLowerCase()) );
+        map.put("Password minimum upper case", moreThanCero(cache.getPasswordMinimumUpperCase()) );
+        map.put("Password minimum non letter",moreThanCero(cache.getPasswordMinimumNonLetter()) );
+        map.put("Password minimum letters", moreThanCero(cache.getPasswordMinimumLetters()) );
+        map.put("Password minimum numeric", moreThanCero(cache.getPasswordMinimumNumeric()) );
+        map.put("Password minimum symbols", moreThanCero(cache.getPasswordMinimumSymbols()) );
+        map.put("Maximum failed passwords for wipe", moreThanCero(cache.getMaximumFailedPasswordsForWipe()) );
+        map.put("Maximum time to lock", moreThanCero(cache.getMaximumTimeToLock()));
+        map.put("Storage encryption", cache.getStorageEncryption());
+        map.put("Disable camera", cache.getDisableCamera());
+        map.put("Disable bluetooth", cache.getDisableBluetooth());
         map.put("Deploy app", false);
         map.put("Remove app",false);
         map.put("Deploy file",true);
         map.put("Remove file",false);
-        map.put("Disable screen capture", false);
-        map.put("Disable airplane mode",!cache.getConnectivityAirplaneModeDisable());
-        map.put("Disable GPS", !cache.getConnectivityGPSDisable());
-        map.put("Disable Hostpot/Tethering", !cache.getConnectivityHostpotTetheringDisable());
-        map.put("Disable roaming", !cache.getConnectivityRoamingDisable());
-        map.put("Disable wifi", !cache.getConnectivityWifiDisable());
-        map.put("Use TLS", false);
-        map.put("Disable mobile line", !cache.getConnectivityMobileLineDisable());
-        map.put("Disable NFC", !cache.getConnectivityNFCDisable());
-        map.put("Disable statusbar", false);
+        map.put("Disable screen capture", cache.getDisableScreenCapture());
+        map.put("Disable airplane mode", cache.getDisableAirplaneMode());
+        map.put("Disable GPS", cache.getDisableGPS());
+        map.put("Disable Hostpot/Tethering", cache.getDisableHostpotTethering());
+        map.put("Disable roaming", cache.getDisableRoaming());
+        map.put("Disable wifi", cache.getDisableWifi());
+        map.put("Use TLS", cache.getUseTLS());
+        map.put("Disable mobile line", cache.getDisableMobileLine());
+        map.put("Disable NFC", cache.getDisableNFC());
+        map.put("Disable statusbar", cache.getDisableStatusbar());
 //        map.put("ResetPassword",false);
-        map.put("Disable Usb Mtp", !cache.getConnectivityMTPUsbFileTransferProtocolsDisable() );
-        map.put("Disable Usb Ptp", !cache.getConnectivityPTPUsbFileTransferProtocolsDisable() );
-        map.put("Disable Usb Adb", !cache.getConnectivityADBUsbFileTransferProtocolsDisable() );
-        map.put("Disable speakerphone", !cache.getdisableSpeakerphone());
+        map.put("Disable Usb Mtp", cache.getDisableUsbMtp() );
+        map.put("Disable Usb Ptp", cache.getDisableUsbPtp() );
+        map.put("Disable Usb Adb", cache.getDisableUsbAdb() );
+        map.put("Disable speakerphone", cache.getDisableSpeakerphone());
 //        map.put("DisableSmsMms",false);
-        map.put("Disable create VPN Profiles", false);
+        map.put("Disable create VPN Profiles", cache.getDisableVPN());
 
         LinearLayout ln = v.findViewById(R.id.lnFields);
         editMessage = v.findViewById(R.id.editMessage);
@@ -119,6 +119,10 @@ public class FragmentFeedback extends Fragment {
         });
 
         return v;
+    }
+
+    private Boolean moreThanCero(int value) {
+        return (value>0);
     }
 
     private JSONObject createFeedbackJSON(Switch[] sw){
