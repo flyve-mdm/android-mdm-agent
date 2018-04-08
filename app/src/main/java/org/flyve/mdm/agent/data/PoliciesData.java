@@ -1,7 +1,12 @@
+package org.flyve.mdm.agent.data;
+
 /*
- * Copyright Teclib. All rights reserved.
+ *   Copyright © 2018 Teclib. All rights reserved.
  *
- * Flyve MDM is a mobile device management software.
+ *   This file is part of flyve-mdm-android
+ *
+ * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,350 +19,337 @@
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
  * @author    Rafael Hernandez
- * @copyright Copyright Teclib. All rights reserved.
+ * @date      8/4/18
+ * @copyright Copyright © 2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/android-mdm-agent
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.data;
-
 import android.content.Context;
 
-public class PoliciesData extends LocalStorage {
+import org.flyve.inventory.categories.Usb;
+import org.flyve.mdm.agent.room.database.AppDataBase;
+import org.flyve.mdm.agent.room.entity.Policies;
 
-    /**
-     * Constructor
-     *
-     * @param context
-     */
+import java.util.List;
+
+public class PoliciesData {
+
+    private static final String PASSWORD_ENABLED = "passwordEnabled";
+    private static final String PASSWORD_QUALITY = "passwordQuality";
+    private static final String PASSWORD_MINIMUM_LENGTH = "passwordMinimumLength";
+    private static final String PASSWORD_MINIMUM_LOWER_CASE = "passwordMinimumLowerCase";
+    private static final String PASSWORD_MINIMUM_UPPER_CASE = "passwordMinimumUpperCase";
+    private static final String PASSWORD_MINIMUM_NON_LETTER = "passwordMinimumNonLetter";
+    private static final String PASSWORD_MINIMUM_LETTERS = "passwordMinimumLetters";
+    private static final String PASSWORD_MINIMUM_NUMERIC = "passwordMinimumNumeric";
+    private static final String PASSWORD_MINIMUM_SYMBOLS = "passwordMinimumSymbols";
+    private static final String MAXIMUM_FAILED_PASSWORDS_FOR_WIPE = "maximumFailedPasswordsForWipe";
+    private static final String MAXIMUM_TIME_TO_LOCK = "maximumTimeToLock";
+    private static final String STORAGE_ENCRYPTION = "storageEncryption";
+    private static final String DISABLE_CAMERA = "disableCamera";
+    private static final String DISABLE_BLUETOOTH = "disableBluetooth";
+    private static final String DISABLE_SCREEN_CAPTURE = "disableScreenCapture";
+    private static final String DISABLE_AIRPLANE_MODE = "disableAirplaneMode";
+    private static final String DISABLE_GPS = "disableGPS";
+    private static final String DISABLE_HOSTPOT_TETHERING = "disableHostpotTethering";
+    private static final String DISABLE_ROAMING = "disableRoaming";
+    private static final String DISABLE_WIFI = "disableWifi";
+    private static final String USE_TLS = "useTLS";
+    private static final String DISABLE_MOBILE_LINE = "disableMobileLine";
+    private static final String DISABLE_NFC = "disableNFC";
+    private static final String DISABLE_STATUSBAR = "disableStatusbar";
+    private static final String DISABLE_USB_MTP = "disableUsbMtp";
+    private static final String DISABLE_USB_PTP = "disableUsbPtp";
+    private static final String DISABLE_USB_ADB = "disableUsbAdb";
+    private static final String DISABLE_SPEAKER_PHONE = "disableSpeakerphone";
+    private static final String DISABLE_VPN = "disableVPN";
+    private static final String DISABLE_SMS_MMS = "disableSmsMms";
+
+    private AppDataBase dataBase;
+
     public PoliciesData(Context context) {
-        super(context);
+        dataBase = AppDataBase.getAppDatabase(context);
     }
 
-    /**
-     * Set the state of the Connectivity of the Wifi
-     * @param disable the state of the connectivity, true if disabled, false otherwise
-     */
-    public void setConnectivityWifiDisable(boolean disable) {
-        setData("ConnectivityWifiDisable", String.valueOf(disable));
+    public boolean getPasswordEnabled() {
+        return getBooleanValue(PASSWORD_ENABLED);
     }
 
-    /**
-     * Get the state of the Connectivity of the Wifi
-     * @return boolean the state of the connectivity, true if disabled, false otherwise
-     */
-    public boolean getConnectivityWifiDisable() {
-        return Boolean.valueOf(getData("ConnectivityWifiDisable"));
-    }
-
-    /**
-     * Set the state of the Connectivity of the Bluetooth
-     * @param disable the state of the connectivity, true if disabled, false otherwise
-     */
-    public void setConnectivityBluetoothDisable(boolean disable) {
-        setData("ConnectivityBluetoothDisable", String.valueOf(disable));
-    }
-
-    /**
-     * Get the state of the Connectivity of the Bluetooth
-     * @return boolean the state of the connectivity, true if disabled, false otherwise
-     */
-    public boolean getConnectivityBluetoothDisable() {
-        return Boolean.valueOf(getData("ConnectivityBluetoothDisable"));
-    }
-
-    /**
-     * Set the state of the Connectivity of the GPS
-     * @param disable the state of the connectivity, true if disabled, false otherwise
-     */
-    public void setConnectivityGPSDisable(boolean disable) {
-        setData("ConnectivityGPSDisable", String.valueOf(disable));
-    }
-
-    /**
-     * Set the state of the Roaming enable / disable
-     * @param disable
-     */
-    public void setConnectivityRoamingDisable(boolean disable) {
-        setData("ConnectivityRoamingDisable", String.valueOf(disable));
-    }
-
-    /**
-     * Set the state of the Airplane mode disable
-     * @param disable
-     */
-    public void setConnectivityAirplaneModeDisable(boolean disable) {
-        setData("ConnectivityAirplaneModeDisable", String.valueOf(disable));
-    }
-
-    /**
-     * Set the state of the Radio FM enable / disable
-     * @param disable
-     */
-    public void setConnectivityRadioFMDisable(boolean disable) {
-        setData("ConnectivityRadioFMDisable", String.valueOf(disable));
-    }
-
-    /**
-     * Set the state of the Mobile Line enable / disable
-     * @param disable
-     */
-    public void setConnectivityMobileLineDisable(boolean disable) {
-        setData("ConnectivityMobileLineDisable", String.valueOf(disable));
-    }
-
-    /**
-     * Set the state of the NFC enable / disable
-     * @param disable
-     */
-    public void setConnectivityNFCDisable(boolean disable) {
-        setData("ConnectivityNFCDisable", String.valueOf(disable));
-    }
-
-    /**
-     * Set the state of the Hostpot Tethering  enable / disable
-     * @param disable
-     */
-    public void setConnectivityHostpotTetheringDisable(boolean disable) {
-        setData("ConnectivityHostpotTetheringDisable", String.valueOf(disable));
-    }
-
-    /**
-     * Set SMS / MMS  enable / disable
-     * @param disable
-     */
-    public void setConnectivitySmsMmsDisable(boolean disable) {
-        setData("ConnectivitySmsMmsDisable", String.valueOf(disable));
-    }
-
-    /**
-     * Set Usb File Transfer Protocols  enable / disable
-     * @param disable
-     */
-    public void setConnectivityUsbFileTransferProtocolsDisable(boolean disable) {
-        setData("ConnectivityUsbFileTransferProtocolsDisable", String.valueOf(disable));
-    }
-
-    public void setConnectivityADBUsbFileTransferProtocolsDisable(boolean disable) {
-        setData("ConnectivityADBUsbFileTransferProtocolsDisable", String.valueOf(disable));
-    }
-
-    public void setConnectivityPTPUsbFileTransferProtocolsDisable(boolean disable) {
-        setData("ConnectivityPTPUsbFileTransferProtocolsDisable", String.valueOf(disable));
-    }
-
-    public void setConnectivityMTPUsbFileTransferProtocolsDisable(boolean disable) {
-        setData("ConnectivityMTPUsbFileTransferProtocolsDisable", String.valueOf(disable));
-    }
-
-    public void setdisableSpeakerphone(boolean disable) {
-        setData("ConnectivityDisableSpeakerphone", String.valueOf(disable));
-    }
-
-    public Boolean getdisableSpeakerphone() {
-        return Boolean.valueOf(getData("ConnectivityDisableSpeakerphone"));
-    }
-
-    public Boolean getConnectivityADBUsbFileTransferProtocolsDisable() {
-        return Boolean.valueOf(getData("ConnectivityADBUsbFileTransferProtocolsDisable"));
-    }
-
-    public Boolean getConnectivityPTPUsbFileTransferProtocolsDisable() {
-        return Boolean.valueOf(getData("ConnectivityPTPUsbFileTransferProtocolsDisable"));
-    }
-
-    public Boolean getConnectivityMTPUsbFileTransferProtocolsDisable() {
-        return Boolean.valueOf(getData("ConnectivityMTPUsbFileTransferProtocolsDisable"));
-    }
-
-    /**
-     * Get the state of the Connectivity of the GPS
-     * @return boolean the state of the connectivity, true if disabled, false otherwise
-     */
-    public boolean getConnectivityGPSDisable() {
-        return Boolean.valueOf(getData("ConnectivityGPSDisable"));
-    }
-
-    public String getWifi() {
-        return getData("ConnectivityWifiDisable");
-    }
-
-    public String getRoaming() {
-        return getData("ConnectivityRoamingDisable");
-    }
-
-    public String getNFC() {
-        return getData("ConnectivityNFCDisable");
-    }
-
-    public String getMobileLine() {
-        return getData("ConnectivityMobileLineDisable");
-    }
-
-    public String getHostpotTethering() {
-        return getData("ConnectivityHostpotTetheringDisable");
-    }
-
-    public String getUsbFileTransferProtocols() {
-        return getData("ConnectivityUsbFileTransferProtocolsDisable");
-    }
-
-    public String getAirplaneMode() {
-        return getData("ConnectivityAirplaneModeDisable");
-    }
-
-    /**
-     * Get the state of the Roaming enable / disable
-     */
-    public boolean getConnectivityRoamingDisable() {
-        return Boolean.valueOf(getData("ConnectivityRoamingDisable"));
-    }
-
-    /**
-     * Get the state of the Radio FM enable / disable
-     */
-    public boolean getConnectivityRadioFMDisable() {
-        return Boolean.valueOf(getData("ConnectivityRadioFMDisable"));
-    }
-
-    /**
-     * Get the state of the Mobile Line enable / disable
-     */
-    public boolean getConnectivityMobileLineDisable() {
-        return Boolean.valueOf(getData("ConnectivityMobileLineDisable"));
-    }
-
-    /**
-     * Get the state of the NFC enable / disable
-     */
-    public boolean getConnectivityNFCDisable() {
-        return Boolean.valueOf(getData("ConnectivityNFCDisable"));
-    }
-
-    /**
-     * Get the state of the Hostpot Tethering  enable / disable
-     */
-    public boolean getConnectivityHostpotTetheringDisable() {
-        return Boolean.valueOf(getData("ConnectivityHostpotTetheringDisable"));
-    }
-
-    /**
-     * Get the state of the Hostpot Tethering  enable / disable
-     */
-    public boolean getConnectivityUsbFileTransferProtocolsDisable() {
-        return Boolean.valueOf(getData("ConnectivityUsbFileTransferProtocolsDisable"));
-    }
-
-    /**
-     * Get the state of the Airplane Mode  enable / disable
-     */
-    public boolean getConnectivityAirplaneModeDisable() {
-        return Boolean.valueOf(getData("ConnectivityAirplaneModeDisable"));
-    }
-
-    /**
-     * Get the state of SMS / MMS  enable / disable
-     */
-    public boolean getConnectivitySmsMmsDisable() {
-        return Boolean.valueOf(getData("ConnectivitySmsMmsDisable"));
-    }
-
-    public void setStorageEncryptionDevice(boolean enable) {
-        setData("StorageEncryptionDevice", String.valueOf(enable));
-    }
-
-    public boolean getStorageEncryptionDevice() {
-        return Boolean.valueOf(getData("StorageEncryptionDevice"));
-    }
-
-    public void setDisableCamera(boolean enable) {
-        setData("DisableCamera", String.valueOf(enable));
-    }
-
-    public boolean getDisableCamera() {
-        return Boolean.valueOf(getData("DisableCamera"));
-    }
-
-    public void setPasswordLength(String value) {
-        setData("PasswordLength", value);
-    }
-
-    public String getPasswordLength() {
-        return getData("PasswordLength");
-    }
-
-    public void setPasswordQuality(String value) {
-        setData("PasswordQuality", value);
+    public void setPasswordEnabled(Boolean enable) {
+        setBooleanValue(PASSWORD_ENABLED, enable);
     }
 
     public String getPasswordQuality() {
-        return getData("PasswordQuality");
+        return getStringValue(PASSWORD_QUALITY);
     }
 
-    public void setPasswordMinimumLetters(String value) {
-        setData("PasswordMinimumLetters", value);
+    public void setPasswordQuality(String value) {
+        setStringValue(PASSWORD_QUALITY, value);
     }
 
-    public String getPasswordMinimumLetters() {
-        return getData("PasswordMinimumLetters");
+    public int getPasswordMinimumLength() {
+        return getIntValue(PASSWORD_MINIMUM_LENGTH);
     }
 
-    public void setPasswordMinimumLowerCase(String value) {
-        setData("PasswordMinimumLowerCase", value);
+    public void setPasswordMinimumLength(int value) {
+        setIntValue(PASSWORD_MINIMUM_LENGTH, value);
     }
 
-    public String getPasswordMinimumLowerCase() {
-        return getData("PasswordMinimumLowerCase");
+    public int getPasswordMinimumLowerCase() {
+        return getIntValue(PASSWORD_MINIMUM_LOWER_CASE);
     }
 
-    public void setPasswordMinimumUpperCase(String value) {
-        setData("PasswordMinimumUpperCase", value);
+    public void setPasswordMinimumLowerCase(int value) {
+        setIntValue(PASSWORD_MINIMUM_LOWER_CASE, value);
     }
 
-    public String getPasswordMinimumUpperCase() {
-        return getData("PasswordMinimumUpperCase");
+    public int getPasswordMinimumUpperCase() {
+        return getIntValue(PASSWORD_MINIMUM_UPPER_CASE);
     }
 
-    public void setPasswordMinimumNonLetter(String value) {
-        setData("PasswordMinimumNonLetter", value);
+    public void setPasswordMinimumUpperCase(int value) {
+        setIntValue(PASSWORD_MINIMUM_UPPER_CASE, value);
     }
 
-    public String getPasswordMinimumNonLetter() {
-        return getData("PasswordMinimumNonLetter");
+    public int getPasswordMinimumNonLetter() {
+        return getIntValue(PASSWORD_MINIMUM_NON_LETTER);
     }
 
-    public void setPasswordMinimumNumeric(String value) {
-        setData("PasswordMinimumNumeric", value);
+    public void setPasswordMinimumNonLetter(int value) {
+        setIntValue(PASSWORD_MINIMUM_NON_LETTER, value);
     }
 
-    public String getPasswordMinimumNumeric() {
-        return getData("PasswordMinimumNumeric");
+    public int getPasswordMinimumLetters() {
+        return getIntValue(PASSWORD_MINIMUM_LETTERS);
     }
 
-    public void setPasswordMinimumSymbols(String value) {
-        setData("PasswordMinimumSymbols", value);
+    public void setPasswordMinimumLetters(int value) {
+        setIntValue(PASSWORD_MINIMUM_LETTERS, value);
     }
 
-    public String getPasswordMinimumSymbols() {
-        return getData("PasswordMinimumSymbols");
+    public int getPasswordMinimumNumeric() {
+        return getIntValue(PASSWORD_MINIMUM_NUMERIC);
     }
 
-    public void setMaximumFailedPasswordsForWipe(String value) {
-        setData("MaximumFailedPasswordsForWipe", value);
+    public void setPasswordMinimumNumeric(int value) {
+        setIntValue(PASSWORD_MINIMUM_NUMERIC, value);
     }
 
-    public String getMaximumFailedPasswordsForWipe() {
-        return getData("MaximumFailedPasswordsForWipe");
+    public int getPasswordMinimumSymbols() {
+        return getIntValue(PASSWORD_MINIMUM_SYMBOLS);
     }
 
-    public void setMaximumTimeToLock(String value) {
-        setData("MaximumTimeToLock", value);
+    public void setPasswordMinimumSymbols(int value) {
+        setIntValue(PASSWORD_MINIMUM_SYMBOLS, value);
     }
 
-    public String getMaximumTimeToLock() {
-        return getData("MaximumTimeToLock");
+    public int getMaximumFailedPasswordsForWipe() {
+        return getIntValue(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE);
+    }
+
+    public void setMaximumFailedPasswordsForWipe(int value) {
+        setIntValue(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE, value);
+    }
+
+    public int getMaximumTimeToLock() {
+        return getIntValue(MAXIMUM_TIME_TO_LOCK);
+    }
+
+    public void setMaximumTimeToLock(int value) {
+        setIntValue(MAXIMUM_TIME_TO_LOCK, value);
+    }
+
+    public boolean getStorageEncryption() {
+        return getBooleanValue(STORAGE_ENCRYPTION);
+    }
+
+    public void setStorageEncryption(boolean value) {
+        setBooleanValue(STORAGE_ENCRYPTION, value);
+    }
+
+    public boolean getDisableCamera() {
+        return getBooleanValue(DISABLE_CAMERA);
+    }
+
+    public void setDisableCamera(boolean value) {
+        setBooleanValue(DISABLE_CAMERA, value);
+    }
+
+    public boolean getDisableBluetooth() {
+        return getBooleanValue(DISABLE_BLUETOOTH);
+    }
+
+    public void setDisableBluetooth(boolean value) {
+        setBooleanValue(DISABLE_BLUETOOTH, value);
+    }
+
+    public boolean getDisableScreenCapture() {
+        return getBooleanValue(DISABLE_SCREEN_CAPTURE);
+    }
+
+    public void setDisableScreenCapture(boolean value) {
+        setBooleanValue(DISABLE_SCREEN_CAPTURE, value);
+    }
+
+    public boolean getDisableAirplaneMode() {
+        return getBooleanValue(DISABLE_AIRPLANE_MODE);
+    }
+
+    public void setDisableAirplaneMode(boolean value) {
+        setBooleanValue(DISABLE_AIRPLANE_MODE, value);
+    }
+
+    public boolean getDisableGPS() {
+        return getBooleanValue(DISABLE_GPS);
+    }
+
+    public void setDisableGPS(boolean value) {
+        setBooleanValue(DISABLE_GPS, value);
+    }
+
+    public boolean getDisableHostpotTethering() {
+        return getBooleanValue(DISABLE_HOSTPOT_TETHERING);
+    }
+
+    public void setDisableHostpotTethering(boolean value) {
+        setBooleanValue(DISABLE_HOSTPOT_TETHERING, value);
+    }
+
+    public boolean getDisableRoaming() {
+        return getBooleanValue(DISABLE_ROAMING);
+    }
+
+    public void setDisableRoaming(boolean value) {
+        setBooleanValue(DISABLE_ROAMING, value);
+    }
+
+    public boolean getDisableWifi() {
+        return getBooleanValue(DISABLE_WIFI);
+    }
+
+    public void setDisableWifi(boolean value) {
+        setBooleanValue(DISABLE_WIFI, value);
+    }
+
+    public boolean getUseTLS() {
+        return getBooleanValue(USE_TLS);
+    }
+
+    public void setUseTLS(boolean value) {
+        setBooleanValue(USE_TLS, value);
+    }
+
+    public boolean getDisableMobileLine() {
+        return getBooleanValue(DISABLE_MOBILE_LINE);
+    }
+
+    public void setDisableMobileLine(boolean value) {
+        setBooleanValue(DISABLE_MOBILE_LINE, value);
+    }
+
+    public boolean getDisableNFC() {
+        return getBooleanValue(DISABLE_NFC);
+    }
+
+    public void setDisableNFC(boolean value) {
+        setBooleanValue(DISABLE_NFC, value);
+    }
+
+    public boolean getDisableStatusbar() {
+        return getBooleanValue(DISABLE_STATUSBAR);
+    }
+
+    public void setDisableStatusbar(boolean value) {
+        setBooleanValue(DISABLE_STATUSBAR, value);
+    }
+
+    public boolean getDisableUsbMtp() {
+        return getBooleanValue(DISABLE_USB_MTP);
+    }
+
+    public void setDisableUsbMtp(boolean value) {
+        setBooleanValue(DISABLE_USB_MTP, value);
+    }
+
+    public boolean getDisableUsbPtp() {
+        return getBooleanValue(DISABLE_USB_PTP);
+    }
+
+    public void setDisableUsbPtp(boolean value) {
+        setBooleanValue(DISABLE_USB_PTP, value);
+    }
+
+    public boolean getDisableUsbAdb() {
+        return getBooleanValue(DISABLE_USB_ADB);
+    }
+
+    public void setDisableUsbAdb(boolean value) {
+        setBooleanValue(DISABLE_USB_ADB, value);
+    }
+
+    public boolean getDisableSpeakerphone() {
+        return getBooleanValue(DISABLE_SPEAKER_PHONE);
+    }
+
+    public void setDisableSpeakerphone(boolean value) {
+        setBooleanValue(DISABLE_SPEAKER_PHONE, value);
+    }
+
+    public boolean getDisableVPN() {
+        return getBooleanValue(DISABLE_VPN);
+    }
+
+    public void setDisableVPN(boolean value) {
+        setBooleanValue(DISABLE_VPN, value);
+    }
+
+    public boolean getDisableSmsMms() {
+        return getBooleanValue(DISABLE_SMS_MMS);
+    }
+
+    public void setDisableSmsMms(boolean value) {
+        setBooleanValue(DISABLE_SMS_MMS, value);
+    }
+
+    private String getStringValue(String policyName) {
+        List<Policies> arrPolicies = dataBase.PoliciesDao().getByPolicyName(policyName);
+        if(!arrPolicies.isEmpty()) {
+            return arrPolicies.get(0).value;
+        } else {
+            return "";
+        }
+    }
+
+    private void setStringValue(String policyName, String value) {
+        if(dataBase.PoliciesDao().getByPolicyName(policyName).isEmpty()) {
+            Policies policies = new Policies();
+            policies.policyName = policyName;
+            policies.value = value;
+            dataBase.PoliciesDao().insert(policies);
+        } else {
+            Policies policies = dataBase.PoliciesDao().getByPolicyName(policyName).get(0);
+            policies.value = value;
+            dataBase.PoliciesDao().update(policies);
+        }
+    }
+
+    private boolean getBooleanValue(String policyName) {
+        return Boolean.valueOf(getStringValue(policyName));
+    }
+
+    private void setBooleanValue(String policyName, Boolean enable) {
+        setStringValue(policyName, String.valueOf(enable));
+    }
+
+    private int getIntValue(String policyName) {
+        return Integer.parseInt(getStringValue(policyName));
+    }
+
+    private void setIntValue(String policyName, int value) {
+        setStringValue(policyName, String.valueOf(value));
     }
 
 }
