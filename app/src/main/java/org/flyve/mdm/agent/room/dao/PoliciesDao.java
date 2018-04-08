@@ -48,4 +48,7 @@ public interface PoliciesDao {
     @Query("Select * FROM policies")
     List<Policies> loadAll();
 
+    @Query("Select * FROM policies where policyName = :policyName limit 1")
+    List<Policies> getByPolicyName(String policyName);
+
 }
