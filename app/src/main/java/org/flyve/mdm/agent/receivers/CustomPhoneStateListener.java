@@ -41,7 +41,7 @@ public class CustomPhoneStateListener extends PhoneStateListener {
         // 2 = CALL_STATE_OFFHOOK (At least one call exists that is dialing, active, or on hold, and no calls are ringing or waiting.)
         FlyveLog.d("Status: " + state);
         final Context context = MDMAgent.getInstance();
-        Boolean disable = new PoliciesData(context).getdisableSpeakerphone();
+        Boolean disable = new PoliciesData(context).getDisableSpeakerphone();
 
         if (state == 2) {
 
