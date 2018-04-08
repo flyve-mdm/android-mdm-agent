@@ -57,7 +57,7 @@ public class FragmentPolicies extends Fragment {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("description", getResources().getString(R.string.storage_encryption_device));
-        map.put("value", String.valueOf(cache.getStorageEncryptionDevice()));
+        map.put("value", String.valueOf(cache.getStorageEncryption()));
         arr.add(map);
 
         map = new HashMap<>();
@@ -67,7 +67,7 @@ public class FragmentPolicies extends Fragment {
 
         map = new HashMap<>();
         map.put("description", getResources().getString(R.string.password_length));
-        map.put("value", String.valueOf(cache.getPasswordLength()));
+        map.put("value", String.valueOf(cache.getPasswordMinimumLength()));
         arr.add(map);
 
         map = new HashMap<>();
@@ -116,7 +116,5 @@ public class FragmentPolicies extends Fragment {
         arr.add(map);
 
         lst.setAdapter( new PoliciesAdapter(FragmentPolicies.this.getActivity(), arr));
-
     }
-
 }
