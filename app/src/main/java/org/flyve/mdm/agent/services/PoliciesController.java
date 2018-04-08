@@ -36,6 +36,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
+import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.room.database.AppDataBase;
 import org.flyve.mdm.agent.room.entity.MQTT;
@@ -297,7 +298,7 @@ public class PoliciesController {
 
     public void disableBluetooth(String taskId, boolean disable) {
         try {
-            cache.setConnectivityBluetoothDisable(disable);
+            cache.setDisableBluetooth(disable);
             PoliciesConnectivity.disableBluetooth(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Bluetooth", "Bluetooth is disable: " + disable));
 
@@ -313,7 +314,7 @@ public class PoliciesController {
 
     public void disableWifi(String taskId, boolean disable) {
         try {
-            cache.setConnectivityWifiDisable(disable);
+            cache.setDisableWifi(disable);
             PoliciesConnectivity.disableWifi(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Wifi", "Wifi is disable: " + disable));
 
@@ -329,7 +330,7 @@ public class PoliciesController {
 
     public void disableGPS(String taskId, boolean disable) {
         try {
-            cache.setConnectivityGPSDisable(disable);
+            cache.setDisableGPS(disable);
             PoliciesConnectivity.disableGps(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "GPS", "GPS is disable: " + disable));
 
@@ -345,7 +346,7 @@ public class PoliciesController {
 
     public void disableRoaming(String taskId, boolean disable) {
         try {
-            cache.setConnectivityRoamingDisable(disable);
+            cache.setDisableRoaming(disable);
             PoliciesConnectivity.disableRoaming(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Roaming", "Roaming is disable: " + disable));
 
@@ -361,7 +362,7 @@ public class PoliciesController {
 
     public void disableAirplaneMode(String taskId, boolean disable) {
         try {
-            cache.setConnectivityAirplaneModeDisable(disable);
+            cache.setDisableAirplaneMode(disable);
             PoliciesConnectivity.disableAirplaneMode(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "AirplaneMode", "AirplaneMode is disable: " + disable));
 
@@ -377,7 +378,7 @@ public class PoliciesController {
 
     public void disableMobileLine(String taskId, boolean disable) {
         try {
-            cache.setConnectivityMobileLineDisable(disable);
+            cache.setDisableMobileLine(disable);
             PoliciesConnectivity.disableMobileLine(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MobileLine", "MobileLine is disable: " + disable));
 
@@ -393,7 +394,7 @@ public class PoliciesController {
 
     public void disableNFC(String taskId, boolean disable) {
         try {
-            cache.setConnectivityNFCDisable(disable);
+            cache.setDisableNFC(disable);
             PoliciesConnectivity.disableNFC(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "NFC", "NFC is disable: " + disable));
 
@@ -409,7 +410,7 @@ public class PoliciesController {
 
     public void disableHostpotTethering(String taskId, boolean disable) {
         try {
-            cache.setConnectivityHostpotTetheringDisable(disable);
+            cache.setDisableHostpotTethering(disable);
             PoliciesConnectivity.disableHostpotTethering(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "HostpotTethering", "HostpotTethering is disable: " + disable));
 
@@ -428,7 +429,7 @@ public class PoliciesController {
         // SMSReceiver
 
         try {
-            cache.setConnectivitySmsMmsDisable(disable);
+            cache.setDisableSmsMms(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "SMS", "SMS is disable: " + disable));
 
             // return the status of the task
@@ -443,7 +444,6 @@ public class PoliciesController {
 
     public void disableAllUsbFileTransferProtocols(boolean disable) {
         try {
-            cache.setConnectivityUsbFileTransferProtocolsDisable(disable);
             PoliciesConnectivity.disableAllUsbFileTransferProtocols(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols", "UsbFileTransferProtocols is disable: " + disable));
         } catch (Exception ex) {
@@ -453,7 +453,7 @@ public class PoliciesController {
 
     public void disableADBUsbFileTransferProtocols(String taskId, boolean disable) {
         try {
-            cache.setConnectivityADBUsbFileTransferProtocolsDisable(disable);
+            cache.setDisableUsbAdb(disable);
             PoliciesConnectivity.disableADBUsbFileTransferProtocols(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols ADB", "UsbFileTransferProtocols is disable: " + disable));
 
@@ -469,7 +469,7 @@ public class PoliciesController {
 
     public void disablePTPUsbFileTransferProtocols(String taskId, boolean disable) {
         try {
-            cache.setConnectivityPTPUsbFileTransferProtocolsDisable(disable);
+            cache.setDisableUsbPtp(disable);
             PoliciesConnectivity.disablePTPUsbFileTransferProtocols(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols PTP", "UsbFileTransferProtocols is disable: " + disable));
 
@@ -485,7 +485,7 @@ public class PoliciesController {
 
     public void disableMTPUsbFileTransferProtocols(String taskId, boolean disable) {
         try {
-            cache.setConnectivityMTPUsbFileTransferProtocolsDisable(disable);
+            cache.setDisableUsbMtp(disable);
             PoliciesConnectivity.disableMTPUsbFileTransferProtocols(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols MTP", "UsbFileTransferProtocols is disable: " + disable));
 
@@ -501,6 +501,7 @@ public class PoliciesController {
 
     public void disableStatusBar(String taskId, boolean disable) {
         try {
+            cache.setDisableStatusbar(disable);
             new PoliciesDeviceManager(context).disableStatusBar(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "status bar", "status bar is disable: " + disable));
 
@@ -516,6 +517,7 @@ public class PoliciesController {
 
     public void disableSpeakerphone(String taskId, boolean disable) {
         try {
+            cache.setDisableSpeakerphone(disable);
             new PoliciesDeviceManager(context).disableSpeakerphone(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Speaker phone", "Speaker phone is disable: " + disable));
 
@@ -532,6 +534,7 @@ public class PoliciesController {
     public void disableScreenCapture(String taskId, boolean disable) {
         try {
             if(Build.VERSION.SDK_INT >= 21) {
+                cache.setDisableScreenCapture(disable);
                 new PoliciesDeviceManager(context).disableCaptureScreen(disable);
                 broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Screen Capture", "Screen Capture is disable: " + disable));
 
@@ -678,6 +681,7 @@ public class PoliciesController {
      */
     public void storageEncryption(String taskId, Boolean enable) {
         try {
+            cache.setStorageEncryption(enable);
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.storageEncryptionDevice(enable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "storage Encryption", "storage Encryption: " + enable));
@@ -694,6 +698,7 @@ public class PoliciesController {
 
     public void passwordEnabled(String taskId) {
         try {
+            cache.setPasswordEnabled(true);
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.enablePassword();
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordEnabled", "true"));
@@ -710,6 +715,7 @@ public class PoliciesController {
 
     public void passwordQuality(String taskId, String quality) {
         try {
+            cache.setPasswordQuality(quality);
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordQuality(quality);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordQuality", quality));
@@ -726,6 +732,7 @@ public class PoliciesController {
 
     public void passwordMinLength(String taskId, int length) {
         try {
+            cache.setPasswordMinimumLength(length);
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordLength(length);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLength", String.valueOf(length)));
@@ -742,6 +749,7 @@ public class PoliciesController {
 
     public void passwordMinNonLetter(String taskId, int length) {
         try {
+            cache.setPasswordMinimumNonLetter(length);
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordMinimumNonLetter(length);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinNonLetter", String.valueOf(length)));
@@ -758,6 +766,7 @@ public class PoliciesController {
 
     public void passwordMinLetter(String taskId, int length) {
         try {
+            cache.setPasswordMinimumLetters(length);
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordMinimumLetters(length);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLetter", String.valueOf(length)));
@@ -774,6 +783,7 @@ public class PoliciesController {
 
     public void passwordMinNumeric(String taskId, int minimum) {
         try {
+            cache.setPasswordMinimumNumeric(minimum);
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordMinimumNumeric(minimum);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinNumeric", String.valueOf(minimum)));
@@ -790,6 +800,7 @@ public class PoliciesController {
 
     public void passwordMinSymbols(String taskId, int minimum) {
         try {
+            cache.setPasswordMinimumSymbols(minimum);
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordMinimumSymbols(minimum);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinSymbols", String.valueOf(minimum)));
@@ -806,6 +817,7 @@ public class PoliciesController {
 
     public void passwordMinLowerCase(String taskId, int minimum) {
         try {
+            cache.setPasswordMinimumLowerCase(minimum);
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordMinimumLowerCase(minimum);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLowerCase", String.valueOf(minimum)));
@@ -822,6 +834,7 @@ public class PoliciesController {
 
     public void passwordMinUpperCase(String taskId, int minimum) {
         try {
+            cache.setPasswordMinimumUpperCase(minimum);
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordMinimumUpperCase(minimum);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinUpperCase", String.valueOf(minimum)));
@@ -838,6 +851,7 @@ public class PoliciesController {
 
     public void maximumFailedPasswordsForWipe(String taskId, int maximum) {
         try {
+            cache.setMaximumFailedPasswordsForWipe(maximum);
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setMaximumFailedPasswordsForWipe(maximum);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MaximumFailedPasswordsForWipe", String.valueOf(maximum)));
@@ -854,6 +868,7 @@ public class PoliciesController {
 
     public void maximumTimeToLock(String taskId, int maximum) {
         try {
+            cache.setMaximumTimeToLock(maximum);
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setMaximumTimeToLock(maximum);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "maximumTimeToLock", String.valueOf(maximum)));
@@ -898,7 +913,7 @@ public class PoliciesController {
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Unenroll", "Unenroll success"));
 
             // clear cache
-            cache.clearSettings();
+            new MqttData(context).deleteAll();
 
             // send message
             Helpers.sendBroadcast(Helpers.broadCastMessage("action", "open", "splash"), Helpers.BROADCAST_MSG, this.context);
@@ -977,6 +992,7 @@ public class PoliciesController {
 
     public void disableCreateVpnProfiles(String taskId, Boolean disable) {
         try {
+            cache.setDisableVPN(disable);
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.disableVPN(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "maximumTimeToLock", String.valueOf(disable)));
