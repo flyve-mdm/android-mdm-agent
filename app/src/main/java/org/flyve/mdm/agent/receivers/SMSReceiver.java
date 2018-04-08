@@ -42,7 +42,7 @@ public class SMSReceiver extends BroadcastReceiver {
 
         if("android.provider.Telephony.SMS_RECEIVED".equalsIgnoreCase(action)) {
             FlyveLog.d("SMS Received");
-            if(cache.getConnectivitySmsMmsDisable()) {
+            if(cache.getDisableSmsMms()) {
                 abortBroadcast();
                 Helpers.deleteAllSMS(context);
             }
