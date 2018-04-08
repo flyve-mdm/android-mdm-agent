@@ -32,7 +32,6 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
 
-import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.ui.LockActivity;
 import org.flyve.mdm.agent.ui.MainActivity;
@@ -44,13 +43,11 @@ public class PoliciesDeviceManager {
     private DevicePolicyManager mDPM;
     private ComponentName mDeviceAdmin;
     private Context context;
-    private PoliciesData cache;
 
     public PoliciesDeviceManager(Context context) {
         this.context = context;
         mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
         mDeviceAdmin = new ComponentName(context, FlyveAdminReceiver.class);
-        cache = new PoliciesData(context);
     }
 
     @TargetApi(21)
@@ -105,8 +102,6 @@ public class PoliciesDeviceManager {
         // This policy is called when a call phone is running
         // review CustomPhoneStateLister to extends or
         // MQTTConnectivityReceiver for listener implementation
-
-        new PoliciesData(context).setdisableSpeakerphone(disable);
     }
 
     public void enablePassword() {
@@ -183,8 +178,6 @@ public class PoliciesDeviceManager {
         int status = mDPM.getStorageEncryptionStatus();
         FlyveLog.d("status: " + status);
 
-        cache.setStorageEncryptionDevice(isEncryption);
-
         if(isEncryption && status == DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE) {
             // the data is already encrypted
             return;
@@ -215,7 +208,6 @@ public class PoliciesDeviceManager {
      */
     public void disableCamera(boolean disable) {
         mDPM.setCameraDisabled(mDeviceAdmin, disable);
-        cache.setDisableCamera(disable);
     }
 
     /**
@@ -223,8 +215,6 @@ public class PoliciesDeviceManager {
      * @param length int
      */
     public void setPasswordLength(int length) {
-        cache.setPasswordLength(String.valueOf(length));
-
         if(mDPM.getPasswordMinimumLength(mDeviceAdmin)!=length){
             FlyveLog.d("PasswordLength: " + length);
             mDPM.setPasswordMinimumLength(mDeviceAdmin, length);
@@ -236,9 +226,6 @@ public class PoliciesDeviceManager {
      * @param quality String quality type
      */
     public void setPasswordQuality(String quality) {
-
-        cache.setPasswordQuality(quality);
-
          if("PASSWORD_QUALITY_NUMERIC".equalsIgnoreCase(quality)) {
              FlyveLog.d("switch: PASSWORD_QUALITY_NUMERIC");
              mDPM.setPasswordQuality(mDeviceAdmin, DevicePolicyManager.PASSWORD_QUALITY_NUMERIC);
@@ -275,9 +262,6 @@ public class PoliciesDeviceManager {
      * @param minLetters int
      */
     public void setPasswordMinimumLetters(int minLetters) {
-
-        cache.setPasswordMinimumLetters(String.valueOf(minLetters));
-
         if(mDPM.getPasswordMinimumLetters(mDeviceAdmin)!=minLetters) {
             FlyveLog.d("PasswordMinimumLetters:  " + minLetters);
 
@@ -294,9 +278,6 @@ public class PoliciesDeviceManager {
      * @param minLowerCase int
      */
     public void setPasswordMinimumLowerCase(int minLowerCase) {
-
-        cache.setPasswordMinimumLowerCase(String.valueOf(minLowerCase));
-
         if(mDPM.getPasswordMinimumLowerCase(mDeviceAdmin)!=minLowerCase) {
             FlyveLog.d("setPasswordMinimumLowerCase:  " + minLowerCase);
 
@@ -313,9 +294,6 @@ public class PoliciesDeviceManager {
      * @param minUpperCase int
      */
     public void setPasswordMinimumUpperCase(int minUpperCase) {
-
-        cache.setPasswordMinimumUpperCase(String.valueOf(minUpperCase));
-
         if(mDPM.getPasswordMinimumUpperCase(mDeviceAdmin)!=minUpperCase) {
             FlyveLog.d("setPasswordMinimumUpperCase:  " + minUpperCase);
 
@@ -332,9 +310,6 @@ public class PoliciesDeviceManager {
      * @param minNonLetter int
      */
     public void setPasswordMinimumNonLetter(int minNonLetter) {
-
-        cache.setPasswordMinimumNonLetter(String.valueOf(minNonLetter));
-
         if(mDPM.getPasswordMinimumNonLetter(mDeviceAdmin)!=minNonLetter) {
             FlyveLog.d("setPasswordMinimumNonLetter: " + minNonLetter);
 
@@ -351,9 +326,6 @@ public class PoliciesDeviceManager {
      * @param minNumeric int
      */
     public void setPasswordMinimumNumeric(int minNumeric) {
-
-        cache.setPasswordMinimumNumeric(String.valueOf(minNumeric));
-
         if(mDPM.getPasswordMinimumNumeric(mDeviceAdmin)!=minNumeric) {
             FlyveLog.d("setPasswordMinimumNumeric:  " + minNumeric);
 
@@ -370,9 +342,6 @@ public class PoliciesDeviceManager {
      * @param minSymbols int
      */
     public void setPasswordMinimumSymbols(int minSymbols) {
-
-        cache.setPasswordMinimumSymbols(String.valueOf(minSymbols));
-
         if(mDPM.getPasswordMinimumSymbols(mDeviceAdmin)!=minSymbols) {
             FlyveLog.d("setPasswordMinimumSymbols:  " + minSymbols);
 
@@ -389,9 +358,6 @@ public class PoliciesDeviceManager {
      * @param maxFailed int
      */
     public void setMaximumFailedPasswordsForWipe(int maxFailed) {
-
-        cache.setMaximumFailedPasswordsForWipe(String.valueOf(maxFailed));
-
         if(mDPM.getMaximumFailedPasswordsForWipe(mDeviceAdmin)!=maxFailed) {
             FlyveLog.d("setMaximumFailedPasswordsForWipe:  " + maxFailed);
             mDPM.setMaximumFailedPasswordsForWipe(mDeviceAdmin, maxFailed);
@@ -403,13 +369,9 @@ public class PoliciesDeviceManager {
      * @param timeMs
      */
     public void setMaximumTimeToLock(long timeMs) {
-
-        cache.setMaximumTimeToLock(String.valueOf(timeMs));
-
         if(mDPM.getMaximumTimeToLock(mDeviceAdmin)!=timeMs) {
             FlyveLog.d("setMaximumTimeToLock:  " + timeMs);
             mDPM.setMaximumTimeToLock(mDeviceAdmin, timeMs);
         }
     }
-
 }
