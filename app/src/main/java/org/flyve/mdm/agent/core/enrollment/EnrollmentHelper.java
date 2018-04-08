@@ -142,6 +142,8 @@ public class EnrollmentHelper {
                         return;
                     }
 
+                    mqtt = dataBase.MQTTDao().loadAll().get(0);
+
                     JSONObject jsonSession = new JSONObject(data);
                     mqtt.sessionToken = jsonSession.getString("session_token");
 
@@ -235,6 +237,7 @@ public class EnrollmentHelper {
                         });
                     } else {
                         JSONObject jsonAgent = new JSONObject(data);
+                        String agentId = jsonAgent.getString("id");
 
                         header = new HashMap();
                         header.put(SESSION_TOKEN, cache.getSessionToken());
@@ -243,7 +246,7 @@ public class EnrollmentHelper {
                         header.put(USER_AGENT,FLYVE_MDM);
                         header.put(REFERER,routes.pluginFlyvemdmAgent());
 
-                        String dataAgent = ConnectionHTTP.getSyncWebData(routes.pluginFlyvemdmAgent(cache.getAgentId()), "GET", header);
+                        String dataAgent = ConnectionHTTP.getSyncWebData(routes.pluginFlyvemdmAgent(agentId), "GET", header);
 
                         JSONObject jsonObject = new JSONObject(dataAgent);
 
@@ -260,7 +263,10 @@ public class EnrollmentHelper {
                         int mEntitiesId = jsonObject.getInt("entities_id");
                         int mFleetId = jsonObject.getInt("plugin_flyvemdm_fleets_id");
 
-                        mqtt.agentId = jsonAgent.getString("id");
+                        mqtt = dataBase.MQTTDao().loadAll().get(0);
+
+                        mqtt.id = 1;
+                        mqtt.agentId = agentId;
                         mqtt.broker = mbroker;
                         mqtt.port = mport;
                         mqtt.tls = mssl;
