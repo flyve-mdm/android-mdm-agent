@@ -30,17 +30,20 @@ import android.content.Context;
 
 import org.flyve.mdm.agent.room.dao.ApplicationDao;
 import org.flyve.mdm.agent.room.dao.MQTTDao;
+import org.flyve.mdm.agent.room.dao.PoliciesDao;
 import org.flyve.mdm.agent.room.entity.Application;
 import org.flyve.mdm.agent.room.entity.MQTT;
+import org.flyve.mdm.agent.room.entity.Policies;
 
 
-@Database(entities = {Application.class, MQTT.class}, version = 3, exportSchema = false)
+@Database(entities = {Application.class, MQTT.class, Policies.class}, version = 4, exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
 
     private static AppDataBase instance;
 
     public abstract ApplicationDao applicationDao();
     public abstract MQTTDao MQTTDao();
+    public abstract PoliciesDao PoliciesDao();
 
     public static AppDataBase getAppDatabase(Context context) {
         if (instance == null) {
