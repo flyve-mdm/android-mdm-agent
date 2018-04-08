@@ -72,29 +72,27 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
         if("android.hardware.usb.action.USB_DEVICE_ATTACHED".equalsIgnoreCase(action)) {
             FlyveLog.d("USB Device Attached");
-            if(cache.getUsbFileTransferProtocols()!=null && !cache.getUsbFileTransferProtocols().equals("")) {
-                PoliciesConnectivity.disableAllUsbFileTransferProtocols( cache.getConnectivityUsbFileTransferProtocolsDisable() );
-            }
+            PoliciesConnectivity.disableAllUsbFileTransferProtocols( true );
         }
 
         if("android.net.conn.CONNECTIVITY_CHANGE".equalsIgnoreCase(action)) {
             FlyveLog.i("is Online: %s", Helpers.isOnline(context));
 
             // Disable / Enable Roaming
-            if(cache.getRoaming()!=null && !cache.getRoaming().equals("")) {
-                PoliciesConnectivity.disableRoaming(cache.getConnectivityRoamingDisable());
+            if(cache.getDisableRoaming()) {
+                PoliciesConnectivity.disableRoaming(cache.getDisableRoaming());
             }
 
             // Disable / Enable Mobile line
-            if(cache.getMobileLine()!=null && !cache.getMobileLine().equals("")) {
-                PoliciesConnectivity.disableMobileLine(cache.getConnectivityMobileLineDisable());
+            if(cache.getDisableMobileLine()) {
+                PoliciesConnectivity.disableMobileLine(cache.getDisableMobileLine());
             }
         }
 
         if("android.intent.action.AIRPLANE_MODE".equalsIgnoreCase(action)) {
             // Disable / Enable Airplane Mode
-            if(cache.getAirplaneMode()!=null && !cache.getAirplaneMode().equals("")) {
-                PoliciesConnectivity.disableAirplaneMode(cache.getConnectivityAirplaneModeDisable());
+            if(cache.getDisableAirplaneMode()) {
+                PoliciesConnectivity.disableAirplaneMode(cache.getDisableAirplaneMode());
             }
         }
 
@@ -103,29 +101,29 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             FlyveLog.i("is Online: %s", Helpers.isOnline(context));
 
             // Disable / Enable Hostpot
-            if(cache.getWifi()!=null && !cache.getWifi().equals("")) {
-                PoliciesConnectivity.disableWifi(cache.getConnectivityWifiDisable());
+            if(cache.getDisableWifi()) {
+                PoliciesConnectivity.disableWifi(cache.getDisableWifi());
             }
 
             // Disable / Enable Hostpot
-            if(cache.getHostpotTethering()!=null && !cache.getHostpotTethering().equals("")) {
-                PoliciesConnectivity.disableHostpotTethering(cache.getConnectivityHostpotTetheringDisable());
+            if(cache.getDisableHostpotTethering()) {
+                PoliciesConnectivity.disableHostpotTethering(cache.getDisableHostpotTethering());
             }
 
         }
 
         // Manage Bluetooth
         if ("android.bluetooth.adapter.action.STATE_CHANGED".equalsIgnoreCase(action)) {
-            if(cache.getConnectivityBluetoothDisable()) {
-                PoliciesConnectivity.disableBluetooth(cache.getConnectivityBluetoothDisable());
+            if(cache.getDisableBluetooth()) {
+                PoliciesConnectivity.disableBluetooth(cache.getDisableBluetooth());
             }
         }
 
         // Manage NFC
         if("android.nfc.extra.ADAPTER_STATE".equalsIgnoreCase(action)) {
             FlyveLog.d("ADAPTER STATE Change");
-            if(cache.getNFC()!=null || !cache.getNFC().equals("")) {
-                PoliciesConnectivity.disableNFC(cache.getConnectivityNFCDisable());
+            if(cache.getDisableNFC()) {
+                PoliciesConnectivity.disableNFC(cache.getDisableNFC());
             }
         }
 
@@ -158,9 +156,8 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
              *   adb reboot
              */
 
-            boolean disable = cache.getConnectivityGPSDisable();
+            boolean disable = cache.getDisableGPS();
             PoliciesConnectivity.disableGps(disable);
-
             FlyveLog.i("Location providers change: " + disable);
         }
     }
