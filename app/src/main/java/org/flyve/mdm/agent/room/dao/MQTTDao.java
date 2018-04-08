@@ -24,7 +24,6 @@
 package org.flyve.mdm.agent.room.dao;
 
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
@@ -42,10 +41,9 @@ public interface MQTTDao {
     @Update
     void update(MQTT... mqtt);
 
-    @Delete
-    void delete(MQTT... mqtt);
-
-    @Query("Select * FROM mqtt")
+    @Query("SELECT * FROM mqtt")
     List<MQTT> loadAll();
 
+    @Query("DELETE FROM mqtt")
+    void deleteAll();
 }
