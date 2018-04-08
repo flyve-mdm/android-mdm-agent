@@ -55,6 +55,11 @@ public class MqttData {
             return "";
         }
     }
+
+    public void deleteAll() {
+        dataBase.MQTTDao().deleteAll();
+    }
+
     /**
      * Get the version of the Manifest
      * @return string the Manifest version
