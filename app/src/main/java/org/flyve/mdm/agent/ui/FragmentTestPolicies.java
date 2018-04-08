@@ -60,11 +60,11 @@ public class FragmentTestPolicies extends Fragment {
 
         Switch swGPS = v.findViewById(R.id.swGPS);
 
-        swGPS.setChecked(cache.getConnectivityGPSDisable());
+        swGPS.setChecked(cache.getDisableGPS());
         swGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setConnectivityGPSDisable(isChecked);
+                cache.setDisableGPS(isChecked);
                 if(isChecked) {
                     PoliciesConnectivity.disableGps(isChecked);
                 }
@@ -72,21 +72,21 @@ public class FragmentTestPolicies extends Fragment {
         });
 
         Switch swAirplane = v.findViewById(R.id.swAirplane);
-        swAirplane.setChecked(cache.getConnectivityAirplaneModeDisable());
+        swAirplane.setChecked(cache.getDisableAirplaneMode());
         swAirplane.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setConnectivityAirplaneModeDisable(isChecked);
+                cache.setDisableAirplaneMode(isChecked);
                 PoliciesConnectivity.disableAirplaneMode(isChecked);
             }
         });
 
         Switch swBluetooth = v.findViewById(R.id.swBluetooth);
-        swBluetooth.setChecked(cache.getConnectivityBluetoothDisable());
+        swBluetooth.setChecked(cache.getDisableBluetooth());
         swBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setConnectivityBluetoothDisable(isChecked);
+                cache.setDisableBluetooth(isChecked);
                 if(isChecked) {
                     PoliciesConnectivity.disableBluetooth(isChecked);
                 }
@@ -94,11 +94,11 @@ public class FragmentTestPolicies extends Fragment {
         });
 
         Switch swWifi = v.findViewById(R.id.swWifi);
-        swWifi.setChecked(cache.getConnectivityWifiDisable());
+        swWifi.setChecked(cache.getDisableWifi());
         swWifi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setConnectivityWifiDisable(isChecked);
+                cache.setDisableWifi(isChecked);
                 if(isChecked) {
                     PoliciesConnectivity.disableWifi(isChecked);
                 }
@@ -106,11 +106,11 @@ public class FragmentTestPolicies extends Fragment {
         });
 
         Switch swNFC = v.findViewById(R.id.swNFC);
-        swNFC.setChecked(cache.getConnectivityRoamingDisable());
+        swNFC.setChecked(cache.getDisableNFC());
         swNFC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setConnectivityNFCDisable(isChecked);
+                cache.setDisableNFC(isChecked);
                 if(isChecked) {
                     PoliciesConnectivity.disableNFC(isChecked);
                 }
@@ -118,11 +118,11 @@ public class FragmentTestPolicies extends Fragment {
         });
 
         Switch swHostpot = v.findViewById(R.id.swHostpot);
-        swHostpot.setChecked(cache.getConnectivityHostpotTetheringDisable());
+        swHostpot.setChecked(cache.getDisableHostpotTethering());
         swHostpot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setConnectivityHostpotTetheringDisable(isChecked);
+                cache.setDisableHostpotTethering(isChecked);
                 if(isChecked) {
                     PoliciesConnectivity.disableHostpotTethering(isChecked);
                 }
@@ -130,25 +130,13 @@ public class FragmentTestPolicies extends Fragment {
         });
 
         Switch swMobileLine = v.findViewById(R.id.swMobileLine);
-        swMobileLine.setChecked(cache.getConnectivityMobileLineDisable());
+        swMobileLine.setChecked(cache.getDisableMobileLine());
         swMobileLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setConnectivityMobileLineDisable(isChecked);
+                cache.setDisableMobileLine(isChecked);
                 if(isChecked) {
                     PoliciesConnectivity.disableMobileLine(isChecked);
-                }
-            }
-        });
-
-        Switch swUsbOnTheGo = v.findViewById(R.id.swUsbOnTheGo);
-        swUsbOnTheGo.setChecked(cache.getConnectivityUsbFileTransferProtocolsDisable());
-        swUsbOnTheGo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setConnectivityUsbFileTransferProtocolsDisable(isChecked);
-                if(isChecked) {
-                    PoliciesConnectivity.disableAllUsbFileTransferProtocols(isChecked);
                 }
             }
         });
@@ -166,15 +154,17 @@ public class FragmentTestPolicies extends Fragment {
         swDisableCamera.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cache.setDisableCamera(isChecked);
                 mdm.disableCamera(isChecked);
             }
         });
 
         Switch swStorageEncryptionDevice = v.findViewById(R.id.swStorageEncryptionDevice);
-        swStorageEncryptionDevice.setChecked(cache.getStorageEncryptionDevice());
+        swStorageEncryptionDevice.setChecked(cache.getStorageEncryption());
         swStorageEncryptionDevice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cache.setStorageEncryption(isChecked);
                 mdm.storageEncryptionDevice(isChecked);
             }
         });
@@ -213,15 +203,35 @@ public class FragmentTestPolicies extends Fragment {
         btnPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mdm.setPasswordLength( Integer.parseInt( edtPasswordLength.getText().toString() ) );
-                mdm.setPasswordMinimumLetters( Integer.parseInt( edtPasswordMinimumLetters.getText().toString() ) );
-                mdm.setPasswordMinimumUpperCase( Integer.parseInt( edtPasswordMinimumUpperCase.getText().toString() ) );
-                mdm.setPasswordMinimumLowerCase( Integer.parseInt( edtPasswordMinimumLowerCase.getText().toString() ) );
-                mdm.setPasswordMinimumNonLetter( Integer.parseInt( edtPasswordMinimumNonLetter.getText().toString() ) );
-                mdm.setPasswordMinimumNumeric( Integer.parseInt( edtPasswordMinimumNumeric.getText().toString() ) );
-                mdm.setPasswordMinimumSymbols( Integer.parseInt( edtPasswordMinimumSymbols.getText().toString() ) );
-                mdm.setMaximumFailedPasswordsForWipe( Integer.parseInt( edtMaximumFailedPasswordsForWipe.getText().toString() ) );
-                mdm.setMaximumTimeToLock( Integer.parseInt( edtMaximumTimeToLock.getText().toString() ) );
+                int minimumLength = Integer.parseInt(edtPasswordLength.getText().toString());
+                int minimumLetters = Integer.parseInt(edtPasswordMinimumLetters.getText().toString());
+                int minimumUpperCase = Integer.parseInt(edtPasswordMinimumUpperCase.getText().toString());
+                int minimumLowerCase = Integer.parseInt(edtPasswordMinimumLowerCase.getText().toString());
+                int minimumNonLetter = Integer.parseInt(edtPasswordMinimumNonLetter.getText().toString());
+                int minimumNumeric = Integer.parseInt(edtPasswordMinimumNumeric.getText().toString());
+                int minimumSymbols = Integer.parseInt(edtPasswordMinimumSymbols.getText().toString());
+                int maximumFailedPasswordsForWipe = Integer.parseInt(edtMaximumFailedPasswordsForWipe.getText().toString());
+                int maximumTimeToLock = Integer.parseInt(edtMaximumTimeToLock.getText().toString());
+
+                cache.setPasswordMinimumLength(minimumLength);
+                cache.setPasswordMinimumLetters(minimumLetters);
+                cache.setPasswordMinimumUpperCase(minimumUpperCase);
+                cache.setPasswordMinimumLowerCase(minimumLowerCase);
+                cache.setPasswordMinimumNonLetter(minimumNonLetter);
+                cache.setPasswordMinimumNumeric(minimumNumeric);
+                cache.setPasswordMinimumSymbols(minimumSymbols);
+                cache.setMaximumFailedPasswordsForWipe(maximumFailedPasswordsForWipe);
+                cache.setMaximumTimeToLock(maximumTimeToLock);
+
+                mdm.setPasswordLength(minimumLength);
+                mdm.setPasswordMinimumLetters(minimumLetters);
+                mdm.setPasswordMinimumUpperCase(minimumUpperCase);
+                mdm.setPasswordMinimumLowerCase(minimumLowerCase);
+                mdm.setPasswordMinimumNonLetter(minimumNonLetter);
+                mdm.setPasswordMinimumNumeric(minimumNumeric);
+                mdm.setPasswordMinimumSymbols(minimumSymbols);
+                mdm.setMaximumFailedPasswordsForWipe(maximumFailedPasswordsForWipe);
+                mdm.setMaximumTimeToLock(maximumTimeToLock);
             }
         });
 
@@ -229,6 +239,7 @@ public class FragmentTestPolicies extends Fragment {
         btnPasswordEnable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cache.setPasswordEnabled(true);
                 mdm.enablePassword();
             }
         });
