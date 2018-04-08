@@ -160,7 +160,8 @@ public class DeeplinkModel implements Deeplink.Model {
             mqtt.invitationToken = invitationToken;
             dataBase.MQTTDao().insert(mqtt);
         } else {
-            MQTT mqtt = new MQTT();
+            MQTT mqtt = dataBase.MQTTDao().loadAll().get(0);
+            mqtt.id = 1;
             mqtt.url = url;
             mqtt.userToken = userToken;
             mqtt.invitationToken = invitationToken;
