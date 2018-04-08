@@ -57,27 +57,27 @@ public class FragmentConnectivity extends Fragment {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("description", getResources().getString(R.string.disable_airplane_mode));
-        map.put("disable", String.valueOf(cache.getConnectivityAirplaneModeDisable()));
+        map.put("disable", String.valueOf(cache.getDisableAirplaneMode()));
         arr.add(map);
 
         map = new HashMap<>();
         map.put("description", getResources().getString(R.string.disable_bluetooth));
-        map.put("disable", String.valueOf(cache.getConnectivityBluetoothDisable()));
+        map.put("disable", String.valueOf(cache.getDisableBluetooth()));
         arr.add(map);
 
         map = new HashMap<>();
         map.put("description", getResources().getString(R.string.disable_gps));
-        map.put("disable", String.valueOf(cache.getConnectivityGPSDisable()));
+        map.put("disable", String.valueOf(cache.getDisableGPS()));
         arr.add(map);
 
         map = new HashMap<>();
         map.put("description", getResources().getString(R.string.disable_mobile_line));
-        map.put("disable", String.valueOf(cache.getConnectivityMobileLineDisable()));
+        map.put("disable", String.valueOf(cache.getDisableMobileLine()));
         arr.add(map);
 
         map = new HashMap<>();
         map.put("description", getResources().getString(R.string.disable_wifi));
-        map.put("disable", String.valueOf(cache.getConnectivityWifiDisable()));
+        map.put("disable", String.valueOf(cache.getDisableWifi()));
         arr.add(map);
 
         lst.setAdapter( new ConnectivityAdapter(FragmentConnectivity.this.getActivity(), arr));
