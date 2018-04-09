@@ -32,11 +32,12 @@ import org.flyve.mdm.agent.room.dao.ApplicationDao;
 import org.flyve.mdm.agent.room.dao.MQTTDao;
 import org.flyve.mdm.agent.room.dao.PoliciesDao;
 import org.flyve.mdm.agent.room.entity.Application;
+import org.flyve.mdm.agent.room.entity.File;
 import org.flyve.mdm.agent.room.entity.MQTT;
 import org.flyve.mdm.agent.room.entity.Policies;
 
 
-@Database(entities = {Application.class, MQTT.class, Policies.class}, version = 5, exportSchema = false)
+@Database(entities = {Application.class, MQTT.class, Policies.class, File.class}, version = 6, exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
 
     private static AppDataBase instance;
