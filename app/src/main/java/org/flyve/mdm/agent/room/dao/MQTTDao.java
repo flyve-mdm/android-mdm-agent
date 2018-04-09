@@ -46,4 +46,8 @@ public interface MQTTDao {
 
     @Query("DELETE FROM mqtt")
     void deleteAll();
+
+    @Query("SELECT * FROM mqtt WHERE name = :name limit 1")
+    List<MQTT> getByName(String name);
+
 }
