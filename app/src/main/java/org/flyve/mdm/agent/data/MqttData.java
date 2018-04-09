@@ -1,7 +1,12 @@
+package org.flyve.mdm.agent.data;
+
 /*
- * Copyright Teclib. All rights reserved.
+ *   Copyright © 2018 Teclib. All rights reserved.
  *
- * Flyve MDM is a mobile device management software.
+ *   This file is part of flyve-mdm-android
+ *
+ * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,194 +18,216 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
- * @author    Rafael Hernandez
- * @copyright Copyright Teclib. All rights reserved.
+ * @author    rafael hernandez
+ * @date      9/4/18
+ * @copyright Copyright © 2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/android-mdm-agent
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-
-package org.flyve.mdm.agent.data;
 
 import android.content.Context;
 
 import org.flyve.mdm.agent.room.database.AppDataBase;
 import org.flyve.mdm.agent.room.entity.MQTT;
 
+import java.util.List;
+
 public class MqttData {
 
+    private static final String MANIFEST_VERSION = "manifestVersion";
+    private static final String URL = "url";
+    private static final String USER_TOKEN = "userToken";
+    private static final String INVITATION_TOKEN = "invitationToken";
+    private static final String SESSION_TOKEN = "sessionToken";
+    private static final String PROFILE_ID = "profileId";
+    private static final String AGENT_ID = "agentId";
+    private static final String BROKER = "broker";
+    private static final String TLS = "tls";
+    private static final String TOPIC = "topic";
+    private static final String MQTT_USER = "mqttuser";
+    private static final String MQTT_PASSWD = "mqttpasswd";
+    private static final String CERTIFICATE = "certificate";
+    private static final String NAME = "name";
+    private static final String COMPUTERS_ID = "computersId";
+    private static final String ENTITIES_ID = "entitiesId";
+    private static final String PLUGIN_FLYVE_MDM_FLEETS_ID = "pluginFlyvemdmFleetsId";
+    private static final String PORT = "port";
+
     private AppDataBase dataBase;
-    private MQTT mqtt;
-    /**
-     * Constructor
-     *
-     * @param context
-     */
+
     public MqttData(Context context) {
         dataBase = AppDataBase.getAppDatabase(context);
-        if(!dataBase.MQTTDao().loadAll().isEmpty()) {
-            mqtt = dataBase.MQTTDao().loadAll().get(0);
-        }
-    }
-
-    public boolean isEmpty() {
-        return (mqtt==null);
-    }
-
-    private String getValue(String value) {
-        if(value!=null) {
-            return value;
-        } else {
-            return "";
-        }
     }
 
     public void deleteAll() {
         dataBase.MQTTDao().deleteAll();
     }
 
-    /**
-     * Get the version of the Manifest
-     * @return string the Manifest version
-     */
     public String getManifestVersion() {
-        return getValue(mqtt.manifestVersion);
+        return getStringValue(MANIFEST_VERSION);
     }
 
-    /**
-     * Get the URL
-     * @return string the URL
-     */
+    public void setManifestVersion(String value) {
+        setStringValue(MANIFEST_VERSION, value);
+    }
+
     public String getUrl() {
-        return getValue(mqtt.url);
+        return getStringValue(URL);
     }
 
-    /**
-     * Get the token of the user
-     * @return string the user token
-     */
+    public void setUrl(String value) {
+        setStringValue(URL, value);
+    }
+
     public String getUserToken() {
-        return getValue(mqtt.userToken);
+        return getStringValue(USER_TOKEN);
     }
 
-    /**
-     * Get the invitation token
-     * @return string the invitation token
-     */
+    public void setUserToken(String value) {
+        setStringValue(USER_TOKEN, value);
+    }
+
     public String getInvitationToken() {
-        return getValue(mqtt.invitationToken);
+        return getStringValue(INVITATION_TOKEN);
     }
 
-    /**
-     * Get the session token
-     * @return string the session token
-     */
+    public void setInvitationToken(String value) {
+        setStringValue(INVITATION_TOKEN, value);
+    }
+
     public String getSessionToken() {
-        return getValue(mqtt.sessionToken);
+        return getStringValue(SESSION_TOKEN);
     }
 
-    /**
-     * Get the ID of the profile
-     * @return string the profile ID
-     */
+    public void setSessionToken(String value) {
+        setStringValue(SESSION_TOKEN, value);
+    }
+
     public String getProfileId() {
-        return getValue(mqtt.profileId);
+        return getStringValue(PROFILE_ID);
     }
 
-    /**
-     * Get the ID of the agent
-     * @return string the agent ID
-     */
+    public void setProfileId(String value) {
+        setStringValue(PROFILE_ID, value);
+    }
+
     public String getAgentId() {
-        return getValue(mqtt.agentId);
+        return getStringValue(AGENT_ID);
     }
 
-    /**
-     * Get the broker
-     * @return string the broker
-     */
+    public void setAgentId(String value) {
+        setStringValue(AGENT_ID, value);
+    }
+
     public String getBroker() {
-        return getValue(mqtt.broker);
+        return getStringValue(BROKER);
     }
 
-    /**
-     * Get the port
-     * @return string the port
-     */
-    public String getPort() {
-        return getValue(mqtt.port);
+    public void setBroker(String value) {
+        setStringValue(BROKER, value);
     }
 
-    /**
-     * Get the Transport Layer Security (TLS)
-     * @return string the TLS
-     */
     public String getTls() {
-        return getValue(mqtt.tls);
+        return getStringValue(TLS);
     }
 
-    /**
-     * Get the topic
-     * @return string the topic
-     */
+    public void setTls(String value) {
+        setStringValue(TLS, value);
+    }
+
     public String getTopic() {
-        return getValue(mqtt.topic);
+        return getStringValue(TOPIC);
     }
 
-    /**
-     * Get the user of the Message Queue Telemetry Transport (MQTT)
-     * @return string the MQTT user
-     */
-    public String getMqttuser() {
-        return getValue(mqtt.mqttuser);
+    public void setTopic(String value) {
+        setStringValue(TOPIC, value);
     }
 
-    /**
-     * Get the password of the Message Queue Telemetry Transport (MQTT)
-     * @return the MQTT password
-     */
-    public String getMqttpasswd() {
-        return getValue(mqtt.mqttpasswd);
+    public String getMqttUser() {
+        return getStringValue(MQTT_USER);
     }
 
-    /**
-     * Get the Certificate
-     * @return string the certificate
-     */
+    public void setMqttUser(String value) {
+        setStringValue(MQTT_USER, value);
+    }
+
+    public String getMqttPasswd() {
+        return getStringValue(MQTT_PASSWD);
+    }
+
+    public void setMqttPasswd(String value) {
+        setStringValue(MQTT_PASSWD, value);
+    }
+
     public String getCertificate() {
-        return getValue(mqtt.certificate);
+        return getStringValue(CERTIFICATE);
     }
 
-    /**
-     * Get the name
-     * @return string the name
-     */
+    public void setCertificate(String value) {
+        setStringValue(CERTIFICATE, value);
+    }
+
     public String getName() {
-        return getValue(mqtt.name);
+        return getStringValue(NAME);
     }
 
-    /**
-     * Get the ID of the computer
-     * @return string the computer ID
-     */
+    public void setName(String value) {
+        setStringValue(NAME, value);
+    }
+
     public String getComputersId() {
-        return getValue(mqtt.computersId);
+        return getStringValue(COMPUTERS_ID);
     }
 
-    /**
-     * Get the ID of the entities
-     * @return string the entities ID
-     */
+    public void setComputersId(String value) {
+        setStringValue(COMPUTERS_ID, value);
+    }
+
     public String getEntitiesId() {
-        return getValue(mqtt.entitiesId);
+        return getStringValue(ENTITIES_ID);
     }
 
-    /**
-     * Get the ID of the Fleets of the Flyve MDM plugin
-     * @return string the Fleets ID
-     */
+    public void setEntitiesId(String value) {
+        setStringValue(ENTITIES_ID, value);
+    }
+
     public String getPluginFlyvemdmFleetsId() {
-        return getValue(mqtt.pluginFlyvemdmFleetsId);
+        return getStringValue(PLUGIN_FLYVE_MDM_FLEETS_ID);
+    }
+
+    public void setPluginFlyvemdmFleetsId(String value) {
+        setStringValue(PLUGIN_FLYVE_MDM_FLEETS_ID, value);
+    }
+
+    public String getPort() {
+        return getStringValue(PORT);
+    }
+
+    public void setPort(String value) {
+        setStringValue(PORT, value);
+    }
+
+    private String getStringValue(String name) {
+        List<MQTT> arrMQTT = dataBase.MQTTDao().getByName(name);
+        if(!arrMQTT.isEmpty()) {
+            return arrMQTT.get(0).value;
+        } else {
+            return "";
+        }
+    }
+
+    private void setStringValue(String name, String value) {
+        if(dataBase.MQTTDao().getByName(name).isEmpty()) {
+            MQTT mqtt = new MQTT();
+            mqtt.name = name;
+            mqtt.value = value;
+            dataBase.MQTTDao().insert(mqtt);
+        } else {
+            MQTT mqtt = dataBase.MQTTDao().getByName(name).get(0);
+            mqtt.value = value;
+            dataBase.MQTTDao().update(mqtt);
+        }
     }
 }
