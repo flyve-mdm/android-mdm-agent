@@ -29,9 +29,8 @@ import android.content.Intent;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
+import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.data.SupervisorData;
-import org.flyve.mdm.agent.room.database.AppDataBase;
-import org.flyve.mdm.agent.room.entity.MQTT;
 import org.flyve.mdm.agent.ui.EnrollmentActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -151,22 +150,10 @@ public class DeeplinkModel implements Deeplink.Model {
 
     @Override
     public void saveMQTTConfig(Context context, String url, String userToken, String invitationToken) {
-        AppDataBase dataBase = AppDataBase.getAppDatabase(context);
-        if(dataBase.MQTTDao().loadAll().isEmpty()) {
-            MQTT mqtt = new MQTT();
-            mqtt.id = 1;
-            mqtt.url = url;
-            mqtt.userToken = userToken;
-            mqtt.invitationToken = invitationToken;
-            dataBase.MQTTDao().insert(mqtt);
-        } else {
-            MQTT mqtt = dataBase.MQTTDao().loadAll().get(0);
-            mqtt.id = 1;
-            mqtt.url = url;
-            mqtt.userToken = userToken;
-            mqtt.invitationToken = invitationToken;
-            dataBase.MQTTDao().update(mqtt);
-        }
+        MqttData cache = new MqttData(context);
+        cache.setUrl(url);
+        cache.setUserToken(userToken);
+        cache.setInvitationToken(invitationToken);
     }
 
     @Override
