@@ -30,62 +30,14 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity (tableName = "mqtt")
 public class MQTT {
 
-    @PrimaryKey
+    @PrimaryKey (autoGenerate = true)
     @ColumnInfo (name = "id")
-    public int id = 1;
-
-    @ColumnInfo (name = "url")
-    public String url;
-
-    @ColumnInfo (name = "manifestVersion")
-    public String manifestVersion;
-
-    @ColumnInfo (name = "userToken")
-    public String userToken;
-
-    @ColumnInfo (name = "invitationToken")
-    public String invitationToken;
-
-    @ColumnInfo (name = "sessionToken")
-    public String sessionToken;
-
-    @ColumnInfo (name = "profileId")
-    public String profileId;
-
-    @ColumnInfo (name = "agentId")
-    public String agentId;
-
-    @ColumnInfo (name = "broker")
-    public String broker;
-
-    @ColumnInfo (name = "port")
-    public String port;
-
-    @ColumnInfo (name = "tls")
-    public String tls;
-
-    @ColumnInfo (name = "topic")
-    public String topic;
-
-    @ColumnInfo (name = "mqttuser")
-    public String mqttuser;
-
-    @ColumnInfo (name = "mqttpasswd")
-    public String mqttpasswd;
-
-    @ColumnInfo (name = "certificate")
-    public String certificate;
+    public int id;
 
     @ColumnInfo (name = "name")
     public String name;
 
-    @ColumnInfo (name = "computersId")
-    public String computersId;
-
-    @ColumnInfo (name = "entitiesId")
-    public String entitiesId;
-
-    @ColumnInfo (name = "pluginFlyvemdmFleetsId")
-    public String pluginFlyvemdmFleetsId;
+    @ColumnInfo (name = "value")
+    public String value;
 
 }
