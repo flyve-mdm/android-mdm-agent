@@ -33,8 +33,6 @@ import android.widget.EditText;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.MqttData;
-import org.flyve.mdm.agent.room.database.AppDataBase;
-import org.flyve.mdm.agent.room.entity.MQTT;
 import org.flyve.mdm.agent.utils.Helpers;
 
 public class FragmentMQTTConfig extends Fragment {
@@ -59,8 +57,8 @@ public class FragmentMQTTConfig extends Fragment {
 
         final String mBroker = cache.getBroker();
         final String mPort = cache.getPort();
-        final String mUser = cache.getMqttuser();
-        final String mPassword = cache.getMqttpasswd();
+        final String mUser = cache.getMqttUser();
+        final String mPassword = cache.getMqttPasswd();
         final String mTopic = cache.getTopic();
 
         final EditText editBroker = v.findViewById(R.id.editBroker);
@@ -83,18 +81,11 @@ public class FragmentMQTTConfig extends Fragment {
             @Override
             public void onClick(View v) {
 
-                AppDataBase dataBase = AppDataBase.getAppDatabase(FragmentMQTTConfig.this.getContext());
-
-                MQTT mqtt = new MQTT();
-
-                mqtt.id = 1;
-                mqtt.broker = editBroker.getText().toString();
-                mqtt.port = editPort.getText().toString();
-                mqtt.mqttuser = editUser.getText().toString();
-                mqtt.mqttpasswd = editPassword.getText().toString();
-                mqtt.topic = editTopic.getText().toString();
-
-                dataBase.MQTTDao().update(mqtt);
+                cache.setBroker(editBroker.getText().toString());
+                cache.setPort(editPort.getText().toString());
+                cache.setMqttUser(editUser.getText().toString());
+                cache.setMqttPasswd(editPassword.getText().toString());
+                cache.setPort(editTopic.getText().toString());
 
                 // restart MQTT connection with this new parameters
                 ((MainActivity)FragmentMQTTConfig.this.getActivity()).globalStartMQTT();
