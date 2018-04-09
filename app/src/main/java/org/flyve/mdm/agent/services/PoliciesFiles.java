@@ -245,7 +245,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
                 return "";
             }
 
-            mBuilder.setContentText("Download " + fileName);
+            mBuilder.setContentText(filePath);
             mNotifyManager.notify(idNotification, mBuilder.build());
 
             publishProgress(50);
