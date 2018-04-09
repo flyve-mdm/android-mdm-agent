@@ -271,10 +271,12 @@ public class MQTTService extends Service implements MqttCallback {
         }
         catch (MqttException ex) {
             FlyveLog.e(TAG, ex.getMessage());
+            broadcastServiceStatus(false);
             broadcastMessage(Helpers.broadCastMessage(ERROR, String.valueOf(ex.getReasonCode()), ex.getMessage()));
             storeLog(Helpers.broadCastMessage(ERROR, "Error on connect", ex.getMessage()));
         } catch (Exception ex) {
             FlyveLog.e(TAG, ex.getMessage());
+            broadcastServiceStatus(false);
             broadcastMessage(Helpers.broadCastMessage(ERROR, "0", mContext.getResources().getString(R.string.MQTT_ERROR_CONNECTION)));
             storeLog(Helpers.broadCastMessage(ERROR, "Error on connect", ex.getMessage()));
         }
