@@ -337,7 +337,11 @@ public class PoliciesData {
     }
 
     private boolean getBooleanValue(String policyName) {
-        return Boolean.valueOf(getStringValue(policyName));
+        String value = getStringValue(policyName);
+        if(value.equals("")) {
+            value = "false";
+        }
+        return Boolean.valueOf(value);
     }
 
     private void setBooleanValue(String policyName, Boolean enable) {
@@ -345,7 +349,11 @@ public class PoliciesData {
     }
 
     private int getIntValue(String policyName) {
-        return Integer.parseInt(getStringValue(policyName));
+        String value = getStringValue(policyName);
+        if(value.equals("")) {
+            value = "0";
+        }
+        return Integer.parseInt(value);
     }
 
     private void setIntValue(String policyName, int value) {
