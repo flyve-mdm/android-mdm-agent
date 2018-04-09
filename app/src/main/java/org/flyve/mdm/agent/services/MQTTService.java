@@ -168,8 +168,8 @@ public class MQTTService extends Service implements MqttCallback {
 
         final String mBroker = cache.getBroker();
         final String mPort = cache.getPort();
-        final String mUser = cache.getMqttuser();
-        final String mPassword = cache.getMqttpasswd();
+        final String mUser = cache.getMqttUser();
+        final String mPassword = cache.getMqttPasswd();
         final String mTopic = cache.getTopic();
         final String mTLS = cache.getTls();
 

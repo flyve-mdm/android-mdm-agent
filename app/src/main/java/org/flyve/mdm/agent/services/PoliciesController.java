@@ -38,15 +38,12 @@ import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.data.PoliciesData;
-import org.flyve.mdm.agent.room.database.AppDataBase;
-import org.flyve.mdm.agent.room.entity.MQTT;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -67,20 +64,16 @@ public class PoliciesController {
     private MqttAndroidClient client;
     private Context context;
     private PoliciesData cache;
-    private MQTT mqtt;
-    private AppDataBase dataBase;
+    private MqttData mqttData;
     private String mTopic;
 
     public PoliciesController(Context context, MqttAndroidClient client) {
         this.client = client;
         this.context = context;
         cache = new PoliciesData(context);
-        mqtt = new MQTT();
-        dataBase = AppDataBase.getAppDatabase(context);
-        if(!dataBase.MQTTDao().loadAll().isEmpty()) {
-            mqtt = dataBase.MQTTDao().loadAll().get(0);
-            mTopic = mqtt.topic;
-        }
+        mqttData = new MqttData(context);
+
+        mTopic = mqttData.getTopic();
 
         arrTopics = new ArrayList<>();
     }
@@ -107,8 +100,7 @@ public class PoliciesController {
     public void addManifest(JSONObject json) {
         try {
             String version = json.getString("version");
-            mqtt.manifestVersion = version;
-            dataBase.MQTTDao().update(mqtt);
+            mqttData.setManifestVersion(version);
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
@@ -200,7 +192,7 @@ public class PoliciesController {
     public void useTLS(String taskId, Boolean enable) {
         try {
             if(enable) {
-                mqtt.tls = "1";
+                mqttData.setTls("1");
 
                 // stop service
                 ((Service) context).stopSelf();
@@ -212,7 +204,7 @@ public class PoliciesController {
                 sendTaskStatus(taskId, FEEDBACK_DONE);
 
             } else {
-                mqtt.tls = "0";
+                mqttData.setTls("0");
 
                 // stop service
                 ((Service) context).stopSelf();
@@ -223,8 +215,6 @@ public class PoliciesController {
                 // return the status of the task
                 sendTaskStatus(taskId, FEEDBACK_DONE);
             }
-
-            dataBase.MQTTDao().update(mqtt);
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
 
@@ -913,7 +903,7 @@ public class PoliciesController {
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Unenroll", "Unenroll success"));
 
             // clear cache
-            new MqttData(context).deleteAll();
+            mqttData.deleteAll();
 
             // send message
             Helpers.sendBroadcast(Helpers.broadCastMessage("action", "open", "splash"), Helpers.BROADCAST_MSG, this.context);
