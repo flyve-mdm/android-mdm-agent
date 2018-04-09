@@ -259,7 +259,7 @@ public class EnrollmentHelper {
                         cache.setPort(mport);
                         cache.setTls(mssl);
                         cache.setTopic(mtopic);
-                        cache.setUserToken(Helpers.getDeviceSerial());
+                        cache.setMqttUser( Helpers.getDeviceSerial() );
                         cache.setMqttPasswd(mpassword);
                         cache.setCertificate(mcert);
                         cache.setName(mNameEmail);
