@@ -41,7 +41,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
         // 2 = CALL_STATE_OFFHOOK (At least one call exists that is dialing, active, or on hold, and no calls are ringing or waiting.)
 <span class="nc" id="L42">        FlyveLog.d(&quot;Status: &quot; + state);</span>
 <span class="nc" id="L43">        final Context context = MDMAgent.getInstance();</span>
-<span class="nc" id="L44">        Boolean disable = new PoliciesData(context).getdisableSpeakerphone();</span>
+<span class="nc" id="L44">        Boolean disable = new PoliciesData(context).getDisableSpeakerphone();</span>
 
 <span class="nc bnc" id="L46" title="All 2 branches missed.">        if (state == 2) {</span>
 

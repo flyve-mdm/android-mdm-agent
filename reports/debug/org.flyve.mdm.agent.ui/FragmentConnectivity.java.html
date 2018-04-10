@@ -57,27 +57,27 @@ import java.util.HashMap;
 
 <span class="nc" id="L58">        HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
 <span class="nc" id="L59">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_airplane_mode));</span>
-<span class="nc" id="L60">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityAirplaneModeDisable()));</span>
+<span class="nc" id="L60">        map.put(&quot;disable&quot;, String.valueOf(cache.getDisableAirplaneMode()));</span>
 <span class="nc" id="L61">        arr.add(map);</span>
 
 <span class="nc" id="L63">        map = new HashMap&lt;&gt;();</span>
 <span class="nc" id="L64">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_bluetooth));</span>
-<span class="nc" id="L65">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityBluetoothDisable()));</span>
+<span class="nc" id="L65">        map.put(&quot;disable&quot;, String.valueOf(cache.getDisableBluetooth()));</span>
 <span class="nc" id="L66">        arr.add(map);</span>
 
 <span class="nc" id="L68">        map = new HashMap&lt;&gt;();</span>
 <span class="nc" id="L69">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_gps));</span>
-<span class="nc" id="L70">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityGPSDisable()));</span>
+<span class="nc" id="L70">        map.put(&quot;disable&quot;, String.valueOf(cache.getDisableGPS()));</span>
 <span class="nc" id="L71">        arr.add(map);</span>
 
 <span class="nc" id="L73">        map = new HashMap&lt;&gt;();</span>
 <span class="nc" id="L74">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_mobile_line));</span>
-<span class="nc" id="L75">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityMobileLineDisable()));</span>
+<span class="nc" id="L75">        map.put(&quot;disable&quot;, String.valueOf(cache.getDisableMobileLine()));</span>
 <span class="nc" id="L76">        arr.add(map);</span>
 
 <span class="nc" id="L78">        map = new HashMap&lt;&gt;();</span>
 <span class="nc" id="L79">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_wifi));</span>
-<span class="nc" id="L80">        map.put(&quot;disable&quot;, String.valueOf(cache.getConnectivityWifiDisable()));</span>
+<span class="nc" id="L80">        map.put(&quot;disable&quot;, String.valueOf(cache.getDisableWifi()));</span>
 <span class="nc" id="L81">        arr.add(map);</span>
 
 <span class="nc" id="L83">        lst.setAdapter( new ConnectivityAdapter(FragmentConnectivity.this.getActivity(), arr));</span>

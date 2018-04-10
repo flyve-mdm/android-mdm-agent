@@ -42,78 +42,83 @@ import java.util.List;
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
+<span class="nc" id="L45">    private int selectTab = 0;</span>
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        /**
-         *Inflate be_calendario_fragment and setup Views.
-         */
-<span class="nc" id="L51">        View v = inflater.inflate(R.layout.fragment_activity, null);</span>
+<span class="nc" id="L49">        View v = inflater.inflate(R.layout.fragment_activity, null);</span>
 
-<span class="nc" id="L53">        viewPager = v.findViewById(R.id.viewpager);</span>
-<span class="nc" id="L54">        setupViewPager(viewPager);</span>
+<span class="nc" id="L51">        viewPager = v.findViewById(R.id.viewpager);</span>
+<span class="nc" id="L52">        setupViewPager(viewPager);</span>
 
-<span class="nc" id="L56">        tabLayout = v.findViewById(R.id.tabs);</span>
-<span class="nc" id="L57">        tabLayout.setupWithViewPager(viewPager);</span>
-<span class="nc" id="L58">        return v;</span>
+<span class="nc" id="L54">        tabLayout = v.findViewById(R.id.tabs);</span>
+<span class="nc" id="L55">        tabLayout.setupWithViewPager(viewPager);</span>
+
+<span class="nc" id="L57">        viewPager.setCurrentItem(selectTab);</span>
+
+<span class="nc" id="L59">        return v;</span>
     }
 
+    public void setup(String extra) {
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if(extra.equalsIgnoreCase(&quot;DeployApp&quot;)) {</span>
+<span class="nc" id="L64">            selectTab = 3;</span>
+        }
+<span class="nc" id="L66">    }</span>
+
     private void setupViewPager(ViewPager viewPager) {
-<span class="nc" id="L62">        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());</span>
+<span class="nc" id="L69">        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());</span>
 
         // ----------------
         // LOG
         // ----------------
-<span class="nc" id="L67">        adapter.addFragment(new FragmentLog(), &quot;Log&quot;);</span>
+<span class="nc" id="L74">        adapter.addFragment(new FragmentLog(), &quot;Log&quot;);</span>
 
         // ----------------
         // Connectivity
         // ----------------
-<span class="nc" id="L72">        adapter.addFragment(new FragmentConnectivity(), &quot;Connectivity&quot;);</span>
+<span class="nc" id="L79">        adapter.addFragment(new FragmentConnectivity(), &quot;Connectivity&quot;);</span>
 
         // ----------------
         // Policies
         // ----------------
-<span class="nc" id="L77">        adapter.addFragment(new FragmentPolicies(), &quot;Policies&quot;);</span>
+<span class="nc" id="L84">        adapter.addFragment(new FragmentPolicies(), &quot;Policies&quot;);</span>
 
         // ----------------
         // App
         // ----------------
-<span class="nc" id="L82">        adapter.addFragment(new FragmentAppList(), &quot;Applications&quot;);</span>
+<span class="nc" id="L89">        adapter.addFragment(new FragmentAppList(), &quot;Applications&quot;);</span>
 
-<span class="nc" id="L84">        viewPager.setAdapter(adapter);</span>
-<span class="nc" id="L85">    }</span>
+<span class="nc" id="L91">        viewPager.setAdapter(adapter);</span>
+<span class="nc" id="L92">    }</span>
 
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
-<span class="nc" id="L89">        private final List&lt;Fragment&gt; mFragmentList = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L90">        private final List&lt;String&gt; mFragmentTitleList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L96">        private final List&lt;Fragment&gt; mFragmentList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L97">        private final List&lt;String&gt; mFragmentTitleList = new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L92">        public ViewPagerAdapter(FragmentManager manager) {</span>
-<span class="nc" id="L93">            super(manager);</span>
-<span class="nc" id="L94">        }</span>
+<span class="nc" id="L99">        public ViewPagerAdapter(FragmentManager manager) {</span>
+<span class="nc" id="L100">            super(manager);</span>
+<span class="nc" id="L101">        }</span>
 
         @Override
         public Fragment getItem(int position) {
-<span class="nc" id="L98">            return mFragmentList.get(position);</span>
+<span class="nc" id="L105">            return mFragmentList.get(position);</span>
         }
 
         @Override
         public int getCount() {
-<span class="nc" id="L103">            return mFragmentList.size();</span>
+<span class="nc" id="L110">            return mFragmentList.size();</span>
         }
 
         public void addFragment(Fragment fragment, String title) {
-<span class="nc" id="L107">            mFragmentList.add(fragment);</span>
-<span class="nc" id="L108">            mFragmentTitleList.add(title);</span>
-<span class="nc" id="L109">        }</span>
+<span class="nc" id="L114">            mFragmentList.add(fragment);</span>
+<span class="nc" id="L115">            mFragmentTitleList.add(title);</span>
+<span class="nc" id="L116">        }</span>
 
         @Override
         public CharSequence getPageTitle(int position) {
-<span class="nc" id="L113">            return mFragmentTitleList.get(position);</span>
+<span class="nc" id="L120">            return mFragmentTitleList.get(position);</span>
         }
     }
-
-
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

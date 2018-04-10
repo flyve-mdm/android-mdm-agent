@@ -35,17 +35,17 @@ public class LocalStorage {
 	 * Constructor
 	 * @param context
 	 */
-<span class="fc" id="L38">	public LocalStorage(Context context){</span>
-<span class="fc" id="L39">		mContext = context;</span>
-<span class="fc" id="L40">	}</span>
+<span class="nc" id="L38">	public LocalStorage(Context context){</span>
+<span class="nc" id="L39">		mContext = context;</span>
+<span class="nc" id="L40">	}</span>
 
 	/**
 	 * Get preference from setting
 	 * @return SharedPreferences
 	 */
 	private SharedPreferences getSettings(){
-<span class="pc bpc" id="L47" title="1 of 2 branches missed.">		if (mContext != null) {</span>
-<span class="fc" id="L48">		return mContext.getSharedPreferences(SHARED_PREFS_FILE, 0);</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">		if (mContext != null) {</span>
+<span class="nc" id="L48">		return mContext.getSharedPreferences(SHARED_PREFS_FILE, 0);</span>
 		} else {
 <span class="nc" id="L50">			return null;</span>
 		}
@@ -57,15 +57,15 @@ public class LocalStorage {
 	 * @return string the data
 	 */
 	protected String getData(String key){
-<span class="fc" id="L60">		String data = &quot;&quot;;</span>
-<span class="fc" id="L61">		SharedPreferences sp = getSettings();</span>
-<span class="pc bpc" id="L62" title="1 of 2 branches missed.">		if(sp != null) {</span>
-<span class="fc" id="L63">			data = sp.getString(key, null);</span>
-<span class="pc bpc" id="L64" title="1 of 2 branches missed.">			if(data==null) {</span>
-<span class="fc" id="L65">				data = &quot;&quot;;</span>
+<span class="nc" id="L60">		String data = &quot;&quot;;</span>
+<span class="nc" id="L61">		SharedPreferences sp = getSettings();</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">		if(sp != null) {</span>
+<span class="nc" id="L63">			data = sp.getString(key, null);</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">			if(data==null) {</span>
+<span class="nc" id="L65">				data = &quot;&quot;;</span>
 			}
 		}
-<span class="fc" id="L68">		return data;</span>
+<span class="nc" id="L68">		return data;</span>
 	}
 
 	/**

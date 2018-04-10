@@ -1,7 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MqttData.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.data</a> &gt; <span class="el_source">MqttData.java</span></div><h1>MqttData.java</h1><pre class="source lang-java linenums">/*
- * Copyright Teclib. All rights reserved.
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MqttData.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.data</a> &gt; <span class="el_source">MqttData.java</span></div><h1>MqttData.java</h1><pre class="source lang-java linenums">package org.flyve.mdm.agent.data;
+
+/*
+ *   Copyright © 2018 Teclib. All rights reserved.
  *
- * Flyve MDM is a mobile device management software.
+ *   This file is part of flyve-mdm-android
+ *
+ * flyve-mdm-android is a subproject of Flyve MDM. Flyve MDM is a mobile
+ * device management software.
  *
  * Flyve MDM is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,315 +18,217 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
- * @author    Rafael Hernandez
- * @copyright Copyright Teclib. All rights reserved.
+ * @author    rafael hernandez
+ * @date      9/4/18
+ * @copyright Copyright © 2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
- * @link      https://github.com/flyve-mdm/android-mdm-agent
+ * @link      https://github.com/flyve-mdm/flyve-mdm-android
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.data;
-
 import android.content.Context;
 
-public class MqttData extends LocalStorage {
+import org.flyve.mdm.agent.room.database.AppDataBase;
+import org.flyve.mdm.agent.room.entity.MQTT;
 
-    /**
-     * Constructor
-     *
-     * @param context
-     */
-    public MqttData(Context context) {
-<span class="fc" id="L36">        super(context);</span>
-<span class="fc" id="L37">    }</span>
+import java.util.List;
 
-    /**
-     * Get the version of the Manifest
-     * @return string the Manifest version
-     */
+public class MqttData {
+
+    private static final String MANIFEST_VERSION = &quot;manifestVersion&quot;;
+    private static final String URL = &quot;url&quot;;
+    private static final String USER_TOKEN = &quot;userToken&quot;;
+    private static final String INVITATION_TOKEN = &quot;invitationToken&quot;;
+    private static final String SESSION_TOKEN = &quot;sessionToken&quot;;
+    private static final String PROFILE_ID = &quot;profileId&quot;;
+    private static final String AGENT_ID = &quot;agentId&quot;;
+    private static final String BROKER = &quot;broker&quot;;
+    private static final String TLS = &quot;tls&quot;;
+    private static final String TOPIC = &quot;topic&quot;;
+    private static final String MQTT_USER = &quot;mqttuser&quot;;
+    private static final String MQTT_PASSWD = &quot;mqttpasswd&quot;;
+    private static final String CERTIFICATE = &quot;certificate&quot;;
+    private static final String NAME = &quot;name&quot;;
+    private static final String COMPUTERS_ID = &quot;computersId&quot;;
+    private static final String ENTITIES_ID = &quot;entitiesId&quot;;
+    private static final String PLUGIN_FLYVE_MDM_FLEETS_ID = &quot;pluginFlyvemdmFleetsId&quot;;
+    private static final String PORT = &quot;port&quot;;
+
+    private AppDataBase dataBase;
+
+<span class="fc" id="L60">    public MqttData(Context context) {</span>
+<span class="fc" id="L61">        dataBase = AppDataBase.getAppDatabase(context);</span>
+<span class="fc" id="L62">    }</span>
+
+    public void deleteAll() {
+<span class="nc" id="L65">        dataBase.MQTTDao().deleteAll();</span>
+<span class="nc" id="L66">    }</span>
+
     public String getManifestVersion() {
-<span class="nc" id="L44">        return getData(&quot;manifestVersion&quot;);</span>
+<span class="nc" id="L69">        return getStringValue(MANIFEST_VERSION);</span>
     }
 
-    /**
-     * Set the version of the Manifest
-     * @param version number of the version
-     */
-    public void setManifestVersion(String version) {
-<span class="nc" id="L52">        setData(&quot;manifestVersion&quot;, version);</span>
-<span class="nc" id="L53">    }</span>
+    public void setManifestVersion(String value) {
+<span class="nc" id="L73">        setStringValue(MANIFEST_VERSION, value);</span>
+<span class="nc" id="L74">    }</span>
 
-    /**
-     * Get the URL
-     * @return string the URL
-     */
     public String getUrl() {
-<span class="fc" id="L60">        return getData(&quot;url&quot;);</span>
+<span class="fc" id="L77">        return getStringValue(URL);</span>
     }
 
-    /**
-     * Set the URL
-     * @param url
-     */
-    public void setUrl(String url) {
-<span class="nc" id="L68">        setData(&quot;url&quot;, url);</span>
-<span class="nc" id="L69">    }</span>
+    public void setUrl(String value) {
+<span class="nc" id="L81">        setStringValue(URL, value);</span>
+<span class="nc" id="L82">    }</span>
 
-    /**
-     * Get the token of the user
-     * @return string the user token
-     */
     public String getUserToken() {
-<span class="nc" id="L76">        return getData(&quot;user_token&quot;);</span>
+<span class="nc" id="L85">        return getStringValue(USER_TOKEN);</span>
     }
 
-    /**
-     * Set the token of the user
-     * @param userToken
-     */
-    public void setUserToken(String userToken) {
-<span class="nc" id="L84">        setData(&quot;user_token&quot;, userToken);</span>
-<span class="nc" id="L85">    }</span>
+    public void setUserToken(String value) {
+<span class="nc" id="L89">        setStringValue(USER_TOKEN, value);</span>
+<span class="nc" id="L90">    }</span>
 
-    /**
-     * Get the invitation token
-     * @return string the invitation token
-     */
     public String getInvitationToken() {
-<span class="nc" id="L92">        return getData(&quot;invitation_token&quot;);</span>
+<span class="nc" id="L93">        return getStringValue(INVITATION_TOKEN);</span>
     }
 
-    /**
-     * Set the invitation token
-     * @param invitationToken
-     */
-    public void setInvitationToken(String invitationToken) {
-<span class="nc" id="L100">        setData(&quot;invitation_token&quot;, invitationToken);</span>
-<span class="nc" id="L101">    }</span>
+    public void setInvitationToken(String value) {
+<span class="nc" id="L97">        setStringValue(INVITATION_TOKEN, value);</span>
+<span class="nc" id="L98">    }</span>
 
-    /**
-     * Get the session token
-     * @return string the session token
-     */
     public String getSessionToken() {
-<span class="nc" id="L108">        return getData(&quot;session_token&quot;);</span>
+<span class="nc" id="L101">        return getStringValue(SESSION_TOKEN);</span>
     }
 
-    /**
-     * Set the session token
-     * @param sessionToken
-     */
-    public void setSessionToken(String sessionToken) {
-<span class="nc" id="L116">        setData(&quot;session_token&quot;, sessionToken);</span>
-<span class="nc" id="L117">    }</span>
+    public void setSessionToken(String value) {
+<span class="nc" id="L105">        setStringValue(SESSION_TOKEN, value);</span>
+<span class="nc" id="L106">    }</span>
 
-    /**
-     * Get the ID of the profile
-     * @return string the profile ID
-     */
     public String getProfileId() {
-<span class="nc" id="L124">        return getData(&quot;profile_id&quot;);</span>
+<span class="nc" id="L109">        return getStringValue(PROFILE_ID);</span>
     }
 
-    /**
-     * Set the ID of the profile
-     * @param profileId
-     */
-    public void setProfileId(String profileId) {
-<span class="nc" id="L132">        setData(&quot;profile_id&quot;, profileId);</span>
-<span class="nc" id="L133">    }</span>
+    public void setProfileId(String value) {
+<span class="nc" id="L113">        setStringValue(PROFILE_ID, value);</span>
+<span class="nc" id="L114">    }</span>
 
-    /**
-     * Get the ID of the agent
-     * @return string the agent ID
-     */
     public String getAgentId() {
-<span class="nc" id="L140">        return getData(&quot;agent_id&quot;);</span>
+<span class="nc" id="L117">        return getStringValue(AGENT_ID);</span>
     }
 
-    /**
-     * Set the ID of the agent
-     * @param agentId
-     */
-    public void setAgentId(String agentId) {
-<span class="nc" id="L148">        setData(&quot;agent_id&quot;, agentId);</span>
-<span class="nc" id="L149">    }</span>
+    public void setAgentId(String value) {
+<span class="nc" id="L121">        setStringValue(AGENT_ID, value);</span>
+<span class="nc" id="L122">    }</span>
 
-    /**
-     * Get the broker
-     * @return string the broker
-     */
     public String getBroker() {
-<span class="fc" id="L156">        return getData(&quot;broker&quot;);</span>
+<span class="fc" id="L125">        return getStringValue(BROKER);</span>
     }
 
-    /**
-     * Set the broker
-     * @param broker
-     */
-    public void setBroker(String broker) {
-<span class="nc" id="L164">        setData(&quot;broker&quot;, broker);</span>
-<span class="nc" id="L165">    }</span>
+    public void setBroker(String value) {
+<span class="nc" id="L129">        setStringValue(BROKER, value);</span>
+<span class="nc" id="L130">    }</span>
 
-    /**
-     * Get the port
-     * @return string the port
-     */
-    public String getPort() {
-<span class="nc" id="L172">        return getData(&quot;port&quot;);</span>
-    }
-
-    /**
-     * Set the port
-     * @param port
-     */
-    public void setPort(String port) {
-<span class="nc" id="L180">        setData(&quot;port&quot;, port);</span>
-<span class="nc" id="L181">    }</span>
-
-    /**
-     * Get the Transport Layer Security (TLS)
-     * @return string the TLS
-     */
     public String getTls() {
-<span class="nc" id="L188">        return getData(&quot;tls&quot;);</span>
+<span class="nc" id="L133">        return getStringValue(TLS);</span>
     }
 
-    /**
-     * Set the Transport Layer Security (TLS)
-     * @param tls
-     */
-    public void setTls(String tls) {
-<span class="nc" id="L196">        setData(&quot;tls&quot;, tls);</span>
-<span class="nc" id="L197">    }</span>
+    public void setTls(String value) {
+<span class="nc" id="L137">        setStringValue(TLS, value);</span>
+<span class="nc" id="L138">    }</span>
 
-    /**
-     * Get the topic
-     * @return string the topic
-     */
     public String getTopic() {
-<span class="nc" id="L204">        return getData(&quot;topic&quot;);</span>
+<span class="nc" id="L141">        return getStringValue(TOPIC);</span>
     }
 
-    /**
-     * Set the topic
-     * @param topic
-     */
-    public void setTopic(String topic) {
-<span class="nc" id="L212">        setData(&quot;topic&quot;, topic);</span>
-<span class="nc" id="L213">    }</span>
+    public void setTopic(String value) {
+<span class="nc" id="L145">        setStringValue(TOPIC, value);</span>
+<span class="nc" id="L146">    }</span>
 
-    /**
-     * Get the user of the Message Queue Telemetry Transport (MQTT)
-     * @return string the MQTT user
-     */
-    public String getMqttuser() {
-<span class="nc" id="L220">        return getData(&quot;mqttuser&quot;);</span>
+    public String getMqttUser() {
+<span class="nc" id="L149">        return getStringValue(MQTT_USER);</span>
     }
 
-    /**
-     * Set the user of the Message Queue Telemetry Transport (MQTT)
-     * @param mqttuser
-     */
-    public void setMqttuser(String mqttuser) {
-<span class="nc" id="L228">        setData(&quot;mqttuser&quot;, mqttuser);</span>
-<span class="nc" id="L229">    }</span>
+    public void setMqttUser(String value) {
+<span class="nc" id="L153">        setStringValue(MQTT_USER, value);</span>
+<span class="nc" id="L154">    }</span>
 
-    /**
-     * Get the password of the Message Queue Telemetry Transport (MQTT)
-     * @return the MQTT password
-     */
-    public String getMqttpasswd() {
-<span class="nc" id="L236">        return getData(&quot;mqttpasswd&quot;);</span>
+    public String getMqttPasswd() {
+<span class="nc" id="L157">        return getStringValue(MQTT_PASSWD);</span>
     }
 
-    /**
-     * Set the password of the Message Queue Telemetry Transport (MQTT)
-     * @param mqttpasswd
-     */
-    public void setMqttpasswd(String mqttpasswd) {
-<span class="nc" id="L244">        setData(&quot;mqttpasswd&quot;, mqttpasswd);</span>
-<span class="nc" id="L245">    }</span>
+    public void setMqttPasswd(String value) {
+<span class="nc" id="L161">        setStringValue(MQTT_PASSWD, value);</span>
+<span class="nc" id="L162">    }</span>
 
-    /**
-     * Get the Certificate
-     * @return string the certificate
-     */
     public String getCertificate() {
-<span class="nc" id="L252">        return getData(&quot;certificate&quot;);</span>
+<span class="nc" id="L165">        return getStringValue(CERTIFICATE);</span>
     }
 
-    /**
-     * Set the Certificate
-     * @param certificate
-     */
-    public void setCertificate(String certificate) {
-<span class="nc" id="L260">        setData(&quot;certificate&quot;, certificate);</span>
-<span class="nc" id="L261">    }</span>
+    public void setCertificate(String value) {
+<span class="nc" id="L169">        setStringValue(CERTIFICATE, value);</span>
+<span class="nc" id="L170">    }</span>
 
-    /**
-     * Get the name
-     * @return string the name
-     */
     public String getName() {
-<span class="nc" id="L268">        return getData(&quot;name&quot;);</span>
+<span class="nc" id="L173">        return getStringValue(NAME);</span>
     }
 
-    /**
-     * Set the name
-     * @param name
-     */
-    public void setName(String name) {
-<span class="nc" id="L276">        setData(&quot;name&quot;, name);</span>
-<span class="nc" id="L277">    }</span>
+    public void setName(String value) {
+<span class="nc" id="L177">        setStringValue(NAME, value);</span>
+<span class="nc" id="L178">    }</span>
 
-    /**
-     * Get the ID of the computer
-     * @return string the computer ID
-     */
     public String getComputersId() {
-<span class="nc" id="L284">        return getData(&quot;computers_id&quot;);</span>
+<span class="nc" id="L181">        return getStringValue(COMPUTERS_ID);</span>
     }
 
-    /**
-     * Set the ID of the computer
-     * @param computersId
-     */
-    public void setComputersId(String computersId) {
-<span class="nc" id="L292">        setData(&quot;computers_id&quot;, computersId);</span>
-<span class="nc" id="L293">    }</span>
+    public void setComputersId(String value) {
+<span class="nc" id="L185">        setStringValue(COMPUTERS_ID, value);</span>
+<span class="nc" id="L186">    }</span>
 
-    /**
-     * Get the ID of the entities
-     * @return string the entities ID
-     */
     public String getEntitiesId() {
-<span class="nc" id="L300">        return getData(&quot;entities_id&quot;);</span>
+<span class="nc" id="L189">        return getStringValue(ENTITIES_ID);</span>
     }
 
-    /**
-     * Set the ID of the entities
-     * @param entitiesId
-     */
-    public void setEntitiesId(String entitiesId) {
-<span class="nc" id="L308">        setData(&quot;entities_id&quot;, entitiesId);</span>
-<span class="nc" id="L309">    }</span>
+    public void setEntitiesId(String value) {
+<span class="nc" id="L193">        setStringValue(ENTITIES_ID, value);</span>
+<span class="nc" id="L194">    }</span>
 
-    /**
-     * Get the ID of the Fleets of the Flyve MDM plugin
-     * @return string the Fleets ID
-     */
     public String getPluginFlyvemdmFleetsId() {
-<span class="nc" id="L316">        return getData(&quot;plugin_flyvemdm_fleets_id&quot;);</span>
+<span class="nc" id="L197">        return getStringValue(PLUGIN_FLYVE_MDM_FLEETS_ID);</span>
     }
 
-    /**
-     * Set the ID of the Fleets of the Flyve MDM plugin
-     * @param pluginFlyvemdmFleetsId
-     */
-    public void setPluginFlyvemdmFleetsId(String pluginFlyvemdmFleetsId) {
-<span class="nc" id="L324">        setData(&quot;plugin_flyvemdm_fleets_id&quot;, pluginFlyvemdmFleetsId);</span>
-<span class="nc" id="L325">    }</span>
+    public void setPluginFlyvemdmFleetsId(String value) {
+<span class="nc" id="L201">        setStringValue(PLUGIN_FLYVE_MDM_FLEETS_ID, value);</span>
+<span class="nc" id="L202">    }</span>
+
+    public String getPort() {
+<span class="nc" id="L205">        return getStringValue(PORT);</span>
+    }
+
+    public void setPort(String value) {
+<span class="nc" id="L209">        setStringValue(PORT, value);</span>
+<span class="nc" id="L210">    }</span>
+
+    private String getStringValue(String name) {
+<span class="fc" id="L213">        List&lt;MQTT&gt; arrMQTT = dataBase.MQTTDao().getByName(name);</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">        if(!arrMQTT.isEmpty()) {</span>
+<span class="nc" id="L215">            return arrMQTT.get(0).value;</span>
+        } else {
+<span class="fc" id="L217">            return &quot;&quot;;</span>
+        }
+    }
+
+    private void setStringValue(String name, String value) {
+<span class="nc bnc" id="L222" title="All 2 branches missed.">        if(dataBase.MQTTDao().getByName(name).isEmpty()) {</span>
+<span class="nc" id="L223">            MQTT mqtt = new MQTT();</span>
+<span class="nc" id="L224">            mqtt.name = name;</span>
+<span class="nc" id="L225">            mqtt.value = value;</span>
+<span class="nc" id="L226">            dataBase.MQTTDao().insert(mqtt);</span>
+<span class="nc" id="L227">        } else {</span>
+<span class="nc" id="L228">            MQTT mqtt = dataBase.MQTTDao().getByName(name).get(0);</span>
+<span class="nc" id="L229">            mqtt.value = value;</span>
+<span class="nc" id="L230">            dataBase.MQTTDao().update(mqtt);</span>
+        }
+<span class="nc" id="L232">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

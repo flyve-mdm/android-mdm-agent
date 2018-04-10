@@ -42,7 +42,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 
 <span class="nc bnc" id="L43" title="All 2 branches missed.">        if(&quot;android.provider.Telephony.SMS_RECEIVED&quot;.equalsIgnoreCase(action)) {</span>
 <span class="nc" id="L44">            FlyveLog.d(&quot;SMS Received&quot;);</span>
-<span class="nc bnc" id="L45" title="All 2 branches missed.">            if(cache.getConnectivitySmsMmsDisable()) {</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            if(cache.getDisableSmsMms()) {</span>
 <span class="nc" id="L46">                abortBroadcast();</span>
 <span class="nc" id="L47">                Helpers.deleteAllSMS(context);</span>
             }
