@@ -36,6 +36,7 @@ import android.support.v4.app.NotificationCompat.Builder;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
+import org.flyve.mdm.agent.room.database.AppDataBase;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -255,9 +256,18 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
                 publishProgress(100);
                 FlyveLog.d("Download ready");
 
+                org.flyve.mdm.agent.room.entity.File dataFile = new org.flyve.mdm.agent.room.entity.File();
+                dataFile.fileName = fileName;
+                dataFile.filePath = file.getAbsolutePath();
+
+                AppDataBase dataBase = AppDataBase.getAppDatabase(context);
+                dataBase.FileDao().deleteByName(fileName);
+                dataBase.FileDao().insert(dataFile);
+
                 return file.getAbsolutePath();
             } else {
                 publishProgress(100);
+                mBuilder.setContentText("Download " + fileName + " Fail");
                 FlyveLog.e("Download fail: " + data);
 
                 return "";
