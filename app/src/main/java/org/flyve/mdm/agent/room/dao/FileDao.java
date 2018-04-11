@@ -29,7 +29,6 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import org.flyve.mdm.agent.room.entity.Application;
 import org.flyve.mdm.agent.room.entity.File;
 
 @Dao
@@ -48,10 +47,10 @@ public interface FileDao {
     void deleteAll();
 
     @Query("Select * FROM files")
-    Application[] loadAll();
+    File[] loadAll();
 
     @Query("SELECT * FROM files WHERE file_id = :id")
-    Application[] getFileById(String id);
+    File[] getFileById(String id);
 
     @Query("UPDATE files SET file_status = :status WHERE file_id = :id")
     int updateStatus(String id, String status);

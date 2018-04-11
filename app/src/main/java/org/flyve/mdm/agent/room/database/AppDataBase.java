@@ -29,6 +29,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import org.flyve.mdm.agent.room.dao.ApplicationDao;
+import org.flyve.mdm.agent.room.dao.FileDao;
 import org.flyve.mdm.agent.room.dao.MQTTDao;
 import org.flyve.mdm.agent.room.dao.PoliciesDao;
 import org.flyve.mdm.agent.room.entity.Application;
@@ -45,6 +46,7 @@ public abstract class AppDataBase extends RoomDatabase {
     public abstract ApplicationDao applicationDao();
     public abstract MQTTDao MQTTDao();
     public abstract PoliciesDao PoliciesDao();
+    public abstract FileDao FileDao();
 
     public static AppDataBase getAppDatabase(Context context) {
         if (instance == null) {
