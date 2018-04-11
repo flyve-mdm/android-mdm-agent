@@ -137,6 +137,8 @@
     <string name="app_no_data">No applications available</string>
     <string name="app_pending_to_install">Pending to install</string>
 
+    <string name="file_no_data">No files available</string>
+
     <string-array name="email_array">
         <item>home</item>
         <item>work</item>
