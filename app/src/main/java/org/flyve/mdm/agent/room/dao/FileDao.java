@@ -55,4 +55,6 @@ public interface FileDao {
     @Query("UPDATE files SET file_status = :status WHERE file_id = :id")
     int updateStatus(String id, String status);
 
+    @Query("DELETE FROM files WHERE file_name = :name")
+    void deleteByName(String name);
 }
