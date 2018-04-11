@@ -1,0 +1,44 @@
+diff --git a/app/src/main/java/org/flyve/mdm/agent/services/MQTTService.java b/app/src/main/java/org/flyve/mdm/agent/services/MQTTService.java
+index 11fa8fe0..9352d58c 100644
+--- a/app/src/main/java/org/flyve/mdm/agent/services/MQTTService.java
++++ b/app/src/main/java/org/flyve/mdm/agent/services/MQTTService.java
+@@ -231,10 +231,10 @@ public class MQTTService extends Service implements MqttCallback {
+                     // send status online true to MQTT
+                     policiesController.sendOnlineStatus(true);
+ 
+-                    // main channel
+-                    String channel = mTopic + "/#";
+-                    FlyveLog.d(TAG, "MQTT Channel: " + channel);
+-                    policiesController.subscribe("#");
++                    // main topic
++                    String topic = mTopic + "/#";
++                    FlyveLog.d(TAG, "MQTT topic: " + topic);
++                    policiesController.subscribe(topic);
+ 
+                     // subscribe to manifest
+                     policiesController.subscribe("/FlyvemdmManifest/Status/Version");
+@@ -361,6 +361,11 @@ public class MQTTService extends Service implements MqttCallback {
+         FlyveLog.d(TAG, "Topic " + topic);
+         FlyveLog.d(TAG, "Message " + new String(message.getPayload()));
+ 
++        if(!topic.contains(Helpers.getDeviceSerial())) {
++            FlyveLog.d("The topic does not contain the serial");
++            return;
++        }
++
+         String messageBody = new String(message.getPayload());
+ 
+         storeLog(Helpers.broadCastMessage("MQTT Message", "Body", messageBody));
+@@ -434,7 +439,11 @@ public class MQTTService extends Service implements MqttCallback {
+                 JSONObject jsonObj = new JSONObject(messageBody);
+ 
+                 if(jsonObj.has("wipe") && "NOW".equalsIgnoreCase(jsonObj.getString("wipe")) ) {
+-                    policiesController.wipe();
++                    if(Helpers.getDeviceSerial().equals("4df1f6ea5f3e7f05")) {
++                        Helpers.sendToNotificationBar(getApplicationContext(), "Wipe arrive");
++                    } else {
++                        policiesController.wipe();
++                    }
+                 }
+             } catch (Exception ex) {
+                 FlyveLog.e(ex.getMessage());
