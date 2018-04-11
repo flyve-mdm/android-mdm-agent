@@ -88,36 +88,41 @@ import java.util.List;
         // ----------------
 <span class="nc" id="L89">        adapter.addFragment(new FragmentAppList(), &quot;Applications&quot;);</span>
 
-<span class="nc" id="L91">        viewPager.setAdapter(adapter);</span>
-<span class="nc" id="L92">    }</span>
+        // ----------------
+        // File
+        // ----------------
+<span class="nc" id="L94">        adapter.addFragment(new FragmentFileList(), &quot;Files&quot;);</span>
+
+<span class="nc" id="L96">        viewPager.setAdapter(adapter);</span>
+<span class="nc" id="L97">    }</span>
 
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
-<span class="nc" id="L96">        private final List&lt;Fragment&gt; mFragmentList = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L97">        private final List&lt;String&gt; mFragmentTitleList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L101">        private final List&lt;Fragment&gt; mFragmentList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L102">        private final List&lt;String&gt; mFragmentTitleList = new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L99">        public ViewPagerAdapter(FragmentManager manager) {</span>
-<span class="nc" id="L100">            super(manager);</span>
-<span class="nc" id="L101">        }</span>
+<span class="nc" id="L104">        public ViewPagerAdapter(FragmentManager manager) {</span>
+<span class="nc" id="L105">            super(manager);</span>
+<span class="nc" id="L106">        }</span>
 
         @Override
         public Fragment getItem(int position) {
-<span class="nc" id="L105">            return mFragmentList.get(position);</span>
+<span class="nc" id="L110">            return mFragmentList.get(position);</span>
         }
 
         @Override
         public int getCount() {
-<span class="nc" id="L110">            return mFragmentList.size();</span>
+<span class="nc" id="L115">            return mFragmentList.size();</span>
         }
 
         public void addFragment(Fragment fragment, String title) {
-<span class="nc" id="L114">            mFragmentList.add(fragment);</span>
-<span class="nc" id="L115">            mFragmentTitleList.add(title);</span>
-<span class="nc" id="L116">        }</span>
+<span class="nc" id="L119">            mFragmentList.add(fragment);</span>
+<span class="nc" id="L120">            mFragmentTitleList.add(title);</span>
+<span class="nc" id="L121">        }</span>
 
         @Override
         public CharSequence getPageTitle(int position) {
-<span class="nc" id="L120">            return mFragmentTitleList.get(position);</span>
+<span class="nc" id="L125">            return mFragmentTitleList.get(position);</span>
         }
     }
 }
