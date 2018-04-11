@@ -88,6 +88,11 @@ public class FragmentActivity extends Fragment {
         // ----------------
         adapter.addFragment(new FragmentAppList(), "Applications");
 
+        // ----------------
+        // File
+        // ----------------
+        adapter.addFragment(new FragmentFileList(), "Files");
+
         viewPager.setAdapter(adapter);
     }
 
