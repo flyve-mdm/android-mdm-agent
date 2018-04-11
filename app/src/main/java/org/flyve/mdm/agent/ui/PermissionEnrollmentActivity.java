@@ -93,6 +93,7 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
     private void requestPermission() {
         ActivityCompat.requestPermissions(PermissionEnrollmentActivity.this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.READ_PHONE_STATE,
                         Manifest.permission.CAMERA,
                         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -128,7 +129,8 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED
                         && grantResults[2] == PackageManager.PERMISSION_GRANTED
                         && grantResults[3] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[4] == PackageManager.PERMISSION_GRANTED) {
+                        && grantResults[4] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[5] == PackageManager.PERMISSION_GRANTED) {
                     presenter.generateInventory(PermissionEnrollmentActivity.this);
                 } else {
                     presenter.showError(getString(R.string.permission_error_result));
