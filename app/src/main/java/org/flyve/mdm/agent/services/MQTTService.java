@@ -439,11 +439,7 @@ public class MQTTService extends Service implements MqttCallback {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
                 if(jsonObj.has("wipe") && "NOW".equalsIgnoreCase(jsonObj.getString("wipe")) ) {
-                    if(Helpers.getDeviceSerial().equals("4df1f6ea5f3e7f05")) {
-                        Helpers.sendToNotificationBar(getApplicationContext(), "Wipe arrive");
-                    } else {
-                        policiesController.wipe();
-                    }
+                    policiesController.wipe();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
