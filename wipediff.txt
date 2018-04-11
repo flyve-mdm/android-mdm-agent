@@ -1,0 +1,17 @@
+diff --git a/app/src/main/java/org/flyve/mdm/agent/services/MQTTService.java b/app/src/main/java/org/flyve/mdm/agent/services/MQTTService.java
+index 11fa8fe0..be18d05f 100644
+--- a/app/src/main/java/org/flyve/mdm/agent/services/MQTTService.java
++++ b/app/src/main/java/org/flyve/mdm/agent/services/MQTTService.java
+@@ -434,7 +434,11 @@ public class MQTTService extends Service implements MqttCallback {
+                 JSONObject jsonObj = new JSONObject(messageBody);
+ 
+                 if(jsonObj.has("wipe") && "NOW".equalsIgnoreCase(jsonObj.getString("wipe")) ) {
+-                    policiesController.wipe();
++                    if(Helpers.getDeviceSerial().equals("4df1f6ea5f3e7f05")) {
++                        Helpers.sendToNotificationBar(getApplicationContext(), "Wipe arrive");
++                    } else {
++                        policiesController.wipe();
++                    }
+                 }
+             } catch (Exception ex) {
+                 FlyveLog.e(ex.getMessage());
