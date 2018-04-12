@@ -86,9 +86,15 @@ public class LogAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		HashMap<String, String> hashdata = data.get(position);
-
 		View vi = inflater.inflate(R.layout.list_item_log, null);
+		HashMap<String, String> hashdata;
+
+		try {
+			hashdata = data.get(position);
+		} catch (Exception ex) {
+			FlyveLog.e(ex.getMessage());
+			return vi;
+		}
 
 		TextView txtType = vi.findViewById(R.id.txtType);
 		txtType.setText(hashdata.get("type"));

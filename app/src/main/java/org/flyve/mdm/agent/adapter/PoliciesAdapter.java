@@ -32,6 +32,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.util.HashMap;
 import java.util.List;
@@ -84,10 +85,16 @@ public class PoliciesAdapter extends BaseAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		HashMap<String, String> hashdata;
-		hashdata = this.data.get(position);
-		
+
 		View vi = inflater.inflate(R.layout.list_item_policies, null);
+		HashMap<String, String> hashdata;
+
+		try {
+			hashdata = data.get(position);
+		} catch (Exception ex) {
+			FlyveLog.e(ex.getMessage());
+			return vi;
+		}
 
 		TextView lblDescription = vi.findViewById(R.id.lblDescription);
 		lblDescription.setText(hashdata.get("description"));

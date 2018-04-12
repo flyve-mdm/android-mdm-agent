@@ -86,9 +86,15 @@ public class FilesAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		File file = data[position];
-
 		View vi = inflater.inflate(R.layout.list_item_file, null);
+		File file;
+
+		try {
+			file = data[position];
+		} catch (Exception ex) {
+			FlyveLog.e(ex.getMessage());
+			return vi;
+		}
 
 		TextView txtFileName = vi.findViewById(R.id.txtFileName);
 		txtFileName.setText(file.fileName);
