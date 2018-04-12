@@ -86,23 +86,29 @@ public class LogAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-<span class="nc" id="L89">		HashMap&lt;String, String&gt; hashdata = data.get(position);</span>
+<span class="nc" id="L89">		View vi = inflater.inflate(R.layout.list_item_log, null);</span>
+		HashMap&lt;String, String&gt; hashdata;
 
-<span class="nc" id="L91">		View vi = inflater.inflate(R.layout.list_item_log, null);</span>
+		try {
+<span class="nc" id="L93">			hashdata = data.get(position);</span>
+<span class="nc" id="L94">		} catch (Exception ex) {</span>
+<span class="nc" id="L95">			FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L96">			return vi;</span>
+<span class="nc" id="L97">		}</span>
 
-<span class="nc" id="L93">		TextView txtType = vi.findViewById(R.id.txtType);</span>
-<span class="nc" id="L94">		txtType.setText(hashdata.get(&quot;type&quot;));</span>
+<span class="nc" id="L99">		TextView txtType = vi.findViewById(R.id.txtType);</span>
+<span class="nc" id="L100">		txtType.setText(hashdata.get(&quot;type&quot;));</span>
 
-<span class="nc" id="L96">		TextView txtDate = vi.findViewById(R.id.txtDate);</span>
-<span class="nc" id="L97">		txtDate.setText(hashdata.get(&quot;date&quot;));</span>
+<span class="nc" id="L102">		TextView txtDate = vi.findViewById(R.id.txtDate);</span>
+<span class="nc" id="L103">		txtDate.setText(hashdata.get(&quot;date&quot;));</span>
 
-<span class="nc" id="L99">		TextView txtTitle = vi.findViewById(R.id.txtTitle);</span>
-<span class="nc" id="L100">		txtTitle.setText(hashdata.get(&quot;title&quot;));</span>
+<span class="nc" id="L105">		TextView txtTitle = vi.findViewById(R.id.txtTitle);</span>
+<span class="nc" id="L106">		txtTitle.setText(hashdata.get(&quot;title&quot;));</span>
 
-<span class="nc" id="L102">		TextView txtBody = vi.findViewById(R.id.txtBody);</span>
-<span class="nc" id="L103">		txtBody.setText(hashdata.get(&quot;body&quot;));</span>
+<span class="nc" id="L108">		TextView txtBody = vi.findViewById(R.id.txtBody);</span>
+<span class="nc" id="L109">		txtBody.setText(hashdata.get(&quot;body&quot;));</span>
 
-<span class="nc" id="L105">		return vi;</span>
+<span class="nc" id="L111">		return vi;</span>
 
 	}
 

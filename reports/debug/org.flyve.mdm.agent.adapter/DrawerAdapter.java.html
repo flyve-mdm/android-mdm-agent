@@ -31,19 +31,22 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.utils.FlyveLog;
+
 import java.util.HashMap;
 import java.util.List;
 
 public class DrawerAdapter extends BaseAdapter {
 
 	private List&lt;HashMap&lt;String, String&gt;&gt; data;
-<span class="nc" id="L41">	private LayoutInflater inflater = null;</span>
+<span class="nc" id="L44">	private LayoutInflater inflater = null;</span>
 
-<span class="nc" id="L43">	public DrawerAdapter(Activity activity, List&lt;HashMap&lt;String, String&gt;&gt; data) {</span>
-<span class="nc" id="L44">		this.data = data;</span>
-<span class="nc" id="L45">		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);</span>
-<span class="nc" id="L46">	}</span>
+<span class="nc" id="L46">	public DrawerAdapter(Activity activity, List&lt;HashMap&lt;String, String&gt;&gt; data) {</span>
+<span class="nc" id="L47">		this.data = data;</span>
+<span class="nc" id="L48">		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);</span>
+<span class="nc" id="L49">	}</span>
 
 	/**
 	 * Get count of the data
@@ -51,7 +54,7 @@ public class DrawerAdapter extends BaseAdapter {
 	 */
 	@Override
 	public int getCount() {
-<span class="nc" id="L54">		return this.data.size();</span>
+<span class="nc" id="L57">		return this.data.size();</span>
 	}
 
 	/**
@@ -61,7 +64,7 @@ public class DrawerAdapter extends BaseAdapter {
  	 */
 	@Override
 	public Object getItem(int position) {
-<span class="nc" id="L64">		return position;</span>
+<span class="nc" id="L67">		return position;</span>
 	}
 
 	/**
@@ -71,7 +74,7 @@ public class DrawerAdapter extends BaseAdapter {
 	 */
 	@Override
 	public long getItemId(int position) {
-<span class="nc" id="L74">		return position;</span>
+<span class="nc" id="L77">		return position;</span>
 	}
 
 	/**
@@ -83,29 +86,35 @@ public class DrawerAdapter extends BaseAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		HashMap&lt;String, String&gt; hashdata;
-<span class="nc" id="L87">		hashdata = this.data.get(position);</span>
 		
-<span class="nc" id="L89">		View vi = inflater.inflate(R.layout.list_item_drawer, null);</span>
+<span class="nc" id="L90">		View vi = inflater.inflate(R.layout.list_item_drawer, null);</span>
+		HashMap&lt;String, String&gt; hashdata;
 
-<span class="nc" id="L91">		View viewSeparator = vi.findViewById(R.id.viewSeparator);</span>
-<span class="nc bnc" id="L92" title="All 4 branches missed.">		if(hashdata.containsKey(&quot;separator&quot;) &amp;&amp; &quot;true&quot;.equalsIgnoreCase(hashdata.get(&quot;separator&quot;))) {</span>
-<span class="nc" id="L93">			viewSeparator.setVisibility(View.VISIBLE);</span>
+		try {
+<span class="nc" id="L94">			hashdata = data.get(position);</span>
+<span class="nc" id="L95">		} catch (Exception ex) {</span>
+<span class="nc" id="L96">			FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L97">			return vi;</span>
+<span class="nc" id="L98">		}</span>
+
+<span class="nc" id="L100">		View viewSeparator = vi.findViewById(R.id.viewSeparator);</span>
+<span class="nc bnc" id="L101" title="All 4 branches missed.">		if(hashdata.containsKey(&quot;separator&quot;) &amp;&amp; &quot;true&quot;.equalsIgnoreCase(hashdata.get(&quot;separator&quot;))) {</span>
+<span class="nc" id="L102">			viewSeparator.setVisibility(View.VISIBLE);</span>
 		} else {
-<span class="nc" id="L95">			viewSeparator.setVisibility(View.GONE);</span>
+<span class="nc" id="L104">			viewSeparator.setVisibility(View.GONE);</span>
 		}
 
-<span class="nc" id="L98">		TextView txtTitle = vi.findViewById(R.id.txtTitle);</span>
-<span class="nc" id="L99">        ImageView img = vi.findViewById(R.id.img);</span>
+<span class="nc" id="L107">		TextView txtTitle = vi.findViewById(R.id.txtTitle);</span>
+<span class="nc" id="L108">        ImageView img = vi.findViewById(R.id.img);</span>
 
-<span class="nc" id="L101">		Context context = img.getContext();</span>
-<span class="nc" id="L102">		int iddw = context.getResources().getIdentifier(hashdata.get(&quot;img&quot;), &quot;drawable&quot;, context.getPackageName());</span>
-<span class="nc" id="L103">		img.setImageResource(iddw);</span>
+<span class="nc" id="L110">		Context context = img.getContext();</span>
+<span class="nc" id="L111">		int iddw = context.getResources().getIdentifier(hashdata.get(&quot;img&quot;), &quot;drawable&quot;, context.getPackageName());</span>
+<span class="nc" id="L112">		img.setImageResource(iddw);</span>
 
-<span class="nc" id="L105">		String title = hashdata.get(&quot;name&quot;);</span>
-<span class="nc" id="L106">		txtTitle.setText(title);</span>
+<span class="nc" id="L114">		String title = hashdata.get(&quot;name&quot;);</span>
+<span class="nc" id="L115">		txtTitle.setText(title);</span>
 
-<span class="nc" id="L108">		return vi;</span>
+<span class="nc" id="L117">		return vi;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

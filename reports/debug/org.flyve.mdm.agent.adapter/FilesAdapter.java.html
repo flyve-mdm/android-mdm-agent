@@ -86,17 +86,23 @@ public class FilesAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-<span class="nc" id="L89">		File file = data[position];</span>
+<span class="nc" id="L89">		View vi = inflater.inflate(R.layout.list_item_file, null);</span>
+		File file;
 
-<span class="nc" id="L91">		View vi = inflater.inflate(R.layout.list_item_file, null);</span>
+		try {
+<span class="nc" id="L93">			file = data[position];</span>
+<span class="nc" id="L94">		} catch (Exception ex) {</span>
+<span class="nc" id="L95">			FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L96">			return vi;</span>
+<span class="nc" id="L97">		}</span>
 
-<span class="nc" id="L93">		TextView txtFileName = vi.findViewById(R.id.txtFileName);</span>
-<span class="nc" id="L94">		txtFileName.setText(file.fileName);</span>
+<span class="nc" id="L99">		TextView txtFileName = vi.findViewById(R.id.txtFileName);</span>
+<span class="nc" id="L100">		txtFileName.setText(file.fileName);</span>
 
-<span class="nc" id="L96">		TextView txtPath = vi.findViewById(R.id.txtPath);</span>
-<span class="nc" id="L97">		txtPath.setText(file.filePath);</span>
+<span class="nc" id="L102">		TextView txtPath = vi.findViewById(R.id.txtPath);</span>
+<span class="nc" id="L103">		txtPath.setText(file.filePath);</span>
 
-<span class="nc" id="L99">		return vi;</span>
+<span class="nc" id="L105">		return vi;</span>
 
 	}
 

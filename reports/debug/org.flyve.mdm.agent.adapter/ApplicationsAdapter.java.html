@@ -88,29 +88,35 @@ public class ApplicationsAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-<span class="nc" id="L91">		Application app = data[position];</span>
+<span class="nc" id="L91">		View vi = inflater.inflate(R.layout.list_item_application, null);</span>
+		Application app;
 
-<span class="nc" id="L93">		View vi = inflater.inflate(R.layout.list_item_application, null);</span>
+		try {
+<span class="nc" id="L95">			app = data[position];</span>
+<span class="nc" id="L96">		} catch (Exception ex) {</span>
+<span class="nc" id="L97">			FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L98">			return vi;</span>
+<span class="nc" id="L99">		}</span>
 
-<span class="nc" id="L95">		TextView txtStatus = vi.findViewById(R.id.txtStatus);</span>
+<span class="nc" id="L101">		TextView txtStatus = vi.findViewById(R.id.txtStatus);</span>
 
-<span class="nc" id="L97">		String status = parent.getResources().getString(R.string.app_installed);</span>
-<span class="nc bnc" id="L98" title="All 2 branches missed.">		if(app.appStatus.equals(&quot;1&quot;)) {</span>
-<span class="nc" id="L99">			status = parent.getResources().getString(R.string.app_pending);</span>
+<span class="nc" id="L103">		String status = parent.getResources().getString(R.string.app_installed);</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		if(app.appStatus.equals(&quot;1&quot;)) {</span>
+<span class="nc" id="L105">			status = parent.getResources().getString(R.string.app_pending);</span>
 		}
 
-<span class="nc" id="L102">		txtStatus.setText(status);</span>
+<span class="nc" id="L108">		txtStatus.setText(status);</span>
 
-<span class="nc" id="L104">		TextView txtAppName = vi.findViewById(R.id.txtAppName);</span>
-<span class="nc" id="L105">		txtAppName.setText(app.appName);</span>
+<span class="nc" id="L110">		TextView txtAppName = vi.findViewById(R.id.txtAppName);</span>
+<span class="nc" id="L111">		txtAppName.setText(app.appName);</span>
 
-<span class="nc" id="L107">		TextView txtPackageName = vi.findViewById(R.id.txtPackageName);</span>
-<span class="nc" id="L108">		txtPackageName.setText(app.appPackage);</span>
+<span class="nc" id="L113">		TextView txtPackageName = vi.findViewById(R.id.txtPackageName);</span>
+<span class="nc" id="L114">		txtPackageName.setText(app.appPackage);</span>
 
-<span class="nc" id="L110">		ImageView imgApp = vi.findViewById(R.id.imgApp);</span>
-<span class="nc" id="L111">		imgApp.setImageDrawable(Helpers.getApplicationImage(parent.getContext(), app.appPackage));</span>
+<span class="nc" id="L116">		ImageView imgApp = vi.findViewById(R.id.imgApp);</span>
+<span class="nc" id="L117">		imgApp.setImageDrawable(Helpers.getApplicationImage(parent.getContext(), app.appPackage));</span>
 
-<span class="nc" id="L113">		return vi;</span>
+<span class="nc" id="L119">		return vi;</span>
 
 	}
 
