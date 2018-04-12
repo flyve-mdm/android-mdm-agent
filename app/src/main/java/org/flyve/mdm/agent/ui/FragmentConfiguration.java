@@ -37,7 +37,7 @@ import android.widget.Switch;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.data.LocalStorage;
-import org.flyve.mdm.agent.room.database.AppDataBase;
+import org.flyve.mdm.agent.data.MqttData;
 
 public class FragmentConfiguration extends Fragment {
 
@@ -85,9 +85,7 @@ public class FragmentConfiguration extends Fragment {
                         LocalStorage localStorage = new LocalStorage(FragmentConfiguration.this.getContext());
                         localStorage.clearSettings();
 
-                        AppDataBase dataBase = AppDataBase.getAppDatabase(FragmentConfiguration.this.getContext());
-                        dataBase.MQTTDao().deleteAll();
-
+                        new MqttData(FragmentConfiguration.this.getContext()).deleteAll();
                         dialog.dismiss();
                     }
                 });
