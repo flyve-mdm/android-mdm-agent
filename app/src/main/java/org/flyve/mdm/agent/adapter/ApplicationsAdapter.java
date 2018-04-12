@@ -88,9 +88,15 @@ public class ApplicationsAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		Application app = data[position];
-
 		View vi = inflater.inflate(R.layout.list_item_application, null);
+		Application app;
+
+		try {
+			app = data[position];
+		} catch (Exception ex) {
+			FlyveLog.e(ex.getMessage());
+			return vi;
+		}
 
 		TextView txtStatus = vi.findViewById(R.id.txtStatus);
 
