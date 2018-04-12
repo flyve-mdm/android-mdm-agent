@@ -54,6 +54,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.AppData;
+import org.flyve.mdm.agent.ui.ErrorActivity;
 import org.flyve.mdm.agent.ui.InstallAppActivity;
 import org.flyve.mdm.agent.ui.MainActivity;
 import org.json.JSONObject;
@@ -89,6 +90,13 @@ public class Helpers {
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.putExtra("APP_ID", id);
 		intent.putExtra("APP_PATH", filename);
+		context.startActivity(intent);
+	}
+
+	public static void openErrorActivity(Context context, String message) {
+		Intent intent = new Intent(context, ErrorActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtra("MESSAGE", message);
 		context.startActivity(intent);
 	}
 
