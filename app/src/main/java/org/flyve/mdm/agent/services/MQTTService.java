@@ -140,6 +140,17 @@ public class MQTTService extends Service implements MqttCallback {
 
         FlyveLog.i(TAG, "Start MQTT Service: with parameter: " + action);
 
+        Context mContext = this.getApplicationContext();
+        MqttData cache = new MqttData(mContext);
+
+        String mBroker = cache.getBroker();
+        String mPort = cache.getPort();
+        String mUser = cache.getMqttUser();
+
+        if(mBroker.equals("") || mPort.equals("") || mUser.equals("")) {
+            connected = false;
+        }
+
         if(!connected) {
             connect();
         }
@@ -163,7 +174,6 @@ public class MQTTService extends Service implements MqttCallback {
      */
     public void connect() {
         Context mContext = this.getApplicationContext();
-
         MqttData cache = new MqttData(mContext);
 
         final String mBroker = cache.getBroker();
@@ -173,8 +183,9 @@ public class MQTTService extends Service implements MqttCallback {
         final String mTopic = cache.getTopic();
         final String mTLS = cache.getTls();
 
-        if(mPassword==null) {
-            FlyveLog.d(TAG, "Password can't be null");
+        if(mBroker.equals("") || mPort.equals("") || mUser.equals("")) {
+            Helpers.openErrorActivity(mContext, "Some important variable can't be null\n\n - Port: " + mPort + "\n - Broker: " + mBroker + "\n - User: " + mUser);
+            FlyveLog.d(TAG, "Some important variable can't be null - Port: " + mPort + " - Broker: " + mBroker + " - User: " + mUser);
             return;
         }
 

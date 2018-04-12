@@ -77,6 +77,7 @@
     <string name="lock_unlock">UNLOCK</string>
 
     <string name="error_certified_x509">Error creating certificate X509</string>
+    <string name="error_title">We have a problem</string>
 
     <string name="download_file_fail">Download file fail</string>
     <string name="download_file_ready">Download file ready!</string>

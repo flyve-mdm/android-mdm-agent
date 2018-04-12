@@ -109,6 +109,10 @@
             android:configChanges="orientation|screenSize">
         </activity>
         <activity
+            android:name=".ui.ErrorActivity"
+            android:configChanges="orientation|screenSize">
+        </activity>
+        <activity
             android:name=".ui.PreviewSupervisorActivity"
             android:configChanges="orientation|screenSize">
         </activity>
