@@ -25,6 +25,7 @@ package org.flyve.mdm.agent.core.enrollment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 
 import org.flyve.mdm.agent.data.UserData;
 
@@ -73,6 +74,11 @@ public class EnrollmentPresenter implements Enrollment.Presenter {
         if(view!=null) {
             view.inventorySuccess(inventory);
         }
+    }
+
+    @Override
+    public Uri getPhoto() {
+        return model.getPhoto();
     }
 
     @Override
