@@ -227,11 +227,11 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
                 Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);
                 try {
                     bitmap = Helpers.modifyOrientation(bitmap, photoPath);
+                    strPicture = Helpers.bitmapToString(bitmap);
+                    imgPhoto.setImageBitmap(bitmap);
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
                 }
-                strPicture = Helpers.bitmapToString(bitmap);
-                imgPhoto.setImageBitmap(bitmap);
             }
         }
     }
@@ -241,17 +241,16 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
      * @param data of the image
      */
     private void onSelectFromGalleryResult(Intent data) {
-        Bitmap bm=null;
+        Bitmap bm;
         if (data != null) {
             try {
                 bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                strPicture = Helpers.bitmapToString(bm);
+                imgPhoto.setImageBitmap(bm);
             } catch (IOException e) {
                 FlyveLog.e(e.getMessage());
             }
         }
-
-        strPicture = Helpers.bitmapToString(bm);
-        imgPhoto.setImageBitmap(bm);
     }
 
     @Override
@@ -259,7 +258,11 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
 
         // photo on the header
         if(!userSchema.getPicture().equals("")) {
-            imgPhoto.setImageBitmap(Helpers.stringToBitmap(userSchema.getPicture()));
+            try {
+                imgPhoto.setImageBitmap(Helpers.stringToBitmap(userSchema.getPicture()));
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
         }
 
         // first name
@@ -347,5 +350,4 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
     public void showError(String message) {
         txtMessage.setText(message);
     }
-
 }
