@@ -25,6 +25,7 @@ package org.flyve.mdm.agent.core.enrollment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 
 import org.flyve.mdm.agent.data.UserData;
 
@@ -49,6 +50,7 @@ public interface Enrollment {
         void inventorySuccess(String inventory);
 
         // Models
+        Uri getPhoto();
         void createInventory(Context context);
         void createX509certification(Context context);
         void selectPhoto(final Activity activity, final int requestCamera, final int requestFile);
@@ -56,6 +58,7 @@ public interface Enrollment {
     }
 
     interface Model {
+        Uri getPhoto();
         void createInventory(Context context);
         void createX509certification(Context context);
         void selectPhoto(final Activity activity, final int requestCamera, final int requestFile);

@@ -150,11 +150,15 @@ public class Helpers {
 	/**
 	 * If the user selects the image with the option take photo
 	 */
-	public static void cameraIntent(Activity activity, int requestCamera) {
+	public static Uri cameraIntent(Activity activity, int requestCamera) {
+		Uri photo = getImageUri();
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
-			takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, getImageUri());
+			takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photo);
 			activity.startActivityForResult(takePictureIntent, requestCamera);
+			return photo;
+		} else {
+			return null;
 		}
 	}
 

@@ -26,6 +26,7 @@ package org.flyve.mdm.agent.core.enrollment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 
 import org.flyve.inventory.InventoryTask;
@@ -45,6 +46,7 @@ import java.util.List;
 public class EnrollmentModel implements Enrollment.Model {
 
     private Enrollment.Presenter presenter;
+    private Uri photo;
 
     public EnrollmentModel(Enrollment.Presenter presenter) {
         this.presenter = presenter;
@@ -87,6 +89,11 @@ public class EnrollmentModel implements Enrollment.Model {
     }
 
     @Override
+    public Uri getPhoto() {
+        return photo;
+    }
+
+    @Override
     public void selectPhoto(final Activity activity, final int requestCamera, final int requestFile) {
         final CharSequence[] items = {
                 activity.getResources().getString(R.string.take_photo),
@@ -103,8 +110,7 @@ public class EnrollmentModel implements Enrollment.Model {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (items[item].equals(activity.getResources().getString(R.string.take_photo))) {
-                    Helpers.cameraIntent(activity, requestCamera);
-
+                    photo = Helpers.cameraIntent(activity, requestCamera);
                 } else if (items[item].equals(activity.getResources().getString(R.string.choose_from_library))) {
                     Helpers.galleryIntent(activity, requestFile);
 
