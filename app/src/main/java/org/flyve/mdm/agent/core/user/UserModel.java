@@ -30,6 +30,7 @@ import android.support.v7.app.AlertDialog;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.UserData;
+import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
 public class UserModel implements User.Model {
@@ -119,18 +120,23 @@ public class UserModel implements User.Model {
         // -------------
         // USER
         // -------------
-        UserData user = new UserData(activity);
+        try {
+            UserData user = new UserData(activity);
 
-        user.setFirstName(schema.getFirstName());
-        user.setLastName(schema.getLastName());
-        user.setEmails(schema.getEmails());
-        user.setPhone(schema.getPhone());
-        user.setPhone2(schema.getPhone2());
-        user.setMobilePhone(schema.getMobilePhone());
-        user.setPicture(schema.getPicture());
-        user.setLanguage(schema.getLanguage());
-        user.setAdministrativeNumber(schema.getAdministrativeNumber());
+            user.setFirstName(schema.getFirstName());
+            user.setLastName(schema.getLastName());
+            user.setEmails(schema.getEmails());
+            user.setPhone(schema.getPhone());
+            user.setPhone2(schema.getPhone2());
+            user.setMobilePhone(schema.getMobilePhone());
+            user.setPicture(schema.getPicture());
+            user.setLanguage(schema.getLanguage());
+            user.setAdministrativeNumber(schema.getAdministrativeNumber());
 
-        presenter.saveSuccess();
+            presenter.saveSuccess();
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+            presenter.showError(ex.getMessage());
+        }
     }
 }
