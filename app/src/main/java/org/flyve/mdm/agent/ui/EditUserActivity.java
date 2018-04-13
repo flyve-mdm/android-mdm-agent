@@ -82,7 +82,6 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
         setContentView(R.layout.activity_user_form);
 
         presenter = new UserPresenter(this);
-        presenter.load(EditUserActivity.this);
 
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -144,6 +143,8 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
                 save();
             }
         });
+
+        presenter.load(EditUserActivity.this);
     }
 
     /**
