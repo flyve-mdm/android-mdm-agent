@@ -25,6 +25,7 @@ package org.flyve.mdm.agent.core.enrollment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 
 import org.flyve.mdm.agent.data.UserData;
 
@@ -35,64 +36,69 @@ public class EnrollmentPresenter implements Enrollment.Presenter {
     private Enrollment.View view;
     private Enrollment.Model model;
 
-<span class="nc" id="L38">    public EnrollmentPresenter(Enrollment.View view){</span>
-<span class="nc" id="L39">        this.view = view;</span>
-<span class="nc" id="L40">        model = new EnrollmentModel(this);</span>
-<span class="nc" id="L41">    }</span>
+<span class="nc" id="L39">    public EnrollmentPresenter(Enrollment.View view){</span>
+<span class="nc" id="L40">        this.view = view;</span>
+<span class="nc" id="L41">        model = new EnrollmentModel(this);</span>
+<span class="nc" id="L42">    }</span>
 
     @Override
     public void showDetailError(String message) {
-<span class="nc bnc" id="L45" title="All 2 branches missed.">        if(view!=null) {</span>
-<span class="nc" id="L46">            view.showDetailError(message);</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        if(view!=null) {</span>
+<span class="nc" id="L47">            view.showDetailError(message);</span>
         }
-<span class="nc" id="L48">    }</span>
+<span class="nc" id="L49">    }</span>
 
     @Override
     public void showSnackError(String message) {
-<span class="nc bnc" id="L52" title="All 2 branches missed.">        if(view!=null) {</span>
-<span class="nc" id="L53">            view.showSnackError(message);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if(view!=null) {</span>
+<span class="nc" id="L54">            view.showSnackError(message);</span>
         }
-<span class="nc" id="L55">    }</span>
+<span class="nc" id="L56">    }</span>
 
     @Override
     public void enrollSuccess() {
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        if(view!=null) {</span>
-<span class="nc" id="L60">            view.enrollSuccess();</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if(view!=null) {</span>
+<span class="nc" id="L61">            view.enrollSuccess();</span>
         }
-<span class="nc" id="L62">    }</span>
+<span class="nc" id="L63">    }</span>
 
     @Override
     public void certificationX509Success() {
-<span class="nc bnc" id="L66" title="All 2 branches missed.">        if(view!=null) {</span>
-<span class="nc" id="L67">            view.certificationX509Success();</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if(view!=null) {</span>
+<span class="nc" id="L68">            view.certificationX509Success();</span>
         }
-<span class="nc" id="L69">    }</span>
+<span class="nc" id="L70">    }</span>
 
     @Override
     public void inventorySuccess(String inventory) {
-<span class="nc bnc" id="L73" title="All 2 branches missed.">        if(view!=null) {</span>
-<span class="nc" id="L74">            view.inventorySuccess(inventory);</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if(view!=null) {</span>
+<span class="nc" id="L75">            view.inventorySuccess(inventory);</span>
         }
-<span class="nc" id="L76">    }</span>
+<span class="nc" id="L77">    }</span>
+
+    @Override
+    public Uri getPhoto() {
+<span class="nc" id="L81">        return model.getPhoto();</span>
+    }
 
     @Override
     public void createInventory(Context context) {
-<span class="nc" id="L80">        model.createInventory(context);</span>
-<span class="nc" id="L81">    }</span>
+<span class="nc" id="L86">        model.createInventory(context);</span>
+<span class="nc" id="L87">    }</span>
 
     @Override
     public void createX509certification(Context context) {
-<span class="nc" id="L85">        model.createX509certification(context);</span>
-<span class="nc" id="L86">    }</span>
+<span class="nc" id="L91">        model.createX509certification(context);</span>
+<span class="nc" id="L92">    }</span>
 
     @Override
     public void selectPhoto(Activity activity, int requestCamera, int requestFile) {
-<span class="nc" id="L90">        model.selectPhoto(activity, requestCamera, requestFile);</span>
-<span class="nc" id="L91">    }</span>
+<span class="nc" id="L96">        model.selectPhoto(activity, requestCamera, requestFile);</span>
+<span class="nc" id="L97">    }</span>
 
     @Override
     public void enroll(Activity activity, List&lt;UserData.EmailsData&gt; arrEmails, String firstName, String lastName, String phone, String phone2, String mobilePhone, String inventory, String photo, String language, String administrativeNumber) {
-<span class="nc" id="L95">        model.enroll(activity, arrEmails, firstName, lastName, phone, phone2, mobilePhone, inventory, photo, language, administrativeNumber);</span>
-<span class="nc" id="L96">    }</span>
+<span class="nc" id="L101">        model.enroll(activity, arrEmails, firstName, lastName, phone, phone2, mobilePhone, inventory, photo, language, administrativeNumber);</span>
+<span class="nc" id="L102">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

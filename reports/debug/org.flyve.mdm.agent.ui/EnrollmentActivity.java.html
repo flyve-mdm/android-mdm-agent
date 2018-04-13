@@ -196,24 +196,26 @@ import static org.flyve.mdm.agent.R.string.email;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 <span class="nc" id="L198">        super.onActivityResult(requestCode, resultCode, data);</span>
-<span class="nc bnc" id="L199" title="All 2 branches missed.">        if (resultCode == Activity.RESULT_OK) {</span>
-<span class="nc bnc" id="L200" title="All 2 branches missed.">            if (requestCode == SELECT_FILE) {</span>
-<span class="nc" id="L201">                onSelectFromGalleryResult(data);</span>
-<span class="nc bnc" id="L202" title="All 4 branches missed.">            } else if (requestCode == REQUEST_CAMERA &amp;&amp; filePhoto.exists()) {</span>
-<span class="nc" id="L203">                BitmapFactory.Options options = new BitmapFactory.Options();</span>
-<span class="nc" id="L204">                options.inPreferredConfig = Bitmap.Config.ARGB_8888;</span>
-<span class="nc" id="L205">                Bitmap bitmap = BitmapFactory.decodeFile(filePhoto.getAbsolutePath(), options);</span>
-                try {
-<span class="nc" id="L207">                    bitmap = Helpers.modifyOrientation(bitmap, filePhoto.getAbsolutePath());</span>
-<span class="nc" id="L208">                } catch (Exception ex) {</span>
-<span class="nc" id="L209">                    FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L210">                }</span>
 
-<span class="nc" id="L212">                strPicture = Helpers.bitmapToString(bitmap);</span>
-<span class="nc" id="L213">                imgPhoto.setImageBitmap(bitmap);</span>
+<span class="nc" id="L200">        filePhoto = new File(presenter.getPhoto().getPath());</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">        if (resultCode == Activity.RESULT_OK) {</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">            if (requestCode == SELECT_FILE) {</span>
+<span class="nc" id="L203">                onSelectFromGalleryResult(data);</span>
+<span class="nc bnc" id="L204" title="All 4 branches missed.">            } else if (requestCode == REQUEST_CAMERA &amp;&amp; filePhoto.exists()) {</span>
+<span class="nc" id="L205">                BitmapFactory.Options options = new BitmapFactory.Options();</span>
+<span class="nc" id="L206">                options.inPreferredConfig = Bitmap.Config.ARGB_8888;</span>
+<span class="nc" id="L207">                Bitmap bitmap = BitmapFactory.decodeFile(filePhoto.getAbsolutePath(), options);</span>
+                try {
+<span class="nc" id="L209">                    bitmap = Helpers.modifyOrientation(bitmap, filePhoto.getAbsolutePath());</span>
+<span class="nc" id="L210">                } catch (Exception ex) {</span>
+<span class="nc" id="L211">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L212">                }</span>
+
+<span class="nc" id="L214">                strPicture = Helpers.bitmapToString(bitmap);</span>
+<span class="nc" id="L215">                imgPhoto.setImageBitmap(bitmap);</span>
             }
         }
-<span class="nc" id="L216">    }</span>
+<span class="nc" id="L218">    }</span>
 
     /**
      * Retrieves the selected image from the gallery
@@ -221,18 +223,18 @@ import static org.flyve.mdm.agent.R.string.email;
      * @throws IOException error message
      */
     private void onSelectFromGalleryResult(Intent data) {
-<span class="nc" id="L224">        Bitmap bm=null;</span>
-<span class="nc bnc" id="L225" title="All 2 branches missed.">        if (data != null) {</span>
+<span class="nc" id="L226">        Bitmap bm=null;</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">        if (data != null) {</span>
             try {
-<span class="nc" id="L227">                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());</span>
-<span class="nc" id="L228">            } catch (IOException e) {</span>
-<span class="nc" id="L229">                FlyveLog.e(e.getMessage());</span>
-<span class="nc" id="L230">            }</span>
+<span class="nc" id="L229">                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());</span>
+<span class="nc" id="L230">            } catch (IOException e) {</span>
+<span class="nc" id="L231">                FlyveLog.e(e.getMessage());</span>
+<span class="nc" id="L232">            }</span>
         }
 
-<span class="nc" id="L233">        strPicture = Helpers.bitmapToString(bm);</span>
-<span class="nc" id="L234">        imgPhoto.setImageBitmap(bm);</span>
-<span class="nc" id="L235">    }</span>
+<span class="nc" id="L235">        strPicture = Helpers.bitmapToString(bm);</span>
+<span class="nc" id="L236">        imgPhoto.setImageBitmap(bm);</span>
+<span class="nc" id="L237">    }</span>
 
     /**
      * Send information to validateForm
@@ -240,130 +242,130 @@ import static org.flyve.mdm.agent.R.string.email;
     private void validateForm() {
 
         // waiting for cert x509
-<span class="nc bnc" id="L243" title="All 2 branches missed.">        if(pbx509.getVisibility() == View.VISIBLE) {</span>
-<span class="nc" id="L244">            sendEnrollment = true;</span>
-<span class="nc" id="L245">            pd = ProgressDialog.show(EnrollmentActivity.this, &quot;&quot;, getResources().getString(R.string.creating_certified_x509));</span>
-<span class="nc" id="L246">            return;</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        if(pbx509.getVisibility() == View.VISIBLE) {</span>
+<span class="nc" id="L246">            sendEnrollment = true;</span>
+<span class="nc" id="L247">            pd = ProgressDialog.show(EnrollmentActivity.this, &quot;&quot;, getResources().getString(R.string.creating_certified_x509));</span>
+<span class="nc" id="L248">            return;</span>
         }
 
-<span class="nc" id="L249">        pd = ProgressDialog.show(EnrollmentActivity.this, &quot;&quot;, getResources().getString(R.string.enrollment_in_process));</span>
+<span class="nc" id="L251">        pd = ProgressDialog.show(EnrollmentActivity.this, &quot;&quot;, getResources().getString(R.string.enrollment_in_process));</span>
 
         // Get all emails
-<span class="nc" id="L252">        ArrayList&lt;UserData.EmailsData&gt; arrEmails = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L254">        ArrayList&lt;UserData.EmailsData&gt; arrEmails = new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L254">        List&lt;EditText&gt; emailEdit = editEmail.getEditList();</span>
-<span class="nc" id="L255">        List&lt;Spinner&gt; emailTypeEdit = editEmail.getSpinnList();</span>
+<span class="nc" id="L256">        List&lt;EditText&gt; emailEdit = editEmail.getEditList();</span>
+<span class="nc" id="L257">        List&lt;Spinner&gt; emailTypeEdit = editEmail.getSpinnList();</span>
 
-<span class="nc bnc" id="L257" title="All 2 branches missed.">        for (int i=0; i&lt;emailEdit.size(); i++) {</span>
-<span class="nc" id="L258">            EditText editText = emailEdit.get(i);</span>
-<span class="nc" id="L259">            Spinner spinner = emailTypeEdit.get(i);</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">        for (int i=0; i&lt;emailEdit.size(); i++) {</span>
+<span class="nc" id="L260">            EditText editText = emailEdit.get(i);</span>
+<span class="nc" id="L261">            Spinner spinner = emailTypeEdit.get(i);</span>
 
-<span class="nc bnc" id="L261" title="All 2 branches missed.">            if(!editText.getText().toString().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L262">                UserData.EmailsData emails = new UserData(EnrollmentActivity.this).new EmailsData();</span>
-<span class="nc" id="L263">                emails.setEmail(editText.getText().toString());</span>
-<span class="nc" id="L264">                emails.setType(spinner.getSelectedItem().toString());</span>
-<span class="nc" id="L265">                arrEmails.add(emails);</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">            if(!editText.getText().toString().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L264">                UserData.EmailsData emails = new UserData(EnrollmentActivity.this).new EmailsData();</span>
+<span class="nc" id="L265">                emails.setEmail(editText.getText().toString());</span>
+<span class="nc" id="L266">                emails.setType(spinner.getSelectedItem().toString());</span>
+<span class="nc" id="L267">                arrEmails.add(emails);</span>
             }
         }
 
-<span class="nc" id="L269">        String mobilePhone = &quot;&quot;;</span>
-<span class="nc" id="L270">        String phone = &quot;&quot;;</span>
-<span class="nc" id="L271">        String phone2 = &quot;&quot;;</span>
+<span class="nc" id="L271">        String mobilePhone = &quot;&quot;;</span>
+<span class="nc" id="L272">        String phone = &quot;&quot;;</span>
+<span class="nc" id="L273">        String phone2 = &quot;&quot;;</span>
 
         // Mobile Phone
-<span class="nc bnc" id="L274" title="All 2 branches missed.">        if(!editPhone.getEditList().isEmpty()) {</span>
-<span class="nc" id="L275">            String mMobilePhone = editPhone.getEditList().get(0).getText().toString();</span>
-<span class="nc bnc" id="L276" title="All 2 branches missed.">            if (!mMobilePhone.equals(&quot;&quot;)) {</span>
-<span class="nc" id="L277">                mobilePhone = mMobilePhone;</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">        if(!editPhone.getEditList().isEmpty()) {</span>
+<span class="nc" id="L277">            String mMobilePhone = editPhone.getEditList().get(0).getText().toString();</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">            if (!mMobilePhone.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L279">                mobilePhone = mMobilePhone;</span>
             }
         }
 
         // Phone
-<span class="nc bnc" id="L282" title="All 2 branches missed.">        if(editPhone.getEditList().size() &gt; 1) {</span>
-<span class="nc" id="L283">            String mPhone = editPhone.getEditList().get(1).getText().toString();</span>
-<span class="nc bnc" id="L284" title="All 2 branches missed.">            if (!phone.equals(&quot;&quot;)) {</span>
-<span class="nc" id="L285">                phone = mPhone;</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">        if(editPhone.getEditList().size() &gt; 1) {</span>
+<span class="nc" id="L285">            String mPhone = editPhone.getEditList().get(1).getText().toString();</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">            if (!phone.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L287">                phone = mPhone;</span>
             }
         }
 
         // Phone 2
-<span class="nc bnc" id="L290" title="All 2 branches missed.">        if(editPhone.getEditList().size() &gt; 2) {</span>
-<span class="nc" id="L291">            String mPhone2 = editPhone.getEditList().get(2).getText().toString();</span>
-<span class="nc bnc" id="L292" title="All 2 branches missed.">            if (!mPhone2.equals(&quot;&quot;)) {</span>
-<span class="nc" id="L293">                phone2 = mPhone2;</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">        if(editPhone.getEditList().size() &gt; 2) {</span>
+<span class="nc" id="L293">            String mPhone2 = editPhone.getEditList().get(2).getText().toString();</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">            if (!mPhone2.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L295">                phone2 = mPhone2;</span>
             }
         }
 
         // Enroll the user
-<span class="nc" id="L298">        presenter.enroll(EnrollmentActivity.this,</span>
+<span class="nc" id="L300">        presenter.enroll(EnrollmentActivity.this,</span>
                 arrEmails,
-<span class="nc" id="L300">                editName.getText().toString(),</span>
-<span class="nc" id="L301">                editLastName.getText().toString(),</span>
+<span class="nc" id="L302">                editName.getText().toString(),</span>
+<span class="nc" id="L303">                editLastName.getText().toString(),</span>
                 phone,
                 phone2,
                 mobilePhone,
                 inventory,
                 strPicture,
-<span class="nc" id="L307">                spinnerLanguage.getSelectedItem().toString(),</span>
-<span class="nc" id="L308">                editAdministrative.getText().toString()</span>
+<span class="nc" id="L309">                spinnerLanguage.getSelectedItem().toString(),</span>
+<span class="nc" id="L310">                editAdministrative.getText().toString()</span>
         );
-<span class="nc" id="L310">    }</span>
+<span class="nc" id="L312">    }</span>
 
     /**
      * Open the next activity
      */
     private void nextStep() {
-<span class="nc" id="L316">        Intent intent = new Intent(EnrollmentActivity.this, DisclosureActivity.class);</span>
-<span class="nc" id="L317">        EnrollmentActivity.this.startActivity(intent);</span>
-<span class="nc" id="L318">        setResult(RESULT_OK, null);</span>
-<span class="nc" id="L319">        EnrollmentActivity.this.finish();</span>
-<span class="nc" id="L320">    }</span>
+<span class="nc" id="L318">        Intent intent = new Intent(EnrollmentActivity.this, DisclosureActivity.class);</span>
+<span class="nc" id="L319">        EnrollmentActivity.this.startActivity(intent);</span>
+<span class="nc" id="L320">        setResult(RESULT_OK, null);</span>
+<span class="nc" id="L321">        EnrollmentActivity.this.finish();</span>
+<span class="nc" id="L322">    }</span>
 
     @Override
     public void showDetailError(String message) {
-<span class="nc" id="L324">        pd.dismiss();</span>
-<span class="nc" id="L325">        pbx509.setVisibility(View.GONE);</span>
+<span class="nc" id="L326">        pd.dismiss();</span>
+<span class="nc" id="L327">        pbx509.setVisibility(View.GONE);</span>
 
-<span class="nc" id="L327">        txtMessage.setText(message);</span>
-<span class="nc" id="L328">    }</span>
+<span class="nc" id="L329">        txtMessage.setText(message);</span>
+<span class="nc" id="L330">    }</span>
 
     @Override
     public void showSnackError(String message) {
-<span class="nc bnc" id="L332" title="All 2 branches missed.">        if(pd!=null) {</span>
-<span class="nc" id="L333">            pd.dismiss();</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">        if(pd!=null) {</span>
+<span class="nc" id="L335">            pd.dismiss();</span>
         }
 
-<span class="nc" id="L336">        pbx509.setVisibility(View.GONE);</span>
+<span class="nc" id="L338">        pbx509.setVisibility(View.GONE);</span>
 
-<span class="nc" id="L338">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
+<span class="nc" id="L340">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L341">            }</span>
+<span class="nc" id="L343">            }</span>
         });
-<span class="nc" id="L343">    }</span>
+<span class="nc" id="L345">    }</span>
 
     @Override
     public void enrollSuccess() {
-<span class="nc bnc" id="L347" title="All 2 branches missed.">        if(pd!=null) {</span>
-<span class="nc" id="L348">            pd.dismiss();</span>
+<span class="nc bnc" id="L349" title="All 2 branches missed.">        if(pd!=null) {</span>
+<span class="nc" id="L350">            pd.dismiss();</span>
         }
 
-<span class="nc" id="L351">        nextStep();</span>
-<span class="nc" id="L352">    }</span>
+<span class="nc" id="L353">        nextStep();</span>
+<span class="nc" id="L354">    }</span>
 
     @Override
     public void certificationX509Success() {
-<span class="nc" id="L356">        pbx509.setVisibility(View.GONE);</span>
-<span class="nc bnc" id="L357" title="All 2 branches missed.">        if(sendEnrollment) {</span>
-<span class="nc" id="L358">            pd.dismiss();</span>
-<span class="nc" id="L359">            validateForm();</span>
+<span class="nc" id="L358">        pbx509.setVisibility(View.GONE);</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">        if(sendEnrollment) {</span>
+<span class="nc" id="L360">            pd.dismiss();</span>
+<span class="nc" id="L361">            validateForm();</span>
         }
 
-<span class="nc" id="L362">    }</span>
+<span class="nc" id="L364">    }</span>
 
     @Override
     public void inventorySuccess(String inventory) {
-<span class="nc" id="L366">        this.inventory = inventory;</span>
-<span class="nc" id="L367">    }</span>
+<span class="nc" id="L368">        this.inventory = inventory;</span>
+<span class="nc" id="L369">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
