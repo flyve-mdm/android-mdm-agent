@@ -51,7 +51,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
     private Routes routes;
     private NotificationManager mNotifyManager;
     private Builder mBuilder;
-    private Integer idNotification = 0;
+    private Integer idNotification;
 
     /**
      * This constructor loads the context of the current class
@@ -249,11 +249,16 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
             mBuilder.setContentText(filePath);
             mNotifyManager.notify(idNotification, mBuilder.build());
 
-            publishProgress(50);
+            Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath, new ConnectionHTTP.ProgressCallback() {
+                @Override
+                public void progress(int value) {
+                    publishProgress(value);
+                }
+            });
 
-            Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath);
             if (isSave) {
                 publishProgress(100);
+                mBuilder.setContentText("Download " + fileName + " complete");
                 FlyveLog.d("Download ready");
 
                 org.flyve.mdm.agent.room.entity.File dataFile = new org.flyve.mdm.agent.room.entity.File();
