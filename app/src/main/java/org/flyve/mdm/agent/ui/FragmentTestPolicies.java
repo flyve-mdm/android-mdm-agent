@@ -253,7 +253,12 @@ public class FragmentTestPolicies extends Fragment {
                         //
                         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/CHANGELOG.md";
                         FlyveLog.d(path);
-                        ConnectionHTTP.getSyncFile("https://raw.githubusercontent.com/flyve-mdm/android-mdm-agent/develop/CHANGELOG.md", path);
+                        ConnectionHTTP.getSyncFile("https://raw.githubusercontent.com/flyve-mdm/android-mdm-agent/develop/CHANGELOG.md", path, new ConnectionHTTP.ProgressCallback() {
+                            @Override
+                            public void progress(int value) {
+
+                            }
+                        });
                     }
                 }).start();
 
@@ -267,7 +272,12 @@ public class FragmentTestPolicies extends Fragment {
             public void onClick(View v) {
                 String path = new StorageFolder(getContext()).getDocumentsDir() + "/flyve-apk.apk";
                 FlyveLog.d(path);
-                ConnectionHTTP.getSyncFile("https://f-droid.org/repo/org.flyve.inventory.agent_37960.apk", path);
+                ConnectionHTTP.getSyncFile("https://f-droid.org/repo/org.flyve.inventory.agent_37960.apk", path, new ConnectionHTTP.ProgressCallback() {
+                    @Override
+                    public void progress(int value) {
+
+                    }
+                });
             }
         });
 

@@ -218,7 +218,7 @@ public class ConnectionHTTP {
 	 * @param pathFile String place to save
 	 * @return Boolean if file is write
 	 */
-	public static Boolean getSyncFile(final String url, final String pathFile) {
+	public static Boolean getSyncFile(final String url, final String pathFile, final ProgressCallback callback) {
 
 		OutputStream output = null;
 
@@ -246,19 +246,21 @@ public class ConnectionHTTP {
 			output = new FileOutputStream(pathFile);
 
 			byte[] data = new byte[4096];
-			long total = 0;
+			long totalDataRead = 0;
 			int count;
 
 			while ((count = input.read(data)) != -1) {
-				total += count;
+				totalDataRead += count;
 				//publish progress only if total length is known
 				if (fileLength > 0) {
-					//FlyveLog.v( String.valueOf (((int)(total * 100 / fileLength))));
+					float percent = (totalDataRead * 100) / fileLength;
+					callback.progress( Math.round(percent) );
 				}
+
 				output.write(data, 0, count);
 			}
 
-			FlyveLog.d( "Download complete size: " + total);
+			FlyveLog.d( "Download complete size: " + totalDataRead);
 			return true;
 		}
 		catch (final Exception ex) {
@@ -445,6 +447,10 @@ public class ConnectionHTTP {
 	 */
 	public interface DataCallback {
 		void callback(String data);
+	}
+
+	public interface ProgressCallback {
+		void progress(int value);
 	}
 
 }
