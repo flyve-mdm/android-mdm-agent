@@ -42,6 +42,7 @@ import org.flyve.mdm.agent.adapter.DrawerAdapter;
 import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.services.DeviceLockedController;
 import org.flyve.mdm.agent.services.MQTTService;
+import org.flyve.mdm.agent.services.PoliciesDeviceManager;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.util.ArrayList;
@@ -122,10 +123,12 @@ public class MainActivity extends AppCompatActivity {
                     menuItemSelected = 1;
                     extra = "DeployApp";
                     break;
+                case "PasswordPolicy":
+                    new PoliciesDeviceManager(MainActivity.this).enablePassword();
             }
         }
-        loadListDrawer(menuItemSelected, extra);
 
+        loadListDrawer(menuItemSelected, extra);
         checkNotifications();
     }
 
