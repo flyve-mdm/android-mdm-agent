@@ -191,8 +191,24 @@ public class MQTTService extends Service implements MqttCallback {
         connetionInformation.append("TLS: " + mTLS + "\n");
 
         if(mBroker.equals("") || mPort.equals("") || mUser.equals("")) {
-            Helpers.openErrorActivity(mContext, "Some important variable can't be null\n\n - Port: " + mPort + "\n - Broker: " + mBroker + "\n - User: " + mUser);
-            FlyveLog.d(TAG, "Some important variable can't be null - Port: " + mPort + " - Broker: " + mBroker + " - User: " + mUser);
+            String brokerValue = "Empty";
+            String portValue = "Empty";
+            String userValue = "Empty";
+
+            if(!mBroker.equals("")) {
+                brokerValue = mBroker;
+            }
+
+            if(!mPort.equals("")) {
+                portValue = mBroker;
+            }
+
+            if(!mUser.equals("")) {
+                userValue = mBroker;
+            }
+
+            Helpers.openErrorActivity(mContext, "Some important variable can't be null\n\n - Port: " + portValue + "\n - Broker: " + brokerValue + "\n - User: " + userValue);
+            FlyveLog.d(TAG, "Some important variable can't be null - Port: " + portValue + " - Broker: " + brokerValue + " - User: " + userValue);
             return;
         }
 
