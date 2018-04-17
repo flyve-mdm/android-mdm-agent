@@ -183,18 +183,20 @@ public class MQTTService extends Service implements MqttCallback {
         final String mTopic = cache.getTopic();
         final String mTLS = cache.getTls();
 
+        final StringBuilder connetionInformation = new StringBuilder();
+        connetionInformation.append("\n\nBroker: " + mBroker + "\n");
+        connetionInformation.append("Port: " + mPort + "\n");
+        connetionInformation.append("User: " + mUser + "\n");
+        connetionInformation.append("Topic: " + mTopic + "\n");
+        connetionInformation.append("TLS: " + mTLS + "\n");
+
         if(mBroker.equals("") || mPort.equals("") || mUser.equals("")) {
             Helpers.openErrorActivity(mContext, "Some important variable can't be null\n\n - Port: " + mPort + "\n - Broker: " + mBroker + "\n - User: " + mUser);
             FlyveLog.d(TAG, "Some important variable can't be null - Port: " + mPort + " - Broker: " + mBroker + " - User: " + mUser);
             return;
         }
 
-        storeLog(Helpers.broadCastMessage(MQTT_LOGIN, "Broker", mBroker));
-        storeLog(Helpers.broadCastMessage(MQTT_LOGIN, "Port", mPort));
-        storeLog(Helpers.broadCastMessage(MQTT_LOGIN, "User", mUser));
-        storeLog(Helpers.broadCastMessage(MQTT_LOGIN, "Topic", mTopic));
-
-        FlyveLog.i("is TLS (0=false;1=true): %s", mTLS);
+        storeLog(Helpers.broadCastMessage(MQTT_LOGIN, "Connection variables", connetionInformation.toString()));
 
         String protocol = "tcp";
         // TLS is active change protocol
@@ -258,24 +260,17 @@ public class MQTTService extends Service implements MqttCallback {
                 public void onFailure(IMqttToken asyncActionToken, Throwable ex) {
                     // Something went wrong e.g. connection timeout or firewall problems
 
-                    String errorMessage = "";
+                    String errorMessage;
                     if(ex.getMessage().equalsIgnoreCase("MqttException")) {
-                        errorMessage = ((MqttException)ex).toString();
+                        errorMessage = ex.toString();
                     } else {
                         errorMessage = ex.getMessage();
                     }
 
-                    FlyveLog.e(TAG, "Connection fail: " + errorMessage);
-                    String errorCode;
+                    FlyveLog.e(TAG, "Error on client.connect: " + errorMessage);
 
-                    try {
-                        errorCode = String.valueOf(((MqttException) ex).getReasonCode());
-                    } catch (Exception exception) {
-                        errorCode = "0";
-                    }
-
-                    storeLog(Helpers.broadCastMessage(ERROR, "Error on connect - client.connect", errorMessage));
-                    broadcastMessage(Helpers.broadCastMessage(ERROR, errorCode, errorMessage));
+                    storeLog(Helpers.broadCastMessage(ERROR, "Error on client.connect", errorMessage + connetionInformation));
+                    broadcastMessage(Helpers.broadCastMessage(ERROR, "Error on client.connect", errorMessage + connetionInformation));
                     broadcastServiceStatus(false);
                 }
             });
@@ -283,13 +278,13 @@ public class MQTTService extends Service implements MqttCallback {
         catch (MqttException ex) {
             FlyveLog.e(TAG, ex.getMessage());
             broadcastServiceStatus(false);
-            broadcastMessage(Helpers.broadCastMessage(ERROR, String.valueOf(ex.getReasonCode()), ex.getMessage()));
-            storeLog(Helpers.broadCastMessage(ERROR, "Error on connect", ex.getMessage()));
+            broadcastMessage(Helpers.broadCastMessage(ERROR, "MQTT Exception: " + String.valueOf(ex.getReasonCode()), ex.getMessage() + connetionInformation));
+            storeLog(Helpers.broadCastMessage(ERROR, "MQTT Exception", ex.getMessage() + connetionInformation));
         } catch (Exception ex) {
             FlyveLog.e(TAG, ex.getMessage());
             broadcastServiceStatus(false);
-            broadcastMessage(Helpers.broadCastMessage(ERROR, "0", mContext.getResources().getString(R.string.MQTT_ERROR_CONNECTION)));
-            storeLog(Helpers.broadCastMessage(ERROR, "Error on connect", ex.getMessage()));
+            broadcastMessage(Helpers.broadCastMessage(ERROR, "General Exception", mContext.getResources().getString(R.string.MQTT_ERROR_CONNECTION) + connetionInformation));
+            storeLog(Helpers.broadCastMessage(ERROR, "General Exception", ex.getMessage() + connetionInformation));
         }
     }
 
