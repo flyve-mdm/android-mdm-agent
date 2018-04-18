@@ -289,12 +289,12 @@ public class EnrollmentHelper {
                                     callback.onError(msgError);
                                 }
                             });
-                        } catch (Exception ex1) {
+                        } catch (final Exception ex1) {
                             FlyveLog.e(ex1.getMessage() + " - Device serial: " + Helpers.getDeviceSerial());
 
                             EnrollmentHelper.runOnUI(new Runnable() {
                                 public void run() {
-                                    callback.onError(context.getResources().getString(R.string.ERROR_INTERNAL));
+                                    callback.onError(ex1.getMessage());
                                 }
                             });
                         }
@@ -302,7 +302,7 @@ public class EnrollmentHelper {
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
                                 FlyveLog.e(error + " - Device serial: " + Helpers.getDeviceSerial());
-                                callback.onError(context.getResources().getString(R.string.ERROR_INTERNAL));
+                                callback.onError(error);
                             }
                         });
                     }
