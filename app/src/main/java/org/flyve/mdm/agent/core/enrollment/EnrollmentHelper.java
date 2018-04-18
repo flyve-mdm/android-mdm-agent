@@ -27,7 +27,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
-import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
@@ -87,7 +86,7 @@ public class EnrollmentHelper {
         if(error.contains("EXCEPTION_HTTP") || error.contains("ERROR")) {
             FlyveLog.e(error);
 
-            errorMessage = context.getResources().getString(R.string.ERROR_INTERNAL);
+            errorMessage = error;
 
             if(error.contains("EXCEPTION_HTTP")) {
                 return errorMessage;
@@ -186,7 +185,7 @@ public class EnrollmentHelper {
                     FlyveLog.e(ex.getMessage());
                     EnrollmentHelper.runOnUI(new Runnable() {
                         public void run() {
-                            callback.onError(context.getResources().getString(R.string.ERROR_INTERNAL));
+                            callback.onError(ex.getMessage());
                         }
                     });
                 }
