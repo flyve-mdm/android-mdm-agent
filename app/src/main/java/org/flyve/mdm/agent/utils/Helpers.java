@@ -51,6 +51,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Base64;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.AppData;
@@ -429,10 +430,14 @@ public class Helpers {
 	 * @param callback to be invoked when the action is clicked
 	 */
 	public static void snack(Activity activity, String message, String action,  View.OnClickListener callback) {
-		Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
+		Snackbar snackbar = Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
 				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))
-				.setAction(action, callback)
-				.show();
+				.setAction(action, callback);
+
+		View snackbarView = snackbar.getView();
+		TextView snackTextView = snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+		snackTextView.setMaxLines(3);
+		snackbar.show();
 	}
 
 	public static void deleteAllSMS(Context context) {
