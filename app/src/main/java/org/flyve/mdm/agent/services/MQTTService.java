@@ -1141,6 +1141,24 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/disableCreateVpnProfiles
+        String DISABLE_ALL_SOUNDS = "disableAllSounds";
+        if(topic.toLowerCase().contains(DISABLE_ALL_SOUNDS.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_ALL_SOUNDS)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_ALL_SOUNDS);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // execute the policy
+                    policiesController.disableAllSounds(taskId, disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
