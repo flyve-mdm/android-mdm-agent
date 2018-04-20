@@ -41,11 +41,9 @@ public class LogAdapter extends BaseAdapter {
 <span class="nc" id="L41">	private LayoutInflater inflater = null;</span>
 
 <span class="nc" id="L43">	public LogAdapter(Activity activity, List&lt;HashMap&lt;String, String&gt;&gt; data) {</span>
-<span class="nc" id="L44">		FlyveLog.d(activity.getLocalClassName());</span>
-
-<span class="nc" id="L46">		this.data = data;</span>
-<span class="nc" id="L47">		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);</span>
-<span class="nc" id="L48">	}</span>
+<span class="nc" id="L44">		this.data = data;</span>
+<span class="nc" id="L45">		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);</span>
+<span class="nc" id="L46">	}</span>
 
 	/**
 	 * Get how many items are in the data
@@ -53,7 +51,7 @@ public class LogAdapter extends BaseAdapter {
 	 */
 	@Override
 	public int getCount() {
-<span class="nc" id="L56">		return data.size();</span>
+<span class="nc" id="L54">		return data.size();</span>
 	}
 
 	/**
@@ -63,7 +61,7 @@ public class LogAdapter extends BaseAdapter {
  	 */
 	@Override
 	public Object getItem(int position) {
-<span class="nc" id="L66">		return position;</span>
+<span class="nc" id="L64">		return position;</span>
 	}
 
 	/**
@@ -73,7 +71,7 @@ public class LogAdapter extends BaseAdapter {
 	 */
 	@Override
 	public long getItemId(int position) {
-<span class="nc" id="L76">		return position;</span>
+<span class="nc" id="L74">		return position;</span>
 	}
 
 	/**
@@ -86,29 +84,29 @@ public class LogAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-<span class="nc" id="L89">		View vi = inflater.inflate(R.layout.list_item_log, null);</span>
+<span class="nc" id="L87">		View vi = inflater.inflate(R.layout.list_item_log, null);</span>
 		HashMap&lt;String, String&gt; hashdata;
 
 		try {
-<span class="nc" id="L93">			hashdata = data.get(position);</span>
-<span class="nc" id="L94">		} catch (Exception ex) {</span>
-<span class="nc" id="L95">			FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L96">			return vi;</span>
-<span class="nc" id="L97">		}</span>
+<span class="nc" id="L91">			hashdata = data.get(position);</span>
+<span class="nc" id="L92">		} catch (Exception ex) {</span>
+<span class="nc" id="L93">			FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L94">			return vi;</span>
+<span class="nc" id="L95">		}</span>
 
-<span class="nc" id="L99">		TextView txtType = vi.findViewById(R.id.txtType);</span>
-<span class="nc" id="L100">		txtType.setText(hashdata.get(&quot;type&quot;));</span>
+<span class="nc" id="L97">		TextView txtType = vi.findViewById(R.id.txtType);</span>
+<span class="nc" id="L98">		txtType.setText(hashdata.get(&quot;type&quot;));</span>
 
-<span class="nc" id="L102">		TextView txtDate = vi.findViewById(R.id.txtDate);</span>
-<span class="nc" id="L103">		txtDate.setText(hashdata.get(&quot;date&quot;));</span>
+<span class="nc" id="L100">		TextView txtDate = vi.findViewById(R.id.txtDate);</span>
+<span class="nc" id="L101">		txtDate.setText(hashdata.get(&quot;date&quot;));</span>
 
-<span class="nc" id="L105">		TextView txtTitle = vi.findViewById(R.id.txtTitle);</span>
-<span class="nc" id="L106">		txtTitle.setText(hashdata.get(&quot;title&quot;));</span>
+<span class="nc" id="L103">		TextView txtTitle = vi.findViewById(R.id.txtTitle);</span>
+<span class="nc" id="L104">		txtTitle.setText(hashdata.get(&quot;title&quot;));</span>
 
-<span class="nc" id="L108">		TextView txtBody = vi.findViewById(R.id.txtBody);</span>
-<span class="nc" id="L109">		txtBody.setText(hashdata.get(&quot;body&quot;));</span>
+<span class="nc" id="L106">		TextView txtBody = vi.findViewById(R.id.txtBody);</span>
+<span class="nc" id="L107">		txtBody.setText(hashdata.get(&quot;body&quot;));</span>
 
-<span class="nc" id="L111">		return vi;</span>
+<span class="nc" id="L109">		return vi;</span>
 
 	}
 
