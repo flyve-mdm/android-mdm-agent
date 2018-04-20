@@ -85,7 +85,7 @@ public class FragmentMQTTConfig extends Fragment {
                 cache.setPort(editPort.getText().toString());
                 cache.setMqttUser(editUser.getText().toString());
                 cache.setMqttPasswd(editPassword.getText().toString());
-                cache.setPort(editTopic.getText().toString());
+                cache.setTopic(editTopic.getText().toString());
 
                 // restart MQTT connection with this new parameters
                 ((MainActivity)FragmentMQTTConfig.this.getActivity()).globalStartMQTT();
