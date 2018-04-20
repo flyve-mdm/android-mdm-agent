@@ -41,8 +41,6 @@ public class LogAdapter extends BaseAdapter {
 	private LayoutInflater inflater = null;
 
 	public LogAdapter(Activity activity, List<HashMap<String, String>> data) {
-		FlyveLog.d(activity.getLocalClassName());
-
 		this.data = data;
 		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
