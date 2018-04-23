@@ -105,6 +105,8 @@ Here you will be able to see which policies are assigned and the value it has.
 <img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/activity-policies.png?raw=true" alt="Policies" width="300">
 </div>
 
+For more information, check our [Policies & API Level](https://flyve.org/android-mdm-agent/howtos/policies).
+
 ### 2.3 Applications
 
 All the applications deployed will be listed here.
