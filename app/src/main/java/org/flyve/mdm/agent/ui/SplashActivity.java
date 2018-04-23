@@ -23,6 +23,7 @@
 
 package org.flyve.mdm.agent.ui;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -52,6 +53,8 @@ import java.util.ArrayList;
 public class SplashActivity extends FragmentActivity implements Walkthrough.View {
 
     private static final int TIME = 3000;
+    private static final int REQUEST_CODE_SCAN = 100;
+
     private IntentFilter mIntent;
     private Walkthrough.Presenter presenter;
 
@@ -115,10 +118,21 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                SplashActivity.this.startActivityForResult(new Intent(SplashActivity.this, ScanActivity.class), REQUEST_CODE_SCAN);
             }
         });
 
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == Activity.RESULT_OK) {
+            String input = intent.getStringExtra(ScanActivity.INTENT_EXTRA_RESULT);
+
+            Intent miIntent = new Intent(SplashActivity.this, StartEnrollmentActivity.class);
+            miIntent.putExtra("data", input);
+            SplashActivity.this.startActivity(miIntent);
+        }
     }
 
     @Override
