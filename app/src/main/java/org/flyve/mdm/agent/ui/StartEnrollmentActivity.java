@@ -81,14 +81,29 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
         pb = findViewById(R.id.progressBar);
 
         // get the deeplink
+        String deeplink = "";
         Intent intent = getIntent();
-        Uri data = intent.getData();
+        Uri data = null;
+
+        // come from QR scan
+        Bundle bundle = intent.getExtras();
+        if(bundle!=null) {
+            data = Uri.parse(bundle.getString("data"));
+        }
+
+        // come from deeplink
+        if(data==null) {
+            data = intent.getData();
+        }
+
         try {
-            String deeplink = data.getQueryParameter("data");
-            presenter.lint(StartEnrollmentActivity.this, deeplink);
+            deeplink = data.getQueryParameter("data");
         } catch (Exception ex) {
             showError(ex.getMessage());
         }
+
+
+        presenter.lint(StartEnrollmentActivity.this, deeplink);
 
         btnEnroll = findViewById(R.id.btnEnroll);
         btnEnroll.setOnClickListener(new View.OnClickListener() {
