@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<dimen name="list_entry_padding_horizontal_lax">20dp</dimen>
+	<dimen name="font_size_small">15sp</dimen>
+
+	<dimen name="scan_laser_width">4dp</dimen>
+	<dimen name="scan_dot_size">8dp</dimen>
+</resources>
