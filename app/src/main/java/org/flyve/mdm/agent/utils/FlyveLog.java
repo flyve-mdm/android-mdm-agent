@@ -177,7 +177,7 @@ public class FlyveLog {
                 Boolean log = logFile.createNewFile();
                 FlyveLog.d("Create File on f %s", log);
             } catch (IOException ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.i(ex.getMessage());
             }
         }
 
@@ -202,7 +202,7 @@ public class FlyveLog {
                 try {
                     fw.close();
                 } catch(Exception ex) {
-                    Log.e("", ex.getMessage());
+                    Log.i("", ex.getMessage());
                 }
             }
         }
