@@ -181,6 +181,13 @@
     <string name="feedback_send">Send</string>
     <string name="feedback_send_success">Feedback sent</string>
 
+    <string name="scan_camera_problem_dialog_title">Sorry</string>
+    <string name="scan_camera_problem_dialog_message">The camera has a problem. You probably need to restart the device.</string>
+    <string name="scan_camera_permission_dialog_title">Camera permission</string>
+    <string name="scan_camera_permission_dialog_message">In order to scan QR codes, you need to grant permission to use the camera.</string>
+
+    <string name="button_dismiss">Dismiss</string>
+
     <string name="MQTT_ERROR_CONNECTION">Please check your connectivity</string>
     <string name="ERROR_INTERNAL">Internal Error, please try again</string>
     <string name="ERROR_DEEP_LINK">Problems with deep link</string>
