@@ -88,4 +88,6 @@ public class MDMAgent extends Application {
     public static Boolean getIsDebuggable() {
         return isDebuggable;
     }
+
+    public static Boolean isSecureVersion() { return true; }
 }
