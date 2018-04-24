@@ -49,7 +49,7 @@ public class DeeplinkModel implements Deeplink.Model {
         String deepLinkData;
 
         // delete all storage mqtt data
-        new MqttData(context).deleteAll();
+        // new MqttData(context).deleteAll();
 
         try {
             deepLinkData = Helpers.base64decode(deeplink);
