@@ -177,7 +177,7 @@ public class FlyveLog {
 <span class="nc" id="L177">                Boolean log = logFile.createNewFile();</span>
 <span class="nc" id="L178">                FlyveLog.d(&quot;Create File on f %s&quot;, log);</span>
 <span class="nc" id="L179">            } catch (IOException ex) {</span>
-<span class="nc" id="L180">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L180">                FlyveLog.i(ex.getMessage());</span>
 <span class="nc" id="L181">            }</span>
         }
 
@@ -202,7 +202,7 @@ public class FlyveLog {
                 try {
 <span class="nc" id="L203">                    fw.close();</span>
 <span class="nc" id="L204">                } catch(Exception ex) {</span>
-<span class="nc" id="L205">                    Log.e(&quot;&quot;, ex.getMessage());</span>
+<span class="nc" id="L205">                    Log.i(&quot;&quot;, ex.getMessage());</span>
 <span class="nc" id="L206">                }</span>
             }
 <span class="nc" id="L208">        }</span>

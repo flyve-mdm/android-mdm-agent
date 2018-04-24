@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CameraManager.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.utils</a> &gt; <span class="el_source">CameraManager.java</span></div><h1>CameraManager.java</h1><pre class="source lang-java linenums">/*
+ * Copyright Teclib. All rights reserved.
+ *
+ * Flyve MDM is a mobile device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @copyright Copyright Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/android-mdm-agent
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+
+package org.flyve.mdm.agent.utils;
+
+import android.annotation.SuppressLint;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.hardware.Camera;
+import android.hardware.Camera.CameraInfo;
+import android.hardware.Camera.PreviewCallback;
+import android.view.TextureView;
+
+import com.google.zxing.PlanarYUVLuminanceSource;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+@SuppressWarnings(&quot;deprecation&quot;)
+<span class="nc" id="L44">public final class CameraManager</span>
+{
+	private static final int MIN_FRAME_SIZE = 240;
+	private static final int MAX_FRAME_SIZE = 600;
+	private static final int MIN_PREVIEW_PIXELS = 470 * 320; // normal screen
+	private static final int MAX_PREVIEW_PIXELS = 1280 * 720;
+
+	private Camera camera;
+<span class="nc" id="L52">	private CameraInfo cameraInfo = new CameraInfo();</span>
+	private Camera.Size cameraResolution;
+	private Rect frame;
+	private RectF framePreview;
+
+	//private static final Logger log = LoggerFactory.getLogger(CameraManager.class);
+
+	public Rect getFrame()
+	{
+<span class="nc" id="L61">		return frame;</span>
+	}
+
+	public RectF getFramePreview()
+	{
+<span class="nc" id="L66">		return framePreview;</span>
+	}
+
+	public int getFacing()
+	{
+<span class="nc" id="L71">		return cameraInfo.facing;</span>
+	}
+
+	public int getOrientation()
+	{
+<span class="nc" id="L76">		return cameraInfo.orientation;</span>
+	}
+
+	public Camera open(final TextureView textureView, final int displayOrientation, final boolean continuousAutoFocus) throws IOException
+	{
+<span class="nc" id="L81">		final int cameraId = determineCameraId();</span>
+<span class="nc" id="L82">		Camera.getCameraInfo(cameraId, cameraInfo);</span>
+
+//		log.info(&quot;opening camera id {}: {}-facing, camera orientation: {}, display orientation: {}&quot;, cameraId,
+//				cameraInfo.facing == CameraInfo.CAMERA_FACING_BACK ? &quot;back&quot; : &quot;front&quot;, cameraInfo.orientation, displayOrientation);
+<span class="nc" id="L86">		camera = Camera.open(cameraId);</span>
+
+<span class="nc bnc" id="L88" title="All 2 branches missed.">		if (cameraInfo.facing == CameraInfo.CAMERA_FACING_FRONT)</span>
+<span class="nc" id="L89">			camera.setDisplayOrientation((720 - displayOrientation - cameraInfo.orientation) % 360);</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">		else if (cameraInfo.facing == CameraInfo.CAMERA_FACING_BACK)</span>
+<span class="nc" id="L91">			camera.setDisplayOrientation((720 - displayOrientation + cameraInfo.orientation) % 360);</span>
+		else
+<span class="nc" id="L93">			throw new IllegalStateException(&quot;facing: &quot; + cameraInfo.facing);</span>
+
+<span class="nc" id="L95">		camera.setPreviewTexture(textureView.getSurfaceTexture());</span>
+
+<span class="nc" id="L97">		final Camera.Parameters parameters = camera.getParameters();</span>
+
+<span class="nc" id="L99">		cameraResolution = findBestPreviewSizeValue(parameters, textureView.getWidth(), textureView.getHeight());</span>
+
+<span class="nc" id="L101">		final int width = textureView.getWidth();</span>
+<span class="nc" id="L102">		final int height = textureView.getHeight();</span>
+
+<span class="nc" id="L104">		final int rawSize = Math.min(width * 2 / 3, height * 2 / 3);</span>
+<span class="nc" id="L105">		final int frameSize = Math.max(MIN_FRAME_SIZE, Math.min(MAX_FRAME_SIZE, rawSize));</span>
+
+<span class="nc" id="L107">		final int leftOffset = (width - frameSize) / 2;</span>
+<span class="nc" id="L108">		final int topOffset = (height - frameSize) / 2;</span>
+<span class="nc" id="L109">		frame = new Rect(leftOffset, topOffset, leftOffset + frameSize, topOffset + frameSize);</span>
+<span class="nc" id="L110">		framePreview = new RectF(frame.left * cameraResolution.width / width, frame.top * cameraResolution.height / height,</span>
+				frame.right * cameraResolution.width / width, frame.bottom * cameraResolution.height / height);
+
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		final String savedParameters = parameters == null ? null : parameters.flatten();</span>
+
+		try
+		{
+<span class="nc" id="L117">			setDesiredCameraParameters(camera, cameraResolution, continuousAutoFocus);</span>
+		}
+<span class="nc" id="L119">		catch (final RuntimeException x)</span>
+		{
+<span class="nc bnc" id="L121" title="All 2 branches missed.">			if (savedParameters != null)</span>
+			{
+<span class="nc" id="L123">				final Camera.Parameters parameters2 = camera.getParameters();</span>
+<span class="nc" id="L124">				parameters2.unflatten(savedParameters);</span>
+				try
+				{
+<span class="nc" id="L127">					camera.setParameters(parameters2);</span>
+<span class="nc" id="L128">					setDesiredCameraParameters(camera, cameraResolution, continuousAutoFocus);</span>
+				}
+<span class="nc" id="L130">				catch (final RuntimeException x2)</span>
+				{
+					//log.info(&quot;problem setting camera parameters&quot;, x2);
+<span class="nc" id="L133">				}</span>
+			}
+<span class="nc" id="L135">		}</span>
+
+		try
+		{
+<span class="nc" id="L139">			camera.startPreview();</span>
+<span class="nc" id="L140">			return camera;</span>
+		}
+<span class="nc" id="L142">		catch (final RuntimeException x)</span>
+		{
+			//log.warn(&quot;something went wrong while starting camera preview&quot;, x);
+<span class="nc" id="L145">			camera.release();</span>
+<span class="nc" id="L146">			throw x;</span>
+		}
+	}
+
+	private int determineCameraId()
+	{
+<span class="nc" id="L152">		final int cameraCount = Camera.getNumberOfCameras();</span>
+<span class="nc" id="L153">		final CameraInfo cameraInfo = new CameraInfo();</span>
+
+		// prefer back-facing camera
+<span class="nc bnc" id="L156" title="All 2 branches missed.">		for (int i = 0; i &lt; cameraCount; i++)</span>
+		{
+<span class="nc" id="L158">			Camera.getCameraInfo(i, cameraInfo);</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">			if (cameraInfo.facing == CameraInfo.CAMERA_FACING_BACK)</span>
+<span class="nc" id="L160">				return i;</span>
+		}
+
+		// fall back to front-facing camera
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		for (int i = 0; i &lt; cameraCount; i++)</span>
+		{
+<span class="nc" id="L166">			Camera.getCameraInfo(i, cameraInfo);</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">			if (cameraInfo.facing == CameraInfo.CAMERA_FACING_FRONT)</span>
+<span class="nc" id="L168">				return i;</span>
+		}
+
+<span class="nc" id="L171">		return -1;</span>
+	}
+
+	public void close()
+	{
+<span class="nc bnc" id="L176" title="All 2 branches missed.">		if (camera != null)</span>
+		{
+			try
+			{
+<span class="nc" id="L180">				camera.stopPreview();</span>
+			}
+<span class="nc" id="L182">			catch (final RuntimeException x)</span>
+			{
+				//log.warn(&quot;something went wrong while stopping camera preview&quot;, x);
+<span class="nc" id="L185">			}</span>
+
+<span class="nc" id="L187">			camera.release();</span>
+		}
+<span class="nc" id="L189">	}</span>
+
+<span class="nc" id="L191">	private static final Comparator&lt;Camera.Size&gt; numPixelComparator = new Comparator&lt;Camera.Size&gt;()</span>
+<span class="nc" id="L192">	{</span>
+		@Override
+		public int compare(final Camera.Size size1, final Camera.Size size2)
+		{
+<span class="nc" id="L196">			final int pixels1 = size1.height * size1.width;</span>
+<span class="nc" id="L197">			final int pixels2 = size2.height * size2.width;</span>
+
+<span class="nc bnc" id="L199" title="All 2 branches missed.">			if (pixels1 &lt; pixels2)</span>
+<span class="nc" id="L200">				return 1;</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">			else if (pixels1 &gt; pixels2)</span>
+<span class="nc" id="L202">				return -1;</span>
+			else
+<span class="nc" id="L204">				return 0;</span>
+		}
+	};
+
+	private static Camera.Size findBestPreviewSizeValue(final Camera.Parameters parameters, int width, int height)
+	{
+<span class="nc bnc" id="L210" title="All 2 branches missed.">		if (height &gt; width)</span>
+		{
+<span class="nc" id="L212">			final int temp = width;</span>
+<span class="nc" id="L213">			width = height;</span>
+<span class="nc" id="L214">			height = temp;</span>
+		}
+
+<span class="nc" id="L217">		final float screenAspectRatio = (float) width / (float) height;</span>
+
+<span class="nc" id="L219">		final List&lt;Camera.Size&gt; rawSupportedSizes = parameters.getSupportedPreviewSizes();</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">		if (rawSupportedSizes == null)</span>
+<span class="nc" id="L221">			return parameters.getPreviewSize();</span>
+
+		// sort by size, descending
+<span class="nc" id="L224">		final List&lt;Camera.Size&gt; supportedPreviewSizes = new ArrayList&lt;Camera.Size&gt;(rawSupportedSizes);</span>
+<span class="nc" id="L225">		Collections.sort(supportedPreviewSizes, numPixelComparator);</span>
+
+<span class="nc" id="L227">		Camera.Size bestSize = null;</span>
+<span class="nc" id="L228">		float diff = Float.POSITIVE_INFINITY;</span>
+
+<span class="nc bnc" id="L230" title="All 2 branches missed.">		for (final Camera.Size supportedPreviewSize : supportedPreviewSizes)</span>
+		{
+<span class="nc" id="L232">			final int realWidth = supportedPreviewSize.width;</span>
+<span class="nc" id="L233">			final int realHeight = supportedPreviewSize.height;</span>
+<span class="nc" id="L234">			final int realPixels = realWidth * realHeight;</span>
+<span class="nc bnc" id="L235" title="All 4 branches missed.">			if (realPixels &lt; MIN_PREVIEW_PIXELS || realPixels &gt; MAX_PREVIEW_PIXELS)</span>
+<span class="nc" id="L236">				continue;</span>
+
+<span class="nc bnc" id="L238" title="All 2 branches missed.">			final boolean isCandidatePortrait = realWidth &lt; realHeight;</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">			final int maybeFlippedWidth = isCandidatePortrait ? realHeight : realWidth;</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">			final int maybeFlippedHeight = isCandidatePortrait ? realWidth : realHeight;</span>
+<span class="nc bnc" id="L241" title="All 4 branches missed.">			if (maybeFlippedWidth == width &amp;&amp; maybeFlippedHeight == height)</span>
+<span class="nc" id="L242">				return supportedPreviewSize;</span>
+
+<span class="nc" id="L244">			final float aspectRatio = (float) maybeFlippedWidth / (float) maybeFlippedHeight;</span>
+<span class="nc" id="L245">			final float newDiff = Math.abs(aspectRatio - screenAspectRatio);</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">			if (newDiff &lt; diff)</span>
+			{
+<span class="nc" id="L248">				bestSize = supportedPreviewSize;</span>
+<span class="nc" id="L249">				diff = newDiff;</span>
+			}
+<span class="nc" id="L251">		}</span>
+
+<span class="nc bnc" id="L253" title="All 2 branches missed.">		if (bestSize != null)</span>
+<span class="nc" id="L254">			return bestSize;</span>
+		else
+<span class="nc" id="L256">			return parameters.getPreviewSize();</span>
+	}
+
+	@SuppressLint(&quot;InlinedApi&quot;)
+	private static void setDesiredCameraParameters(final Camera camera, final Camera.Size cameraResolution, final boolean continuousAutoFocus)
+	{
+<span class="nc" id="L262">		final Camera.Parameters parameters = camera.getParameters();</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">		if (parameters == null)</span>
+<span class="nc" id="L264">			return;</span>
+
+<span class="nc" id="L266">		final List&lt;String&gt; supportedFocusModes = parameters.getSupportedFocusModes();</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">		final String focusMode = continuousAutoFocus ? findValue(supportedFocusModes, Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE,</span>
+<span class="nc" id="L268">				Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO, Camera.Parameters.FOCUS_MODE_AUTO, Camera.Parameters.FOCUS_MODE_MACRO) : findValue(</span>
+				supportedFocusModes, Camera.Parameters.FOCUS_MODE_AUTO, Camera.Parameters.FOCUS_MODE_MACRO);
+<span class="nc bnc" id="L270" title="All 2 branches missed.">		if (focusMode != null)</span>
+<span class="nc" id="L271">			parameters.setFocusMode(focusMode);</span>
+
+<span class="nc" id="L273">		parameters.setPreviewSize(cameraResolution.width, cameraResolution.height);</span>
+
+<span class="nc" id="L275">		camera.setParameters(parameters);</span>
+<span class="nc" id="L276">	}</span>
+
+	public void requestPreviewFrame(final PreviewCallback callback)
+	{
+		try
+		{
+<span class="nc" id="L282">			camera.setOneShotPreviewCallback(callback);</span>
+		}
+<span class="nc" id="L284">		catch (final RuntimeException x)</span>
+		{
+			//log.warn(&quot;problem requesting preview frame, callback won't be called&quot;, x);
+<span class="nc" id="L287">		}</span>
+<span class="nc" id="L288">	}</span>
+
+	public PlanarYUVLuminanceSource buildLuminanceSource(final byte[] data)
+	{
+<span class="nc" id="L292">		return new PlanarYUVLuminanceSource(data, cameraResolution.width, cameraResolution.height, (int) framePreview.left, (int) framePreview.top,</span>
+<span class="nc" id="L293">				(int) framePreview.width(), (int) framePreview.height(), false);</span>
+	}
+
+	public void setTorch(final boolean enabled)
+	{
+<span class="nc bnc" id="L298" title="All 2 branches missed.">		if (enabled != getTorchEnabled(camera))</span>
+<span class="nc" id="L299">			setTorchEnabled(camera, enabled);</span>
+<span class="nc" id="L300">	}</span>
+
+	private static boolean getTorchEnabled(final Camera camera)
+	{
+<span class="nc" id="L304">		final Camera.Parameters parameters = camera.getParameters();</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">		if (parameters != null)</span>
+		{
+<span class="nc" id="L307">			final String flashMode = camera.getParameters().getFlashMode();</span>
+<span class="nc bnc" id="L308" title="All 6 branches missed.">			return flashMode != null &amp;&amp; (Camera.Parameters.FLASH_MODE_ON.equals(flashMode) || Camera.Parameters.FLASH_MODE_TORCH.equals(flashMode));</span>
+		}
+
+<span class="nc" id="L311">		return false;</span>
+	}
+
+	private static void setTorchEnabled(final Camera camera, final boolean enabled)
+	{
+<span class="nc" id="L316">		final Camera.Parameters parameters = camera.getParameters();</span>
+
+<span class="nc" id="L318">		final List&lt;String&gt; supportedFlashModes = parameters.getSupportedFlashModes();</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">		if (supportedFlashModes != null)</span>
+		{
+			final String flashMode;
+<span class="nc bnc" id="L322" title="All 2 branches missed.">			if (enabled)</span>
+<span class="nc" id="L323">				flashMode = findValue(supportedFlashModes, Camera.Parameters.FLASH_MODE_TORCH, Camera.Parameters.FLASH_MODE_ON);</span>
+			else
+<span class="nc" id="L325">				flashMode = findValue(supportedFlashModes, Camera.Parameters.FLASH_MODE_OFF);</span>
+
+<span class="nc bnc" id="L327" title="All 2 branches missed.">			if (flashMode != null)</span>
+			{
+<span class="nc" id="L329">				camera.cancelAutoFocus(); // autofocus can cause conflict</span>
+
+<span class="nc" id="L331">				parameters.setFlashMode(flashMode);</span>
+<span class="nc" id="L332">				camera.setParameters(parameters);</span>
+			}
+		}
+<span class="nc" id="L335">	}</span>
+
+	private static String findValue(final Collection&lt;String&gt; values, final String... valuesToFind)
+	{
+<span class="nc bnc" id="L339" title="All 2 branches missed.">		for (final String valueToFind : valuesToFind)</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">			if (values.contains(valueToFind))</span>
+<span class="nc" id="L341">				return valueToFind;</span>
+
+<span class="nc" id="L343">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ScanActivity.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">ScanActivity.java</span></div><h1>ScanActivity.java</h1><pre class="source lang-java linenums">/*
+ * Copyright Teclib. All rights reserved.
+ *
+ * Flyve MDM is a mobile device management software.
+ *
+ * Flyve MDM is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * Flyve MDM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ------------------------------------------------------------------------------
+ * @author    Rafael Hernandez
+ * @copyright Copyright Teclib. All rights reserved.
+ * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @link      https://github.com/flyve-mdm/android-mdm-agent
+ * @link      https://flyve-mdm.com
+ * ------------------------------------------------------------------------------
+ */
+
+package org.flyve.mdm.agent.ui;
+
+import android.Manifest;
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
+import android.hardware.Camera.CameraInfo;
+import android.hardware.Camera.PreviewCallback;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Process;
+import android.os.Vibrator;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
+import android.view.Surface;
+import android.view.TextureView;
+import android.view.TextureView.SurfaceTextureListener;
+import android.view.WindowManager;
+
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.PlanarYUVLuminanceSource;
+import com.google.zxing.ReaderException;
+import com.google.zxing.Result;
+import com.google.zxing.ResultPoint;
+import com.google.zxing.ResultPointCallback;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
+
+import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.utils.CameraManager;
+import org.flyve.mdm.agent.utils.DialogBuilder;
+
+import java.util.EnumMap;
+import java.util.Map;
+
+
+@SuppressWarnings(&quot;deprecation&quot;)
+<span class="nc" id="L74">public final class ScanActivity extends Activity implements SurfaceTextureListener, ActivityCompat.OnRequestPermissionsResultCallback</span>
+{
+	public static final String INTENT_EXTRA_RESULT = &quot;result&quot;;
+
+	private static final long VIBRATE_DURATION = 50L;
+	private static final long AUTO_FOCUS_INTERVAL_MS = 2500L;
+
+<span class="nc" id="L81">	private final CameraManager cameraManager = new CameraManager();</span>
+	private ScannerView scannerView;
+	private TextureView previewView;
+<span class="nc" id="L84">	private volatile boolean surfaceCreated = false;</span>
+
+	private Vibrator vibrator;
+	private HandlerThread cameraThread;
+	private volatile Handler cameraHandler;
+
+<span class="nc bnc" id="L90" title="All 2 branches missed.">	private static boolean DISABLE_CONTINUOUS_AUTOFOCUS = Build.MODEL.equals(&quot;GT-I9100&quot;) // Galaxy S2</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">			|| Build.MODEL.equals(&quot;SGH-T989&quot;) // Galaxy S2</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">			|| Build.MODEL.equals(&quot;SGH-T989D&quot;) // Galaxy S2 X</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">			|| Build.MODEL.equals(&quot;SAMSUNG-SGH-I727&quot;) // Galaxy S2 Skyrocket</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">			|| Build.MODEL.equals(&quot;GT-I9300&quot;) // Galaxy S3</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">			|| Build.MODEL.equals(&quot;GT-N7000&quot;); // Galaxy Note</span>
+
+	//private static final Logger log = LoggerFactory.getLogger(ScanActivity.class);
+
+	@Override
+	public void onCreate(final Bundle savedInstanceState)
+	{
+<span class="nc" id="L102">		super.onCreate(savedInstanceState);</span>
+
+<span class="nc" id="L104">		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);</span>
+
+<span class="nc" id="L106">		setContentView(R.layout.activity_scan);</span>
+<span class="nc" id="L107">		scannerView = (ScannerView) findViewById(R.id.scan_activity_mask);</span>
+<span class="nc" id="L108">		previewView = (TextureView) findViewById(R.id.scan_activity_preview);</span>
+<span class="nc" id="L109">		previewView.setSurfaceTextureListener(this);</span>
+
+<span class="nc" id="L111">		cameraThread = new HandlerThread(&quot;cameraThread&quot;, Process.THREAD_PRIORITY_BACKGROUND);</span>
+<span class="nc" id="L112">		cameraThread.start();</span>
+<span class="nc" id="L113">		cameraHandler = new Handler(cameraThread.getLooper());</span>
+
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)</span>
+<span class="nc" id="L116">			ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA }, 0);</span>
+<span class="nc" id="L117">	}</span>
+
+	@Override
+	protected void onResume()
+	{
+<span class="nc" id="L122">		super.onResume();</span>
+
+<span class="nc" id="L124">		maybeOpenCamera();</span>
+<span class="nc" id="L125">	}</span>
+
+	@Override
+	protected void onPause()
+	{
+<span class="nc" id="L130">		cameraHandler.post(closeRunnable);</span>
+
+<span class="nc" id="L132">		super.onPause();</span>
+<span class="nc" id="L133">	}</span>
+
+	@Override
+	protected void onDestroy()
+	{
+		// cancel background thread
+<span class="nc" id="L139">		cameraHandler.removeCallbacksAndMessages(null);</span>
+<span class="nc" id="L140">		cameraThread.quit();</span>
+
+<span class="nc" id="L142">		previewView.setSurfaceTextureListener(null);</span>
+
+<span class="nc" id="L144">		super.onDestroy();</span>
+<span class="nc" id="L145">	}</span>
+
+	@Override
+	public void onRequestPermissionsResult(final int requestCode, final String[] permissions, final int[] grantResults)
+	{
+<span class="nc bnc" id="L150" title="All 4 branches missed.">		if (grantResults.length &gt; 0 &amp;&amp; grantResults[0] == PackageManager.PERMISSION_GRANTED)</span>
+<span class="nc" id="L151">			maybeOpenCamera();</span>
+		else
+<span class="nc" id="L153">			WarnDialogFragment.newInstance(R.string.scan_camera_permission_dialog_title, getString(R.string.scan_camera_permission_dialog_message))</span>
+<span class="nc" id="L154">					.show(getFragmentManager(), &quot;dialog&quot;);</span>
+
+<span class="nc" id="L156">	}</span>
+
+	private void maybeOpenCamera()
+	{
+<span class="nc bnc" id="L160" title="All 4 branches missed.">		if (surfaceCreated &amp;&amp; ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)</span>
+<span class="nc" id="L161">			cameraHandler.post(openRunnable);</span>
+<span class="nc" id="L162">	}</span>
+
+	@Override
+	public void onSurfaceTextureAvailable(final SurfaceTexture surface, final int width, final int height)
+	{
+<span class="nc" id="L167">		surfaceCreated = true;</span>
+<span class="nc" id="L168">		maybeOpenCamera();</span>
+<span class="nc" id="L169">	}</span>
+
+	@Override
+	public boolean onSurfaceTextureDestroyed(final SurfaceTexture surface)
+	{
+<span class="nc" id="L174">		surfaceCreated = false;</span>
+<span class="nc" id="L175">		return true;</span>
+	}
+
+	@Override
+	public void onSurfaceTextureSizeChanged(final SurfaceTexture surface, final int width, final int height)
+	{
+<span class="nc" id="L181">	}</span>
+
+	@Override
+	public void onSurfaceTextureUpdated(final SurfaceTexture surface)
+	{
+<span class="nc" id="L186">	}</span>
+
+	@Override
+	public void onAttachedToWindow()
+	{
+<span class="nc" id="L191">		getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);</span>
+<span class="nc" id="L192">	}</span>
+
+	@Override
+	public void onBackPressed()
+	{
+<span class="nc" id="L197">		setResult(RESULT_CANCELED);</span>
+<span class="nc" id="L198">		finish();</span>
+<span class="nc" id="L199">	}</span>
+
+	@Override
+	public boolean onKeyDown(final int keyCode, final KeyEvent event)
+	{
+<span class="nc bnc" id="L204" title="All 3 branches missed.">		switch (keyCode)</span>
+		{
+			case KeyEvent.KEYCODE_FOCUS:
+			case KeyEvent.KEYCODE_CAMERA:
+				// don't launch camera app
+<span class="nc" id="L209">				return true;</span>
+			case KeyEvent.KEYCODE_VOLUME_DOWN:
+			case KeyEvent.KEYCODE_VOLUME_UP:
+<span class="nc" id="L212">				cameraHandler.post(new Runnable()</span>
+<span class="nc" id="L213">				{</span>
+					@Override
+					public void run()
+					{
+<span class="nc bnc" id="L217" title="All 2 branches missed.">						cameraManager.setTorch(keyCode == KeyEvent.KEYCODE_VOLUME_UP);</span>
+<span class="nc" id="L218">					}</span>
+				});
+<span class="nc" id="L220">				return true;</span>
+		}
+
+<span class="nc" id="L223">		return super.onKeyDown(keyCode, event);</span>
+	}
+
+	public void handleResult(final Result scanResult)
+	{
+<span class="nc" id="L228">		vibrator.vibrate(VIBRATE_DURATION);</span>
+
+<span class="nc" id="L230">		scannerView.setIsResult(true);</span>
+
+<span class="nc" id="L232">		final Intent result = new Intent();</span>
+<span class="nc" id="L233">		result.putExtra(INTENT_EXTRA_RESULT, scanResult.getText());</span>
+<span class="nc" id="L234">		setResult(RESULT_OK, result);</span>
+
+		// delayed finish
+<span class="nc" id="L237">		new Handler().post(new Runnable()</span>
+<span class="nc" id="L238">		{</span>
+			@Override
+			public void run()
+			{
+<span class="nc" id="L242">				finish();</span>
+<span class="nc" id="L243">			}</span>
+		});
+<span class="nc" id="L245">	}</span>
+
+<span class="nc" id="L247">	private final Runnable openRunnable = new Runnable()</span>
+<span class="nc" id="L248">	{</span>
+		@Override
+		public void run()
+		{
+			try
+			{
+<span class="nc bnc" id="L254" title="All 2 branches missed.">				final Camera camera = cameraManager.open(previewView, displayRotation(), !DISABLE_CONTINUOUS_AUTOFOCUS);</span>
+
+<span class="nc" id="L256">				final Rect framingRect = cameraManager.getFrame();</span>
+<span class="nc" id="L257">				final RectF framingRectInPreview = new RectF(cameraManager.getFramePreview());</span>
+<span class="nc" id="L258">				framingRectInPreview.offsetTo(0, 0);</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">				final boolean cameraFlip = cameraManager.getFacing() == CameraInfo.CAMERA_FACING_FRONT;</span>
+<span class="nc" id="L260">				final int cameraRotation = cameraManager.getOrientation();</span>
+
+<span class="nc" id="L262">				runOnUiThread(new Runnable()</span>
+<span class="nc" id="L263">				{</span>
+					@Override
+					public void run()
+					{
+<span class="nc" id="L267">						scannerView.setFraming(framingRect, framingRectInPreview, displayRotation(), cameraRotation, cameraFlip);</span>
+<span class="nc" id="L268">					}</span>
+				});
+
+<span class="nc" id="L271">				final String focusMode = camera.getParameters().getFocusMode();</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">				final boolean nonContinuousAutoFocus = Camera.Parameters.FOCUS_MODE_AUTO.equals(focusMode)</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">						|| Camera.Parameters.FOCUS_MODE_MACRO.equals(focusMode);</span>
+
+<span class="nc bnc" id="L275" title="All 2 branches missed.">				if (nonContinuousAutoFocus)</span>
+<span class="nc" id="L276">					cameraHandler.post(new AutoFocusRunnable(camera));</span>
+
+<span class="nc" id="L278">				cameraHandler.post(fetchAndDecodeRunnable);</span>
+			}
+<span class="nc" id="L280">			catch (final Exception x)</span>
+			{
+				//log.info(&quot;problem opening camera&quot;, x);
+<span class="nc" id="L283">				runOnUiThread(new Runnable()</span>
+<span class="nc" id="L284">				{</span>
+					@Override
+					public void run()
+					{
+<span class="nc bnc" id="L288" title="All 2 branches missed.">						if (!isFinishing())</span>
+<span class="nc" id="L289">							WarnDialogFragment</span>
+<span class="nc" id="L290">									.newInstance(R.string.scan_camera_problem_dialog_title, getString(R.string.scan_camera_problem_dialog_message))</span>
+<span class="nc" id="L291">									.show(getFragmentManager(), &quot;dialog&quot;);</span>
+<span class="nc" id="L292">					}</span>
+				});
+<span class="nc" id="L294">			}</span>
+<span class="nc" id="L295">		}</span>
+
+		private int displayRotation()
+		{
+<span class="nc" id="L299">			final int rotation = getWindowManager().getDefaultDisplay().getRotation();</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">			if (rotation == Surface.ROTATION_0)</span>
+<span class="nc" id="L301">				return 0;</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">			else if (rotation == Surface.ROTATION_90)</span>
+<span class="nc" id="L303">				return 90;</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">			else if (rotation == Surface.ROTATION_180)</span>
+<span class="nc" id="L305">				return 180;</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">			else if (rotation == Surface.ROTATION_270)</span>
+<span class="nc" id="L307">				return 270;</span>
+			else
+<span class="nc" id="L309">				throw new IllegalStateException(&quot;rotation: &quot; + rotation);</span>
+		}
+	};
+
+<span class="nc" id="L313">	private final Runnable closeRunnable = new Runnable()</span>
+<span class="nc" id="L314">	{</span>
+		@Override
+		public void run()
+		{
+<span class="nc" id="L318">			cameraHandler.removeCallbacksAndMessages(null);</span>
+<span class="nc" id="L319">			cameraManager.close();</span>
+<span class="nc" id="L320">		}</span>
+	};
+
+	private final class AutoFocusRunnable implements Runnable
+	{
+		private final Camera camera;
+
+		public AutoFocusRunnable(final Camera camera)
+<span class="nc" id="L328">		{</span>
+<span class="nc" id="L329">			this.camera = camera;</span>
+<span class="nc" id="L330">		}</span>
+
+		@Override
+		public void run()
+		{
+<span class="nc" id="L335">			camera.autoFocus(new Camera.AutoFocusCallback()</span>
+<span class="nc" id="L336">			{</span>
+				@Override
+				public void onAutoFocus(final boolean success, final Camera camera)
+				{
+					// schedule again
+<span class="nc" id="L341">					cameraHandler.postDelayed(AutoFocusRunnable.this, AUTO_FOCUS_INTERVAL_MS);</span>
+<span class="nc" id="L342">				}</span>
+			});
+<span class="nc" id="L344">		}</span>
+	}
+
+<span class="nc" id="L347">	private final Runnable fetchAndDecodeRunnable = new Runnable()</span>
+<span class="nc" id="L348">	{</span>
+<span class="nc" id="L349">		private final QRCodeReader reader = new QRCodeReader();</span>
+<span class="nc" id="L350">		private final Map&lt;DecodeHintType, Object&gt; hints = new EnumMap&lt;DecodeHintType, Object&gt;(DecodeHintType.class);</span>
+
+		@Override
+		public void run()
+		{
+<span class="nc" id="L355">			cameraManager.requestPreviewFrame(new PreviewCallback()</span>
+<span class="nc" id="L356">			{</span>
+				@Override
+				public void onPreviewFrame(final byte[] data, final Camera camera)
+				{
+<span class="nc" id="L360">					decode(data);</span>
+<span class="nc" id="L361">				}</span>
+			});
+<span class="nc" id="L363">		}</span>
+
+		private void decode(final byte[] data)
+		{
+<span class="nc" id="L367">			final PlanarYUVLuminanceSource source = cameraManager.buildLuminanceSource(data);</span>
+<span class="nc" id="L368">			final BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));</span>
+
+			try
+			{
+<span class="nc" id="L372">				hints.put(DecodeHintType.NEED_RESULT_POINT_CALLBACK, new ResultPointCallback()</span>
+<span class="nc" id="L373">				{</span>
+					@Override
+					public void foundPossibleResultPoint(final ResultPoint dot)
+					{
+<span class="nc" id="L377">						runOnUiThread(new Runnable()</span>
+<span class="nc" id="L378">						{</span>
+							@Override
+							public void run()
+							{
+<span class="nc" id="L382">								scannerView.addDot(dot);</span>
+<span class="nc" id="L383">							}</span>
+						});
+<span class="nc" id="L385">					}</span>
+				});
+<span class="nc" id="L387">				final Result scanResult = reader.decode(bitmap, hints);</span>
+
+<span class="nc" id="L389">				runOnUiThread(new Runnable()</span>
+<span class="nc" id="L390">				{</span>
+					@Override
+					public void run()
+					{
+<span class="nc" id="L394">						handleResult(scanResult);</span>
+<span class="nc" id="L395">					}</span>
+				});
+			}
+<span class="nc" id="L398">			catch (final ReaderException x)</span>
+			{
+				// retry
+<span class="nc" id="L401">				cameraHandler.post(fetchAndDecodeRunnable);</span>
+			}
+			finally
+			{
+<span class="nc" id="L405">				reader.reset();</span>
+<span class="nc" id="L406">			}</span>
+<span class="nc" id="L407">		}</span>
+	};
+
+<span class="nc" id="L410">	public static class WarnDialogFragment extends DialogFragment</span>
+	{
+		public static WarnDialogFragment newInstance(final int titleResId, final String message)
+		{
+<span class="nc" id="L414">			final WarnDialogFragment fragment = new WarnDialogFragment();</span>
+<span class="nc" id="L415">			final Bundle args = new Bundle();</span>
+<span class="nc" id="L416">			args.putInt(&quot;title&quot;, titleResId);</span>
+<span class="nc" id="L417">			args.putString(&quot;message&quot;, message);</span>
+<span class="nc" id="L418">			fragment.setArguments(args);</span>
+<span class="nc" id="L419">			return fragment;</span>
+		}
+
+		@Override
+		public Dialog onCreateDialog(final Bundle savedInstanceState)
+		{
+<span class="nc" id="L425">			final Bundle args = getArguments();</span>
+<span class="nc" id="L426">			final DialogBuilder dialog = DialogBuilder.warn(getActivity(), args.getInt(&quot;title&quot;));</span>
+<span class="nc" id="L427">			dialog.setMessage(args.getString(&quot;message&quot;));</span>
+<span class="nc" id="L428">			dialog.singleDismissButton(new OnClickListener()</span>
+<span class="nc" id="L429">			{</span>
+				@Override
+				public void onClick(final DialogInterface dialog, final int which)
+				{
+<span class="nc" id="L433">					getActivity().finish();</span>
+<span class="nc" id="L434">				}</span>
+			});
+<span class="nc" id="L436">			return dialog.create();</span>
+		}
+
+		@Override
+		public void onCancel(final DialogInterface dialog)
+		{
+<span class="nc" id="L442">			getActivity().finish();</span>
+<span class="nc" id="L443">		}</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
