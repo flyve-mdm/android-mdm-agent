@@ -20,6 +20,7 @@ To get started, check out [Flyve MDM Website](https://flyve-mdm.com/)!
 
 * [Synopsis](#synopsis)
 * [Build Status](#build-status)
+* [Compatibility Matrix](#compatibility-matrix)
 * [Installation](#installation)
 * [Documentation](#documentation)
 * [Versioning](#versioning)
@@ -41,19 +42,28 @@ The Android Agent will help you to:
 * Delete, partially or totally, your data in case of loss or theft
 * Create an inventory of all of your company terminals
 * Keep control and protect yourself from cyber-attacks:
-    * Set the level of complexity of your passwords
-    * Activate mobile device encryption
-    * Lock the mobile device remotely
-    * Control the authorisation for the use of the camera
-    * Erase all data from the remote terminal (reset)
+  * Set the level of complexity of your passwords
+  * Activate mobile device encryption
+  * Lock the mobile device remotely
+  * Control the authorisation for the use of the camera
+  * Erase all data from the remote terminal (reset)
 
 For more information visit our [Official Website](http://flyve.org/android-mdm-agent/).
 
 ## Build Status
 
-| **Release channel** | **Beta channel** |
+| **LTS** | **Bleeding Edge** |
 |:---:|:---:|
 | [![Build Status](https://circleci.com/gh/flyve-mdm/android-mdm-agent/tree/master.svg?style=svg)](https://circleci.com/gh/flyve-mdm/android-mdm-agent/tree/master) | [![Build Status](https://circleci.com/gh/flyve-mdm/android-mdm-agent/tree/develop.svg?style=svg)](https://circleci.com/gh/flyve-mdm/android-mdm-agent/tree/develop) |
+
+## Compatibility Matrix
+
+|MDM Agent|0.99.x|1.0.0|2.0.0-dev|
+|:---|---|---|---|
+|GLPI|9.1|9.2|9.2|
+|Flyve MDM plugin|-|2.0.0-dev|2.0.0-dev|
+|Web MDM Dashboard|-|2.0.0-dev|2.0.0-dev|
+|Legacy Dashboard|2.1.0|-|-|
 
 ## Installation
 
