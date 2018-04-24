@@ -42,6 +42,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.ui.MainActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
@@ -1190,6 +1191,7 @@ public class MQTTService extends Service implements MqttCallback {
 
         // reconnect
         if(!status) {
+            Helpers.sendToNotificationBar(getApplicationContext(), 101, "Connection", "The agent is disconnected", false, MainActivity.class, "service_disconnect");
             reconnect();
         }
 
