@@ -8,6 +8,43 @@ description: Install it as System App!
 category: user
 ---
 
+## Before\.\.\.
+
+Check the following compatibility matrix to make sure, you're getting the right version.
+
+<table class="policy-matrix">
+    <tr>
+        <td>MDM Agent</td>
+        <td>0.99.x</td>
+        <td>1.0.0</td>
+        <td>2.0.0-dev</td>
+    </tr>
+    <tr>
+        <td>GLPI</td>
+        <td>9.1</td>
+        <td>9.2</td>
+        <td>9.2</td>
+    </tr>
+    <tr>
+        <td>Flyve MDM plugin</td>
+        <td align="center">-</td>
+        <td>2.0.0-dev</td>
+        <td>2.0.0-dev</td>
+    </tr>
+    <tr>
+        <td>Web MDM Dashboard</td>
+        <td align="center">-</td>
+        <td>2.0.0-dev</td>
+        <td>2.0.0-dev</td>
+    </tr>
+    <tr>
+        <td>Legacy Dashboard</td>
+        <td>2.1.0</td>
+        <td align="center">-</td>
+        <td align="center">-</td>
+    </tr>
+</table>
+
 ## Download
 
 You can install the application by downloading it from the **Play Store**
@@ -56,29 +93,29 @@ You have two ways to move your apk to the system folder:
 
 Copy the apk directly to the System folder.
 
-#### For Android 4.3 or newest
+##### For Android 4.3 or newest
 
 ```shell
 $adb push yourAPKFile.apk /system/priv-app
 ```
 
-#### Older Android version
+##### Older Android version
 
 ```shell
 $adb push yourAPKFile.apk /system/app
 ```
 
-### Step 3.2
+#### Step 3.2
 
 If you can't copy directly to the folder or has the apk in external sdcard, move the apk to the system folder.
 
-#### For Android 4.3 or newest
+##### For Android 4.3 or newest
 
 ```shell
 $mv /storage/sdcard1/yourAPKFile.apk /system/priv-app
 ```
 
-#### Older Android version
+##### Older Android version
 
 ```shell
 $mv /storage/sdcard1/yourAPKFile.apk /system/app
