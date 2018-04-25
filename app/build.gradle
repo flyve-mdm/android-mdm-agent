@@ -7,6 +7,8 @@ android {
         applicationId "org.flyve.mdm.agent"
         minSdkVersion 16
         targetSdkVersion 27
+        versionCode 1
+        versionName "2.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
