@@ -351,7 +351,10 @@ public class MQTTService extends Service implements MqttCallback {
                             tryEverySeconds *= 2;
                         }
 
-                        FlyveLog.d("Reconnecting " + reconnectionCounter + " times");
+                        String message = "Reconnecting " + reconnectionCounter + " times";
+                        Helpers.sendToNotificationBar(getApplicationContext(), 101, "MDM Agent", message, false, MainActivity.class, "service_disconnect");
+                        FlyveLog.d(message);
+
                         connect();
                     }
                 } else {
@@ -1191,7 +1194,6 @@ public class MQTTService extends Service implements MqttCallback {
 
         // reconnect
         if(!status) {
-            Helpers.sendToNotificationBar(getApplicationContext(), 101, "Connection", "The agent is disconnected", false, MainActivity.class, "service_disconnect");
             reconnect();
         }
 
