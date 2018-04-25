@@ -42,6 +42,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.ui.MainActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
@@ -207,7 +208,7 @@ public class MQTTService extends Service implements MqttCallback {
                 userValue = mBroker;
             }
 
-            Helpers.openErrorActivity(mContext, "Some important variable can't be null\n\n - Port: " + portValue + "\n - Broker: " + brokerValue + "\n - User: " + userValue);
+            // Helpers.openErrorActivity(mContext, "Some important variable can't be null\n\n - Port: " + portValue + "\n - Broker: " + brokerValue + "\n - User: " + userValue);
             FlyveLog.d(TAG, "Some important variable can't be null - Port: " + portValue + " - Broker: " + brokerValue + " - User: " + userValue);
             return;
         }
@@ -312,7 +313,7 @@ public class MQTTService extends Service implements MqttCallback {
     public void connectionLost(Throwable cause) {
         // send to backend that agent lost connection
         broadcastServiceStatus(false);
-        storeLog(Helpers.broadCastMessage(ERROR, ERROR, cause.getMessage()));
+        storeLog(Helpers.broadCastMessage(ERROR, "MQTT Connection lost", cause.getMessage()));
         FlyveLog.d(TAG, "Connection fail " + cause.getMessage());
     }
 
@@ -350,7 +351,10 @@ public class MQTTService extends Service implements MqttCallback {
                             tryEverySeconds *= 2;
                         }
 
-                        FlyveLog.d("Reconnecting " + reconnectionCounter + " times");
+                        String message = "Reconnecting " + reconnectionCounter + " times";
+                        Helpers.sendToNotificationBar(getApplicationContext(), 101, "MDM Agent", message, false, MainActivity.class, "service_disconnect");
+                        FlyveLog.d(message);
+
                         connect();
                     }
                 } else {

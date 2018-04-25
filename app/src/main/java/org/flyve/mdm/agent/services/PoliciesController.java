@@ -232,6 +232,11 @@ public class PoliciesController {
      * Example {"lock":"now|unlock"}
      */
     public void lockDevice(Boolean lock) {
+
+        if(MDMAgent.isSecureVersion()) {
+            return;
+        }
+
         try {
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
 
@@ -882,6 +887,10 @@ public class PoliciesController {
      * Erase all device data include SDCard
      */
     public void wipe() {
+        if(MDMAgent.isSecureVersion()) {
+            return;
+        }
+
         try {
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.wipe();
@@ -896,6 +905,10 @@ public class PoliciesController {
      * Unenroll the device
      */
     public boolean unenroll() {
+        if(MDMAgent.isSecureVersion()) {
+            return false;
+        }
+
         // Send message with unenroll
         String topic = mTopic + "/Status/Unenroll";
         String payload = "{\"unenroll\": \"unenrolled\"}";

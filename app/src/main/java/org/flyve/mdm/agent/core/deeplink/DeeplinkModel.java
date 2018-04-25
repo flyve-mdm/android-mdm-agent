@@ -48,9 +48,6 @@ public class DeeplinkModel implements Deeplink.Model {
         String deepLinkErrorMessage = context.getResources().getString(R.string.ERROR_DEEP_LINK);
         String deepLinkData;
 
-        // delete all storage mqtt data
-        new MqttData(context).deleteAll();
-
         try {
             deepLinkData = Helpers.base64decode(deeplink);
         } catch(Exception ex) {
