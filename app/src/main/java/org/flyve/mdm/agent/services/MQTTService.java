@@ -313,7 +313,7 @@ public class MQTTService extends Service implements MqttCallback {
     public void connectionLost(Throwable cause) {
         // send to backend that agent lost connection
         broadcastServiceStatus(false);
-        storeLog(Helpers.broadCastMessage(ERROR, ERROR, cause.getMessage()));
+        storeLog(Helpers.broadCastMessage(ERROR, "MQTT Connection lost", cause.getMessage()));
         FlyveLog.d(TAG, "Connection fail " + cause.getMessage());
     }
 
