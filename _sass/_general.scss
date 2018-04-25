@@ -1,4 +1,5 @@
 $white: #fff;
+$grey: #f2f2f2;
 
 html {
   min-height: 100%;
@@ -36,4 +37,23 @@ img {
 
 .article-howtos {
   margin-left: 40px;
+}
+
+.policy-matrix {
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  th,
+  td {
+    padding: 16px;
+  }
+
+  tr {
+    &:nth-child(even) {
+      background-color: $grey;
+    }
+  }
 }
