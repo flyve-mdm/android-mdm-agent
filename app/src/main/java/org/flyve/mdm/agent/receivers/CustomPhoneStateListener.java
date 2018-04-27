@@ -24,11 +24,10 @@
 package org.flyve.mdm.agent.receivers;
 
 import android.content.Context;
-import android.media.AudioManager;
-import android.os.Handler;
 import android.telephony.PhoneStateListener;
 
 import org.flyve.mdm.agent.data.PoliciesData;
+import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
@@ -44,22 +43,8 @@ public class CustomPhoneStateListener extends PhoneStateListener {
         Boolean disable = new PoliciesData(context).getDisableSpeakerphone();
 
         if (state == 2) {
-
             // Disable Speaker Phone
-            if(disable) {
-                final Handler mHandler = new Handler();
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-                        audioManager.setMode(AudioManager.MODE_IN_CALL);
-                        audioManager.setMode(AudioManager.MODE_NORMAL);
-                        audioManager.setSpeakerphoneOn(false);
-                        FlyveLog.d("incoming_call: speaker_off");
-                    }
-                }, 500);
-            }
-
+            PoliciesConnectivity.disableSpeakerphone(disable);
         }
     }
 }
