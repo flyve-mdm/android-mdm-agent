@@ -20,6 +20,14 @@
             />
 
         <Switch
+            android:id="@+id/swConnectionNotification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enable Connection Notifications"
+            android:layout_margin="5dp"
+            />
+
+        <Switch
             android:id="@+id/swDarkTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
