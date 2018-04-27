@@ -517,7 +517,7 @@ public class PoliciesController {
     public void disableSpeakerphone(String taskId, boolean disable) {
         try {
 <span class="nc" id="L519">            cache.setDisableSpeakerphone(disable);</span>
-<span class="nc" id="L520">            new PoliciesDeviceManager(context).disableSpeakerphone(disable);</span>
+<span class="nc" id="L520">            PoliciesConnectivity.disableSpeakerphone(disable);</span>
 <span class="nc" id="L521">            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, &quot;Speaker phone&quot;, &quot;Speaker phone is disable: &quot; + disable));</span>
 
             // return the status of the task
