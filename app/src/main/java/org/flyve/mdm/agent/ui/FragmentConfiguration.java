@@ -62,6 +62,7 @@ public class FragmentConfiguration extends Fragment {
         });
 
         Switch swConnectionNotification = v.findViewById(R.id.swConnectionNotification);
+        swConnectionNotification.setChecked(cache.getEnableNotificationConnection());
         swConnectionNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
