@@ -61,6 +61,14 @@ public class FragmentConfiguration extends Fragment {
             }
         });
 
+        Switch swConnectionNotification = v.findViewById(R.id.swConnectionNotification);
+        swConnectionNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                cache.setEnableNotificationConnection(b);
+            }
+        });
+
         Switch swDarkTheme = v.findViewById(R.id.swDarkTheme);
         swDarkTheme.setChecked(cache.getDarkTheme());
         swDarkTheme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
