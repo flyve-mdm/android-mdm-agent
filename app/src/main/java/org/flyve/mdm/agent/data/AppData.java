@@ -84,6 +84,22 @@ public class AppData extends LocalStorage {
     }
 
     /**
+     * Get if the notifications are disable
+     * @return boolean the value represented by the string
+     */
+    public boolean getEnableNotificationConnection() {
+        return Boolean.valueOf(getData("enableNotificationConnection"));
+    }
+
+    /**
+     * Set if the notifications are disable
+     * @param status enable / disable
+     */
+    public void setEnableNotificationConnection(boolean status) {
+        setData("enableNotificationConnection", String.valueOf(status));
+    }
+
+    /**
      * Get if dark theme enable
      * @return boolean the value represented by the string
      */
