@@ -61,51 +61,60 @@ import org.flyve.mdm.agent.data.MqttData;
 <span class="nc" id="L61">            }</span>
         });
 
-<span class="nc" id="L64">        Switch swDarkTheme = v.findViewById(R.id.swDarkTheme);</span>
-<span class="nc" id="L65">        swDarkTheme.setChecked(cache.getDarkTheme());</span>
-<span class="nc" id="L66">        swDarkTheme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L64">        Switch swConnectionNotification = v.findViewById(R.id.swConnectionNotification);</span>
+<span class="nc" id="L65">        swConnectionNotification.setChecked(cache.getEnableNotificationConnection());</span>
+<span class="nc" id="L66">        swConnectionNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-<span class="nc" id="L69">                cache.setDarkTheme(b);</span>
+<span class="nc" id="L69">                cache.setEnableNotificationConnection(b);</span>
 <span class="nc" id="L70">            }</span>
         });
 
-<span class="nc" id="L73">        Button btnClear = v.findViewById(R.id.btnClear);</span>
-<span class="nc" id="L74">        btnClear.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L73">        Switch swDarkTheme = v.findViewById(R.id.swDarkTheme);</span>
+<span class="nc" id="L74">        swDarkTheme.setChecked(cache.getDarkTheme());</span>
+<span class="nc" id="L75">        swDarkTheme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+<span class="nc" id="L78">                cache.setDarkTheme(b);</span>
+<span class="nc" id="L79">            }</span>
+        });
+
+<span class="nc" id="L82">        Button btnClear = v.findViewById(R.id.btnClear);</span>
+<span class="nc" id="L83">        btnClear.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View view) {
-<span class="nc" id="L77">                AlertDialog.Builder builder = new AlertDialog.Builder(FragmentConfiguration.this.getContext());</span>
+<span class="nc" id="L86">                AlertDialog.Builder builder = new AlertDialog.Builder(FragmentConfiguration.this.getContext());</span>
 
-<span class="nc" id="L79">                builder.setTitle(&quot;DANGER&quot;);</span>
-<span class="nc" id="L80">                builder.setMessage(&quot;Are you sure do you want erase all the data?&quot;);</span>
+<span class="nc" id="L88">                builder.setTitle(&quot;DANGER&quot;);</span>
+<span class="nc" id="L89">                builder.setMessage(&quot;Are you sure do you want erase all the data?&quot;);</span>
 
-<span class="nc" id="L82">                builder.setPositiveButton(&quot;YES&quot;, new DialogInterface.OnClickListener() {</span>
+<span class="nc" id="L91">                builder.setPositiveButton(&quot;YES&quot;, new DialogInterface.OnClickListener() {</span>
 
                     public void onClick(DialogInterface dialog, int which) {
-<span class="nc" id="L85">                        LocalStorage localStorage = new LocalStorage(FragmentConfiguration.this.getContext());</span>
-<span class="nc" id="L86">                        localStorage.clearSettings();</span>
+<span class="nc" id="L94">                        LocalStorage localStorage = new LocalStorage(FragmentConfiguration.this.getContext());</span>
+<span class="nc" id="L95">                        localStorage.clearSettings();</span>
 
-<span class="nc" id="L88">                        new MqttData(FragmentConfiguration.this.getContext()).deleteAll();</span>
-<span class="nc" id="L89">                        dialog.dismiss();</span>
-<span class="nc" id="L90">                    }</span>
+<span class="nc" id="L97">                        new MqttData(FragmentConfiguration.this.getContext()).deleteAll();</span>
+<span class="nc" id="L98">                        dialog.dismiss();</span>
+<span class="nc" id="L99">                    }</span>
                 });
 
-<span class="nc" id="L93">                builder.setNegativeButton(&quot;NO&quot;, new DialogInterface.OnClickListener() {</span>
+<span class="nc" id="L102">                builder.setNegativeButton(&quot;NO&quot;, new DialogInterface.OnClickListener() {</span>
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                         // Do nothing
-<span class="nc" id="L99">                        dialog.dismiss();</span>
-<span class="nc" id="L100">                    }</span>
+<span class="nc" id="L108">                        dialog.dismiss();</span>
+<span class="nc" id="L109">                    }</span>
                 });
 
-<span class="nc" id="L103">                AlertDialog alert = builder.create();</span>
-<span class="nc" id="L104">                alert.show();</span>
-<span class="nc" id="L105">            }</span>
+<span class="nc" id="L112">                AlertDialog alert = builder.create();</span>
+<span class="nc" id="L113">                alert.show();</span>
+<span class="nc" id="L114">            }</span>
         });
 
-<span class="nc" id="L108">        return v;</span>
+<span class="nc" id="L117">        return v;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
