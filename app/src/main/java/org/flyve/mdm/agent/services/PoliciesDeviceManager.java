@@ -98,12 +98,6 @@ public class PoliciesDeviceManager {
         }
     }
 
-    public void disableSpeakerphone(boolean disable) {
-        // This policy is called when a call phone is running
-        // review CustomPhoneStateLister to extends or
-        // MQTTConnectivityReceiver for listener implementation
-    }
-
     public void enablePassword() {
         DeviceLockedController pwd = new DeviceLockedController(context);
         if(pwd.isDeviceScreenLocked()) {
