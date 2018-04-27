@@ -352,7 +352,11 @@ public class MQTTService extends Service implements MqttCallback {
                         }
 
                         String message = "Reconnecting " + reconnectionCounter + " times";
-                        Helpers.sendToNotificationBar(getApplicationContext(), 101, "MDM Agent", message, false, MainActivity.class, "service_disconnect");
+
+                        if(new AppData(getApplicationContext()).getEnableNotificationConnection()) {
+                            Helpers.sendToNotificationBar(getApplicationContext(), 101, "MDM Agent", message, false, MainActivity.class, "service_disconnect");
+                        }
+
                         FlyveLog.d(message);
 
                         connect();
