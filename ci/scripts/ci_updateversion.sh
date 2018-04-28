@@ -41,5 +41,5 @@ if [[ $CIRCLE_BRANCH == *"master"* ]]; then
 fi
 
 git add app/src/main/AndroidManifest.xml
-git commit -m "ci(release): update information on android manifest"
+git commit -m "ci(release): update version on android manifest"
 git push origin $CIRCLE_BRANCH
