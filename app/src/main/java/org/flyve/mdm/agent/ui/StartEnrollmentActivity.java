@@ -87,8 +87,11 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
 
         // come from QR scan
         Bundle bundle = intent.getExtras();
-        if(bundle!=null) {
-            data = Uri.parse(bundle.getString("data"));
+        if(bundle != null) {
+            String str = bundle.getString("data");
+            if (str != null) {
+                data = Uri.parse(str);
+            }
         }
 
         // come from deeplink
