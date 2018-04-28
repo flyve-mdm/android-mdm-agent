@@ -7,8 +7,6 @@ android {
         applicationId "org.flyve.mdm.agent"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 1
-        versionName "2.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -61,10 +59,8 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
-
     implementation "android.arch.persistence.room:runtime:1.0.0"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
-
     implementation 'com.madgag.spongycastle:core:1.54.0.0'
     implementation 'com.madgag.spongycastle:prov:1.54.0.0'
     implementation 'com.madgag.spongycastle:pkix:1.54.0.0'
@@ -79,19 +75,15 @@ import java.util.regex.Pattern
 
 task updateVersionCode {
     doLast {
-        if (project.hasProperty("vCode")) {
-            def manifestFile = file("src/main/AndroidManifest.xml")
-            def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
-            def manifestText = manifestFile.getText()
-            def matcher = pattern.matcher(manifestText)
-            matcher.find()
-
-            def manifestContent = matcher.replaceAll("versionCode=\"" + vCode + "\"")
-            println "Version Code: " + vCode
-            manifestFile.write(manifestContent)
-        } else {
-            println "please run: updateVersionCode -P vCode="
-        }
+        def manifestFile = file("src/main/AndroidManifest.xml")
+        def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
+        def manifestText = manifestFile.getText()
+        def matcher = pattern.matcher(manifestText)
+        matcher.find()
+        def versionCode = Integer.parseInt(matcher.group(1))
+        def manifestContent = matcher.replaceAll("versionCode=\"" + ++versionCode + "\"")
+        println "Version Code: " + versionCode
+        manifestFile.write(manifestContent)
     }
 }
 
