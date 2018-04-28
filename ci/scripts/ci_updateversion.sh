@@ -27,20 +27,19 @@
 #
 # increment version code, need to be unique to send to store
 # this factor is used if you need increase you version code to deploy on Google Play by default is 0
-export BUILD_INCREMENT_FACTOR=600
-./gradlew updateVersionCode -P vCode=$(($CIRCLE_BUILD_NUM + $BUILD_INCREMENT_FACTOR))
+./gradlew updateVersionCode
 
-# increment version on package.json, create tag and commit with changelog
+# increment version name on package.json, create tag and commit with changelog
 npm run release -- -m "ci(release): generate CHANGELOG.md for version %s"
 
-# Get version number from package.json
-export GIT_TAG=$(jq -r ".version" package.json)
+if [[ $CIRCLE_BRANCH == *"master"* ]]; then
+    # Get version number from package.json
+    export GIT_TAG=$(jq -r ".version" package.json)
 
-# update version name generate on package json
-./gradlew updateVersionName -P vName=$GIT_TAG
+    # update version name generate on package json
+    ./gradlew updateVersionName -P vName=$GIT_TAG
+fi
 
-# git add app/src/main/AndroidManifest.xml
-#
-# git commit -m "ci(release): update version ($GIT_TAG) and code number ($CIRCLE_BUILD_NUM)"
-#
-# git push origin $CIRCLE_BRANCH
+git add app/src/main/AndroidManifest.xml
+git commit -m "ci(release): update information on android manifest"
+git push origin $CIRCLE_BRANCH
