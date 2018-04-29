@@ -25,8 +25,10 @@ package org.flyve.mdm.agent.services;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Handler;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
@@ -55,6 +57,24 @@ public class PoliciesConnectivity {
         catch (Exception ex){
             FlyveLog.d(ex.getMessage());
         }
+    }
+
+    public static void disableSpeakerphone(final boolean disable) {
+        // This policy is called when a call phone is running
+        // review CustomPhoneStateLister to extends or
+        // MQTTConnectivityReceiver for listener implementation
+
+        final Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AudioManager audioManager = (AudioManager) MDMAgent.getInstance().getSystemService(Context.AUDIO_SERVICE);
+                audioManager.setMode(AudioManager.MODE_IN_CALL);
+                audioManager.setMode(AudioManager.MODE_NORMAL);
+                audioManager.setSpeakerphoneOn(disable);
+                FlyveLog.d("incoming_call: speaker: " + disable);
+            }
+        }, 500);
     }
 
     public static void disableGps(boolean disable) {

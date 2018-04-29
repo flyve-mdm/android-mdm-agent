@@ -517,7 +517,7 @@ public class PoliciesController {
     public void disableSpeakerphone(String taskId, boolean disable) {
         try {
             cache.setDisableSpeakerphone(disable);
-            new PoliciesDeviceManager(context).disableSpeakerphone(disable);
+            PoliciesConnectivity.disableSpeakerphone(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Speaker phone", "Speaker phone is disable: " + disable));
 
             // return the status of the task

@@ -9,6 +9,9 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout
+      - run:
+          name: validate
+          command: source ci/scripts/ci_validate_workflow.sh
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
@@ -93,9 +96,6 @@ jobs:
         - run:
             name: Setup environment
             command: source ci/scripts/ci_setup.sh
-        - run:
-            name: Update version and code
-            command: source ci/scripts/ci_updateversion.sh
         - run:
             name: Update about information
             command: source ci/scripts/ci_about.sh
