@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+static def releaseTime() {
+    return new Date().format("yyyy-MM-dd_HHmmss", TimeZone.getTimeZone("UTC"))
+}
+
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
@@ -18,7 +22,17 @@ android {
             testCoverageEnabled true
         }
     }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileName = outputFile.name.replace("app",
+                        "${defaultConfig.applicationId}_${releaseTime()}")
+                outputFileName = fileName
 
+            }
+        }
+    }
     dexOptions {
         preDexLibraries true
         maxProcessCount 8
