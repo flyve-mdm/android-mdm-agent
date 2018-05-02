@@ -32,6 +32,7 @@ import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.mdm.agent.utils.Inventory;
 
 public class PermissionModel implements Permission.Model {
 
@@ -89,8 +90,8 @@ public class PermissionModel implements Permission.Model {
         final ProgressDialog progress = ProgressDialog.show(context, "MDM Agent",
                 "Creating inventory...", true);
 
-        InventoryTask inventoryTask = new InventoryTask(context, "", true);
-        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
+        Inventory inventory = new Inventory();
+        inventory.getXMLInventory(context, new InventoryTask.OnTaskCompleted() {
             @Override
             public void onTaskSuccess(String s) {
                 progress.setMessage("Creating session...");
@@ -118,6 +119,5 @@ public class PermissionModel implements Permission.Model {
                 presenter.showError("The inventory fail");
             }
         });
-
     }
 }

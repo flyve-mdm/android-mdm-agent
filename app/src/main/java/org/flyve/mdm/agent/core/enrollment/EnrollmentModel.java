@@ -38,6 +38,7 @@ import org.flyve.mdm.agent.data.UserData;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.mdm.agent.utils.Inventory;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
@@ -54,22 +55,20 @@ public class EnrollmentModel implements Enrollment.Model {
 
     @Override
     public void createInventory(Context context) {
-        InventoryTask inventoryTask = new InventoryTask(context, "FlyveMDM-Agent");
-        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
+
+        Inventory inventory = new Inventory();
+        inventory.getXMLInventory(context, new InventoryTask.OnTaskCompleted() {
             @Override
             public void onTaskSuccess(String s) {
-                // String str = s.replaceAll("<\\?xml version='1.0' encoding='utf-8' standalone='yes' \\?>", "");
-                // String str = s.replaceAll("\\n|\\r", "");
-                // str = str.replaceAll(" ", "");
                 presenter.inventorySuccess(s);
             }
 
             @Override
             public void onTaskError(Throwable throwable) {
+                FlyveLog.e(throwable.getMessage());
                 presenter.showSnackError("Inventory fail");
             }
         });
-
     }
 
     @Override
