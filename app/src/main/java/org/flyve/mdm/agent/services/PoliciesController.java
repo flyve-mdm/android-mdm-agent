@@ -43,6 +43,7 @@ import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.mdm.agent.utils.Inventory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -168,23 +169,23 @@ public class PoliciesController {
      * Example {"query": "inventory"}
      */
     public void createInventory() {
-        InventoryTask inventoryTask = new InventoryTask(this.context, "FlyveMDM-Agent_v1.0");
-        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {
+        Inventory inventory = new Inventory();
+        inventory.getXMLInventory(context, new InventoryTask.OnTaskCompleted() {
             @Override
-            public void onTaskSuccess(String data) {
-                FlyveLog.xml(data);
+            public void onTaskSuccess(String s) {
+                FlyveLog.xml(s);
 
                 // send inventory to MQTT
-                sendInventory(data);
+                sendInventory(s);
 
                 broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Inventory", "Inventory Send"));
             }
 
             @Override
-            public void onTaskError(Throwable error) {
-                FlyveLog.e(error.getMessage());
+            public void onTaskError(Throwable throwable) {
+                FlyveLog.e(throwable.getMessage());
                 //send broadcast
-                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on createInventory", error.getMessage()));
+                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on createInventory", throwable.getMessage()));
             }
         });
     }
