@@ -49,4 +49,18 @@ public class Inventory {
 
         inventoryTask.getXML(callback);
     }
+
+    public void getJSONInventory(Context context, InventoryTask.OnTaskCompleted callback) {
+        InventoryTask inventoryTask = new InventoryTask(context, APP_VERSION, true);
+        MqttData cache = new MqttData(context);
+
+        String invitationToken = cache.getInvitationToken();
+        if(!invitationToken.isEmpty()){
+            String tag = "invitation_" + invitationToken;
+            FlyveLog.i(tag);
+            inventoryTask.setTag(tag);
+        }
+
+        inventoryTask.getJSON(callback);
+    }
 }
