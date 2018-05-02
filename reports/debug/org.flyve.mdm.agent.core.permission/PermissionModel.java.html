@@ -31,94 +31,107 @@ import android.support.v7.app.AlertDialog;
 import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
-import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Inventory;
 
 public class PermissionModel implements Permission.Model {
 
     private Permission.Presenter presenter;
 
-<span class="nc" id="L40">    public PermissionModel(Permission.Presenter presenter) {</span>
-<span class="nc" id="L41">        this.presenter = presenter;</span>
-<span class="nc" id="L42">    }</span>
+<span class="nc" id="L41">    public PermissionModel(Permission.Presenter presenter) {</span>
+<span class="nc" id="L42">        this.presenter = presenter;</span>
+<span class="nc" id="L43">    }</span>
 
 
     @Override
     public void showDialogShare(final Context context) {
-<span class="nc" id="L47">        AlertDialog.Builder builder = new AlertDialog.Builder(context );</span>
-<span class="nc" id="L48">        builder.setTitle(R.string.dialog_share_title);</span>
+<span class="nc" id="L48">        AlertDialog.Builder builder = new AlertDialog.Builder(context );</span>
+<span class="nc" id="L49">        builder.setTitle(R.string.dialog_share_title);</span>
 
-<span class="nc" id="L50">        final int[] type = new int[1];</span>
+<span class="nc" id="L51">        final int[] type = new int[1];</span>
 
         //list of items
-<span class="nc" id="L53">        String[] items = context.getResources().getStringArray(R.array.export_list);</span>
-<span class="nc" id="L54">        builder.setSingleChoiceItems(items, 0,</span>
-<span class="nc" id="L55">                new DialogInterface.OnClickListener() {</span>
+<span class="nc" id="L54">        String[] items = context.getResources().getStringArray(R.array.export_list);</span>
+<span class="nc" id="L55">        builder.setSingleChoiceItems(items, 0,</span>
+<span class="nc" id="L56">                new DialogInterface.OnClickListener() {</span>
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-<span class="nc" id="L58">                        type[0] = which;</span>
-<span class="nc" id="L59">                    }</span>
+<span class="nc" id="L59">                        type[0] = which;</span>
+<span class="nc" id="L60">                    }</span>
                 });
 
-<span class="nc" id="L62">        String positiveText = context.getString(android.R.string.ok);</span>
-<span class="nc" id="L63">        builder.setPositiveButton(positiveText,</span>
-<span class="nc" id="L64">                new DialogInterface.OnClickListener() {</span>
+<span class="nc" id="L63">        String positiveText = context.getString(android.R.string.ok);</span>
+<span class="nc" id="L64">        builder.setPositiveButton(positiveText,</span>
+<span class="nc" id="L65">                new DialogInterface.OnClickListener() {</span>
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // positive button logic
-<span class="nc" id="L68">                        Helpers.share(context, &quot;Inventory File&quot;, type[0] );</span>
-<span class="nc" id="L69">                    }</span>
+<span class="nc" id="L69">                        new InventoryTask(context, &quot;Inventory File&quot;).shareInventory(type[0]);</span>
+<span class="nc" id="L70">                    }</span>
                 });
 
-<span class="nc" id="L72">        String negativeText = context.getString(android.R.string.cancel);</span>
-<span class="nc" id="L73">        builder.setNegativeButton(negativeText,</span>
-<span class="nc" id="L74">                new DialogInterface.OnClickListener() {</span>
+<span class="nc" id="L73">        String negativeText = context.getString(android.R.string.cancel);</span>
+<span class="nc" id="L74">        builder.setNegativeButton(negativeText,</span>
+<span class="nc" id="L75">                new DialogInterface.OnClickListener() {</span>
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // negative button logic
-<span class="nc" id="L78">                    }</span>
+<span class="nc" id="L79">                    }</span>
                 });
 
-<span class="nc" id="L81">        AlertDialog dialog = builder.create();</span>
+<span class="nc" id="L82">        AlertDialog dialog = builder.create();</span>
         // display dialog
-<span class="nc" id="L83">        dialog.show();</span>
+<span class="nc" id="L84">        dialog.show();</span>
 
-<span class="nc" id="L85">    }</span>
+<span class="nc" id="L86">    }</span>
 
     @Override
     public void generateInventory(final Context context) {
-<span class="nc" id="L89">        final ProgressDialog progress = ProgressDialog.show(context, &quot;MDM Agent&quot;,</span>
+<span class="nc" id="L90">        final ProgressDialog progress = ProgressDialog.show(context, &quot;MDM Agent&quot;,</span>
                 &quot;Creating inventory...&quot;, true);
 
-<span class="nc" id="L92">        InventoryTask inventoryTask = new InventoryTask(context, &quot;&quot;, true);</span>
-<span class="nc" id="L93">        inventoryTask.getXML(new InventoryTask.OnTaskCompleted() {</span>
+<span class="nc" id="L93">        Inventory inventory = new Inventory();</span>
+
+<span class="nc" id="L95">        inventory.getJSONInventory(context, new InventoryTask.OnTaskCompleted() {</span>
             @Override
             public void onTaskSuccess(String s) {
-<span class="nc" id="L96">                progress.setMessage(&quot;Creating session...&quot;);</span>
-
-<span class="nc" id="L98">                EnrollmentHelper sessionToken = new EnrollmentHelper(context);</span>
-<span class="nc" id="L99">                sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {</span>
-                    @Override
-                    public void onSuccess(String data) {
-                        // Active EnrollmentHelper Token is stored on cache
-<span class="nc" id="L103">                        progress.dismiss();</span>
-<span class="nc" id="L104">                        presenter.inventorySuccess();</span>
-<span class="nc" id="L105">                    }</span>
-
-                    @Override
-                    public void onError(String error) {
-<span class="nc" id="L109">                        progress.dismiss();</span>
-<span class="nc" id="L110">                        presenter.showError(error);</span>
-<span class="nc" id="L111">                    }</span>
-                });
-<span class="nc" id="L113">            }</span>
+<span class="nc" id="L98">                FlyveLog.i(s);</span>
+<span class="nc" id="L99">            }</span>
 
             @Override
             public void onTaskError(Throwable throwable) {
-<span class="nc" id="L117">                progress.dismiss();</span>
-<span class="nc" id="L118">                presenter.showError(&quot;The inventory fail&quot;);</span>
-<span class="nc" id="L119">            }</span>
+<span class="nc" id="L103">                FlyveLog.e(throwable.getMessage());</span>
+<span class="nc" id="L104">            }</span>
         });
 
-<span class="nc" id="L122">    }</span>
+<span class="nc" id="L107">        inventory.getXMLInventory(context, new InventoryTask.OnTaskCompleted() {</span>
+            @Override
+            public void onTaskSuccess(String s) {
+<span class="nc" id="L110">                progress.setMessage(&quot;Creating session...&quot;);</span>
+
+<span class="nc" id="L112">                EnrollmentHelper sessionToken = new EnrollmentHelper(context);</span>
+<span class="nc" id="L113">                sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {</span>
+                    @Override
+                    public void onSuccess(String data) {
+                        // Active EnrollmentHelper Token is stored on cache
+<span class="nc" id="L117">                        progress.dismiss();</span>
+<span class="nc" id="L118">                        presenter.inventorySuccess();</span>
+<span class="nc" id="L119">                    }</span>
+
+                    @Override
+                    public void onError(String error) {
+<span class="nc" id="L123">                        progress.dismiss();</span>
+<span class="nc" id="L124">                        presenter.showError(error);</span>
+<span class="nc" id="L125">                    }</span>
+                });
+<span class="nc" id="L127">            }</span>
+
+            @Override
+            public void onTaskError(Throwable throwable) {
+<span class="nc" id="L131">                progress.dismiss();</span>
+<span class="nc" id="L132">                presenter.showError(&quot;The inventory fail&quot;);</span>
+<span class="nc" id="L133">            }</span>
+        });
+<span class="nc" id="L135">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
