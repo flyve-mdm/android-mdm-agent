@@ -27,9 +27,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 
-import org.flyve.inventory.InventoryTask;
 import org.flyve.inventory.categories.Hardware;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
@@ -38,9 +38,12 @@ import org.flyve.mdm.agent.data.UserData;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.flyve.mdm.agent.utils.Inventory;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -56,19 +59,38 @@ public class EnrollmentModel implements Enrollment.Model {
     @Override
     public void createInventory(Context context) {
 
-        Inventory inventory = new Inventory();
-        inventory.getXMLInventory(context, new InventoryTask.OnTaskCompleted() {
-            @Override
-            public void onTaskSuccess(String s) {
-                presenter.inventorySuccess(s);
-            }
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        File file = new File(path + "/Inventory.xml");
 
-            @Override
-            public void onTaskError(Throwable throwable) {
-                FlyveLog.e(throwable.getMessage());
-                presenter.showSnackError("Inventory fail");
+        if(!file.exists()) {
+            presenter.showSnackError("The inventory file does not exist");
+        }
+
+        //Read text from file
+        StringBuilder inventory = new StringBuilder();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(file));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                inventory.append(line);
             }
-        });
+            presenter.inventorySuccess(inventory.toString());
+            br.close();
+        } catch (IOException ex) {
+            inventory.append("fail");
+            presenter.showSnackError("Inventory fail, cannot read the file");
+            FlyveLog.e(ex.getMessage());
+        } finally {
+            if(br!=null) {
+                try {
+                    br.close();
+                } catch (IOException ex) {
+                    FlyveLog.e(ex.getMessage());
+                }
+            }
+        }
     }
 
     @Override
@@ -173,7 +195,7 @@ public class EnrollmentModel implements Enrollment.Model {
 
             JSONObject payload = new JSONObject();
 
-            String mInventory = Helpers.base64encode( inventory );
+            String mInventory = Helpers.base64encode( inventory.toString() );
 
             payload.put("_email", arrEmails.get(0).getEmail()); // get first email
             payload.put("_invitation_token", invitationToken);
