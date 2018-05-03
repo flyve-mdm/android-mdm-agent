@@ -360,7 +360,6 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
             pd.dismiss();
             validateForm();
         }
-
     }
 
     @Override
