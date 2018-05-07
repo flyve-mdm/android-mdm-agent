@@ -91,10 +91,12 @@ public class PoliciesDeviceManager {
 
     @TargetApi(23)
     public void disableStatusBar(boolean disable) {
-        try {
-            mDPM.setStatusBarDisabled(mDeviceAdmin, disable);
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+        if(Build.VERSION.SDK_INT >= 23) {
+            try {
+                mDPM.setStatusBarDisabled(mDeviceAdmin, disable);
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
         }
     }
 
