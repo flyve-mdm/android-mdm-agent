@@ -90,6 +90,14 @@
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/txtVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="10dp"
+                />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/user_information_enroll"
@@ -263,5 +271,4 @@
 
         </LinearLayout>
     </ScrollView>
-
 </RelativeLayout>
