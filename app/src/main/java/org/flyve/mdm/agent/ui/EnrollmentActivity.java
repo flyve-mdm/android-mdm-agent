@@ -109,6 +109,9 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
             });
         }
 
+        TextView txtVersion = findViewById(R.id.txtVersion);
+        txtVersion.setText(MDMAgent.getCompleteVersion());
+
         presenter = new EnrollmentPresenter(EnrollmentActivity.this);
 
         pbx509 = findViewById(R.id.progressBarX509);
