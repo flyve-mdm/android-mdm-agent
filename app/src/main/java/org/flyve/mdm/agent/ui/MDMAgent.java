@@ -34,6 +34,7 @@ import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
 
+import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.utils.UtilsCrash;
 
 /**
@@ -90,4 +91,8 @@ public class MDMAgent extends Application {
     }
 
     public static Boolean isSecureVersion() { return true; }
+
+    public static String getCompleteVersion() {
+        return BuildConfig.VERSION_NAME + "." + BuildConfig.VERSION_CODE;
+    }
 }
