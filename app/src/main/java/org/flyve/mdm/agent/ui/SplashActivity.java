@@ -38,7 +38,6 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 
-import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.Walkthrough;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughPresenter;
@@ -125,7 +124,7 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
         });
 
         TextView txtVersion = findViewById(R.id.txtVersion);
-        txtVersion.setText(BuildConfig.VERSION_NAME);
+        txtVersion.setText(MDMAgent.getCompleteVersion());
     }
 
     @Override
