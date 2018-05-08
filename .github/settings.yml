@@ -44,6 +44,6 @@ labels:
     color: 33aa3f
   - name: good first issue
     color: 7057ff
-  - name: ui/ux
+  - name: ui-ux
     color: 000000
     
