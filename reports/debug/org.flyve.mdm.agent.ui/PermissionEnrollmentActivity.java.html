@@ -33,12 +33,14 @@ import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.permission.Permission;
 import org.flyve.mdm.agent.core.permission.PermissionPresenter;
 import org.flyve.mdm.agent.utils.Helpers;
 
-<span class="nc" id="L41">public class PermissionEnrollmentActivity extends Activity implements Permission.View {</span>
+<span class="nc" id="L43">public class PermissionEnrollmentActivity extends Activity implements Permission.View {</span>
     private static final int REQUEST_EXIT = 1;
     private LinearLayout lnButtons;
     private Button btnPermission;
@@ -46,52 +48,55 @@ import org.flyve.mdm.agent.utils.Helpers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-<span class="nc" id="L49">        super.onCreate(savedInstanceState);</span>
-<span class="nc" id="L50">        setContentView(R.layout.activity_permission_enrollment);</span>
+<span class="nc" id="L51">        super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L52">        setContentView(R.layout.activity_permission_enrollment);</span>
 
-<span class="nc" id="L52">        presenter = new PermissionPresenter(this);</span>
+<span class="nc" id="L54">        presenter = new PermissionPresenter(this);</span>
 
-<span class="nc" id="L54">        lnButtons = findViewById(R.id.lnButtons);</span>
+<span class="nc" id="L56">        lnButtons = findViewById(R.id.lnButtons);</span>
 
-<span class="nc" id="L56">        btnPermission = findViewById(R.id.btnPermission);</span>
-<span class="nc" id="L57">        btnPermission.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L58">        btnPermission = findViewById(R.id.btnPermission);</span>
+<span class="nc" id="L59">        btnPermission.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View view) {
-<span class="nc bnc" id="L60" title="All 2 branches missed.">                if(Build.VERSION.SDK_INT &gt;= 23) {</span>
-<span class="nc" id="L61">                    requestPermission();</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">                if(Build.VERSION.SDK_INT &gt;= 23) {</span>
+<span class="nc" id="L63">                    requestPermission();</span>
                 } else {
-<span class="nc" id="L63">                    presenter.generateInventory(PermissionEnrollmentActivity.this);</span>
+<span class="nc" id="L65">                    presenter.generateInventory(PermissionEnrollmentActivity.this);</span>
                 }
-<span class="nc" id="L65">            }</span>
+<span class="nc" id="L67">            }</span>
         });
 
-<span class="nc" id="L68">        Button btnShare = findViewById(R.id.btnShare);</span>
-<span class="nc" id="L69">        btnShare.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L70">        Button btnShare = findViewById(R.id.btnShare);</span>
+<span class="nc" id="L71">        btnShare.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View view) {
-<span class="nc" id="L72">                presenter.showDialogShare(PermissionEnrollmentActivity.this);</span>
-<span class="nc" id="L73">            }</span>
+<span class="nc" id="L74">                presenter.showDialogShare(PermissionEnrollmentActivity.this);</span>
+<span class="nc" id="L75">            }</span>
         });
 
-<span class="nc" id="L76">        Button btnContinue = findViewById(R.id.btnContinue);</span>
-<span class="nc" id="L77">        btnContinue.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L78">        Button btnContinue = findViewById(R.id.btnContinue);</span>
+<span class="nc" id="L79">        btnContinue.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View view) {
-<span class="nc" id="L80">                Intent miIntent = new Intent(PermissionEnrollmentActivity.this, EnrollmentActivity.class);</span>
-<span class="nc" id="L81">                PermissionEnrollmentActivity.this.startActivityForResult(miIntent, REQUEST_EXIT);</span>
-<span class="nc" id="L82">            }</span>
+<span class="nc" id="L82">                Intent miIntent = new Intent(PermissionEnrollmentActivity.this, EnrollmentActivity.class);</span>
+<span class="nc" id="L83">                PermissionEnrollmentActivity.this.startActivityForResult(miIntent, REQUEST_EXIT);</span>
+<span class="nc" id="L84">            }</span>
         });
-<span class="nc" id="L84">    }</span>
+
+<span class="nc" id="L87">        TextView txtVersion = findViewById(R.id.txtVersion);</span>
+<span class="nc" id="L88">        txtVersion.setText(MDMAgent.getCompleteVersion());</span>
+<span class="nc" id="L89">    }</span>
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-<span class="nc bnc" id="L88" title="All 4 branches missed.">        if (requestCode == REQUEST_EXIT &amp;&amp; resultCode == RESULT_OK) {</span>
-<span class="nc" id="L89">            this.finish();</span>
+<span class="nc bnc" id="L93" title="All 4 branches missed.">        if (requestCode == REQUEST_EXIT &amp;&amp; resultCode == RESULT_OK) {</span>
+<span class="nc" id="L94">            this.finish();</span>
         }
-<span class="nc" id="L91">    }</span>
+<span class="nc" id="L96">    }</span>
 
     private void requestPermission() {
-<span class="nc" id="L94">        ActivityCompat.requestPermissions(PermissionEnrollmentActivity.this,</span>
+<span class="nc" id="L99">        ActivityCompat.requestPermissions(PermissionEnrollmentActivity.this,</span>
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.READ_PHONE_STATE,
@@ -101,42 +106,42 @@ import org.flyve.mdm.agent.utils.Helpers;
                         Manifest.permission.READ_SMS,
                 },
                 1);
-<span class="nc" id="L104">    }</span>
+<span class="nc" id="L109">    }</span>
 
     @Override
     public void showError(String message) {
-<span class="nc" id="L108">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
+<span class="nc" id="L113">        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L111">            }</span>
+<span class="nc" id="L116">            }</span>
         });
-<span class="nc" id="L113">    }</span>
+<span class="nc" id="L118">    }</span>
 
     @Override
     public void inventorySuccess() {
-<span class="nc" id="L117">        lnButtons.setVisibility(View.VISIBLE);</span>
-<span class="nc" id="L118">        btnPermission.setVisibility(View.GONE);</span>
-<span class="nc" id="L119">    }</span>
+<span class="nc" id="L122">        lnButtons.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L123">        btnPermission.setVisibility(View.GONE);</span>
+<span class="nc" id="L124">    }</span>
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-<span class="nc bnc" id="L123" title="All 2 branches missed.">        switch (requestCode) {</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        switch (requestCode) {</span>
             case 1: {
 
                 // If request is cancelled, the result arrays are empty.
-<span class="nc bnc" id="L127" title="All 14 branches missed.">                if (grantResults.length &gt; 0</span>
+<span class="nc bnc" id="L132" title="All 14 branches missed.">                if (grantResults.length &gt; 0</span>
                         &amp;&amp; grantResults[0] == PackageManager.PERMISSION_GRANTED
                         &amp;&amp; grantResults[1] == PackageManager.PERMISSION_GRANTED
                         &amp;&amp; grantResults[2] == PackageManager.PERMISSION_GRANTED
                         &amp;&amp; grantResults[3] == PackageManager.PERMISSION_GRANTED
                         &amp;&amp; grantResults[4] == PackageManager.PERMISSION_GRANTED
                         &amp;&amp; grantResults[5] == PackageManager.PERMISSION_GRANTED) {
-<span class="nc" id="L134">                    presenter.generateInventory(PermissionEnrollmentActivity.this);</span>
+<span class="nc" id="L139">                    presenter.generateInventory(PermissionEnrollmentActivity.this);</span>
                 } else {
-<span class="nc" id="L136">                    presenter.showError(getString(R.string.permission_error_result));</span>
+<span class="nc" id="L141">                    presenter.showError(getString(R.string.permission_error_result));</span>
                 }
             }
         }
-<span class="nc" id="L140">    }</span>
+<span class="nc" id="L145">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

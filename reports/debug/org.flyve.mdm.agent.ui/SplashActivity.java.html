@@ -38,7 +38,6 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 
-import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.Walkthrough;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughPresenter;
@@ -52,7 +51,7 @@ import java.util.ArrayList;
  * This is the first screen of the app here you can get information about flyve-mdm-agent
  * if you are not register
  */
-<span class="fc" id="L55">public class SplashActivity extends FragmentActivity implements Walkthrough.View {</span>
+<span class="fc" id="L54">public class SplashActivity extends FragmentActivity implements Walkthrough.View {</span>
 
     private static final int TIME = 3000;
     private static final int REQUEST_CODE_SCAN = 100;
@@ -63,19 +62,19 @@ import java.util.ArrayList;
     @Override
     public void onPause() {
         // unregister the broadcast
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if(mIntent != null) {</span>
-<span class="nc" id="L67">            unregisterReceiver(broadcastMessage);</span>
-<span class="nc" id="L68">            mIntent = null;</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if(mIntent != null) {</span>
+<span class="nc" id="L66">            unregisterReceiver(broadcastMessage);</span>
+<span class="nc" id="L67">            mIntent = null;</span>
         }
-<span class="fc" id="L70">        super.onPause();</span>
-<span class="fc" id="L71">    }</span>
+<span class="fc" id="L69">        super.onPause();</span>
+<span class="fc" id="L70">    }</span>
 
     @Override
     public void onResume() {
         // register the broadcast
-<span class="fc" id="L76">        super.onResume();</span>
-<span class="fc" id="L77">        LocalBroadcastManager.getInstance(SplashActivity.this).registerReceiver(broadcastMessage, new IntentFilter(&quot;flyve.ACTION_CLOSE&quot;));</span>
-<span class="fc" id="L78">    }</span>
+<span class="fc" id="L75">        super.onResume();</span>
+<span class="fc" id="L76">        LocalBroadcastManager.getInstance(SplashActivity.this).registerReceiver(broadcastMessage, new IntentFilter(&quot;flyve.ACTION_CLOSE&quot;));</span>
+<span class="fc" id="L77">    }</span>
 
     /**
      * Called when the activity is starting
@@ -84,86 +83,86 @@ import java.util.ArrayList;
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-<span class="fc" id="L87">        super.onCreate(savedInstanceState);</span>
+<span class="fc" id="L86">        super.onCreate(savedInstanceState);</span>
 
-<span class="fc" id="L89">        MqttData cache = new MqttData( SplashActivity.this );</span>
+<span class="fc" id="L88">        MqttData cache = new MqttData( SplashActivity.this );</span>
 
         // if broker is on cache open the main activity
-<span class="fc" id="L92">        String broker = cache.getBroker();</span>
-<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if(!broker.isEmpty()) {</span>
+<span class="fc" id="L91">        String broker = cache.getBroker();</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if(!broker.isEmpty()) {</span>
             // if user is enrolled show landing screen
-<span class="nc" id="L95">            FlyveLog.d(cache.getSessionToken());</span>
+<span class="nc" id="L94">            FlyveLog.d(cache.getSessionToken());</span>
 
-<span class="nc" id="L97">            setContentView(R.layout.activity_splash_enrolled);</span>
-<span class="nc" id="L98">            new Handler().postDelayed(new Runnable() {</span>
+<span class="nc" id="L96">            setContentView(R.layout.activity_splash_enrolled);</span>
+<span class="nc" id="L97">            new Handler().postDelayed(new Runnable() {</span>
                 @Override
                 public void run() {
-<span class="nc" id="L101">                    openMain();</span>
-<span class="nc" id="L102">                }</span>
+<span class="nc" id="L100">                    openMain();</span>
+<span class="nc" id="L101">                }</span>
             }, TIME);
 
-<span class="nc" id="L105">            return;</span>
+<span class="nc" id="L104">            return;</span>
        }
 
         // if user is not enrolled show help
-<span class="fc" id="L109">        setContentView(R.layout.activity_splash);</span>
-<span class="fc" id="L110">        presenter = new WalkthroughPresenter(this);</span>
+<span class="fc" id="L108">        setContentView(R.layout.activity_splash);</span>
+<span class="fc" id="L109">        presenter = new WalkthroughPresenter(this);</span>
 
-<span class="fc" id="L112">        ArrayList&lt;WalkthroughData&gt; walkthrough = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L113">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));</span>
-<span class="fc" id="L114">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));</span>
-<span class="fc" id="L115">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));</span>
+<span class="fc" id="L111">        ArrayList&lt;WalkthroughData&gt; walkthrough = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L112">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));</span>
+<span class="fc" id="L113">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));</span>
+<span class="fc" id="L114">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));</span>
 
-<span class="fc" id="L117">        presenter.createSlides(walkthrough, getSupportFragmentManager());</span>
+<span class="fc" id="L116">        presenter.createSlides(walkthrough, getSupportFragmentManager());</span>
 
-<span class="fc" id="L119">        FloatingActionButton btnScan = findViewById(R.id.btnScan);</span>
-<span class="fc" id="L120">        btnScan.setOnClickListener(new View.OnClickListener() {</span>
+<span class="fc" id="L118">        FloatingActionButton btnScan = findViewById(R.id.btnScan);</span>
+<span class="fc" id="L119">        btnScan.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View view) {
-<span class="nc" id="L123">                SplashActivity.this.startActivityForResult(new Intent(SplashActivity.this, ScanActivity.class), REQUEST_CODE_SCAN);</span>
-<span class="nc" id="L124">            }</span>
+<span class="nc" id="L122">                SplashActivity.this.startActivityForResult(new Intent(SplashActivity.this, ScanActivity.class), REQUEST_CODE_SCAN);</span>
+<span class="nc" id="L123">            }</span>
         });
 
-<span class="fc" id="L127">        TextView txtVersion = findViewById(R.id.txtVersion);</span>
-<span class="fc" id="L128">        txtVersion.setText(BuildConfig.VERSION_NAME);</span>
-<span class="fc" id="L129">    }</span>
+<span class="fc" id="L126">        TextView txtVersion = findViewById(R.id.txtVersion);</span>
+<span class="fc" id="L127">        txtVersion.setText(MDMAgent.getCompleteVersion());</span>
+<span class="fc" id="L128">    }</span>
 
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
-<span class="nc bnc" id="L133" title="All 4 branches missed.">        if (requestCode == REQUEST_CODE_SCAN &amp;&amp; resultCode == Activity.RESULT_OK) {</span>
-<span class="nc" id="L134">            String input = intent.getStringExtra(ScanActivity.INTENT_EXTRA_RESULT);</span>
+<span class="nc bnc" id="L132" title="All 4 branches missed.">        if (requestCode == REQUEST_CODE_SCAN &amp;&amp; resultCode == Activity.RESULT_OK) {</span>
+<span class="nc" id="L133">            String input = intent.getStringExtra(ScanActivity.INTENT_EXTRA_RESULT);</span>
 
-<span class="nc" id="L136">            Intent miIntent = new Intent(SplashActivity.this, StartEnrollmentActivity.class);</span>
-<span class="nc" id="L137">            miIntent.putExtra(&quot;data&quot;, input);</span>
-<span class="nc" id="L138">            SplashActivity.this.startActivity(miIntent);</span>
+<span class="nc" id="L135">            Intent miIntent = new Intent(SplashActivity.this, StartEnrollmentActivity.class);</span>
+<span class="nc" id="L136">            miIntent.putExtra(&quot;data&quot;, input);</span>
+<span class="nc" id="L137">            SplashActivity.this.startActivity(miIntent);</span>
         }
-<span class="nc" id="L140">    }</span>
+<span class="nc" id="L139">    }</span>
 
     @Override
     public void addSlides(PagerAdapter mPagerAdapter) {
-<span class="fc" id="L144">        ViewPager mPager = findViewById(R.id.pager);</span>
-<span class="fc" id="L145">        mPager.setAdapter(mPagerAdapter);</span>
-<span class="fc" id="L146">    }</span>
+<span class="fc" id="L143">        ViewPager mPager = findViewById(R.id.pager);</span>
+<span class="fc" id="L144">        mPager.setAdapter(mPagerAdapter);</span>
+<span class="fc" id="L145">    }</span>
 
     /**
      * Open the main activity
      */
     private void openMain() {
-<span class="nc" id="L152">        Intent miIntent = new Intent(SplashActivity.this, MainActivity.class);</span>
-<span class="nc" id="L153">        SplashActivity.this.startActivity(miIntent);</span>
-<span class="nc" id="L154">        SplashActivity.this.finish();</span>
-<span class="nc" id="L155">    }</span>
+<span class="nc" id="L151">        Intent miIntent = new Intent(SplashActivity.this, MainActivity.class);</span>
+<span class="nc" id="L152">        SplashActivity.this.startActivity(miIntent);</span>
+<span class="nc" id="L153">        SplashActivity.this.finish();</span>
+<span class="nc" id="L154">    }</span>
 
-<span class="fc" id="L157">    private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {</span>
+<span class="fc" id="L156">    private BroadcastReceiver broadcastMessage = new BroadcastReceiver() {</span>
         @Override
         public void onReceive(Context context, Intent intent) {
-<span class="nc" id="L160">            String action = intent.getAction();</span>
+<span class="nc" id="L159">            String action = intent.getAction();</span>
 
             // Close this activity
-<span class="nc bnc" id="L163" title="All 2 branches missed.">            if(&quot;flyve.ACTION_CLOSE&quot;.equalsIgnoreCase(action)) {</span>
-<span class="nc" id="L164">                SplashActivity.this.finish();</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">            if(&quot;flyve.ACTION_CLOSE&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc" id="L163">                SplashActivity.this.finish();</span>
             }
-<span class="nc" id="L166">        }</span>
+<span class="nc" id="L165">        }</span>
     };
 
 
