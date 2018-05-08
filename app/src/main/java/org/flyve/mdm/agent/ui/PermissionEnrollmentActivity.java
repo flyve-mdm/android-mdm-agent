@@ -33,6 +33,8 @@ import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.permission.Permission;
 import org.flyve.mdm.agent.core.permission.PermissionPresenter;
@@ -81,6 +83,9 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
                 PermissionEnrollmentActivity.this.startActivityForResult(miIntent, REQUEST_EXIT);
             }
         });
+
+        TextView txtVersion = findViewById(R.id.txtVersion);
+        txtVersion.setText(MDMAgent.getCompleteVersion());
     }
 
     @Override
