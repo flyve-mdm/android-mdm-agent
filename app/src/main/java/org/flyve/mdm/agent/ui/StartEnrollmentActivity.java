@@ -105,6 +105,8 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
             showError(ex.getMessage());
         }
 
+        TextView txtVersion = findViewById(R.id.txtVersion);
+        txtVersion.setText(MDMAgent.getCompleteVersion());
 
         presenter.lint(StartEnrollmentActivity.this, deeplink);
 
