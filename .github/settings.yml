@@ -1,7 +1,7 @@
 repository:
-  name: flyve-mdm-android-agent
+  name: android-mdm-agent
   description: Flyve MDM Agent for Android
-  homepage: http://flyve.org/flyve-mdm-android-agent/
+  homepage: http://flyve.org/android-mdm-agent/
   topics: flyve-mdm, android, agent
   private: false
   has_issues: true
@@ -44,6 +44,5 @@ labels:
     color: 33aa3f
   - name: good first issue
     color: 7057ff
-  - name: ui-ux
+  - name: ui ux
     color: 000000
-    
