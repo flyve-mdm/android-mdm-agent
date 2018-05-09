@@ -1149,7 +1149,7 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
-        // Policy/disableCreateVpnProfiles
+        // Policy/disableAllSounds
         String DISABLE_ALL_SOUNDS = "disableAllSounds";
         if(topic.toLowerCase().contains(DISABLE_ALL_SOUNDS.toLowerCase())) {
             try {
