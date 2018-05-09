@@ -1095,6 +1095,26 @@ public class PoliciesController {
         });
     }
 
+    public void disableSounds(int streamType, String taskId, Boolean disable) {
+        AudioManager aManager = (AudioManager)context.getSystemService(AUDIO_SERVICE);
+
+        try {
+            if (Build.VERSION.SDK_INT >= 23) {
+                int direction = disable ? AudioManager.ADJUST_SAME : AudioManager.ADJUST_MUTE;
+                aManager.adjustStreamVolume(streamType, direction, 0);
+            } else {
+                //media
+                aManager.setStreamMute(streamType, disable);
+            }
+
+            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Disable Sound", "Disable streamType: " + streamType));
+            sendTaskStatus(taskId, FEEDBACK_DONE);
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error disable streamType: " + streamType, ex.getMessage()));
+        }
+    }
+
     public void disableAllSounds(String taskId, Boolean disable) {
 
         AudioManager aManager = (AudioManager)context.getSystemService(AUDIO_SERVICE);
