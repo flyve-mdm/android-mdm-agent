@@ -26,6 +26,7 @@ package org.flyve.mdm.agent.services;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -1161,6 +1162,23 @@ public class MQTTService extends Service implements MqttCallback {
 
                     // execute the policy
                     policiesController.disableAllSounds(taskId, disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
+        String DISABLE_STREAM_MUSIC = "disableStreamMusic";
+        if(topic.toLowerCase().contains(DISABLE_STREAM_MUSIC.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_STREAM_MUSIC)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_STREAM_MUSIC);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // execute the policy
+                    policiesController.disableSounds(AudioManager.STREAM_MUSIC, taskId, disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
