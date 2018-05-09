@@ -1236,6 +1236,23 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        String DISABLE_STREAM_ACCESSIBILITY = "disableStreamAccessibility";
+        if(topic.toLowerCase().contains(DISABLE_STREAM_ACCESSIBILITY.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_STREAM_ACCESSIBILITY)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_STREAM_ACCESSIBILITY);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // execute the policy
+                    policiesController.disableSounds(AudioManager.STREAM_ACCESSIBILITY, taskId, disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
