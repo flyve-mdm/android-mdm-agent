@@ -1219,6 +1219,23 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        String DISABLE_STREAM_NOTIFICATION = "disableStreamNotification";
+        if(topic.toLowerCase().contains(DISABLE_STREAM_NOTIFICATION.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DISABLE_STREAM_NOTIFICATION)) {
+                    Boolean disable = jsonObj.getBoolean(DISABLE_STREAM_NOTIFICATION);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // execute the policy
+                    policiesController.disableSounds(AudioManager.STREAM_NOTIFICATION, taskId, disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
     }
 
 
