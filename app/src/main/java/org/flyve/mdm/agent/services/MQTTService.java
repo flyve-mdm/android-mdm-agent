@@ -269,9 +269,6 @@ public class MQTTService extends Service implements MqttCallback {
 
                     // subscribe to manifest
                     policiesController.subscribe("/FlyvemdmManifest/Status/Version");
-
-                    // send inventory on connect
-                    policiesController.createInventory();
                 }
 
                 @Override
