@@ -32,90 +32,49 @@ import android.widget.ListView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.PoliciesAdapter;
-import org.flyve.mdm.agent.data.PoliciesData;
+import org.flyve.mdm.agent.room.database.AppDataBase;
+import org.flyve.mdm.agent.room.entity.Policies;
+import org.flyve.mdm.agent.utils.Helpers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-<span class="nc" id="L40">public class FragmentPolicies extends Fragment {</span>
+<span class="nc" id="L43">public class FragmentPolicies extends Fragment {</span>
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-<span class="nc" id="L44">        View v = inflater.inflate(R.layout.fragment_policies, null);</span>
+<span class="nc" id="L47">        View v = inflater.inflate(R.layout.fragment_policies, null);</span>
 
-<span class="nc" id="L46">        ListView lst = v.findViewById(R.id.lst);</span>
-<span class="nc" id="L47">        loadData(lst);</span>
+<span class="nc" id="L49">        ListView lst = v.findViewById(R.id.lst);</span>
+<span class="nc" id="L50">        loadData(lst);</span>
 
-<span class="nc" id="L49">        return v;</span>
+<span class="nc" id="L52">        return v;</span>
     }
 
     private void loadData(ListView lst) {
 
-<span class="nc" id="L54">        PoliciesData cache = new PoliciesData(FragmentPolicies.this.getContext());</span>
+<span class="nc" id="L57">        AppDataBase dataBase = AppDataBase.getAppDatabase(FragmentPolicies.this.getContext());</span>
 
-<span class="nc" id="L56">        ArrayList arr = new ArrayList&lt;HashMap&lt;String, Boolean&gt;&gt;();</span>
+<span class="nc" id="L59">        List&lt;Policies&gt; arrPolicies = dataBase.PoliciesDao().loadAll();</span>
 
-<span class="nc" id="L58">        HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L59">        map.put(&quot;description&quot;, getResources().getString(R.string.storage_encryption_device));</span>
-<span class="nc" id="L60">        map.put(&quot;value&quot;, String.valueOf(cache.getStorageEncryption()));</span>
-<span class="nc" id="L61">        arr.add(map);</span>
+<span class="nc" id="L61">        ArrayList arr = new ArrayList&lt;HashMap&lt;String, Boolean&gt;&gt;();</span>
 
-<span class="nc" id="L63">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L64">        map.put(&quot;description&quot;, getResources().getString(R.string.disable_camera));</span>
-<span class="nc" id="L65">        map.put(&quot;value&quot;, String.valueOf(cache.getDisableCamera()));</span>
-<span class="nc" id="L66">        arr.add(map);</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if(arrPolicies.isEmpty()) {</span>
+<span class="nc" id="L64">            HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L65">            map.put(&quot;description&quot;, &quot;0 policies&quot;);</span>
+<span class="nc" id="L66">            map.put(&quot;value&quot;, &quot;&quot;);</span>
+<span class="nc" id="L67">            arr.add(map);</span>
+<span class="nc" id="L68">        } else {</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">            for (int i = 0; i &lt; arrPolicies.size(); i++) {</span>
+<span class="nc" id="L70">                HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L71">                map.put(&quot;description&quot;, Helpers.splitCapitalized(arrPolicies.get(i).policyName));</span>
+<span class="nc" id="L72">                map.put(&quot;value&quot;, String.valueOf(arrPolicies.get(i).value));</span>
+<span class="nc" id="L73">                arr.add(map);</span>
+            }
+        }
 
-<span class="nc" id="L68">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L69">        map.put(&quot;description&quot;, getResources().getString(R.string.password_length));</span>
-<span class="nc" id="L70">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumLength()));</span>
-<span class="nc" id="L71">        arr.add(map);</span>
-
-<span class="nc" id="L73">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L74">        map.put(&quot;description&quot;, getResources().getString(R.string.password_quality));</span>
-<span class="nc" id="L75">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordQuality()));</span>
-<span class="nc" id="L76">        arr.add(map);</span>
-
-<span class="nc" id="L78">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L79">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_letters));</span>
-<span class="nc" id="L80">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumLetters()));</span>
-<span class="nc" id="L81">        arr.add(map);</span>
-
-<span class="nc" id="L83">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L84">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_lower_case));</span>
-<span class="nc" id="L85">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumLowerCase()));</span>
-<span class="nc" id="L86">        arr.add(map);</span>
-
-<span class="nc" id="L88">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L89">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_upper_case));</span>
-<span class="nc" id="L90">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumUpperCase()));</span>
-<span class="nc" id="L91">        arr.add(map);</span>
-
-<span class="nc" id="L93">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L94">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_non_letter));</span>
-<span class="nc" id="L95">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumNonLetter()));</span>
-<span class="nc" id="L96">        arr.add(map);</span>
-
-<span class="nc" id="L98">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L99">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_numeric));</span>
-<span class="nc" id="L100">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumNumeric()));</span>
-<span class="nc" id="L101">        arr.add(map);</span>
-
-<span class="nc" id="L103">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L104">        map.put(&quot;description&quot;, getResources().getString(R.string.password_minimum_symbols));</span>
-<span class="nc" id="L105">        map.put(&quot;value&quot;, String.valueOf(cache.getPasswordMinimumSymbols()));</span>
-<span class="nc" id="L106">        arr.add(map);</span>
-
-<span class="nc" id="L108">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L109">        map.put(&quot;description&quot;, getResources().getString(R.string.maximum_failed_passwords_for_wipe));</span>
-<span class="nc" id="L110">        map.put(&quot;value&quot;, String.valueOf(cache.getMaximumFailedPasswordsForWipe()));</span>
-<span class="nc" id="L111">        arr.add(map);</span>
-
-<span class="nc" id="L113">        map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L114">        map.put(&quot;description&quot;, getResources().getString(R.string.maximum_time_to_lock));</span>
-<span class="nc" id="L115">        map.put(&quot;value&quot;, String.valueOf(cache.getMaximumTimeToLock()));</span>
-<span class="nc" id="L116">        arr.add(map);</span>
-
-<span class="nc" id="L118">        lst.setAdapter( new PoliciesAdapter(FragmentPolicies.this.getActivity(), arr));</span>
-<span class="nc" id="L119">    }</span>
+<span class="nc" id="L77">        lst.setAdapter( new PoliciesAdapter(FragmentPolicies.this.getActivity(), arr));</span>
+<span class="nc" id="L78">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
