@@ -32,10 +32,13 @@ import android.widget.ListView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.PoliciesAdapter;
-import org.flyve.mdm.agent.data.PoliciesData;
+import org.flyve.mdm.agent.room.database.AppDataBase;
+import org.flyve.mdm.agent.room.entity.Policies;
+import org.flyve.mdm.agent.utils.Helpers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class FragmentPolicies extends Fragment {
 
@@ -51,69 +54,25 @@ public class FragmentPolicies extends Fragment {
 
     private void loadData(ListView lst) {
 
-        PoliciesData cache = new PoliciesData(FragmentPolicies.this.getContext());
+        AppDataBase dataBase = AppDataBase.getAppDatabase(FragmentPolicies.this.getContext());
+
+        List<Policies> arrPolicies = dataBase.PoliciesDao().loadAll();
 
         ArrayList arr = new ArrayList<HashMap<String, Boolean>>();
 
-        HashMap<String, String> map = new HashMap<>();
-        map.put("description", getResources().getString(R.string.storage_encryption_device));
-        map.put("value", String.valueOf(cache.getStorageEncryption()));
-        arr.add(map);
-
-        map = new HashMap<>();
-        map.put("description", getResources().getString(R.string.disable_camera));
-        map.put("value", String.valueOf(cache.getDisableCamera()));
-        arr.add(map);
-
-        map = new HashMap<>();
-        map.put("description", getResources().getString(R.string.password_length));
-        map.put("value", String.valueOf(cache.getPasswordMinimumLength()));
-        arr.add(map);
-
-        map = new HashMap<>();
-        map.put("description", getResources().getString(R.string.password_quality));
-        map.put("value", String.valueOf(cache.getPasswordQuality()));
-        arr.add(map);
-
-        map = new HashMap<>();
-        map.put("description", getResources().getString(R.string.password_minimum_letters));
-        map.put("value", String.valueOf(cache.getPasswordMinimumLetters()));
-        arr.add(map);
-
-        map = new HashMap<>();
-        map.put("description", getResources().getString(R.string.password_minimum_lower_case));
-        map.put("value", String.valueOf(cache.getPasswordMinimumLowerCase()));
-        arr.add(map);
-
-        map = new HashMap<>();
-        map.put("description", getResources().getString(R.string.password_minimum_upper_case));
-        map.put("value", String.valueOf(cache.getPasswordMinimumUpperCase()));
-        arr.add(map);
-
-        map = new HashMap<>();
-        map.put("description", getResources().getString(R.string.password_minimum_non_letter));
-        map.put("value", String.valueOf(cache.getPasswordMinimumNonLetter()));
-        arr.add(map);
-
-        map = new HashMap<>();
-        map.put("description", getResources().getString(R.string.password_minimum_numeric));
-        map.put("value", String.valueOf(cache.getPasswordMinimumNumeric()));
-        arr.add(map);
-
-        map = new HashMap<>();
-        map.put("description", getResources().getString(R.string.password_minimum_symbols));
-        map.put("value", String.valueOf(cache.getPasswordMinimumSymbols()));
-        arr.add(map);
-
-        map = new HashMap<>();
-        map.put("description", getResources().getString(R.string.maximum_failed_passwords_for_wipe));
-        map.put("value", String.valueOf(cache.getMaximumFailedPasswordsForWipe()));
-        arr.add(map);
-
-        map = new HashMap<>();
-        map.put("description", getResources().getString(R.string.maximum_time_to_lock));
-        map.put("value", String.valueOf(cache.getMaximumTimeToLock()));
-        arr.add(map);
+        if(arrPolicies.isEmpty()) {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("description", "0 policies");
+            map.put("value", "");
+            arr.add(map);
+        } else {
+            for (int i = 0; i < arrPolicies.size(); i++) {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("description", Helpers.splitCapitalized(arrPolicies.get(i).policyName));
+                map.put("value", String.valueOf(arrPolicies.get(i).value));
+                arr.add(map);
+            }
+        }
 
         lst.setAdapter( new PoliciesAdapter(FragmentPolicies.this.getActivity(), arr));
     }
