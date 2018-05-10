@@ -74,11 +74,6 @@ public class FragmentActivity extends Fragment {
         adapter.addFragment(new FragmentLog(), "Log");
 
         // ----------------
-        // Connectivity
-        // ----------------
-        adapter.addFragment(new FragmentConnectivity(), "Connectivity");
-
-        // ----------------
         // Policies
         // ----------------
         adapter.addFragment(new FragmentPolicies(), "Policies");
