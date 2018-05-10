@@ -555,4 +555,15 @@ public class Helpers {
 		matrix.preScale(horizontal ? -1 : 1, vertical ? -1 : 1);
 		return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 	}
+
+	public static String splitCapitalized(String value){
+		String[] result = value.split("(?=\\p{Upper})");
+		StringBuilder tmp = new StringBuilder();
+		for(int i=0; i < result.length; i++) {
+			tmp.append(result[i].toLowerCase() + " ");
+		}
+
+		return tmp.toString();
+	}
+
 }
