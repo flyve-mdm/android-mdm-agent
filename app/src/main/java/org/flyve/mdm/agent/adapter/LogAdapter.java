@@ -42,7 +42,11 @@ public class LogAdapter extends BaseAdapter {
 
 	public LogAdapter(Activity activity, List<HashMap<String, String>> data) {
 		this.data = data;
-		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		try {
+			inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		} catch (Exception ex) {
+			FlyveLog.e(ex.getMessage());
+		}
 	}
 
 	/**
