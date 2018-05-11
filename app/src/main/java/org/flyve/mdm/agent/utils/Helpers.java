@@ -94,6 +94,16 @@ public class Helpers {
 		context.startActivity(intent);
 	}
 
+	public static boolean isPackageInstalled(Context context, String packagename) {
+		try {
+			PackageManager pm = context.getPackageManager();
+			pm.getPackageInfo(packagename, 0);
+			return true;
+		} catch (PackageManager.NameNotFoundException e) {
+			return false;
+		}
+	}
+
 	public static void openErrorActivity(Context context, String message) {
 		Intent intent = new Intent(context, ErrorActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
