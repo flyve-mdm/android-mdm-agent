@@ -570,7 +570,7 @@ public class PoliciesController {
     public void removePackage(String taskId, String packageName) {
         try {
 <span class="nc" id="L572">            PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);</span>
-<span class="nc" id="L573">            policiesFiles.removeApk(packageName);</span>
+<span class="nc" id="L573">            policiesFiles.removeApk(packageName.trim());</span>
 
             // return the status of the task
 <span class="nc" id="L576">            sendTaskStatus(taskId, FEEDBACK_DONE);</span>

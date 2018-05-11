@@ -243,46 +243,51 @@ public class PoliciesFiles extends AsyncTask&lt;String, Integer, Integer&gt; {
 <span class="nc" id="L243">            File file = new File(filePath);</span>
 <span class="nc bnc" id="L244" title="All 2 branches missed.">            if (file.exists()) {</span>
 <span class="nc" id="L245">                FlyveLog.d(&quot;File exists: &quot; + filePath);</span>
-<span class="nc" id="L246">                return &quot;&quot;;</span>
+<span class="nc" id="L246">                addApplication(file, fileName);</span>
+<span class="nc" id="L247">                return file.getAbsolutePath();</span>
             }
 
-<span class="nc" id="L249">            mBuilder.setContentText(filePath);</span>
-<span class="nc" id="L250">            mNotifyManager.notify(idNotification, mBuilder.build());</span>
+<span class="nc" id="L250">            mBuilder.setContentText(filePath);</span>
+<span class="nc" id="L251">            mNotifyManager.notify(idNotification, mBuilder.build());</span>
 
-<span class="nc" id="L252">            Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath, new ConnectionHTTP.ProgressCallback() {</span>
+<span class="nc" id="L253">            Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath, new ConnectionHTTP.ProgressCallback() {</span>
                 @Override
                 public void progress(int value) {
-<span class="nc" id="L255">                    publishProgress(value);</span>
-<span class="nc" id="L256">                }</span>
+<span class="nc" id="L256">                    publishProgress(value);</span>
+<span class="nc" id="L257">                }</span>
             });
 
-<span class="nc bnc" id="L259" title="All 2 branches missed.">            if (isSave) {</span>
-<span class="nc" id="L260">                publishProgress(100);</span>
-<span class="nc" id="L261">                mBuilder.setContentText(&quot;Download &quot; + fileName + &quot; complete&quot;);</span>
-<span class="nc" id="L262">                FlyveLog.d(&quot;Download ready&quot;);</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">            if (isSave) {</span>
+<span class="nc" id="L261">                publishProgress(100);</span>
+<span class="nc" id="L262">                mBuilder.setContentText(&quot;Download &quot; + fileName + &quot; complete&quot;);</span>
+<span class="nc" id="L263">                FlyveLog.d(&quot;Download ready&quot;);</span>
 
-<span class="nc" id="L264">                org.flyve.mdm.agent.room.entity.File dataFile = new org.flyve.mdm.agent.room.entity.File();</span>
-<span class="nc" id="L265">                dataFile.fileName = fileName;</span>
-<span class="nc" id="L266">                dataFile.filePath = file.getAbsolutePath();</span>
+<span class="nc" id="L265">                addApplication(file, fileName);</span>
 
-<span class="nc" id="L268">                AppDataBase dataBase = AppDataBase.getAppDatabase(context);</span>
-<span class="nc" id="L269">                dataBase.FileDao().deleteByName(fileName);</span>
-<span class="nc" id="L270">                dataBase.FileDao().insert(dataFile);</span>
-
-<span class="nc" id="L272">                return file.getAbsolutePath();</span>
+<span class="nc" id="L267">                return file.getAbsolutePath();</span>
             } else {
-<span class="nc" id="L274">                publishProgress(100);</span>
-<span class="nc" id="L275">                mBuilder.setContentText(&quot;Download &quot; + fileName + &quot; Fail&quot;);</span>
-<span class="nc" id="L276">                FlyveLog.e(&quot;Download fail: &quot; + data);</span>
+<span class="nc" id="L269">                publishProgress(100);</span>
+<span class="nc" id="L270">                mBuilder.setContentText(&quot;Download &quot; + fileName + &quot; Fail&quot;);</span>
+<span class="nc" id="L271">                FlyveLog.e(&quot;Download fail: &quot; + data);</span>
 
-<span class="nc" id="L278">                return &quot;&quot;;</span>
+<span class="nc" id="L273">                return &quot;&quot;;</span>
             }
 
-<span class="nc" id="L281">        } catch(Exception ex) {</span>
-<span class="nc" id="L282">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L283">            return &quot;&quot;;</span>
+<span class="nc" id="L276">        } catch(Exception ex) {</span>
+<span class="nc" id="L277">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L278">            return &quot;&quot;;</span>
         }
     }
+
+    private void addApplication(File file, String fileName) {
+<span class="nc" id="L283">        org.flyve.mdm.agent.room.entity.File dataFile = new org.flyve.mdm.agent.room.entity.File();</span>
+<span class="nc" id="L284">        dataFile.fileName = fileName;</span>
+<span class="nc" id="L285">        dataFile.filePath = file.getAbsolutePath();</span>
+
+<span class="nc" id="L287">        AppDataBase dataBase = AppDataBase.getAppDatabase(context);</span>
+<span class="nc" id="L288">        dataBase.FileDao().deleteByName(fileName);</span>
+<span class="nc" id="L289">        dataBase.FileDao().insert(dataFile);</span>
+<span class="nc" id="L290">    }</span>
 
     /**
      * Remove the file according to the given path
@@ -291,12 +296,12 @@ public class PoliciesFiles extends AsyncTask&lt;String, Integer, Integer&gt; {
      */
     public boolean removeFile(String filePath) {
         try {
-<span class="nc" id="L294">            String realPath = new StorageFolder(context).convertPath(filePath);</span>
-<span class="nc" id="L295">            File file = new File(realPath);</span>
-<span class="nc" id="L296">            return file.delete();</span>
-<span class="nc" id="L297">        } catch (Exception ex) {</span>
-<span class="nc" id="L298">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L299">            return false;</span>
+<span class="nc" id="L299">            String realPath = new StorageFolder(context).convertPath(filePath);</span>
+<span class="nc" id="L300">            File file = new File(realPath);</span>
+<span class="nc" id="L301">            return file.delete();</span>
+<span class="nc" id="L302">        } catch (Exception ex) {</span>
+<span class="nc" id="L303">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L304">            return false;</span>
         }
     }
 
@@ -306,16 +311,16 @@ public class PoliciesFiles extends AsyncTask&lt;String, Integer, Integer&gt; {
      * @return int if it succeed 1, otherwise 0
      */
     public int removeApk(String mPackage){
-<span class="nc" id="L309">        Uri packageUri = Uri.parse(&quot;package:&quot;+mPackage);</span>
-<span class="nc" id="L310">        Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);</span>
-<span class="nc" id="L311">        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
+<span class="nc" id="L314">        Uri packageUri = Uri.parse(&quot;package:&quot;+mPackage);</span>
+<span class="nc" id="L315">        Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);</span>
+<span class="nc" id="L316">        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span>
         try {
-<span class="nc" id="L313">            context.startActivity(intent);</span>
-<span class="nc" id="L314">        } catch (ActivityNotFoundException e) {</span>
-<span class="nc" id="L315">            FlyveLog.e(e.getMessage());</span>
-<span class="nc" id="L316">            return 0;</span>
-<span class="nc" id="L317">        }</span>
-<span class="nc" id="L318">        return 1;</span>
+<span class="nc" id="L318">            context.startActivity(intent);</span>
+<span class="nc" id="L319">        } catch (ActivityNotFoundException e) {</span>
+<span class="nc" id="L320">            FlyveLog.e(e.getMessage());</span>
+<span class="nc" id="L321">            return 0;</span>
+<span class="nc" id="L322">        }</span>
+<span class="nc" id="L323">        return 1;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

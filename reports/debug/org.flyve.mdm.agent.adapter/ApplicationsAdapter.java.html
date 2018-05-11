@@ -100,23 +100,29 @@ public class ApplicationsAdapter extends BaseAdapter {
 
 <span class="nc" id="L101">		TextView txtStatus = vi.findViewById(R.id.txtStatus);</span>
 
-<span class="nc" id="L103">		String status = parent.getResources().getString(R.string.app_installed);</span>
+		String status;
 <span class="nc bnc" id="L104" title="All 2 branches missed.">		if(app.appStatus.equals(&quot;1&quot;)) {</span>
 <span class="nc" id="L105">			status = parent.getResources().getString(R.string.app_pending);</span>
+		} else {
+<span class="nc bnc" id="L107" title="All 2 branches missed.">			if(Helpers.isPackageInstalled(parent.getContext(), app.appPackage)) {</span>
+<span class="nc" id="L108">				status = parent.getResources().getString(R.string.app_installed);</span>
+			} else {
+<span class="nc" id="L110">				status = parent.getResources().getString(R.string.app_not_installed);</span>
+			}
 		}
 
-<span class="nc" id="L108">		txtStatus.setText(status);</span>
+<span class="nc" id="L114">		txtStatus.setText(status);</span>
 
-<span class="nc" id="L110">		TextView txtAppName = vi.findViewById(R.id.txtAppName);</span>
-<span class="nc" id="L111">		txtAppName.setText(app.appName);</span>
+<span class="nc" id="L116">		TextView txtAppName = vi.findViewById(R.id.txtAppName);</span>
+<span class="nc" id="L117">		txtAppName.setText(app.appName);</span>
 
-<span class="nc" id="L113">		TextView txtPackageName = vi.findViewById(R.id.txtPackageName);</span>
-<span class="nc" id="L114">		txtPackageName.setText(app.appPackage);</span>
+<span class="nc" id="L119">		TextView txtPackageName = vi.findViewById(R.id.txtPackageName);</span>
+<span class="nc" id="L120">		txtPackageName.setText(app.appPackage);</span>
 
-<span class="nc" id="L116">		ImageView imgApp = vi.findViewById(R.id.imgApp);</span>
-<span class="nc" id="L117">		imgApp.setImageDrawable(Helpers.getApplicationImage(parent.getContext(), app.appPackage));</span>
+<span class="nc" id="L122">		ImageView imgApp = vi.findViewById(R.id.imgApp);</span>
+<span class="nc" id="L123">		imgApp.setImageDrawable(Helpers.getApplicationImage(parent.getContext(), app.appPackage));</span>
 
-<span class="nc" id="L119">		return vi;</span>
+<span class="nc" id="L125">		return vi;</span>
 
 	}
 
