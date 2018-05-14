@@ -276,28 +276,6 @@ public class PoliciesController {
         }
     }
 
-    public void disableUI(JSONObject json) {
-        try {
-            JSONArray jsonConnectivities = json.getJSONArray("connectivity");
-            for (int i = 0; i <= jsonConnectivities.length(); i++) {
-                JSONObject jsonConnectivity = jsonConnectivities.getJSONObject(i);
-
-                if (jsonConnectivity.has("disableScreenCapture")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableScreenCapture");
-                    new PoliciesDeviceManager(context).disableCaptureScreen(disable);
-                }
-
-                if (jsonConnectivity.has("disableStatusBar")) {
-                    boolean disable = jsonConnectivity.getBoolean("disableStatusBar");
-                    new PoliciesDeviceManager(context).disableCaptureScreen(disable);
-                }
-
-            }
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-        }
-    }
-
     public void disableBluetooth(String taskId, boolean disable) {
         try {
             cache.setDisableBluetooth(disable);
