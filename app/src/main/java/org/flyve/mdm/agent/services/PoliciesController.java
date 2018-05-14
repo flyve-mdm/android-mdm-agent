@@ -259,8 +259,15 @@ public class PoliciesController {
      */
     public void disableCamera(String taskId, Boolean disable, int priority) {
         try {
-            cache.setDisableCamera(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableCamera(disable, priority);
 
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.disableCamera(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Camera", "Camera is disable: " + disable));
@@ -277,7 +284,15 @@ public class PoliciesController {
 
     public void disableBluetooth(String taskId, boolean disable, int priority) {
         try {
-            cache.setDisableBluetooth(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableBluetooth(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesConnectivity.disableBluetooth(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Bluetooth", "Bluetooth is disable: " + disable));
 
@@ -293,7 +308,15 @@ public class PoliciesController {
 
     public void disableWifi(String taskId, boolean disable, int priority) {
         try {
-            cache.setDisableWifi(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableWifi(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesConnectivity.disableWifi(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Wifi", "Wifi is disable: " + disable));
 
@@ -309,7 +332,15 @@ public class PoliciesController {
 
     public void disableGPS(String taskId, boolean disable, int priority) {
         try {
-            cache.setDisableGPS(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableGPS(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesConnectivity.disableGps(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "GPS", "GPS is disable: " + disable));
 
@@ -325,7 +356,15 @@ public class PoliciesController {
 
     public void disableRoaming(String taskId, boolean disable, int priority) {
         try {
-            cache.setDisableRoaming(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableRoaming(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesConnectivity.disableRoaming(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Roaming", "Roaming is disable: " + disable));
 
@@ -341,7 +380,15 @@ public class PoliciesController {
 
     public void disableAirplaneMode(String taskId, boolean disable, int priority) {
         try {
-            cache.setDisableAirplaneMode(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableAirplaneMode(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesConnectivity.disableAirplaneMode(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "AirplaneMode", "AirplaneMode is disable: " + disable));
 
@@ -357,7 +404,15 @@ public class PoliciesController {
 
     public void disableMobileLine(String taskId, boolean disable, int priority) {
         try {
-            cache.setDisableMobileLine(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableMobileLine(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesConnectivity.disableMobileLine(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MobileLine", "MobileLine is disable: " + disable));
 
@@ -373,7 +428,15 @@ public class PoliciesController {
 
     public void disableNFC(String taskId, boolean disable, int priority) {
         try {
-            cache.setDisableNFC(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableNFC(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesConnectivity.disableNFC(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "NFC", "NFC is disable: " + disable));
 
@@ -389,7 +452,15 @@ public class PoliciesController {
 
     public void disableHostpotTethering(String taskId, boolean disable, int priority) {
         try {
-            cache.setDisableHostpotTethering(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableHostpotTethering(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesConnectivity.disableHostpotTethering(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "HostpotTethering", "HostpotTethering is disable: " + disable));
 
@@ -408,7 +479,15 @@ public class PoliciesController {
         // SMSReceiver
 
         try {
-            cache.setDisableSmsMms(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableSmsMms(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "SMS", "SMS is disable: " + disable));
 
             // return the status of the task
@@ -423,7 +502,15 @@ public class PoliciesController {
 
     public void disableADBUsbFileTransferProtocols(String taskId, boolean disable, int priority) {
         try {
-            cache.setDisableUsbAdb(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableUsbAdb(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesConnectivity.disableADBUsbFileTransferProtocols(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols ADB", "UsbFileTransferProtocols is disable: " + disable));
 
@@ -439,7 +526,15 @@ public class PoliciesController {
 
     public void disablePTPUsbFileTransferProtocols(String taskId, boolean disable, int priority) {
         try {
-            cache.setDisableUsbPtp(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableUsbPtp(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesConnectivity.disablePTPUsbFileTransferProtocols(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols PTP", "UsbFileTransferProtocols is disable: " + disable));
 
@@ -455,7 +550,15 @@ public class PoliciesController {
 
     public void disableMTPUsbFileTransferProtocols(String taskId, boolean disable, int priority) {
         try {
-            cache.setDisableUsbMtp(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableUsbMtp(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesConnectivity.disableMTPUsbFileTransferProtocols(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols MTP", "UsbFileTransferProtocols is disable: " + disable));
 
@@ -471,7 +574,15 @@ public class PoliciesController {
 
     public void disableStatusBar(String taskId, boolean disable, int priority) {
         try {
-            cache.setDisableStatusbar(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableStatusbar(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             new PoliciesDeviceManager(context).disableStatusBar(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "status bar", "status bar is disable: " + disable));
 
@@ -487,7 +598,15 @@ public class PoliciesController {
 
     public void disableSpeakerphone(String taskId, boolean disable, int priority) {
         try {
-            cache.setDisableSpeakerphone(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableSpeakerphone(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesConnectivity.disableSpeakerphone(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Speaker phone", "Speaker phone is disable: " + disable));
 
@@ -504,7 +623,15 @@ public class PoliciesController {
     public void disableScreenCapture(String taskId, boolean disable, int priority) {
         try {
             if(Build.VERSION.SDK_INT >= 21) {
-                cache.setDisableScreenCapture(disable, priority);
+                // Set on database and get priority value
+                Object priorityValue = cache.setDisableScreenCapture(disable, priority);
+
+                // check Priority
+                if(priorityValue!=null) {
+                    disable = Boolean.valueOf(priorityValue.toString());
+                }
+
+                // Execute the policy
                 new PoliciesDeviceManager(context).disableCaptureScreen(disable);
                 broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Screen Capture", "Screen Capture is disable: " + disable));
 
@@ -651,7 +778,15 @@ public class PoliciesController {
      */
     public void storageEncryption(String taskId, Boolean enable, int priority) {
         try {
-            cache.setStorageEncryption(enable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setStorageEncryption(enable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                enable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.storageEncryptionDevice(enable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "storage Encryption", "storage Encryption: " + enable));
@@ -666,11 +801,19 @@ public class PoliciesController {
         }
     }
 
-    public void passwordEnabled(String taskId, int priority) {
+    public void passwordEnabled(String taskId, boolean enable, int priority) {
         try {
-            cache.setPasswordEnabled(true, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setPasswordEnabled(enable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                enable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-            mdm.enablePassword();
+            mdm.enablePassword(enable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordEnabled", "true"));
 
             // return the status of the task
@@ -685,7 +828,15 @@ public class PoliciesController {
 
     public void passwordQuality(String taskId, String quality, int priority) {
         try {
-            cache.setPasswordQuality(quality, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setPasswordQuality(quality, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                quality = priorityValue.toString();
+            }
+
+            // Execute the policy
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordQuality(quality);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordQuality", quality));
@@ -702,7 +853,15 @@ public class PoliciesController {
 
     public void passwordMinLength(String taskId, int length, int priority) {
         try {
-            cache.setPasswordMinimumLength(length, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setPasswordMinimumLength(length, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                length = Integer.parseInt(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordLength(length);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLength", String.valueOf(length)));
@@ -719,7 +878,15 @@ public class PoliciesController {
 
     public void passwordMinNonLetter(String taskId, int length, int priority) {
         try {
-            cache.setPasswordMinimumNonLetter(length, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setPasswordMinimumNonLetter(length, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                length = Integer.parseInt(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordMinimumNonLetter(length);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinNonLetter", String.valueOf(length)));
@@ -736,7 +903,15 @@ public class PoliciesController {
 
     public void passwordMinLetter(String taskId, int length, int priority) {
         try {
-            cache.setPasswordMinimumLetters(length, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setPasswordMinimumLetters(length, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                length = Integer.parseInt(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordMinimumLetters(length);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLetter", String.valueOf(length)));
@@ -753,7 +928,15 @@ public class PoliciesController {
 
     public void passwordMinNumeric(String taskId, int minimum, int priority) {
         try {
-            cache.setPasswordMinimumNumeric(minimum, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setPasswordMinimumNumeric(minimum, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                minimum = Integer.parseInt(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordMinimumNumeric(minimum);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinNumeric", String.valueOf(minimum)));
@@ -770,7 +953,15 @@ public class PoliciesController {
 
     public void passwordMinSymbols(String taskId, int minimum, int priority) {
         try {
-            cache.setPasswordMinimumSymbols(minimum, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setPasswordMinimumSymbols(minimum, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                minimum = Integer.parseInt(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordMinimumSymbols(minimum);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinSymbols", String.valueOf(minimum)));
@@ -787,7 +978,15 @@ public class PoliciesController {
 
     public void passwordMinLowerCase(String taskId, int minimum, int priority) {
         try {
-            cache.setPasswordMinimumLowerCase(minimum, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setPasswordMinimumLowerCase(minimum, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                minimum = Integer.parseInt(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordMinimumLowerCase(minimum);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLowerCase", String.valueOf(minimum)));
@@ -804,7 +1003,15 @@ public class PoliciesController {
 
     public void passwordMinUpperCase(String taskId, int minimum, int priority) {
         try {
-            cache.setPasswordMinimumUpperCase(minimum, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setPasswordMinimumUpperCase(minimum, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                minimum = Integer.parseInt(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setPasswordMinimumUpperCase(minimum);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinUpperCase", String.valueOf(minimum)));
@@ -821,7 +1028,15 @@ public class PoliciesController {
 
     public void maximumFailedPasswordsForWipe(String taskId, int maximum, int priority) {
         try {
-            cache.setMaximumFailedPasswordsForWipe(maximum, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setMaximumFailedPasswordsForWipe(maximum, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                maximum = Integer.parseInt(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setMaximumFailedPasswordsForWipe(maximum);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MaximumFailedPasswordsForWipe", String.valueOf(maximum)));
@@ -838,7 +1053,15 @@ public class PoliciesController {
 
     public void maximumTimeToLock(String taskId, int maximum, int priority) {
         try {
-            cache.setMaximumTimeToLock(maximum, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setMaximumTimeToLock(maximum, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                maximum = Integer.parseInt(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.setMaximumTimeToLock(maximum);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "maximumTimeToLock", String.valueOf(maximum)));
@@ -970,7 +1193,15 @@ public class PoliciesController {
 
     public void disableCreateVpnProfiles(String taskId, Boolean disable, int priority) {
         try {
-            cache.setDisableVPN(disable, priority);
+            // Set on database and get priority value
+            Object priorityValue = cache.setDisableVPN(disable, priority);
+
+            // check Priority
+            if(priorityValue!=null) {
+                disable = Boolean.valueOf(priorityValue.toString());
+            }
+
+            // Execute the policy
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.disableVPN(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "maximumTimeToLock", String.valueOf(disable)));
