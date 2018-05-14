@@ -78,240 +78,240 @@ public class PoliciesData {
         return getBooleanValue(PASSWORD_ENABLED);
     }
 
-    public void setPasswordEnabled(Boolean enable) {
-        setBooleanValue(PASSWORD_ENABLED, enable);
+    public void setPasswordEnabled(Boolean enable, int priority) {
+        setBooleanValue(PASSWORD_ENABLED, enable, priority);
     }
 
     public String getPasswordQuality() {
         return getStringValue(PASSWORD_QUALITY);
     }
 
-    public void setPasswordQuality(String value) {
-        setStringValue(PASSWORD_QUALITY, value);
+    public void setPasswordQuality(String value, int priority) {
+        setStringValue(PASSWORD_QUALITY, value, priority);
     }
 
     public int getPasswordMinimumLength() {
         return getIntValue(PASSWORD_MINIMUM_LENGTH);
     }
 
-    public void setPasswordMinimumLength(int value) {
-        setIntValue(PASSWORD_MINIMUM_LENGTH, value);
+    public void setPasswordMinimumLength(int value, int priority) {
+        setIntValue(PASSWORD_MINIMUM_LENGTH, value, priority);
     }
 
     public int getPasswordMinimumLowerCase() {
         return getIntValue(PASSWORD_MINIMUM_LOWER_CASE);
     }
 
-    public void setPasswordMinimumLowerCase(int value) {
-        setIntValue(PASSWORD_MINIMUM_LOWER_CASE, value);
+    public void setPasswordMinimumLowerCase(int value, int priority) {
+        setIntValue(PASSWORD_MINIMUM_LOWER_CASE, value, priority);
     }
 
     public int getPasswordMinimumUpperCase() {
         return getIntValue(PASSWORD_MINIMUM_UPPER_CASE);
     }
 
-    public void setPasswordMinimumUpperCase(int value) {
-        setIntValue(PASSWORD_MINIMUM_UPPER_CASE, value);
+    public void setPasswordMinimumUpperCase(int value, int priority) {
+        setIntValue(PASSWORD_MINIMUM_UPPER_CASE, value, priority);
     }
 
     public int getPasswordMinimumNonLetter() {
         return getIntValue(PASSWORD_MINIMUM_NON_LETTER);
     }
 
-    public void setPasswordMinimumNonLetter(int value) {
-        setIntValue(PASSWORD_MINIMUM_NON_LETTER, value);
+    public void setPasswordMinimumNonLetter(int value, int priority) {
+        setIntValue(PASSWORD_MINIMUM_NON_LETTER, value, priority);
     }
 
     public int getPasswordMinimumLetters() {
         return getIntValue(PASSWORD_MINIMUM_LETTERS);
     }
 
-    public void setPasswordMinimumLetters(int value) {
-        setIntValue(PASSWORD_MINIMUM_LETTERS, value);
+    public void setPasswordMinimumLetters(int value, int priority) {
+        setIntValue(PASSWORD_MINIMUM_LETTERS, value, priority);
     }
 
     public int getPasswordMinimumNumeric() {
         return getIntValue(PASSWORD_MINIMUM_NUMERIC);
     }
 
-    public void setPasswordMinimumNumeric(int value) {
-        setIntValue(PASSWORD_MINIMUM_NUMERIC, value);
+    public void setPasswordMinimumNumeric(int value, int priority) {
+        setIntValue(PASSWORD_MINIMUM_NUMERIC, value, priority);
     }
 
     public int getPasswordMinimumSymbols() {
         return getIntValue(PASSWORD_MINIMUM_SYMBOLS);
     }
 
-    public void setPasswordMinimumSymbols(int value) {
-        setIntValue(PASSWORD_MINIMUM_SYMBOLS, value);
+    public void setPasswordMinimumSymbols(int value, int priority) {
+        setIntValue(PASSWORD_MINIMUM_SYMBOLS, value, priority);
     }
 
     public int getMaximumFailedPasswordsForWipe() {
         return getIntValue(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE);
     }
 
-    public void setMaximumFailedPasswordsForWipe(int value) {
-        setIntValue(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE, value);
+    public void setMaximumFailedPasswordsForWipe(int value, int priority) {
+        setIntValue(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE, value, priority);
     }
 
     public int getMaximumTimeToLock() {
         return getIntValue(MAXIMUM_TIME_TO_LOCK);
     }
 
-    public void setMaximumTimeToLock(int value) {
-        setIntValue(MAXIMUM_TIME_TO_LOCK, value);
+    public void setMaximumTimeToLock(int value, int priority) {
+        setIntValue(MAXIMUM_TIME_TO_LOCK, value, priority);
     }
 
     public boolean getStorageEncryption() {
         return getBooleanValue(STORAGE_ENCRYPTION);
     }
 
-    public void setStorageEncryption(boolean value) {
-        setBooleanValue(STORAGE_ENCRYPTION, value);
+    public void setStorageEncryption(boolean value, int priority) {
+        setBooleanValue(STORAGE_ENCRYPTION, value, priority);
     }
 
     public boolean getDisableCamera() {
         return getBooleanValue(DISABLE_CAMERA);
     }
 
-    public void setDisableCamera(boolean value) {
-        setBooleanValue(DISABLE_CAMERA, value);
+    public void setDisableCamera(boolean value, int priority) {
+        setBooleanValue(DISABLE_CAMERA, value, priority);
     }
 
     public boolean getDisableBluetooth() {
         return getBooleanValue(DISABLE_BLUETOOTH);
     }
 
-    public void setDisableBluetooth(boolean value) {
-        setBooleanValue(DISABLE_BLUETOOTH, value);
+    public void setDisableBluetooth(boolean value, int priority) {
+        setBooleanValue(DISABLE_BLUETOOTH, value, priority);
     }
 
     public boolean getDisableScreenCapture() {
         return getBooleanValue(DISABLE_SCREEN_CAPTURE);
     }
 
-    public void setDisableScreenCapture(boolean value) {
-        setBooleanValue(DISABLE_SCREEN_CAPTURE, value);
+    public void setDisableScreenCapture(boolean value, int priority) {
+        setBooleanValue(DISABLE_SCREEN_CAPTURE, value, priority);
     }
 
     public boolean getDisableAirplaneMode() {
         return getBooleanValue(DISABLE_AIRPLANE_MODE);
     }
 
-    public void setDisableAirplaneMode(boolean value) {
-        setBooleanValue(DISABLE_AIRPLANE_MODE, value);
+    public void setDisableAirplaneMode(boolean value, int priority) {
+        setBooleanValue(DISABLE_AIRPLANE_MODE, value, priority);
     }
 
     public boolean getDisableGPS() {
         return getBooleanValue(DISABLE_GPS);
     }
 
-    public void setDisableGPS(boolean value) {
-        setBooleanValue(DISABLE_GPS, value);
+    public void setDisableGPS(boolean value, int priority) {
+        setBooleanValue(DISABLE_GPS, value, priority);
     }
 
     public boolean getDisableHostpotTethering() {
         return getBooleanValue(DISABLE_HOSTPOT_TETHERING);
     }
 
-    public void setDisableHostpotTethering(boolean value) {
-        setBooleanValue(DISABLE_HOSTPOT_TETHERING, value);
+    public void setDisableHostpotTethering(boolean value, int priority) {
+        setBooleanValue(DISABLE_HOSTPOT_TETHERING, value, priority);
     }
 
     public boolean getDisableRoaming() {
         return getBooleanValue(DISABLE_ROAMING);
     }
 
-    public void setDisableRoaming(boolean value) {
-        setBooleanValue(DISABLE_ROAMING, value);
+    public void setDisableRoaming(boolean value, int priority) {
+        setBooleanValue(DISABLE_ROAMING, value, priority);
     }
 
     public boolean getDisableWifi() {
         return getBooleanValue(DISABLE_WIFI);
     }
 
-    public void setDisableWifi(boolean value) {
-        setBooleanValue(DISABLE_WIFI, value);
+    public void setDisableWifi(boolean value, int priority) {
+        setBooleanValue(DISABLE_WIFI, value, priority);
     }
 
     public boolean getUseTLS() {
         return getBooleanValue(USE_TLS);
     }
 
-    public void setUseTLS(boolean value) {
-        setBooleanValue(USE_TLS, value);
+    public void setUseTLS(boolean value, int priority) {
+        setBooleanValue(USE_TLS, value, priority);
     }
 
     public boolean getDisableMobileLine() {
         return getBooleanValue(DISABLE_MOBILE_LINE);
     }
 
-    public void setDisableMobileLine(boolean value) {
-        setBooleanValue(DISABLE_MOBILE_LINE, value);
+    public void setDisableMobileLine(boolean value, int priority) {
+        setBooleanValue(DISABLE_MOBILE_LINE, value, priority);
     }
 
     public boolean getDisableNFC() {
         return getBooleanValue(DISABLE_NFC);
     }
 
-    public void setDisableNFC(boolean value) {
-        setBooleanValue(DISABLE_NFC, value);
+    public void setDisableNFC(boolean value, int priority) {
+        setBooleanValue(DISABLE_NFC, value, priority);
     }
 
     public boolean getDisableStatusbar() {
         return getBooleanValue(DISABLE_STATUSBAR);
     }
 
-    public void setDisableStatusbar(boolean value) {
-        setBooleanValue(DISABLE_STATUSBAR, value);
+    public void setDisableStatusbar(boolean value, int priority) {
+        setBooleanValue(DISABLE_STATUSBAR, value, priority);
     }
 
     public boolean getDisableUsbMtp() {
         return getBooleanValue(DISABLE_USB_MTP);
     }
 
-    public void setDisableUsbMtp(boolean value) {
-        setBooleanValue(DISABLE_USB_MTP, value);
+    public void setDisableUsbMtp(boolean value, int priority) {
+        setBooleanValue(DISABLE_USB_MTP, value, priority);
     }
 
     public boolean getDisableUsbPtp() {
         return getBooleanValue(DISABLE_USB_PTP);
     }
 
-    public void setDisableUsbPtp(boolean value) {
-        setBooleanValue(DISABLE_USB_PTP, value);
+    public void setDisableUsbPtp(boolean value, int priority) {
+        setBooleanValue(DISABLE_USB_PTP, value, priority);
     }
 
     public boolean getDisableUsbAdb() {
         return getBooleanValue(DISABLE_USB_ADB);
     }
 
-    public void setDisableUsbAdb(boolean value) {
-        setBooleanValue(DISABLE_USB_ADB, value);
+    public void setDisableUsbAdb(boolean value, int priority) {
+        setBooleanValue(DISABLE_USB_ADB, value, priority);
     }
 
     public boolean getDisableSpeakerphone() {
         return getBooleanValue(DISABLE_SPEAKER_PHONE);
     }
 
-    public void setDisableSpeakerphone(boolean value) {
-        setBooleanValue(DISABLE_SPEAKER_PHONE, value);
+    public void setDisableSpeakerphone(boolean value, int priority) {
+        setBooleanValue(DISABLE_SPEAKER_PHONE, value, priority);
     }
 
     public boolean getDisableVPN() {
         return getBooleanValue(DISABLE_VPN);
     }
 
-    public void setDisableVPN(boolean value) {
-        setBooleanValue(DISABLE_VPN, value);
+    public void setDisableVPN(boolean value, int priority) {
+        setBooleanValue(DISABLE_VPN, value, priority);
     }
 
     public boolean getDisableSmsMms() {
         return getBooleanValue(DISABLE_SMS_MMS);
     }
 
-    public void setDisableSmsMms(boolean value) {
-        setBooleanValue(DISABLE_SMS_MMS, value);
+    public void setDisableSmsMms(boolean value, int priority) {
+        setBooleanValue(DISABLE_SMS_MMS, value, priority);
     }
 
     private String getStringValue(String policyName) {
@@ -323,11 +323,12 @@ public class PoliciesData {
         }
     }
 
-    private void setStringValue(String policyName, String value) {
+    private void setStringValue(String policyName, String value, int priority) {
         if(dataBase.PoliciesDao().getByPolicyName(policyName).isEmpty()) {
             Policies policies = new Policies();
             policies.policyName = policyName;
             policies.value = value;
+            policies.priority = priority;
             dataBase.PoliciesDao().insert(policies);
         } else {
             Policies policies = dataBase.PoliciesDao().getByPolicyName(policyName).get(0);
@@ -344,8 +345,8 @@ public class PoliciesData {
         return Boolean.valueOf(value);
     }
 
-    private void setBooleanValue(String policyName, Boolean enable) {
-        setStringValue(policyName, String.valueOf(enable));
+    private void setBooleanValue(String policyName, Boolean enable, int priority) {
+        setStringValue(policyName, String.valueOf(enable), priority);
     }
 
     private int getIntValue(String policyName) {
@@ -356,8 +357,8 @@ public class PoliciesData {
         return Integer.parseInt(value);
     }
 
-    private void setIntValue(String policyName, int value) {
-        setStringValue(policyName, String.valueOf(value));
+    private void setIntValue(String policyName, int value, int priority) {
+        setStringValue(policyName, String.valueOf(value), priority);
     }
 
 }
