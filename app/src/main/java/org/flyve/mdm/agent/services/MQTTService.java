@@ -389,6 +389,8 @@ public class MQTTService extends Service implements MqttCallback {
         FlyveLog.d(TAG, "Topic " + topic);
         FlyveLog.d(TAG, "Message " + new String(message.getPayload()));
 
+        String priority = topic.contains("fleet") ? "0" : "1";
+
         String messageBody = new String(message.getPayload());
 
         storeLog(Helpers.broadCastMessage("MQTT Message", "Body", messageBody));
