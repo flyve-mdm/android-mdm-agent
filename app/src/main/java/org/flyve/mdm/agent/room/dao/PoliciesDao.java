@@ -49,7 +49,7 @@ public interface PoliciesDao {
     List<Policies> loadAll();
 
     @Query("Select * FROM policies where policyName = :policyName order by priority desc limit 1")
-    List<Policies> getByPolicyName(String policyName);
+    List<Policies> getPolicyByName(String policyName);
 
     @Query("Select * FROM policies where policyName = :policyName and priority = :priority order by priority desc limit 1")
     List<Policies> getPolicyBy(String policyName, int priority);
