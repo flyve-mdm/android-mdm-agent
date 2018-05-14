@@ -29,7 +29,6 @@ package org.flyve.mdm.agent.data;
 
 import android.content.Context;
 
-import org.flyve.inventory.categories.Usb;
 import org.flyve.mdm.agent.room.database.AppDataBase;
 import org.flyve.mdm.agent.room.entity.Policies;
 
@@ -315,7 +314,7 @@ public class PoliciesData {
     }
 
     private String getStringValue(String policyName) {
-        List<Policies> arrPolicies = dataBase.PoliciesDao().getByPolicyName(policyName);
+        List<Policies> arrPolicies = dataBase.PoliciesDao().getPolicyByName(policyName);
         if(!arrPolicies.isEmpty()) {
             return arrPolicies.get(0).value;
         } else {
@@ -324,14 +323,14 @@ public class PoliciesData {
     }
 
     private void setStringValue(String policyName, String value, int priority) {
-        if(dataBase.PoliciesDao().getByPolicyName(policyName).isEmpty()) {
+        if(dataBase.PoliciesDao().getPolicyByName(policyName).isEmpty()) {
             Policies policies = new Policies();
             policies.policyName = policyName;
             policies.value = value;
             policies.priority = priority;
             dataBase.PoliciesDao().insert(policies);
         } else {
-            Policies policies = dataBase.PoliciesDao().getByPolicyName(policyName).get(0);
+            Policies policies = dataBase.PoliciesDao().getPolicyByName(policyName).get(0);
             policies.value = value;
             dataBase.PoliciesDao().update(policies);
         }
