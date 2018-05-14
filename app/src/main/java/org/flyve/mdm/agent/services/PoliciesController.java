@@ -258,8 +258,10 @@ public class PoliciesController {
      * FLEET Camera
      * Example {"camera":[{"disableCamera":"true"}]}
      */
-    public void disableCamera(String taskId, Boolean disable) {
+    public void disableCamera(String taskId, Boolean disable, int priority) {
         try {
+            cache.setDisableCamera(disable, priority);
+
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.disableCamera(disable);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Camera", "Camera is disable: " + disable));
