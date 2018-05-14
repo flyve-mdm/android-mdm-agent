@@ -44,7 +44,6 @@ import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.Inventory;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -419,15 +418,6 @@ public class PoliciesController {
 
             // return the status of the task
             sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
-    public void disableAllUsbFileTransferProtocols(boolean disable) {
-        try {
-            PoliciesConnectivity.disableAllUsbFileTransferProtocols(disable);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols", "UsbFileTransferProtocols is disable: " + disable));
-        } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on UsbFileTransferProtocols", ex.getMessage()));
         }
     }
 
