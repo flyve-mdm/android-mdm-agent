@@ -43,4 +43,7 @@ public class Policies {
     @ColumnInfo (name = "value")
     public String value;
 
+    @ColumnInfo (name = "priority")
+    public int priority;
+
 }
