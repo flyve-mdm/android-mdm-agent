@@ -47,6 +47,7 @@ public class FragmentTestPolicies extends Fragment {
 
     private PoliciesData cache;
     private PoliciesDeviceManager mdm;
+    private static final int PRIORITY = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,7 +65,6 @@ public class FragmentTestPolicies extends Fragment {
         swGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setDisableGPS(isChecked);
                 if(isChecked) {
                     PoliciesConnectivity.disableGps(isChecked);
                 }
@@ -76,7 +76,6 @@ public class FragmentTestPolicies extends Fragment {
         swAirplane.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setDisableAirplaneMode(isChecked);
                 PoliciesConnectivity.disableAirplaneMode(isChecked);
             }
         });
@@ -86,7 +85,6 @@ public class FragmentTestPolicies extends Fragment {
         swBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setDisableBluetooth(isChecked);
                 if(isChecked) {
                     PoliciesConnectivity.disableBluetooth(isChecked);
                 }
@@ -98,7 +96,6 @@ public class FragmentTestPolicies extends Fragment {
         swWifi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setDisableWifi(isChecked);
                 if(isChecked) {
                     PoliciesConnectivity.disableWifi(isChecked);
                 }
@@ -110,7 +107,6 @@ public class FragmentTestPolicies extends Fragment {
         swNFC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setDisableNFC(isChecked);
                 if(isChecked) {
                     PoliciesConnectivity.disableNFC(isChecked);
                 }
@@ -122,7 +118,6 @@ public class FragmentTestPolicies extends Fragment {
         swHostpot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setDisableHostpotTethering(isChecked);
                 if(isChecked) {
                     PoliciesConnectivity.disableHostpotTethering(isChecked);
                 }
@@ -134,7 +129,6 @@ public class FragmentTestPolicies extends Fragment {
         swMobileLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setDisableMobileLine(isChecked);
                 if(isChecked) {
                     PoliciesConnectivity.disableMobileLine(isChecked);
                 }
@@ -154,7 +148,6 @@ public class FragmentTestPolicies extends Fragment {
         swDisableCamera.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setDisableCamera(isChecked);
                 mdm.disableCamera(isChecked);
             }
         });
@@ -164,7 +157,6 @@ public class FragmentTestPolicies extends Fragment {
         swStorageEncryptionDevice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cache.setStorageEncryption(isChecked);
                 mdm.storageEncryptionDevice(isChecked);
             }
         });
@@ -213,16 +205,6 @@ public class FragmentTestPolicies extends Fragment {
                 int maximumFailedPasswordsForWipe = Integer.parseInt(edtMaximumFailedPasswordsForWipe.getText().toString());
                 int maximumTimeToLock = Integer.parseInt(edtMaximumTimeToLock.getText().toString());
 
-                cache.setPasswordMinimumLength(minimumLength);
-                cache.setPasswordMinimumLetters(minimumLetters);
-                cache.setPasswordMinimumUpperCase(minimumUpperCase);
-                cache.setPasswordMinimumLowerCase(minimumLowerCase);
-                cache.setPasswordMinimumNonLetter(minimumNonLetter);
-                cache.setPasswordMinimumNumeric(minimumNumeric);
-                cache.setPasswordMinimumSymbols(minimumSymbols);
-                cache.setMaximumFailedPasswordsForWipe(maximumFailedPasswordsForWipe);
-                cache.setMaximumTimeToLock(maximumTimeToLock);
-
                 mdm.setPasswordLength(minimumLength);
                 mdm.setPasswordMinimumLetters(minimumLetters);
                 mdm.setPasswordMinimumUpperCase(minimumUpperCase);
@@ -239,7 +221,6 @@ public class FragmentTestPolicies extends Fragment {
         btnPasswordEnable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cache.setPasswordEnabled(true);
                 mdm.enablePassword();
             }
         });
