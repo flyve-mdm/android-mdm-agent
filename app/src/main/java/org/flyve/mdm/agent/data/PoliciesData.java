@@ -77,7 +77,7 @@ public class PoliciesData {
         return getBooleanValue(PASSWORD_ENABLED);
     }
 
-    public boolean setPasswordEnabled(Boolean enable, int priority) {
+    public Object setPasswordEnabled(Boolean enable, int priority) {
         return setBooleanValue(PASSWORD_ENABLED, enable, priority);
     }
 
@@ -85,7 +85,7 @@ public class PoliciesData {
         return getStringValue(PASSWORD_QUALITY);
     }
 
-    public String setPasswordQuality(String value, int priority) {
+    public Object setPasswordQuality(String value, int priority) {
         return setStringValue(PASSWORD_QUALITY, value, priority);
     }
 
@@ -93,7 +93,7 @@ public class PoliciesData {
         return getIntValue(PASSWORD_MINIMUM_LENGTH);
     }
 
-    public int setPasswordMinimumLength(int value, int priority) {
+    public Object setPasswordMinimumLength(int value, int priority) {
         return setIntValue(PASSWORD_MINIMUM_LENGTH, value, priority);
     }
 
@@ -101,15 +101,15 @@ public class PoliciesData {
         return getIntValue(PASSWORD_MINIMUM_LOWER_CASE);
     }
 
-    public void setPasswordMinimumLowerCase(int value, int priority) {
-        setIntValue(PASSWORD_MINIMUM_LOWER_CASE, value, priority);
+    public Object setPasswordMinimumLowerCase(int value, int priority) {
+        return setIntValue(PASSWORD_MINIMUM_LOWER_CASE, value, priority);
     }
 
     public int getPasswordMinimumUpperCase() {
         return getIntValue(PASSWORD_MINIMUM_UPPER_CASE);
     }
 
-    public int setPasswordMinimumUpperCase(int value, int priority) {
+    public Object setPasswordMinimumUpperCase(int value, int priority) {
         return setIntValue(PASSWORD_MINIMUM_UPPER_CASE, value, priority);
     }
 
@@ -117,7 +117,7 @@ public class PoliciesData {
         return getIntValue(PASSWORD_MINIMUM_NON_LETTER);
     }
 
-    public int setPasswordMinimumNonLetter(int value, int priority) {
+    public Object setPasswordMinimumNonLetter(int value, int priority) {
         return setIntValue(PASSWORD_MINIMUM_NON_LETTER, value, priority);
     }
 
@@ -125,7 +125,7 @@ public class PoliciesData {
         return getIntValue(PASSWORD_MINIMUM_LETTERS);
     }
 
-    public int setPasswordMinimumLetters(int value, int priority) {
+    public Object setPasswordMinimumLetters(int value, int priority) {
         return setIntValue(PASSWORD_MINIMUM_LETTERS, value, priority);
     }
 
@@ -133,7 +133,7 @@ public class PoliciesData {
         return getIntValue(PASSWORD_MINIMUM_NUMERIC);
     }
 
-    public int setPasswordMinimumNumeric(int value, int priority) {
+    public Object setPasswordMinimumNumeric(int value, int priority) {
         return setIntValue(PASSWORD_MINIMUM_NUMERIC, value, priority);
     }
 
@@ -141,7 +141,7 @@ public class PoliciesData {
         return getIntValue(PASSWORD_MINIMUM_SYMBOLS);
     }
 
-    public int setPasswordMinimumSymbols(int value, int priority) {
+    public Object setPasswordMinimumSymbols(int value, int priority) {
         return setIntValue(PASSWORD_MINIMUM_SYMBOLS, value, priority);
     }
 
@@ -149,7 +149,7 @@ public class PoliciesData {
         return getIntValue(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE);
     }
 
-    public int setMaximumFailedPasswordsForWipe(int value, int priority) {
+    public Object setMaximumFailedPasswordsForWipe(int value, int priority) {
         return setIntValue(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE, value, priority);
     }
 
@@ -157,7 +157,7 @@ public class PoliciesData {
         return getIntValue(MAXIMUM_TIME_TO_LOCK);
     }
 
-    public int setMaximumTimeToLock(int value, int priority) {
+    public Object setMaximumTimeToLock(int value, int priority) {
         return setIntValue(MAXIMUM_TIME_TO_LOCK, value, priority);
     }
 
@@ -165,7 +165,7 @@ public class PoliciesData {
         return getBooleanValue(STORAGE_ENCRYPTION);
     }
 
-    public boolean setStorageEncryption(boolean value, int priority) {
+    public Object setStorageEncryption(boolean value, int priority) {
         return setBooleanValue(STORAGE_ENCRYPTION, value, priority);
     }
 
@@ -173,7 +173,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_CAMERA);
     }
 
-    public boolean setDisableCamera(boolean value, int priority) {
+    public Object setDisableCamera(boolean value, int priority) {
         return setBooleanValue(DISABLE_CAMERA, value, priority);
     }
 
@@ -181,7 +181,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_BLUETOOTH);
     }
 
-    public boolean setDisableBluetooth(boolean value, int priority) {
+    public Object setDisableBluetooth(boolean value, int priority) {
         return setBooleanValue(DISABLE_BLUETOOTH, value, priority);
     }
 
@@ -189,7 +189,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_SCREEN_CAPTURE);
     }
 
-    public boolean setDisableScreenCapture(boolean value, int priority) {
+    public Object setDisableScreenCapture(boolean value, int priority) {
         return setBooleanValue(DISABLE_SCREEN_CAPTURE, value, priority);
     }
 
@@ -197,7 +197,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_AIRPLANE_MODE);
     }
 
-    public boolean setDisableAirplaneMode(boolean value, int priority) {
+    public Object setDisableAirplaneMode(boolean value, int priority) {
         return setBooleanValue(DISABLE_AIRPLANE_MODE, value, priority);
     }
 
@@ -205,7 +205,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_GPS);
     }
 
-    public boolean setDisableGPS(boolean value, int priority) {
+    public Object setDisableGPS(boolean value, int priority) {
         return setBooleanValue(DISABLE_GPS, value, priority);
     }
 
@@ -213,7 +213,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_HOSTPOT_TETHERING);
     }
 
-    public boolean setDisableHostpotTethering(boolean value, int priority) {
+    public Object setDisableHostpotTethering(boolean value, int priority) {
         return setBooleanValue(DISABLE_HOSTPOT_TETHERING, value, priority);
     }
 
@@ -221,7 +221,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_ROAMING);
     }
 
-    public boolean setDisableRoaming(boolean value, int priority) {
+    public Object setDisableRoaming(boolean value, int priority) {
         return setBooleanValue(DISABLE_ROAMING, value, priority);
     }
 
@@ -229,7 +229,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_WIFI);
     }
 
-    public boolean setDisableWifi(boolean value, int priority) {
+    public Object setDisableWifi(boolean value, int priority) {
         return setBooleanValue(DISABLE_WIFI, value, priority);
     }
 
@@ -237,7 +237,7 @@ public class PoliciesData {
         return getBooleanValue(USE_TLS);
     }
 
-    public boolean setUseTLS(boolean value, int priority) {
+    public Object setUseTLS(boolean value, int priority) {
         return setBooleanValue(USE_TLS, value, priority);
     }
 
@@ -245,7 +245,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_MOBILE_LINE);
     }
 
-    public boolean setDisableMobileLine(boolean value, int priority) {
+    public Object setDisableMobileLine(boolean value, int priority) {
         return setBooleanValue(DISABLE_MOBILE_LINE, value, priority);
     }
 
@@ -253,7 +253,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_NFC);
     }
 
-    public boolean setDisableNFC(boolean value, int priority) {
+    public Object setDisableNFC(boolean value, int priority) {
         return setBooleanValue(DISABLE_NFC, value, priority);
     }
 
@@ -261,7 +261,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_STATUSBAR);
     }
 
-    public boolean setDisableStatusbar(boolean value, int priority) {
+    public Object setDisableStatusbar(boolean value, int priority) {
         return setBooleanValue(DISABLE_STATUSBAR, value, priority);
     }
 
@@ -269,7 +269,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_USB_MTP);
     }
 
-    public boolean setDisableUsbMtp(boolean value, int priority) {
+    public Object setDisableUsbMtp(boolean value, int priority) {
         return setBooleanValue(DISABLE_USB_MTP, value, priority);
     }
 
@@ -277,7 +277,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_USB_PTP);
     }
 
-    public boolean setDisableUsbPtp(boolean value, int priority) {
+    public Object setDisableUsbPtp(boolean value, int priority) {
         return setBooleanValue(DISABLE_USB_PTP, value, priority);
     }
 
@@ -285,7 +285,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_USB_ADB);
     }
 
-    public boolean setDisableUsbAdb(boolean value, int priority) {
+    public Object setDisableUsbAdb(boolean value, int priority) {
         return setBooleanValue(DISABLE_USB_ADB, value, priority);
     }
 
@@ -293,7 +293,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_SPEAKER_PHONE);
     }
 
-    public boolean setDisableSpeakerphone(boolean value, int priority) {
+    public Object setDisableSpeakerphone(boolean value, int priority) {
         return setBooleanValue(DISABLE_SPEAKER_PHONE, value, priority);
     }
 
@@ -301,7 +301,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_VPN);
     }
 
-    public boolean setDisableVPN(boolean value, int priority) {
+    public Object setDisableVPN(boolean value, int priority) {
         return setBooleanValue(DISABLE_VPN, value, priority);
     }
 
@@ -309,7 +309,7 @@ public class PoliciesData {
         return getBooleanValue(DISABLE_SMS_MMS);
     }
 
-    public boolean setDisableSmsMms(boolean value, int priority) {
+    public Object setDisableSmsMms(boolean value, int priority) {
         return setBooleanValue(DISABLE_SMS_MMS, value, priority);
     }
 
@@ -322,7 +322,7 @@ public class PoliciesData {
         }
     }
 
-    private String setStringValue(String policyName, String value, int priority) {
+    private Object setStringValue(String policyName, String value, int priority) {
         if(dataBase.PoliciesDao().getPolicyBy(policyName, priority).isEmpty()) {
             Policies policies = new Policies();
             policies.policyName = policyName;
@@ -348,12 +348,12 @@ public class PoliciesData {
         return Boolean.valueOf(value);
     }
 
-    private Boolean setBooleanValue(String policyName, Boolean enable, int priority) {
-        String data = setStringValue(policyName, String.valueOf(enable), priority);
+    private Object setBooleanValue(String policyName, Boolean enable, int priority) {
+        Object data = setStringValue(policyName, String.valueOf(enable), priority);
         if(data.equals("")) {
-            data = "false";
+            return null;
         }
-        return Boolean.valueOf(data);
+        return data;
     }
 
     private int getIntValue(String policyName) {
@@ -364,12 +364,12 @@ public class PoliciesData {
         return Integer.parseInt(value);
     }
 
-    private int setIntValue(String policyName, int value, int priority) {
-        String data = setStringValue(policyName, String.valueOf(value), priority);
+    private Object setIntValue(String policyName, int value, int priority) {
+        Object data = setStringValue(policyName, String.valueOf(value), priority);
         if(data.equals("")) {
-            data = "0";
+            return null;
         }
-        return Integer.parseInt(data);
+        return data;
     }
 
 }
