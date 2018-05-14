@@ -389,7 +389,7 @@ public class MQTTService extends Service implements MqttCallback {
         FlyveLog.d(TAG, "Topic " + topic);
         FlyveLog.d(TAG, "Message " + new String(message.getPayload()));
 
-        String priority = topic.contains("fleet") ? "0" : "1";
+        int priority = topic.contains("fleet") ? 0 : 1;
 
         String messageBody = new String(message.getPayload());
 
@@ -517,7 +517,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.passwordEnabled(taskId);
+                    policiesController.passwordEnabled(taskId, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -535,7 +535,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.passwordQuality(taskId, quality);
+                    policiesController.passwordQuality(taskId, quality, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -553,7 +553,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.passwordMinLength(taskId, length);
+                    policiesController.passwordMinLength(taskId, length, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -571,7 +571,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.passwordMinLowerCase(taskId, minimum);
+                    policiesController.passwordMinLowerCase(taskId, minimum, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -589,7 +589,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.passwordMinUpperCase(taskId, minimum);
+                    policiesController.passwordMinUpperCase(taskId, minimum, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -607,7 +607,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.passwordMinNonLetter(taskId, minimum);
+                    policiesController.passwordMinNonLetter(taskId, minimum, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -625,7 +625,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.passwordMinLetter(taskId, minimum);
+                    policiesController.passwordMinLetter(taskId, minimum, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -643,7 +643,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.passwordMinNumeric(taskId, minimum);
+                    policiesController.passwordMinNumeric(taskId, minimum, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -661,7 +661,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.passwordMinSymbols(taskId, minimum);
+                    policiesController.passwordMinSymbols(taskId, minimum, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -679,7 +679,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.maximumFailedPasswordsForWipe(taskId, max);
+                    policiesController.maximumFailedPasswordsForWipe(taskId, max, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -697,7 +697,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.maximumTimeToLock(taskId, max);
+                    policiesController.maximumTimeToLock(taskId, max, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -714,7 +714,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.storageEncryption(taskId, enable);
+                    policiesController.storageEncryption(taskId, enable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -732,7 +732,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableCamera(taskId, disable);
+                    policiesController.disableCamera(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -750,7 +750,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableBluetooth(taskId, disable);
+                    policiesController.disableBluetooth(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -845,7 +845,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableScreenCapture(taskId, disable);
+                    policiesController.disableScreenCapture(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -864,7 +864,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableAirplaneMode(taskId, disable);
+                    policiesController.disableAirplaneMode(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -883,7 +883,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableGPS(taskId, disable);
+                    policiesController.disableGPS(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -901,7 +901,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableHostpotTethering(taskId, disable);
+                    policiesController.disableHostpotTethering(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -919,7 +919,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableRoaming(taskId, disable);
+                    policiesController.disableRoaming(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -937,7 +937,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableWifi(taskId, disable);
+                    policiesController.disableWifi(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -974,7 +974,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableMobileLine(taskId, disable);
+                    policiesController.disableMobileLine(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -993,7 +993,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableNFC(taskId, disable);
+                    policiesController.disableNFC(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -1012,7 +1012,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableStatusBar(taskId, disable);
+                    policiesController.disableStatusBar(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -1050,7 +1050,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableMTPUsbFileTransferProtocols(taskId, disable);
+                    policiesController.disableMTPUsbFileTransferProtocols(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -1069,7 +1069,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disablePTPUsbFileTransferProtocols(taskId, disable);
+                    policiesController.disablePTPUsbFileTransferProtocols(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -1088,7 +1088,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableADBUsbFileTransferProtocols(taskId, disable);
+                    policiesController.disableADBUsbFileTransferProtocols(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -1106,7 +1106,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableSpeakerphone(taskId, disable);
+                    policiesController.disableSpeakerphone(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -1124,7 +1124,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableSmsMms(taskId, disable);
+                    policiesController.disableSmsMms(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -1142,7 +1142,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableCreateVpnProfiles(taskId, disable);
+                    policiesController.disableCreateVpnProfiles(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
