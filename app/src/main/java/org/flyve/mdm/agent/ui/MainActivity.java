@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     extra = "DeployApp";
                     break;
                 case "PasswordPolicy":
-                    new PoliciesDeviceManager(MainActivity.this).enablePassword();
+                    new PoliciesDeviceManager(MainActivity.this).enablePassword(true);
             }
         }
 
