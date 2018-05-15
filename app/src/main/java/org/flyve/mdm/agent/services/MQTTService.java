@@ -517,7 +517,7 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.passwordEnabled(taskId, priority);
+                    policiesController.passwordEnabled(taskId, true, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
