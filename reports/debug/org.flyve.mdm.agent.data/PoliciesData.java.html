@@ -29,7 +29,6 @@
 
 import android.content.Context;
 
-import org.flyve.inventory.categories.Usb;
 import org.flyve.mdm.agent.room.database.AppDataBase;
 import org.flyve.mdm.agent.room.entity.Policies;
 
@@ -70,295 +69,308 @@ public class PoliciesData {
 
     private AppDataBase dataBase;
 
-<span class="nc" id="L73">    public PoliciesData(Context context) {</span>
-<span class="nc" id="L74">        dataBase = AppDataBase.getAppDatabase(context);</span>
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L72">    public PoliciesData(Context context) {</span>
+<span class="nc" id="L73">        dataBase = AppDataBase.getAppDatabase(context);</span>
+<span class="nc" id="L74">    }</span>
 
     public boolean getPasswordEnabled() {
-<span class="nc" id="L78">        return getBooleanValue(PASSWORD_ENABLED);</span>
+<span class="nc" id="L77">        return getBooleanValue(PASSWORD_ENABLED);</span>
     }
 
-    public void setPasswordEnabled(Boolean enable) {
-<span class="nc" id="L82">        setBooleanValue(PASSWORD_ENABLED, enable);</span>
-<span class="nc" id="L83">    }</span>
+    public Object setPasswordEnabled(Boolean enable, int priority) {
+<span class="nc" id="L81">        return setBooleanValue(PASSWORD_ENABLED, enable, priority);</span>
+    }
 
     public String getPasswordQuality() {
-<span class="nc" id="L86">        return getStringValue(PASSWORD_QUALITY);</span>
+<span class="nc" id="L85">        return getStringValue(PASSWORD_QUALITY);</span>
     }
 
-    public void setPasswordQuality(String value) {
-<span class="nc" id="L90">        setStringValue(PASSWORD_QUALITY, value);</span>
-<span class="nc" id="L91">    }</span>
+    public Object setPasswordQuality(String value, int priority) {
+<span class="nc" id="L89">        return setStringValue(PASSWORD_QUALITY, value, priority);</span>
+    }
 
     public int getPasswordMinimumLength() {
-<span class="nc" id="L94">        return getIntValue(PASSWORD_MINIMUM_LENGTH);</span>
+<span class="nc" id="L93">        return getIntValue(PASSWORD_MINIMUM_LENGTH);</span>
     }
 
-    public void setPasswordMinimumLength(int value) {
-<span class="nc" id="L98">        setIntValue(PASSWORD_MINIMUM_LENGTH, value);</span>
-<span class="nc" id="L99">    }</span>
+    public Object setPasswordMinimumLength(int value, int priority) {
+<span class="nc" id="L97">        return setIntValue(PASSWORD_MINIMUM_LENGTH, value, priority);</span>
+    }
 
     public int getPasswordMinimumLowerCase() {
-<span class="nc" id="L102">        return getIntValue(PASSWORD_MINIMUM_LOWER_CASE);</span>
+<span class="nc" id="L101">        return getIntValue(PASSWORD_MINIMUM_LOWER_CASE);</span>
     }
 
-    public void setPasswordMinimumLowerCase(int value) {
-<span class="nc" id="L106">        setIntValue(PASSWORD_MINIMUM_LOWER_CASE, value);</span>
-<span class="nc" id="L107">    }</span>
+    public Object setPasswordMinimumLowerCase(int value, int priority) {
+<span class="nc" id="L105">        return setIntValue(PASSWORD_MINIMUM_LOWER_CASE, value, priority);</span>
+    }
 
     public int getPasswordMinimumUpperCase() {
-<span class="nc" id="L110">        return getIntValue(PASSWORD_MINIMUM_UPPER_CASE);</span>
+<span class="nc" id="L109">        return getIntValue(PASSWORD_MINIMUM_UPPER_CASE);</span>
     }
 
-    public void setPasswordMinimumUpperCase(int value) {
-<span class="nc" id="L114">        setIntValue(PASSWORD_MINIMUM_UPPER_CASE, value);</span>
-<span class="nc" id="L115">    }</span>
+    public Object setPasswordMinimumUpperCase(int value, int priority) {
+<span class="nc" id="L113">        return setIntValue(PASSWORD_MINIMUM_UPPER_CASE, value, priority);</span>
+    }
 
     public int getPasswordMinimumNonLetter() {
-<span class="nc" id="L118">        return getIntValue(PASSWORD_MINIMUM_NON_LETTER);</span>
+<span class="nc" id="L117">        return getIntValue(PASSWORD_MINIMUM_NON_LETTER);</span>
     }
 
-    public void setPasswordMinimumNonLetter(int value) {
-<span class="nc" id="L122">        setIntValue(PASSWORD_MINIMUM_NON_LETTER, value);</span>
-<span class="nc" id="L123">    }</span>
+    public Object setPasswordMinimumNonLetter(int value, int priority) {
+<span class="nc" id="L121">        return setIntValue(PASSWORD_MINIMUM_NON_LETTER, value, priority);</span>
+    }
 
     public int getPasswordMinimumLetters() {
-<span class="nc" id="L126">        return getIntValue(PASSWORD_MINIMUM_LETTERS);</span>
+<span class="nc" id="L125">        return getIntValue(PASSWORD_MINIMUM_LETTERS);</span>
     }
 
-    public void setPasswordMinimumLetters(int value) {
-<span class="nc" id="L130">        setIntValue(PASSWORD_MINIMUM_LETTERS, value);</span>
-<span class="nc" id="L131">    }</span>
+    public Object setPasswordMinimumLetters(int value, int priority) {
+<span class="nc" id="L129">        return setIntValue(PASSWORD_MINIMUM_LETTERS, value, priority);</span>
+    }
 
     public int getPasswordMinimumNumeric() {
-<span class="nc" id="L134">        return getIntValue(PASSWORD_MINIMUM_NUMERIC);</span>
+<span class="nc" id="L133">        return getIntValue(PASSWORD_MINIMUM_NUMERIC);</span>
     }
 
-    public void setPasswordMinimumNumeric(int value) {
-<span class="nc" id="L138">        setIntValue(PASSWORD_MINIMUM_NUMERIC, value);</span>
-<span class="nc" id="L139">    }</span>
+    public Object setPasswordMinimumNumeric(int value, int priority) {
+<span class="nc" id="L137">        return setIntValue(PASSWORD_MINIMUM_NUMERIC, value, priority);</span>
+    }
 
     public int getPasswordMinimumSymbols() {
-<span class="nc" id="L142">        return getIntValue(PASSWORD_MINIMUM_SYMBOLS);</span>
+<span class="nc" id="L141">        return getIntValue(PASSWORD_MINIMUM_SYMBOLS);</span>
     }
 
-    public void setPasswordMinimumSymbols(int value) {
-<span class="nc" id="L146">        setIntValue(PASSWORD_MINIMUM_SYMBOLS, value);</span>
-<span class="nc" id="L147">    }</span>
+    public Object setPasswordMinimumSymbols(int value, int priority) {
+<span class="nc" id="L145">        return setIntValue(PASSWORD_MINIMUM_SYMBOLS, value, priority);</span>
+    }
 
     public int getMaximumFailedPasswordsForWipe() {
-<span class="nc" id="L150">        return getIntValue(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE);</span>
+<span class="nc" id="L149">        return getIntValue(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE);</span>
     }
 
-    public void setMaximumFailedPasswordsForWipe(int value) {
-<span class="nc" id="L154">        setIntValue(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE, value);</span>
-<span class="nc" id="L155">    }</span>
+    public Object setMaximumFailedPasswordsForWipe(int value, int priority) {
+<span class="nc" id="L153">        return setIntValue(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE, value, priority);</span>
+    }
 
     public int getMaximumTimeToLock() {
-<span class="nc" id="L158">        return getIntValue(MAXIMUM_TIME_TO_LOCK);</span>
+<span class="nc" id="L157">        return getIntValue(MAXIMUM_TIME_TO_LOCK);</span>
     }
 
-    public void setMaximumTimeToLock(int value) {
-<span class="nc" id="L162">        setIntValue(MAXIMUM_TIME_TO_LOCK, value);</span>
-<span class="nc" id="L163">    }</span>
+    public Object setMaximumTimeToLock(int value, int priority) {
+<span class="nc" id="L161">        return setIntValue(MAXIMUM_TIME_TO_LOCK, value, priority);</span>
+    }
 
     public boolean getStorageEncryption() {
-<span class="nc" id="L166">        return getBooleanValue(STORAGE_ENCRYPTION);</span>
+<span class="nc" id="L165">        return getBooleanValue(STORAGE_ENCRYPTION);</span>
     }
 
-    public void setStorageEncryption(boolean value) {
-<span class="nc" id="L170">        setBooleanValue(STORAGE_ENCRYPTION, value);</span>
-<span class="nc" id="L171">    }</span>
+    public Object setStorageEncryption(boolean value, int priority) {
+<span class="nc" id="L169">        return setBooleanValue(STORAGE_ENCRYPTION, value, priority);</span>
+    }
 
     public boolean getDisableCamera() {
-<span class="nc" id="L174">        return getBooleanValue(DISABLE_CAMERA);</span>
+<span class="nc" id="L173">        return getBooleanValue(DISABLE_CAMERA);</span>
     }
 
-    public void setDisableCamera(boolean value) {
-<span class="nc" id="L178">        setBooleanValue(DISABLE_CAMERA, value);</span>
-<span class="nc" id="L179">    }</span>
+    public Object setDisableCamera(boolean value, int priority) {
+<span class="nc" id="L177">        return setBooleanValue(DISABLE_CAMERA, value, priority);</span>
+    }
 
     public boolean getDisableBluetooth() {
-<span class="nc" id="L182">        return getBooleanValue(DISABLE_BLUETOOTH);</span>
+<span class="nc" id="L181">        return getBooleanValue(DISABLE_BLUETOOTH);</span>
     }
 
-    public void setDisableBluetooth(boolean value) {
-<span class="nc" id="L186">        setBooleanValue(DISABLE_BLUETOOTH, value);</span>
-<span class="nc" id="L187">    }</span>
+    public Object setDisableBluetooth(boolean value, int priority) {
+<span class="nc" id="L185">        return setBooleanValue(DISABLE_BLUETOOTH, value, priority);</span>
+    }
 
     public boolean getDisableScreenCapture() {
-<span class="nc" id="L190">        return getBooleanValue(DISABLE_SCREEN_CAPTURE);</span>
+<span class="nc" id="L189">        return getBooleanValue(DISABLE_SCREEN_CAPTURE);</span>
     }
 
-    public void setDisableScreenCapture(boolean value) {
-<span class="nc" id="L194">        setBooleanValue(DISABLE_SCREEN_CAPTURE, value);</span>
-<span class="nc" id="L195">    }</span>
+    public Object setDisableScreenCapture(boolean value, int priority) {
+<span class="nc" id="L193">        return setBooleanValue(DISABLE_SCREEN_CAPTURE, value, priority);</span>
+    }
 
     public boolean getDisableAirplaneMode() {
-<span class="nc" id="L198">        return getBooleanValue(DISABLE_AIRPLANE_MODE);</span>
+<span class="nc" id="L197">        return getBooleanValue(DISABLE_AIRPLANE_MODE);</span>
     }
 
-    public void setDisableAirplaneMode(boolean value) {
-<span class="nc" id="L202">        setBooleanValue(DISABLE_AIRPLANE_MODE, value);</span>
-<span class="nc" id="L203">    }</span>
+    public Object setDisableAirplaneMode(boolean value, int priority) {
+<span class="nc" id="L201">        return setBooleanValue(DISABLE_AIRPLANE_MODE, value, priority);</span>
+    }
 
     public boolean getDisableGPS() {
-<span class="nc" id="L206">        return getBooleanValue(DISABLE_GPS);</span>
+<span class="nc" id="L205">        return getBooleanValue(DISABLE_GPS);</span>
     }
 
-    public void setDisableGPS(boolean value) {
-<span class="nc" id="L210">        setBooleanValue(DISABLE_GPS, value);</span>
-<span class="nc" id="L211">    }</span>
+    public Object setDisableGPS(boolean value, int priority) {
+<span class="nc" id="L209">        return setBooleanValue(DISABLE_GPS, value, priority);</span>
+    }
 
     public boolean getDisableHostpotTethering() {
-<span class="nc" id="L214">        return getBooleanValue(DISABLE_HOSTPOT_TETHERING);</span>
+<span class="nc" id="L213">        return getBooleanValue(DISABLE_HOSTPOT_TETHERING);</span>
     }
 
-    public void setDisableHostpotTethering(boolean value) {
-<span class="nc" id="L218">        setBooleanValue(DISABLE_HOSTPOT_TETHERING, value);</span>
-<span class="nc" id="L219">    }</span>
+    public Object setDisableHostpotTethering(boolean value, int priority) {
+<span class="nc" id="L217">        return setBooleanValue(DISABLE_HOSTPOT_TETHERING, value, priority);</span>
+    }
 
     public boolean getDisableRoaming() {
-<span class="nc" id="L222">        return getBooleanValue(DISABLE_ROAMING);</span>
+<span class="nc" id="L221">        return getBooleanValue(DISABLE_ROAMING);</span>
     }
 
-    public void setDisableRoaming(boolean value) {
-<span class="nc" id="L226">        setBooleanValue(DISABLE_ROAMING, value);</span>
-<span class="nc" id="L227">    }</span>
+    public Object setDisableRoaming(boolean value, int priority) {
+<span class="nc" id="L225">        return setBooleanValue(DISABLE_ROAMING, value, priority);</span>
+    }
 
     public boolean getDisableWifi() {
-<span class="nc" id="L230">        return getBooleanValue(DISABLE_WIFI);</span>
+<span class="nc" id="L229">        return getBooleanValue(DISABLE_WIFI);</span>
     }
 
-    public void setDisableWifi(boolean value) {
-<span class="nc" id="L234">        setBooleanValue(DISABLE_WIFI, value);</span>
-<span class="nc" id="L235">    }</span>
+    public Object setDisableWifi(boolean value, int priority) {
+<span class="nc" id="L233">        return setBooleanValue(DISABLE_WIFI, value, priority);</span>
+    }
 
     public boolean getUseTLS() {
-<span class="nc" id="L238">        return getBooleanValue(USE_TLS);</span>
+<span class="nc" id="L237">        return getBooleanValue(USE_TLS);</span>
     }
 
-    public void setUseTLS(boolean value) {
-<span class="nc" id="L242">        setBooleanValue(USE_TLS, value);</span>
-<span class="nc" id="L243">    }</span>
+    public Object setUseTLS(boolean value, int priority) {
+<span class="nc" id="L241">        return setBooleanValue(USE_TLS, value, priority);</span>
+    }
 
     public boolean getDisableMobileLine() {
-<span class="nc" id="L246">        return getBooleanValue(DISABLE_MOBILE_LINE);</span>
+<span class="nc" id="L245">        return getBooleanValue(DISABLE_MOBILE_LINE);</span>
     }
 
-    public void setDisableMobileLine(boolean value) {
-<span class="nc" id="L250">        setBooleanValue(DISABLE_MOBILE_LINE, value);</span>
-<span class="nc" id="L251">    }</span>
+    public Object setDisableMobileLine(boolean value, int priority) {
+<span class="nc" id="L249">        return setBooleanValue(DISABLE_MOBILE_LINE, value, priority);</span>
+    }
 
     public boolean getDisableNFC() {
-<span class="nc" id="L254">        return getBooleanValue(DISABLE_NFC);</span>
+<span class="nc" id="L253">        return getBooleanValue(DISABLE_NFC);</span>
     }
 
-    public void setDisableNFC(boolean value) {
-<span class="nc" id="L258">        setBooleanValue(DISABLE_NFC, value);</span>
-<span class="nc" id="L259">    }</span>
+    public Object setDisableNFC(boolean value, int priority) {
+<span class="nc" id="L257">        return setBooleanValue(DISABLE_NFC, value, priority);</span>
+    }
 
     public boolean getDisableStatusbar() {
-<span class="nc" id="L262">        return getBooleanValue(DISABLE_STATUSBAR);</span>
+<span class="nc" id="L261">        return getBooleanValue(DISABLE_STATUSBAR);</span>
     }
 
-    public void setDisableStatusbar(boolean value) {
-<span class="nc" id="L266">        setBooleanValue(DISABLE_STATUSBAR, value);</span>
-<span class="nc" id="L267">    }</span>
+    public Object setDisableStatusbar(boolean value, int priority) {
+<span class="nc" id="L265">        return setBooleanValue(DISABLE_STATUSBAR, value, priority);</span>
+    }
 
     public boolean getDisableUsbMtp() {
-<span class="nc" id="L270">        return getBooleanValue(DISABLE_USB_MTP);</span>
+<span class="nc" id="L269">        return getBooleanValue(DISABLE_USB_MTP);</span>
     }
 
-    public void setDisableUsbMtp(boolean value) {
-<span class="nc" id="L274">        setBooleanValue(DISABLE_USB_MTP, value);</span>
-<span class="nc" id="L275">    }</span>
+    public Object setDisableUsbMtp(boolean value, int priority) {
+<span class="nc" id="L273">        return setBooleanValue(DISABLE_USB_MTP, value, priority);</span>
+    }
 
     public boolean getDisableUsbPtp() {
-<span class="nc" id="L278">        return getBooleanValue(DISABLE_USB_PTP);</span>
+<span class="nc" id="L277">        return getBooleanValue(DISABLE_USB_PTP);</span>
     }
 
-    public void setDisableUsbPtp(boolean value) {
-<span class="nc" id="L282">        setBooleanValue(DISABLE_USB_PTP, value);</span>
-<span class="nc" id="L283">    }</span>
+    public Object setDisableUsbPtp(boolean value, int priority) {
+<span class="nc" id="L281">        return setBooleanValue(DISABLE_USB_PTP, value, priority);</span>
+    }
 
     public boolean getDisableUsbAdb() {
-<span class="nc" id="L286">        return getBooleanValue(DISABLE_USB_ADB);</span>
+<span class="nc" id="L285">        return getBooleanValue(DISABLE_USB_ADB);</span>
     }
 
-    public void setDisableUsbAdb(boolean value) {
-<span class="nc" id="L290">        setBooleanValue(DISABLE_USB_ADB, value);</span>
-<span class="nc" id="L291">    }</span>
+    public Object setDisableUsbAdb(boolean value, int priority) {
+<span class="nc" id="L289">        return setBooleanValue(DISABLE_USB_ADB, value, priority);</span>
+    }
 
     public boolean getDisableSpeakerphone() {
-<span class="nc" id="L294">        return getBooleanValue(DISABLE_SPEAKER_PHONE);</span>
+<span class="nc" id="L293">        return getBooleanValue(DISABLE_SPEAKER_PHONE);</span>
     }
 
-    public void setDisableSpeakerphone(boolean value) {
-<span class="nc" id="L298">        setBooleanValue(DISABLE_SPEAKER_PHONE, value);</span>
-<span class="nc" id="L299">    }</span>
+    public Object setDisableSpeakerphone(boolean value, int priority) {
+<span class="nc" id="L297">        return setBooleanValue(DISABLE_SPEAKER_PHONE, value, priority);</span>
+    }
 
     public boolean getDisableVPN() {
-<span class="nc" id="L302">        return getBooleanValue(DISABLE_VPN);</span>
+<span class="nc" id="L301">        return getBooleanValue(DISABLE_VPN);</span>
     }
 
-    public void setDisableVPN(boolean value) {
-<span class="nc" id="L306">        setBooleanValue(DISABLE_VPN, value);</span>
-<span class="nc" id="L307">    }</span>
+    public Object setDisableVPN(boolean value, int priority) {
+<span class="nc" id="L305">        return setBooleanValue(DISABLE_VPN, value, priority);</span>
+    }
 
     public boolean getDisableSmsMms() {
-<span class="nc" id="L310">        return getBooleanValue(DISABLE_SMS_MMS);</span>
+<span class="nc" id="L309">        return getBooleanValue(DISABLE_SMS_MMS);</span>
     }
 
-    public void setDisableSmsMms(boolean value) {
-<span class="nc" id="L314">        setBooleanValue(DISABLE_SMS_MMS, value);</span>
-<span class="nc" id="L315">    }</span>
+    public Object setDisableSmsMms(boolean value, int priority) {
+<span class="nc" id="L313">        return setBooleanValue(DISABLE_SMS_MMS, value, priority);</span>
+    }
 
     private String getStringValue(String policyName) {
-<span class="nc" id="L318">        List&lt;Policies&gt; arrPolicies = dataBase.PoliciesDao().getByPolicyName(policyName);</span>
-<span class="nc bnc" id="L319" title="All 2 branches missed.">        if(!arrPolicies.isEmpty()) {</span>
-<span class="nc" id="L320">            return arrPolicies.get(0).value;</span>
+<span class="nc" id="L317">        List&lt;Policies&gt; arrPolicies = dataBase.PoliciesDao().getPolicyByName(policyName);</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">        if(!arrPolicies.isEmpty()) {</span>
+<span class="nc" id="L319">            return arrPolicies.get(0).value;</span>
         } else {
-<span class="nc" id="L322">            return &quot;&quot;;</span>
+<span class="nc" id="L321">            return &quot;&quot;;</span>
         }
     }
 
-    private void setStringValue(String policyName, String value) {
-<span class="nc bnc" id="L327" title="All 2 branches missed.">        if(dataBase.PoliciesDao().getByPolicyName(policyName).isEmpty()) {</span>
-<span class="nc" id="L328">            Policies policies = new Policies();</span>
-<span class="nc" id="L329">            policies.policyName = policyName;</span>
-<span class="nc" id="L330">            policies.value = value;</span>
+    private Object setStringValue(String policyName, String value, int priority) {
+<span class="nc bnc" id="L326" title="All 2 branches missed.">        if(dataBase.PoliciesDao().getPolicyBy(policyName, priority).isEmpty()) {</span>
+<span class="nc" id="L327">            Policies policies = new Policies();</span>
+<span class="nc" id="L328">            policies.policyName = policyName;</span>
+<span class="nc" id="L329">            policies.value = value;</span>
+<span class="nc" id="L330">            policies.priority = priority;</span>
 <span class="nc" id="L331">            dataBase.PoliciesDao().insert(policies);</span>
 <span class="nc" id="L332">        } else {</span>
-<span class="nc" id="L333">            Policies policies = dataBase.PoliciesDao().getByPolicyName(policyName).get(0);</span>
+<span class="nc" id="L333">            Policies policies = dataBase.PoliciesDao().getPolicyBy(policyName, priority).get(0);</span>
 <span class="nc" id="L334">            policies.value = value;</span>
 <span class="nc" id="L335">            dataBase.PoliciesDao().update(policies);</span>
         }
-<span class="nc" id="L337">    }</span>
+
+        // Return the priority value
+<span class="nc" id="L339">        Policies policies = dataBase.PoliciesDao().getPolicyByName(policyName).get(0);</span>
+<span class="nc" id="L340">        return policies.value;</span>
+    }
 
     private boolean getBooleanValue(String policyName) {
-<span class="nc" id="L340">        String value = getStringValue(policyName);</span>
-<span class="nc bnc" id="L341" title="All 2 branches missed.">        if(value.equals(&quot;&quot;)) {</span>
-<span class="nc" id="L342">            value = &quot;false&quot;;</span>
+<span class="nc" id="L344">        String value = getStringValue(policyName);</span>
+<span class="nc bnc" id="L345" title="All 2 branches missed.">        if(value.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L346">            value = &quot;false&quot;;</span>
         }
-<span class="nc" id="L344">        return Boolean.valueOf(value);</span>
+<span class="nc" id="L348">        return Boolean.valueOf(value);</span>
     }
 
-    private void setBooleanValue(String policyName, Boolean enable) {
-<span class="nc" id="L348">        setStringValue(policyName, String.valueOf(enable));</span>
-<span class="nc" id="L349">    }</span>
+    private Object setBooleanValue(String policyName, Boolean enable, int priority) {
+<span class="nc" id="L352">        Object data = setStringValue(policyName, String.valueOf(enable), priority);</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">        if(data.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L354">            return null;</span>
+        }
+<span class="nc" id="L356">        return data;</span>
+    }
 
     private int getIntValue(String policyName) {
-<span class="nc" id="L352">        String value = getStringValue(policyName);</span>
-<span class="nc bnc" id="L353" title="All 2 branches missed.">        if(value.equals(&quot;&quot;)) {</span>
-<span class="nc" id="L354">            value = &quot;0&quot;;</span>
+<span class="nc" id="L360">        String value = getStringValue(policyName);</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">        if(value.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L362">            value = &quot;0&quot;;</span>
         }
-<span class="nc" id="L356">        return Integer.parseInt(value);</span>
+<span class="nc" id="L364">        return Integer.parseInt(value);</span>
     }
 
-    private void setIntValue(String policyName, int value) {
-<span class="nc" id="L360">        setStringValue(policyName, String.valueOf(value));</span>
-<span class="nc" id="L361">    }</span>
+    private Object setIntValue(String policyName, int value, int priority) {
+<span class="nc" id="L368">        Object data = setStringValue(policyName, String.valueOf(value), priority);</span>
+<span class="nc bnc" id="L369" title="All 2 branches missed.">        if(data.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L370">            return null;</span>
+        }
+<span class="nc" id="L372">        return data;</span>
+    }
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
