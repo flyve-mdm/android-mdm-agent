@@ -100,24 +100,26 @@ public class PoliciesDeviceManager {
         }
     }
 
-    public void enablePassword() {
-        DeviceLockedController pwd = new DeviceLockedController(context);
-        if(pwd.isDeviceScreenLocked()) {
-            try {
-                if (!mDPM.isActivePasswordSufficient()) {
-                    Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
+    public void enablePassword(boolean enable) {
+        if(enable) {
+            DeviceLockedController pwd = new DeviceLockedController(context);
+            if (pwd.isDeviceScreenLocked()) {
+                try {
+                    if (!mDPM.isActivePasswordSufficient()) {
+                        Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                } catch (Exception ex) {
+                    FlyveLog.e(ex.getMessage());
                 }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        } else {
-            Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+            } else {
+                Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
 
-            Helpers.sendToNotificationBar(context, 1009, "MDM Agent","Please create a password", true, MainActivity.class, "PasswordPolicy");
+                Helpers.sendToNotificationBar(context, 1009, "MDM Agent", "Please create a password", true, MainActivity.class, "PasswordPolicy");
+            }
         }
     }
 
