@@ -32,7 +32,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  * ------------------------------------------------------------------------------
  */
 
-public class CameraPolicy extends Policies {
+public class CameraPolicy extends BasePolicies {
 
     private static final String POLICY_NAME = "CameraPolicy";
 

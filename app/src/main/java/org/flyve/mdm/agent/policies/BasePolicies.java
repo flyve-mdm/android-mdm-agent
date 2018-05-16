@@ -33,10 +33,11 @@ import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.data.PoliciesDataNew;
+import org.flyve.mdm.agent.room.entity.Policies;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
-public abstract class Policies {
+public abstract class BasePolicies {
 
     private static final String ERROR = "ERROR";
     private static final String MQTT_SEND = "MQTT Send";
@@ -60,11 +61,11 @@ public abstract class Policies {
     private String mqttTopic;
     private String mqttTaskId;
 
-    public Policies(Context context, String name) {
+    public BasePolicies(Context context, String name) {
         this.context = context;
         this.policyName = name;
         this.data = new PoliciesDataNew(context);
-        org.flyve.mdm.agent.room.entity.Policies policies = data.getValue(this.policyName);
+        Policies policies = data.getValue(this.policyName);
         this.policyValue = policies.value;
         this.policyPriority = policies.priority;
         this.mqttEnable = true;
@@ -72,11 +73,6 @@ public abstract class Policies {
 
     public void setMqttEnable(boolean enable) {
         this.mqttEnable = enable;
-    }
-
-    public void setPolicyName(String name) {
-        this.policyName = name;
-        storage();
     }
 
     public void setValue(String value) {
@@ -93,8 +89,10 @@ public abstract class Policies {
         this.enableLog = enable;
     }
 
-    public void setMQTTclient(MqttAndroidClient client) {
+    public void setMQTTparameters(MqttAndroidClient client, String topic, String taskId) {
         this.mqttClient = client;
+        this.mqttTopic = topic;
+        this.mqttTaskId = taskId;
     }
 
     private void storage()  {
@@ -122,10 +120,9 @@ public abstract class Policies {
         }
     }
 
-    public void mqttResponse(String mqttTopic, String taskId, String status) {
+    private void mqttResponse(String status) {
         if(mqttEnable) {
-            this.setMQTTclient(this.mqttClient);
-            this.mqttSendTaskStatus(mqttTopic, taskId, status);
+            this.mqttSendTaskStatus(this.mqttTopic, this.mqttTaskId, status);
         }
     }
 
@@ -162,30 +159,25 @@ public abstract class Policies {
         validate();
         Log("Start the policy: " + this.policyName + " value: " + this.policyValue + " priority: " + this.policyPriority);
         boolean status = process();
-        if(mqttEnable) {
-            if(status) {
-                policyDone();
-            } else {
-                policyFail();
-            }
+        if(status) {
+            policyDone();
+        } else {
+            policyFail();
         }
     }
 
     protected void policyDone() {
-        mqttResponse(this.mqttTopic, this.mqttTaskId, MQTT_FEEDBACK_DONE);
+        if(mqttEnable) {
+            mqttResponse(MQTT_FEEDBACK_DONE);
+        }
     }
 
     protected void policyFail() {
         Log("Policy Fail: " + this.policyName + " value: " + this.policyValue + " priority: " + this.policyPriority);
         if(mqttEnable) {
-            mqttResponse(this.mqttTopic, this.mqttTaskId, MQTT_FEEDBACK_FAILED);
+            mqttResponse(MQTT_FEEDBACK_FAILED);
         }
     }
 
     protected abstract boolean process();
-
-    public interface PolicyCallback {
-        void onSuccess();
-        void onFail(String error);
-    }
 }
