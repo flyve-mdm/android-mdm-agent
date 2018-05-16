@@ -43,6 +43,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.ui.MainActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -744,13 +745,18 @@ public class MQTTService extends Service implements MqttCallback {
         if(topic.toLowerCase().contains(DISABLE_BLUETOOTH.toLowerCase())) {
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
-
                 if(jsonObj.has(DISABLE_BLUETOOTH)) {
                     Boolean disable = jsonObj.getBoolean(DISABLE_BLUETOOTH);
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableBluetooth(taskId, disable, priority);
+                    BluetoothPolicy bluetoothPolicy = new BluetoothPolicy(getApplicationContext());
+                    bluetoothPolicy.setMQTTparameters(this.client, topic, taskId);
+                    bluetoothPolicy.setValue(disable);
+                    bluetoothPolicy.setPriority(priority);
+                    bluetoothPolicy.execute();
+
+                    // policiesController.disableBluetooth(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
