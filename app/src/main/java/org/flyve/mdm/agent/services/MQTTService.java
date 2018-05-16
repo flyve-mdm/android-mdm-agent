@@ -755,8 +755,6 @@ public class MQTTService extends Service implements MqttCallback {
                     bluetoothPolicy.setValue(disable);
                     bluetoothPolicy.setPriority(priority);
                     bluetoothPolicy.execute();
-
-                    // policiesController.disableBluetooth(taskId, disable, priority);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());

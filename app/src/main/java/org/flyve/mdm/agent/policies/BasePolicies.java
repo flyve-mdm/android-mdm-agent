@@ -65,10 +65,13 @@ public abstract class BasePolicies {
         this.context = context;
         this.policyName = name;
         this.data = new PoliciesDataNew(context);
-        Policies policies = data.getValue(this.policyName);
-        this.policyValue = policies.value;
-        this.policyPriority = policies.priority;
         this.mqttEnable = true;
+
+        Policies policies = data.getValue(this.policyName);
+        if(policies!=null) {
+            this.policyValue = policies.value;
+            this.policyPriority = policies.priority;
+        }
     }
 
     public void setMqttEnable(boolean enable) {
