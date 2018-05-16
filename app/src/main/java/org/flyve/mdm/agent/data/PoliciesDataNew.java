@@ -29,8 +29,6 @@ package org.flyve.mdm.agent.data;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.policies.CameraPolicy;
-import org.flyve.mdm.agent.policies.PoliciesException;
 import org.flyve.mdm.agent.room.database.AppDataBase;
 import org.flyve.mdm.agent.room.entity.Policies;
 
@@ -42,25 +40,6 @@ public class PoliciesDataNew {
 
     public PoliciesDataNew(Context context) {
         dataBase = AppDataBase.getAppDatabase(context);
-        CameraPolicy cameraPolicy = new CameraPolicy(context);
-        cameraPolicy.setValue("true");
-        cameraPolicy.setPriority(0);
-
-        try {
-            cameraPolicy.execute(new org.flyve.mdm.agent.policies.Policies.PolicyCallback() {
-                @Override
-                public void onSuccess() {
-
-                }
-
-                @Override
-                public void onFail(String error) {
-
-                }
-            });
-        } catch (PoliciesException ex) {
-
-        }
     }
 
     public Policies getValue(String policyName) {
