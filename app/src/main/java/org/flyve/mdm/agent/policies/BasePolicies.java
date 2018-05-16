@@ -31,6 +31,4 @@ public interface BasePolicies {
     void onStart() throws PoliciesException;
     void execute();
     void onFinish();
-    void onSuccess();
-    void onFail();
 }

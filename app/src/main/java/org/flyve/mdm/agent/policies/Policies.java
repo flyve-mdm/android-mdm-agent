@@ -18,7 +18,7 @@ package org.flyve.mdm.agent.policies;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
- * @author    rafaelhernandez
+ * @author    rafael hernandez
  * @date      15/5/18
  * @copyright Copyright © 2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
@@ -29,6 +29,7 @@ package org.flyve.mdm.agent.policies;
 
 import android.content.Context;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.flyve.mdm.agent.data.PoliciesDataNew;
 
 public abstract class Policies implements BasePolicies {
@@ -36,6 +37,8 @@ public abstract class Policies implements BasePolicies {
     protected Context context;
     private String policyName;
     private PoliciesDataNew data;
+    private boolean enableLog;
+    private MqttAndroidClient MQTTclient;
     protected String policyValue;
     protected int policyPriority;
 
@@ -44,6 +47,7 @@ public abstract class Policies implements BasePolicies {
         this.data = new PoliciesDataNew(context);
         this.policyName = policyName;
         this.policyPriority = 0;
+        this.enableLog = false;
 
         onStart();
     }
@@ -56,26 +60,29 @@ public abstract class Policies implements BasePolicies {
         this.policyPriority = priority;
     }
 
+    public void setLog(Boolean enable) {
+        this.enableLog = enable;
+    }
+
+    public void setMQTTclient(MqttAndroidClient client) {
+        this.MQTTclient = client;
+    }
+
     @Override
     public void onStart() {
         // store the policy on database
         data.setStringValue(policyName, policyValue, policyPriority);
     }
 
-    public abstract void execute();
+    public abstract void execute(PolicyCallback policyCallback);
 
     @Override
     public void onFinish() {
 
     }
 
-    @Override
-    public void onSuccess() {
-
-    }
-
-    @Override
-    public void onFail() {
-
+    public interface PolicyCallback {
+        void onSuccess();
+        void onFail(String error);
     }
 }
