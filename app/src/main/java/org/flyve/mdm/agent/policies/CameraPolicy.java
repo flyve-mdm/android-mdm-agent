@@ -43,11 +43,10 @@ public class CameraPolicy extends Policies {
         mdm.disableCamera(Boolean.valueOf(this.policyValue));
     }
 
-    public void onSuccess() {
+    @Override
+    public void execute(PolicyCallback policyCallback) {
+        policyCallback.onSuccess();
 
-    }
-
-    public void onFail() {
 
     }
 }
