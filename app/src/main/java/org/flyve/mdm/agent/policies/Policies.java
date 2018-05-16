@@ -30,56 +30,119 @@ package org.flyve.mdm.agent.policies;
 import android.content.Context;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.data.PoliciesDataNew;
+import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 
-public abstract class Policies implements BasePolicies {
+public abstract class Policies {
 
-    protected Context context;
-    private String policyName;
-    private PoliciesDataNew data;
+    private static final String ERROR = "ERROR";
+    private static final String MQTT_SEND = "MQTT Send";
+
     private boolean enableLog;
-    private MqttAndroidClient MQTTclient;
-    protected String policyValue;
+    protected Context context;
+    protected String policyName;
+    protected PoliciesDataNew data;
+    private MqttAndroidClient mqttClient;
+    protected Object policyValue;
     protected int policyPriority;
+    private boolean mqttEnable;
 
-    public Policies(Context context, String policyName) {
+    public Policies(Context context, String name) {
         this.context = context;
+        this.policyName = name;
         this.data = new PoliciesDataNew(context);
-        this.policyName = policyName;
-        this.policyPriority = 0;
-        this.enableLog = false;
+        org.flyve.mdm.agent.room.entity.Policies policies = data.getValue(this.policyName);
+        this.policyValue = policies.value;
+        this.policyPriority = policies.priority;
+    }
 
-        onStart();
+    public void setMqttEnable(boolean enable) {
+        this.mqttEnable = enable;
+    }
+
+    public void setPolicyName(String name) {
+        this.policyName = name;
+        storage();
     }
 
     public void setValue(String value) {
         this.policyValue = value;
+        storage();
     }
 
     public void setPriority(int priority) {
         this.policyPriority = priority;
+        storage();
     }
 
     public void setLog(Boolean enable) {
         this.enableLog = enable;
     }
 
+    public void storage()  {
+        if(!policyName.isEmpty()) {
+            data.setValue(this.policyName, String.valueOf(this.policyValue), this.policyPriority);
+        }
+    }
+
+    public void mqttSendTaskStatus(String mqttTopic, String taskId, String status) {
+        String topic = mqttTopic + "/Status/Task/" + taskId;
+        byte[] encodedPayload;
+        try {
+            String payload = "{ \"status\": \"" + status + "\" }";
+
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            IMqttDeliveryToken token = this.mqttClient.publish(topic, message);
+
+            // send broadcast
+            Log(Helpers.broadCastMessage(MQTT_SEND, "Send Inventory", "ID: " + token.getMessageId()));
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+
+            // send broadcast
+            Log(Helpers.broadCastMessage(ERROR, "Error on sendKeepAlive", ex.getMessage()));
+        }
+    }
+
+    public void mqttResponse(MqttAndroidClient client, String mqttTopic, String taskId, String status) {
+        if(mqttEnable) {
+            this.setMQTTclient(client);
+            this.mqttSendTaskStatus(mqttTopic, taskId, status);
+        }
+    }
+
     public void setMQTTclient(MqttAndroidClient client) {
-        this.MQTTclient = client;
+        this.mqttClient = client;
     }
 
-    @Override
-    public void onStart() {
-        // store the policy on database
-        data.setStringValue(policyName, policyValue, policyPriority);
+    protected void Log(String message){
+        // write log file
+        if(enableLog) {
+            FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);
+        }
     }
 
-    public abstract void execute(PolicyCallback policyCallback);
+    private void validate() throws PoliciesException {
+        if(this.policyName.isEmpty()){
+            throw new PoliciesException("provide a name for the policy");
+        }
 
-    @Override
-    public void onFinish() {
-
+        if(this.policyValue.toString().isEmpty()){
+            throw new PoliciesException("provide a value for the policy");
+        }
     }
+
+    public void execute(PolicyCallback policyCallback) throws PoliciesException {
+        validate();
+        Log("Start the policy: " + this.policyName + " value: " + this.policyValue + " priority: " + this.policyPriority);
+        process(policyCallback);
+    }
+
+    protected abstract void process(PolicyCallback policyCallback);
 
     public interface PolicyCallback {
         void onSuccess();

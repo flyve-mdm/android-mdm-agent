@@ -42,16 +42,16 @@ public class PoliciesDataNew {
         dataBase = AppDataBase.getAppDatabase(context);
     }
 
-    public String getStringValue(String policyName) {
+    public Policies getValue(String policyName) {
         List<Policies> arrPolicies = dataBase.PoliciesDao().getPolicyByName(policyName);
         if(!arrPolicies.isEmpty()) {
-            return arrPolicies.get(0).value;
+            return arrPolicies.get(0);
         } else {
-            return "";
+            return null;
         }
     }
 
-    public Object setStringValue(String policyName, String value, int priority) {
+    public Object setValue(String policyName, String value, int priority) {
         if(dataBase.PoliciesDao().getPolicyBy(policyName, priority).isEmpty()) {
             Policies policies = new Policies();
             policies.policyName = policyName;
@@ -67,37 +67,5 @@ public class PoliciesDataNew {
         // Return the priority value
         Policies policies = dataBase.PoliciesDao().getPolicyByName(policyName).get(0);
         return policies.value;
-    }
-
-    public boolean getBooleanValue(String policyName) {
-        String value = getStringValue(policyName);
-        if(value.equals("")) {
-            value = "false";
-        }
-        return Boolean.valueOf(value);
-    }
-
-    public Object setBooleanValue(String policyName, Boolean enable, int priority) {
-        Object data = setStringValue(policyName, String.valueOf(enable), priority);
-        if(data.equals("")) {
-            return null;
-        }
-        return data;
-    }
-
-    public int getIntValue(String policyName) {
-        String value = getStringValue(policyName);
-        if(value.equals("")) {
-            value = "0";
-        }
-        return Integer.parseInt(value);
-    }
-
-    public Object setIntValue(String policyName, int value, int priority) {
-        Object data = setStringValue(policyName, String.valueOf(value), priority);
-        if(data.equals("")) {
-            return null;
-        }
-        return data;
     }
 }

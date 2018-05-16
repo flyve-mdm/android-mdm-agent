@@ -33,20 +33,20 @@ import org.flyve.mdm.agent.services.PoliciesDeviceManager;
 
 public class CameraPolicy extends Policies {
 
+    private final static String POLICY_NAME = "CameraPolicy";
+
     public CameraPolicy(Context context) {
-        super(context, "CameraPolicy");
+        super(context, POLICY_NAME);
     }
 
     @Override
-    public void execute() {
-        PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-        mdm.disableCamera(Boolean.valueOf(this.policyValue));
-    }
-
-    @Override
-    public void execute(PolicyCallback policyCallback) {
-        policyCallback.onSuccess();
-
-
+    protected void process(PolicyCallback policyCallback) {
+        try {
+            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+            mdm.disableCamera(Boolean.valueOf(this.policyValue.toString()));
+            policyCallback.onSuccess();
+        } catch (Exception ex) {
+            policyCallback.onFail(ex.getMessage());
+        }
     }
 }
