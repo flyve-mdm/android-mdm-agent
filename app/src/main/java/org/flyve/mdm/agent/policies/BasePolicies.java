@@ -75,7 +75,7 @@ public abstract class BasePolicies {
         this.mqttEnable = enable;
     }
 
-    public void setValue(String value) {
+    public void setValue(Object value) {
         this.policyValue = value;
         storage();
     }
