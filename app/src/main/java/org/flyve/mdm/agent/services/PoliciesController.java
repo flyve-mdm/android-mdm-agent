@@ -279,30 +279,6 @@ public class PoliciesController {
         }
     }
 
-    public void disableADBUsbFileTransferProtocols(String taskId, boolean disable, int priority) {
-        try {
-            // Set on database and get priority value
-            Object priorityValue = cache.setDisableUsbAdb(disable, priority);
-
-            // check Priority
-            if(priorityValue!=null) {
-                disable = Boolean.valueOf(priorityValue.toString());
-            }
-
-            // Execute the policy
-            PoliciesConnectivity.disableADBUsbFileTransferProtocols(disable);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols ADB", "UsbFileTransferProtocols is disable: " + disable));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on UsbFileTransferProtocols ADB", ex.getMessage()));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
     public void disablePTPUsbFileTransferProtocols(String taskId, boolean disable, int priority) {
         try {
             // Set on database and get priority value
