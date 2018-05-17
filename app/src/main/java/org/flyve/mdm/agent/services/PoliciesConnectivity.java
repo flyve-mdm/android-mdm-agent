@@ -38,6 +38,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 import java.io.DataOutputStream;
 import java.lang.reflect.Method;
 
+import static android.content.Context.AUDIO_SERVICE;
 import static android.content.Context.TELEPHONY_SERVICE;
 
 public class PoliciesConnectivity {
@@ -210,4 +211,21 @@ public class PoliciesConnectivity {
             wifiManager.setWifiEnabled(!disable);
         }
     }
+
+    public static void disableSounds(int streamType, Boolean disable) {
+        AudioManager aManager = (AudioManager)MDMAgent.getInstance().getApplicationContext().getSystemService(AUDIO_SERVICE);
+
+        try {
+            if (Build.VERSION.SDK_INT >= 23) {
+                int direction = disable ? AudioManager.ADJUST_SAME : AudioManager.ADJUST_MUTE;
+                aManager.adjustStreamVolume(streamType, direction, 0);
+            } else {
+                //media
+                aManager.setStreamMute(streamType, disable);
+            }
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
+    }
+
 }
