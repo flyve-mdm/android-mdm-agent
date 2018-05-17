@@ -279,30 +279,6 @@ public class PoliciesController {
         }
     }
 
-    public void disableMTPUsbFileTransferProtocols(String taskId, boolean disable, int priority) {
-        try {
-            // Set on database and get priority value
-            Object priorityValue = cache.setDisableUsbMtp(disable, priority);
-
-            // check Priority
-            if(priorityValue!=null) {
-                disable = Boolean.valueOf(priorityValue.toString());
-            }
-
-            // Execute the policy
-            PoliciesConnectivity.disableMTPUsbFileTransferProtocols(disable);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "UsbFileTransferProtocols MTP", "UsbFileTransferProtocols is disable: " + disable));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on UsbFileTransferProtocols MTP", ex.getMessage()));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
     public void disableStatusBar(String taskId, boolean disable, int priority) {
         try {
             // Set on database and get priority value

@@ -52,6 +52,7 @@ import org.flyve.mdm.agent.policies.MobileLinePolicy;
 import org.flyve.mdm.agent.policies.NFCPolicy;
 import org.flyve.mdm.agent.policies.RoamingPolicy;
 import org.flyve.mdm.agent.policies.UsbAdbPolicy;
+import org.flyve.mdm.agent.policies.UsbMtpPolicy;
 import org.flyve.mdm.agent.policies.UsbPtpPolicy;
 import org.flyve.mdm.agent.policies.WifiPolicy;
 import org.flyve.mdm.agent.ui.MainActivity;
@@ -1097,7 +1098,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableMTPUsbFileTransferProtocols(taskId, disable, priority);
+                    UsbMtpPolicy usbMtpPolicy = new UsbMtpPolicy(getApplicationContext());
+                    usbMtpPolicy.setMQTTparameters(this.client, topic, taskId);
+                    usbMtpPolicy.setValue(disable);
+                    usbMtpPolicy.setPriority(priority);
+                    usbMtpPolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
