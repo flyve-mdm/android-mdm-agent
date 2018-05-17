@@ -399,31 +399,6 @@ public class PoliciesController {
         }
     }
 
-    public void passwordEnabled(String taskId, boolean enable, int priority) {
-        try {
-            // Set on database and get priority value
-            Object priorityValue = cache.setPasswordEnabled(enable, priority);
-
-            // check Priority
-            if(priorityValue!=null) {
-                enable = Boolean.valueOf(priorityValue.toString());
-            }
-
-            // Execute the policy
-            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-            mdm.enablePassword(enable);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordEnabled", "true"));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
     public void passwordQuality(String taskId, String quality, int priority) {
         try {
             // Set on database and get priority value
