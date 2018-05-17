@@ -279,30 +279,6 @@ public class PoliciesController {
         }
     }
 
-    public void disableSpeakerphone(String taskId, boolean disable, int priority) {
-        try {
-            // Set on database and get priority value
-            Object priorityValue = cache.setDisableSpeakerphone(disable, priority);
-
-            // check Priority
-            if(priorityValue!=null) {
-                disable = Boolean.valueOf(priorityValue.toString());
-            }
-
-            // Execute the policy
-            PoliciesConnectivity.disableSpeakerphone(disable);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Speaker phone", "Speaker phone is disable: " + disable));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Speaker phone", ex.getMessage()));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
     public void disableScreenCapture(String taskId, boolean disable, int priority) {
         try {
             if(Build.VERSION.SDK_INT >= 21) {
