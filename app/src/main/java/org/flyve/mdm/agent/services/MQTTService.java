@@ -45,6 +45,7 @@ import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.CameraPolicy;
+import org.flyve.mdm.agent.policies.WifiPolicy;
 import org.flyve.mdm.agent.ui.MainActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -946,7 +947,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableWifi(taskId, disable, priority);
+                    WifiPolicy wifiPolicy = new WifiPolicy(getApplicationContext());
+                    wifiPolicy.setMQTTparameters(this.client, topic, taskId);
+                    wifiPolicy.setValue(disable);
+                    wifiPolicy.setPriority(priority);
+                    wifiPolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
