@@ -54,6 +54,7 @@ import org.flyve.mdm.agent.policies.RoamingPolicy;
 import org.flyve.mdm.agent.policies.ScreenCapturePolicy;
 import org.flyve.mdm.agent.policies.SpeakerphonePolicy;
 import org.flyve.mdm.agent.policies.StatusBarPolicy;
+import org.flyve.mdm.agent.policies.StorageEncryptionPolicy;
 import org.flyve.mdm.agent.policies.UsbAdbPolicy;
 import org.flyve.mdm.agent.policies.UsbMtpPolicy;
 import org.flyve.mdm.agent.policies.UsbPtpPolicy;
@@ -729,7 +730,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.storageEncryption(taskId, enable, priority);
+                    StorageEncryptionPolicy storageEncryptionPolicy = new StorageEncryptionPolicy(getApplicationContext());
+                    storageEncryptionPolicy.setMQTTparameters(this.client, topic, taskId);
+                    storageEncryptionPolicy.setValue(enable);
+                    storageEncryptionPolicy.setPriority(priority);
+                    storageEncryptionPolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());

@@ -399,36 +399,6 @@ public class PoliciesController {
         }
     }
 
-
-    /**
-     * FLEET encryption
-     * Example {"encryption":[{"storageEncryption":"false"}]}
-     */
-    public void storageEncryption(String taskId, Boolean enable, int priority) {
-        try {
-            // Set on database and get priority value
-            Object priorityValue = cache.setStorageEncryption(enable, priority);
-
-            // check Priority
-            if(priorityValue!=null) {
-                enable = Boolean.valueOf(priorityValue.toString());
-            }
-
-            // Execute the policy
-            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-            mdm.storageEncryptionDevice(enable);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "storage Encryption", "storage Encryption: " + enable));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
     public void passwordEnabled(String taskId, boolean enable, int priority) {
         try {
             // Set on database and get priority value
