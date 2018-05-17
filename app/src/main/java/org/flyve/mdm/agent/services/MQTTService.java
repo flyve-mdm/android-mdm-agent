@@ -48,6 +48,7 @@ import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.CameraPolicy;
 import org.flyve.mdm.agent.policies.GPSPolicy;
 import org.flyve.mdm.agent.policies.MobileLinePolicy;
+import org.flyve.mdm.agent.policies.NFCPolicy;
 import org.flyve.mdm.agent.policies.RoamingPolicy;
 import org.flyve.mdm.agent.policies.WifiPolicy;
 import org.flyve.mdm.agent.ui.MainActivity;
@@ -1027,7 +1028,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableNFC(taskId, disable, priority);
+                    NFCPolicy nfcPolicy = new NFCPolicy(getApplicationContext());
+                    nfcPolicy.setMQTTparameters(this.client, topic, taskId);
+                    nfcPolicy.setValue(disable);
+                    nfcPolicy.setPriority(priority);
+                    nfcPolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());

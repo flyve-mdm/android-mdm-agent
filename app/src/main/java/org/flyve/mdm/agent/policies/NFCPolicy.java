@@ -32,11 +32,11 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  * ------------------------------------------------------------------------------
  */
 
-public class MobileLinePolicy extends BasePolicies {
+public class NFCPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableRoaming";
+    private static final String POLICY_NAME = "disableNFC";
 
-    public MobileLinePolicy(Context context) {
+    public NFCPolicy(Context context) {
         super(context, POLICY_NAME);
     }
 
@@ -44,7 +44,7 @@ public class MobileLinePolicy extends BasePolicies {
     protected boolean process() {
         try {
             boolean disable = Boolean.parseBoolean(this.policyValue.toString());
-            PoliciesConnectivity.disableMobileLine(disable);
+            PoliciesConnectivity.disableNFC(disable);
             return true;
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
