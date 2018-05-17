@@ -43,6 +43,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.policies.UsbAdbPolicy;
 import org.flyve.mdm.agent.policies.AirplaneModePolicy;
 import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.CameraPolicy;
@@ -1133,7 +1134,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableADBUsbFileTransferProtocols(taskId, disable, priority);
+                    UsbAdbPolicy usbAdbPolicy = new UsbAdbPolicy(getApplicationContext());
+                    usbAdbPolicy.setMQTTparameters(this.client, topic, taskId);
+                    usbAdbPolicy.setValue(disable);
+                    usbAdbPolicy.setPriority(priority);
+                    usbAdbPolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
