@@ -253,30 +253,6 @@ public class PoliciesController {
         }
     }
 
-    public void disableMobileLine(String taskId, boolean disable, int priority) {
-        try {
-            // Set on database and get priority value
-            Object priorityValue = cache.setDisableMobileLine(disable, priority);
-
-            // check Priority
-            if(priorityValue!=null) {
-                disable = Boolean.valueOf(priorityValue.toString());
-            }
-
-            // Execute the policy
-            PoliciesConnectivity.disableMobileLine(disable);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MobileLine", "MobileLine is disable: " + disable));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on MobileLine", ex.getMessage()));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
     public void disableNFC(String taskId, boolean disable, int priority) {
         try {
             // Set on database and get priority value

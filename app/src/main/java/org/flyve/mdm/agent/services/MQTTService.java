@@ -47,6 +47,7 @@ import org.flyve.mdm.agent.policies.AirplaneModePolicy;
 import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.CameraPolicy;
 import org.flyve.mdm.agent.policies.GPSPolicy;
+import org.flyve.mdm.agent.policies.MobileLinePolicy;
 import org.flyve.mdm.agent.policies.RoamingPolicy;
 import org.flyve.mdm.agent.policies.WifiPolicy;
 import org.flyve.mdm.agent.ui.MainActivity;
@@ -1003,7 +1004,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableMobileLine(taskId, disable, priority);
+                    MobileLinePolicy mobileLinePolicy = new MobileLinePolicy(getApplicationContext());
+                    mobileLinePolicy.setMQTTparameters(this.client, topic, taskId);
+                    mobileLinePolicy.setValue(disable);
+                    mobileLinePolicy.setPriority(priority);
+                    mobileLinePolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
