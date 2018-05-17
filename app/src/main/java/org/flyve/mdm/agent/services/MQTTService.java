@@ -51,6 +51,7 @@ import org.flyve.mdm.agent.policies.HostpotTetheringPolicy;
 import org.flyve.mdm.agent.policies.MobileLinePolicy;
 import org.flyve.mdm.agent.policies.NFCPolicy;
 import org.flyve.mdm.agent.policies.RoamingPolicy;
+import org.flyve.mdm.agent.policies.StatusBarPolicy;
 import org.flyve.mdm.agent.policies.UsbAdbPolicy;
 import org.flyve.mdm.agent.policies.UsbMtpPolicy;
 import org.flyve.mdm.agent.policies.UsbPtpPolicy;
@@ -1060,7 +1061,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableStatusBar(taskId, disable, priority);
+                    StatusBarPolicy statusBarPolicy = new StatusBarPolicy(getApplicationContext());
+                    statusBarPolicy.setMQTTparameters(this.client, topic, taskId);
+                    statusBarPolicy.setValue(disable);
+                    statusBarPolicy.setPriority(priority);
+                    statusBarPolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());

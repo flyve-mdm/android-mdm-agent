@@ -279,30 +279,6 @@ public class PoliciesController {
         }
     }
 
-    public void disableStatusBar(String taskId, boolean disable, int priority) {
-        try {
-            // Set on database and get priority value
-            Object priorityValue = cache.setDisableStatusbar(disable, priority);
-
-            // check Priority
-            if(priorityValue!=null) {
-                disable = Boolean.valueOf(priorityValue.toString());
-            }
-
-            // Execute the policy
-            new PoliciesDeviceManager(context).disableStatusBar(disable);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "status bar", "status bar is disable: " + disable));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on status bar", ex.getMessage()));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
     public void disableSpeakerphone(String taskId, boolean disable, int priority) {
         try {
             // Set on database and get priority value
