@@ -26,8 +26,6 @@ package org.flyve.mdm.agent.services;
 import android.app.Service;
 import android.content.Context;
 import android.location.Location;
-import android.media.AudioManager;
-import android.os.Build;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -48,8 +46,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import static android.content.Context.AUDIO_SERVICE;
 
 public class PoliciesController {
 
@@ -565,42 +561,6 @@ public class PoliciesController {
                 }
             }
         });
-    }
-
-    public void disableAllSounds(String taskId, Boolean disable) {
-
-        AudioManager aManager = (AudioManager)context.getSystemService(AUDIO_SERVICE);
-
-        //turn ringer silent
-        try {
-            aManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-
-            return;
-        }
-
-        // turn on sound, enable notifications
-        aManager.setStreamMute(AudioManager.STREAM_SYSTEM, disable);
-
-        //notifications
-        aManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, disable);
-
-        //alarm
-        aManager.setStreamMute(AudioManager.STREAM_ALARM, disable);
-
-        //ringer
-        aManager.setStreamMute(AudioManager.STREAM_RING, disable);
-
-        //media
-        aManager.setStreamMute(AudioManager.STREAM_MUSIC, disable);
-
-        // return the status of the task
-        sendTaskStatus(taskId, FEEDBACK_DONE);
-
     }
 
     /**
