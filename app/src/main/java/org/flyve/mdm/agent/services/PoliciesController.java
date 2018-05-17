@@ -399,31 +399,6 @@ public class PoliciesController {
         }
     }
 
-    public void passwordMinSymbols(String taskId, int minimum, int priority) {
-        try {
-            // Set on database and get priority value
-            Object priorityValue = cache.setPasswordMinimumSymbols(minimum, priority);
-
-            // check Priority
-            if(priorityValue!=null) {
-                minimum = Integer.parseInt(priorityValue.toString());
-            }
-
-            // Execute the policy
-            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-            mdm.setPasswordMinimumSymbols(minimum);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinSymbols", String.valueOf(minimum)));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
     public void maximumFailedPasswordsForWipe(String taskId, int maximum, int priority) {
         try {
             // Set on database and get priority value
