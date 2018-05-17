@@ -51,6 +51,7 @@ import org.flyve.mdm.agent.policies.HostpotTetheringPolicy;
 import org.flyve.mdm.agent.policies.MobileLinePolicy;
 import org.flyve.mdm.agent.policies.NFCPolicy;
 import org.flyve.mdm.agent.policies.RoamingPolicy;
+import org.flyve.mdm.agent.policies.ScreenCapturePolicy;
 import org.flyve.mdm.agent.policies.SpeakerphonePolicy;
 import org.flyve.mdm.agent.policies.StatusBarPolicy;
 import org.flyve.mdm.agent.policies.UsbAdbPolicy;
@@ -866,7 +867,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableScreenCapture(taskId, disable, priority);
+                    ScreenCapturePolicy screenCapturePolicy = new ScreenCapturePolicy(getApplicationContext());
+                    screenCapturePolicy.setMQTTparameters(this.client, topic, taskId);
+                    screenCapturePolicy.setValue(disable);
+                    screenCapturePolicy.setPriority(priority);
+                    screenCapturePolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());

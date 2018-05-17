@@ -279,37 +279,6 @@ public class PoliciesController {
         }
     }
 
-    public void disableScreenCapture(String taskId, boolean disable, int priority) {
-        try {
-            if(Build.VERSION.SDK_INT >= 21) {
-                // Set on database and get priority value
-                Object priorityValue = cache.setDisableScreenCapture(disable, priority);
-
-                // check Priority
-                if(priorityValue!=null) {
-                    disable = Boolean.valueOf(priorityValue.toString());
-                }
-
-                // Execute the policy
-                new PoliciesDeviceManager(context).disableCaptureScreen(disable);
-                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Screen Capture", "Screen Capture is disable: " + disable));
-
-                // return the status of the task
-                sendTaskStatus(taskId, FEEDBACK_DONE);
-            } else {
-                FlyveLog.i("Screen capture policy is available on devices with api equals or mayor than 21");
-
-                // return the status of the task
-                sendTaskStatus(taskId, FEEDBACK_FAILED);
-            }
-        } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Screen Capture", ex.getMessage()));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
     public void resetPassword(String newPassword) {
         try {
             if(!newPassword.isEmpty()) {
