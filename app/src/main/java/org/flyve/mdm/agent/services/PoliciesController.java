@@ -399,31 +399,6 @@ public class PoliciesController {
         }
     }
 
-    public void passwordMinLetter(String taskId, int length, int priority) {
-        try {
-            // Set on database and get priority value
-            Object priorityValue = cache.setPasswordMinimumLetters(length, priority);
-
-            // check Priority
-            if(priorityValue!=null) {
-                length = Integer.parseInt(priorityValue.toString());
-            }
-
-            // Execute the policy
-            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-            mdm.setPasswordMinimumLetters(length);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLetter", String.valueOf(length)));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
     public void passwordMinNumeric(String taskId, int minimum, int priority) {
         try {
             // Set on database and get priority value
