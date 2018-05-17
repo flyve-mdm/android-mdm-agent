@@ -43,6 +43,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.policies.AirplaneModePolicy;
 import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.CameraPolicy;
 import org.flyve.mdm.agent.policies.GPSPolicy;
@@ -876,7 +877,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableAirplaneMode(taskId, disable, priority);
+                    AirplaneModePolicy airplaneModePolicy = new AirplaneModePolicy(getApplicationContext());
+                    airplaneModePolicy.setMQTTparameters(this.client, topic, taskId);
+                    airplaneModePolicy.setValue(disable);
+                    airplaneModePolicy.setPriority(priority);
+                    airplaneModePolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
