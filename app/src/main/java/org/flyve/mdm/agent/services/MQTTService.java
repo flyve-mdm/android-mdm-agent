@@ -543,6 +543,43 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
+        // Policy/resetPassword
+        // ROOT
+        String RESET_PASSWORD = "resetPassword";
+        if(topic.toLowerCase().contains(RESET_PASSWORD.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(RESET_PASSWORD)) {
+                    Boolean disable = jsonObj.getBoolean(RESET_PASSWORD);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // execute the policy
+                    //policiesController.resetPassword(taskId, disable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
+        // Policy/useTLS
+        String USE_TLS = "useTLS";
+        if(topic.toLowerCase().contains(USE_TLS.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if (jsonObj.has(USE_TLS)) {
+                    Boolean enable = jsonObj.getBoolean(USE_TLS);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // execute the policy
+                    policiesController.useTLS(taskId, enable);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
         // Policy/passwordEnabled
         String PASSWORD_ENABLE = "passwordEnabled";
         if(topic.toLowerCase().contains(PASSWORD_ENABLE.toLowerCase())) {
@@ -856,82 +893,6 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
-        // Policy/deployApp
-        String DEPLOY_APP = "deployApp";
-        if(topic.toLowerCase().contains(DEPLOY_APP.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DEPLOY_APP)) {
-                    String deployApp = jsonObj.getString(DEPLOY_APP);
-                    String id = jsonObj.getString("id");
-                    String versionCode = jsonObj.getString("versionCode");
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    policiesController.installPackage(deployApp, id, versionCode, taskId);
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        // Policy/deployApp
-        String REMOVE_APP = "removeApp";
-        if(topic.toLowerCase().contains(REMOVE_APP.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(REMOVE_APP)) {
-                    String removeApp = jsonObj.getString(REMOVE_APP);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    policiesController.removePackage(taskId, removeApp);
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        // Policy/deployFile
-        String DEPLOY_FILE = "deployFile";
-        if(topic.toLowerCase().contains(DEPLOY_FILE.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DEPLOY_FILE)) {
-                    String deployFile = jsonObj.getString(DEPLOY_FILE);
-                    String id = jsonObj.getString("id");
-                    String versionCode = jsonObj.getString("version");
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    policiesController.downloadFile(deployFile, id, versionCode, taskId);
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        // Policy/deployFile
-        String REMOVE_FILE = "removeFile";
-        if(topic.toLowerCase().contains(REMOVE_FILE.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(REMOVE_FILE)) {
-                    String removeFile = jsonObj.getString(REMOVE_FILE);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    policiesController.removeFile(taskId, removeFile);
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
         // Policy/disableScreenCapture
         //  ROOT REQUIRED
         String DISABLE_SCREEN_CAPTURE = "disableScreenCapture";
@@ -1068,24 +1029,6 @@ public class MQTTService extends Service implements MqttCallback {
             }
         }
 
-        // Policy/useTLS
-        String USE_TLS = "useTLS";
-        if(topic.toLowerCase().contains(USE_TLS.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(USE_TLS)) {
-                    Boolean enable = jsonObj.getBoolean(USE_TLS);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    policiesController.useTLS(taskId, enable);
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
         // Policy/disableMobileLine
         // ROOT
         String DISABLE_MOBILE_LINE = "disableMobileLine";
@@ -1149,25 +1092,6 @@ public class MQTTService extends Service implements MqttCallback {
                     statusBarPolicy.setValue(disable);
                     statusBarPolicy.setPriority(priority);
                     statusBarPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        // Policy/resetPassword
-        // ROOT
-        String RESET_PASSWORD = "resetPassword";
-        if(topic.toLowerCase().contains(RESET_PASSWORD.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(RESET_PASSWORD)) {
-                    Boolean disable = jsonObj.getBoolean(RESET_PASSWORD);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    //policiesController.resetPassword(taskId, disable);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -1458,6 +1382,83 @@ public class MQTTService extends Service implements MqttCallback {
                 FlyveLog.e(ex.getMessage());
             }
         }
+
+        // Policy/deployApp
+        String DEPLOY_APP = "deployApp";
+        if(topic.toLowerCase().contains(DEPLOY_APP.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DEPLOY_APP)) {
+                    String deployApp = jsonObj.getString(DEPLOY_APP);
+                    String id = jsonObj.getString("id");
+                    String versionCode = jsonObj.getString("versionCode");
+                    String taskId = jsonObj.getString("taskId");
+
+                    // execute the policy
+                    policiesController.installPackage(deployApp, id, versionCode, taskId);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
+        // Policy/deployApp
+        String REMOVE_APP = "removeApp";
+        if(topic.toLowerCase().contains(REMOVE_APP.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(REMOVE_APP)) {
+                    String removeApp = jsonObj.getString(REMOVE_APP);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // execute the policy
+                    policiesController.removePackage(taskId, removeApp);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
+        // Policy/deployFile
+        String DEPLOY_FILE = "deployFile";
+        if(topic.toLowerCase().contains(DEPLOY_FILE.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(DEPLOY_FILE)) {
+                    String deployFile = jsonObj.getString(DEPLOY_FILE);
+                    String id = jsonObj.getString("id");
+                    String versionCode = jsonObj.getString("version");
+                    String taskId = jsonObj.getString("taskId");
+
+                    // execute the policy
+                    policiesController.downloadFile(deployFile, id, versionCode, taskId);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
+        // Policy/deployFile
+        String REMOVE_FILE = "removeFile";
+        if(topic.toLowerCase().contains(REMOVE_FILE.toLowerCase())) {
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(REMOVE_FILE)) {
+                    String removeFile = jsonObj.getString(REMOVE_FILE);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // execute the policy
+                    policiesController.removeFile(taskId, removeFile);
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+
 
     }
 
