@@ -47,6 +47,7 @@ import org.flyve.mdm.agent.policies.AirplaneModePolicy;
 import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.CameraPolicy;
 import org.flyve.mdm.agent.policies.GPSPolicy;
+import org.flyve.mdm.agent.policies.HostpotTetheringPolicy;
 import org.flyve.mdm.agent.policies.MobileLinePolicy;
 import org.flyve.mdm.agent.policies.NFCPolicy;
 import org.flyve.mdm.agent.policies.RoamingPolicy;
@@ -924,7 +925,12 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableHostpotTethering(taskId, disable, priority);
+                    HostpotTetheringPolicy hostpotTetheringPolicy = new HostpotTetheringPolicy(getApplicationContext());
+                    hostpotTetheringPolicy.setMQTTparameters(this.client, topic, taskId);
+                    hostpotTetheringPolicy.setValue(disable);
+                    hostpotTetheringPolicy.setPriority(priority);
+                    hostpotTetheringPolicy.execute();
+
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
