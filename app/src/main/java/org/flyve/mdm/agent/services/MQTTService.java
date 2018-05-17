@@ -69,6 +69,7 @@ import org.flyve.mdm.agent.policies.StorageEncryptionPolicy;
 import org.flyve.mdm.agent.policies.UsbAdbPolicy;
 import org.flyve.mdm.agent.policies.UsbMtpPolicy;
 import org.flyve.mdm.agent.policies.UsbPtpPolicy;
+import org.flyve.mdm.agent.policies.VPNPolicy;
 import org.flyve.mdm.agent.policies.WifiPolicy;
 import org.flyve.mdm.agent.ui.MainActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -1285,7 +1286,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableCreateVpnProfiles(taskId, disable, priority);
+                    VPNPolicy vpnPolicy = new VPNPolicy(getApplicationContext());
+                    vpnPolicy.setMQTTparameters(this.client, topic, taskId);
+                    vpnPolicy.setValue(disable);
+                    vpnPolicy.setPriority(priority);
+                    vpnPolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
