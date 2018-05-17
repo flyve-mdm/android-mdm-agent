@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class RoamingPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableRoaming";
+    private static final String POLICY_NAME = "disableGPS";
 
     public RoamingPolicy(Context context) {
         super(context, POLICY_NAME);
