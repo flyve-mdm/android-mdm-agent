@@ -51,6 +51,7 @@ import org.flyve.mdm.agent.policies.HostpotTetheringPolicy;
 import org.flyve.mdm.agent.policies.MobileLinePolicy;
 import org.flyve.mdm.agent.policies.NFCPolicy;
 import org.flyve.mdm.agent.policies.PasswordEnablePolicy;
+import org.flyve.mdm.agent.policies.PasswordMinLengthPolicy;
 import org.flyve.mdm.agent.policies.PasswordQualityPolicy;
 import org.flyve.mdm.agent.policies.RoamingPolicy;
 import org.flyve.mdm.agent.policies.ScreenCapturePolicy;
@@ -581,7 +582,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.passwordMinLength(taskId, length, priority);
+                    PasswordMinLengthPolicy passwordMinLengthPolicy = new PasswordMinLengthPolicy(getApplicationContext());
+                    passwordMinLengthPolicy.setMQTTparameters(this.client, topic, taskId);
+                    passwordMinLengthPolicy.setValue(length);
+                    passwordMinLengthPolicy.setPriority(priority);
+                    passwordMinLengthPolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
