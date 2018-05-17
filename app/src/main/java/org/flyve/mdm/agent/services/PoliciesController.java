@@ -499,56 +499,6 @@ public class PoliciesController {
         }
     }
 
-    public void passwordMinLowerCase(String taskId, int minimum, int priority) {
-        try {
-            // Set on database and get priority value
-            Object priorityValue = cache.setPasswordMinimumLowerCase(minimum, priority);
-
-            // check Priority
-            if(priorityValue!=null) {
-                minimum = Integer.parseInt(priorityValue.toString());
-            }
-
-            // Execute the policy
-            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-            mdm.setPasswordMinimumLowerCase(minimum);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinLowerCase", String.valueOf(minimum)));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
-    public void passwordMinUpperCase(String taskId, int minimum, int priority) {
-        try {
-            // Set on database and get priority value
-            Object priorityValue = cache.setPasswordMinimumUpperCase(minimum, priority);
-
-            // check Priority
-            if(priorityValue!=null) {
-                minimum = Integer.parseInt(priorityValue.toString());
-            }
-
-            // Execute the policy
-            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-            mdm.setPasswordMinimumUpperCase(minimum);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "passwordMinUpperCase", String.valueOf(minimum)));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
     public void maximumFailedPasswordsForWipe(String taskId, int maximum, int priority) {
         try {
             // Set on database and get priority value

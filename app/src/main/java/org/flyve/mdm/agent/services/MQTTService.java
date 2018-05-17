@@ -52,6 +52,8 @@ import org.flyve.mdm.agent.policies.MobileLinePolicy;
 import org.flyve.mdm.agent.policies.NFCPolicy;
 import org.flyve.mdm.agent.policies.PasswordEnablePolicy;
 import org.flyve.mdm.agent.policies.PasswordMinLengthPolicy;
+import org.flyve.mdm.agent.policies.PasswordMinLowerCasePolicy;
+import org.flyve.mdm.agent.policies.PasswordMinUpperCasePolicy;
 import org.flyve.mdm.agent.policies.PasswordQualityPolicy;
 import org.flyve.mdm.agent.policies.RoamingPolicy;
 import org.flyve.mdm.agent.policies.ScreenCapturePolicy;
@@ -604,7 +606,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.passwordMinLowerCase(taskId, minimum, priority);
+                    PasswordMinLowerCasePolicy passwordMinLowerCasePolicy = new PasswordMinLowerCasePolicy(getApplicationContext());
+                    passwordMinLowerCasePolicy.setMQTTparameters(this.client, topic, taskId);
+                    passwordMinLowerCasePolicy.setValue(minimum);
+                    passwordMinLowerCasePolicy.setPriority(priority);
+                    passwordMinLowerCasePolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
@@ -622,7 +628,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.passwordMinUpperCase(taskId, minimum, priority);
+                    PasswordMinUpperCasePolicy passwordMinUpperCasePolicy = new PasswordMinUpperCasePolicy(getApplicationContext());
+                    passwordMinUpperCasePolicy.setMQTTparameters(this.client, topic, taskId);
+                    passwordMinUpperCasePolicy.setValue(minimum);
+                    passwordMinUpperCasePolicy.setPriority(priority);
+                    passwordMinUpperCasePolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
