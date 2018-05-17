@@ -69,6 +69,7 @@ import org.flyve.mdm.agent.policies.StatusBarPolicy;
 import org.flyve.mdm.agent.policies.StorageEncryptionPolicy;
 import org.flyve.mdm.agent.policies.StreamAlarmPolicy;
 import org.flyve.mdm.agent.policies.StreamMusicPolicy;
+import org.flyve.mdm.agent.policies.StreamNotificationPolicy;
 import org.flyve.mdm.agent.policies.StreamRingPolicy;
 import org.flyve.mdm.agent.policies.UsbAdbPolicy;
 import org.flyve.mdm.agent.policies.UsbMtpPolicy;
@@ -1399,7 +1400,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableSounds(AudioManager.STREAM_NOTIFICATION, taskId, disable);
+                    StreamNotificationPolicy streamNotificationPolicy = new StreamNotificationPolicy(getApplicationContext());
+                    streamNotificationPolicy.setMQTTparameters(this.client, topic, taskId);
+                    streamNotificationPolicy.setValue(disable);
+                    streamNotificationPolicy.setPriority(priority);
+                    streamNotificationPolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
