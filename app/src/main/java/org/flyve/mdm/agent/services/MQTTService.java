@@ -49,6 +49,7 @@ import org.flyve.mdm.agent.policies.CameraPolicy;
 import org.flyve.mdm.agent.policies.GPSPolicy;
 import org.flyve.mdm.agent.policies.HostpotTetheringPolicy;
 import org.flyve.mdm.agent.policies.MaximumFailedPasswordForWipePolicy;
+import org.flyve.mdm.agent.policies.MaximumTimeToLockPolicy;
 import org.flyve.mdm.agent.policies.MobileLinePolicy;
 import org.flyve.mdm.agent.policies.NFCPolicy;
 import org.flyve.mdm.agent.policies.PasswordEnablePolicy;
@@ -770,7 +771,12 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.maximumTimeToLock(taskId, max, priority);
+                    MaximumTimeToLockPolicy maximumTimeToLockPolicy = new MaximumTimeToLockPolicy(getApplicationContext());
+                    maximumTimeToLockPolicy.setMQTTparameters(this.client, topic, taskId);
+                    maximumTimeToLockPolicy.setValue(max);
+                    maximumTimeToLockPolicy.setPriority(priority);
+                    maximumTimeToLockPolicy.execute();
+
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());

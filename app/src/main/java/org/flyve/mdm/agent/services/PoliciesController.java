@@ -399,32 +399,6 @@ public class PoliciesController {
         }
     }
 
-    public void maximumTimeToLock(String taskId, int maximum, int priority) {
-        try {
-            // Set on database and get priority value
-            Object priorityValue = cache.setMaximumTimeToLock(maximum, priority);
-
-            // check Priority
-            if(priorityValue!=null) {
-                maximum = Integer.parseInt(priorityValue.toString());
-            }
-
-            // Execute the policy
-            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-            mdm.setMaximumTimeToLock(maximum);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "maximumTimeToLock", String.valueOf(maximum)));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-
-    }
-
     /**
      * Erase all device data include SDCard
      */
