@@ -399,31 +399,6 @@ public class PoliciesController {
         }
     }
 
-    public void maximumFailedPasswordsForWipe(String taskId, int maximum, int priority) {
-        try {
-            // Set on database and get priority value
-            Object priorityValue = cache.setMaximumFailedPasswordsForWipe(maximum, priority);
-
-            // check Priority
-            if(priorityValue!=null) {
-                maximum = Integer.parseInt(priorityValue.toString());
-            }
-
-            // Execute the policy
-            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-            mdm.setMaximumFailedPasswordsForWipe(maximum);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "MaximumFailedPasswordsForWipe", String.valueOf(maximum)));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
     public void maximumTimeToLock(String taskId, int maximum, int priority) {
         try {
             // Set on database and get priority value

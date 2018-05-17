@@ -48,6 +48,7 @@ import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.CameraPolicy;
 import org.flyve.mdm.agent.policies.GPSPolicy;
 import org.flyve.mdm.agent.policies.HostpotTetheringPolicy;
+import org.flyve.mdm.agent.policies.MaximumFailedPasswordForWipePolicy;
 import org.flyve.mdm.agent.policies.MobileLinePolicy;
 import org.flyve.mdm.agent.policies.NFCPolicy;
 import org.flyve.mdm.agent.policies.PasswordEnablePolicy;
@@ -746,7 +747,12 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.maximumFailedPasswordsForWipe(taskId, max, priority);
+                    MaximumFailedPasswordForWipePolicy maximumFailedPasswordForWipePolicy = new MaximumFailedPasswordForWipePolicy(getApplicationContext());
+                    maximumFailedPasswordForWipePolicy.setMQTTparameters(this.client, topic, taskId);
+                    maximumFailedPasswordForWipePolicy.setValue(max);
+                    maximumFailedPasswordForWipePolicy.setPriority(priority);
+                    maximumFailedPasswordForWipePolicy.execute();
+
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
