@@ -43,7 +43,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.data.MqttData;
-import org.flyve.mdm.agent.policies.UsbAdbPolicy;
 import org.flyve.mdm.agent.policies.AirplaneModePolicy;
 import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.CameraPolicy;
@@ -52,6 +51,8 @@ import org.flyve.mdm.agent.policies.HostpotTetheringPolicy;
 import org.flyve.mdm.agent.policies.MobileLinePolicy;
 import org.flyve.mdm.agent.policies.NFCPolicy;
 import org.flyve.mdm.agent.policies.RoamingPolicy;
+import org.flyve.mdm.agent.policies.UsbAdbPolicy;
+import org.flyve.mdm.agent.policies.UsbPtpPolicy;
 import org.flyve.mdm.agent.policies.WifiPolicy;
 import org.flyve.mdm.agent.ui.MainActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -1115,7 +1116,11 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disablePTPUsbFileTransferProtocols(taskId, disable, priority);
+                    UsbPtpPolicy usbPtpPolicy = new UsbPtpPolicy(getApplicationContext());
+                    usbPtpPolicy.setMQTTparameters(this.client, topic, taskId);
+                    usbPtpPolicy.setValue(disable);
+                    usbPtpPolicy.setPriority(priority);
+                    usbPtpPolicy.execute();
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
