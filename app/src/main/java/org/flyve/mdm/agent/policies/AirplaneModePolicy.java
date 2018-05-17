@@ -32,11 +32,11 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  * ------------------------------------------------------------------------------
  */
 
-public class RoamingPolicy extends BasePolicies {
+public class AirplaneModePolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableGPS";
+    private static final String POLICY_NAME = "disableAirplaneMode";
 
-    public RoamingPolicy(Context context) {
+    public AirplaneModePolicy(Context context) {
         super(context, POLICY_NAME);
     }
 
