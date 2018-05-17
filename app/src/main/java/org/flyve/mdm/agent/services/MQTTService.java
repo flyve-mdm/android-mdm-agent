@@ -62,6 +62,7 @@ import org.flyve.mdm.agent.policies.PasswordMinSymbolsPolicy;
 import org.flyve.mdm.agent.policies.PasswordMinUpperCasePolicy;
 import org.flyve.mdm.agent.policies.PasswordQualityPolicy;
 import org.flyve.mdm.agent.policies.RoamingPolicy;
+import org.flyve.mdm.agent.policies.SMSPolicy;
 import org.flyve.mdm.agent.policies.ScreenCapturePolicy;
 import org.flyve.mdm.agent.policies.SpeakerphonePolicy;
 import org.flyve.mdm.agent.policies.StatusBarPolicy;
@@ -1268,7 +1269,12 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.disableSmsMms(taskId, disable, priority);
+                    SMSPolicy smsPolicy = new SMSPolicy(getApplicationContext());
+                    smsPolicy.setMQTTparameters(this.client, topic, taskId);
+                    smsPolicy.setValue(disable);
+                    smsPolicy.setPriority(priority);
+                    smsPolicy.execute();
+
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
