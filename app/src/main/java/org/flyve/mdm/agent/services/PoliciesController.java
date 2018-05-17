@@ -253,32 +253,6 @@ public class PoliciesController {
         }
     }
 
-    public void disableSmsMms(String taskId, boolean disable, int priority) {
-        // to change the behavior of this policy check
-        // SMSReceiver
-
-        try {
-            // Set on database and get priority value
-            Object priorityValue = cache.setDisableSmsMms(disable, priority);
-
-            // check Priority
-            if(priorityValue!=null) {
-                disable = Boolean.valueOf(priorityValue.toString());
-            }
-
-            // Execute the policy
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "SMS", "SMS is disable: " + disable));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on SMS", ex.getMessage()));
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
-        }
-    }
-
     public void resetPassword(String newPassword) {
         try {
             if(!newPassword.isEmpty()) {
