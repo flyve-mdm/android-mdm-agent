@@ -6,6 +6,7 @@ org.flyve.mdm.agent.core.permission
 org.flyve.mdm.agent.core.user
 org.flyve.mdm.agent.core.walkthrough
 org.flyve.mdm.agent.data
+org.flyve.mdm.agent.policies
 org.flyve.mdm.agent.receivers
 org.flyve.mdm.agent.room.dao
 org.flyve.mdm.agent.room.database
