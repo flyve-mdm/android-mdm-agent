@@ -840,12 +840,12 @@ public class MQTTService extends Service implements MqttCallback {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
                 if(jsonObj.has(policyName)) {
-                    Object disable = jsonObj.get(policyName);
+                    Object value = jsonObj.get(policyName);
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
                     policies.setMQTTparameters(this.client, topic, taskId);
-                    policies.setValue(disable);
+                    policies.setValue(value);
                     policies.setPriority(policyPriority);
                     policies.execute();
                 }
