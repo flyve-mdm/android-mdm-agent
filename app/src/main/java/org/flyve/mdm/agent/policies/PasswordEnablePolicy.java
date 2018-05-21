@@ -43,8 +43,8 @@ public class PasswordEnablePolicy extends BasePolicies {
     @Override
     protected boolean process() {
         try {
-            boolean enable = Boolean.parseBoolean(this.policyValue.toString());
-            new PoliciesDeviceManager(context).enablePassword(enable);
+            String type = this.policyValue.toString();
+            new PoliciesDeviceManager(context).enablePassword(true, type);
             return true;
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());

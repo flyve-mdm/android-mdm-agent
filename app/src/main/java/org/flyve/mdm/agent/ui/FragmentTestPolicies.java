@@ -221,7 +221,7 @@ public class FragmentTestPolicies extends Fragment {
         btnPasswordEnable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mdm.enablePassword(true);
+                mdm.enablePassword(true, "");
             }
         });
 

@@ -577,33 +577,9 @@ public class MQTTService extends Service implements MqttCallback {
 
         // Policy/passwordEnabled
         String PASSWORD_ENABLE = "passwordEnabled";
-        if(topic.toLowerCase().contains(PASSWORD_ENABLE.toLowerCase())) {
-            PasswordEnablePolicy passwordEnablePolicy = new PasswordEnablePolicy(getApplicationContext());
+        callPolicy(new PasswordEnablePolicy(getApplicationContext()), PASSWORD_ENABLE, priority, topic, messageBody);
 
-            if(messageBody.isEmpty()) {
-                passwordEnablePolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(PASSWORD_ENABLE)) {
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    passwordEnablePolicy.setMQTTparameters(this.client, topic, taskId);
-                    passwordEnablePolicy.setValue(true);
-                    passwordEnablePolicy.setPriority(priority);
-                    passwordEnablePolicy.execute();
-
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        // Policy/passwordEnabled
+        // Policy/passwordQuality
         String PASSWORD_QUALITY = "passwordQuality";
         callPolicy(new PasswordQualityPolicy(getApplicationContext()), PASSWORD_QUALITY, priority, topic, messageBody);
 

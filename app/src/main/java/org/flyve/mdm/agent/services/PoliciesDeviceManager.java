@@ -100,7 +100,7 @@ public class PoliciesDeviceManager {
         }
     }
 
-    public void enablePassword(boolean enable) {
+    public void enablePassword(boolean enable, String typeRecommended) {
         if(enable) {
             DeviceLockedController pwd = new DeviceLockedController(context);
             if (pwd.isDeviceScreenLocked()) {
@@ -118,7 +118,8 @@ public class PoliciesDeviceManager {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
 
-                Helpers.sendToNotificationBar(context, 1009, "MDM Agent", "Please create a password", true, MainActivity.class, "PasswordPolicy");
+                String type = typeRecommended.equals("PASSWORD_PASSWD") ? "Password" : "PIN Password";
+                Helpers.sendToNotificationBar(context, 1009, "MDM Agent", "Please create a " + type, true, MainActivity.class, "PasswordPolicy");
             }
         }
     }
