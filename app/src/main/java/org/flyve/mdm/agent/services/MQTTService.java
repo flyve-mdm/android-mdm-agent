@@ -43,6 +43,7 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.AppData;
 import org.flyve.mdm.agent.data.MqttData;
 import org.flyve.mdm.agent.policies.AirplaneModePolicy;
+import org.flyve.mdm.agent.policies.BasePolicies;
 import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.CameraPolicy;
 import org.flyve.mdm.agent.policies.GPSPolicy;
@@ -1701,10 +1702,33 @@ public class MQTTService extends Service implements MqttCallback {
                 FlyveLog.e(ex.getMessage());
             }
         }
-
-
     }
 
+    private void callPolicy(BasePolicies policies, String policyName, int policyPriority, String topic, String messageBody) {
+        if(topic.toLowerCase().contains(policyName.toLowerCase())) {
+            if(messageBody.isEmpty()) {
+                policies.remove();
+                return;
+            }
+
+            try {
+                JSONObject jsonObj = new JSONObject(messageBody);
+
+                if(jsonObj.has(policyName)) {
+                    Object disable = jsonObj.get(policyName);
+                    String taskId = jsonObj.getString("taskId");
+
+                    // execute the policy
+                    policies.setMQTTparameters(this.client, topic, taskId);
+                    policies.setValue(disable);
+                    policies.setPriority(policyPriority);
+                    policies.execute();
+                }
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
+        }
+    }
 
     /**
      * Send broadcast for log messages from MQTT
