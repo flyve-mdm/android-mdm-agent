@@ -72,7 +72,7 @@ public class InstallAppActivity extends Activity {
      */
     public void installApk(String file) {
 
-        FlyveLog.d(file);
+        FlyveLog.i(file);
         Uri uri = Uri.fromFile(new File(file));
         if (uri == null) {
             throw new RuntimeException("Set the data uri to point to an apk location!");
