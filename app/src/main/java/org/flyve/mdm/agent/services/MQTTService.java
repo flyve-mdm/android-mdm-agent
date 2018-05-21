@@ -436,11 +436,6 @@ public class MQTTService extends Service implements MqttCallback {
             return;
         }
 
-        if(messageBody.isEmpty()) {
-            // exit if the message if empty
-            return;
-        }
-
         // Command/Ping
         if(topic.toLowerCase().contains("ping")) {
             try {
@@ -1056,6 +1051,13 @@ public class MQTTService extends Service implements MqttCallback {
         // ROOT
         String DISABLE_NFC = "disableNfc";
         if(topic.toLowerCase().contains(DISABLE_NFC.toLowerCase())) {
+            NFCPolicy nfcPolicy = new NFCPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                nfcPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1064,7 +1066,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    NFCPolicy nfcPolicy = new NFCPolicy(getApplicationContext());
                     nfcPolicy.setMQTTparameters(this.client, topic, taskId);
                     nfcPolicy.setValue(disable);
                     nfcPolicy.setPriority(priority);
