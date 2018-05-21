@@ -605,1027 +605,152 @@ public class MQTTService extends Service implements MqttCallback {
 
         // Policy/passwordEnabled
         String PASSWORD_QUALITY = "passwordQuality";
-        if(topic.toLowerCase().contains(PASSWORD_QUALITY.toLowerCase())) {
-
-            PasswordQualityPolicy passwordQualityPolicy = new PasswordQualityPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                passwordQualityPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(PASSWORD_QUALITY)) {
-                    String quality = jsonObj.getString(PASSWORD_QUALITY);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    passwordQualityPolicy.setMQTTparameters(this.client, topic, taskId);
-                    passwordQualityPolicy.setValue(quality);
-                    passwordQualityPolicy.setPriority(priority);
-                    passwordQualityPolicy.execute();
-
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new PasswordQualityPolicy(getApplicationContext()), PASSWORD_QUALITY, priority, topic, messageBody);
 
         // Policy/passwordMinLength
         String PASSWORD_MIN_LENGTH = "passwordMinLength";
-        if(topic.toLowerCase().contains(PASSWORD_MIN_LENGTH.toLowerCase())) {
-
-            PasswordMinLengthPolicy passwordMinLengthPolicy = new PasswordMinLengthPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                passwordMinLengthPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(PASSWORD_MIN_LENGTH)) {
-                    int length = jsonObj.getInt(PASSWORD_MIN_LENGTH);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    passwordMinLengthPolicy.setMQTTparameters(this.client, topic, taskId);
-                    passwordMinLengthPolicy.setValue(length);
-                    passwordMinLengthPolicy.setPriority(priority);
-                    passwordMinLengthPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new PasswordMinLengthPolicy(getApplicationContext()), PASSWORD_MIN_LENGTH, priority, topic, messageBody);
 
         // Policy/passwordMinLowerCase
         String PASSWORD_MIN_LOWERCASE = "passwordMinLowerCase";
-        if(topic.toLowerCase().contains(PASSWORD_MIN_LOWERCASE.toLowerCase())) {
-            PasswordMinLowerCasePolicy passwordMinLowerCasePolicy = new PasswordMinLowerCasePolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                passwordMinLowerCasePolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(PASSWORD_MIN_LOWERCASE)) {
-                    int minimum = jsonObj.getInt(PASSWORD_MIN_LOWERCASE);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    passwordMinLowerCasePolicy.setMQTTparameters(this.client, topic, taskId);
-                    passwordMinLowerCasePolicy.setValue(minimum);
-                    passwordMinLowerCasePolicy.setPriority(priority);
-                    passwordMinLowerCasePolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new PasswordMinLowerCasePolicy(getApplicationContext()), PASSWORD_MIN_LOWERCASE, priority, topic, messageBody);
 
         // Policy/passwordMinUpperCase
         String PASSWORD_MIN_UPPERCASE = "passwordMinUpperCase";
-        if(topic.toLowerCase().contains(PASSWORD_MIN_UPPERCASE.toLowerCase())) {
-
-            PasswordMinUpperCasePolicy passwordMinUpperCasePolicy = new PasswordMinUpperCasePolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                passwordMinUpperCasePolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(PASSWORD_MIN_UPPERCASE)) {
-                    int minimum = jsonObj.getInt(PASSWORD_MIN_UPPERCASE);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    passwordMinUpperCasePolicy.setMQTTparameters(this.client, topic, taskId);
-                    passwordMinUpperCasePolicy.setValue(minimum);
-                    passwordMinUpperCasePolicy.setPriority(priority);
-                    passwordMinUpperCasePolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new PasswordMinUpperCasePolicy(getApplicationContext()), PASSWORD_MIN_UPPERCASE, priority, topic, messageBody);
 
         // Policy/passwordMinNonLetter
         String PASSWORD_MIN_NON_LETTER = "passwordMinNonLetter";
-        if(topic.toLowerCase().contains(PASSWORD_MIN_NON_LETTER.toLowerCase())) {
-
-            PasswordMinNonLetterPolicy passwordMinNonLetterPolicy = new PasswordMinNonLetterPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                passwordMinNonLetterPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(PASSWORD_MIN_NON_LETTER)) {
-                    int minimum = jsonObj.getInt(PASSWORD_MIN_NON_LETTER);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    passwordMinNonLetterPolicy.setMQTTparameters(this.client, topic, taskId);
-                    passwordMinNonLetterPolicy.setValue(minimum);
-                    passwordMinNonLetterPolicy.setPriority(priority);
-                    passwordMinNonLetterPolicy.execute();
-
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new PasswordMinNonLetterPolicy(getApplicationContext()), PASSWORD_MIN_NON_LETTER, priority, topic, messageBody);
 
         // Policy/passwordMinLetters
         String PASSWORD_MIN_LETTERS = "passwordMinLetters";
-        if(topic.toLowerCase().contains(PASSWORD_MIN_LETTERS.toLowerCase())) {
-
-            PasswordMinLetterPolicy passwordMinLetterPolicy = new PasswordMinLetterPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                passwordMinLetterPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(PASSWORD_MIN_LETTERS)) {
-                    int minimum = jsonObj.getInt(PASSWORD_MIN_LETTERS);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    passwordMinLetterPolicy.setMQTTparameters(this.client, topic, taskId);
-                    passwordMinLetterPolicy.setValue(minimum);
-                    passwordMinLetterPolicy.setPriority(priority);
-                    passwordMinLetterPolicy.execute();
-
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new PasswordMinLetterPolicy(getApplicationContext()), PASSWORD_MIN_LETTERS, priority, topic, messageBody);
 
         // Policy/passwordMinNumeric
         String PASSWORD_MIN_NUMERIC = "passwordMinNumeric";
-        if(topic.toLowerCase().contains(PASSWORD_MIN_NUMERIC.toLowerCase())) {
-
-            PasswordMinNumericPolicy passwordMinNumericPolicy = new PasswordMinNumericPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                passwordMinNumericPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(PASSWORD_MIN_NUMERIC)) {
-                    int minimum = jsonObj.getInt(PASSWORD_MIN_NUMERIC);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    passwordMinNumericPolicy.setMQTTparameters(this.client, topic, taskId);
-                    passwordMinNumericPolicy.setValue(minimum);
-                    passwordMinNumericPolicy.setPriority(priority);
-                    passwordMinNumericPolicy.execute();
-
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new PasswordMinNumericPolicy(getApplicationContext()), PASSWORD_MIN_NUMERIC, priority, topic, messageBody);
 
         // Policy/passwordMinSymbols
         String PASSWORD_MIN_SYMBOLS = "passwordMinSymbols";
-        if(topic.toLowerCase().contains(PASSWORD_MIN_SYMBOLS.toLowerCase())) {
-
-            PasswordMinSymbolsPolicy passwordMinSymbolsPolicy = new PasswordMinSymbolsPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                passwordMinSymbolsPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(PASSWORD_MIN_SYMBOLS)) {
-                    int minimum = jsonObj.getInt(PASSWORD_MIN_SYMBOLS);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    passwordMinSymbolsPolicy.setMQTTparameters(this.client, topic, taskId);
-                    passwordMinSymbolsPolicy.setValue(minimum);
-                    passwordMinSymbolsPolicy.setPriority(priority);
-                    passwordMinSymbolsPolicy.execute();
-
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new PasswordMinSymbolsPolicy(getApplicationContext()), PASSWORD_MIN_SYMBOLS, priority, topic, messageBody);
 
         // Policy/MaximumFailedPasswordsForWipe
         String MAXIMUM_FAILED_PASSWORDS_FOR_WIPE = "maximumFailedPasswordsForWipe";
-        if(topic.toLowerCase().contains(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE.toLowerCase())) {
-
-            MaximumFailedPasswordForWipePolicy maximumFailedPasswordForWipePolicy = new MaximumFailedPasswordForWipePolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                maximumFailedPasswordForWipePolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE)) {
-                    int max = jsonObj.getInt(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    maximumFailedPasswordForWipePolicy.setMQTTparameters(this.client, topic, taskId);
-                    maximumFailedPasswordForWipePolicy.setValue(max);
-                    maximumFailedPasswordForWipePolicy.setPriority(priority);
-                    maximumFailedPasswordForWipePolicy.execute();
-
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new MaximumFailedPasswordForWipePolicy(getApplicationContext()), MAXIMUM_FAILED_PASSWORDS_FOR_WIPE, priority, topic, messageBody);
 
         // Policy/MaximumTimeToLock
         String MAXIMUM_TIME_TO_LOCK = "maximumTimeToLock";
-        if(topic.toLowerCase().contains(MAXIMUM_TIME_TO_LOCK.toLowerCase())) {
-
-            MaximumTimeToLockPolicy maximumTimeToLockPolicy = new MaximumTimeToLockPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                maximumTimeToLockPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(MAXIMUM_TIME_TO_LOCK)) {
-                    int max = jsonObj.getInt(MAXIMUM_TIME_TO_LOCK);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    maximumTimeToLockPolicy.setMQTTparameters(this.client, topic, taskId);
-                    maximumTimeToLockPolicy.setValue(max);
-                    maximumTimeToLockPolicy.setPriority(priority);
-                    maximumTimeToLockPolicy.execute();
-
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new MaximumTimeToLockPolicy(getApplicationContext()), MAXIMUM_TIME_TO_LOCK, priority, topic, messageBody);
 
         // Policy/storageEncryption
         String STORAGE_ENCRYPTION = "storageEncryption";
-        if(topic.toLowerCase().contains(STORAGE_ENCRYPTION.toLowerCase())) {
-
-            StorageEncryptionPolicy storageEncryptionPolicy = new StorageEncryptionPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                storageEncryptionPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-                if(jsonObj.has(STORAGE_ENCRYPTION)) {
-                    boolean enable = jsonObj.getBoolean(STORAGE_ENCRYPTION);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    storageEncryptionPolicy.setMQTTparameters(this.client, topic, taskId);
-                    storageEncryptionPolicy.setValue(enable);
-                    storageEncryptionPolicy.setPriority(priority);
-                    storageEncryptionPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new StorageEncryptionPolicy(getApplicationContext()), STORAGE_ENCRYPTION, priority, topic, messageBody);
 
         // Policy/disableCamera
         String DISABLE_CAMERA = "disableCamera";
-        if(topic.toLowerCase().contains(DISABLE_CAMERA.toLowerCase())) {
-
-            CameraPolicy cameraPolicy = new CameraPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                cameraPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_CAMERA)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_CAMERA);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    cameraPolicy.setMQTTparameters(this.client, topic, taskId);
-                    cameraPolicy.setValue(disable);
-                    cameraPolicy.setPriority(priority);
-                    cameraPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new CameraPolicy(getApplicationContext()), DISABLE_CAMERA, priority, topic, messageBody);
 
         // Policy/disableBluetooth
         String DISABLE_BLUETOOTH = "disableBluetooth";
-        if(topic.toLowerCase().contains(DISABLE_BLUETOOTH.toLowerCase())) {
+        callPolicy(new BluetoothPolicy(getApplicationContext()), DISABLE_BLUETOOTH, priority, topic, messageBody);
 
-            BluetoothPolicy bluetoothPolicy = new BluetoothPolicy(getApplicationContext());
+        // Policy/disableHostpotTethering
+        String DISABLE_HOSTPOT_TETHERING = "disableHostpotTethering";
+        callPolicy(new HostpotTetheringPolicy(getApplicationContext()), DISABLE_HOSTPOT_TETHERING, priority, topic, messageBody);
 
-            if(messageBody.isEmpty()) {
-                bluetoothPolicy.remove();
-                return;
-            }
+        // Policy/disableRoaming
+        String DISABLE_ROAMING = "disableRoaming";
+        callPolicy(new RoamingPolicy(getApplicationContext()), DISABLE_ROAMING, priority, topic, messageBody);
 
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-                if(jsonObj.has(DISABLE_BLUETOOTH)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_BLUETOOTH);
-                    String taskId = jsonObj.getString("taskId");
+        // Policy/disableWifi
+        String DISABLE_WIFI = "disableWifi";
+        callPolicy(new WifiPolicy(getApplicationContext()), DISABLE_WIFI, priority, topic, messageBody);
 
-                    // execute the policy
-                    bluetoothPolicy.setMQTTparameters(this.client, topic, taskId);
-                    bluetoothPolicy.setValue(disable);
-                    bluetoothPolicy.setPriority(priority);
-                    bluetoothPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        // Policy/disableSpeakerphone
+        String DISABLE_SPEAKER_PHONE = "disableSpeakerphone";
+        callPolicy(new SpeakerphonePolicy(getApplicationContext()), DISABLE_SPEAKER_PHONE, priority, topic, messageBody);
+
+        // Policy/disableUsbOnTheGo
+        String DISABLE_SMSMMS = "disableSmsMms";
+        callPolicy(new SMSPolicy(getApplicationContext()), DISABLE_SMSMMS, priority, topic, messageBody);
+
+        // Policy/disableCreateVpnProfiles
+        String DISABLE_CREATE_VPN_PROFILES = "disableCreateVpnProfiles";
+        callPolicy(new VPNPolicy(getApplicationContext()), DISABLE_CREATE_VPN_PROFILES, priority, topic, messageBody);
+
+        // Policy/disableStreamMusic
+        String DISABLE_STREAM_MUSIC = "disableStreamMusic";
+        callPolicy(new StreamMusicPolicy(getApplicationContext()), DISABLE_STREAM_MUSIC, priority, topic, messageBody);
+
+        // Policy/disableStreamRing
+        String DISABLE_STREAM_RING = "disableStreamRing";
+        callPolicy(new StreamRingPolicy(getApplicationContext()), DISABLE_STREAM_RING, priority, topic, messageBody);
+
+        // Policy/disableStreamAlarm
+        String DISABLE_STREAM_ALARM = "disableStreamAlarm";
+        callPolicy(new StreamAlarmPolicy(getApplicationContext()), DISABLE_STREAM_ALARM, priority, topic, messageBody);
+
+        // Policy/disableStreamNotification
+        String DISABLE_STREAM_NOTIFICATION = "disableStreamNotification";
+        callPolicy(new StreamNotificationPolicy(getApplicationContext()), DISABLE_STREAM_NOTIFICATION, priority, topic, messageBody);
+
+        // Policy/disableStreamAccessibility
+        String DISABLE_STREAM_ACCESSIBILITY = "disableStreamAccessibility";
+        callPolicy(new StreamAccessibilityPolicy(getApplicationContext()), DISABLE_STREAM_ACCESSIBILITY, priority, topic, messageBody);
+
+        // Policy/disableStreamVoiceCall
+        String DISABLE_STREAM_VOICECALL = "disableStreamVoiceCall";
+        callPolicy(new StreamVoiceCallPolicy(getApplicationContext()), DISABLE_STREAM_VOICECALL, priority, topic, messageBody);
+
+        // Policy/disableStreamDTMF
+        String DISABLE_STREAM_DTMF = "disableStreamDTMF";
+        callPolicy(new StreamVoiceCallPolicy(getApplicationContext()), DISABLE_STREAM_DTMF, priority, topic, messageBody);
 
         // Policy/disableScreenCapture
         //  ROOT REQUIRED
         String DISABLE_SCREEN_CAPTURE = "disableScreenCapture";
-        if(topic.toLowerCase().contains(DISABLE_SCREEN_CAPTURE.toLowerCase())) {
-
-            ScreenCapturePolicy screenCapturePolicy = new ScreenCapturePolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                screenCapturePolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_SCREEN_CAPTURE)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_SCREEN_CAPTURE);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    screenCapturePolicy.setMQTTparameters(this.client, topic, taskId);
-                    screenCapturePolicy.setValue(disable);
-                    screenCapturePolicy.setPriority(priority);
-                    screenCapturePolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new ScreenCapturePolicy(getApplicationContext()), DISABLE_SCREEN_CAPTURE, priority, topic, messageBody);
 
         // Policy/disableAirplaneMode
         //  ROOT REQUIRED
         String DISABLE_AIRPLANE_MODE = "disableAirplaneMode";
-        if(topic.toLowerCase().contains(DISABLE_AIRPLANE_MODE.toLowerCase())) {
-
-            AirplaneModePolicy airplaneModePolicy = new AirplaneModePolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                airplaneModePolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_AIRPLANE_MODE)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_AIRPLANE_MODE);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    airplaneModePolicy.setMQTTparameters(this.client, topic, taskId);
-                    airplaneModePolicy.setValue(disable);
-                    airplaneModePolicy.setPriority(priority);
-                    airplaneModePolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new AirplaneModePolicy(getApplicationContext()), DISABLE_AIRPLANE_MODE, priority, topic, messageBody);
 
         // Policy/disableGPS
         //  ROOT REQUIRED
         String DISABLE_GPS = "disableGPS";
-        if(topic.toLowerCase().contains(DISABLE_GPS.toLowerCase())) {
-
-            GPSPolicy gpsPolicy = new GPSPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                gpsPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_GPS)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_GPS);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    gpsPolicy.setMQTTparameters(this.client, topic, taskId);
-                    gpsPolicy.setValue(disable);
-                    gpsPolicy.setPriority(priority);
-                    gpsPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        // Policy/disableHostpotTethering
-        String DISABLE_HOSTPOT_TETHERING = "disableHostpotTethering";
-        if(topic.toLowerCase().contains(DISABLE_HOSTPOT_TETHERING.toLowerCase())) {
-
-            HostpotTetheringPolicy hostpotTetheringPolicy = new HostpotTetheringPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                hostpotTetheringPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_HOSTPOT_TETHERING)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_HOSTPOT_TETHERING);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    hostpotTetheringPolicy.setMQTTparameters(this.client, topic, taskId);
-                    hostpotTetheringPolicy.setValue(disable);
-                    hostpotTetheringPolicy.setPriority(priority);
-                    hostpotTetheringPolicy.execute();
-
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        // Policy/disableRoaming
-        String DISABLE_ROAMING = "disableRoaming";
-        if(topic.toLowerCase().contains(DISABLE_ROAMING.toLowerCase())) {
-
-            RoamingPolicy roamingPolicy = new RoamingPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                roamingPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_ROAMING)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_ROAMING);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    roamingPolicy.setMQTTparameters(this.client, topic, taskId);
-                    roamingPolicy.setValue(disable);
-                    roamingPolicy.setPriority(priority);
-                    roamingPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        // Policy/disableWifi
-        String DISABLE_WIFI = "disableWifi";
-        if(topic.toLowerCase().contains(DISABLE_WIFI.toLowerCase())) {
-
-            WifiPolicy wifiPolicy = new WifiPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                wifiPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_WIFI)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_WIFI);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    wifiPolicy.setMQTTparameters(this.client, topic, taskId);
-                    wifiPolicy.setValue(disable);
-                    wifiPolicy.setPriority(priority);
-                    wifiPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new GPSPolicy(getApplicationContext()), DISABLE_GPS, priority, topic, messageBody);
 
         // Policy/disableMobileLine
         // ROOT
         String DISABLE_MOBILE_LINE = "disableMobileLine";
-        if(topic.toLowerCase().contains(DISABLE_MOBILE_LINE.toLowerCase())) {
-
-            MobileLinePolicy mobileLinePolicy = new MobileLinePolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                mobileLinePolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_MOBILE_LINE)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_MOBILE_LINE);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    mobileLinePolicy.setMQTTparameters(this.client, topic, taskId);
-                    mobileLinePolicy.setValue(disable);
-                    mobileLinePolicy.setPriority(priority);
-                    mobileLinePolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new MobileLinePolicy(getApplicationContext()), DISABLE_MOBILE_LINE, priority, topic, messageBody);
 
         // Policy/disableNfc
         // ROOT
         String DISABLE_NFC = "disableNfc";
-        if(topic.toLowerCase().contains(DISABLE_NFC.toLowerCase())) {
-            NFCPolicy nfcPolicy = new NFCPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                nfcPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_NFC)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_NFC);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    nfcPolicy.setMQTTparameters(this.client, topic, taskId);
-                    nfcPolicy.setValue(disable);
-                    nfcPolicy.setPriority(priority);
-                    nfcPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new NFCPolicy(getApplicationContext()), DISABLE_NFC, priority, topic, messageBody);
 
         // Policy/disableStatusBar
         // ROOT
         String DISABLE_STATUS_BAR = "disableStatusBar";
-        if(topic.toLowerCase().contains(DISABLE_STATUS_BAR.toLowerCase())) {
-
-            StatusBarPolicy statusBarPolicy = new StatusBarPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                statusBarPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_STATUS_BAR)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_STATUS_BAR);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    statusBarPolicy.setMQTTparameters(this.client, topic, taskId);
-                    statusBarPolicy.setValue(disable);
-                    statusBarPolicy.setPriority(priority);
-                    statusBarPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new StatusBarPolicy(getApplicationContext()), DISABLE_STATUS_BAR, priority, topic, messageBody);
 
         // Policy/disableUsbMtp
         // ROOT
         String DISABLE_USB_MTP = "disableUsbMtp";
-        if(topic.toLowerCase().contains(DISABLE_USB_MTP.toLowerCase())) {
-
-            UsbMtpPolicy usbMtpPolicy = new UsbMtpPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                usbMtpPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_USB_MTP)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_USB_MTP);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    usbMtpPolicy.setMQTTparameters(this.client, topic, taskId);
-                    usbMtpPolicy.setValue(disable);
-                    usbMtpPolicy.setPriority(priority);
-                    usbMtpPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new UsbMtpPolicy(getApplicationContext()), DISABLE_USB_MTP, priority, topic, messageBody);
 
         // Policy/disableUsbPtp
         // ROOT
         String DISABLE_USB_PTP = "disableUsbPtp";
-        if(topic.toLowerCase().contains(DISABLE_USB_PTP.toLowerCase())) {
-
-            UsbPtpPolicy usbPtpPolicy = new UsbPtpPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                usbPtpPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_USB_PTP)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_USB_PTP);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    usbPtpPolicy.setMQTTparameters(this.client, topic, taskId);
-                    usbPtpPolicy.setValue(disable);
-                    usbPtpPolicy.setPriority(priority);
-                    usbPtpPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new UsbPtpPolicy(getApplicationContext()), DISABLE_USB_PTP, priority, topic, messageBody);
 
         // Policy/disableUsbAdb
         // ROOT
         String DISABLE_USB_ADB = "disableUsbAdb";
-        if(topic.toLowerCase().contains(DISABLE_USB_ADB.toLowerCase())) {
-
-            UsbAdbPolicy usbAdbPolicy = new UsbAdbPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                usbAdbPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_USB_ADB)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_USB_ADB);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    usbAdbPolicy.setMQTTparameters(this.client, topic, taskId);
-                    usbAdbPolicy.setValue(disable);
-                    usbAdbPolicy.setPriority(priority);
-                    usbAdbPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        // Policy/disableSpeakerphone
-        String DISABLE_SPEAKER_PHONE = "disableSpeakerphone";
-        if(topic.toLowerCase().contains(DISABLE_SPEAKER_PHONE.toLowerCase())) {
-
-            SpeakerphonePolicy speakerphonePolicy = new SpeakerphonePolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                speakerphonePolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_SPEAKER_PHONE)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_SPEAKER_PHONE);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    speakerphonePolicy.setMQTTparameters(this.client, topic, taskId);
-                    speakerphonePolicy.setValue(disable);
-                    speakerphonePolicy.setPriority(priority);
-                    speakerphonePolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        // Policy/disableUsbOnTheGo
-        String DISABLE_SMSMMS = "disableSmsMms";
-        if(topic.toLowerCase().contains(DISABLE_SMSMMS.toLowerCase())) {
-
-            SMSPolicy smsPolicy = new SMSPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                smsPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_SMSMMS)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_SMSMMS);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    smsPolicy.setMQTTparameters(this.client, topic, taskId);
-                    smsPolicy.setValue(disable);
-                    smsPolicy.setPriority(priority);
-                    smsPolicy.execute();
-
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        // Policy/disableCreateVpnProfiles
-        String DISABLE_CREATE_VPN_PROFILES = "disableCreateVpnProfiles";
-        if(topic.toLowerCase().contains(DISABLE_CREATE_VPN_PROFILES.toLowerCase())) {
-
-            VPNPolicy vpnPolicy = new VPNPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                vpnPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_CREATE_VPN_PROFILES)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_CREATE_VPN_PROFILES);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    vpnPolicy.setMQTTparameters(this.client, topic, taskId);
-                    vpnPolicy.setValue(disable);
-                    vpnPolicy.setPriority(priority);
-                    vpnPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        String DISABLE_STREAM_MUSIC = "disableStreamMusic";
-        if(topic.toLowerCase().contains(DISABLE_STREAM_MUSIC.toLowerCase())) {
-
-            StreamMusicPolicy streamMusicPolicy = new StreamMusicPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                streamMusicPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_STREAM_MUSIC)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_STREAM_MUSIC);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    streamMusicPolicy.setMQTTparameters(this.client, topic, taskId);
-                    streamMusicPolicy.setValue(disable);
-                    streamMusicPolicy.setPriority(priority);
-                    streamMusicPolicy.execute();
-
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        String DISABLE_STREAM_RING = "disableStreamRing";
-        if(topic.toLowerCase().contains(DISABLE_STREAM_RING.toLowerCase())) {
-
-            StreamRingPolicy streamRingPolicy = new StreamRingPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                streamRingPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_STREAM_RING)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_STREAM_RING);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    streamRingPolicy.setMQTTparameters(this.client, topic, taskId);
-                    streamRingPolicy.setValue(disable);
-                    streamRingPolicy.setPriority(priority);
-                    streamRingPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        String DISABLE_STREAM_ALARM = "disableStreamAlarm";
-        if(topic.toLowerCase().contains(DISABLE_STREAM_ALARM.toLowerCase())) {
-
-            StreamAlarmPolicy streamAlarmPolicy = new StreamAlarmPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                streamAlarmPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_STREAM_ALARM)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_STREAM_ALARM);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    streamAlarmPolicy.setMQTTparameters(this.client, topic, taskId);
-                    streamAlarmPolicy.setValue(disable);
-                    streamAlarmPolicy.setPriority(priority);
-                    streamAlarmPolicy.execute();
-
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        String DISABLE_STREAM_NOTIFICATION = "disableStreamNotification";
-        if(topic.toLowerCase().contains(DISABLE_STREAM_NOTIFICATION.toLowerCase())) {
-
-            StreamNotificationPolicy streamNotificationPolicy = new StreamNotificationPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                streamNotificationPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_STREAM_NOTIFICATION)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_STREAM_NOTIFICATION);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    streamNotificationPolicy.setMQTTparameters(this.client, topic, taskId);
-                    streamNotificationPolicy.setValue(disable);
-                    streamNotificationPolicy.setPriority(priority);
-                    streamNotificationPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        String DISABLE_STREAM_ACCESSIBILITY = "disableStreamAccessibility";
-        if(topic.toLowerCase().contains(DISABLE_STREAM_ACCESSIBILITY.toLowerCase())) {
-
-            StreamAccessibilityPolicy streamAccessibilityPolicy = new StreamAccessibilityPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                streamAccessibilityPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_STREAM_ACCESSIBILITY)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_STREAM_ACCESSIBILITY);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    streamAccessibilityPolicy.setMQTTparameters(this.client, topic, taskId);
-                    streamAccessibilityPolicy.setValue(disable);
-                    streamAccessibilityPolicy.setPriority(priority);
-                    streamAccessibilityPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        String DISABLE_STREAM_VOICECALL = "disableStreamVoiceCall";
-        if(topic.toLowerCase().contains(DISABLE_STREAM_VOICECALL.toLowerCase())) {
-
-            StreamVoiceCallPolicy streamVoiceCallPolicy = new StreamVoiceCallPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                streamVoiceCallPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_STREAM_VOICECALL)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_STREAM_VOICECALL);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    streamVoiceCallPolicy.setMQTTparameters(this.client, topic, taskId);
-                    streamVoiceCallPolicy.setValue(disable);
-                    streamVoiceCallPolicy.setPriority(priority);
-                    streamVoiceCallPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
-
-        String DISABLE_STREAM_DTMF = "disableStreamDTMF";
-        if(topic.toLowerCase().contains(DISABLE_STREAM_DTMF.toLowerCase())) {
-
-            StreamDTMFPolicy streamDTMFPolicy = new StreamDTMFPolicy(getApplicationContext());
-
-            if(messageBody.isEmpty()) {
-                streamDTMFPolicy.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DISABLE_STREAM_DTMF)) {
-                    Boolean disable = jsonObj.getBoolean(DISABLE_STREAM_DTMF);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    streamDTMFPolicy.setMQTTparameters(this.client, topic, taskId);
-                    streamDTMFPolicy.setValue(disable);
-                    streamDTMFPolicy.setPriority(priority);
-                    streamDTMFPolicy.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
-            }
-        }
+        callPolicy(new UsbAdbPolicy(getApplicationContext()), DISABLE_USB_ADB, priority, topic, messageBody);
 
         // Policy/deployApp
         String DEPLOY_APP = "deployApp";
