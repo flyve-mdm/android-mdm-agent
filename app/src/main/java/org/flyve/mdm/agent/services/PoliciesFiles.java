@@ -242,7 +242,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
             String filePath = path + fileName;
             File file = new File(filePath);
             if (file.exists()) {
-                FlyveLog.d("File exists: " + filePath);
+                FlyveLog.i("File exists: " + filePath);
                 addApplication(file, fileName);
                 return file.getAbsolutePath();
             }
