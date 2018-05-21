@@ -104,6 +104,12 @@ public abstract class BasePolicies {
         }
     }
 
+    public void remove() {
+        if(!policyName.isEmpty()) {
+            data.removeValue(policyName, policyPriority);
+        }
+    }
+
     private void mqttSendTaskStatus(String mqttTopic, String taskId, String status) {
         String topic = mqttTopic + "/Status/Task/" + taskId;
         byte[] encodedPayload;
