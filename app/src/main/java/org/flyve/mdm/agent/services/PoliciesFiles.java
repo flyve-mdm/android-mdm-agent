@@ -260,7 +260,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
             if (isSave) {
                 publishProgress(100);
                 mBuilder.setContentText("Download " + fileName + " complete");
-                FlyveLog.d("Download ready");
+                FlyveLog.i("Download file ready: " + file.getAbsolutePath());
 
                 addApplication(file, fileName);
 
