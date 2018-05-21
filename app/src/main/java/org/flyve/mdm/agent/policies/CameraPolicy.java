@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class CameraPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "CameraPolicy";
+    private static final String POLICY_NAME = "disableCamera";
 
     public CameraPolicy(Context context) {
         super(context, POLICY_NAME);
