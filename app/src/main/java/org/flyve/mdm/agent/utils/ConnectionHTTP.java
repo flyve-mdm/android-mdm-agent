@@ -65,7 +65,7 @@ public class ConnectionHTTP {
 	public static String getSyncWebData(String url, String method, Map<String, String> header) {
 		try {
 			URL dataURL = new URL(url);
-			FlyveLog.d( "- URL = " + url);
+			FlyveLog.d( "URL: " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 			conn.setConnectTimeout(timeout);
@@ -102,7 +102,7 @@ public class ConnectionHTTP {
 	public static String getSyncWebData(final String url, final JSONObject data, final Map<String, String> header) {
 		try {
 			URL dataURL = new URL(url);
-			FlyveLog.d("- URL = " + url);
+			FlyveLog.d( "URL: " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 			conn.setRequestMethod("POST");
@@ -149,7 +149,7 @@ public class ConnectionHTTP {
 
 		try {
 			URL dataURL = new URL(url);
-			FlyveLog.d("- URL: " + url);
+			FlyveLog.d( "URL: " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 			conn.setConnectTimeout(timeout);
@@ -218,7 +218,7 @@ public class ConnectionHTTP {
 			try
 			{
 				URL dataURL = new URL(url);
-				FlyveLog.d("- URL: " + url);
+				FlyveLog.d( "URL: " + url);
 				HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 				conn.setRequestMethod("POST");
