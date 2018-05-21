@@ -26,7 +26,6 @@ package org.flyve.mdm.agent.services;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -578,6 +577,13 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/passwordEnabled
         String PASSWORD_ENABLE = "passwordEnabled";
         if(topic.toLowerCase().contains(PASSWORD_ENABLE.toLowerCase())) {
+            PasswordEnablePolicy passwordEnablePolicy = new PasswordEnablePolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                passwordEnablePolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -585,7 +591,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    PasswordEnablePolicy passwordEnablePolicy = new PasswordEnablePolicy(getApplicationContext());
                     passwordEnablePolicy.setMQTTparameters(this.client, topic, taskId);
                     passwordEnablePolicy.setValue(true);
                     passwordEnablePolicy.setPriority(priority);
@@ -600,6 +605,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/passwordEnabled
         String PASSWORD_QUALITY = "passwordQuality";
         if(topic.toLowerCase().contains(PASSWORD_QUALITY.toLowerCase())) {
+
+            PasswordQualityPolicy passwordQualityPolicy = new PasswordQualityPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                passwordQualityPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -608,7 +621,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    PasswordQualityPolicy passwordQualityPolicy = new PasswordQualityPolicy(getApplicationContext());
                     passwordQualityPolicy.setMQTTparameters(this.client, topic, taskId);
                     passwordQualityPolicy.setValue(quality);
                     passwordQualityPolicy.setPriority(priority);
@@ -623,6 +635,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/passwordMinLength
         String PASSWORD_MIN_LENGTH = "passwordMinLength";
         if(topic.toLowerCase().contains(PASSWORD_MIN_LENGTH.toLowerCase())) {
+
+            PasswordMinLengthPolicy passwordMinLengthPolicy = new PasswordMinLengthPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                passwordMinLengthPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -631,7 +651,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    PasswordMinLengthPolicy passwordMinLengthPolicy = new PasswordMinLengthPolicy(getApplicationContext());
                     passwordMinLengthPolicy.setMQTTparameters(this.client, topic, taskId);
                     passwordMinLengthPolicy.setValue(length);
                     passwordMinLengthPolicy.setPriority(priority);
@@ -645,6 +664,13 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/passwordMinLowerCase
         String PASSWORD_MIN_LOWERCASE = "passwordMinLowerCase";
         if(topic.toLowerCase().contains(PASSWORD_MIN_LOWERCASE.toLowerCase())) {
+            PasswordMinLowerCasePolicy passwordMinLowerCasePolicy = new PasswordMinLowerCasePolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                passwordMinLowerCasePolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -653,7 +679,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    PasswordMinLowerCasePolicy passwordMinLowerCasePolicy = new PasswordMinLowerCasePolicy(getApplicationContext());
                     passwordMinLowerCasePolicy.setMQTTparameters(this.client, topic, taskId);
                     passwordMinLowerCasePolicy.setValue(minimum);
                     passwordMinLowerCasePolicy.setPriority(priority);
@@ -667,6 +692,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/passwordMinUpperCase
         String PASSWORD_MIN_UPPERCASE = "passwordMinUpperCase";
         if(topic.toLowerCase().contains(PASSWORD_MIN_UPPERCASE.toLowerCase())) {
+
+            PasswordMinUpperCasePolicy passwordMinUpperCasePolicy = new PasswordMinUpperCasePolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                passwordMinUpperCasePolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -675,7 +708,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    PasswordMinUpperCasePolicy passwordMinUpperCasePolicy = new PasswordMinUpperCasePolicy(getApplicationContext());
                     passwordMinUpperCasePolicy.setMQTTparameters(this.client, topic, taskId);
                     passwordMinUpperCasePolicy.setValue(minimum);
                     passwordMinUpperCasePolicy.setPriority(priority);
@@ -689,6 +721,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/passwordMinNonLetter
         String PASSWORD_MIN_NON_LETTER = "passwordMinNonLetter";
         if(topic.toLowerCase().contains(PASSWORD_MIN_NON_LETTER.toLowerCase())) {
+
+            PasswordMinNonLetterPolicy passwordMinNonLetterPolicy = new PasswordMinNonLetterPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                passwordMinNonLetterPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -697,7 +737,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    PasswordMinNonLetterPolicy passwordMinNonLetterPolicy = new PasswordMinNonLetterPolicy(getApplicationContext());
                     passwordMinNonLetterPolicy.setMQTTparameters(this.client, topic, taskId);
                     passwordMinNonLetterPolicy.setValue(minimum);
                     passwordMinNonLetterPolicy.setPriority(priority);
@@ -712,6 +751,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/passwordMinLetters
         String PASSWORD_MIN_LETTERS = "passwordMinLetters";
         if(topic.toLowerCase().contains(PASSWORD_MIN_LETTERS.toLowerCase())) {
+
+            PasswordMinLetterPolicy passwordMinLetterPolicy = new PasswordMinLetterPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                passwordMinLetterPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -720,7 +767,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    PasswordMinLetterPolicy passwordMinLetterPolicy = new PasswordMinLetterPolicy(getApplicationContext());
                     passwordMinLetterPolicy.setMQTTparameters(this.client, topic, taskId);
                     passwordMinLetterPolicy.setValue(minimum);
                     passwordMinLetterPolicy.setPriority(priority);
@@ -735,6 +781,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/passwordMinNumeric
         String PASSWORD_MIN_NUMERIC = "passwordMinNumeric";
         if(topic.toLowerCase().contains(PASSWORD_MIN_NUMERIC.toLowerCase())) {
+
+            PasswordMinNumericPolicy passwordMinNumericPolicy = new PasswordMinNumericPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                passwordMinNumericPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -743,7 +797,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    PasswordMinNumericPolicy passwordMinNumericPolicy = new PasswordMinNumericPolicy(getApplicationContext());
                     passwordMinNumericPolicy.setMQTTparameters(this.client, topic, taskId);
                     passwordMinNumericPolicy.setValue(minimum);
                     passwordMinNumericPolicy.setPriority(priority);
@@ -758,6 +811,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/passwordMinSymbols
         String PASSWORD_MIN_SYMBOLS = "passwordMinSymbols";
         if(topic.toLowerCase().contains(PASSWORD_MIN_SYMBOLS.toLowerCase())) {
+
+            PasswordMinSymbolsPolicy passwordMinSymbolsPolicy = new PasswordMinSymbolsPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                passwordMinSymbolsPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -766,7 +827,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    PasswordMinSymbolsPolicy passwordMinSymbolsPolicy = new PasswordMinSymbolsPolicy(getApplicationContext());
                     passwordMinSymbolsPolicy.setMQTTparameters(this.client, topic, taskId);
                     passwordMinSymbolsPolicy.setValue(minimum);
                     passwordMinSymbolsPolicy.setPriority(priority);
@@ -781,6 +841,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/MaximumFailedPasswordsForWipe
         String MAXIMUM_FAILED_PASSWORDS_FOR_WIPE = "maximumFailedPasswordsForWipe";
         if(topic.toLowerCase().contains(MAXIMUM_FAILED_PASSWORDS_FOR_WIPE.toLowerCase())) {
+
+            MaximumFailedPasswordForWipePolicy maximumFailedPasswordForWipePolicy = new MaximumFailedPasswordForWipePolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                maximumFailedPasswordForWipePolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -789,7 +857,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    MaximumFailedPasswordForWipePolicy maximumFailedPasswordForWipePolicy = new MaximumFailedPasswordForWipePolicy(getApplicationContext());
                     maximumFailedPasswordForWipePolicy.setMQTTparameters(this.client, topic, taskId);
                     maximumFailedPasswordForWipePolicy.setValue(max);
                     maximumFailedPasswordForWipePolicy.setPriority(priority);
@@ -804,6 +871,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/MaximumTimeToLock
         String MAXIMUM_TIME_TO_LOCK = "maximumTimeToLock";
         if(topic.toLowerCase().contains(MAXIMUM_TIME_TO_LOCK.toLowerCase())) {
+
+            MaximumTimeToLockPolicy maximumTimeToLockPolicy = new MaximumTimeToLockPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                maximumTimeToLockPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -812,7 +887,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    MaximumTimeToLockPolicy maximumTimeToLockPolicy = new MaximumTimeToLockPolicy(getApplicationContext());
                     maximumTimeToLockPolicy.setMQTTparameters(this.client, topic, taskId);
                     maximumTimeToLockPolicy.setValue(max);
                     maximumTimeToLockPolicy.setPriority(priority);
@@ -827,6 +901,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/storageEncryption
         String STORAGE_ENCRYPTION = "storageEncryption";
         if(topic.toLowerCase().contains(STORAGE_ENCRYPTION.toLowerCase())) {
+
+            StorageEncryptionPolicy storageEncryptionPolicy = new StorageEncryptionPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                storageEncryptionPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
                 if(jsonObj.has(STORAGE_ENCRYPTION)) {
@@ -834,7 +916,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    StorageEncryptionPolicy storageEncryptionPolicy = new StorageEncryptionPolicy(getApplicationContext());
                     storageEncryptionPolicy.setMQTTparameters(this.client, topic, taskId);
                     storageEncryptionPolicy.setValue(enable);
                     storageEncryptionPolicy.setPriority(priority);
@@ -848,6 +929,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/disableCamera
         String DISABLE_CAMERA = "disableCamera";
         if(topic.toLowerCase().contains(DISABLE_CAMERA.toLowerCase())) {
+
+            CameraPolicy cameraPolicy = new CameraPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                cameraPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -856,7 +945,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    CameraPolicy cameraPolicy = new CameraPolicy(getApplicationContext());
                     cameraPolicy.setMQTTparameters(this.client, topic, taskId);
                     cameraPolicy.setValue(disable);
                     cameraPolicy.setPriority(priority);
@@ -870,6 +958,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/disableBluetooth
         String DISABLE_BLUETOOTH = "disableBluetooth";
         if(topic.toLowerCase().contains(DISABLE_BLUETOOTH.toLowerCase())) {
+
+            BluetoothPolicy bluetoothPolicy = new BluetoothPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                bluetoothPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
                 if(jsonObj.has(DISABLE_BLUETOOTH)) {
@@ -877,7 +973,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    BluetoothPolicy bluetoothPolicy = new BluetoothPolicy(getApplicationContext());
                     bluetoothPolicy.setMQTTparameters(this.client, topic, taskId);
                     bluetoothPolicy.setValue(disable);
                     bluetoothPolicy.setPriority(priority);
@@ -892,6 +987,14 @@ public class MQTTService extends Service implements MqttCallback {
         //  ROOT REQUIRED
         String DISABLE_SCREEN_CAPTURE = "disableScreenCapture";
         if(topic.toLowerCase().contains(DISABLE_SCREEN_CAPTURE.toLowerCase())) {
+
+            ScreenCapturePolicy screenCapturePolicy = new ScreenCapturePolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                screenCapturePolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -900,7 +1003,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    ScreenCapturePolicy screenCapturePolicy = new ScreenCapturePolicy(getApplicationContext());
                     screenCapturePolicy.setMQTTparameters(this.client, topic, taskId);
                     screenCapturePolicy.setValue(disable);
                     screenCapturePolicy.setPriority(priority);
@@ -915,6 +1017,14 @@ public class MQTTService extends Service implements MqttCallback {
         //  ROOT REQUIRED
         String DISABLE_AIRPLANE_MODE = "disableAirplaneMode";
         if(topic.toLowerCase().contains(DISABLE_AIRPLANE_MODE.toLowerCase())) {
+
+            AirplaneModePolicy airplaneModePolicy = new AirplaneModePolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                airplaneModePolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -923,7 +1033,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    AirplaneModePolicy airplaneModePolicy = new AirplaneModePolicy(getApplicationContext());
                     airplaneModePolicy.setMQTTparameters(this.client, topic, taskId);
                     airplaneModePolicy.setValue(disable);
                     airplaneModePolicy.setPriority(priority);
@@ -938,6 +1047,14 @@ public class MQTTService extends Service implements MqttCallback {
         //  ROOT REQUIRED
         String DISABLE_GPS = "disableGPS";
         if(topic.toLowerCase().contains(DISABLE_GPS.toLowerCase())) {
+
+            GPSPolicy gpsPolicy = new GPSPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                gpsPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -946,7 +1063,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    GPSPolicy gpsPolicy = new GPSPolicy(getApplicationContext());
                     gpsPolicy.setMQTTparameters(this.client, topic, taskId);
                     gpsPolicy.setValue(disable);
                     gpsPolicy.setPriority(priority);
@@ -960,6 +1076,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/disableHostpotTethering
         String DISABLE_HOSTPOT_TETHERING = "disableHostpotTethering";
         if(topic.toLowerCase().contains(DISABLE_HOSTPOT_TETHERING.toLowerCase())) {
+
+            HostpotTetheringPolicy hostpotTetheringPolicy = new HostpotTetheringPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                hostpotTetheringPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -968,7 +1092,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    HostpotTetheringPolicy hostpotTetheringPolicy = new HostpotTetheringPolicy(getApplicationContext());
                     hostpotTetheringPolicy.setMQTTparameters(this.client, topic, taskId);
                     hostpotTetheringPolicy.setValue(disable);
                     hostpotTetheringPolicy.setPriority(priority);
@@ -983,6 +1106,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/disableRoaming
         String DISABLE_ROAMING = "disableRoaming";
         if(topic.toLowerCase().contains(DISABLE_ROAMING.toLowerCase())) {
+
+            RoamingPolicy roamingPolicy = new RoamingPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                roamingPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -991,7 +1122,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    RoamingPolicy roamingPolicy = new RoamingPolicy(getApplicationContext());
                     roamingPolicy.setMQTTparameters(this.client, topic, taskId);
                     roamingPolicy.setValue(disable);
                     roamingPolicy.setPriority(priority);
@@ -1005,6 +1135,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/disableWifi
         String DISABLE_WIFI = "disableWifi";
         if(topic.toLowerCase().contains(DISABLE_WIFI.toLowerCase())) {
+
+            WifiPolicy wifiPolicy = new WifiPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                wifiPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1013,7 +1151,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    WifiPolicy wifiPolicy = new WifiPolicy(getApplicationContext());
                     wifiPolicy.setMQTTparameters(this.client, topic, taskId);
                     wifiPolicy.setValue(disable);
                     wifiPolicy.setPriority(priority);
@@ -1028,6 +1165,14 @@ public class MQTTService extends Service implements MqttCallback {
         // ROOT
         String DISABLE_MOBILE_LINE = "disableMobileLine";
         if(topic.toLowerCase().contains(DISABLE_MOBILE_LINE.toLowerCase())) {
+
+            MobileLinePolicy mobileLinePolicy = new MobileLinePolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                mobileLinePolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1036,7 +1181,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    MobileLinePolicy mobileLinePolicy = new MobileLinePolicy(getApplicationContext());
                     mobileLinePolicy.setMQTTparameters(this.client, topic, taskId);
                     mobileLinePolicy.setValue(disable);
                     mobileLinePolicy.setPriority(priority);
@@ -1080,6 +1224,14 @@ public class MQTTService extends Service implements MqttCallback {
         // ROOT
         String DISABLE_STATUS_BAR = "disableStatusBar";
         if(topic.toLowerCase().contains(DISABLE_STATUS_BAR.toLowerCase())) {
+
+            StatusBarPolicy statusBarPolicy = new StatusBarPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                statusBarPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1088,7 +1240,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    StatusBarPolicy statusBarPolicy = new StatusBarPolicy(getApplicationContext());
                     statusBarPolicy.setMQTTparameters(this.client, topic, taskId);
                     statusBarPolicy.setValue(disable);
                     statusBarPolicy.setPriority(priority);
@@ -1103,6 +1254,14 @@ public class MQTTService extends Service implements MqttCallback {
         // ROOT
         String DISABLE_USB_MTP = "disableUsbMtp";
         if(topic.toLowerCase().contains(DISABLE_USB_MTP.toLowerCase())) {
+
+            UsbMtpPolicy usbMtpPolicy = new UsbMtpPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                usbMtpPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1111,7 +1270,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    UsbMtpPolicy usbMtpPolicy = new UsbMtpPolicy(getApplicationContext());
                     usbMtpPolicy.setMQTTparameters(this.client, topic, taskId);
                     usbMtpPolicy.setValue(disable);
                     usbMtpPolicy.setPriority(priority);
@@ -1126,6 +1284,14 @@ public class MQTTService extends Service implements MqttCallback {
         // ROOT
         String DISABLE_USB_PTP = "disableUsbPtp";
         if(topic.toLowerCase().contains(DISABLE_USB_PTP.toLowerCase())) {
+
+            UsbPtpPolicy usbPtpPolicy = new UsbPtpPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                usbPtpPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1134,7 +1300,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    UsbPtpPolicy usbPtpPolicy = new UsbPtpPolicy(getApplicationContext());
                     usbPtpPolicy.setMQTTparameters(this.client, topic, taskId);
                     usbPtpPolicy.setValue(disable);
                     usbPtpPolicy.setPriority(priority);
@@ -1149,6 +1314,14 @@ public class MQTTService extends Service implements MqttCallback {
         // ROOT
         String DISABLE_USB_ADB = "disableUsbAdb";
         if(topic.toLowerCase().contains(DISABLE_USB_ADB.toLowerCase())) {
+
+            UsbAdbPolicy usbAdbPolicy = new UsbAdbPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                usbAdbPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1157,7 +1330,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    UsbAdbPolicy usbAdbPolicy = new UsbAdbPolicy(getApplicationContext());
                     usbAdbPolicy.setMQTTparameters(this.client, topic, taskId);
                     usbAdbPolicy.setValue(disable);
                     usbAdbPolicy.setPriority(priority);
@@ -1171,6 +1343,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/disableSpeakerphone
         String DISABLE_SPEAKER_PHONE = "disableSpeakerphone";
         if(topic.toLowerCase().contains(DISABLE_SPEAKER_PHONE.toLowerCase())) {
+
+            SpeakerphonePolicy speakerphonePolicy = new SpeakerphonePolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                speakerphonePolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1179,7 +1359,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    SpeakerphonePolicy speakerphonePolicy = new SpeakerphonePolicy(getApplicationContext());
                     speakerphonePolicy.setMQTTparameters(this.client, topic, taskId);
                     speakerphonePolicy.setValue(disable);
                     speakerphonePolicy.setPriority(priority);
@@ -1193,6 +1372,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/disableUsbOnTheGo
         String DISABLE_SMSMMS = "disableSmsMms";
         if(topic.toLowerCase().contains(DISABLE_SMSMMS.toLowerCase())) {
+
+            SMSPolicy smsPolicy = new SMSPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                smsPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1201,7 +1388,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    SMSPolicy smsPolicy = new SMSPolicy(getApplicationContext());
                     smsPolicy.setMQTTparameters(this.client, topic, taskId);
                     smsPolicy.setValue(disable);
                     smsPolicy.setPriority(priority);
@@ -1216,6 +1402,14 @@ public class MQTTService extends Service implements MqttCallback {
         // Policy/disableCreateVpnProfiles
         String DISABLE_CREATE_VPN_PROFILES = "disableCreateVpnProfiles";
         if(topic.toLowerCase().contains(DISABLE_CREATE_VPN_PROFILES.toLowerCase())) {
+
+            VPNPolicy vpnPolicy = new VPNPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                vpnPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1224,7 +1418,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    VPNPolicy vpnPolicy = new VPNPolicy(getApplicationContext());
                     vpnPolicy.setMQTTparameters(this.client, topic, taskId);
                     vpnPolicy.setValue(disable);
                     vpnPolicy.setPriority(priority);
@@ -1237,6 +1430,14 @@ public class MQTTService extends Service implements MqttCallback {
 
         String DISABLE_STREAM_MUSIC = "disableStreamMusic";
         if(topic.toLowerCase().contains(DISABLE_STREAM_MUSIC.toLowerCase())) {
+
+            StreamMusicPolicy streamMusicPolicy = new StreamMusicPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                streamMusicPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1245,7 +1446,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    StreamMusicPolicy streamMusicPolicy = new StreamMusicPolicy(getApplicationContext());
                     streamMusicPolicy.setMQTTparameters(this.client, topic, taskId);
                     streamMusicPolicy.setValue(disable);
                     streamMusicPolicy.setPriority(priority);
@@ -1259,6 +1459,14 @@ public class MQTTService extends Service implements MqttCallback {
 
         String DISABLE_STREAM_RING = "disableStreamRing";
         if(topic.toLowerCase().contains(DISABLE_STREAM_RING.toLowerCase())) {
+
+            StreamRingPolicy streamRingPolicy = new StreamRingPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                streamRingPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1267,7 +1475,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    StreamRingPolicy streamRingPolicy = new StreamRingPolicy(getApplicationContext());
                     streamRingPolicy.setMQTTparameters(this.client, topic, taskId);
                     streamRingPolicy.setValue(disable);
                     streamRingPolicy.setPriority(priority);
@@ -1280,6 +1487,14 @@ public class MQTTService extends Service implements MqttCallback {
 
         String DISABLE_STREAM_ALARM = "disableStreamAlarm";
         if(topic.toLowerCase().contains(DISABLE_STREAM_ALARM.toLowerCase())) {
+
+            StreamAlarmPolicy streamAlarmPolicy = new StreamAlarmPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                streamAlarmPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1288,7 +1503,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    StreamAlarmPolicy streamAlarmPolicy = new StreamAlarmPolicy(getApplicationContext());
                     streamAlarmPolicy.setMQTTparameters(this.client, topic, taskId);
                     streamAlarmPolicy.setValue(disable);
                     streamAlarmPolicy.setPriority(priority);
@@ -1302,6 +1516,14 @@ public class MQTTService extends Service implements MqttCallback {
 
         String DISABLE_STREAM_NOTIFICATION = "disableStreamNotification";
         if(topic.toLowerCase().contains(DISABLE_STREAM_NOTIFICATION.toLowerCase())) {
+
+            StreamNotificationPolicy streamNotificationPolicy = new StreamNotificationPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                streamNotificationPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1310,7 +1532,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    StreamNotificationPolicy streamNotificationPolicy = new StreamNotificationPolicy(getApplicationContext());
                     streamNotificationPolicy.setMQTTparameters(this.client, topic, taskId);
                     streamNotificationPolicy.setValue(disable);
                     streamNotificationPolicy.setPriority(priority);
@@ -1323,6 +1544,14 @@ public class MQTTService extends Service implements MqttCallback {
 
         String DISABLE_STREAM_ACCESSIBILITY = "disableStreamAccessibility";
         if(topic.toLowerCase().contains(DISABLE_STREAM_ACCESSIBILITY.toLowerCase())) {
+
+            StreamAccessibilityPolicy streamAccessibilityPolicy = new StreamAccessibilityPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                streamAccessibilityPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1331,7 +1560,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    StreamAccessibilityPolicy streamAccessibilityPolicy = new StreamAccessibilityPolicy(getApplicationContext());
                     streamAccessibilityPolicy.setMQTTparameters(this.client, topic, taskId);
                     streamAccessibilityPolicy.setValue(disable);
                     streamAccessibilityPolicy.setPriority(priority);
@@ -1344,6 +1572,14 @@ public class MQTTService extends Service implements MqttCallback {
 
         String DISABLE_STREAM_VOICECALL = "disableStreamVoiceCall";
         if(topic.toLowerCase().contains(DISABLE_STREAM_VOICECALL.toLowerCase())) {
+
+            StreamVoiceCallPolicy streamVoiceCallPolicy = new StreamVoiceCallPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                streamVoiceCallPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1352,7 +1588,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    StreamVoiceCallPolicy streamVoiceCallPolicy = new StreamVoiceCallPolicy(getApplicationContext());
                     streamVoiceCallPolicy.setMQTTparameters(this.client, topic, taskId);
                     streamVoiceCallPolicy.setValue(disable);
                     streamVoiceCallPolicy.setPriority(priority);
@@ -1365,6 +1600,14 @@ public class MQTTService extends Service implements MqttCallback {
 
         String DISABLE_STREAM_DTMF = "disableStreamDTMF";
         if(topic.toLowerCase().contains(DISABLE_STREAM_DTMF.toLowerCase())) {
+
+            StreamDTMFPolicy streamDTMFPolicy = new StreamDTMFPolicy(getApplicationContext());
+
+            if(messageBody.isEmpty()) {
+                streamDTMFPolicy.remove();
+                return;
+            }
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
@@ -1373,7 +1616,6 @@ public class MQTTService extends Service implements MqttCallback {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    StreamDTMFPolicy streamDTMFPolicy = new StreamDTMFPolicy(getApplicationContext());
                     streamDTMFPolicy.setMQTTparameters(this.client, topic, taskId);
                     streamDTMFPolicy.setValue(disable);
                     streamDTMFPolicy.setPriority(priority);
