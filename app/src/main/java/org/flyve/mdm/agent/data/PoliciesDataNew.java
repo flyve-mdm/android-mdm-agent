@@ -70,4 +70,9 @@ public class PoliciesDataNew {
         Policies policies = dataBase.PoliciesDao().getPolicyByName(policyName).get(0);
         return policies.value;
     }
+
+    public void removeValue(String policyName, int priority) {
+        Policies policies = dataBase.PoliciesDao().getPolicyBy(policyName, priority).get(0);
+        dataBase.PoliciesDao().delete(policies);
+    }
 }
