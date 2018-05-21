@@ -173,7 +173,6 @@ public class StorageFolder {
             sreturn = sreturn.replace("%PHOTOS%", getPicturesDir());
         }
 
-        FlyveLog.d("convertPath return = " + sreturn);
         return sreturn;
     }
 
