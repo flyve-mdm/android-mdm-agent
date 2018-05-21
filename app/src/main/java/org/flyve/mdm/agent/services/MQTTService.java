@@ -176,8 +176,6 @@ public class MQTTService extends Service implements MqttCallback {
             action = intent.getAction();
         }
 
-        FlyveLog.i(TAG, "Start MQTT Service: with parameter: " + action);
-
         Context mContext = this.getApplicationContext();
         MqttData cache = new MqttData(mContext);
 
@@ -290,7 +288,7 @@ public class MQTTService extends Service implements MqttCallback {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
                     // Everything ready waiting for message
-                    FlyveLog.d(TAG, "Success we are online!");
+                    FlyveLog.i(TAG, "Success we are online!");
                     broadcastServiceStatus(true);
 
                     policiesController = new PoliciesController(getApplicationContext(), client);
@@ -300,7 +298,6 @@ public class MQTTService extends Service implements MqttCallback {
 
                     // main topic
                     String topic = mTopic + "/#";
-                    FlyveLog.d(TAG, "MQTT topic: " + topic);
                     policiesController.subscribe(topic);
 
                     // subscribe to manifest
