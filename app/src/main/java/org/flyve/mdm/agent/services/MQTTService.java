@@ -407,8 +407,12 @@ public class MQTTService extends Service implements MqttCallback {
      */
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
-        FlyveLog.d(TAG, "deliveryComplete: " + token.toString());
-        storeLog(Helpers.broadCastMessage("MQTT Delivery", "Response id", String.valueOf(token.getMessageId())));
+        try {
+            FlyveLog.d(TAG, "deliveryComplete: \nis Complete: " + token.isComplete() + "\nMessage: " + token.getMessage().toString());
+            storeLog(Helpers.broadCastMessage("MQTT Delivery", "Response id", String.valueOf(token.getMessageId())));
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
     }
 
     /**
@@ -419,8 +423,7 @@ public class MQTTService extends Service implements MqttCallback {
      */
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        FlyveLog.d(TAG, "Topic " + topic);
-        FlyveLog.d(TAG, "Message " + new String(message.getPayload()));
+        FlyveLog.d(TAG, "Topic: " + topic + "\n\n- Message: " + new String(message.getPayload()));
 
         int priority = topic.contains("fleet") ? 0 : 1;
 

@@ -165,11 +165,8 @@ public class PoliciesController {
         inventory.getXMLInventory(context, new InventoryTask.OnTaskCompleted() {
             @Override
             public void onTaskSuccess(String s) {
-                FlyveLog.xml(s);
-
                 // send inventory to MQTT
                 sendInventory(s);
-
                 broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Inventory", "Inventory Send"));
             }
 
