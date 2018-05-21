@@ -57,81 +57,15 @@ public class ConnectionHTTP {
 	}
 
 	/**
-	 * Get data from url in a thread
-	 * @param url String url
-	 * @param method String POST, GET, PUT, DELETE
-	 * @param callback DataCallback
-	 */
-	public static void getWebData(final String url, final String method, final DataCallback callback)
-	{
-		Thread t = new Thread(new Runnable()
-		{
-			public void run()
-			{
-				try
-				{
-					URL dataURL = new URL(url);
-					FlyveLog.d(method + " " + url);
-					HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
-
-					conn.setConnectTimeout(timeout);
-					conn.setReadTimeout(readtimeout);
-					conn.setInstanceFollowRedirects(true);
-
-					if(conn.getResponseCode() >= 400) {
-						InputStream is = conn.getErrorStream();
-						final String result = inputStreamToString(is);
-
-						ConnectionHTTP.runOnUI(new Runnable()
-						{
-							public void run()
-							{
-								callback.callback(result);
-							}
-						});
-						return;
-					}
-
-					InputStream is = conn.getInputStream();
-
-					final String result = inputStreamToString(is);
-					FlyveLog.d("Request" + result);
-
-					ConnectionHTTP.runOnUI(new Runnable() {
-						public void run() {
-							callback.callback(result);
-						}
-					});					
-
-				}
-				catch (final Exception ex)
-				{
-					ConnectionHTTP.runOnUI(new Runnable()
-					{
-						public void run()
-						{
-						callback.callback(ex.getMessage());
-						FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
-						}
-					});
-				}
-			}
-		});
-		t.start();
-	}
-
-	/**
 	 * Get the data in a synchronous way
 	 * @param url
 	 * @param method
 	 * @param header
 	 */
-	public static String getSyncWebData(String url, String method, Map<String, String> header)
-	{
-		try
-		{
+	public static String getSyncWebData(String url, String method, Map<String, String> header) {
+		try {
 			URL dataURL = new URL(url);
-			FlyveLog.d("Method: " + method + " - URL = " + url);
+			FlyveLog.d( "- URL = " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 			conn.setConnectTimeout(timeout);
@@ -142,7 +76,6 @@ public class ConnectionHTTP {
 			if(header != null) {
 				for (Map.Entry<String, String> entry : header.entrySet()) {
 					conn.setRequestProperty(entry.getKey(), entry.getValue());
-					FlyveLog.d(entry.getKey() + " = " + entry.getValue());
 				}
 			}
 
@@ -152,14 +85,9 @@ public class ConnectionHTTP {
 			}
 
 			InputStream is = conn.getInputStream();
-
-			final String result = inputStreamToString(is);
-			FlyveLog.d("GetRequest input stream = " + result);
-
-			return result;
+			return inputStreamToString(is);
 		}
-		catch (final Exception ex)
-		{
+		catch (final Exception ex) {
 			FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
 			return EXCEPTION_HTTP + ex.getMessage();
 		}
@@ -172,10 +100,9 @@ public class ConnectionHTTP {
 	 * @param header
 	 */
 	public static String getSyncWebData(final String url, final JSONObject data, final Map<String, String> header) {
-		try
-		{
+		try {
 			URL dataURL = new URL(url);
-			FlyveLog.i("getSyncWebData: " + url);
+			FlyveLog.d("- URL = " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 			conn.setRequestMethod("POST");
@@ -184,7 +111,6 @@ public class ConnectionHTTP {
 
 			for (Map.Entry<String, String> entry : header.entrySet()) {
 				conn.setRequestProperty(entry.getKey(), entry.getValue());
-				FlyveLog.d(entry.getKey() + " = " + entry.getValue());
 			}
 
 			// Send post request
@@ -204,8 +130,7 @@ public class ConnectionHTTP {
 			return inputStreamToString(is);
 
 		}
-		catch (final Exception ex)
-		{
+		catch (final Exception ex) {
 			String error = EXCEPTION_HTTP + ex.getMessage();
 			FlyveLog.e(error);
 			return error;
@@ -224,7 +149,7 @@ public class ConnectionHTTP {
 
 		try {
 			URL dataURL = new URL(url);
-			FlyveLog.d("getSyncFile: " + url);
+			FlyveLog.d("- URL: " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 			conn.setConnectTimeout(timeout);
@@ -237,7 +162,6 @@ public class ConnectionHTTP {
 
 			for (Map.Entry<String, String> entry : header.entrySet()) {
 				conn.setRequestProperty(entry.getKey(), entry.getValue());
-				FlyveLog.d(entry.getKey() + " = " + entry.getValue());
 			}
 
 			int fileLength = conn.getContentLength();
@@ -279,77 +203,6 @@ public class ConnectionHTTP {
 	}
 
 	/**
-	 * Get data from url in a thread
-	 * @param url String url
-	 * @param method String POST, GET, PUT, DELETE
-	 * @param header Map with al the header information
-	 * @param callback DataCallback
-	 */
-	public static void getWebData(final String url, final String method, final Map<String, String> header, final DataCallback callback)
-	{
-		Thread t = new Thread(new Runnable()
-		{
-			public void run()
-			{
-				try
-				{
-					URL dataURL = new URL(url);
-					FlyveLog.i(method + " " + url);
-					HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
-
-					conn.setConnectTimeout(timeout);
-					conn.setReadTimeout(readtimeout);
-					conn.setInstanceFollowRedirects(true);
-					conn.setRequestMethod(method);
-
-					for (Map.Entry<String, String> entry : header.entrySet()) {
-						conn.setRequestProperty(entry.getKey(), entry.getValue());
-						FlyveLog.d(entry.getKey() + " = " + entry.getValue());
-					}
-
-					if(conn.getResponseCode() >= 400) {
-						InputStream is = conn.getErrorStream();
-						final String result = inputStreamToString(is);
-
-						ConnectionHTTP.runOnUI(new Runnable()
-						{
-							public void run()
-							{
-								callback.callback(result);
-							}
-						});
-						return;
-					}
-
-					InputStream is = conn.getInputStream();
-					final String result = inputStreamToString(is);
-
-					FlyveLog.d("GetRequest input stream = " + result);
-
-					ConnectionHTTP.runOnUI(new Runnable() {
-						public void run() {
-							callback.callback(result);
-						}
-					});					
-
-				}
-				catch (final Exception ex)
-				{
-					ConnectionHTTP.runOnUI(new Runnable()
-					{
-						public void run()
-						{
-						callback.callback(EXCEPTION_HTTP + ex.getMessage());
-						FlyveLog.e(ex.getClass() + " : " + ex.getMessage());
-						}
-					});
-				}
-			}
-		});
-		t.start();
-	}
-
-	/**
 	 * Send information by post with a JSONObject and header
 	 * @param url String url
 	 * @param data JSONObject data to send
@@ -365,7 +218,7 @@ public class ConnectionHTTP {
 			try
 			{
 				URL dataURL = new URL(url);
-				FlyveLog.i("Method: POST - URL = " + url);
+				FlyveLog.d("- URL: " + url);
 				HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 				conn.setRequestMethod("POST");
@@ -374,7 +227,6 @@ public class ConnectionHTTP {
 
 				for (Map.Entry<String, String> entry : header.entrySet()) {
 					conn.setRequestProperty(entry.getKey(), entry.getValue());
-					FlyveLog.d(entry.getKey() + " = " + entry.getValue());
 				}
 
 				// Send post request
