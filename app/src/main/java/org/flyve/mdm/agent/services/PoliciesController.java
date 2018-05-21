@@ -111,7 +111,7 @@ public class PoliciesController {
      * When come from MQTT has a format like this {"subscribe":[{"topic":"/2/fleet/22"}]}
      */
     public void subscribe(final String channel) {
-        String[] topics = addTopic(channel);
+        final String[] topics = addTopic(channel);
 
         // if topic null
         if(topics==null || topics.length == 0) {
@@ -128,16 +128,13 @@ public class PoliciesController {
             FlyveLog.e(ex.getMessage());
         }
 
-        String str = Arrays.toString(topics);
-        FlyveLog.i("Topics: " + str + " Qos: " + qos.length);
-
         try {
             IMqttToken subToken = client.subscribe(topics, qos);
             subToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // The message was published
-                    FlyveLog.d("Subscribed");
+                    FlyveLog.i("Subscribed topics: " + Arrays.toString(topics));
                     broadcastReceivedLog(Helpers.broadCastMessage("TOPIC", "Subscribed", channel));
                 }
 
