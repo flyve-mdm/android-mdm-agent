@@ -577,156 +577,156 @@ public class MQTTService extends Service implements MqttCallback {
 
         // Policy/passwordEnabled
         String PASSWORD_ENABLE = "passwordEnabled";
-        callPolicy(new PasswordEnablePolicy(getApplicationContext()), PASSWORD_ENABLE, priority, topic, messageBody);
+        callPolicy(PasswordEnablePolicy.class, PASSWORD_ENABLE, priority, topic, messageBody);
 
         // Policy/passwordQuality
         String PASSWORD_QUALITY = "passwordQuality";
-        callPolicy(new PasswordQualityPolicy(getApplicationContext()), PASSWORD_QUALITY, priority, topic, messageBody);
+        callPolicy(PasswordQualityPolicy.class, PASSWORD_QUALITY, priority, topic, messageBody);
 
         // Policy/passwordMinLength
         String PASSWORD_MIN_LENGTH = "passwordMinLength";
-        callPolicy(new PasswordMinLengthPolicy(getApplicationContext()), PASSWORD_MIN_LENGTH, priority, topic, messageBody);
+        callPolicy(PasswordMinLengthPolicy.class, PASSWORD_MIN_LENGTH, priority, topic, messageBody);
 
         // Policy/passwordMinLowerCase
         String PASSWORD_MIN_LOWERCASE = "passwordMinLowerCase";
-        callPolicy(new PasswordMinLowerCasePolicy(getApplicationContext()), PASSWORD_MIN_LOWERCASE, priority, topic, messageBody);
+        callPolicy(PasswordMinLowerCasePolicy.class, PASSWORD_MIN_LOWERCASE, priority, topic, messageBody);
 
         // Policy/passwordMinUpperCase
         String PASSWORD_MIN_UPPERCASE = "passwordMinUpperCase";
-        callPolicy(new PasswordMinUpperCasePolicy(getApplicationContext()), PASSWORD_MIN_UPPERCASE, priority, topic, messageBody);
+        callPolicy(PasswordMinUpperCasePolicy.class, PASSWORD_MIN_UPPERCASE, priority, topic, messageBody);
 
         // Policy/passwordMinNonLetter
         String PASSWORD_MIN_NON_LETTER = "passwordMinNonLetter";
-        callPolicy(new PasswordMinNonLetterPolicy(getApplicationContext()), PASSWORD_MIN_NON_LETTER, priority, topic, messageBody);
+        callPolicy(PasswordMinNonLetterPolicy.class, PASSWORD_MIN_NON_LETTER, priority, topic, messageBody);
 
         // Policy/passwordMinLetters
         String PASSWORD_MIN_LETTERS = "passwordMinLetters";
-        callPolicy(new PasswordMinLetterPolicy(getApplicationContext()), PASSWORD_MIN_LETTERS, priority, topic, messageBody);
+        callPolicy(PasswordMinLetterPolicy.class, PASSWORD_MIN_LETTERS, priority, topic, messageBody);
 
         // Policy/passwordMinNumeric
         String PASSWORD_MIN_NUMERIC = "passwordMinNumeric";
-        callPolicy(new PasswordMinNumericPolicy(getApplicationContext()), PASSWORD_MIN_NUMERIC, priority, topic, messageBody);
+        callPolicy(PasswordMinNumericPolicy.class, PASSWORD_MIN_NUMERIC, priority, topic, messageBody);
 
         // Policy/passwordMinSymbols
         String PASSWORD_MIN_SYMBOLS = "passwordMinSymbols";
-        callPolicy(new PasswordMinSymbolsPolicy(getApplicationContext()), PASSWORD_MIN_SYMBOLS, priority, topic, messageBody);
+        callPolicy(PasswordMinSymbolsPolicy.class, PASSWORD_MIN_SYMBOLS, priority, topic, messageBody);
 
         // Policy/MaximumFailedPasswordsForWipe
         String MAXIMUM_FAILED_PASSWORDS_FOR_WIPE = "maximumFailedPasswordsForWipe";
-        callPolicy(new MaximumFailedPasswordForWipePolicy(getApplicationContext()), MAXIMUM_FAILED_PASSWORDS_FOR_WIPE, priority, topic, messageBody);
+        callPolicy(MaximumFailedPasswordForWipePolicy.class, MAXIMUM_FAILED_PASSWORDS_FOR_WIPE, priority, topic, messageBody);
 
         // Policy/MaximumTimeToLock
         String MAXIMUM_TIME_TO_LOCK = "maximumTimeToLock";
-        callPolicy(new MaximumTimeToLockPolicy(getApplicationContext()), MAXIMUM_TIME_TO_LOCK, priority, topic, messageBody);
+        callPolicy(MaximumTimeToLockPolicy.class, MAXIMUM_TIME_TO_LOCK, priority, topic, messageBody);
 
         // Policy/storageEncryption
         String STORAGE_ENCRYPTION = "storageEncryption";
-        callPolicy(new StorageEncryptionPolicy(getApplicationContext()), STORAGE_ENCRYPTION, priority, topic, messageBody);
+        callPolicy(StorageEncryptionPolicy.class, STORAGE_ENCRYPTION, priority, topic, messageBody);
 
         // Policy/disableCamera
         String DISABLE_CAMERA = "disableCamera";
-        callPolicy(new CameraPolicy(getApplicationContext()), DISABLE_CAMERA, priority, topic, messageBody);
+        callPolicy(CameraPolicy.class, DISABLE_CAMERA, priority, topic, messageBody);
 
         // Policy/disableBluetooth
         String DISABLE_BLUETOOTH = "disableBluetooth";
-        callPolicy(new BluetoothPolicy(getApplicationContext()), DISABLE_BLUETOOTH, priority, topic, messageBody);
+        callPolicy(BluetoothPolicy.class, DISABLE_BLUETOOTH, priority, topic, messageBody);
 
         // Policy/disableHostpotTethering
         String DISABLE_HOSTPOT_TETHERING = "disableHostpotTethering";
-        callPolicy(new HostpotTetheringPolicy(getApplicationContext()), DISABLE_HOSTPOT_TETHERING, priority, topic, messageBody);
+        callPolicy(HostpotTetheringPolicy.class, DISABLE_HOSTPOT_TETHERING, priority, topic, messageBody);
 
         // Policy/disableRoaming
         String DISABLE_ROAMING = "disableRoaming";
-        callPolicy(new RoamingPolicy(getApplicationContext()), DISABLE_ROAMING, priority, topic, messageBody);
+        callPolicy(RoamingPolicy.class, DISABLE_ROAMING, priority, topic, messageBody);
 
         // Policy/disableWifi
         String DISABLE_WIFI = "disableWifi";
-        callPolicy(new WifiPolicy(getApplicationContext()), DISABLE_WIFI, priority, topic, messageBody);
+        callPolicy(WifiPolicy.class, DISABLE_WIFI, priority, topic, messageBody);
 
         // Policy/disableSpeakerphone
         String DISABLE_SPEAKER_PHONE = "disableSpeakerphone";
-        callPolicy(new SpeakerphonePolicy(getApplicationContext()), DISABLE_SPEAKER_PHONE, priority, topic, messageBody);
+        callPolicy(SpeakerphonePolicy.class, DISABLE_SPEAKER_PHONE, priority, topic, messageBody);
 
         // Policy/disableUsbOnTheGo
         String DISABLE_SMSMMS = "disableSmsMms";
-        callPolicy(new SMSPolicy(getApplicationContext()), DISABLE_SMSMMS, priority, topic, messageBody);
+        callPolicy(SMSPolicy.class, DISABLE_SMSMMS, priority, topic, messageBody);
 
         // Policy/disableCreateVpnProfiles
         String DISABLE_CREATE_VPN_PROFILES = "disableCreateVpnProfiles";
-        callPolicy(new VPNPolicy(getApplicationContext()), DISABLE_CREATE_VPN_PROFILES, priority, topic, messageBody);
+        callPolicy(VPNPolicy.class, DISABLE_CREATE_VPN_PROFILES, priority, topic, messageBody);
 
         // Policy/disableStreamMusic
         String DISABLE_STREAM_MUSIC = "disableStreamMusic";
-        callPolicy(new StreamMusicPolicy(getApplicationContext()), DISABLE_STREAM_MUSIC, priority, topic, messageBody);
+        callPolicy(StreamMusicPolicy.class, DISABLE_STREAM_MUSIC, priority, topic, messageBody);
 
         // Policy/disableStreamRing
         String DISABLE_STREAM_RING = "disableStreamRing";
-        callPolicy(new StreamRingPolicy(getApplicationContext()), DISABLE_STREAM_RING, priority, topic, messageBody);
+        callPolicy(StreamRingPolicy.class, DISABLE_STREAM_RING, priority, topic, messageBody);
 
         // Policy/disableStreamAlarm
         String DISABLE_STREAM_ALARM = "disableStreamAlarm";
-        callPolicy(new StreamAlarmPolicy(getApplicationContext()), DISABLE_STREAM_ALARM, priority, topic, messageBody);
+        callPolicy(StreamAlarmPolicy.class, DISABLE_STREAM_ALARM, priority, topic, messageBody);
 
         // Policy/disableStreamNotification
         String DISABLE_STREAM_NOTIFICATION = "disableStreamNotification";
-        callPolicy(new StreamNotificationPolicy(getApplicationContext()), DISABLE_STREAM_NOTIFICATION, priority, topic, messageBody);
+        callPolicy(StreamNotificationPolicy.class, DISABLE_STREAM_NOTIFICATION, priority, topic, messageBody);
 
         // Policy/disableStreamAccessibility
         String DISABLE_STREAM_ACCESSIBILITY = "disableStreamAccessibility";
-        callPolicy(new StreamAccessibilityPolicy(getApplicationContext()), DISABLE_STREAM_ACCESSIBILITY, priority, topic, messageBody);
+        callPolicy(StreamAccessibilityPolicy.class, DISABLE_STREAM_ACCESSIBILITY, priority, topic, messageBody);
 
         // Policy/disableStreamVoiceCall
         String DISABLE_STREAM_VOICECALL = "disableStreamVoiceCall";
-        callPolicy(new StreamVoiceCallPolicy(getApplicationContext()), DISABLE_STREAM_VOICECALL, priority, topic, messageBody);
+        callPolicy(StreamVoiceCallPolicy.class, DISABLE_STREAM_VOICECALL, priority, topic, messageBody);
 
         // Policy/disableStreamDTMF
         String DISABLE_STREAM_DTMF = "disableStreamDTMF";
-        callPolicy(new StreamVoiceCallPolicy(getApplicationContext()), DISABLE_STREAM_DTMF, priority, topic, messageBody);
+        callPolicy(StreamVoiceCallPolicy.class, DISABLE_STREAM_DTMF, priority, topic, messageBody);
 
         // Policy/disableScreenCapture
         //  ROOT REQUIRED
         String DISABLE_SCREEN_CAPTURE = "disableScreenCapture";
-        callPolicy(new ScreenCapturePolicy(getApplicationContext()), DISABLE_SCREEN_CAPTURE, priority, topic, messageBody);
+        callPolicy(ScreenCapturePolicy.class, DISABLE_SCREEN_CAPTURE, priority, topic, messageBody);
 
         // Policy/disableAirplaneMode
         //  ROOT REQUIRED
         String DISABLE_AIRPLANE_MODE = "disableAirplaneMode";
-        callPolicy(new AirplaneModePolicy(getApplicationContext()), DISABLE_AIRPLANE_MODE, priority, topic, messageBody);
+        callPolicy(AirplaneModePolicy.class, DISABLE_AIRPLANE_MODE, priority, topic, messageBody);
 
         // Policy/disableGPS
         //  ROOT REQUIRED
         String DISABLE_GPS = "disableGPS";
-        callPolicy(new GPSPolicy(getApplicationContext()), DISABLE_GPS, priority, topic, messageBody);
+        callPolicy(GPSPolicy.class, DISABLE_GPS, priority, topic, messageBody);
 
         // Policy/disableMobileLine
         // ROOT
         String DISABLE_MOBILE_LINE = "disableMobileLine";
-        callPolicy(new MobileLinePolicy(getApplicationContext()), DISABLE_MOBILE_LINE, priority, topic, messageBody);
+        callPolicy(MobileLinePolicy.class, DISABLE_MOBILE_LINE, priority, topic, messageBody);
 
         // Policy/disableNfc
         // ROOT
         String DISABLE_NFC = "disableNfc";
-        callPolicy(new NFCPolicy(getApplicationContext()), DISABLE_NFC, priority, topic, messageBody);
+        callPolicy(NFCPolicy.class, DISABLE_NFC, priority, topic, messageBody);
 
         // Policy/disableStatusBar
         // ROOT
         String DISABLE_STATUS_BAR = "disableStatusBar";
-        callPolicy(new StatusBarPolicy(getApplicationContext()), DISABLE_STATUS_BAR, priority, topic, messageBody);
+        callPolicy(StatusBarPolicy.class, DISABLE_STATUS_BAR, priority, topic, messageBody);
 
         // Policy/disableUsbMtp
         // ROOT
         String DISABLE_USB_MTP = "disableUsbMtp";
-        callPolicy(new UsbMtpPolicy(getApplicationContext()), DISABLE_USB_MTP, priority, topic, messageBody);
+        callPolicy(UsbMtpPolicy.class, DISABLE_USB_MTP, priority, topic, messageBody);
 
         // Policy/disableUsbPtp
         // ROOT
         String DISABLE_USB_PTP = "disableUsbPtp";
-        callPolicy(new UsbPtpPolicy(getApplicationContext()), DISABLE_USB_PTP, priority, topic, messageBody);
+        callPolicy(UsbPtpPolicy.class, DISABLE_USB_PTP, priority, topic, messageBody);
 
         // Policy/disableUsbAdb
         // ROOT
         String DISABLE_USB_ADB = "disableUsbAdb";
-        callPolicy(new UsbAdbPolicy(getApplicationContext()), DISABLE_USB_ADB, priority, topic, messageBody);
+        callPolicy(UsbAdbPolicy.class, DISABLE_USB_ADB, priority, topic, messageBody);
 
         // Policy/deployApp
         String DEPLOY_APP = "deployApp";
@@ -805,8 +805,19 @@ public class MQTTService extends Service implements MqttCallback {
         }
     }
 
-    private void callPolicy(BasePolicies policies, String policyName, int policyPriority, String topic, String messageBody) {
+    private void callPolicy(Class<? extends BasePolicies> classPolicy, String policyName, int policyPriority, String topic, String messageBody) {
+
         if(topic.toLowerCase().contains(policyName.toLowerCase())) {
+
+            BasePolicies policies;
+
+            try {
+                policies = classPolicy.getDeclaredConstructor(Context.class).newInstance(getApplicationContext());
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+                return;
+            }
+
             if(messageBody.isEmpty()) {
                 policies.remove();
                 return;
