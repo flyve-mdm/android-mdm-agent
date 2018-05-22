@@ -577,156 +577,156 @@ public class MQTTService extends Service implements MqttCallback {
 
         // Policy/passwordEnabled
 <span class="nc" id="L579">        String PASSWORD_ENABLE = &quot;passwordEnabled&quot;;</span>
-<span class="nc" id="L580">        callPolicy(new PasswordEnablePolicy(getApplicationContext()), PASSWORD_ENABLE, priority, topic, messageBody);</span>
+<span class="nc" id="L580">        callPolicy(PasswordEnablePolicy.class, PASSWORD_ENABLE, priority, topic, messageBody);</span>
 
         // Policy/passwordQuality
 <span class="nc" id="L583">        String PASSWORD_QUALITY = &quot;passwordQuality&quot;;</span>
-<span class="nc" id="L584">        callPolicy(new PasswordQualityPolicy(getApplicationContext()), PASSWORD_QUALITY, priority, topic, messageBody);</span>
+<span class="nc" id="L584">        callPolicy(PasswordQualityPolicy.class, PASSWORD_QUALITY, priority, topic, messageBody);</span>
 
         // Policy/passwordMinLength
 <span class="nc" id="L587">        String PASSWORD_MIN_LENGTH = &quot;passwordMinLength&quot;;</span>
-<span class="nc" id="L588">        callPolicy(new PasswordMinLengthPolicy(getApplicationContext()), PASSWORD_MIN_LENGTH, priority, topic, messageBody);</span>
+<span class="nc" id="L588">        callPolicy(PasswordMinLengthPolicy.class, PASSWORD_MIN_LENGTH, priority, topic, messageBody);</span>
 
         // Policy/passwordMinLowerCase
 <span class="nc" id="L591">        String PASSWORD_MIN_LOWERCASE = &quot;passwordMinLowerCase&quot;;</span>
-<span class="nc" id="L592">        callPolicy(new PasswordMinLowerCasePolicy(getApplicationContext()), PASSWORD_MIN_LOWERCASE, priority, topic, messageBody);</span>
+<span class="nc" id="L592">        callPolicy(PasswordMinLowerCasePolicy.class, PASSWORD_MIN_LOWERCASE, priority, topic, messageBody);</span>
 
         // Policy/passwordMinUpperCase
 <span class="nc" id="L595">        String PASSWORD_MIN_UPPERCASE = &quot;passwordMinUpperCase&quot;;</span>
-<span class="nc" id="L596">        callPolicy(new PasswordMinUpperCasePolicy(getApplicationContext()), PASSWORD_MIN_UPPERCASE, priority, topic, messageBody);</span>
+<span class="nc" id="L596">        callPolicy(PasswordMinUpperCasePolicy.class, PASSWORD_MIN_UPPERCASE, priority, topic, messageBody);</span>
 
         // Policy/passwordMinNonLetter
 <span class="nc" id="L599">        String PASSWORD_MIN_NON_LETTER = &quot;passwordMinNonLetter&quot;;</span>
-<span class="nc" id="L600">        callPolicy(new PasswordMinNonLetterPolicy(getApplicationContext()), PASSWORD_MIN_NON_LETTER, priority, topic, messageBody);</span>
+<span class="nc" id="L600">        callPolicy(PasswordMinNonLetterPolicy.class, PASSWORD_MIN_NON_LETTER, priority, topic, messageBody);</span>
 
         // Policy/passwordMinLetters
 <span class="nc" id="L603">        String PASSWORD_MIN_LETTERS = &quot;passwordMinLetters&quot;;</span>
-<span class="nc" id="L604">        callPolicy(new PasswordMinLetterPolicy(getApplicationContext()), PASSWORD_MIN_LETTERS, priority, topic, messageBody);</span>
+<span class="nc" id="L604">        callPolicy(PasswordMinLetterPolicy.class, PASSWORD_MIN_LETTERS, priority, topic, messageBody);</span>
 
         // Policy/passwordMinNumeric
 <span class="nc" id="L607">        String PASSWORD_MIN_NUMERIC = &quot;passwordMinNumeric&quot;;</span>
-<span class="nc" id="L608">        callPolicy(new PasswordMinNumericPolicy(getApplicationContext()), PASSWORD_MIN_NUMERIC, priority, topic, messageBody);</span>
+<span class="nc" id="L608">        callPolicy(PasswordMinNumericPolicy.class, PASSWORD_MIN_NUMERIC, priority, topic, messageBody);</span>
 
         // Policy/passwordMinSymbols
 <span class="nc" id="L611">        String PASSWORD_MIN_SYMBOLS = &quot;passwordMinSymbols&quot;;</span>
-<span class="nc" id="L612">        callPolicy(new PasswordMinSymbolsPolicy(getApplicationContext()), PASSWORD_MIN_SYMBOLS, priority, topic, messageBody);</span>
+<span class="nc" id="L612">        callPolicy(PasswordMinSymbolsPolicy.class, PASSWORD_MIN_SYMBOLS, priority, topic, messageBody);</span>
 
         // Policy/MaximumFailedPasswordsForWipe
 <span class="nc" id="L615">        String MAXIMUM_FAILED_PASSWORDS_FOR_WIPE = &quot;maximumFailedPasswordsForWipe&quot;;</span>
-<span class="nc" id="L616">        callPolicy(new MaximumFailedPasswordForWipePolicy(getApplicationContext()), MAXIMUM_FAILED_PASSWORDS_FOR_WIPE, priority, topic, messageBody);</span>
+<span class="nc" id="L616">        callPolicy(MaximumFailedPasswordForWipePolicy.class, MAXIMUM_FAILED_PASSWORDS_FOR_WIPE, priority, topic, messageBody);</span>
 
         // Policy/MaximumTimeToLock
 <span class="nc" id="L619">        String MAXIMUM_TIME_TO_LOCK = &quot;maximumTimeToLock&quot;;</span>
-<span class="nc" id="L620">        callPolicy(new MaximumTimeToLockPolicy(getApplicationContext()), MAXIMUM_TIME_TO_LOCK, priority, topic, messageBody);</span>
+<span class="nc" id="L620">        callPolicy(MaximumTimeToLockPolicy.class, MAXIMUM_TIME_TO_LOCK, priority, topic, messageBody);</span>
 
         // Policy/storageEncryption
 <span class="nc" id="L623">        String STORAGE_ENCRYPTION = &quot;storageEncryption&quot;;</span>
-<span class="nc" id="L624">        callPolicy(new StorageEncryptionPolicy(getApplicationContext()), STORAGE_ENCRYPTION, priority, topic, messageBody);</span>
+<span class="nc" id="L624">        callPolicy(StorageEncryptionPolicy.class, STORAGE_ENCRYPTION, priority, topic, messageBody);</span>
 
         // Policy/disableCamera
 <span class="nc" id="L627">        String DISABLE_CAMERA = &quot;disableCamera&quot;;</span>
-<span class="nc" id="L628">        callPolicy(new CameraPolicy(getApplicationContext()), DISABLE_CAMERA, priority, topic, messageBody);</span>
+<span class="nc" id="L628">        callPolicy(CameraPolicy.class, DISABLE_CAMERA, priority, topic, messageBody);</span>
 
         // Policy/disableBluetooth
 <span class="nc" id="L631">        String DISABLE_BLUETOOTH = &quot;disableBluetooth&quot;;</span>
-<span class="nc" id="L632">        callPolicy(new BluetoothPolicy(getApplicationContext()), DISABLE_BLUETOOTH, priority, topic, messageBody);</span>
+<span class="nc" id="L632">        callPolicy(BluetoothPolicy.class, DISABLE_BLUETOOTH, priority, topic, messageBody);</span>
 
         // Policy/disableHostpotTethering
 <span class="nc" id="L635">        String DISABLE_HOSTPOT_TETHERING = &quot;disableHostpotTethering&quot;;</span>
-<span class="nc" id="L636">        callPolicy(new HostpotTetheringPolicy(getApplicationContext()), DISABLE_HOSTPOT_TETHERING, priority, topic, messageBody);</span>
+<span class="nc" id="L636">        callPolicy(HostpotTetheringPolicy.class, DISABLE_HOSTPOT_TETHERING, priority, topic, messageBody);</span>
 
         // Policy/disableRoaming
 <span class="nc" id="L639">        String DISABLE_ROAMING = &quot;disableRoaming&quot;;</span>
-<span class="nc" id="L640">        callPolicy(new RoamingPolicy(getApplicationContext()), DISABLE_ROAMING, priority, topic, messageBody);</span>
+<span class="nc" id="L640">        callPolicy(RoamingPolicy.class, DISABLE_ROAMING, priority, topic, messageBody);</span>
 
         // Policy/disableWifi
 <span class="nc" id="L643">        String DISABLE_WIFI = &quot;disableWifi&quot;;</span>
-<span class="nc" id="L644">        callPolicy(new WifiPolicy(getApplicationContext()), DISABLE_WIFI, priority, topic, messageBody);</span>
+<span class="nc" id="L644">        callPolicy(WifiPolicy.class, DISABLE_WIFI, priority, topic, messageBody);</span>
 
         // Policy/disableSpeakerphone
 <span class="nc" id="L647">        String DISABLE_SPEAKER_PHONE = &quot;disableSpeakerphone&quot;;</span>
-<span class="nc" id="L648">        callPolicy(new SpeakerphonePolicy(getApplicationContext()), DISABLE_SPEAKER_PHONE, priority, topic, messageBody);</span>
+<span class="nc" id="L648">        callPolicy(SpeakerphonePolicy.class, DISABLE_SPEAKER_PHONE, priority, topic, messageBody);</span>
 
         // Policy/disableUsbOnTheGo
 <span class="nc" id="L651">        String DISABLE_SMSMMS = &quot;disableSmsMms&quot;;</span>
-<span class="nc" id="L652">        callPolicy(new SMSPolicy(getApplicationContext()), DISABLE_SMSMMS, priority, topic, messageBody);</span>
+<span class="nc" id="L652">        callPolicy(SMSPolicy.class, DISABLE_SMSMMS, priority, topic, messageBody);</span>
 
         // Policy/disableCreateVpnProfiles
 <span class="nc" id="L655">        String DISABLE_CREATE_VPN_PROFILES = &quot;disableCreateVpnProfiles&quot;;</span>
-<span class="nc" id="L656">        callPolicy(new VPNPolicy(getApplicationContext()), DISABLE_CREATE_VPN_PROFILES, priority, topic, messageBody);</span>
+<span class="nc" id="L656">        callPolicy(VPNPolicy.class, DISABLE_CREATE_VPN_PROFILES, priority, topic, messageBody);</span>
 
         // Policy/disableStreamMusic
 <span class="nc" id="L659">        String DISABLE_STREAM_MUSIC = &quot;disableStreamMusic&quot;;</span>
-<span class="nc" id="L660">        callPolicy(new StreamMusicPolicy(getApplicationContext()), DISABLE_STREAM_MUSIC, priority, topic, messageBody);</span>
+<span class="nc" id="L660">        callPolicy(StreamMusicPolicy.class, DISABLE_STREAM_MUSIC, priority, topic, messageBody);</span>
 
         // Policy/disableStreamRing
 <span class="nc" id="L663">        String DISABLE_STREAM_RING = &quot;disableStreamRing&quot;;</span>
-<span class="nc" id="L664">        callPolicy(new StreamRingPolicy(getApplicationContext()), DISABLE_STREAM_RING, priority, topic, messageBody);</span>
+<span class="nc" id="L664">        callPolicy(StreamRingPolicy.class, DISABLE_STREAM_RING, priority, topic, messageBody);</span>
 
         // Policy/disableStreamAlarm
 <span class="nc" id="L667">        String DISABLE_STREAM_ALARM = &quot;disableStreamAlarm&quot;;</span>
-<span class="nc" id="L668">        callPolicy(new StreamAlarmPolicy(getApplicationContext()), DISABLE_STREAM_ALARM, priority, topic, messageBody);</span>
+<span class="nc" id="L668">        callPolicy(StreamAlarmPolicy.class, DISABLE_STREAM_ALARM, priority, topic, messageBody);</span>
 
         // Policy/disableStreamNotification
 <span class="nc" id="L671">        String DISABLE_STREAM_NOTIFICATION = &quot;disableStreamNotification&quot;;</span>
-<span class="nc" id="L672">        callPolicy(new StreamNotificationPolicy(getApplicationContext()), DISABLE_STREAM_NOTIFICATION, priority, topic, messageBody);</span>
+<span class="nc" id="L672">        callPolicy(StreamNotificationPolicy.class, DISABLE_STREAM_NOTIFICATION, priority, topic, messageBody);</span>
 
         // Policy/disableStreamAccessibility
 <span class="nc" id="L675">        String DISABLE_STREAM_ACCESSIBILITY = &quot;disableStreamAccessibility&quot;;</span>
-<span class="nc" id="L676">        callPolicy(new StreamAccessibilityPolicy(getApplicationContext()), DISABLE_STREAM_ACCESSIBILITY, priority, topic, messageBody);</span>
+<span class="nc" id="L676">        callPolicy(StreamAccessibilityPolicy.class, DISABLE_STREAM_ACCESSIBILITY, priority, topic, messageBody);</span>
 
         // Policy/disableStreamVoiceCall
 <span class="nc" id="L679">        String DISABLE_STREAM_VOICECALL = &quot;disableStreamVoiceCall&quot;;</span>
-<span class="nc" id="L680">        callPolicy(new StreamVoiceCallPolicy(getApplicationContext()), DISABLE_STREAM_VOICECALL, priority, topic, messageBody);</span>
+<span class="nc" id="L680">        callPolicy(StreamVoiceCallPolicy.class, DISABLE_STREAM_VOICECALL, priority, topic, messageBody);</span>
 
         // Policy/disableStreamDTMF
 <span class="nc" id="L683">        String DISABLE_STREAM_DTMF = &quot;disableStreamDTMF&quot;;</span>
-<span class="nc" id="L684">        callPolicy(new StreamVoiceCallPolicy(getApplicationContext()), DISABLE_STREAM_DTMF, priority, topic, messageBody);</span>
+<span class="nc" id="L684">        callPolicy(StreamVoiceCallPolicy.class, DISABLE_STREAM_DTMF, priority, topic, messageBody);</span>
 
         // Policy/disableScreenCapture
         //  ROOT REQUIRED
 <span class="nc" id="L688">        String DISABLE_SCREEN_CAPTURE = &quot;disableScreenCapture&quot;;</span>
-<span class="nc" id="L689">        callPolicy(new ScreenCapturePolicy(getApplicationContext()), DISABLE_SCREEN_CAPTURE, priority, topic, messageBody);</span>
+<span class="nc" id="L689">        callPolicy(ScreenCapturePolicy.class, DISABLE_SCREEN_CAPTURE, priority, topic, messageBody);</span>
 
         // Policy/disableAirplaneMode
         //  ROOT REQUIRED
 <span class="nc" id="L693">        String DISABLE_AIRPLANE_MODE = &quot;disableAirplaneMode&quot;;</span>
-<span class="nc" id="L694">        callPolicy(new AirplaneModePolicy(getApplicationContext()), DISABLE_AIRPLANE_MODE, priority, topic, messageBody);</span>
+<span class="nc" id="L694">        callPolicy(AirplaneModePolicy.class, DISABLE_AIRPLANE_MODE, priority, topic, messageBody);</span>
 
         // Policy/disableGPS
         //  ROOT REQUIRED
 <span class="nc" id="L698">        String DISABLE_GPS = &quot;disableGPS&quot;;</span>
-<span class="nc" id="L699">        callPolicy(new GPSPolicy(getApplicationContext()), DISABLE_GPS, priority, topic, messageBody);</span>
+<span class="nc" id="L699">        callPolicy(GPSPolicy.class, DISABLE_GPS, priority, topic, messageBody);</span>
 
         // Policy/disableMobileLine
         // ROOT
 <span class="nc" id="L703">        String DISABLE_MOBILE_LINE = &quot;disableMobileLine&quot;;</span>
-<span class="nc" id="L704">        callPolicy(new MobileLinePolicy(getApplicationContext()), DISABLE_MOBILE_LINE, priority, topic, messageBody);</span>
+<span class="nc" id="L704">        callPolicy(MobileLinePolicy.class, DISABLE_MOBILE_LINE, priority, topic, messageBody);</span>
 
         // Policy/disableNfc
         // ROOT
 <span class="nc" id="L708">        String DISABLE_NFC = &quot;disableNfc&quot;;</span>
-<span class="nc" id="L709">        callPolicy(new NFCPolicy(getApplicationContext()), DISABLE_NFC, priority, topic, messageBody);</span>
+<span class="nc" id="L709">        callPolicy(NFCPolicy.class, DISABLE_NFC, priority, topic, messageBody);</span>
 
         // Policy/disableStatusBar
         // ROOT
 <span class="nc" id="L713">        String DISABLE_STATUS_BAR = &quot;disableStatusBar&quot;;</span>
-<span class="nc" id="L714">        callPolicy(new StatusBarPolicy(getApplicationContext()), DISABLE_STATUS_BAR, priority, topic, messageBody);</span>
+<span class="nc" id="L714">        callPolicy(StatusBarPolicy.class, DISABLE_STATUS_BAR, priority, topic, messageBody);</span>
 
         // Policy/disableUsbMtp
         // ROOT
 <span class="nc" id="L718">        String DISABLE_USB_MTP = &quot;disableUsbMtp&quot;;</span>
-<span class="nc" id="L719">        callPolicy(new UsbMtpPolicy(getApplicationContext()), DISABLE_USB_MTP, priority, topic, messageBody);</span>
+<span class="nc" id="L719">        callPolicy(UsbMtpPolicy.class, DISABLE_USB_MTP, priority, topic, messageBody);</span>
 
         // Policy/disableUsbPtp
         // ROOT
 <span class="nc" id="L723">        String DISABLE_USB_PTP = &quot;disableUsbPtp&quot;;</span>
-<span class="nc" id="L724">        callPolicy(new UsbPtpPolicy(getApplicationContext()), DISABLE_USB_PTP, priority, topic, messageBody);</span>
+<span class="nc" id="L724">        callPolicy(UsbPtpPolicy.class, DISABLE_USB_PTP, priority, topic, messageBody);</span>
 
         // Policy/disableUsbAdb
         // ROOT
 <span class="nc" id="L728">        String DISABLE_USB_ADB = &quot;disableUsbAdb&quot;;</span>
-<span class="nc" id="L729">        callPolicy(new UsbAdbPolicy(getApplicationContext()), DISABLE_USB_ADB, priority, topic, messageBody);</span>
+<span class="nc" id="L729">        callPolicy(UsbAdbPolicy.class, DISABLE_USB_ADB, priority, topic, messageBody);</span>
 
         // Policy/deployApp
 <span class="nc" id="L732">        String DEPLOY_APP = &quot;deployApp&quot;;</span>
@@ -805,31 +805,42 @@ public class MQTTService extends Service implements MqttCallback {
         }
 <span class="nc" id="L806">    }</span>
 
-    private void callPolicy(BasePolicies policies, String policyName, int policyPriority, String topic, String messageBody) {
-<span class="nc bnc" id="L809" title="All 2 branches missed.">        if(topic.toLowerCase().contains(policyName.toLowerCase())) {</span>
-<span class="nc bnc" id="L810" title="All 2 branches missed.">            if(messageBody.isEmpty()) {</span>
-<span class="nc" id="L811">                policies.remove();</span>
-<span class="nc" id="L812">                return;</span>
+    private void callPolicy(Class&lt;? extends BasePolicies&gt; classPolicy, String policyName, int policyPriority, String topic, String messageBody) {
+
+<span class="nc bnc" id="L810" title="All 2 branches missed.">        if(topic.toLowerCase().contains(policyName.toLowerCase())) {</span>
+
+            BasePolicies policies;
+
+            try {
+<span class="nc" id="L815">                policies = classPolicy.getDeclaredConstructor(Context.class).newInstance(getApplicationContext());</span>
+<span class="nc" id="L816">            } catch (Exception ex) {</span>
+<span class="nc" id="L817">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L818">                return;</span>
+<span class="nc" id="L819">            }</span>
+
+<span class="nc bnc" id="L821" title="All 2 branches missed.">            if(messageBody.isEmpty()) {</span>
+<span class="nc" id="L822">                policies.remove();</span>
+<span class="nc" id="L823">                return;</span>
             }
 
             try {
-<span class="nc" id="L816">                JSONObject jsonObj = new JSONObject(messageBody);</span>
+<span class="nc" id="L827">                JSONObject jsonObj = new JSONObject(messageBody);</span>
 
-<span class="nc bnc" id="L818" title="All 2 branches missed.">                if(jsonObj.has(policyName)) {</span>
-<span class="nc" id="L819">                    Object value = jsonObj.get(policyName);</span>
-<span class="nc" id="L820">                    String taskId = jsonObj.getString(&quot;taskId&quot;);</span>
+<span class="nc bnc" id="L829" title="All 2 branches missed.">                if(jsonObj.has(policyName)) {</span>
+<span class="nc" id="L830">                    Object value = jsonObj.get(policyName);</span>
+<span class="nc" id="L831">                    String taskId = jsonObj.getString(&quot;taskId&quot;);</span>
 
                     // execute the policy
-<span class="nc" id="L823">                    policies.setMQTTparameters(this.client, topic, taskId);</span>
-<span class="nc" id="L824">                    policies.setValue(value);</span>
-<span class="nc" id="L825">                    policies.setPriority(policyPriority);</span>
-<span class="nc" id="L826">                    policies.execute();</span>
+<span class="nc" id="L834">                    policies.setMQTTparameters(this.client, topic, taskId);</span>
+<span class="nc" id="L835">                    policies.setValue(value);</span>
+<span class="nc" id="L836">                    policies.setPriority(policyPriority);</span>
+<span class="nc" id="L837">                    policies.execute();</span>
                 }
-<span class="nc" id="L828">            } catch (Exception ex) {</span>
-<span class="nc" id="L829">                FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L830">            }</span>
+<span class="nc" id="L839">            } catch (Exception ex) {</span>
+<span class="nc" id="L840">                FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L841">            }</span>
         }
-<span class="nc" id="L832">    }</span>
+<span class="nc" id="L843">    }</span>
 
     /**
      * Send broadcast for log messages from MQTT
@@ -837,8 +848,8 @@ public class MQTTService extends Service implements MqttCallback {
      */
     public void broadcastMessage(String message) {
         //send broadcast
-<span class="nc" id="L840">        Helpers.sendBroadcast(message, Helpers.BROADCAST_MSG, getApplicationContext());</span>
-<span class="nc" id="L841">    }</span>
+<span class="nc" id="L851">        Helpers.sendBroadcast(message, Helpers.BROADCAST_MSG, getApplicationContext());</span>
+<span class="nc" id="L852">    }</span>
 
     /**
      * store log messages from MQTT
@@ -846,8 +857,8 @@ public class MQTTService extends Service implements MqttCallback {
      */
     public void storeLog(String message) {
         // write log file
-<span class="nc" id="L849">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
-<span class="nc" id="L850">    }</span>
+<span class="nc" id="L860">        FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);</span>
+<span class="nc" id="L861">    }</span>
 
     /**
      * Send broadcast for status of the service
@@ -855,17 +866,17 @@ public class MQTTService extends Service implements MqttCallback {
      */
     private void broadcastServiceStatus(boolean status) {
         //send broadcast
-<span class="nc" id="L858">        this.connected = status;</span>
+<span class="nc" id="L869">        this.connected = status;</span>
 
         // reconnect
-<span class="nc bnc" id="L861" title="All 2 branches missed.">        if(!status) {</span>
-<span class="nc" id="L862">            reconnect();</span>
+<span class="nc bnc" id="L872" title="All 2 branches missed.">        if(!status) {</span>
+<span class="nc" id="L873">            reconnect();</span>
         }
 
-<span class="nc" id="L865">        AppData cache = new AppData(this.getApplicationContext());</span>
-<span class="nc" id="L866">        cache.setOnlineStatus(status);</span>
+<span class="nc" id="L876">        AppData cache = new AppData(this.getApplicationContext());</span>
+<span class="nc" id="L877">        cache.setOnlineStatus(status);</span>
 
-<span class="nc" id="L868">        Helpers.sendBroadcast(status, Helpers.BROADCAST_STATUS, getApplicationContext());</span>
-<span class="nc" id="L869">    }</span>
+<span class="nc" id="L879">        Helpers.sendBroadcast(status, Helpers.BROADCAST_STATUS, getApplicationContext());</span>
+<span class="nc" id="L880">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
