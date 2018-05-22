@@ -72,7 +72,7 @@ import java.io.File;
      */
     public void installApk(String file) {
 
-<span class="nc" id="L75">        FlyveLog.d(file);</span>
+<span class="nc" id="L75">        FlyveLog.i(file);</span>
 <span class="nc" id="L76">        Uri uri = Uri.fromFile(new File(file));</span>
 <span class="nc bnc" id="L77" title="All 2 branches missed.">        if (uri == null) {</span>
 <span class="nc" id="L78">            throw new RuntimeException(&quot;Set the data uri to point to an apk location!&quot;);</span>
@@ -136,7 +136,7 @@ import java.io.File;
 <span class="nc" id="L136">                    FlyveLog.d(&quot;Package Installation Success&quot;);</span>
 <span class="nc" id="L137">                    status = &quot;2&quot;; // installed</span>
                 } else {
-<span class="nc" id="L139">                    FlyveLog.d(&quot;Installation failed&quot;);</span>
+<span class="nc" id="L139">                    FlyveLog.e(&quot;Installation failed&quot;);</span>
                 }
         }
 

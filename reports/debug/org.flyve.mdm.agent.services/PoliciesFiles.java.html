@@ -242,7 +242,7 @@ public class PoliciesFiles extends AsyncTask&lt;String, Integer, Integer&gt; {
 <span class="nc" id="L242">            String filePath = path + fileName;</span>
 <span class="nc" id="L243">            File file = new File(filePath);</span>
 <span class="nc bnc" id="L244" title="All 2 branches missed.">            if (file.exists()) {</span>
-<span class="nc" id="L245">                FlyveLog.d(&quot;File exists: &quot; + filePath);</span>
+<span class="nc" id="L245">                FlyveLog.i(&quot;File exists: &quot; + filePath);</span>
 <span class="nc" id="L246">                addApplication(file, fileName);</span>
 <span class="nc" id="L247">                return file.getAbsolutePath();</span>
             }
@@ -260,7 +260,7 @@ public class PoliciesFiles extends AsyncTask&lt;String, Integer, Integer&gt; {
 <span class="nc bnc" id="L260" title="All 2 branches missed.">            if (isSave) {</span>
 <span class="nc" id="L261">                publishProgress(100);</span>
 <span class="nc" id="L262">                mBuilder.setContentText(&quot;Download &quot; + fileName + &quot; complete&quot;);</span>
-<span class="nc" id="L263">                FlyveLog.d(&quot;Download ready&quot;);</span>
+<span class="nc" id="L263">                FlyveLog.i(&quot;Download file ready: &quot; + file.getAbsolutePath());</span>
 
 <span class="nc" id="L265">                addApplication(file, fileName);</span>
 

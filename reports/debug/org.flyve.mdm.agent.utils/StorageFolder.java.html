@@ -173,59 +173,58 @@ public class StorageFolder {
 <span class="nc" id="L173">            sreturn = sreturn.replace(&quot;%PHOTOS%&quot;, getPicturesDir());</span>
         }
 
-<span class="nc" id="L176">        FlyveLog.d(&quot;convertPath return = &quot; + sreturn);</span>
-<span class="nc" id="L177">        return sreturn;</span>
+<span class="nc" id="L176">        return sreturn;</span>
     }
 
     private String getFolderPath(String folderName) {
-<span class="nc" id="L181">        return Environment.getExternalStoragePublicDirectory(folderName).getAbsolutePath() + &quot;/&quot;;</span>
+<span class="nc" id="L180">        return Environment.getExternalStoragePublicDirectory(folderName).getAbsolutePath() + &quot;/&quot;;</span>
     }
 
     private Boolean checkPath(String path) {
         // Check if storage is writable
-<span class="nc bnc" id="L186" title="All 2 branches missed.">        if(!isExternalStorageWritable()) {</span>
-<span class="nc" id="L187">            return false;</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">        if(!isExternalStorageWritable()) {</span>
+<span class="nc" id="L186">            return false;</span>
         }
 
         // check if the folder exists if not try to create
-<span class="nc" id="L191">        File folder = new File(path);</span>
+<span class="nc" id="L190">        File folder = new File(path);</span>
 
-<span class="nc" id="L193">        boolean success = true;</span>
-<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (!folder.exists()) {</span>
-<span class="nc" id="L195">            success = folder.mkdir();</span>
+<span class="nc" id="L192">        boolean success = true;</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (!folder.exists()) {</span>
+<span class="nc" id="L194">            success = folder.mkdir();</span>
         }
 
-<span class="nc" id="L198">        return success;</span>
+<span class="nc" id="L197">        return success;</span>
     }
 
     /* Checks if external storage is available for read and write */
     private boolean isExternalStorageWritable() {
-<span class="nc" id="L203">        String state = Environment.getExternalStorageState();</span>
-<span class="nc bnc" id="L204" title="All 2 branches missed.">        if (Environment.MEDIA_MOUNTED.equals(state)) {</span>
-<span class="nc" id="L205">            return true;</span>
+<span class="nc" id="L202">        String state = Environment.getExternalStorageState();</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">        if (Environment.MEDIA_MOUNTED.equals(state)) {</span>
+<span class="nc" id="L204">            return true;</span>
         }
-<span class="nc" id="L207">        return false;</span>
+<span class="nc" id="L206">        return false;</span>
     }
 
     /* Checks if external storage is available to at least read */
     private boolean isExternalStorageReadable() {
-<span class="nc" id="L212">        String state = Environment.getExternalStorageState();</span>
-<span class="nc bnc" id="L213" title="All 2 branches missed.">        if (Environment.MEDIA_MOUNTED.equals(state) ||</span>
-<span class="nc bnc" id="L214" title="All 2 branches missed.">                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {</span>
-<span class="nc" id="L215">            return true;</span>
+<span class="nc" id="L211">        String state = Environment.getExternalStorageState();</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">        if (Environment.MEDIA_MOUNTED.equals(state) ||</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {</span>
+<span class="nc" id="L214">            return true;</span>
         }
-<span class="nc" id="L217">        return false;</span>
+<span class="nc" id="L216">        return false;</span>
     }
 
     public static long getFreeExternalMemorySize() {
-<span class="nc" id="L221">        String secStore = System.getenv(&quot;SECONDARY_STORAGE&quot;);</span>
-<span class="nc" id="L222">        File path = new File(secStore);</span>
-<span class="nc" id="L223">        StatFs stat = new StatFs(path.getPath());</span>
+<span class="nc" id="L220">        String secStore = System.getenv(&quot;SECONDARY_STORAGE&quot;);</span>
+<span class="nc" id="L221">        File path = new File(secStore);</span>
+<span class="nc" id="L222">        StatFs stat = new StatFs(path.getPath());</span>
 
-<span class="nc" id="L225">        long blockSize = stat.getBlockSize();</span>
-<span class="nc" id="L226">        long availableBlocks = stat.getAvailableBlocks();</span>
+<span class="nc" id="L224">        long blockSize = stat.getBlockSize();</span>
+<span class="nc" id="L225">        long availableBlocks = stat.getAvailableBlocks();</span>
 
-<span class="nc" id="L228">        return availableBlocks * blockSize;</span>
+<span class="nc" id="L227">        return availableBlocks * blockSize;</span>
     }
 
 }
