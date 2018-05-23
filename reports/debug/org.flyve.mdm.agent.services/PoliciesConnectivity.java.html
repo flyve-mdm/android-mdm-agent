@@ -217,7 +217,7 @@ public class PoliciesConnectivity {
 
         try {
 <span class="nc bnc" id="L219" title="All 2 branches missed.">            if (Build.VERSION.SDK_INT &gt;= 23) {</span>
-<span class="nc bnc" id="L220" title="All 2 branches missed.">                int direction = disable ? AudioManager.ADJUST_SAME : AudioManager.ADJUST_MUTE;</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">                int direction = disable ? AudioManager.ADJUST_MUTE : AudioManager.ADJUST_SAME;</span>
 <span class="nc" id="L221">                aManager.adjustStreamVolume(streamType, direction, 0);</span>
 <span class="nc" id="L222">            } else {</span>
                 //media
