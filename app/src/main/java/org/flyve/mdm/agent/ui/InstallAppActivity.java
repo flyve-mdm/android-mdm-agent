@@ -59,7 +59,11 @@ public class InstallAppActivity extends Activity {
             id = extras.getString("APP_ID");
             appPath = extras.getString("APP_PATH");
 
-            installApk(appPath);
+            try {
+                installApk(appPath);
+            } catch (Exception ex) {
+                FlyveLog.e(ex.getMessage());
+            }
         } else {
             finish();
         }
