@@ -217,7 +217,7 @@ public class PoliciesConnectivity {
 
         try {
             if (Build.VERSION.SDK_INT >= 23) {
-                int direction = disable ? AudioManager.ADJUST_SAME : AudioManager.ADJUST_MUTE;
+                int direction = disable ? AudioManager.ADJUST_MUTE : AudioManager.ADJUST_SAME;
                 aManager.adjustStreamVolume(streamType, direction, 0);
             } else {
                 //media
