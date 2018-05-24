@@ -70,7 +70,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             FlyveLog.e(ex.getMessage());
         }
 
-        if("android.hardware.usb.action.USB_DEVICE_ATTACHED".equalsIgnoreCase(action)) {
+        if(action.contains("USB")) {
             FlyveLog.d("USB Device Attached");
             PoliciesConnectivity.disableAllUsbFileTransferProtocols( true );
         }
