@@ -200,7 +200,13 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        filePhoto = new File(presenter.getPhoto().getPath());
+        try {
+            filePhoto = new File(presenter.getPhoto().getPath());
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+            return;
+        }
+
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_FILE) {
                 onSelectFromGalleryResult(data);
