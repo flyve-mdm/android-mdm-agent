@@ -22,6 +22,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.USB_PERMISSION" />
     <uses-feature android:name="android.hardware.nfc" android:required="false" />
 
     <!-- for location information -->
@@ -202,7 +203,6 @@
                 <action android:name="android.app.action.ACTION_PASSWORD_FAILED" />
                 <action android:name="android.app.action.ACTION_PASSWORD_SUCCEEDED" />
                 <action android:name="android.nfc.extra.ADAPTER_STATE" />
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
         </receiver>
 
@@ -218,6 +218,8 @@
                 <action android:name="android.location.PROVIDERS_CHANGED" />
                 <action android:name="android.intent.action.AIRPLANE_MODE"/>
                 <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+                <action android:name="android.hardware.usb.action.USB_STATE" />
             </intent-filter>
         </receiver>
 
