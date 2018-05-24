@@ -70,7 +70,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L70">            FlyveLog.e(ex.getMessage());</span>
 <span class="nc" id="L71">        }</span>
 
-<span class="nc bnc" id="L73" title="All 2 branches missed.">        if(&quot;android.hardware.usb.action.USB_DEVICE_ATTACHED&quot;.equalsIgnoreCase(action)) {</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if(action.contains(&quot;USB&quot;)) {</span>
 <span class="nc" id="L74">            FlyveLog.d(&quot;USB Device Attached&quot;);</span>
 <span class="nc" id="L75">            PoliciesConnectivity.disableAllUsbFileTransferProtocols( true );</span>
         }
