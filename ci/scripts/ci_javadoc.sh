@@ -25,14 +25,20 @@
 #  @link      https://flyve-mdm.com/
 #  ------------------------------------------------------------------------------
 #
-# Generate javadoc this folder must be on .gitignore
-javadoc -d ./reports$1/javadoc -sourcepath ./app/src/main/java -subpackages . -bootclasspath $ANDROID_HOME/platforms/android-26/android.jar
+# Generate code-documentation directory, this folder must be on .gitignore
+javadoc -d ./development/code-documentation -sourcepath ./app/src/main/java -subpackages . -bootclasspath $ANDROID_HOME/platforms/android-26/android.jar
 
-# add reports
-git add reports$1 -f
+# delete the index.html file
+sudo rm ./development/code-documentation/index.html
 
-# create commit with temporary report folder
-git commit -m "tmp report commit"
+# rename the overview-summary.html file to index.html
+mv ./development/code-documentation/overview-summary.html ./development/code-documentation/index.html
+
+# add development folder
+git add development -f
+
+# create commit with temporary development folder
+git commit -m "tmp development commit"
 
 # get gh-pages branch
 git fetch origin gh-pages
@@ -40,14 +46,35 @@ git fetch origin gh-pages
 # move to gh-pages
 git checkout gh-pages
 
-# get javadoc folder
-git checkout $CIRCLE_BRANCH reports$1/javadoc
+# delete old code-documentation folder
+sudo rm -R development/code-documentation
 
-# git add javadoc folder
-git add reports$1/javadoc
+# get code-documentation folder
+git checkout $CIRCLE_BRANCH development/code-documentation
+
+# remove default stylesheet.css
+sudo rm ./development/code-documentation/stylesheet.css
+
+# add new css
+cp ./css/codeDocumentation.css ./development/code-documentation/stylesheet.css
+
+# git add code-documentation folder
+git add development/code-documentation
+
+# git add
+git add ./development/code-documentation/stylesheet.css
 
 # create commit for documentation
-git commit -m "docs(javadoc): update javadoc"
+git commit -m "docs(development): update code documentation"
+
+# change headers
+ruby ci/add_header.rb
+
+# git add
+git add .
+
+# git commit
+git commit -m "docs(headers): update headers"
 
 # push to branch
 git push origin gh-pages
