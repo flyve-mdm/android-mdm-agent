@@ -8,6 +8,13 @@ description: Install it as System App!
 category: user
 ---
 
+# Index
+
+* [Compatibility Matrix](#before)
+* [Download APK](#download)
+* [Beta version](#beta-version)
+* [Install as System App](#system-app)
+
 ## Before\.\.\.
 
 Check the following compatibility matrix to make sure, you're getting the right version.
@@ -59,7 +66,11 @@ Or get the APK from the **Release** page on Github
 
 <a href="https://github.com/flyve-mdm/android-mdm-agent/releases" target="_blank"><img src="https://user-images.githubusercontent.com/663460/26973090-f8fdc986-4d14-11e7-995a-e7c5e79ed925.png" width="300" alt="Download from the Release page on Github"></a>
 
-## Install as System App with ADB (Android Debug Bridge) tools
+## Beta version
+
+Download the [Beta testing app from Google Play](https://play.google.com/apps/testing/org.flyve.mdm.agent)
+
+## <a name="system-app"></a>Install as System App with ADB (Android Debug Bridge) tools
 
 This simple guide asumes that you have some basic knowledge about command line, Android and ADB tool if not please feel free to review the ADB official information:
 
