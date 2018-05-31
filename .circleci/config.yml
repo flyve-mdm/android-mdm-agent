@@ -181,6 +181,9 @@ jobs:
             name: Update version and code
             command: source ci/scripts/ci_updateversion.sh
         - run:
+            name: Changelog
+            command: source ci/scripts/ci_changelog.sh
+        - run:
             name: Update about information
             command: source ci/scripts/ci_about.sh
         - run:
@@ -280,6 +283,8 @@ workflows:
               only:
                 - develop
       - deploy_production:
+          requires:
+            - build
           filters:
             branches:
               only:

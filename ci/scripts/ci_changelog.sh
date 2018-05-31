@@ -30,31 +30,22 @@
 git fetch origin gh-pages
 
 # move to gh-pages
-git checkout gh-pages
+git checkout -f gh-pages
 
-# clean unstage file on gh-pages to remove all others files gets on checkout
+# clean unstage file on gh-pages to remove all others files gotten on checkout
 sudo git clean -fdx
 
-# remove local CHANGELOG.md on gh-pages
-rm CHANGELOG.md
+# remove old CHANGELOG.md on gh-pages
+rm _includes/CHANGELOG.md
 
 # get changelog from branch
 git checkout $CIRCLE_BRANCH CHANGELOG.md
 
-# Create header content to work with gh-pages templates
-HEADER="---"$'\r'"layout: modal"$'\r'"title: changelog"$'\r'"---"$'\r\r'
-
-# Duplicate CHANGELOG.md
-cp CHANGELOG.md CHANGELOG_COPY.md
-
-# Add header to CHANGELOG.md
-(echo $HEADER ; cat CHANGELOG_COPY.md) > CHANGELOG.md
-
-# Remove CHANGELOG_COPY.md
-rm CHANGELOG_COPY.md
+# move changelog to _includes folder
+sudo mv CHANGELOG.md _includes/CHANGELOG.md
 
 # add
-git add CHANGELOG.md
+git add _includes/ && git add CHANGELOG.md
 
 # create commit
 git commit -m "docs(changelog): update changelog$1 with version ${GIT_TAG}"
