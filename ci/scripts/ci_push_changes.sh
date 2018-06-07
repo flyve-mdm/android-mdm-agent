@@ -17,8 +17,8 @@ git checkout develop
 # review some change
 git pull origin develop
 
-# merge with master
-git merge master
+# rebase with master
+git rebase master
 
 # push develop
 git push origin develop --force
