@@ -35,19 +35,20 @@ Here is placed files and bash script required to build, test and deploy the app.
 
 On this project we use the following variables:
 
+- BUILD_TOOL -> Used to build the application, set to 26.0.0
+
 - ci_fastlane
-  - $KEYSTORE -> Java store for apk signing
+  - $KEYSTORE -> Key store for apk signing
   - $ALIAS    -> The alias of the certificate to sign the apk
 - ci_github_release
-  - $GH_TOKEN -> GitHub Token
+  - $GITHUB_TOKEN -> GitHub Token
 - ci_setup
-  - $TELEGRAM_WEBHOOKS ->
-  - $ADMIN_WEB_CONSOLE ->
-  - $THESTRALBOT_URL   ->
-  - $ENCRYPTED_KEY     ->
-  - $GH_EMAIL          -> GitHub Email
-  - $GH_USER           -> GitHub User
-  - $GH_TOKEN          -> GitHub Token
+  - $TELEGRAM_WEBHOOKS -> Used to send notifications to Telegram
+  - $THESTRALBOT_URL   -> URL to Thestralbot
+  - $ENCRYPTED_KEY     -> Used to desencrypt the key to sign the APK
+  - $GITHUB_EMAIL      -> GitHub Email
+  - $GITHUB_USER       -> GitHub User
+  - $GITHUB_TOKEN      -> GitHub Token
 - ci_transifex
-  - $TRANSIFEX_USER      -> User of Transifex account
+  - $TRANSIFEX_USER      -> User of Transifex
   - $TRANSIFEX_API_TOKEN -> API Token of Transifex
