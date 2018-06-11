@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.29.1"></a>
+## [2.29.1](https://github.com/flyve-mdm/flyve-mdm-android-agent/compare/2.30.0...2.29.1) (2018-06-11)
+
+
+### Bug Fixes
+
+* **package:** update conventional-github-releaser to version 3.0.0 ([4a2613a](https://github.com/flyve-mdm/flyve-mdm-android-agent/commit/4a2613a))
+
+
+
 <a name="2.29.0"></a>
 # [2.29.0](https://github.com/flyve-mdm/flyve-mdm-android-agent/compare/0.99.46...2.29.0) (2018-05-30)
 
