@@ -5,3 +5,4 @@ files:
     - 'css/syntax.css'
     - 'css/highlight.scss' 
     - 'node_modules/**'
+    - 'vendor/bundle/ruby/**'
