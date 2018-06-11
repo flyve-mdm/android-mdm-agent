@@ -338,6 +338,7 @@ public class Helpers {
 			byte[] data = text.getBytes("UTF-8");
 			rtext = Base64.encodeToString(data, Base64.NO_WRAP | Base64.URL_SAFE);
 			rtext = rtext.replaceAll("-", "+");
+			rtext = rtext.replaceAll(" ", "+");
 		} catch (UnsupportedEncodingException e) {
 			FlyveLog.e(e.getMessage());
 		}
