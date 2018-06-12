@@ -1,16 +1,9 @@
----layout: modaltitle: changelog---
 # Change Log
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-<a name="2.0.1"></a>
-## 2.0.1 (2017-09-07)
-
-
-
-<a name="2.0.0"></a>
-# [2.0.0](https://github.com/flyve-mdm/flyve-mdm-android-agent/compare/v0.99.45...v2.0.0) (2017-08-22)
-
+<a name="0.99.46"></a>
+## [0.99.46](https://github.com/flyve-mdm/flyve-mdm-android/compare/0.99.45...0.99.46) (2018-01-02)
 
 ### Bug Fixes
 
@@ -145,18 +138,6 @@ All notable changes to this project will be documented in this file. See [standa
 ### BREAKING CHANGES
 
 * **package:** new enrollment workflow
-
-
-
-<a name="0.99.46"></a>
-## [0.99.46](https://github.com/flyve-mdm/flyve-mdm-android/compare/v0.99.45...v0.99.46) (2017-06-01)
-
-
-### Features
-
-* **rc:** add sonar qube and automation scripts ([865e2ab](https://github.com/flyve-mdm/flyve-mdm-android/commit/865e2ab))
-
-
 
 <a name="0.99.45"></a>
 ## 0.99.45 (2017-06-01)
