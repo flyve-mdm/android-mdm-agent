@@ -1,10 +1,10 @@
 {
-  "name": "flyve-mdm-android-agent",
+  "name": "android-mdm-agent",
   "version": "1.0.0",
   "description": "Branch created with the intention of functioning as an introduction web site of the project, a small point of entry where anyone can find out what it is about and to be able to get relevant information.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/flyve-mdm/flyve-mdm-android-agent.git"
+    "url": "git+https://github.com/flyve-mdm/android-mdm-agent.git"
   },
   "sasslintConfig": ".sass-lint.yml",
   "scripts": {
@@ -18,9 +18,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/flyve-mdm/flyve-mdm-android-agent/issues"
+    "url": "https://github.com/flyve-mdm/android-mdm-agent/issues"
   },
-  "homepage": "https://github.com/flyve-mdm/flyve-mdm-android-agent#readme",
+  "homepage": "http://flyve.org/android-mdm-agent/",
   "devDependencies": {
     "eslint": "^4.7.2",
     "eslint-config-google": "^0.9.1",
