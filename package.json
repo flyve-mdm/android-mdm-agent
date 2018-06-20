@@ -1,6 +1,6 @@
 {
   "name": "@teclib/android-mdm-agent",
-  "version": "2.31.0",
+  "version": "2.32.0",
   "description": "Flyve MDM Agent for Android",
   "main": "index.js",
   "scripts": {
