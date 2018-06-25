@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static org.mockito.Mockito.mock;
 
 /*
@@ -69,7 +70,13 @@ public class EnrollmentModelTest {
 
     @Test
     public void selectPhoto() {
-        model.selectPhoto(rule.getActivity(), 2, 1);
+        getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                model.selectPhoto(rule.getActivity(), 2, 1);
+            }
+        });
+
         Assert.assertTrue(true);
     }
 }
