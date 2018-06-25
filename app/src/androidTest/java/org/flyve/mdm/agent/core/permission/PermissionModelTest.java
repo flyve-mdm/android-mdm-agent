@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static org.mockito.Mockito.mock;
 
 /*
@@ -57,7 +58,13 @@ public class PermissionModelTest {
 
     @Test
     public void showDialogShare() {
-        model.showDialogShare(context);
+        getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                model.showDialogShare(rule.getActivity());
+            }
+        });
+
         Assert.assertTrue(true);
     }
 }
