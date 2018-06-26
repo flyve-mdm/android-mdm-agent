@@ -63,7 +63,7 @@ public class EnrollmentModel implements Enrollment.Model {
         File file = new File(path + "/Inventory.xml");
 
         if(!file.exists()) {
-            presenter.showSnackError("The inventory file does not exist");
+            presenter.showSnackError(context.getString(R.string.inventory_file_not_exists));
         }
 
         //Read text from file
@@ -79,8 +79,8 @@ public class EnrollmentModel implements Enrollment.Model {
             presenter.inventorySuccess(inventory.toString());
             br.close();
         } catch (IOException ex) {
-            inventory.append("fail");
-            presenter.showSnackError("Inventory fail, cannot read the file");
+            inventory.append(context.getString(R.string.fail));
+            presenter.showSnackError(context.getString(R.string.inventory_cannot_read_the_file));
             FlyveLog.e(ex.getMessage());
         } finally {
             if(br!=null) {
