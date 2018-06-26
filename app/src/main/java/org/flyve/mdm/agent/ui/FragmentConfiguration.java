@@ -85,10 +85,10 @@ public class FragmentConfiguration extends Fragment {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(FragmentConfiguration.this.getContext());
 
-                builder.setTitle("DANGER");
-                builder.setMessage("Are you sure do you want erase all the data?");
+                builder.setTitle(R.string.danger);
+                builder.setMessage(R.string.erase_all_data_question);
 
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.YES, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
                         LocalStorage localStorage = new LocalStorage(FragmentConfiguration.this.getContext());
@@ -99,7 +99,7 @@ public class FragmentConfiguration extends Fragment {
                     }
                 });
 
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(R.string.NO, new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
