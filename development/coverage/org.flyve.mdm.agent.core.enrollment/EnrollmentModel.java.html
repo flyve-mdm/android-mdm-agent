@@ -1,7 +1,4 @@
----
-layout: coverage
----
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../resources/report.css" type="text/css"/><link rel="shortcut icon" href="../resources/report.gif" type="image/gif"/><title>EnrollmentModel.java</title><link rel="stylesheet" href="../resources/prettify.css" type="text/css"/><script type="text/javascript" src="../resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.core.enrollment</a> &gt; <span class="el_source">EnrollmentModel.java</span></div><h1>EnrollmentModel.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>EnrollmentModel.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.core.enrollment</a> &gt; <span class="el_source">EnrollmentModel.java</span></div><h1>EnrollmentModel.java</h1><pre class="source lang-java linenums">/*
  * Copyright Teclib. All rights reserved.
  *
  * Flyve MDM is a mobile device management software.
@@ -66,7 +63,7 @@ public class EnrollmentModel implements Enrollment.Model {
 <span class="fc" id="L63">        File file = new File(path + &quot;/Inventory.xml&quot;);</span>
 
 <span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if(!file.exists()) {</span>
-<span class="fc" id="L66">            presenter.showSnackError(&quot;The inventory file does not exist&quot;);</span>
+<span class="fc" id="L66">            presenter.showSnackError(context.getString(R.string.inventory_file_not_exists));</span>
         }
 
         //Read text from file
@@ -82,8 +79,8 @@ public class EnrollmentModel implements Enrollment.Model {
 <span class="nc" id="L79">            presenter.inventorySuccess(inventory.toString());</span>
 <span class="nc" id="L80">            br.close();</span>
 <span class="fc" id="L81">        } catch (IOException ex) {</span>
-<span class="fc" id="L82">            inventory.append(&quot;fail&quot;);</span>
-<span class="fc" id="L83">            presenter.showSnackError(&quot;Inventory fail, cannot read the file&quot;);</span>
+<span class="fc" id="L82">            inventory.append(context.getString(R.string.fail));</span>
+<span class="fc" id="L83">            presenter.showSnackError(context.getString(R.string.inventory_cannot_read_the_file));</span>
 <span class="fc" id="L84">            FlyveLog.e(ex.getMessage());</span>
         } finally {
 <span class="pc bpc" id="L86" title="5 of 6 branches missed.">            if(br!=null) {</span>

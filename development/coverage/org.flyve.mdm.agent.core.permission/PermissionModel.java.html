@@ -1,7 +1,4 @@
----
-layout: coverage
----
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../resources/report.css" type="text/css"/><link rel="shortcut icon" href="../resources/report.gif" type="image/gif"/><title>PermissionModel.java</title><link rel="stylesheet" href="../resources/prettify.css" type="text/css"/><script type="text/javascript" src="../resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.core.permission</a> &gt; <span class="el_source">PermissionModel.java</span></div><h1>PermissionModel.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PermissionModel.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.core.permission</a> &gt; <span class="el_source">PermissionModel.java</span></div><h1>PermissionModel.java</h1><pre class="source lang-java linenums">/*
  * Copyright Teclib. All rights reserved.
  *
  * Flyve MDM is a mobile device management software.
@@ -69,7 +66,7 @@ public class PermissionModel implements Permission.Model {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // positive button logic
-<span class="nc" id="L69">                        new InventoryTask(context, &quot;Inventory File&quot;).shareInventory(type[0]);</span>
+<span class="nc" id="L69">                        new InventoryTask(context, Inventory.APP_VERSION).shareInventory(type[0]);</span>
 <span class="nc" id="L70">                    }</span>
                 });
 
@@ -90,8 +87,8 @@ public class PermissionModel implements Permission.Model {
 
     @Override
     public void generateInventory(final Context context) {
-<span class="nc" id="L90">        final ProgressDialog progress = ProgressDialog.show(context, &quot;MDM Agent&quot;,</span>
-                &quot;Creating inventory...&quot;, true);
+<span class="nc" id="L90">        final ProgressDialog progress = ProgressDialog.show(context, context.getString(R.string.app_name),</span>
+<span class="nc" id="L91">                context.getString(R.string.creating_inventory), true);</span>
 
 <span class="nc" id="L93">        Inventory inventory = new Inventory();</span>
 
@@ -110,7 +107,7 @@ public class PermissionModel implements Permission.Model {
 <span class="nc" id="L107">        inventory.getXMLInventory(context, new InventoryTask.OnTaskCompleted() {</span>
             @Override
             public void onTaskSuccess(String s) {
-<span class="nc" id="L110">                progress.setMessage(&quot;Creating session...&quot;);</span>
+<span class="nc" id="L110">                progress.setMessage(context.getString(R.string.creating_session));</span>
 
 <span class="nc" id="L112">                EnrollmentHelper sessionToken = new EnrollmentHelper(context);</span>
 <span class="nc" id="L113">                sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {</span>
@@ -132,7 +129,7 @@ public class PermissionModel implements Permission.Model {
             @Override
             public void onTaskError(Throwable throwable) {
 <span class="nc" id="L131">                progress.dismiss();</span>
-<span class="nc" id="L132">                presenter.showError(&quot;The inventory fail&quot;);</span>
+<span class="nc" id="L132">                presenter.showError(context.getString(R.string.inventory_fail) + throwable.getMessage());</span>
 <span class="nc" id="L133">            }</span>
         });
 <span class="nc" id="L135">    }</span>
