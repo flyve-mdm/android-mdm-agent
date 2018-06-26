@@ -245,4 +245,10 @@
     <string name="packageinstaller_android_n_support"><![CDATA[PackageInstaller < Android N only supports file scheme!]]></string>
     <string name="packageinstaller_android_n_support_content_scheme"><![CDATA[PackageInstaller >= Android N only supports content scheme!]]></string>
     <string name="message">message</string>
+    <string name="installing_app">Installing App</string>
+    <string name="disable_notifications">Disable Notifications</string>
+    <string name="enable_connection_notifications">Enable Connection Notifications</string>
+    <string name="enable_dark_theme">Enable Dark Theme</string>
+    <string name="delete_data">Delete Data</string>
+    <string name="message_from_mqtt_service">Message from MQTT Service</string>
 </resources>

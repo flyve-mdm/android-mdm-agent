@@ -15,7 +15,7 @@
             android:id="@+id/swNotifications"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Disable Notifications"
+            android:text="@string/disable_notifications"
             android:layout_margin="5dp"
             />
 
@@ -23,7 +23,7 @@
             android:id="@+id/swConnectionNotification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enable Connection Notifications"
+            android:text="@string/enable_connection_notifications"
             android:layout_margin="5dp"
             />
 
@@ -31,7 +31,7 @@
             android:id="@+id/swDarkTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enable Dark Theme"
+            android:text="@string/enable_dark_theme"
             android:layout_margin="5dp"
             android:visibility="gone"
             />
@@ -40,7 +40,7 @@
             android:id="@+id/btnClear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete Data"
+            android:text="@string/delete_data"
             style="?android:attr/borderlessButtonStyle"
             android:layout_gravity="right"
             android:layout_marginTop="40dp"
