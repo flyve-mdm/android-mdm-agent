@@ -213,4 +213,7 @@
     <string name="ERROR_GLPI_PARTIAL_UPDATE">Error</string>
     <string name="ERROR_GLPI_DELETE">Error</string>
     <string name="ERROR_GLPI_PARTIAL_DELETE">Error</string>
+    <string name="inventory_file_not_exists">The inventory file does not exist</string>
+    <string name="fail">fail</string>
+    <string name="inventory_cannot_read_the_file">Inventory fail, cannot read the file</string>
 </resources>
