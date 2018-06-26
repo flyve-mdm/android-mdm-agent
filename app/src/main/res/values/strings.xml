@@ -80,7 +80,7 @@
     <string name="error_title">We have a problem</string>
 
     <string name="download_file_fail">Download file fail</string>
-    <string name="download_file_ready">Download file ready!</string>
+    <string name="download_file_ready">Download file ready! </string>
 
     <string name="take_photo">Take Photo</string>
     <string name="choose_from_library">Choose from Library</string>
@@ -227,4 +227,9 @@
     <string name="mqtt_connection_lost">MQTT Connection lost</string>
     <string name="mqtt_delivery">MQTT Delivery</string>
     <string name="response_id">Response id</string>
+    <string name="download">Download</string>
+    <string name="download_in_progress">Download in progress</string>
+    <string name="Downloading">Downloading</string>
+    <string name="download_complete">Download %1$s complete</string>
+    <string name="download_fail">Download %1$s fail</string>
 </resources>
