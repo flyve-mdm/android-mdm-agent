@@ -227,9 +227,9 @@ public class MQTTService extends Service implements MqttCallback {
         connectionInformation.append("TLS: " + mTLS + "\n");
 
         if(mBroker.equals("") || mPort.equals("") || mUser.equals("")) {
-            String brokerValue = "Empty";
-            String portValue = "Empty";
-            String userValue = "Empty";
+            String brokerValue = getString(R.string.empty);
+            String portValue = getString(R.string.empty);
+            String userValue = getString(R.string.empty);
 
             if(!mBroker.equals("")) {
                 brokerValue = mBroker;
@@ -243,12 +243,11 @@ public class MQTTService extends Service implements MqttCallback {
                 userValue = mBroker;
             }
 
-            // Helpers.openErrorActivity(mContext, "Some important variable can't be null\n\n - Port: " + portValue + "\n - Broker: " + brokerValue + "\n - User: " + userValue);
             FlyveLog.d(TAG, "Some important variable can't be null - Port: " + portValue + " - Broker: " + brokerValue + " - User: " + userValue);
             return;
         }
 
-        storeLog(Helpers.broadCastMessage(MQTT_LOGIN, "Connection variables", connectionInformation.toString()));
+        storeLog(Helpers.broadCastMessage(MQTT_LOGIN, getString(R.string.connection_variables), connectionInformation.toString()));
 
         String protocol = "tcp";
         // TLS is active change protocol
@@ -318,7 +317,7 @@ public class MQTTService extends Service implements MqttCallback {
                     FlyveLog.e(TAG, "Error on client.connect: " + errorMessage);
 
                     storeLog(Helpers.broadCastMessage(ERROR, "Error on client.connect", errorMessage + connectionInformation));
-                    broadcastMessage(Helpers.broadCastMessage(ERROR, "Error on client.connect", errorMessage + connectionInformation));
+                    broadcastMessage(Helpers.broadCastMessage(ERROR, getString(R.string.error_on_client_connect), errorMessage + connectionInformation));
                     broadcastServiceStatus(false);
                 }
             });
@@ -326,13 +325,13 @@ public class MQTTService extends Service implements MqttCallback {
         catch (MqttException ex) {
             FlyveLog.e(TAG, ex.getMessage());
             broadcastServiceStatus(false);
-            broadcastMessage(Helpers.broadCastMessage(ERROR, "MQTT Exception: " + String.valueOf(ex.getReasonCode()), ex.getMessage() + connectionInformation));
-            storeLog(Helpers.broadCastMessage(ERROR, "MQTT Exception", ex.getMessage() + connectionInformation));
+            broadcastMessage(Helpers.broadCastMessage(ERROR, getString(R.string.mqtt_exception) + String.valueOf(ex.getReasonCode()), ex.getMessage() + connectionInformation));
+            storeLog(Helpers.broadCastMessage(ERROR, getString(R.string.mqtt_exception), ex.getMessage() + connectionInformation));
         } catch (Exception ex) {
             FlyveLog.e(TAG, ex.getMessage());
             broadcastServiceStatus(false);
-            broadcastMessage(Helpers.broadCastMessage(ERROR, "General Exception", mContext.getResources().getString(R.string.MQTT_ERROR_CONNECTION) + connectionInformation));
-            storeLog(Helpers.broadCastMessage(ERROR, "General Exception", ex.getMessage() + connectionInformation));
+            broadcastMessage(Helpers.broadCastMessage(ERROR, getString(R.string.general_exception), mContext.getResources().getString(R.string.MQTT_ERROR_CONNECTION) + connectionInformation));
+            storeLog(Helpers.broadCastMessage(ERROR, getString(R.string.general_exception), ex.getMessage() + connectionInformation));
         }
     }
 
@@ -344,7 +343,7 @@ public class MQTTService extends Service implements MqttCallback {
     public void connectionLost(Throwable cause) {
         // send to backend that agent lost connection
         broadcastServiceStatus(false);
-        storeLog(Helpers.broadCastMessage(ERROR, "MQTT Connection lost", cause.getMessage()));
+        storeLog(Helpers.broadCastMessage(ERROR, getString(R.string.mqtt_connection_lost), cause.getMessage()));
         FlyveLog.d(TAG, "Connection fail " + cause.getMessage());
     }
 
@@ -385,7 +384,7 @@ public class MQTTService extends Service implements MqttCallback {
                         String message = "Reconnecting " + reconnectionCounter + " times";
 
                         if(new AppData(getApplicationContext()).getEnableNotificationConnection()) {
-                            Helpers.sendToNotificationBar(getApplicationContext(), 101, "MDM Agent", message, false, MainActivity.class, "service_disconnect");
+                            Helpers.sendToNotificationBar(getApplicationContext(), 101, getString(R.string.app_name), message, false, MainActivity.class, "service_disconnect");
                         }
 
                         FlyveLog.d(message);
@@ -409,7 +408,7 @@ public class MQTTService extends Service implements MqttCallback {
     public void deliveryComplete(IMqttDeliveryToken token) {
         try {
             FlyveLog.d(TAG, "deliveryComplete: \nis Complete: " + token.isComplete() + "\nMessage: " + token.getMessage().toString());
-            storeLog(Helpers.broadCastMessage("MQTT Delivery", "Response id", String.valueOf(token.getMessageId())));
+            storeLog(Helpers.broadCastMessage(getString(R.string.mqtt_delivery), getString(R.string.response_id), String.valueOf(token.getMessageId())));
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
