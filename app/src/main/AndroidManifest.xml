@@ -4,6 +4,8 @@
     android:versionCode="1983"
     android:versionName="2.0.1-beta">
 
+    <uses-permission android:name="android.permission.LOCAL_MAC_ADDRESS" />
+
     <!-- For writing logfiles -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
