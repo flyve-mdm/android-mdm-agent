@@ -244,4 +244,5 @@
     <string name="datauri_not_point_apk_location">Set the data uri to point to an apk location!</string>
     <string name="packageinstaller_android_n_support"><![CDATA[PackageInstaller < Android N only supports file scheme!]]></string>
     <string name="packageinstaller_android_n_support_content_scheme"><![CDATA[PackageInstaller >= Android N only supports content scheme!]]></string>
+    <string name="message">message</string>
 </resources>

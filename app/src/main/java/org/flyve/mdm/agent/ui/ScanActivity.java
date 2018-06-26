@@ -424,7 +424,7 @@ public final class ScanActivity extends Activity implements SurfaceTextureListen
 		{
 			final Bundle args = getArguments();
 			final DialogBuilder dialog = DialogBuilder.warn(getActivity(), args.getInt("title"));
-			dialog.setMessage(args.getString("message"));
+			dialog.setMessage(args.getString(getActivity().getString(R.string.message)));
 			dialog.singleDismissButton(new OnClickListener()
 			{
 				@Override
