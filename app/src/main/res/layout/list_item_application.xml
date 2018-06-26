@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -20,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="App Name"
+        tools:text="App Name"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
@@ -36,7 +37,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:text="Status"
+        tools:text="Status"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
@@ -51,7 +52,7 @@
         android:layout_below="@+id/txtAppName"
         android:layout_toRightOf="@+id/imgApp"
         android:layout_toEndOf="@+id/imgApp"
-        android:text="Package Name"
+        tools:text="Package Name"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         style="@style/regularText"

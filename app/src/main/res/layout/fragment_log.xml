@@ -10,7 +10,7 @@
         android:id="@+id/txtTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Message from MQTT Service"
+        android:text="@string/message_from_mqtt_service"
         android:gravity="center"
         android:layout_alignParentTop="true"
         android:layout_margin="20dp"
@@ -40,7 +40,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:text=""
         android:gravity="center_horizontal"
         />
 

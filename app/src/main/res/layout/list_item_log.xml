@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -10,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="type"
+        tools:text="type"
         android:layout_margin="10dp"
         style="@style/regularText"
         />
@@ -21,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:text="date"
+        tools:text="date"
         android:layout_margin="10dp"
         style="@style/regularText"
         />
@@ -31,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtType"
-        android:text="title"
+        tools:text="title"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         style="@style/titleText"

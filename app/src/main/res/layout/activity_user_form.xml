@@ -262,7 +262,6 @@
                 android:id="@+id/txtMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
                 android:layout_margin="20dp"
                 android:layout_gravity="center_horizontal"
                 style="@style/regularText"
