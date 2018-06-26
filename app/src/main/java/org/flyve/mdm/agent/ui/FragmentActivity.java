@@ -71,22 +71,22 @@ public class FragmentActivity extends Fragment {
         // ----------------
         // LOG
         // ----------------
-        adapter.addFragment(new FragmentLog(), "Log");
+        adapter.addFragment(new FragmentLog(), getString(R.string.log));
 
         // ----------------
         // Policies
         // ----------------
-        adapter.addFragment(new FragmentPolicies(), "Policies");
+        adapter.addFragment(new FragmentPolicies(), getString(R.string.policies));
 
         // ----------------
         // App
         // ----------------
-        adapter.addFragment(new FragmentAppList(), "Applications");
+        adapter.addFragment(new FragmentAppList(), getString(R.string.applications));
 
         // ----------------
         // File
         // ----------------
-        adapter.addFragment(new FragmentFileList(), "Files");
+        adapter.addFragment(new FragmentFileList(), getString(R.string.files));
 
         viewPager.setAdapter(adapter);
     }
