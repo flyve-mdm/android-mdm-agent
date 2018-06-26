@@ -65,8 +65,8 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
 
         mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(context);
-        mBuilder.setContentTitle("Download")
-                .setContentText("Download in progress");
+        mBuilder.setContentTitle(context.getString(R.string.download))
+                .setContentText(context.getString(R.string.download_in_progress));
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mBuilder.setSmallIcon(R.drawable.ic_notification_white);
@@ -227,7 +227,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
             // Both has name
             if (jsonObjDownload.has("name")) {
                 fileName = jsonObjDownload.getString("name");
-                mBuilder.setContentText("Downloading " + fileName);
+                mBuilder.setContentText(context.getString(R.string.Downloading) + fileName);
             }
 
             // is APK
@@ -259,15 +259,15 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
 
             if (isSave) {
                 publishProgress(100);
-                mBuilder.setContentText("Download " + fileName + " complete");
-                FlyveLog.i("Download file ready: " + file.getAbsolutePath());
+                mBuilder.setContentText(context.getString(R.string.download_complete, fileName));
+                FlyveLog.i(context.getString(R.string.download_file_ready) + file.getAbsolutePath());
 
                 addApplication(file, fileName);
 
                 return file.getAbsolutePath();
             } else {
                 publishProgress(100);
-                mBuilder.setContentText("Download " + fileName + " Fail");
+                mBuilder.setContentText(context.getString(R.string.download_fail, fileName));
                 FlyveLog.e("Download fail: " + data);
 
                 return "";
