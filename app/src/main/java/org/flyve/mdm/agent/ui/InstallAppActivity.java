@@ -79,16 +79,16 @@ public class InstallAppActivity extends Activity {
         FlyveLog.i(file);
         Uri uri = Uri.fromFile(new File(file));
         if (uri == null) {
-            throw new RuntimeException("Set the data uri to point to an apk location!");
+            throw new RuntimeException(getString(R.string.datauri_not_point_apk_location));
         }
         // https://code.google.com/p/android/issues/detail?id=205827
         if ((Build.VERSION.SDK_INT < 24)
                 && (!uri.getScheme().equals("file"))) {
-            throw new RuntimeException("PackageInstaller < Android N only supports file scheme!");
+            throw new RuntimeException(getString(R.string.packageinstaller_android_n_support));
         }
         if ((Build.VERSION.SDK_INT >= 24)
                 && (!uri.getScheme().equals("content"))) {
-            throw new RuntimeException("PackageInstaller >= Android N only supports content scheme!");
+            throw new RuntimeException(getString(R.string.packageinstaller_android_n_support_content_scheme));
         }
 
         Intent intent = new Intent();
