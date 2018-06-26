@@ -66,7 +66,7 @@ public class PermissionModel implements Permission.Model {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // positive button logic
-                        new InventoryTask(context, "Inventory File").shareInventory(type[0]);
+                        new InventoryTask(context, Inventory.APP_VERSION).shareInventory(type[0]);
                     }
                 });
 
@@ -87,8 +87,8 @@ public class PermissionModel implements Permission.Model {
 
     @Override
     public void generateInventory(final Context context) {
-        final ProgressDialog progress = ProgressDialog.show(context, "MDM Agent",
-                "Creating inventory...", true);
+        final ProgressDialog progress = ProgressDialog.show(context, context.getString(R.string.app_name),
+                context.getString(R.string.creating_inventory), true);
 
         Inventory inventory = new Inventory();
 
@@ -107,7 +107,7 @@ public class PermissionModel implements Permission.Model {
         inventory.getXMLInventory(context, new InventoryTask.OnTaskCompleted() {
             @Override
             public void onTaskSuccess(String s) {
-                progress.setMessage("Creating session...");
+                progress.setMessage(context.getString(R.string.creating_session));
 
                 EnrollmentHelper sessionToken = new EnrollmentHelper(context);
                 sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
@@ -129,7 +129,7 @@ public class PermissionModel implements Permission.Model {
             @Override
             public void onTaskError(Throwable throwable) {
                 progress.dismiss();
-                presenter.showError("The inventory fail");
+                presenter.showError(context.getString(R.string.inventory_fail) + throwable.getMessage());
             }
         });
     }

@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.data.MqttData;
 
 public class Inventory {
-    private static final String APP_VERSION = "FlyveMDMAgent_" + BuildConfig.VERSION_NAME;
+    public static final String APP_VERSION = "FlyveMDMAgent_" + BuildConfig.VERSION_NAME;
 
     public void getXMLInventory(Context context, InventoryTask.OnTaskCompleted callback) {
         InventoryTask inventoryTask = new InventoryTask(context, APP_VERSION, true);
