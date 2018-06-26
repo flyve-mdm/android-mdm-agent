@@ -219,4 +219,12 @@
     <string name="creating_inventory">Creating inventory...</string>
     <string name="creating_session">Creating session...</string>
     <string name="inventory_fail">The inventory fail:</string>
+    <string name="empty">Empty</string>
+    <string name="connection_variables">Connection variables</string>
+    <string name="error_on_client_connect">Error on client.connect</string>
+    <string name="mqtt_exception">MQTT Exception:</string>
+    <string name="general_exception">General Exception</string>
+    <string name="mqtt_connection_lost">MQTT Connection lost</string>
+    <string name="mqtt_delivery">MQTT Delivery</string>
+    <string name="response_id">Response id</string>
 </resources>
