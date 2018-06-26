@@ -1,7 +1,4 @@
----
-layout: coverage
----
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../resources/report.css" type="text/css"/><link rel="shortcut icon" href="../resources/report.gif" type="image/gif"/><title>EnrollmentModel.java</title><link rel="stylesheet" href="../resources/prettify.css" type="text/css"/><script type="text/javascript" src="../resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.core.enrollment</a> &gt; <span class="el_source">EnrollmentModel.java</span></div><h1>EnrollmentModel.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>EnrollmentModel.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.core.enrollment</a> &gt; <span class="el_source">EnrollmentModel.java</span></div><h1>EnrollmentModel.java</h1><pre class="source lang-java linenums">/*
  * Copyright Teclib. All rights reserved.
  *
  * Flyve MDM is a mobile device management software.
@@ -55,23 +52,23 @@ public class EnrollmentModel implements Enrollment.Model {
     private Enrollment.Presenter presenter;
     private Uri photo;
 
-<span class="nc" id="L55">    public EnrollmentModel(Enrollment.Presenter presenter) {</span>
-<span class="nc" id="L56">        this.presenter = presenter;</span>
-<span class="nc" id="L57">    }</span>
+<span class="fc" id="L55">    public EnrollmentModel(Enrollment.Presenter presenter) {</span>
+<span class="fc" id="L56">        this.presenter = presenter;</span>
+<span class="fc" id="L57">    }</span>
 
     @Override
     public void createInventory(Context context) {
 
-<span class="nc" id="L62">        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();</span>
-<span class="nc" id="L63">        File file = new File(path + &quot;/Inventory.xml&quot;);</span>
+<span class="fc" id="L62">        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();</span>
+<span class="fc" id="L63">        File file = new File(path + &quot;/Inventory.xml&quot;);</span>
 
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        if(!file.exists()) {</span>
-<span class="nc" id="L66">            presenter.showSnackError(&quot;The inventory file does not exist&quot;);</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if(!file.exists()) {</span>
+<span class="fc" id="L66">            presenter.showSnackError(&quot;The inventory file does not exist&quot;);</span>
         }
 
         //Read text from file
-<span class="nc" id="L70">        StringBuilder inventory = new StringBuilder();</span>
-<span class="nc" id="L71">        BufferedReader br = null;</span>
+<span class="fc" id="L70">        StringBuilder inventory = new StringBuilder();</span>
+<span class="fc" id="L71">        BufferedReader br = null;</span>
         try {
 <span class="nc" id="L73">            br = new BufferedReader(new FileReader(file));</span>
             String line;
@@ -81,12 +78,12 @@ public class EnrollmentModel implements Enrollment.Model {
             }
 <span class="nc" id="L79">            presenter.inventorySuccess(inventory.toString());</span>
 <span class="nc" id="L80">            br.close();</span>
-<span class="nc" id="L81">        } catch (IOException ex) {</span>
-<span class="nc" id="L82">            inventory.append(&quot;fail&quot;);</span>
-<span class="nc" id="L83">            presenter.showSnackError(&quot;Inventory fail, cannot read the file&quot;);</span>
-<span class="nc" id="L84">            FlyveLog.e(ex.getMessage());</span>
+<span class="fc" id="L81">        } catch (IOException ex) {</span>
+<span class="fc" id="L82">            inventory.append(&quot;fail&quot;);</span>
+<span class="fc" id="L83">            presenter.showSnackError(&quot;Inventory fail, cannot read the file&quot;);</span>
+<span class="fc" id="L84">            FlyveLog.e(ex.getMessage());</span>
         } finally {
-<span class="nc bnc" id="L86" title="All 6 branches missed.">            if(br!=null) {</span>
+<span class="pc bpc" id="L86" title="5 of 6 branches missed.">            if(br!=null) {</span>
                 try {
 <span class="nc" id="L88">                    br.close();</span>
 <span class="nc" id="L89">                } catch (IOException ex) {</span>
@@ -94,12 +91,12 @@ public class EnrollmentModel implements Enrollment.Model {
 <span class="nc" id="L91">                }</span>
             }
 <span class="nc" id="L93">        }</span>
-<span class="nc" id="L94">    }</span>
+<span class="fc" id="L94">    }</span>
 
     @Override
     public void createX509certification(Context context) {
-<span class="nc" id="L98">        EnrollmentHelper enroll = new EnrollmentHelper(context);</span>
-<span class="nc" id="L99">        enroll.createX509cert(new EnrollmentHelper.EnrollCallBack() {</span>
+<span class="fc" id="L98">        EnrollmentHelper enroll = new EnrollmentHelper(context);</span>
+<span class="fc" id="L99">        enroll.createX509cert(new EnrollmentHelper.EnrollCallBack() {</span>
             @Override
             public void onSuccess(String data) {
 <span class="nc" id="L102">                presenter.certificationX509Success();</span>
@@ -110,7 +107,7 @@ public class EnrollmentModel implements Enrollment.Model {
 <span class="nc" id="L107">                presenter.showSnackError(error);</span>
 <span class="nc" id="L108">            }</span>
         });
-<span class="nc" id="L110">    }</span>
+<span class="fc" id="L110">    }</span>
 
     @Override
     public Uri getPhoto() {
@@ -119,17 +116,17 @@ public class EnrollmentModel implements Enrollment.Model {
 
     @Override
     public void selectPhoto(final Activity activity, final int requestCamera, final int requestFile) {
-<span class="nc" id="L119">        final CharSequence[] items = {</span>
-<span class="nc" id="L120">                activity.getResources().getString(R.string.take_photo),</span>
-<span class="nc" id="L121">                activity.getResources().getString(R.string.choose_from_library),</span>
-<span class="nc" id="L122">                activity.getResources().getString(R.string.cancel)</span>
+<span class="fc" id="L119">        final CharSequence[] items = {</span>
+<span class="fc" id="L120">                activity.getResources().getString(R.string.take_photo),</span>
+<span class="fc" id="L121">                activity.getResources().getString(R.string.choose_from_library),</span>
+<span class="fc" id="L122">                activity.getResources().getString(R.string.cancel)</span>
         };
 
-<span class="nc" id="L125">        Helpers.hideKeyboard(activity);</span>
+<span class="fc" id="L125">        Helpers.hideKeyboard(activity);</span>
 
-<span class="nc" id="L127">        AlertDialog.Builder builder = new AlertDialog.Builder(activity);</span>
-<span class="nc" id="L128">        builder.setTitle(activity.getResources().getString(R.string.add_photo) );</span>
-<span class="nc" id="L129">        builder.setItems(items, new DialogInterface.OnClickListener() {</span>
+<span class="fc" id="L127">        AlertDialog.Builder builder = new AlertDialog.Builder(activity);</span>
+<span class="fc" id="L128">        builder.setTitle(activity.getResources().getString(R.string.add_photo) );</span>
+<span class="fc" id="L129">        builder.setItems(items, new DialogInterface.OnClickListener() {</span>
             @Override
             public void onClick(DialogInterface dialog, int item) {
 
@@ -143,8 +140,8 @@ public class EnrollmentModel implements Enrollment.Model {
                 }
 <span class="nc" id="L141">            }</span>
         });
-<span class="nc" id="L143">        builder.show();</span>
-<span class="nc" id="L144">    }</span>
+<span class="fc" id="L143">        builder.show();</span>
+<span class="fc" id="L144">    }</span>
 
     @Override
     public void enroll(final Activity activity, final List&lt;UserData.EmailsData&gt; arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber) {

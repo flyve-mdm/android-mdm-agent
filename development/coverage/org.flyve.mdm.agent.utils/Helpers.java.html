@@ -1,7 +1,4 @@
----
-layout: coverage
----
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../resources/report.css" type="text/css"/><link rel="shortcut icon" href="../resources/report.gif" type="image/gif"/><title>Helpers.java</title><link rel="stylesheet" href="../resources/prettify.css" type="text/css"/><script type="text/javascript" src="../resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.utils</a> &gt; <span class="el_source">Helpers.java</span></div><h1>Helpers.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Helpers.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.utils</a> &gt; <span class="el_source">Helpers.java</span></div><h1>Helpers.java</h1><pre class="source lang-java linenums">/*
  * Copyright Teclib. All rights reserved.
  *
  * Flyve MDM is a mobile device management software.
@@ -140,16 +137,16 @@ public class Helpers {
 	}
 	public static void hideKeyboard(Activity activity) {
 		// Hide keyboard
-<span class="nc" id="L140">		View view = activity.getCurrentFocus();</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (view != null) {</span>
+<span class="fc" id="L140">		View view = activity.getCurrentFocus();</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		if (view != null) {</span>
 			try {
-<span class="nc" id="L143">				InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);</span>
-<span class="nc" id="L144">				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);</span>
+<span class="fc" id="L143">				InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);</span>
+<span class="fc" id="L144">				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);</span>
 <span class="nc" id="L145">			} catch (NullPointerException ex) {</span>
 <span class="nc" id="L146">				FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L147">			}</span>
+<span class="fc" id="L147">			}</span>
 		}
-<span class="nc" id="L149">	}</span>
+<span class="fc" id="L149">	}</span>
 
 	/**
 	 * If the user selects the image with the option from the gallery
@@ -260,7 +257,7 @@ public class Helpers {
 <span class="nc" id="L257">		sendToNotificationBar(context, getIntID(), context.getResources().getString(R.string.app_name), message, false, MainActivity.class, &quot;&quot;);</span>
 <span class="nc" id="L258">	}</span>
 
-<span class="nc" id="L260">	private final static AtomicInteger c = new AtomicInteger(0);</span>
+<span class="fc" id="L260">	private final static AtomicInteger c = new AtomicInteger(0);</span>
 	public static int getIntID() {
 <span class="nc" id="L262">		return c.incrementAndGet();</span>
 	}
@@ -318,15 +315,15 @@ public class Helpers {
 	 * @return String with a plain text
 	 */
 	public static String base64decode(String text) {
-<span class="nc" id="L318">		String rtext = &quot;&quot;;</span>
-<span class="nc bnc" id="L319" title="All 2 branches missed.">		if(text == null) { return &quot;&quot;; }</span>
+<span class="fc" id="L318">		String rtext = &quot;&quot;;</span>
+<span class="pc bpc" id="L319" title="1 of 2 branches missed.">		if(text == null) { return &quot;&quot;; }</span>
 		try {
-<span class="nc" id="L321">			byte[] bdata = Base64.decode(text, Base64.DEFAULT);</span>
-<span class="nc" id="L322">			rtext = new String(bdata, &quot;UTF-8&quot;);</span>
+<span class="fc" id="L321">			byte[] bdata = Base64.decode(text, Base64.DEFAULT);</span>
+<span class="fc" id="L322">			rtext = new String(bdata, &quot;UTF-8&quot;);</span>
 <span class="nc" id="L323">		} catch (UnsupportedEncodingException e) {</span>
 <span class="nc" id="L324">			FlyveLog.e(e.getMessage());</span>
-<span class="nc" id="L325">		}</span>
-<span class="nc" id="L326">		return rtext.trim();</span>
+<span class="fc" id="L325">		}</span>
+<span class="fc" id="L326">		return rtext.trim();</span>
 	}
 
 	/**
@@ -432,15 +429,15 @@ public class Helpers {
 	 * @param callback to be invoked when the action is clicked
 	 */
 	public static void snack(Activity activity, String message, String action,  View.OnClickListener callback) {
-<span class="nc" id="L432">		Snackbar snackbar = Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)</span>
-<span class="nc" id="L433">				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))</span>
-<span class="nc" id="L434">				.setAction(action, callback);</span>
+<span class="fc" id="L432">		Snackbar snackbar = Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)</span>
+<span class="fc" id="L433">				.setActionTextColor(activity.getResources().getColor(R.color.snackbar_action))</span>
+<span class="fc" id="L434">				.setAction(action, callback);</span>
 
-<span class="nc" id="L436">		View snackbarView = snackbar.getView();</span>
-<span class="nc" id="L437">		TextView snackTextView = snackbarView.findViewById(android.support.design.R.id.snackbar_text);</span>
-<span class="nc" id="L438">		snackTextView.setMaxLines(3);</span>
-<span class="nc" id="L439">		snackbar.show();</span>
-<span class="nc" id="L440">	}</span>
+<span class="fc" id="L436">		View snackbarView = snackbar.getView();</span>
+<span class="fc" id="L437">		TextView snackTextView = snackbarView.findViewById(android.support.design.R.id.snackbar_text);</span>
+<span class="fc" id="L438">		snackTextView.setMaxLines(3);</span>
+<span class="fc" id="L439">		snackbar.show();</span>
+<span class="fc" id="L440">	}</span>
 
 	public static void deleteAllSMS(Context context) {
 <span class="nc" id="L443">		Cursor cursor = context.getContentResolver().query(</span>

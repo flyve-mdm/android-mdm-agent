@@ -1,7 +1,4 @@
----
-layout: coverage
----
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../resources/report.css" type="text/css"/><link rel="shortcut icon" href="../resources/report.gif" type="image/gif"/><title>DeeplinkModel.java</title><link rel="stylesheet" href="../resources/prettify.css" type="text/css"/><script type="text/javascript" src="../resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.core.deeplink</a> &gt; <span class="el_source">DeeplinkModel.java</span></div><h1>DeeplinkModel.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DeeplinkModel.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.core.deeplink</a> &gt; <span class="el_source">DeeplinkModel.java</span></div><h1>DeeplinkModel.java</h1><pre class="source lang-java linenums">/*
  * Copyright Teclib. All rights reserved.
  *
  * Flyve MDM is a mobile device management software.
@@ -42,128 +39,128 @@ public class DeeplinkModel implements Deeplink.Model {
 
     private Deeplink.Presenter presenter;
 
-<span class="nc" id="L42">    public DeeplinkModel(Deeplink.Presenter presenter) {</span>
-<span class="nc" id="L43">        this.presenter = presenter;</span>
-<span class="nc" id="L44">    }</span>
+<span class="fc" id="L42">    public DeeplinkModel(Deeplink.Presenter presenter) {</span>
+<span class="fc" id="L43">        this.presenter = presenter;</span>
+<span class="fc" id="L44">    }</span>
 
     @Override
     public void lint(Context context, String deeplink) {
-<span class="nc" id="L48">        String deepLinkErrorMessage = context.getResources().getString(R.string.ERROR_DEEP_LINK);</span>
+<span class="fc" id="L48">        String deepLinkErrorMessage = context.getResources().getString(R.string.ERROR_DEEP_LINK);</span>
         String deepLinkData;
 
         try {
-<span class="nc" id="L52">            deepLinkData = Helpers.base64decode(deeplink);</span>
+<span class="fc" id="L52">            deepLinkData = Helpers.base64decode(deeplink);</span>
 <span class="nc" id="L53">        } catch(Exception ex) {</span>
 <span class="nc" id="L54">            presenter.showError( deepLinkErrorMessage );</span>
 <span class="nc" id="L55">            FlyveLog.e(deepLinkErrorMessage + &quot; - &quot; + ex.getMessage());</span>
 <span class="nc" id="L56">            return;</span>
-<span class="nc" id="L57">        }</span>
+<span class="fc" id="L57">        }</span>
 
-<span class="nc" id="L59">        DeeplinkSchema deeplinkSchema = new DeeplinkSchema();</span>
+<span class="fc" id="L59">        DeeplinkSchema deeplinkSchema = new DeeplinkSchema();</span>
 
         try {
             // CSV comma-separated values format
             // url; user token; invitation token; support name; support phone, support website; support email
-<span class="nc" id="L64">            String[] csv = deepLinkData.split(&quot;\\\\;&quot;);</span>
+<span class="fc" id="L64">            String[] csv = deepLinkData.split(&quot;\\\\;&quot;);</span>
 
-<span class="nc bnc" id="L66" title="All 2 branches missed.">            if(csv.length &gt; 0) {</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">            if(csv.length &gt; 0) {</span>
 
                 // url
-<span class="nc bnc" id="L69" title="All 2 branches missed.">                if(!csv[0].isEmpty()) {</span>
-<span class="nc" id="L70">                    String url = csv[0];</span>
-<span class="nc" id="L71">                    deeplinkSchema.setUrl(url);</span>
-<span class="nc" id="L72">                } else {</span>
-<span class="nc" id="L73">                    deepLinkErrorMessage = &quot;URL &quot; + deepLinkErrorMessage;</span>
-<span class="nc" id="L74">                    presenter.showError( deepLinkErrorMessage );</span>
-<span class="nc" id="L75">                    return;</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">                if(!csv[0].isEmpty()) {</span>
+<span class="fc" id="L70">                    String url = csv[0];</span>
+<span class="fc" id="L71">                    deeplinkSchema.setUrl(url);</span>
+<span class="fc" id="L72">                } else {</span>
+<span class="fc" id="L73">                    deepLinkErrorMessage = &quot;URL &quot; + deepLinkErrorMessage;</span>
+<span class="fc" id="L74">                    presenter.showError( deepLinkErrorMessage );</span>
+<span class="fc" id="L75">                    return;</span>
                 }
 
                 // user token
-<span class="nc bnc" id="L79" title="All 2 branches missed.">                if(!csv[1].isEmpty()) {</span>
-<span class="nc" id="L80">                    String userToken = csv[1];</span>
-<span class="nc" id="L81">                    deeplinkSchema.setUserToken(userToken);</span>
-<span class="nc" id="L82">                } else {</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">                if(!csv[1].isEmpty()) {</span>
+<span class="fc" id="L80">                    String userToken = csv[1];</span>
+<span class="fc" id="L81">                    deeplinkSchema.setUserToken(userToken);</span>
+<span class="fc" id="L82">                } else {</span>
 <span class="nc" id="L83">                    deepLinkErrorMessage = &quot;USER &quot; + deepLinkErrorMessage;</span>
 <span class="nc" id="L84">                    presenter.showError( deepLinkErrorMessage );</span>
 <span class="nc" id="L85">                    return;</span>
                 }
 
                 // invitation token
-<span class="nc bnc" id="L89" title="All 2 branches missed.">                if(!csv[2].isEmpty()) {</span>
-<span class="nc" id="L90">                    String invitationToken = csv[2];</span>
-<span class="nc" id="L91">                    deeplinkSchema.setInvitationToken(invitationToken);</span>
-<span class="nc" id="L92">                } else {</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">                if(!csv[2].isEmpty()) {</span>
+<span class="fc" id="L90">                    String invitationToken = csv[2];</span>
+<span class="fc" id="L91">                    deeplinkSchema.setInvitationToken(invitationToken);</span>
+<span class="fc" id="L92">                } else {</span>
 <span class="nc" id="L93">                    deepLinkErrorMessage = &quot;TOKEN &quot; + deepLinkErrorMessage;</span>
 <span class="nc" id="L94">                    presenter.showError( deepLinkErrorMessage );</span>
 <span class="nc" id="L95">                    return;</span>
                 }
 
                 // name
-<span class="nc bnc" id="L99" title="All 4 branches missed.">                if(csv.length &gt; 3 &amp;&amp; !csv[3].isEmpty()) {</span>
-<span class="nc" id="L100">                    String name = csv[3];</span>
-<span class="nc" id="L101">                    deeplinkSchema.setName(name);</span>
+<span class="pc bpc" id="L99" title="2 of 4 branches missed.">                if(csv.length &gt; 3 &amp;&amp; !csv[3].isEmpty()) {</span>
+<span class="fc" id="L100">                    String name = csv[3];</span>
+<span class="fc" id="L101">                    deeplinkSchema.setName(name);</span>
                 }
 
                 // phone
-<span class="nc bnc" id="L105" title="All 4 branches missed.">                if(csv.length &gt; 4 &amp;&amp; !csv[4].isEmpty()) {</span>
-<span class="nc" id="L106">                    String phone = csv[4];</span>
-<span class="nc" id="L107">                    deeplinkSchema.setPhone(phone);</span>
+<span class="pc bpc" id="L105" title="2 of 4 branches missed.">                if(csv.length &gt; 4 &amp;&amp; !csv[4].isEmpty()) {</span>
+<span class="fc" id="L106">                    String phone = csv[4];</span>
+<span class="fc" id="L107">                    deeplinkSchema.setPhone(phone);</span>
                 }
 
                 // website
-<span class="nc bnc" id="L111" title="All 4 branches missed.">                if(csv.length &gt; 5 &amp;&amp; !csv[5].isEmpty()) {</span>
-<span class="nc" id="L112">                    String website = csv[5];</span>
-<span class="nc" id="L113">                    deeplinkSchema.setWebsite(website);</span>
+<span class="pc bpc" id="L111" title="2 of 4 branches missed.">                if(csv.length &gt; 5 &amp;&amp; !csv[5].isEmpty()) {</span>
+<span class="fc" id="L112">                    String website = csv[5];</span>
+<span class="fc" id="L113">                    deeplinkSchema.setWebsite(website);</span>
                 }
 
                 // email
-<span class="nc bnc" id="L117" title="All 4 branches missed.">                if(csv.length &gt; 6 &amp;&amp; !csv[6].isEmpty()) {</span>
-<span class="nc" id="L118">                    String email = csv[6];</span>
-<span class="nc" id="L119">                    deeplinkSchema.setEmail(email);</span>
-<span class="nc" id="L120">                }</span>
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">                if(csv.length &gt; 6 &amp;&amp; !csv[6].isEmpty()) {</span>
+<span class="fc" id="L118">                    String email = csv[6];</span>
+<span class="fc" id="L119">                    deeplinkSchema.setEmail(email);</span>
+<span class="fc" id="L120">                }</span>
             } else {
 <span class="nc" id="L122">                presenter.showError( deepLinkErrorMessage );</span>
             }
 
             // Success
-<span class="nc" id="L126">            presenter.lintSuccess(deeplinkSchema);</span>
+<span class="fc" id="L126">            presenter.lintSuccess(deeplinkSchema);</span>
 
 <span class="nc" id="L128">        } catch (Exception ex) {</span>
 <span class="nc" id="L129">            FlyveLog.e(ex.getMessage());</span>
 <span class="nc" id="L130">            presenter.showError( deepLinkErrorMessage );</span>
-<span class="nc" id="L131">        }</span>
-<span class="nc" id="L132">    }</span>
+<span class="fc" id="L131">        }</span>
+<span class="fc" id="L132">    }</span>
 
     @Override
     public void saveSupervisor(Context context, String name, String phone, String webSite, String email) {
-<span class="nc" id="L136">        SupervisorData supervisorData = new SupervisorData(context);</span>
+<span class="fc" id="L136">        SupervisorData supervisorData = new SupervisorData(context);</span>
 
         // name
-<span class="nc" id="L139">        supervisorData.setName(name);</span>
+<span class="fc" id="L139">        supervisorData.setName(name);</span>
 
         // phone
-<span class="nc" id="L142">        supervisorData.setPhone(phone);</span>
+<span class="fc" id="L142">        supervisorData.setPhone(phone);</span>
 
         // website
-<span class="nc" id="L145">        supervisorData.setWebsite(webSite);</span>
+<span class="fc" id="L145">        supervisorData.setWebsite(webSite);</span>
 
         // email
-<span class="nc" id="L148">        supervisorData.setEmail(email);</span>
-<span class="nc" id="L149">    }</span>
+<span class="fc" id="L148">        supervisorData.setEmail(email);</span>
+<span class="fc" id="L149">    }</span>
 
     @Override
     public void saveMQTTConfig(Context context, String url, String userToken, String invitationToken) {
-<span class="nc" id="L153">        MqttData cache = new MqttData(context);</span>
-<span class="nc" id="L154">        cache.setUrl(url);</span>
-<span class="nc" id="L155">        cache.setUserToken(userToken);</span>
-<span class="nc" id="L156">        cache.setInvitationToken(invitationToken);</span>
-<span class="nc" id="L157">    }</span>
+<span class="fc" id="L153">        MqttData cache = new MqttData(context);</span>
+<span class="fc" id="L154">        cache.setUrl(url);</span>
+<span class="fc" id="L155">        cache.setUserToken(userToken);</span>
+<span class="fc" id="L156">        cache.setInvitationToken(invitationToken);</span>
+<span class="fc" id="L157">    }</span>
 
     @Override
     public void openEnrollment(final Activity activity, final int request) {
 
-<span class="nc" id="L162">        EnrollmentHelper sessionToken = new EnrollmentHelper(activity);</span>
-<span class="nc" id="L163">        sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {</span>
+<span class="fc" id="L162">        EnrollmentHelper sessionToken = new EnrollmentHelper(activity);</span>
+<span class="fc" id="L163">        sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {</span>
             @Override
             public void onSuccess(String data) {
                 // Active EnrollmentHelper Token is stored on cache
@@ -173,11 +170,11 @@ public class DeeplinkModel implements Deeplink.Model {
 
             @Override
             public void onError(String error) {
-<span class="nc" id="L173">                presenter.showError( error );</span>
-<span class="nc" id="L174">                presenter.openEnrollFail();</span>
-<span class="nc" id="L175">            }</span>
+<span class="fc" id="L173">                presenter.showError( error );</span>
+<span class="fc" id="L174">                presenter.openEnrollFail();</span>
+<span class="fc" id="L175">            }</span>
         });
-<span class="nc" id="L177">    }</span>
+<span class="fc" id="L177">    }</span>
 
     /**
      * Open enrollment
