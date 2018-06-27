@@ -31,6 +31,9 @@ git push --follow-tags origin $CIRCLE_BRANCH
 
 # Merge back the develop branch step
 
+# checkout uncommited changes
+git checkout -- app/src/main/assets/setup.properties
+
 # delete branch
 git branch -D develop
 
