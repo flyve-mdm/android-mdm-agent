@@ -44,19 +44,22 @@ sudo apt-get install ruby-full build-essential
 # install fastlane
 sudo gem install fastlane --no-rdoc --no-ri
 
-# install Node.js v7
-curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+# install yarn
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+# install without Node since it'll be installed below
+sudo apt-get update && sudo apt-get install --no-install-recommends yarn
+
+# install Node.js v8 (version required by yarn)
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo sudo apt-get install -y nodejs
 
-# install globally
-sudo npm install -g conventional-github-releaser
-sudo npm install -g node-github-release
-
 # install node package available on package.json
-sudo npm install
+yarn install
 
 # config git
 git config --global user.email $GITHUB_EMAIL
-git config --global user.name "Flyve MDM"
+git config --global user.name "Teclib"
 git remote remove origin
 git remote add origin https://$GITHUB_USER:$GITHUB_TOKEN@github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git
