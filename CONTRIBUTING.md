@@ -33,26 +33,28 @@ We present you here the guidelines to start contributing in any of the Flyve MDM
         - 4.1.4 [Information Needed for the Report](#4.1.4)
         - 4.1.5 [Submit an Issue](#4.1.5)
     - 4.2 [How to Create a Pull Request (PR)](#4.2)
-        - 4.2.1 [Create a Branch and Naming it](#4.2.1)
-        - 4.2.2 [Make Changes](#4.2.2)
-        - 4.2.3 [Commit Your Changes](#4.2.3)
-            - 4.2.3.1 [Rules to Follow](#4.2.3.1)
-            - 4.2.3.2 [Commit Format](#4.2.3.2)
-                - 4.2.3.2.1 [Header: Writing a `type`](#4.2.3.2.1)
-                - 4.2.3.2.2 [Header: Writing the `(optional scope)`](#4.2.3.2.2 )
-                - 4.2.3.2.3 [Header: Writing a `description`](#4.2.3.2.3)
-                - 4.2.3.2.4 [Header Lenght](#4.2.3.2.4)
-                - 4.2.3.2.5 [Writing the `optional body`](#4.2.3.2.5)
-                - 4.2.3.2.6 [Writing the `optional footer`](#4.2.3.2.6)
-            - 4.2.3.3 [Commit Examples](#4.2.3.3)
-        - 4.2.4 [Push your Changes](#4.2.4)
-        - 4.2.5 [Create a Pull Request](#4.2.5)
-            - 4.2.5.1 [How to Write a Title for a Pull Request](#4.2.5.1)
-            - 4.2.5.2 [Before Send a Pull Request](#4.2.5.2)
-            - 4.2.5.3 [How We Check your Submission](#4.2.5.3)
-                - 4.2.5.3.1 [Status Check](#4.2.5.3.1)
-                - 4.2.5.3.2 [App/Bots List](#4.2.5.3.2)
-        - 4.2.6 [How to proceed with suggestions](#4.2.6)
+        - 4.2.1 [Create a Fork](#4.2.1)
+            - 4.2.1.1 [Keep updated your Fork](#4.2.1.1)
+        - 4.2.2 [Create a Branch and Naming it](#4.2.2)
+        - 4.2.3 [Make Changes](#4.2.3)
+        - 4.2.4 [Commit Your Changes](#4.2.4)
+            - 4.2.4.1 [Rules to Follow](#4.2.4.1)
+            - 4.2.4.2 [Commit Format](#4.2.4.2)
+                - 4.2.4.2.1 [Header: Writing a `type`](#4.2.4.2.1)
+                - 4.2.4.2.2 [Header: Writing the `(optional scope)`](#4.2.4.2.2 )
+                - 4.2.4.2.3 [Header: Writing a `description`](#4.2.4.2.3)
+                - 4.2.4.2.4 [Header Lenght](#4.2.4.2.4)
+                - 4.2.4.2.5 [Writing the `optional body`](#4.2.4.2.5)
+                - 4.2.4.2.6 [Writing the `optional footer`](#4.2.4.2.6)
+            - 4.2.4.3 [Commit Examples](#4.2.4.3)
+        - 4.2.5 [Push your Changes](#4.2.5)
+        - 4.2.6 [Create a Pull Request](#4.2.6)
+            - 4.2.6.1 [How to Write a Title for a Pull Request](#4.2.6.1)
+            - 4.2.6.2 [Before Send a Pull Request](#4.2.6.2)
+            - 4.2.6.3 [How We Check your Submission](#4.2.6.3)
+                - 4.2.6.3.1 [Status Check](#4.2.6.3.1)
+                - 4.2.6.3.2 [App/Bots List](#4.2.6.3.2)
+        - 4.2.7 [How to proceed with suggestions](#4.2.7)
 - 5 [What to do next?](#5)
 - 6 [Coding Rules](#6)
 
@@ -122,11 +124,47 @@ Having all data at hand, file the new issue by filling out our [Issue form](http
 
 **&mdash; That's it! :tada:**
 
-## <a name="4.2"></a> 4.2 How to Create a Pull Request (PR)
+## <a name="4.2"></a> 4.2 How to Create a Pull Request (PR) [:top:](#top)
 
-Before submitting your Pull Request check for an open or closed PR that relates to your submission. We don't want to duplicate efforts.
+Before submitting a Pull Request, check for an open or closed PR that relates to your submission. We don't want to duplicate efforts.
 
-### <a name="4.2.1"></a> 4.2.1 Create a Branch and Naming it
+### <a name="4.2.1"></a> 4.2.1 Create a Fork
+
+Fork the repository before making any changes, a fork is a copy of the repository which allows you to _freely experiment with changes_ without affecting the original project.
+
+Go to the top-right corner on GitHub, and click on ![Fork](https://github.com/Naylin15/Screenshots/blob/master/docs/fork.png?raw=true)
+
+### <a name="4.2.1.1"></a> 4.2.1.1 Keep updated your Fork
+
+To avoid and also to solve conflicts in your PR, you must update your Fork since other team mates may have already submitted their work.
+
+Following this [Gist](https://gist.github.com/CristinaSolana/1885435):
+
+**1 - Clone your fork**
+
+```git clone git@github.com:YOUR-USER-NAME/android-mdm-agent.git```
+
+**2 - Add remote upstream**
+
+```shell
+
+cd path/to/your/fork/
+git remote add upstream git://github.com/flyve-mdm/android-mdm-agent.git
+
+```
+
+**3 - Update your fork**
+
+```shell
+
+git fetch upstream
+git pull upstream develop
+
+```
+
+:memo: **Note:** You can pull from any branch of the remote repo.
+
+### <a name="4.2.2"></a> 4.2.2 Create a Branch and Naming it
 
 The project is organized according to the branch model [Git Flow.](http://nvie.com/posts/a-successful-git-branching-model/) Create a new branch before committing any changes. A _branch is a parallel version of a repository._ It is contained within the repository but does not affect the **`primary or master`** branch.
 
@@ -134,21 +172,23 @@ The project is organized according to the branch model [Git Flow.](http://nvie.c
 
 :no_entry_sign: **Important:** Do not commit to our default **`develop`** branch. Name it anything _except master, develop, release-*, or hotfix-*_. We'll use **`created-branch`** an example.
 
-### <a name="4.2.2"></a> 4.2.2 Make Changes
+### <a name="4.2.3"></a> 4.2.3 Make Changes
 
 Make your changes in your **newly created** branch.
 
 ```console
+
     git checkout -b feature/created-branch develop
+
 ```
 
-### <a name="4.2.3"></a> 4.2.3 Commit Your Changes
+### <a name="4.2.4"></a> 4.2.4 Commit Your Changes
 A commit, or "revision", is an individual change to a file (or set of files). It's like when you save a file, except with Git, every time you save it creates a unique ID (a.k.a. the "SHA" or "hash") that allows you to keep a record of what changes were made when and by who. Commits usually contain a commit message which is a brief description of what changes were made.
 
-### <a name="4.2.3.1"></a> 4.2.3.1 Rules to Follow
+### <a name="4.2.4.1"></a> 4.2.4.1 Rules to Follow
 For commits, we follow the [Conventional Commit](http://conventionalcommits.org/). This leads to **more readable messages** that are easy to follow when looking through the project history. But also, we use the git commit messages to **automatically generate changelogs** from these messages.
 
-### <a name="4.2.3.2"></a> 4.2.3.2 Commit Format
+### <a name="4.2.4.2"></a> 4.2.4.2 Commit Format
 Each commit message consists of a **header**, a **body**, and a **footer**. The header has a special
 format that includes a **type**, a **scope**, and a **description**:
 
@@ -164,7 +204,7 @@ optional body
 optional footer
 ```
 
-### <a name="4.2.3.2.1"></a> 4.2.3.2.1 Header: Writing a `type`
+### <a name="4.2.4.2.1"></a> 4.2.4.2.1 Header: Writing a `type`
 Commits must be prefixed with a type, which consists of a verb, **feat, fix, build,** followed by a colon and space.
 
 **Your options:**
@@ -184,7 +224,7 @@ Commits must be prefixed with a type, which consists of a verb, **feat, fix, bui
 >:point_right:feat:point_left:(parser): add ability to parse arrays
 ---
 
-### <a name="4.2.3.2.2"></a> 4.2.3.2.2 Header: Writing the `(optional scope)`
+### <a name="4.2.4.2.2"></a> 4.2.4.2.2 Header: Writing the `(optional scope)`
 Refers to the extent, subject matter or contextual information about your changes. A scope is a phrase describing the file modified or a section of the codebase, it’s always enclosed in parenthesis.
 
 ---
@@ -192,7 +232,7 @@ Refers to the extent, subject matter or contextual information about your change
 > feat:point_right:(parser):point_left:: add ability to parse arrays
 ---
 
-### <a name="4.2.3.2.3"></a> 4.2.3.2.3 Header: Writing a `description`
+### <a name="4.2.4.2.3"></a> 4.2.4.2.3 Header: Writing a `description`
 A description must immediately follow the **`type(optional scope):`** The description is a short description of the commit.
 
 **Important**
@@ -206,10 +246,10 @@ A description must immediately follow the **`type(optional scope):`** The descri
 >feat(parser)::point_right:add ability to parse arrays:point_left:
 ---
 
-### <a name="4.2.3.2.4"></a> 4.2.3.2.4 Header Lenght
+### <a name="4.2.4.2.4"></a> 4.2.4.2.4 Header Lenght
 The **header** cannot be longer than 100 characters. This allows the message to be easier to read on GitHub as well as in various git tools.
 
-### <a name="4.2.3.2.5"></a> 4.2.3.2.5 Writing the `optional body`
+### <a name="4.2.4.2.5"></a> 4.2.4.2.5 Writing the `optional body`
 The body should include the motivation for the change and contrast this with previous behavior.
 
 ---
@@ -221,7 +261,7 @@ fix broken links
 ```
 ---
 
-### <a name="4.2.3.2.6"></a> 4.2.3.2.6 Writing the `optional footer`
+### <a name="4.2.4.2.6"></a> 4.2.4.2.6 Writing the `optional footer`
 The `<optional footer>` should contain a [closing reference to an issue](https://help.github.com/articles/closing-issues-using-keywords/) if any.
 
 For example, to close an issue numbered **`123`**, you could use the phrases **`Closes #123`** in your pull request description or commit message. Once the branch is merged into the default branch, the issue will close.
@@ -231,7 +271,7 @@ For example, to close an issue numbered **`123`**, you could use the phrases **`
 >:point_right:Closes #123:point_left:
 ---
 
-### <a name="4.2.3.3"></a> 4.2.3.3 Commit Examples
+### <a name="4.2.4.3"></a> 4.2.4.3 Commit Examples
 :shit:
 **Bad**
 
@@ -250,22 +290,24 @@ remove out of date paragraph
 fix broken links
 ```
 
-### <a name="4.2.4"></a> 4.2.4 Push your Changes
+### <a name="4.2.5"></a> 4.2.5 Push your Changes
 Pushing refers to **sending your committed changes to a remote repository**, such as a repository hosted on GitHub. For instance, if you change something locally, you'd want to then push those changes so that others may access them.
 
 After working on your changes you need to Push it (upload) your **newly created branch** to GitHub
 
-```console
-    git push origin feature/created-branch
-```
+```git push origin feature/created-branch```
 
-### <a name="4.2.5"></a> 4.2.5 Create a Pull Request
+Then you'll need to run:
+
+```git push --set-upstream origin feature/created-branch```
+
+### <a name="4.2.6"></a> 4.2.6 Create a Pull Request
 
 Pull requests or PR are **proposed changes** to a repository submitted by a user and accepted or rejected by a repository's collaborators.
 
 After all the work being pushed to the newly created branch, In GitHub, send a pull request to our [repository.](https://github.com/flyve-mdm/android-mdm-agent/pulls)
 
-### <a name="4.2.5.1"></a> 4.2.5.1 How to Write a Title for a Pull Request
+### <a name="4.2.6.1"></a> 4.2.6.1 How to Write a Title for a Pull Request
 Pull Request should be named in reference to the main fix or feature you provide; minor information can be added to the description. Please be specific and don't use generic terms.
 
 **:warning: Important:** Please avoid generic terms.
@@ -289,7 +331,7 @@ Pull Request should be named in reference to the main fix or feature you provide
 >:point_right:Added a Table of Content for the Contributing Guideline Document.:point_left:
 ---
 
-### <a name="4.2.5.2"></a> 4.2.5.2 Before Send a Pull Request
+### <a name="4.2.6.2"></a> 4.2.6.2 Before Send a Pull Request
 
 **1 - Pull Request Description:** Write a description about the changes, we provide a [template](https://github.com/flyve-mdm/android-mdm-agent/community) for Pull Request descriptions. When you're creating a Pull Request it'll be shown automatically. Just fill it out and you're done.
 
@@ -299,15 +341,15 @@ Pull Request should be named in reference to the main fix or feature you provide
 
 **&mdash; That's it! :tada:**
 
-### <a name="4.2.5.3"></a> 4.2.5.3 How We Check your Submission
+### <a name="4.2.6.3"></a> 4.2.6.3 How We Check your Submission
 
-#### <a name="4.2.5.3.1"></a> 4.2.5.3.1 Status Check :rotating_light:
+#### <a name="4.2.6.3.1"></a> 4.2.6.3.1 Status Check :rotating_light:
 
 Required status checks ensure us that all required tests are passing before collaborators can make changes to a protected branch. We enforce status checks before a branch is merged.
 
 The type of required status check we choose is _Loose_, not all of them are required but some of them determines whether your changes will be reviewed or not. Some of them are here on this list, although, some of them may not be implemented in all repositories:
 
-#### <a name="4.2.5.3.2"></a> 4.2.5.3.2 App/Bots List :traffic_light:
+#### <a name="4.2.6.3.2"></a> 4.2.6.3.2 App/Bots List :traffic_light:
 
 **WIP:** Refers to Work In Progress, this app helps you to prevent your PR to be merged accidentally, add the word "wip" or "WIP" to its title and WIP bot will set its status to error. When you write WIP in the PR title it means that your changes are still in progress or unfinished, so it won't be reviewed until the WIP is removed.
 
@@ -341,7 +383,7 @@ _ci/circleci build: Maintainers: Required / Contributors: Required_
 
 _continuous-integration/travis-ci/push(and pr): Maintainers: Required / Contributors: Required_
 
-### <a name="4.2.6"></a> 4.2.6 How to proceed with suggestions
+### <a name="4.2.7"></a> 4.2.7 How to proceed with suggestions
 
 If we suggest changes then:
 * Make the required updates.
