@@ -28,6 +28,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -106,14 +107,7 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
 
         // if user is not enrolled show help
         setContentView(R.layout.activity_splash);
-        presenter = new WalkthroughPresenter(this);
-
-        ArrayList<WalkthroughData> walkthrough = new ArrayList<>();
-        walkthrough.add(new WalkthroughData(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
-        walkthrough.add(new WalkthroughData(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));
-        walkthrough.add(new WalkthroughData(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));
-
-        presenter.createSlides(walkthrough, getSupportFragmentManager());
+        setupUI();
 
         FloatingActionButton btnScan = findViewById(R.id.btnScan);
         btnScan.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +119,23 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
 
         TextView txtVersion = findViewById(R.id.txtVersion);
         txtVersion.setText(MDMAgent.getCompleteVersion());
+    }
+
+    private void setupUI() {
+        presenter = new WalkthroughPresenter(this);
+
+        ArrayList<WalkthroughData> walkthrough = new ArrayList<>();
+        walkthrough.add(new WalkthroughData(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
+        walkthrough.add(new WalkthroughData(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));
+        walkthrough.add(new WalkthroughData(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));
+
+        presenter.createSlides(walkthrough, getSupportFragmentManager());
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setupUI();
     }
 
     @Override
