@@ -30,11 +30,14 @@
 sudo mv ./fastlane/metadata/android ./screenshots
 sudo mv ./screenshots/screenshots.html ./screenshots/index.html
 
-# add
-git add .
+# send to gh-pages
+yarn gh-pages --dist ./screenshots/ --dest ./screenshots/ --add -m "ci(screenshot): update screenshot"
 
-# temporal commit
-git commit -m "ci(tmp): temporal commit"
+# Update headers for correct display on project site
+
+# checkout uncommited changes
+git checkout -- app/src/main/assets/setup.properties
+git checkout -- app/src/main/assets/about.properties
 
 # fetch
 git fetch origin gh-pages
@@ -45,17 +48,14 @@ git checkout gh-pages
 # clean workspace
 sudo git clean -fdx
 
-# git get screenshots
-git checkout $CIRCLE_BRANCH ./screenshots
-
 # add header
 ruby ./ci/add_header_screenshot.rb
 
 # add
 git add ./screenshots
 
-# commit
-git commit -m "ci(screenshot): update screenshot"
+# commit headers change
+git commit -m "ci(screenshots): add headers"
 
 # push to branch
 git push origin gh-pages
