@@ -32,30 +32,30 @@ import org.flyve.mdm.agent.data.WalkthroughData;
 import org.flyve.mdm.agent.ui.FragmentSlideWalkthrough;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class WalkthroughModel implements Walkthrough.Model {
 
     private Walkthrough.Presenter Presenter;
-    private ArrayList&lt;WalkthroughData&gt; data;
-
-<span class="fc" id="L41">    public WalkthroughModel(Walkthrough.Presenter Presenter) {</span>
-<span class="fc" id="L42">        this.Presenter = Presenter;</span>
-<span class="fc" id="L43">    }</span>
+<span class="fc" id="L40">    public WalkthroughModel(Walkthrough.Presenter Presenter) {</span>
+<span class="fc" id="L41">        this.Presenter = Presenter;</span>
+<span class="fc" id="L42">    }</span>
 
     @Override
     public void createSlides(ArrayList&lt;WalkthroughData&gt; data, FragmentManager fm) {
-<span class="fc" id="L47">        this.data = data;</span>
-
-<span class="fc" id="L49">        PagerAdapter mPagerAdapter = new SimpleSlidePagerAdapter(fm);</span>
-<span class="fc" id="L50">        Presenter.addSlides(mPagerAdapter);</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L46">        PagerAdapter mPagerAdapter = new SimpleSlidePagerAdapter(fm, data);</span>
+<span class="fc" id="L47">        Presenter.addSlides(mPagerAdapter);</span>
+<span class="fc" id="L48">    }</span>
 
     /**
      * A simple pager adapter
      */
     private class SimpleSlidePagerAdapter extends FragmentStatePagerAdapter {
-<span class="fc" id="L57">        public SimpleSlidePagerAdapter(FragmentManager fm) {</span>
-<span class="fc" id="L58">            super(fm);</span>
+        List&lt;WalkthroughData&gt; data;
+
+<span class="fc" id="L56">        public SimpleSlidePagerAdapter(FragmentManager fm, List&lt;WalkthroughData&gt; data) {</span>
+<span class="fc" id="L57">            super(fm);</span>
+<span class="fc" id="L58">            this.data = data;</span>
 <span class="fc" id="L59">        }</span>
 
         @Override
