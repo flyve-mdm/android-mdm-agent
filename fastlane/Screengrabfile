@@ -3,8 +3,8 @@
 app_package_name 'org.flyve.mdm.agent'
 use_tests_in_packages ['org.flyve.mdm.agent']
 
-app_apk_path '/home/circleci/flyve_mdm/app/build/outputs/apk/debug/app-debug.apk'
-tests_apk_path '/home/circleci/flyve_mdm/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk'
+app_apk_path Dir["/home/circleci/flyve_mdm/app/build/outputs/apk/debug/*.apk"].first
+tests_apk_path Dir["/home/circleci/flyve_mdm/app/build/outputs/apk/androidTest/debug/*.apk"].first
 
 locales ['en-US', 'en-GB', 'fr-FR', 'es-ES', 'ko-KR', 'ru-RU']
 
