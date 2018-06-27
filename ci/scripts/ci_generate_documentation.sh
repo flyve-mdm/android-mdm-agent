@@ -42,8 +42,14 @@ mv development/androidTests/connected development/test-reports
 # replace .resources with resource because github doesn't support folders with "_" or "." at the beginning
 mv development/coverage/.resources development/coverage/resources
 
+# find and replace links to the old name of file
+grep -rl .resources development/coverage/ | xargs sed -i 's|.resources|resources|g'
+
 # replace .sessions
 mv development/coverage/.sessions.html development/coverage/sessions.html
+
+# find and replace links to the old name of file
+grep -rl .sessions.html development/coverage/ | xargs sed -i 's|.sessions.html|sessions.html|g'
 
 # Generate javadoc this folder must be on .gitignore
 javadoc -d ./development/code-documentation -sourcepath ./app/src/main/java -subpackages . -bootclasspath $ANDROID_HOME/platforms/android-26/android.jar
@@ -53,6 +59,9 @@ sudo rm ./development/code-documentation/index.html
 
 # rename the overview-summary.html file to index.html
 mv ./development/code-documentation/overview-summary.html ./development/code-documentation/index.html
+
+# find and replace links to the old name of file
+grep -rl overview-summary.html development/code-documentation/ | xargs sed -i 's|overview-summary.html|index.html|g'
 
 # send development folder to project site with the documentation updated
 yarn gh-pages --dist ./development/ --dest ./development/ --add -m "docs(development): update documentation
