@@ -27,19 +27,19 @@
 #
 
 # push tag to github
-conventional-github-releaser -p angular -t $GITHUB_TOKEN -r 0 2> /dev/null || true
+yarn conventional-github-releaser -p angular -t $GITHUB_TOKEN -r 0 2> /dev/null || true
 
 GIT_TAG=$(jq -r ".version" package.json)
-FILE=$(find ./app/build/outputs/apk -name '*.apk')
+FILE=$(find ./app/build/outputs/apk/release -name '*.apk')
 # Update release name
-github-release edit \
+yarn github-release edit \
 --user $CIRCLE_PROJECT_USERNAME \
 --repo $CIRCLE_PROJECT_REPONAME \
 --tag ${GIT_TAG} \
 --name "MDM Agent v${GIT_TAG}" \
 
 # Upload example code release
-github-release upload \
+yarn github-release upload \
 --user $CIRCLE_PROJECT_USERNAME \
 --repo $CIRCLE_PROJECT_REPONAME \
 --tag ${GIT_TAG} \
