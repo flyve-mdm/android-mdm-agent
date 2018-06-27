@@ -16,6 +16,8 @@ labels:
     color: f44336
   - name: build
     color: 795548
+  - name: cherry-pick
+    color: af1c46
   - name: ci
     color: fbca04
   - name: documentation
