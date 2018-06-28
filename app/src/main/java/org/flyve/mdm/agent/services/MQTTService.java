@@ -575,157 +575,121 @@ public class MQTTService extends Service implements MqttCallback {
         }
 
         // Policy/passwordEnabled
-        String PASSWORD_ENABLE = "passwordEnabled";
-        callPolicy(PasswordEnablePolicy.class, PASSWORD_ENABLE, priority, topic, messageBody);
+        callPolicy(PasswordEnablePolicy.class, PasswordEnablePolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/passwordQuality
-        String PASSWORD_QUALITY = "passwordQuality";
-        callPolicy(PasswordQualityPolicy.class, PASSWORD_QUALITY, priority, topic, messageBody);
+        callPolicy(PasswordQualityPolicy.class, PasswordQualityPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/passwordMinLength
-        String PASSWORD_MIN_LENGTH = "passwordMinLength";
-        callPolicy(PasswordMinLengthPolicy.class, PASSWORD_MIN_LENGTH, priority, topic, messageBody);
+        callPolicy(PasswordMinLengthPolicy.class, PasswordMinLengthPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/passwordMinLowerCase
-        String PASSWORD_MIN_LOWERCASE = "passwordMinLowerCase";
-        callPolicy(PasswordMinLowerCasePolicy.class, PASSWORD_MIN_LOWERCASE, priority, topic, messageBody);
+        callPolicy(PasswordMinLowerCasePolicy.class, PasswordMinLowerCasePolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/passwordMinUpperCase
-        String PASSWORD_MIN_UPPERCASE = "passwordMinUpperCase";
-        callPolicy(PasswordMinUpperCasePolicy.class, PASSWORD_MIN_UPPERCASE, priority, topic, messageBody);
+        callPolicy(PasswordMinUpperCasePolicy.class, PasswordMinUpperCasePolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/passwordMinNonLetter
-        String PASSWORD_MIN_NON_LETTER = "passwordMinNonLetter";
-        callPolicy(PasswordMinNonLetterPolicy.class, PASSWORD_MIN_NON_LETTER, priority, topic, messageBody);
+        callPolicy(PasswordMinNonLetterPolicy.class, PasswordMinNonLetterPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/passwordMinLetters
-        String PASSWORD_MIN_LETTERS = "passwordMinLetters";
-        callPolicy(PasswordMinLetterPolicy.class, PASSWORD_MIN_LETTERS, priority, topic, messageBody);
+        callPolicy(PasswordMinLetterPolicy.class, PasswordMinLetterPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/passwordMinNumeric
-        String PASSWORD_MIN_NUMERIC = "passwordMinNumeric";
-        callPolicy(PasswordMinNumericPolicy.class, PASSWORD_MIN_NUMERIC, priority, topic, messageBody);
+        callPolicy(PasswordMinNumericPolicy.class, PasswordMinNumericPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/passwordMinSymbols
-        String PASSWORD_MIN_SYMBOLS = "passwordMinSymbols";
-        callPolicy(PasswordMinSymbolsPolicy.class, PASSWORD_MIN_SYMBOLS, priority, topic, messageBody);
+        callPolicy(PasswordMinSymbolsPolicy.class, PasswordMinSymbolsPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/MaximumFailedPasswordsForWipe
-        String MAXIMUM_FAILED_PASSWORDS_FOR_WIPE = "maximumFailedPasswordsForWipe";
-        callPolicy(MaximumFailedPasswordForWipePolicy.class, MAXIMUM_FAILED_PASSWORDS_FOR_WIPE, priority, topic, messageBody);
+        callPolicy(MaximumFailedPasswordForWipePolicy.class, MaximumFailedPasswordForWipePolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/MaximumTimeToLock
-        String MAXIMUM_TIME_TO_LOCK = "maximumTimeToLock";
-        callPolicy(MaximumTimeToLockPolicy.class, MAXIMUM_TIME_TO_LOCK, priority, topic, messageBody);
+        callPolicy(MaximumTimeToLockPolicy.class, MaximumTimeToLockPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/storageEncryption
-        String STORAGE_ENCRYPTION = "storageEncryption";
-        callPolicy(StorageEncryptionPolicy.class, STORAGE_ENCRYPTION, priority, topic, messageBody);
+        callPolicy(StorageEncryptionPolicy.class, StorageEncryptionPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableCamera
-        String DISABLE_CAMERA = "disableCamera";
-        callPolicy(CameraPolicy.class, DISABLE_CAMERA, priority, topic, messageBody);
+        callPolicy(CameraPolicy.class, CameraPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableBluetooth
-        String DISABLE_BLUETOOTH = "disableBluetooth";
-        callPolicy(BluetoothPolicy.class, DISABLE_BLUETOOTH, priority, topic, messageBody);
+        callPolicy(BluetoothPolicy.class, BluetoothPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableHostpotTethering
-        String DISABLE_HOSTPOT_TETHERING = "disableHostpotTethering";
-        callPolicy(HostpotTetheringPolicy.class, DISABLE_HOSTPOT_TETHERING, priority, topic, messageBody);
+        callPolicy(HostpotTetheringPolicy.class, HostpotTetheringPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableRoaming
-        String DISABLE_ROAMING = "disableRoaming";
-        callPolicy(RoamingPolicy.class, DISABLE_ROAMING, priority, topic, messageBody);
+        callPolicy(RoamingPolicy.class, RoamingPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableWifi
-        String DISABLE_WIFI = "disableWifi";
-        callPolicy(WifiPolicy.class, DISABLE_WIFI, priority, topic, messageBody);
+        callPolicy(WifiPolicy.class, WifiPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableSpeakerphone
-        String DISABLE_SPEAKER_PHONE = "disableSpeakerphone";
-        callPolicy(SpeakerphonePolicy.class, DISABLE_SPEAKER_PHONE, priority, topic, messageBody);
+        callPolicy(SpeakerphonePolicy.class, SpeakerphonePolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableUsbOnTheGo
-        String DISABLE_SMSMMS = "disableSmsMms";
-        callPolicy(SMSPolicy.class, DISABLE_SMSMMS, priority, topic, messageBody);
+        callPolicy(SMSPolicy.class, SMSPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableCreateVpnProfiles
-        String DISABLE_CREATE_VPN_PROFILES = "disableCreateVpnProfiles";
-        callPolicy(VPNPolicy.class, DISABLE_CREATE_VPN_PROFILES, priority, topic, messageBody);
+        callPolicy(VPNPolicy.class, VPNPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableStreamMusic
-        String DISABLE_STREAM_MUSIC = "disableStreamMusic";
-        callPolicy(StreamMusicPolicy.class, DISABLE_STREAM_MUSIC, priority, topic, messageBody);
+        callPolicy(StreamMusicPolicy.class, StreamMusicPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableStreamRing
-        String DISABLE_STREAM_RING = "disableStreamRing";
-        callPolicy(StreamRingPolicy.class, DISABLE_STREAM_RING, priority, topic, messageBody);
+        callPolicy(StreamRingPolicy.class, StreamRingPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableStreamAlarm
-        String DISABLE_STREAM_ALARM = "disableStreamAlarm";
-        callPolicy(StreamAlarmPolicy.class, DISABLE_STREAM_ALARM, priority, topic, messageBody);
+        callPolicy(StreamAlarmPolicy.class, StreamAlarmPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableStreamNotification
-        String DISABLE_STREAM_NOTIFICATION = "disableStreamNotification";
-        callPolicy(StreamNotificationPolicy.class, DISABLE_STREAM_NOTIFICATION, priority, topic, messageBody);
+        callPolicy(StreamNotificationPolicy.class, StreamNotificationPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableStreamAccessibility
-        String DISABLE_STREAM_ACCESSIBILITY = "disableStreamAccessibility";
-        callPolicy(StreamAccessibilityPolicy.class, DISABLE_STREAM_ACCESSIBILITY, priority, topic, messageBody);
+        callPolicy(StreamAccessibilityPolicy.class, StreamAccessibilityPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableStreamVoiceCall
-        String DISABLE_STREAM_VOICECALL = "disableStreamVoiceCall";
-        callPolicy(StreamVoiceCallPolicy.class, DISABLE_STREAM_VOICECALL, priority, topic, messageBody);
+        callPolicy(StreamVoiceCallPolicy.class, StreamVoiceCallPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableStreamDTMF
-        String DISABLE_STREAM_DTMF = "disableStreamDTMF";
-        callPolicy(StreamVoiceCallPolicy.class, DISABLE_STREAM_DTMF, priority, topic, messageBody);
+        callPolicy(StreamVoiceCallPolicy.class, StreamVoiceCallPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableScreenCapture
         //  ROOT REQUIRED
-        String DISABLE_SCREEN_CAPTURE = "disableScreenCapture";
-        callPolicy(ScreenCapturePolicy.class, DISABLE_SCREEN_CAPTURE, priority, topic, messageBody);
+        callPolicy(ScreenCapturePolicy.class, ScreenCapturePolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableAirplaneMode
         //  ROOT REQUIRED
-        String DISABLE_AIRPLANE_MODE = "disableAirplaneMode";
-        callPolicy(AirplaneModePolicy.class, DISABLE_AIRPLANE_MODE, priority, topic, messageBody);
+        callPolicy(AirplaneModePolicy.class, AirplaneModePolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableGPS
         //  ROOT REQUIRED
-        String DISABLE_GPS = "disableGPS";
-        callPolicy(GPSPolicy.class, DISABLE_GPS, priority, topic, messageBody);
+        callPolicy(GPSPolicy.class, GPSPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableMobileLine
         // ROOT
-        String DISABLE_MOBILE_LINE = "disableMobileLine";
-        callPolicy(MobileLinePolicy.class, DISABLE_MOBILE_LINE, priority, topic, messageBody);
+        callPolicy(MobileLinePolicy.class, MobileLinePolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableNfc
         // ROOT
-        String DISABLE_NFC = "disableNfc";
-        callPolicy(NFCPolicy.class, DISABLE_NFC, priority, topic, messageBody);
+        callPolicy(NFCPolicy.class, NFCPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableStatusBar
         // ROOT
-        String DISABLE_STATUS_BAR = "disableStatusBar";
-        callPolicy(StatusBarPolicy.class, DISABLE_STATUS_BAR, priority, topic, messageBody);
+        callPolicy(StatusBarPolicy.class, StatusBarPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableUsbMtp
         // ROOT
-        String DISABLE_USB_MTP = "disableUsbMtp";
-        callPolicy(UsbMtpPolicy.class, DISABLE_USB_MTP, priority, topic, messageBody);
+        callPolicy(UsbMtpPolicy.class, UsbMtpPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableUsbPtp
         // ROOT
-        String DISABLE_USB_PTP = "disableUsbPtp";
-        callPolicy(UsbPtpPolicy.class, DISABLE_USB_PTP, priority, topic, messageBody);
+        callPolicy(UsbPtpPolicy.class, UsbPtpPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableUsbAdb
         // ROOT
-        String DISABLE_USB_ADB = "disableUsbAdb";
-        callPolicy(UsbAdbPolicy.class, DISABLE_USB_ADB, priority, topic, messageBody);
+        callPolicy(UsbAdbPolicy.class, UsbAdbPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/deployApp
         String DEPLOY_APP = "deployApp";
