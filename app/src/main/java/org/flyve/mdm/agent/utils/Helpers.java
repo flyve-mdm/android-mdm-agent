@@ -26,6 +26,7 @@ package org.flyve.mdm.agent.utils;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -35,6 +36,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
@@ -234,6 +236,25 @@ public class Helpers {
 			builder.setOngoing(true);
 		} else {
 			builder.setAutoCancel(true);
+		}
+
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+			// Notification Channel
+			String notificationChannelId = "1122";
+			String channelName = "Flyve MDM Notifications";
+			int importance = NotificationManager.IMPORTANCE_LOW;
+			NotificationChannel notificationChannel = new NotificationChannel(notificationChannelId, channelName, importance);
+			notificationChannel.enableLights(true);
+ 			notificationChannel.setLightColor(Color.GREEN);
+
+			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+			try {
+				notificationManager.createNotificationChannel(notificationChannel);
+				builder.setChannelId(notificationChannelId);
+			} catch (Exception ex) {
+				FlyveLog.e(ex.getMessage());
+			}
 		}
 
 		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
