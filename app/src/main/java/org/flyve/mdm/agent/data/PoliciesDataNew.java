@@ -43,8 +43,6 @@ public class PoliciesDataNew {
     }
 
     public Policies getValue(String policyName) {
-
-
         List<Policies> arrPolicies = dataBase.PoliciesDao().getPolicyByName(policyName);
         if(!arrPolicies.isEmpty()) {
             return arrPolicies.get(0);
