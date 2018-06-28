@@ -27,7 +27,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import org.flyve.mdm.agent.data.PoliciesDataNew;
+import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.policies.SMSPolicy;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -39,7 +39,7 @@ public class SMSReceiver extends BroadcastReceiver {
         final String action = intent.getAction();
         FlyveLog.d("SMSReceiver receiver: " + action);
 
-        PoliciesDataNew cache = new PoliciesDataNew(context);
+        PoliciesData cache = new PoliciesData(context);
 
         if("android.provider.Telephony.SMS_RECEIVED".equalsIgnoreCase(action)) {
             FlyveLog.d("SMS Received");

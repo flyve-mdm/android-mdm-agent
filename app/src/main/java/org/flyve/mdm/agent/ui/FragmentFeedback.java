@@ -36,7 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.PoliciesDataNew;
+import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.policies.AirplaneModePolicy;
 import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.CameraPolicy;
@@ -88,7 +88,7 @@ public class FragmentFeedback extends Fragment {
 
         HashMap<String, Boolean> map = new HashMap<>();
 
-        PoliciesDataNew cache = new PoliciesDataNew(FragmentFeedback.this.getContext());
+        PoliciesData cache = new PoliciesData(FragmentFeedback.this.getContext());
 
         map.put("Ping",false);
         map.put("Geolocate",false);

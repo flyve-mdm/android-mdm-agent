@@ -34,11 +34,11 @@ import org.flyve.mdm.agent.room.entity.Policies;
 
 import java.util.List;
 
-public class PoliciesDataNew {
+public class PoliciesData {
 
     public AppDataBase dataBase;
 
-    public PoliciesDataNew(Context context) {
+    public PoliciesData(Context context) {
         dataBase = AppDataBase.getAppDatabase(context);
     }
 
