@@ -35,7 +35,16 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.PoliciesData;
+import org.flyve.mdm.agent.data.PoliciesDataNew;
+import org.flyve.mdm.agent.policies.AirplaneModePolicy;
+import org.flyve.mdm.agent.policies.BluetoothPolicy;
+import org.flyve.mdm.agent.policies.CameraPolicy;
+import org.flyve.mdm.agent.policies.GPSPolicy;
+import org.flyve.mdm.agent.policies.HostpotTetheringPolicy;
+import org.flyve.mdm.agent.policies.MobileLinePolicy;
+import org.flyve.mdm.agent.policies.NFCPolicy;
+import org.flyve.mdm.agent.policies.StorageEncryptionPolicy;
+import org.flyve.mdm.agent.policies.WifiPolicy;
 import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.services.PoliciesDeviceManager;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
@@ -45,7 +54,7 @@ import org.flyve.mdm.agent.utils.StorageFolder;
 
 public class FragmentTestPolicies extends Fragment {
 
-    private PoliciesData cache;
+    private PoliciesDataNew cache;
     private PoliciesDeviceManager mdm;
     private static final int PRIORITY = 0;
 
@@ -56,12 +65,12 @@ public class FragmentTestPolicies extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_test_policies, container, false);
 
-        cache = new PoliciesData(FragmentTestPolicies.this.getContext());
+        cache = new PoliciesDataNew(FragmentTestPolicies.this.getContext());
         mdm = new PoliciesDeviceManager(FragmentTestPolicies.this.getContext());
 
         Switch swGPS = v.findViewById(R.id.swGPS);
 
-        swGPS.setChecked(cache.getDisableGPS());
+        swGPS.setChecked(Boolean.parseBoolean(cache.getValue(GPSPolicy.POLICY_NAME).value));
         swGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -72,7 +81,7 @@ public class FragmentTestPolicies extends Fragment {
         });
 
         Switch swAirplane = v.findViewById(R.id.swAirplane);
-        swAirplane.setChecked(cache.getDisableAirplaneMode());
+        swAirplane.setChecked(Boolean.parseBoolean(cache.getValue(AirplaneModePolicy.POLICY_NAME).value));
         swAirplane.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -81,7 +90,7 @@ public class FragmentTestPolicies extends Fragment {
         });
 
         Switch swBluetooth = v.findViewById(R.id.swBluetooth);
-        swBluetooth.setChecked(cache.getDisableBluetooth());
+        swBluetooth.setChecked(Boolean.parseBoolean(cache.getValue(BluetoothPolicy.POLICY_NAME).value));
         swBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -92,7 +101,7 @@ public class FragmentTestPolicies extends Fragment {
         });
 
         Switch swWifi = v.findViewById(R.id.swWifi);
-        swWifi.setChecked(cache.getDisableWifi());
+        swWifi.setChecked(Boolean.parseBoolean(cache.getValue(WifiPolicy.POLICY_NAME).value));
         swWifi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -103,7 +112,7 @@ public class FragmentTestPolicies extends Fragment {
         });
 
         Switch swNFC = v.findViewById(R.id.swNFC);
-        swNFC.setChecked(cache.getDisableNFC());
+        swNFC.setChecked(Boolean.parseBoolean(cache.getValue(NFCPolicy.POLICY_NAME).value));
         swNFC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -114,7 +123,7 @@ public class FragmentTestPolicies extends Fragment {
         });
 
         Switch swHostpot = v.findViewById(R.id.swHostpot);
-        swHostpot.setChecked(cache.getDisableHostpotTethering());
+        swHostpot.setChecked(Boolean.parseBoolean(cache.getValue(HostpotTetheringPolicy.POLICY_NAME).value));
         swHostpot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -125,7 +134,7 @@ public class FragmentTestPolicies extends Fragment {
         });
 
         Switch swMobileLine = v.findViewById(R.id.swMobileLine);
-        swMobileLine.setChecked(cache.getDisableMobileLine());
+        swMobileLine.setChecked(Boolean.parseBoolean(cache.getValue(MobileLinePolicy.POLICY_NAME).value));
         swMobileLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -144,7 +153,7 @@ public class FragmentTestPolicies extends Fragment {
         });
 
         Switch swDisableCamera = v.findViewById(R.id.swDisableCamera);
-        swDisableCamera.setChecked(cache.getDisableCamera());
+        swDisableCamera.setChecked(Boolean.parseBoolean(cache.getValue(CameraPolicy.POLICY_NAME).value));
         swDisableCamera.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -153,7 +162,7 @@ public class FragmentTestPolicies extends Fragment {
         });
 
         Switch swStorageEncryptionDevice = v.findViewById(R.id.swStorageEncryptionDevice);
-        swStorageEncryptionDevice.setChecked(cache.getStorageEncryption());
+        swStorageEncryptionDevice.setChecked(Boolean.parseBoolean(cache.getValue(StorageEncryptionPolicy.POLICY_NAME).value));
         swStorageEncryptionDevice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
