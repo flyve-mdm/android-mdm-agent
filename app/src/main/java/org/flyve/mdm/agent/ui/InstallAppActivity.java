@@ -33,7 +33,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 
+import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.room.database.AppDataBase;
 import org.flyve.mdm.agent.room.entity.Application;
@@ -77,18 +79,18 @@ public class InstallAppActivity extends Activity {
     public void installApk(String file) {
 
         FlyveLog.i(file);
-        Uri uri = Uri.fromFile(new File(file));
+        File toInstall = new File(file);
+        Uri uri = Uri.fromFile(toInstall);
         if (uri == null) {
             throw new RuntimeException(getString(R.string.datauri_not_point_apk_location));
         }
         // https://code.google.com/p/android/issues/detail?id=205827
-        if ((Build.VERSION.SDK_INT < 24)
-                && (!uri.getScheme().equals("file"))) {
-            throw new RuntimeException(getString(R.string.packageinstaller_android_n_support));
-        }
-        if ((Build.VERSION.SDK_INT >= 24)
-                && (!uri.getScheme().equals("content"))) {
-            throw new RuntimeException(getString(R.string.packageinstaller_android_n_support_content_scheme));
+//        if ((Build.VERSION.SDK_INT < 24)
+//                && (!uri.getScheme().equals("file"))) {
+//            throw new RuntimeException(getString(R.string.packageinstaller_android_n_support));
+//        }
+        if (Build.VERSION.SDK_INT >= 24) {
+            uri = FileProvider.getUriForFile(InstallAppActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", toInstall);
         }
 
         Intent intent = new Intent();
