@@ -29,7 +29,7 @@ import android.content.Intent;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
-import org.flyve.mdm.agent.data.PoliciesDataNew;
+import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.policies.AirplaneModePolicy;
 import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.GPSPolicy;
@@ -58,7 +58,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         final String action = intent.getAction();
         FlyveLog.d("Connectivity receiver: " + action);
 
-        PoliciesDataNew cache = new PoliciesDataNew(context);
+        PoliciesData cache = new PoliciesData(context);
 
         if(action==null) {
             return;

@@ -35,7 +35,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.PoliciesDataNew;
+import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.policies.AirplaneModePolicy;
 import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.CameraPolicy;
@@ -54,7 +54,7 @@ import org.flyve.mdm.agent.utils.StorageFolder;
 
 public class FragmentTestPolicies extends Fragment {
 
-    private PoliciesDataNew cache;
+    private PoliciesData cache;
     private PoliciesDeviceManager mdm;
     private static final int PRIORITY = 0;
 
@@ -65,7 +65,7 @@ public class FragmentTestPolicies extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_test_policies, container, false);
 
-        cache = new PoliciesDataNew(FragmentTestPolicies.this.getContext());
+        cache = new PoliciesData(FragmentTestPolicies.this.getContext());
         mdm = new PoliciesDeviceManager(FragmentTestPolicies.this.getContext());
 
         Switch swGPS = v.findViewById(R.id.swGPS);

@@ -32,7 +32,7 @@ import android.content.Context;
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.flyve.mdm.agent.data.PoliciesDataNew;
+import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.room.entity.Policies;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -52,7 +52,7 @@ public abstract class BasePolicies {
     private boolean enableLog;
     protected Context context;
     protected String policyName;
-    protected PoliciesDataNew data;
+    protected PoliciesData data;
     protected Object policyValue;
     protected int policyPriority;
 
@@ -64,7 +64,7 @@ public abstract class BasePolicies {
     public BasePolicies(Context context, String name) {
         this.context = context;
         this.policyName = name;
-        this.data = new PoliciesDataNew(context);
+        this.data = new PoliciesData(context);
         this.mqttEnable = true;
 
         Policies policies = data.getValue(this.policyName);

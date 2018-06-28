@@ -26,7 +26,7 @@ package org.flyve.mdm.agent.receivers;
 import android.content.Context;
 import android.telephony.PhoneStateListener;
 
-import org.flyve.mdm.agent.data.PoliciesDataNew;
+import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.policies.SpeakerphonePolicy;
 import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.ui.MDMAgent;
@@ -41,7 +41,7 @@ public class CustomPhoneStateListener extends PhoneStateListener {
         // 2 = CALL_STATE_OFFHOOK (At least one call exists that is dialing, active, or on hold, and no calls are ringing or waiting.)
         FlyveLog.d("Status: " + state);
         final Context context = MDMAgent.getInstance();
-        Boolean disable = Boolean.parseBoolean(new PoliciesDataNew(context).getValue(SpeakerphonePolicy.POLICY_NAME).value);
+        Boolean disable = Boolean.parseBoolean(new PoliciesData(context).getValue(SpeakerphonePolicy.POLICY_NAME).value);
 
         if (state == 2) {
             // Disable Speaker Phone
