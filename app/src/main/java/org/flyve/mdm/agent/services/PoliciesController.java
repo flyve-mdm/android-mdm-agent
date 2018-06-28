@@ -36,7 +36,6 @@ import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.MqttData;
-import org.flyve.mdm.agent.data.PoliciesData;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -63,14 +62,12 @@ public class PoliciesController {
     private ArrayList<String> arrTopics;
     private MqttAndroidClient client;
     private Context context;
-    private PoliciesData cache;
     private MqttData mqttData;
     private String mTopic;
 
     public PoliciesController(Context context, MqttAndroidClient client) {
         this.client = client;
         this.context = context;
-        cache = new PoliciesData(context);
         mqttData = new MqttData(context);
 
         mTopic = mqttData.getTopic();
