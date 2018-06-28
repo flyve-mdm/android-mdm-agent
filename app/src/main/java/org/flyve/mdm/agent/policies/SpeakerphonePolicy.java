@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class SpeakerphonePolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableSpeakerphone";
+    public static final String POLICY_NAME = "disableSpeakerphone";
 
     public SpeakerphonePolicy(Context context) {
         super(context, POLICY_NAME);

@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class HostpotTetheringPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableHostpotTethering";
+    public static final String POLICY_NAME = "disableHostpotTethering";
 
     public HostpotTetheringPolicy(Context context) {
         super(context, POLICY_NAME);

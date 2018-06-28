@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class MaximumFailedPasswordForWipePolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "maximumFailedPasswordsForWipe";
+    public static final String POLICY_NAME = "maximumFailedPasswordsForWipe";
 
     public MaximumFailedPasswordForWipePolicy(Context context) {
         super(context, POLICY_NAME);

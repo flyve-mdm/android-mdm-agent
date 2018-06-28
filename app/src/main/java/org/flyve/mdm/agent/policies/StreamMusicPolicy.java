@@ -35,7 +35,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class StreamMusicPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableStreamMusic";
+    public static final String POLICY_NAME = "disableStreamMusic";
 
     public StreamMusicPolicy(Context context) {
         super(context, POLICY_NAME);

@@ -35,7 +35,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class StreamVoiceCallPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableStreamVoiceCall";
+    public static final String POLICY_NAME = "disableStreamVoiceCall";
 
     public StreamVoiceCallPolicy(Context context) {
         super(context, POLICY_NAME);

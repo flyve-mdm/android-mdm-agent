@@ -31,7 +31,7 @@ import android.content.Context;
 
 public class SMSPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableSmsMms";
+    public static final String POLICY_NAME = "disableSmsMms";
 
     public SMSPolicy(Context context) {
         super(context, POLICY_NAME);

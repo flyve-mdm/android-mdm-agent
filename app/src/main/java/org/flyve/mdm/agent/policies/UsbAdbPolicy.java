@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class UsbAdbPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableUsbAdb";
+    public static final String POLICY_NAME = "disableUsbAdb";
 
     public UsbAdbPolicy(Context context) {
         super(context, POLICY_NAME);

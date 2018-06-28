@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class WifiPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableWifi";
+    public static final String POLICY_NAME = "disableWifi";
 
     public WifiPolicy(Context context) {
         super(context, POLICY_NAME);

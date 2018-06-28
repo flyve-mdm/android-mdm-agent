@@ -35,7 +35,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class StreamNotificationPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableStreamNotification";
+    public static final String POLICY_NAME = "disableStreamNotification";
 
     public StreamNotificationPolicy(Context context) {
         super(context, POLICY_NAME);

@@ -35,7 +35,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class StreamRingPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableStreamRing";
+    public static final String POLICY_NAME = "disableStreamRing";
 
     public StreamRingPolicy(Context context) {
         super(context, POLICY_NAME);
