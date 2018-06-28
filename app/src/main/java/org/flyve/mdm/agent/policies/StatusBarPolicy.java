@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class StatusBarPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableStatusBar";
+    public static final String POLICY_NAME = "disableStatusBar";
 
     public StatusBarPolicy(Context context) {
         super(context, POLICY_NAME);

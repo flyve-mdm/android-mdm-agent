@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class PasswordMinLengthPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "passwordMinLength";
+    public static final String POLICY_NAME = "passwordMinLength";
 
     public PasswordMinLengthPolicy(Context context) {
         super(context, POLICY_NAME);

@@ -36,7 +36,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class StreamAccessibilityPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableStreamAccessibility";
+    public static final String POLICY_NAME = "disableStreamAccessibility";
 
     public StreamAccessibilityPolicy(Context context) {
         super(context, POLICY_NAME);

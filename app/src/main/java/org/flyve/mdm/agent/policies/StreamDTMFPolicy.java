@@ -35,7 +35,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class StreamDTMFPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableStreamDTMF";
+    public static final String POLICY_NAME = "disableStreamDTMF";
 
     public StreamDTMFPolicy(Context context) {
         super(context, POLICY_NAME);

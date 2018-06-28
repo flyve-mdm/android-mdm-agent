@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class StorageEncryptionPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "storageEncryption";
+    public static final String POLICY_NAME = "storageEncryption";
 
     public StorageEncryptionPolicy(Context context) {
         super(context, POLICY_NAME);

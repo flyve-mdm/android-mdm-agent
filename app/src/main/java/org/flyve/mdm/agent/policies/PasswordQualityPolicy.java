@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class PasswordQualityPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "passwordEnabled";
+    public static final String POLICY_NAME = "passwordEnabled";
 
     public PasswordQualityPolicy(Context context) {
         super(context, POLICY_NAME);

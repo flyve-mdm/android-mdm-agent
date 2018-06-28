@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class PasswordMinUpperCasePolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "passwordMinUpperCase";
+    public static final String POLICY_NAME = "passwordMinUpperCase";
 
     public PasswordMinUpperCasePolicy(Context context) {
         super(context, POLICY_NAME);

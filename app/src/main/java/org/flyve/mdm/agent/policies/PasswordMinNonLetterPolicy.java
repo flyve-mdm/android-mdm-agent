@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class PasswordMinNonLetterPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "passwordMinNonLetter";
+    public static final String POLICY_NAME = "passwordMinNonLetter";
 
     public PasswordMinNonLetterPolicy(Context context) {
         super(context, POLICY_NAME);

@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class UsbMtpPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableUsbMtp";
+    public static final String POLICY_NAME = "disableUsbMtp";
 
     public UsbMtpPolicy(Context context) {
         super(context, POLICY_NAME);

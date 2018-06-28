@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class PasswordMinSymbolsPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "passwordMinSymbols";
+    public static final String POLICY_NAME = "passwordMinSymbols";
 
     public PasswordMinSymbolsPolicy(Context context) {
         super(context, POLICY_NAME);

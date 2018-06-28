@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class NFCPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableNFC";
+    public static final String POLICY_NAME = "disableNFC";
 
     public NFCPolicy(Context context) {
         super(context, POLICY_NAME);

@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class GPSPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableGPS";
+    public static final String POLICY_NAME = "disableGPS";
 
     public GPSPolicy(Context context) {
         super(context, POLICY_NAME);

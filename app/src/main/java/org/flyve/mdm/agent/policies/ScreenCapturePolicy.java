@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class ScreenCapturePolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableScreenCapture";
+    public static final String POLICY_NAME = "disableScreenCapture";
 
     public ScreenCapturePolicy(Context context) {
         super(context, POLICY_NAME);

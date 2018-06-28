@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class MaximumTimeToLockPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "maximumTimeToLock";
+    public static final String POLICY_NAME = "maximumTimeToLock";
 
     public MaximumTimeToLockPolicy(Context context) {
         super(context, POLICY_NAME);

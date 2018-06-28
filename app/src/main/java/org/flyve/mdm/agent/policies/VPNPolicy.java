@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class VPNPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableCreateVpnProfiles";
+    public static final String POLICY_NAME = "disableCreateVpnProfiles";
 
     public VPNPolicy(Context context) {
         super(context, POLICY_NAME);

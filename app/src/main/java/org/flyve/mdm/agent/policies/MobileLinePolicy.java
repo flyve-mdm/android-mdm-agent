@@ -34,7 +34,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class MobileLinePolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableMobileLine";
+    public static final String POLICY_NAME = "disableMobileLine";
 
     public MobileLinePolicy(Context context) {
         super(context, POLICY_NAME);

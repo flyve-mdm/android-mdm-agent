@@ -38,7 +38,7 @@ import static android.content.Context.AUDIO_SERVICE;
 
 public class StreamAlarmPolicy extends BasePolicies {
 
-    private static final String POLICY_NAME = "disableStreamAlarm";
+    public static final String POLICY_NAME = "disableStreamAlarm";
 
     public StreamAlarmPolicy(Context context) {
         super(context, POLICY_NAME);
