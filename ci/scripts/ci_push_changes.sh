@@ -18,7 +18,8 @@
 #  GNU General Public License for more details.
 #  --------------------------------------------------------------------------------
 #  @author    Rafael Hernandez - <rhernandez@teclib.com>
-#  @copyright Copyright (c) 2017 - 2018 Teclib'
+#  @author    Naylin Medina    - <nmedina@teclib.com>
+#  @copyright Copyright (c) Teclib'
 #  @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
 #  @link      https://github.com/flyve-mdm/android-mdm-agent/
 #  @link      http://flyve.org/android-mdm-agent/
