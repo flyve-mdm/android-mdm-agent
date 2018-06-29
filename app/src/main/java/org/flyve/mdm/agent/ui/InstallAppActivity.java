@@ -37,7 +37,7 @@ import android.support.v4.content.FileProvider;
 
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.database.setup.AppDataBase;
+import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -49,6 +49,7 @@ public class InstallAppActivity extends Activity {
     private static final int APP_INSTALL_REQUEST = 1010;
     private String id;
     private String appPath;
+    private ApplicationData appData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +61,10 @@ public class InstallAppActivity extends Activity {
         if (extras != null) {
             id = extras.getString("APP_ID");
             appPath = extras.getString("APP_PATH");
+            appData = new ApplicationData(InstallAppActivity.this);
 
             // check if the app is installed
-            AppDataBase dataBase = AppDataBase.getAppDatabase(InstallAppActivity.this);
-            Application[] apps = dataBase.applicationDao().getApplicationById(id);
+            Application[] apps = appData.getApplicationsById(id);
 
             if(apps.length > 0 && Helpers.isPackageInstalled(InstallAppActivity.this, apps[0].appPackage)) {
                 FlyveLog.d(apps[0].appPackage + " " + apps[0].appId);
@@ -164,8 +165,7 @@ public class InstallAppActivity extends Activity {
             String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
             String appPackage = packageInfo.packageName;
 
-            AppDataBase dataBase = AppDataBase.getAppDatabase(InstallAppActivity.this);
-            if(dataBase.applicationDao().getApplicationById(id).length <= 0) {
+            if(appData.getApplicationsById(id).length <= 0) {
                 Application apps = new Application();
 
                 apps.appId = id;
@@ -174,11 +174,11 @@ public class InstallAppActivity extends Activity {
                 apps.appStatus = status; // 1 pending | 2 installed
                 apps.appPackage = appPackage;
 
-                dataBase.applicationDao().insert(apps);
+                appData.create(apps);
             } else {
                 // update status to installed
                 if(isPackageInstalled(appPackage, packageManager)) {
-                    dataBase.applicationDao().updateStatus(id, "2");
+                    appData.updateStatus(id, "2");
                 }
             }
 

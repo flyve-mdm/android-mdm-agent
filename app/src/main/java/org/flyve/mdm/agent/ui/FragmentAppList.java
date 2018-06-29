@@ -34,17 +34,15 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.ApplicationsAdapter;
-import org.flyve.mdm.agent.data.database.setup.AppDataBase;
+import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.entity.Application;
 
 public class FragmentAppList extends Fragment {
 
     private ListView lst;
     private ProgressBar pb;
-    private AppDataBase dataBase;
     private Application[] apps;
     private TextView txtNoData;
 
@@ -58,8 +56,6 @@ public class FragmentAppList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_app_list, container, false);
-
-        dataBase = AppDataBase.getAppDatabase(this.getActivity());
 
         pb = v.findViewById(R.id.progressBar);
         txtNoData = v.findViewById(R.id.txtNoData);
@@ -96,7 +92,7 @@ public class FragmentAppList extends Fragment {
 
         pb.setVisibility(View.VISIBLE);
 
-        apps = dataBase.applicationDao().loadAll();
+        apps = new ApplicationData(FragmentAppList.this.getContext()).getAllApplications();
 
         if(apps.length>0) {
             ApplicationsAdapter mAdapter = new ApplicationsAdapter(this.getActivity(), apps);

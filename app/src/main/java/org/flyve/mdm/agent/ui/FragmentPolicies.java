@@ -33,7 +33,7 @@ import android.widget.ListView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.PoliciesAdapter;
-import org.flyve.mdm.agent.data.database.setup.AppDataBase;
+import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.data.database.entity.Policies;
 import org.flyve.mdm.agent.utils.Helpers;
 
@@ -63,10 +63,7 @@ public class FragmentPolicies extends Fragment {
     }
 
     private void loadData(ListView lst) {
-
-        AppDataBase dataBase = AppDataBase.getAppDatabase(FragmentPolicies.this.getContext());
-
-        List<Policies> arrPolicies = dataBase.PoliciesDao().loadAll();
+        List<Policies> arrPolicies = new PoliciesData(FragmentPolicies.this.getContext()).getAllPolicies();
 
         ArrayList arr = new ArrayList<HashMap<String, Boolean>>();
 
