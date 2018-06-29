@@ -43,7 +43,7 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.Walkthrough;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughPresenter;
 import org.flyve.mdm.agent.data.MqttData;
-import org.flyve.mdm.agent.data.WalkthroughData;
+import org.flyve.mdm.agent.core.walkthrough.WalkthroughSchema;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.util.ArrayList;
@@ -124,10 +124,10 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
     private void setupUI() {
         presenter = new WalkthroughPresenter(this);
 
-        ArrayList<WalkthroughData> walkthrough = new ArrayList<>();
-        walkthrough.add(new WalkthroughData(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
-        walkthrough.add(new WalkthroughData(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));
-        walkthrough.add(new WalkthroughData(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));
+        ArrayList<WalkthroughSchema> walkthrough = new ArrayList<>();
+        walkthrough.add(new WalkthroughSchema(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
+        walkthrough.add(new WalkthroughSchema(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));
+        walkthrough.add(new WalkthroughSchema(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));
 
         presenter.createSlides(walkthrough, getSupportFragmentManager());
     }

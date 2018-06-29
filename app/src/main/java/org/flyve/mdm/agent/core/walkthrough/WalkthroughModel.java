@@ -28,7 +28,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 
-import org.flyve.mdm.agent.data.WalkthroughData;
 import org.flyve.mdm.agent.ui.FragmentSlideWalkthrough;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class WalkthroughModel implements Walkthrough.Model {
     }
 
     @Override
-    public void createSlides(ArrayList<WalkthroughData> data, FragmentManager fm) {
+    public void createSlides(ArrayList<WalkthroughSchema> data, FragmentManager fm) {
         PagerAdapter mPagerAdapter = new SimpleSlidePagerAdapter(fm, data);
         Presenter.addSlides(mPagerAdapter);
     }
@@ -51,9 +50,9 @@ public class WalkthroughModel implements Walkthrough.Model {
      * A simple pager adapter
      */
     private class SimpleSlidePagerAdapter extends FragmentStatePagerAdapter {
-        List<WalkthroughData> data;
+        List<WalkthroughSchema> data;
 
-        public SimpleSlidePagerAdapter(FragmentManager fm, List<WalkthroughData> data) {
+        public SimpleSlidePagerAdapter(FragmentManager fm, List<WalkthroughSchema> data) {
             super(fm);
             this.data = data;
         }

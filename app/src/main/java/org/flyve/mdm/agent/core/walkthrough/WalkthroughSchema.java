@@ -21,9 +21,9 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.data;
+package org.flyve.mdm.agent.core.walkthrough;
 
-public class WalkthroughData {
+public class WalkthroughSchema {
 
     private int message;
     private String link;
@@ -35,7 +35,7 @@ public class WalkthroughData {
      * @param link
      * @param image
      */
-    public WalkthroughData(int message, String link, int image) {
+    public WalkthroughSchema(int message, String link, int image) {
         this.message = message;
         this.link = link;
         this.image = image;
