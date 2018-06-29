@@ -36,7 +36,7 @@ import android.support.v4.app.NotificationCompat.Builder;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
-import org.flyve.mdm.agent.room.database.AppDataBase;
+import org.flyve.mdm.agent.data.database.setup.AppDataBase;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -280,7 +280,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
     }
 
     private void addApplication(File file, String fileName) {
-        org.flyve.mdm.agent.room.entity.File dataFile = new org.flyve.mdm.agent.room.entity.File();
+        org.flyve.mdm.agent.data.database.entity.File dataFile = new org.flyve.mdm.agent.data.database.entity.File();
         dataFile.fileName = fileName;
         dataFile.filePath = file.getAbsolutePath();
 

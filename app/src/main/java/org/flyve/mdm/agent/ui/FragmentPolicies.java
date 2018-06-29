@@ -33,8 +33,8 @@ import android.widget.ListView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.PoliciesAdapter;
-import org.flyve.mdm.agent.room.database.AppDataBase;
-import org.flyve.mdm.agent.room.entity.Policies;
+import org.flyve.mdm.agent.data.database.setup.AppDataBase;
+import org.flyve.mdm.agent.data.database.entity.Policies;
 import org.flyve.mdm.agent.utils.Helpers;
 
 import java.util.ArrayList;

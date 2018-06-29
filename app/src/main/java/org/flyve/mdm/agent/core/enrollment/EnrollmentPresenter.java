@@ -27,7 +27,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 
-import org.flyve.mdm.agent.data.UserData;
+import org.flyve.mdm.agent.data.localstorage.UserData;
 
 import java.util.List;
 

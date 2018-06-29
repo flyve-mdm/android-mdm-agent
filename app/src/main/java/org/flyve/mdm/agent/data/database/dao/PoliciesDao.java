@@ -21,23 +21,37 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.room.entity;
+package org.flyve.mdm.agent.data.database.dao;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
-@Entity (tableName = "mqtt")
-public class MQTT {
+import org.flyve.mdm.agent.data.database.entity.Policies;
 
-    @PrimaryKey (autoGenerate = true)
-    @ColumnInfo (name = "id")
-    public int id;
+import java.util.List;
 
-    @ColumnInfo (name = "name")
-    public String name;
+@Dao
+public interface PoliciesDao {
 
-    @ColumnInfo (name = "value")
-    public String value;
+    @Insert
+    void insert(Policies... policies);
+
+    @Update
+    void update(Policies... policies);
+
+    @Delete
+    void delete(Policies... policies);
+
+    @Query("Select * FROM policies")
+    List<Policies> loadAll();
+
+    @Query("Select * FROM policies where policyName = :policyName order by priority desc limit 1")
+    List<Policies> getPolicyByName(String policyName);
+
+    @Query("Select * FROM policies where policyName = :policyName and priority = :priority order by priority desc limit 1")
+    List<Policies> getPolicyBy(String policyName, int priority);
 
 }

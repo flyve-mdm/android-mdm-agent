@@ -21,37 +21,31 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.room.dao;
+package org.flyve.mdm.agent.data.database.entity;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
-import org.flyve.mdm.agent.room.entity.Policies;
+@Entity (tableName = "applications")
+public class Application {
 
-import java.util.List;
+    @PrimaryKey (autoGenerate = true)
+    public int id;
 
-@Dao
-public interface PoliciesDao {
+    @ColumnInfo (name = "app_id")
+    public String appId;
 
-    @Insert
-    void insert(Policies... policies);
+    @ColumnInfo (name = "app_name")
+    public String appName;
 
-    @Update
-    void update(Policies... policies);
+    @ColumnInfo (name = "app_package")
+    public String appPackage;
 
-    @Delete
-    void delete(Policies... policies);
+    @ColumnInfo (name = "app_path")
+    public String appPath;
 
-    @Query("Select * FROM policies")
-    List<Policies> loadAll();
-
-    @Query("Select * FROM policies where policyName = :policyName order by priority desc limit 1")
-    List<Policies> getPolicyByName(String policyName);
-
-    @Query("Select * FROM policies where policyName = :policyName and priority = :priority order by priority desc limit 1")
-    List<Policies> getPolicyBy(String policyName, int priority);
+    @ColumnInfo (name = "app_status")
+    public String appStatus;
 
 }

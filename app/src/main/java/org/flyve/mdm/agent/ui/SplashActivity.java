@@ -42,7 +42,7 @@ import android.widget.TextView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.Walkthrough;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughPresenter;
-import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughSchema;
 import org.flyve.mdm.agent.utils.FlyveLog;
 

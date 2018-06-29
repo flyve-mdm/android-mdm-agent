@@ -21,27 +21,23 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.room.entity;
+package org.flyve.mdm.agent.data.database.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity (tableName = "files")
-public class File {
+@Entity (tableName = "mqtt")
+public class MQTT {
 
     @PrimaryKey (autoGenerate = true)
+    @ColumnInfo (name = "id")
     public int id;
 
-    @ColumnInfo (name = "file_id")
-    public String fileId;
+    @ColumnInfo (name = "name")
+    public String name;
 
-    @ColumnInfo (name = "file_name")
-    public String fileName;
+    @ColumnInfo (name = "value")
+    public String value;
 
-    @ColumnInfo (name = "file_path")
-    public String filePath;
-
-    @ColumnInfo (name = "file_status")
-    public String fileStatus;
 }

@@ -39,7 +39,7 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.deeplink.Deeplink;
 import org.flyve.mdm.agent.core.deeplink.DeeplinkPresenter;
 import org.flyve.mdm.agent.core.deeplink.DeeplinkSchema;
-import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.utils.Helpers;
 
 public class StartEnrollmentActivity extends Activity implements Deeplink.View {

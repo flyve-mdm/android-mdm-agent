@@ -21,31 +21,40 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.room.entity;
+package org.flyve.mdm.agent.data.database.dao;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
-@Entity (tableName = "applications")
-public class Application {
+import org.flyve.mdm.agent.data.database.entity.File;
 
-    @PrimaryKey (autoGenerate = true)
-    public int id;
+@Dao
+public interface FileDao {
 
-    @ColumnInfo (name = "app_id")
-    public String appId;
+    @Insert
+    void insert(File... files);
 
-    @ColumnInfo (name = "app_name")
-    public String appName;
+    @Update
+    void update(File... files);
 
-    @ColumnInfo (name = "app_package")
-    public String appPackage;
+    @Delete
+    void delete(File... files);
 
-    @ColumnInfo (name = "app_path")
-    public String appPath;
+    @Query("DELETE FROM files")
+    void deleteAll();
 
-    @ColumnInfo (name = "app_status")
-    public String appStatus;
+    @Query("Select * FROM files")
+    File[] loadAll();
 
+    @Query("SELECT * FROM files WHERE file_id = :id")
+    File[] getFileById(String id);
+
+    @Query("UPDATE files SET file_status = :status WHERE file_id = :id")
+    int updateStatus(String id, String status);
+
+    @Query("DELETE FROM files WHERE file_name = :name")
+    void deleteByName(String name);
 }

@@ -28,7 +28,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import org.flyve.mdm.agent.core.Routes;
-import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;

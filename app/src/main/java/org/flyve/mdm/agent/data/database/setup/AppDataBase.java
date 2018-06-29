@@ -21,21 +21,21 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.room.database;
+package org.flyve.mdm.agent.data.database.setup;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import org.flyve.mdm.agent.room.dao.ApplicationDao;
-import org.flyve.mdm.agent.room.dao.FileDao;
-import org.flyve.mdm.agent.room.dao.MQTTDao;
-import org.flyve.mdm.agent.room.dao.PoliciesDao;
-import org.flyve.mdm.agent.room.entity.Application;
-import org.flyve.mdm.agent.room.entity.File;
-import org.flyve.mdm.agent.room.entity.MQTT;
-import org.flyve.mdm.agent.room.entity.Policies;
+import org.flyve.mdm.agent.data.database.entity.File;
+import org.flyve.mdm.agent.data.database.dao.ApplicationDao;
+import org.flyve.mdm.agent.data.database.dao.FileDao;
+import org.flyve.mdm.agent.data.database.dao.MQTTDao;
+import org.flyve.mdm.agent.data.database.dao.PoliciesDao;
+import org.flyve.mdm.agent.data.database.entity.Application;
+import org.flyve.mdm.agent.data.database.entity.MQTT;
+import org.flyve.mdm.agent.data.database.entity.Policies;
 
 
 @Database(entities = {Application.class, MQTT.class, Policies.class, File.class}, version = 7, exportSchema = false)

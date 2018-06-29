@@ -26,7 +26,7 @@ package org.flyve.mdm.agent.receivers;
 import android.content.Context;
 import android.telephony.PhoneStateListener;
 
-import org.flyve.mdm.agent.data.PoliciesData;
+import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.policies.SpeakerphonePolicy;
 import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.ui.MDMAgent;

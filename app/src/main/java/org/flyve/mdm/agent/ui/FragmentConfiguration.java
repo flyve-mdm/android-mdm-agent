@@ -35,9 +35,9 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.AppData;
-import org.flyve.mdm.agent.data.LocalStorage;
-import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.data.localstorage.AppData;
+import org.flyve.mdm.agent.data.localstorage.LocalStorage;
+import org.flyve.mdm.agent.data.database.MqttData;
 
 public class FragmentConfiguration extends Fragment {
 

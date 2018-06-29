@@ -21,7 +21,7 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.data;
+package org.flyve.mdm.agent.data.localstorage;
 
 import android.content.Context;
 import android.content.SharedPreferences;

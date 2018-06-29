@@ -32,7 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.UserData;
+import org.flyve.mdm.agent.data.localstorage.UserData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 

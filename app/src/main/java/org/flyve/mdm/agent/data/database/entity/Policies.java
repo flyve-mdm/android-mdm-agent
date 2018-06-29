@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent.room.entity;
+package org.flyve.mdm.agent.data.database.entity;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.

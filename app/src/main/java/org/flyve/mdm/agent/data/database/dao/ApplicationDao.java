@@ -21,33 +21,38 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.room.dao;
+package org.flyve.mdm.agent.data.database.dao;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import org.flyve.mdm.agent.room.entity.MQTT;
-
-import java.util.List;
+import org.flyve.mdm.agent.data.database.entity.Application;
 
 @Dao
-public interface MQTTDao {
+public interface ApplicationDao {
 
     @Insert
-    void insert(MQTT... mqtt);
+    void insert(Application... applications);
 
     @Update
-    void update(MQTT... mqtt);
+    void update(Application... applications);
 
-    @Query("SELECT * FROM mqtt")
-    List<MQTT> loadAll();
+    @Delete
+    void delete(Application... applications);
 
-    @Query("DELETE FROM mqtt")
+    @Query("DELETE FROM applications")
     void deleteAll();
 
-    @Query("SELECT * FROM mqtt WHERE name = :name limit 1")
-    List<MQTT> getByName(String name);
+    @Query("Select * FROM applications")
+    Application[] loadAll();
+
+    @Query("SELECT * FROM applications WHERE app_id = :id")
+    Application[] getApplicationById(String id);
+
+    @Query("UPDATE applications SET app_status = :status WHERE app_id = :id")
+    int updateStatus(String id, String status);
 
 }
