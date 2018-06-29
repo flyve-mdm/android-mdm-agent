@@ -5,7 +5,6 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.WalkthroughData;
 import org.flyve.mdm.agent.ui.MainActivity;
 import org.junit.Before;
 import org.junit.Rule;
@@ -60,8 +59,8 @@ public class WalkthroughModelTest {
 
     @Test
     public void createSlides() {
-        ArrayList<WalkthroughData> walkthrough = new ArrayList<>();
-        walkthrough.add(new WalkthroughData(R.drawable.wt_text_1, context.getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
+        ArrayList<WalkthroughSchema> walkthrough = new ArrayList<>();
+        walkthrough.add(new WalkthroughSchema(R.drawable.wt_text_1, context.getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
         model.createSlides(walkthrough, rule.getActivity().getSupportFragmentManager());
     }
 }

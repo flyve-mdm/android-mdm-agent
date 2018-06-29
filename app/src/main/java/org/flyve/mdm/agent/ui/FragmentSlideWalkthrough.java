@@ -32,13 +32,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.WalkthroughData;
+import org.flyve.mdm.agent.core.walkthrough.WalkthroughSchema;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
 public class FragmentSlideWalkthrough extends Fragment {
 
-    private WalkthroughData walkthroughData;
+    private WalkthroughSchema walkthroughData;
     private int slides;
     private int position;
 
@@ -52,7 +52,7 @@ public class FragmentSlideWalkthrough extends Fragment {
      * @param slides the number of slides the Walkthrough has
      * @param position the user is currently on
      */
-    public void config(WalkthroughData walkthroughData, int slides, int position) {
+    public void config(WalkthroughSchema walkthroughData, int slides, int position) {
         this.walkthroughData = walkthroughData;
         this.slides = slides;
         this.position = position;

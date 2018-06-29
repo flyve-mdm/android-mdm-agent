@@ -26,8 +26,6 @@ package org.flyve.mdm.agent.core.walkthrough;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 
-import org.flyve.mdm.agent.data.WalkthroughData;
-
 import java.util.ArrayList;
 
 public class WalkthroughPresenter implements Walkthrough.Presenter {
@@ -48,7 +46,7 @@ public class WalkthroughPresenter implements Walkthrough.Presenter {
     }
 
     @Override
-    public void createSlides(ArrayList<WalkthroughData> data, FragmentManager fm) {
+    public void createSlides(ArrayList<WalkthroughSchema> data, FragmentManager fm) {
         model.createSlides(data, fm);
     }
 }
