@@ -57,6 +57,8 @@ import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.AppData;
+import org.flyve.mdm.agent.room.database.AppDataBase;
+import org.flyve.mdm.agent.room.entity.Application;
 import org.flyve.mdm.agent.ui.ErrorActivity;
 import org.flyve.mdm.agent.ui.InstallAppActivity;
 import org.flyve.mdm.agent.ui.MainActivity;
@@ -89,11 +91,20 @@ public class Helpers {
 	}
 
 	public static void installApk(Context context, String id, String filename) {
-		Intent intent = new Intent(context, InstallAppActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.putExtra("APP_ID", id);
-		intent.putExtra("APP_PATH", filename);
-		context.startActivity(intent);
+
+		// check if the app is installed
+		AppDataBase dataBase = AppDataBase.getAppDatabase(context);
+		Application[] apps = dataBase.applicationDao().getApplicationById(id);
+
+		if(apps.length > 0 && Helpers.isPackageInstalled(context, apps[0].appPackage)) {
+			FlyveLog.d("This app is installed: " + apps[0].appName);
+		} else {
+			Intent intent = new Intent(context, InstallAppActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.putExtra("APP_ID", id);
+			intent.putExtra("APP_PATH", filename);
+			context.startActivity(intent);
+		}
 	}
 
 	public static boolean isPackageInstalled(Context context, String packagename) {

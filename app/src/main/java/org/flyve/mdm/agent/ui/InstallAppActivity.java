@@ -61,15 +61,23 @@ public class InstallAppActivity extends Activity {
             id = extras.getString("APP_ID");
             appPath = extras.getString("APP_PATH");
 
-            try {
-                installApk(appPath);
-            } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+            // check if the app is installed
+            AppDataBase dataBase = AppDataBase.getAppDatabase(InstallAppActivity.this);
+            Application[] apps = dataBase.applicationDao().getApplicationById(id);
+
+            if(apps.length > 0 && Helpers.isPackageInstalled(InstallAppActivity.this, apps[0].appPackage)) {
+                FlyveLog.d(apps[0].appPackage + " " + apps[0].appId);
+                finish();
+            } else {
+                try {
+                    installApk(appPath);
+                } catch (Exception ex) {
+                    FlyveLog.e(ex.getMessage());
+                }
             }
         } else {
             finish();
         }
-
     }
 
     /**
