@@ -142,7 +142,7 @@ public class InstallAppActivity extends Activity {
                     FlyveLog.d("Package Installation Success");
                     status = "2"; // installed
                 } else {
-                    FlyveLog.e("Installation failed");
+                    FlyveLog.e("Installation failed or is installed");
                 }
         }
 
