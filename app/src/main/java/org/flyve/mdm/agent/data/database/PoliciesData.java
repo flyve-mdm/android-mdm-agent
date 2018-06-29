@@ -42,6 +42,10 @@ public class PoliciesData {
         dataBase = AppDataBase.getAppDatabase(context);
     }
 
+    public List<Policies> getAllPolicies() {
+        return dataBase.PoliciesDao().loadAll();
+    }
+
     public Policies getValue(String policyName) {
         List<Policies> arrPolicies = dataBase.PoliciesDao().getPolicyByName(policyName);
         if(!arrPolicies.isEmpty()) {

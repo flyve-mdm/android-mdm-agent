@@ -36,14 +36,14 @@ import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.FilesAdapter;
-import org.flyve.mdm.agent.data.database.setup.AppDataBase;
+import org.flyve.mdm.agent.data.database.FileData;
 import org.flyve.mdm.agent.data.database.entity.File;
+import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class FragmentFileList extends Fragment {
 
     private ListView lst;
     private ProgressBar pb;
-    private AppDataBase dataBase;
     private File[] files;
     private TextView txtNoData;
 
@@ -57,8 +57,6 @@ public class FragmentFileList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_file_list, container, false);
-
-        dataBase = AppDataBase.getAppDatabase(this.getActivity());
 
         pb = v.findViewById(R.id.progressBar);
         txtNoData = v.findViewById(R.id.txtNoData);
@@ -77,7 +75,7 @@ public class FragmentFileList extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 File file = files[i];
-
+                FlyveLog.d(file.fileName);
             }
         });
 
@@ -90,7 +88,7 @@ public class FragmentFileList extends Fragment {
 
         pb.setVisibility(View.VISIBLE);
 
-        files = dataBase.FileDao().loadAll();
+        files = new FileData(FragmentFileList.this.getContext()).getAllFiles();
 
         if(files.length>0) {
             FilesAdapter mAdapter = new FilesAdapter(FragmentFileList.this.getActivity(), files);
