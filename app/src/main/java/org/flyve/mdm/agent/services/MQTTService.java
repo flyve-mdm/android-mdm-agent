@@ -202,7 +202,11 @@ public class MQTTService extends Service implements MqttCallback {
     public void onDestroy() {
         super.onDestroy();
         Helpers.deleteMQTTCache(getApplicationContext());
-        getApplicationContext().startService(new Intent(getApplicationContext(), MQTTService.class));
+        try {
+            getApplicationContext().startService(new Intent(getApplicationContext(), MQTTService.class));
+        } catch (Exception ex) {
+            FlyveLog.e(ex.getMessage());
+        }
     }
 
     /**
