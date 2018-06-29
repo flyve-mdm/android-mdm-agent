@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FragmentTestPolicies.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">FragmentTestPolicies.java</span></div><h1>FragmentTestPolicies.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../resources/report.css" type="text/css"/><link rel="shortcut icon" href="../resources/report.gif" type="image/gif"/><title>FragmentTestPolicies.java</title><link rel="stylesheet" href="../resources/prettify.css" type="text/css"/><script type="text/javascript" src="../resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">FragmentTestPolicies.java</span></div><h1>FragmentTestPolicies.java</h1><pre class="source lang-java linenums">/*
  * Copyright Teclib. All rights reserved.
  *
  * Flyve MDM is a mobile device management software.
@@ -36,6 +36,15 @@ import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.PoliciesData;
+import org.flyve.mdm.agent.policies.AirplaneModePolicy;
+import org.flyve.mdm.agent.policies.BluetoothPolicy;
+import org.flyve.mdm.agent.policies.CameraPolicy;
+import org.flyve.mdm.agent.policies.GPSPolicy;
+import org.flyve.mdm.agent.policies.HostpotTetheringPolicy;
+import org.flyve.mdm.agent.policies.MobileLinePolicy;
+import org.flyve.mdm.agent.policies.NFCPolicy;
+import org.flyve.mdm.agent.policies.StorageEncryptionPolicy;
+import org.flyve.mdm.agent.policies.WifiPolicy;
 import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.services.PoliciesDeviceManager;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
@@ -43,7 +52,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.StorageFolder;
 
-<span class="nc" id="L46">public class FragmentTestPolicies extends Fragment {</span>
+<span class="nc" id="L55">public class FragmentTestPolicies extends Fragment {</span>
 
     private PoliciesData cache;
     private PoliciesDeviceManager mdm;
@@ -54,232 +63,232 @@ import org.flyve.mdm.agent.utils.StorageFolder;
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-<span class="nc" id="L57">        View v = inflater.inflate(R.layout.fragment_test_policies, container, false);</span>
+<span class="nc" id="L66">        View v = inflater.inflate(R.layout.fragment_test_policies, container, false);</span>
 
-<span class="nc" id="L59">        cache = new PoliciesData(FragmentTestPolicies.this.getContext());</span>
-<span class="nc" id="L60">        mdm = new PoliciesDeviceManager(FragmentTestPolicies.this.getContext());</span>
+<span class="nc" id="L68">        cache = new PoliciesData(FragmentTestPolicies.this.getContext());</span>
+<span class="nc" id="L69">        mdm = new PoliciesDeviceManager(FragmentTestPolicies.this.getContext());</span>
 
-<span class="nc" id="L62">        Switch swGPS = v.findViewById(R.id.swGPS);</span>
+<span class="nc" id="L71">        Switch swGPS = v.findViewById(R.id.swGPS);</span>
 
-<span class="nc" id="L64">        swGPS.setChecked(cache.getDisableGPS());</span>
-<span class="nc" id="L65">        swGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L73">        swGPS.setChecked(Boolean.parseBoolean(cache.getValue(GPSPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L74">        swGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc bnc" id="L68" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L69">                    PoliciesConnectivity.disableGps(isChecked);</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">                if(isChecked) {</span>
+<span class="nc" id="L78">                    PoliciesConnectivity.disableGps(isChecked);</span>
                 }
-<span class="nc" id="L71">            }</span>
-        });
-
-<span class="nc" id="L74">        Switch swAirplane = v.findViewById(R.id.swAirplane);</span>
-<span class="nc" id="L75">        swAirplane.setChecked(cache.getDisableAirplaneMode());</span>
-<span class="nc" id="L76">        swAirplane.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc" id="L79">                PoliciesConnectivity.disableAirplaneMode(isChecked);</span>
 <span class="nc" id="L80">            }</span>
         });
 
-<span class="nc" id="L83">        Switch swBluetooth = v.findViewById(R.id.swBluetooth);</span>
-<span class="nc" id="L84">        swBluetooth.setChecked(cache.getDisableBluetooth());</span>
-<span class="nc" id="L85">        swBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L83">        Switch swAirplane = v.findViewById(R.id.swAirplane);</span>
+<span class="nc" id="L84">        swAirplane.setChecked(Boolean.parseBoolean(cache.getValue(AirplaneModePolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L85">        swAirplane.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc bnc" id="L88" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L89">                    PoliciesConnectivity.disableBluetooth(isChecked);</span>
-                }
-<span class="nc" id="L91">            }</span>
+<span class="nc" id="L88">                PoliciesConnectivity.disableAirplaneMode(isChecked);</span>
+<span class="nc" id="L89">            }</span>
         });
 
-<span class="nc" id="L94">        Switch swWifi = v.findViewById(R.id.swWifi);</span>
-<span class="nc" id="L95">        swWifi.setChecked(cache.getDisableWifi());</span>
-<span class="nc" id="L96">        swWifi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L92">        Switch swBluetooth = v.findViewById(R.id.swBluetooth);</span>
+<span class="nc" id="L93">        swBluetooth.setChecked(Boolean.parseBoolean(cache.getValue(BluetoothPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L94">        swBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc bnc" id="L99" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L100">                    PoliciesConnectivity.disableWifi(isChecked);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                if(isChecked) {</span>
+<span class="nc" id="L98">                    PoliciesConnectivity.disableBluetooth(isChecked);</span>
                 }
-<span class="nc" id="L102">            }</span>
+<span class="nc" id="L100">            }</span>
         });
 
-<span class="nc" id="L105">        Switch swNFC = v.findViewById(R.id.swNFC);</span>
-<span class="nc" id="L106">        swNFC.setChecked(cache.getDisableNFC());</span>
-<span class="nc" id="L107">        swNFC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L103">        Switch swWifi = v.findViewById(R.id.swWifi);</span>
+<span class="nc" id="L104">        swWifi.setChecked(Boolean.parseBoolean(cache.getValue(WifiPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L105">        swWifi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc bnc" id="L110" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L111">                    PoliciesConnectivity.disableNFC(isChecked);</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">                if(isChecked) {</span>
+<span class="nc" id="L109">                    PoliciesConnectivity.disableWifi(isChecked);</span>
                 }
-<span class="nc" id="L113">            }</span>
+<span class="nc" id="L111">            }</span>
         });
 
-<span class="nc" id="L116">        Switch swHostpot = v.findViewById(R.id.swHostpot);</span>
-<span class="nc" id="L117">        swHostpot.setChecked(cache.getDisableHostpotTethering());</span>
-<span class="nc" id="L118">        swHostpot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L114">        Switch swNFC = v.findViewById(R.id.swNFC);</span>
+<span class="nc" id="L115">        swNFC.setChecked(Boolean.parseBoolean(cache.getValue(NFCPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L116">        swNFC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc bnc" id="L121" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L122">                    PoliciesConnectivity.disableHostpotTethering(isChecked);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                if(isChecked) {</span>
+<span class="nc" id="L120">                    PoliciesConnectivity.disableNFC(isChecked);</span>
                 }
-<span class="nc" id="L124">            }</span>
+<span class="nc" id="L122">            }</span>
         });
 
-<span class="nc" id="L127">        Switch swMobileLine = v.findViewById(R.id.swMobileLine);</span>
-<span class="nc" id="L128">        swMobileLine.setChecked(cache.getDisableMobileLine());</span>
-<span class="nc" id="L129">        swMobileLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L125">        Switch swHostpot = v.findViewById(R.id.swHostpot);</span>
+<span class="nc" id="L126">        swHostpot.setChecked(Boolean.parseBoolean(cache.getValue(HostpotTetheringPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L127">        swHostpot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc bnc" id="L132" title="All 2 branches missed.">                if(isChecked) {</span>
-<span class="nc" id="L133">                    PoliciesConnectivity.disableMobileLine(isChecked);</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">                if(isChecked) {</span>
+<span class="nc" id="L131">                    PoliciesConnectivity.disableHostpotTethering(isChecked);</span>
                 }
-<span class="nc" id="L135">            }</span>
+<span class="nc" id="L133">            }</span>
         });
 
-<span class="nc" id="L138">        Button btnLock = v.findViewById(R.id.btnLock);</span>
-<span class="nc" id="L139">        btnLock.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L136">        Switch swMobileLine = v.findViewById(R.id.swMobileLine);</span>
+<span class="nc" id="L137">        swMobileLine.setChecked(Boolean.parseBoolean(cache.getValue(MobileLinePolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L138">        swMobileLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+<span class="nc bnc" id="L141" title="All 2 branches missed.">                if(isChecked) {</span>
+<span class="nc" id="L142">                    PoliciesConnectivity.disableMobileLine(isChecked);</span>
+                }
+<span class="nc" id="L144">            }</span>
+        });
+
+<span class="nc" id="L147">        Button btnLock = v.findViewById(R.id.btnLock);</span>
+<span class="nc" id="L148">        btnLock.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L142">                mdm.lockScreen();</span>
-<span class="nc" id="L143">            }</span>
-        });
-
-<span class="nc" id="L146">        Switch swDisableCamera = v.findViewById(R.id.swDisableCamera);</span>
-<span class="nc" id="L147">        swDisableCamera.setChecked(cache.getDisableCamera());</span>
-<span class="nc" id="L148">        swDisableCamera.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc" id="L151">                mdm.disableCamera(isChecked);</span>
+<span class="nc" id="L151">                mdm.lockScreen();</span>
 <span class="nc" id="L152">            }</span>
         });
 
-<span class="nc" id="L155">        Switch swStorageEncryptionDevice = v.findViewById(R.id.swStorageEncryptionDevice);</span>
-<span class="nc" id="L156">        swStorageEncryptionDevice.setChecked(cache.getStorageEncryption());</span>
-<span class="nc" id="L157">        swStorageEncryptionDevice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
+<span class="nc" id="L155">        Switch swDisableCamera = v.findViewById(R.id.swDisableCamera);</span>
+<span class="nc" id="L156">        swDisableCamera.setChecked(Boolean.parseBoolean(cache.getValue(CameraPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L157">        swDisableCamera.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-<span class="nc" id="L160">                mdm.storageEncryptionDevice(isChecked);</span>
+<span class="nc" id="L160">                mdm.disableCamera(isChecked);</span>
 <span class="nc" id="L161">            }</span>
         });
 
-<span class="nc" id="L164">        Button btnReboot = v.findViewById(R.id.btnReboot);</span>
-<span class="nc" id="L165">        btnReboot.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L164">        Switch swStorageEncryptionDevice = v.findViewById(R.id.swStorageEncryptionDevice);</span>
+<span class="nc" id="L165">        swStorageEncryptionDevice.setChecked(Boolean.parseBoolean(cache.getValue(StorageEncryptionPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L166">        swStorageEncryptionDevice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {</span>
             @Override
-            public void onClick(View v) {
-<span class="nc" id="L168">                mdm.reboot();</span>
-<span class="nc" id="L169">            }</span>
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+<span class="nc" id="L169">                mdm.storageEncryptionDevice(isChecked);</span>
+<span class="nc" id="L170">            }</span>
         });
 
-<span class="nc" id="L172">        Button btnClearMQTT = v.findViewById(R.id.btnCleatMQTT);</span>
-<span class="nc" id="L173">        btnClearMQTT.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L173">        Button btnReboot = v.findViewById(R.id.btnReboot);</span>
+<span class="nc" id="L174">        btnReboot.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View v) {
+<span class="nc" id="L177">                mdm.reboot();</span>
+<span class="nc" id="L178">            }</span>
+        });
+
+<span class="nc" id="L181">        Button btnClearMQTT = v.findViewById(R.id.btnCleatMQTT);</span>
+<span class="nc" id="L182">        btnClearMQTT.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
                 try {
-<span class="nc" id="L177">                    Helpers.deleteMQTTCache(FragmentTestPolicies.this.getContext());</span>
-<span class="nc" id="L178">                } catch (Exception ex) {</span>
-<span class="nc" id="L179">                    FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L180">                }</span>
-<span class="nc" id="L181">            }</span>
+<span class="nc" id="L186">                    Helpers.deleteMQTTCache(FragmentTestPolicies.this.getContext());</span>
+<span class="nc" id="L187">                } catch (Exception ex) {</span>
+<span class="nc" id="L188">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L189">                }</span>
+<span class="nc" id="L190">            }</span>
         });
 
-<span class="nc" id="L184">        final EditText edtPasswordLength = v.findViewById(R.id.edtPasswordLength);</span>
-<span class="nc" id="L185">        final EditText edtPasswordMinimumLetters = v.findViewById(R.id.edtPasswordMinimumLetters);</span>
-<span class="nc" id="L186">        final EditText edtPasswordMinimumLowerCase =  v.findViewById(R.id.edtPasswordMinimumLowerCase);</span>
-<span class="nc" id="L187">        final EditText edtPasswordMinimumUpperCase =  v.findViewById(R.id.edtPasswordMinimumUpperCase);</span>
-<span class="nc" id="L188">        final EditText edtPasswordMinimumNonLetter = v.findViewById(R.id.edtPasswordMinimumNonLetter);</span>
-<span class="nc" id="L189">        final EditText edtPasswordMinimumNumeric = v.findViewById(R.id.edtPasswordMinimumNumeric);</span>
-<span class="nc" id="L190">        final EditText edtPasswordMinimumSymbols = v.findViewById(R.id.edtPasswordMinimumSymbols);</span>
-<span class="nc" id="L191">        final EditText edtMaximumFailedPasswordsForWipe = v.findViewById(R.id.edtMaximumFailedPasswordsForWipe);</span>
-<span class="nc" id="L192">        final EditText edtMaximumTimeToLock = v.findViewById(R.id.edtMaximumTimeToLock);</span>
+<span class="nc" id="L193">        final EditText edtPasswordLength = v.findViewById(R.id.edtPasswordLength);</span>
+<span class="nc" id="L194">        final EditText edtPasswordMinimumLetters = v.findViewById(R.id.edtPasswordMinimumLetters);</span>
+<span class="nc" id="L195">        final EditText edtPasswordMinimumLowerCase =  v.findViewById(R.id.edtPasswordMinimumLowerCase);</span>
+<span class="nc" id="L196">        final EditText edtPasswordMinimumUpperCase =  v.findViewById(R.id.edtPasswordMinimumUpperCase);</span>
+<span class="nc" id="L197">        final EditText edtPasswordMinimumNonLetter = v.findViewById(R.id.edtPasswordMinimumNonLetter);</span>
+<span class="nc" id="L198">        final EditText edtPasswordMinimumNumeric = v.findViewById(R.id.edtPasswordMinimumNumeric);</span>
+<span class="nc" id="L199">        final EditText edtPasswordMinimumSymbols = v.findViewById(R.id.edtPasswordMinimumSymbols);</span>
+<span class="nc" id="L200">        final EditText edtMaximumFailedPasswordsForWipe = v.findViewById(R.id.edtMaximumFailedPasswordsForWipe);</span>
+<span class="nc" id="L201">        final EditText edtMaximumTimeToLock = v.findViewById(R.id.edtMaximumTimeToLock);</span>
 
-<span class="nc" id="L194">        Button btnPassword = v.findViewById(R.id.btnPassword);</span>
-<span class="nc" id="L195">        btnPassword.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L203">        Button btnPassword = v.findViewById(R.id.btnPassword);</span>
+<span class="nc" id="L204">        btnPassword.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L198">                int minimumLength = Integer.parseInt(edtPasswordLength.getText().toString());</span>
-<span class="nc" id="L199">                int minimumLetters = Integer.parseInt(edtPasswordMinimumLetters.getText().toString());</span>
-<span class="nc" id="L200">                int minimumUpperCase = Integer.parseInt(edtPasswordMinimumUpperCase.getText().toString());</span>
-<span class="nc" id="L201">                int minimumLowerCase = Integer.parseInt(edtPasswordMinimumLowerCase.getText().toString());</span>
-<span class="nc" id="L202">                int minimumNonLetter = Integer.parseInt(edtPasswordMinimumNonLetter.getText().toString());</span>
-<span class="nc" id="L203">                int minimumNumeric = Integer.parseInt(edtPasswordMinimumNumeric.getText().toString());</span>
-<span class="nc" id="L204">                int minimumSymbols = Integer.parseInt(edtPasswordMinimumSymbols.getText().toString());</span>
-<span class="nc" id="L205">                int maximumFailedPasswordsForWipe = Integer.parseInt(edtMaximumFailedPasswordsForWipe.getText().toString());</span>
-<span class="nc" id="L206">                int maximumTimeToLock = Integer.parseInt(edtMaximumTimeToLock.getText().toString());</span>
+<span class="nc" id="L207">                int minimumLength = Integer.parseInt(edtPasswordLength.getText().toString());</span>
+<span class="nc" id="L208">                int minimumLetters = Integer.parseInt(edtPasswordMinimumLetters.getText().toString());</span>
+<span class="nc" id="L209">                int minimumUpperCase = Integer.parseInt(edtPasswordMinimumUpperCase.getText().toString());</span>
+<span class="nc" id="L210">                int minimumLowerCase = Integer.parseInt(edtPasswordMinimumLowerCase.getText().toString());</span>
+<span class="nc" id="L211">                int minimumNonLetter = Integer.parseInt(edtPasswordMinimumNonLetter.getText().toString());</span>
+<span class="nc" id="L212">                int minimumNumeric = Integer.parseInt(edtPasswordMinimumNumeric.getText().toString());</span>
+<span class="nc" id="L213">                int minimumSymbols = Integer.parseInt(edtPasswordMinimumSymbols.getText().toString());</span>
+<span class="nc" id="L214">                int maximumFailedPasswordsForWipe = Integer.parseInt(edtMaximumFailedPasswordsForWipe.getText().toString());</span>
+<span class="nc" id="L215">                int maximumTimeToLock = Integer.parseInt(edtMaximumTimeToLock.getText().toString());</span>
 
-<span class="nc" id="L208">                mdm.setPasswordLength(minimumLength);</span>
-<span class="nc" id="L209">                mdm.setPasswordMinimumLetters(minimumLetters);</span>
-<span class="nc" id="L210">                mdm.setPasswordMinimumUpperCase(minimumUpperCase);</span>
-<span class="nc" id="L211">                mdm.setPasswordMinimumLowerCase(minimumLowerCase);</span>
-<span class="nc" id="L212">                mdm.setPasswordMinimumNonLetter(minimumNonLetter);</span>
-<span class="nc" id="L213">                mdm.setPasswordMinimumNumeric(minimumNumeric);</span>
-<span class="nc" id="L214">                mdm.setPasswordMinimumSymbols(minimumSymbols);</span>
-<span class="nc" id="L215">                mdm.setMaximumFailedPasswordsForWipe(maximumFailedPasswordsForWipe);</span>
-<span class="nc" id="L216">                mdm.setMaximumTimeToLock(maximumTimeToLock);</span>
-<span class="nc" id="L217">            }</span>
+<span class="nc" id="L217">                mdm.setPasswordLength(minimumLength);</span>
+<span class="nc" id="L218">                mdm.setPasswordMinimumLetters(minimumLetters);</span>
+<span class="nc" id="L219">                mdm.setPasswordMinimumUpperCase(minimumUpperCase);</span>
+<span class="nc" id="L220">                mdm.setPasswordMinimumLowerCase(minimumLowerCase);</span>
+<span class="nc" id="L221">                mdm.setPasswordMinimumNonLetter(minimumNonLetter);</span>
+<span class="nc" id="L222">                mdm.setPasswordMinimumNumeric(minimumNumeric);</span>
+<span class="nc" id="L223">                mdm.setPasswordMinimumSymbols(minimumSymbols);</span>
+<span class="nc" id="L224">                mdm.setMaximumFailedPasswordsForWipe(maximumFailedPasswordsForWipe);</span>
+<span class="nc" id="L225">                mdm.setMaximumTimeToLock(maximumTimeToLock);</span>
+<span class="nc" id="L226">            }</span>
         });
 
-<span class="nc" id="L220">        Button btnPasswordEnable = v.findViewById(R.id.btnPasswordEnable);</span>
-<span class="nc" id="L221">        btnPasswordEnable.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L229">        Button btnPasswordEnable = v.findViewById(R.id.btnPasswordEnable);</span>
+<span class="nc" id="L230">        btnPasswordEnable.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L224">                mdm.enablePassword(true, &quot;&quot;);</span>
-<span class="nc" id="L225">            }</span>
+<span class="nc" id="L233">                mdm.enablePassword(true, &quot;&quot;);</span>
+<span class="nc" id="L234">            }</span>
         });
 
-<span class="nc" id="L228">        Button btnDownloadFile = v.findViewById(R.id.btnDownloadFile);</span>
-<span class="nc" id="L229">        btnDownloadFile.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L237">        Button btnDownloadFile = v.findViewById(R.id.btnDownloadFile);</span>
+<span class="nc" id="L238">        btnDownloadFile.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L232">                new Thread(new Runnable() {</span>
+<span class="nc" id="L241">                new Thread(new Runnable() {</span>
                     public void run() {
                         //
-<span class="nc" id="L235">                        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + &quot;/CHANGELOG.md&quot;;</span>
-<span class="nc" id="L236">                        FlyveLog.d(path);</span>
-<span class="nc" id="L237">                        ConnectionHTTP.getSyncFile(&quot;https://raw.githubusercontent.com/flyve-mdm/android-mdm-agent/develop/CHANGELOG.md&quot;, path, new ConnectionHTTP.ProgressCallback() {</span>
+<span class="nc" id="L244">                        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + &quot;/CHANGELOG.md&quot;;</span>
+<span class="nc" id="L245">                        FlyveLog.d(path);</span>
+<span class="nc" id="L246">                        ConnectionHTTP.getSyncFile(&quot;https://raw.githubusercontent.com/flyve-mdm/android-mdm-agent/develop/CHANGELOG.md&quot;, path, new ConnectionHTTP.ProgressCallback() {</span>
                             @Override
                             public void progress(int value) {
 
-<span class="nc" id="L241">                            }</span>
+<span class="nc" id="L250">                            }</span>
                         });
-<span class="nc" id="L243">                    }</span>
-<span class="nc" id="L244">                }).start();</span>
+<span class="nc" id="L252">                    }</span>
+<span class="nc" id="L253">                }).start();</span>
 
 
-<span class="nc" id="L247">            }</span>
+<span class="nc" id="L256">            }</span>
         });
 
-<span class="nc" id="L250">        Button btnDownloadAPK = v.findViewById(R.id.btnDownloadAPK);</span>
-<span class="nc" id="L251">        btnDownloadAPK.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L259">        Button btnDownloadAPK = v.findViewById(R.id.btnDownloadAPK);</span>
+<span class="nc" id="L260">        btnDownloadAPK.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View v) {
-<span class="nc" id="L254">                String path = new StorageFolder(getContext()).getDocumentsDir() + &quot;/flyve-apk.apk&quot;;</span>
-<span class="nc" id="L255">                FlyveLog.d(path);</span>
-<span class="nc" id="L256">                ConnectionHTTP.getSyncFile(&quot;https://f-droid.org/repo/org.flyve.inventory.agent_37960.apk&quot;, path, new ConnectionHTTP.ProgressCallback() {</span>
+<span class="nc" id="L263">                String path = new StorageFolder(getContext()).getDocumentsDir() + &quot;/flyve-apk.apk&quot;;</span>
+<span class="nc" id="L264">                FlyveLog.d(path);</span>
+<span class="nc" id="L265">                ConnectionHTTP.getSyncFile(&quot;https://f-droid.org/repo/org.flyve.inventory.agent_37960.apk&quot;, path, new ConnectionHTTP.ProgressCallback() {</span>
                     @Override
                     public void progress(int value) {
 
-<span class="nc" id="L260">                    }</span>
+<span class="nc" id="L269">                    }</span>
                 });
-<span class="nc" id="L262">            }</span>
+<span class="nc" id="L271">            }</span>
         });
 
-<span class="nc" id="L265">        Button btnEnablePassword = v.findViewById(R.id.btnEnablePassword);</span>
-<span class="nc" id="L266">        btnEnablePassword.setOnClickListener(new View.OnClickListener() {</span>
+<span class="nc" id="L274">        Button btnEnablePassword = v.findViewById(R.id.btnEnablePassword);</span>
+<span class="nc" id="L275">        btnEnablePassword.setOnClickListener(new View.OnClickListener() {</span>
             @Override
             public void onClick(View view) {
-<span class="nc" id="L269">                Helpers.sendToNotificationBar(getContext(), 1009, &quot;MDM Agent&quot;, &quot;Please create a new password&quot;, true, MainActivity.class, &quot;TestPolicies&quot;);</span>
-<span class="nc" id="L270">            }</span>
-        });
-
-<span class="nc" id="L273">        Button btnInstallSilently = v.findViewById(R.id.btnInstallSilently);</span>
-<span class="nc" id="L274">        btnInstallSilently.setOnClickListener(new View.OnClickListener() {</span>
-            @Override
-            public void onClick(View view) {
-<span class="nc" id="L277">                String path = new StorageFolder(FragmentTestPolicies.this.getContext()).getDownloadDir() + &quot;/test.apk&quot;;</span>
-<span class="nc" id="L278">                Helpers.installApkSilently(path);</span>
+<span class="nc" id="L278">                Helpers.sendToNotificationBar(getContext(), 1009, &quot;MDM Agent&quot;, &quot;Please create a new password&quot;, true, MainActivity.class, &quot;TestPolicies&quot;);</span>
 <span class="nc" id="L279">            }</span>
         });
 
-<span class="nc" id="L282">        return v;</span>
+<span class="nc" id="L282">        Button btnInstallSilently = v.findViewById(R.id.btnInstallSilently);</span>
+<span class="nc" id="L283">        btnInstallSilently.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View view) {
+<span class="nc" id="L286">                String path = new StorageFolder(FragmentTestPolicies.this.getContext()).getDownloadDir() + &quot;/test.apk&quot;;</span>
+<span class="nc" id="L287">                Helpers.installApkSilently(path);</span>
+<span class="nc" id="L288">            }</span>
+        });
+
+<span class="nc" id="L291">        return v;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
