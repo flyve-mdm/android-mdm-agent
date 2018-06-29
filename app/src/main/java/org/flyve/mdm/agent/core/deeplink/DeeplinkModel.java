@@ -29,8 +29,8 @@ import android.content.Intent;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
-import org.flyve.mdm.agent.data.MqttData;
-import org.flyve.mdm.agent.data.SupervisorData;
+import org.flyve.mdm.agent.data.database.MqttData;
+import org.flyve.mdm.agent.data.localstorage.SupervisorData;
 import org.flyve.mdm.agent.ui.EnrollmentActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;

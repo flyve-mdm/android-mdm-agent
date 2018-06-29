@@ -36,8 +36,8 @@ import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.FilesAdapter;
-import org.flyve.mdm.agent.room.database.AppDataBase;
-import org.flyve.mdm.agent.room.entity.File;
+import org.flyve.mdm.agent.data.database.setup.AppDataBase;
+import org.flyve.mdm.agent.data.database.entity.File;
 
 public class FragmentFileList extends Fragment {
 

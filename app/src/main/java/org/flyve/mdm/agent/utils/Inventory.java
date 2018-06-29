@@ -31,7 +31,7 @@ import android.content.Context;
 
 import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.BuildConfig;
-import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.data.database.MqttData;
 
 public class Inventory {
     public static final String APP_VERSION = "FlyveMDMAgent_" + BuildConfig.VERSION_NAME;

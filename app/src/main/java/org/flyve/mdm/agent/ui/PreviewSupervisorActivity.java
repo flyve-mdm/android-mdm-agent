@@ -30,7 +30,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.SupervisorData;
+import org.flyve.mdm.agent.data.localstorage.SupervisorData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 

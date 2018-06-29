@@ -32,7 +32,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.utils.Helpers;
 
 public class FragmentMQTTConfig extends Fragment {

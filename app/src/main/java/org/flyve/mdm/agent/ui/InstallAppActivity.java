@@ -37,8 +37,8 @@ import android.support.v4.content.FileProvider;
 
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.room.database.AppDataBase;
-import org.flyve.mdm.agent.room.entity.Application;
+import org.flyve.mdm.agent.data.database.setup.AppDataBase;
+import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 

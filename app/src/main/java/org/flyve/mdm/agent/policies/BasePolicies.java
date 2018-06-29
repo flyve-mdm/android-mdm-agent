@@ -32,8 +32,8 @@ import android.content.Context;
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.flyve.mdm.agent.data.PoliciesData;
-import org.flyve.mdm.agent.room.entity.Policies;
+import org.flyve.mdm.agent.data.database.PoliciesData;
+import org.flyve.mdm.agent.data.database.entity.Policies;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 

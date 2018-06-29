@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent.data;
+package org.flyve.mdm.agent.data.database;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -29,8 +29,8 @@ package org.flyve.mdm.agent.data;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.room.database.AppDataBase;
-import org.flyve.mdm.agent.room.entity.Policies;
+import org.flyve.mdm.agent.data.database.setup.AppDataBase;
+import org.flyve.mdm.agent.data.database.entity.Policies;
 
 import java.util.List;
 

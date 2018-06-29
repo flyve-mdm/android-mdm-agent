@@ -21,9 +21,11 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.data;
+package org.flyve.mdm.agent.data.localstorage;
 
 import android.content.Context;
+
+import org.flyve.mdm.agent.data.localstorage.LocalStorage;
 
 public class AppData extends LocalStorage {
     /**

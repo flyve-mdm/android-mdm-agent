@@ -35,7 +35,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
-import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;

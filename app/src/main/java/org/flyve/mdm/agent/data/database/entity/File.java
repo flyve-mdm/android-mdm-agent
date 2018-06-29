@@ -21,38 +21,27 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.room.dao;
+package org.flyve.mdm.agent.data.database.entity;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
-import org.flyve.mdm.agent.room.entity.Application;
+@Entity (tableName = "files")
+public class File {
 
-@Dao
-public interface ApplicationDao {
+    @PrimaryKey (autoGenerate = true)
+    public int id;
 
-    @Insert
-    void insert(Application... applications);
+    @ColumnInfo (name = "file_id")
+    public String fileId;
 
-    @Update
-    void update(Application... applications);
+    @ColumnInfo (name = "file_name")
+    public String fileName;
 
-    @Delete
-    void delete(Application... applications);
+    @ColumnInfo (name = "file_path")
+    public String filePath;
 
-    @Query("DELETE FROM applications")
-    void deleteAll();
-
-    @Query("Select * FROM applications")
-    Application[] loadAll();
-
-    @Query("SELECT * FROM applications WHERE app_id = :id")
-    Application[] getApplicationById(String id);
-
-    @Query("UPDATE applications SET app_status = :status WHERE app_id = :id")
-    int updateStatus(String id, String status);
-
+    @ColumnInfo (name = "file_status")
+    public String fileStatus;
 }

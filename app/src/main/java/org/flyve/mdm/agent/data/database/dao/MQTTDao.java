@@ -21,40 +21,33 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.room.dao;
+package org.flyve.mdm.agent.data.database.dao;
 
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import org.flyve.mdm.agent.room.entity.File;
+import org.flyve.mdm.agent.data.database.entity.MQTT;
+
+import java.util.List;
 
 @Dao
-public interface FileDao {
+public interface MQTTDao {
 
     @Insert
-    void insert(File... files);
+    void insert(MQTT... mqtt);
 
     @Update
-    void update(File... files);
+    void update(MQTT... mqtt);
 
-    @Delete
-    void delete(File... files);
+    @Query("SELECT * FROM mqtt")
+    List<MQTT> loadAll();
 
-    @Query("DELETE FROM files")
+    @Query("DELETE FROM mqtt")
     void deleteAll();
 
-    @Query("Select * FROM files")
-    File[] loadAll();
+    @Query("SELECT * FROM mqtt WHERE name = :name limit 1")
+    List<MQTT> getByName(String name);
 
-    @Query("SELECT * FROM files WHERE file_id = :id")
-    File[] getFileById(String id);
-
-    @Query("UPDATE files SET file_status = :status WHERE file_id = :id")
-    int updateStatus(String id, String status);
-
-    @Query("DELETE FROM files WHERE file_name = :name")
-    void deleteByName(String name);
 }

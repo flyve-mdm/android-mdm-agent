@@ -25,7 +25,7 @@ package org.flyve.mdm.agent.core;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.data.database.MqttData;
 
 /**
  * Content all the routes of the app

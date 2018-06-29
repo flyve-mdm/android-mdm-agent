@@ -23,7 +23,7 @@
 
 package org.flyve.mdm.agent.core.user;
 
-import org.flyve.mdm.agent.data.UserData;
+import org.flyve.mdm.agent.data.localstorage.UserData;
 
 import java.util.List;
 

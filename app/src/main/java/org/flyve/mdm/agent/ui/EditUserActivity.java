@@ -45,7 +45,7 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.user.User;
 import org.flyve.mdm.agent.core.user.UserPresenter;
 import org.flyve.mdm.agent.core.user.UserSchema;
-import org.flyve.mdm.agent.data.UserData;
+import org.flyve.mdm.agent.data.localstorage.UserData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.MultipleEditText;

@@ -36,7 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.PoliciesData;
+import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.policies.AirplaneModePolicy;
 import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.CameraPolicy;
