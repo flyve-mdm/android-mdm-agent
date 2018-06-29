@@ -25,6 +25,7 @@ package org.flyve.mdm.agent.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,8 +47,17 @@ public class FragmentPolicies extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_policies, null);
 
-        ListView lst = v.findViewById(R.id.lst);
+        final ListView lst = v.findViewById(R.id.lst);
         loadData(lst);
+
+        final SwipeRefreshLayout swipeLayout = v.findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(false);
+                loadData(lst);
+            }
+        });
 
         return v;
     }
