@@ -31,14 +31,13 @@
 sudo mv ./fastlane/metadata/android ./screenshots
 sudo mv ./screenshots/screenshots.html ./screenshots/index.html
 
-# send to gh-pages
-yarn gh-pages --dist ./screenshots/ --dest ./screenshots/ --add -m "ci(screenshot): update screenshot"
+# send to gh-pages, also removes folder with old docs
+yarn gh-pages --dist ./screenshots/ --dest ./screenshots/ -m "ci(screenshot): update screenshot"
 
 # Update headers for correct display on project site
 
 # checkout uncommited changes
 git checkout -- app/src/main/assets/setup.properties
-git checkout -- app/src/main/assets/about.properties
 
 # fetch
 git fetch origin gh-pages
