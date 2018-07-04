@@ -87,13 +87,13 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             FlyveLog.i("is Online: %s", Helpers.isOnline(context));
 
             // Disable / Enable Roaming
-            Boolean policy = Boolean.parseBoolean(cache.getValue(RoamingPolicy.POLICY_NAME).value);
+            Boolean policy = Helpers.boolFromString(cache.getValue(RoamingPolicy.POLICY_NAME).value);
             if(policy) {
                 PoliciesConnectivity.disableRoaming(policy);
             }
 
             // Disable / Enable Mobile line
-            policy = Boolean.parseBoolean(cache.getValue(MobileLinePolicy.POLICY_NAME).value);
+            policy = Helpers.boolFromString(cache.getValue(MobileLinePolicy.POLICY_NAME).value);
             if(policy) {
                 PoliciesConnectivity.disableMobileLine(policy);
             }
@@ -101,7 +101,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
         if("android.intent.action.AIRPLANE_MODE".equalsIgnoreCase(action)) {
             // Disable / Enable Airplane Mode
-            Boolean policy = Boolean.parseBoolean(cache.getValue(AirplaneModePolicy.POLICY_NAME).value);
+            Boolean policy = Helpers.boolFromString(cache.getValue(AirplaneModePolicy.POLICY_NAME).value);
             if(policy) {
                 PoliciesConnectivity.disableAirplaneMode(policy);
             }
@@ -112,13 +112,13 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             FlyveLog.i("is Online: %s", Helpers.isOnline(context));
 
             // Disable / Enable Hostpot
-            Boolean policy = Boolean.parseBoolean(cache.getValue(HostpotTetheringPolicy.POLICY_NAME).value);
+            Boolean policy = Helpers.boolFromString(cache.getValue(HostpotTetheringPolicy.POLICY_NAME).value);
             if(policy) {
                 PoliciesConnectivity.disableWifi(policy);
             }
 
             // Disable / Enable Wifi
-            policy = Boolean.parseBoolean(cache.getValue(WifiPolicy.POLICY_NAME).value);
+            policy = Helpers.boolFromString(cache.getValue(WifiPolicy.POLICY_NAME).value);
             if(policy) {
                 PoliciesConnectivity.disableHostpotTethering(policy);
             }
@@ -126,7 +126,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
         // Manage Bluetooth
         if ("android.bluetooth.adapter.action.STATE_CHANGED".equalsIgnoreCase(action)) {
-            Boolean policy = Boolean.parseBoolean(cache.getValue(BluetoothPolicy.POLICY_NAME).value);
+            Boolean policy = Helpers.boolFromString(cache.getValue(BluetoothPolicy.POLICY_NAME).value);
             if(policy) {
                 PoliciesConnectivity.disableBluetooth(policy);
             }
@@ -134,7 +134,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
         // Manage NFC
         if("android.nfc.extra.ADAPTER_STATE".equalsIgnoreCase(action)) {
-            Boolean policy = Boolean.parseBoolean(cache.getValue(NFCPolicy.POLICY_NAME).value);
+            Boolean policy = Helpers.boolFromString(cache.getValue(NFCPolicy.POLICY_NAME).value);
             if(policy) {
                 PoliciesConnectivity.disableNFC(policy);
             }
@@ -169,7 +169,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
              *   adb reboot
              */
 
-            boolean disable = Boolean.parseBoolean(cache.getValue(GPSPolicy.POLICY_NAME).value);
+            boolean disable = Helpers.boolFromString(cache.getValue(GPSPolicy.POLICY_NAME).value);
             PoliciesConnectivity.disableGps(disable);
             FlyveLog.i("Location providers change: " + disable);
         }
