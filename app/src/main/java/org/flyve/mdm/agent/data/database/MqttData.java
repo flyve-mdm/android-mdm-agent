@@ -28,9 +28,12 @@ package org.flyve.mdm.agent.data.database;
  */
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 
-import org.flyve.mdm.agent.data.database.setup.AppDataBase;
 import org.flyve.mdm.agent.data.database.entity.MQTT;
+import org.flyve.mdm.agent.data.database.setup.AppDataBase;
 
 import java.util.List;
 
@@ -56,6 +59,15 @@ public class MqttData {
     private static final String PORT = "port";
 
     private AppDataBase dataBase;
+
+    private static Handler uiHandler;
+
+    static {
+        uiHandler = new Handler(Looper.getMainLooper());
+    }
+    private static void runOnUI(Runnable runnable) {
+        uiHandler.post(runnable);
+    }
 
     public MqttData(Context context) {
         dataBase = AppDataBase.getAppDatabase(context);
@@ -218,16 +230,22 @@ public class MqttData {
         }
     }
 
-    private void setStringValue(String name, String value) {
-        if(dataBase.MQTTDao().getByName(name).isEmpty()) {
-            MQTT mqtt = new MQTT();
-            mqtt.name = name;
-            mqtt.value = value;
-            dataBase.MQTTDao().insert(mqtt);
-        } else {
-            MQTT mqtt = dataBase.MQTTDao().getByName(name).get(0);
-            mqtt.value = value;
-            dataBase.MQTTDao().update(mqtt);
-        }
+    private void setStringValue(final String name, final String value) {
+        Thread t = new HandlerThread("UIHandler") {
+            @Override
+            public void run() {
+                if (dataBase.MQTTDao().getByName(name).isEmpty()) {
+                    MQTT mqtt = new MQTT();
+                    mqtt.name = name;
+                    mqtt.value = value;
+                    dataBase.MQTTDao().insert(mqtt);
+                } else {
+                    MQTT mqtt = dataBase.MQTTDao().getByName(name).get(0);
+                    mqtt.value = value;
+                    dataBase.MQTTDao().update(mqtt);
+                }
+            }
+        };
+        t.start();
     }
 }
