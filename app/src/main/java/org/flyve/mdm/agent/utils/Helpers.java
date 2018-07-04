@@ -123,6 +123,18 @@ public class Helpers {
 		context.startActivity(intent);
 	}
 
+	public static Boolean boolFromString(String value) {
+		return Boolean.parseBoolean(value);
+	}
+
+	public static Boolean moreThanZero(String value) {
+		if(value==null) {
+			return false;
+		} else {
+			return (Integer.valueOf(value) > 0);
+		}
+	}
+
 	public static void installApkSilently(String filename) {
 		File file = new File(filename);
 		if(file.exists()) {
