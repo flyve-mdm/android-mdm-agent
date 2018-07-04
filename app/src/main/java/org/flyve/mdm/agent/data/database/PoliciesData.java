@@ -51,7 +51,7 @@ public class PoliciesData {
         if(!arrPolicies.isEmpty()) {
             return arrPolicies.get(0);
         } else {
-            return null;
+            return new Policies();
         }
     }
 
