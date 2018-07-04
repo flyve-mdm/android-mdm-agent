@@ -106,7 +106,7 @@ public class PermissionModel implements Permission.Model {
 
         inventory.getXMLInventory(context, new InventoryTask.OnTaskCompleted() {
             @Override
-            public void onTaskSuccess(String s) {
+            public void onTaskSuccess(final String s) {
                 progress.setMessage(context.getString(R.string.creating_session));
 
                 EnrollmentHelper sessionToken = new EnrollmentHelper(context);
@@ -115,7 +115,8 @@ public class PermissionModel implements Permission.Model {
                     public void onSuccess(String data) {
                         // Active EnrollmentHelper Token is stored on cache
                         progress.dismiss();
-                        presenter.inventorySuccess();
+                        FlyveLog.d(s);
+                        presenter.inventorySuccess(s);
                     }
 
                     @Override

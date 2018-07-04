@@ -45,6 +45,7 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
     private LinearLayout lnButtons;
     private Button btnPermission;
     private Permission.Presenter presenter;
+    private String inventory = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,7 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                EnrollmentActivity.inventory = PermissionEnrollmentActivity.this.inventory;
                 Intent miIntent = new Intent(PermissionEnrollmentActivity.this, EnrollmentActivity.class);
                 PermissionEnrollmentActivity.this.startActivityForResult(miIntent, REQUEST_EXIT);
             }
@@ -118,9 +120,10 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
     }
 
     @Override
-    public void inventorySuccess() {
+    public void inventorySuccess(String inventory) {
         lnButtons.setVisibility(View.VISIBLE);
         btnPermission.setVisibility(View.GONE);
+        this.inventory = inventory;
     }
 
     @Override

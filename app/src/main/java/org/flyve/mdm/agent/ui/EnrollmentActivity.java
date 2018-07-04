@@ -79,7 +79,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
     private ImageView imgPhoto;
     private ProgressDialog pd;
     private File filePhoto;
-    private String inventory = "";
+    public static String inventory = "";
     private Enrollment.Presenter presenter;
 
     /**
