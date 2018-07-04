@@ -43,9 +43,9 @@ public class PermissionPresenter implements Permission.Presenter {
     }
 
     @Override
-    public void inventorySuccess() {
+    public void inventorySuccess(String inventory) {
         if(view!=null) {
-            view.inventorySuccess();
+            view.inventorySuccess(inventory);
         }
     }
 

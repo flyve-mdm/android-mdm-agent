@@ -29,13 +29,13 @@ public interface Permission {
 
     interface View {
         void showError(String message);
-        void inventorySuccess();
+        void inventorySuccess(String inventory);
     }
 
     interface Presenter {
         // Views
         void showError(String message);
-        void inventorySuccess();
+        void inventorySuccess(String inventory);
 
         // Models
         void showDialogShare(final Context context);
