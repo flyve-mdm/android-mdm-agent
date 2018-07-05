@@ -3,10 +3,38 @@
 Overall document style
 */
 
-footer h4 {
-    font-size: 24px;
-}
+@import url('resources/fonts/dejavu.css');
 
+body {
+    background-color:#ffffff;
+    color:#353833;
+    font-family:'DejaVu Sans', Arial, Helvetica, sans-serif;
+    font-size:14px;
+    margin:0;
+}
+a:link, a:visited {
+    text-decoration:none;
+    color:#4A6782;
+}
+a:hover, a:focus {
+    text-decoration:none;
+    color:#bb7a2a;
+}
+a:active {
+    text-decoration:none;
+    color:#4A6782;
+}
+a[name] {
+    color:#353833;
+}
+a[name]:hover {
+    text-decoration:none;
+    color:#353833;
+}
+pre {
+    font-family:'DejaVu Sans Mono', monospace;
+    font-size:14px;
+}
 h1 {
     font-size:20px;
 }
@@ -26,39 +54,23 @@ h5 {
 h6 {
     font-size:11px;
 }
-
-a:link, a:visited {
-    text-decoration:none;
-}
-a:hover, a:focus {
-    text-decoration:none;
-}
-a:active {
-    text-decoration:none;
-}
-a[name]:hover {
-    text-decoration:none;
-}
-pre {
-    font-size:14px;
-}
-.blockList h4 {
-    font-size:13px;
-}
 ul {
     list-style-type:disc;
 }
 code, tt {
+    font-family:'DejaVu Sans Mono', monospace;
     font-size:14px;
     padding-top:4px;
     margin-top:8px;
     line-height:1.4em;
 }
 dt code {
+    font-family:'DejaVu Sans Mono', monospace;
     font-size:14px;
     padding-top:4px;
 }
 table tr td dt code {
+    font-family:'DejaVu Sans Mono', monospace;
     font-size:14px;
     vertical-align:top;
     padding-top:4px;
@@ -102,8 +114,7 @@ Document title and Copyright styles
 Navigation bar styles
 */
 .bar {
-    color: black;
-    background-color: rgba(62,62,62,.3);
+    background-color:#4D7A97;
     color:#FFFFFF;
     padding:.8em .5em .4em .8em;
     height:auto;/*height:1.8em;*/
@@ -111,27 +122,27 @@ Navigation bar styles
     margin:0;
 }
 .topNav {
-    color: black;
-    background-color: rgba(62,62,62,.3);
+    background-color:#4D7A97;
     color:#FFFFFF;
     float:left;
     padding:0;
     width:100%;
     clear:right;
     height:2.8em;
+    padding-top:10px;
     overflow:hidden;
     font-size:12px; 
 }
 .bottomNav {
     margin-top:10px;
-    color: black;
-    background-color: rgba(62,62,62,.3);
+    background-color:#4D7A97;
     color:#FFFFFF;
     float:left;
     padding:0;
     width:100%;
     clear:right;
     height:2.8em;
+    padding-top:10px;
     overflow:hidden;
     font-size:12px;
 }
@@ -174,8 +185,7 @@ ul.subNavList li{
     text-transform:uppercase;
 }
 .navBarCell1Rev {
-    color: #FFF;
-    background-color: #008785;
+    background-color:#F8981D;
     color:#253441;
     margin: auto 5px;
 }
@@ -277,6 +287,7 @@ Page layout container styles
 .contentContainer .description dl dd, .contentContainer .details dl dd, .serializedFormContainer dl dd {
     margin:5px 0 10px 0px;
     font-size:14px;
+    font-family:'DejaVu Sans Mono',monospace;
 }
 .serializedFormContainer dl.nameValue dt {
     margin-left:1px;
@@ -378,9 +389,9 @@ Table styles
 .useSummary caption a:active, .constantsSummary caption a:active, .deprecatedSummary caption a:active,
 .overviewSummary caption a:visited, .memberSummary caption a:visited, .typeSummary caption a:visited,
 .useSummary caption a:visited, .constantsSummary caption a:visited, .deprecatedSummary caption a:visited {
-    color: #474747;
+    color:#FFFFFF;
 }
-
+.overviewSummary caption span, .memberSummary caption span, .typeSummary caption span,
 .useSummary caption span, .constantsSummary caption span, .deprecatedSummary caption span {
     white-space:nowrap;
     padding-top:5px;
@@ -389,11 +400,9 @@ Table styles
     padding-bottom:7px;
     display:inline-block;
     float:left;
-    background-color:#008785;
+    background-color:#F8981D;
     border: none;
-    height:30px;
-    margin-bottom: 5px;
-    color: #FFF;
+    height:16px;
 }
 .memberSummary caption span.activeTableTab span {
     white-space:nowrap;
@@ -403,10 +412,8 @@ Table styles
     margin-right:3px;
     display:inline-block;
     float:left;
-    background-color:#008785;
-    height:30px;
-    margin-bottom: 5px;
-    color: #FFF;
+    background-color:#F8981D;
+    height:16px;
 }
 .memberSummary caption span.tableTab span {
     white-space:nowrap;
@@ -416,11 +423,9 @@ Table styles
     margin-right:3px;
     display:inline-block;
     float:left;
-    background-color:rgba(62,62,62,.3);
-    height:30px;
-    margin-bottom: 5px;
+    background-color:#4D7A97;
+    height:16px;
 }
-
 .memberSummary caption span.tableTab, .memberSummary caption span.activeTableTab {
     padding-top:0px;
     padding-left:0px;
@@ -435,8 +440,7 @@ Table styles
     width:5px;
     position:relative;
     float:left;
-    color: #FFF;
-    background-color: #008785;
+    background-color:#F8981D;
 }
 .memberSummary .activeTableTab .tabEnd {
     display:none;
@@ -444,19 +448,16 @@ Table styles
     margin-right:3px;
     position:relative; 
     float:left;
-    color: #FFF;
-    background-color: #008785;
+    background-color:#F8981D;
 }
 .memberSummary .tableTab .tabEnd {
     display:none;
     width:5px;
     margin-right:3px;
     position:relative;
-    color: black;
-    background-color: rgba(62,62,62,.3);
+    background-color:#4D7A97;
     float:left;
-    
-    white-space: nowrap;
+
 }
 .overviewSummary td, .memberSummary td, .typeSummary td,
 .useSummary td, .constantsSummary td, .deprecatedSummary td {
@@ -526,6 +527,7 @@ ul.blockList ul.blockList ul.blockList li.blockList h3 {
 
 div.block {
     font-size:14px;
+    font-family:'DejaVu Serif', Georgia, "Times New Roman", Times, serif;
 }
 
 td.colLast div {
@@ -569,8 +571,4 @@ div.block div.block span.interfaceName {
 
 div.contentContainer ul.blockList li.blockList h2{
     padding-bottom:0px;
-}
-
-code {
-    white-space: normal !important;
 }
