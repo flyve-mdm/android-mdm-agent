@@ -17,8 +17,9 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 #  --------------------------------------------------------------------------------
-#  @author    Rafael Hernandez - <rafaelje@teclib.com>
-#  @copyright Copyright (c) 2017 - 2018 Teclib'
+#  @author    Rafael Hernandez - <rhernandez@teclib.com>
+#  @author    Naylin Medina    - <nmedina@teclib.com>
+#  @copyright Copyright (c) Teclib'
 #  @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
 #  @link      https://github.com/flyve-mdm/android-mdm-agent/
 #  @link      http://flyve.org/android-mdm-agent/
@@ -30,11 +31,13 @@
 sudo mv ./fastlane/metadata/android ./screenshots
 sudo mv ./screenshots/screenshots.html ./screenshots/index.html
 
-# add
-git add .
+# send to gh-pages, also removes folder with old docs
+yarn gh-pages --dist ./screenshots/ --dest ./screenshots/ -m "ci(screenshot): update screenshot"
 
-# temporal commit
-git commit -m "ci(tmp): temporal commit"
+# Update headers for correct display on project site
+
+# checkout uncommited changes
+git checkout -- app/src/main/assets/setup.properties
 
 # fetch
 git fetch origin gh-pages
@@ -45,17 +48,14 @@ git checkout gh-pages
 # clean workspace
 sudo git clean -fdx
 
-# git get screenshots
-git checkout $CIRCLE_BRANCH ./screenshots
-
 # add header
 ruby ./ci/add_header_screenshot.rb
 
 # add
 git add ./screenshots
 
-# commit
-git commit -m "ci(screenshot): update screenshot"
+# commit headers change
+git commit -m "ci(screenshots): add headers"
 
 # push to branch
 git push origin gh-pages
