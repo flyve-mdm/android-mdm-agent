@@ -136,11 +136,12 @@ public class EnrollmentHelper {
                     }
 
                     JSONObject jsonSession = new JSONObject(data);
-                    cache.setSessionToken(jsonSession.getString("session_token"));
+                    final String sessionToken = jsonSession.getString("session_token");
+                    cache.setSessionToken(sessionToken);
 
                     // STEP 2 get full session information
                     HashMap<String, String> header = new HashMap();
-                    header.put(SESSION_TOKEN, cache.getSessionToken());
+                    header.put(SESSION_TOKEN, sessionToken);
                     header.put(ACCEPT,APPLICATION_JSON);
                     header.put(CONTENT_TYPE,APPLICATION_JSON + ";" + CHARSET);
                     header.put(USER_AGENT,FLYVE_MDM);
@@ -164,7 +165,7 @@ public class EnrollmentHelper {
                     cache.setProfileId(profileId);
 
                     // STEP 3 Activated the profile
-                    final String dataActiveProfile = getSyncWebData(routes.changeActiveProfile(cache.getProfileId()), "POST", header);
+                    final String dataActiveProfile = getSyncWebData(routes.changeActiveProfile(profileId), "POST", header);
                     final String errorActiveProfile = manageError(dataActiveProfile);
                     if(!errorActiveProfile.equals("")) {
                         EnrollmentHelper.runOnUI(new Runnable() {
@@ -176,7 +177,7 @@ public class EnrollmentHelper {
                         // Success
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
-                                callback.onSuccess(cache.getSessionToken());
+                                callback.onSuccess(sessionToken);
                             }
                         });
                     }
