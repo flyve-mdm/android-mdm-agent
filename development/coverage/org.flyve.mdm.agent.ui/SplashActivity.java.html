@@ -1,6 +1,3 @@
----
-layout: coverage
----
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../resources/report.css" type="text/css"/><link rel="shortcut icon" href="../resources/report.gif" type="image/gif"/><title>SplashActivity.java</title><link rel="stylesheet" href="../resources/prettify.css" type="text/css"/><script type="text/javascript" src="../resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">SplashActivity.java</span></div><h1>SplashActivity.java</h1><pre class="source lang-java linenums">/*
  * Copyright Teclib. All rights reserved.
  *
@@ -45,8 +42,8 @@ import android.widget.TextView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.walkthrough.Walkthrough;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughPresenter;
-import org.flyve.mdm.agent.data.MqttData;
-import org.flyve.mdm.agent.data.WalkthroughData;
+import org.flyve.mdm.agent.data.database.MqttData;
+import org.flyve.mdm.agent.core.walkthrough.WalkthroughSchema;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.util.ArrayList;
@@ -127,10 +124,10 @@ import java.util.ArrayList;
     private void setupUI() {
 <span class="fc" id="L125">        presenter = new WalkthroughPresenter(this);</span>
 
-<span class="fc" id="L127">        ArrayList&lt;WalkthroughData&gt; walkthrough = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L128">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));</span>
-<span class="fc" id="L129">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));</span>
-<span class="fc" id="L130">        walkthrough.add(new WalkthroughData(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));</span>
+<span class="fc" id="L127">        ArrayList&lt;WalkthroughSchema&gt; walkthrough = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L128">        walkthrough.add(new WalkthroughSchema(R.drawable.wt_text_1, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));</span>
+<span class="fc" id="L129">        walkthrough.add(new WalkthroughSchema(R.drawable.wt_text_2, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_2));</span>
+<span class="fc" id="L130">        walkthrough.add(new WalkthroughSchema(R.drawable.wt_text_3, getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_3));</span>
 
 <span class="fc" id="L132">        presenter.createSlides(walkthrough, getSupportFragmentManager());</span>
 <span class="fc" id="L133">    }</span>

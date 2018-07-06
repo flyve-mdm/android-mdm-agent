@@ -1,6 +1,3 @@
----
-layout: coverage
----
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../resources/report.css" type="text/css"/><link rel="shortcut icon" href="../resources/report.gif" type="image/gif"/><title>EnrollmentHelper.java</title><link rel="stylesheet" href="../resources/prettify.css" type="text/css"/><script type="text/javascript" src="../resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.core.enrollment</a> &gt; <span class="el_source">EnrollmentHelper.java</span></div><h1>EnrollmentHelper.java</h1><pre class="source lang-java linenums">/*
  * Copyright Teclib. All rights reserved.
  *
@@ -31,7 +28,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import org.flyve.mdm.agent.core.Routes;
-import org.flyve.mdm.agent.data.MqttData;
+import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -139,63 +136,64 @@ public class EnrollmentHelper {
                     }
 
 <span class="nc" id="L138">                    JSONObject jsonSession = new JSONObject(data);</span>
-<span class="nc" id="L139">                    cache.setSessionToken(jsonSession.getString(&quot;session_token&quot;));</span>
+<span class="nc" id="L139">                    final String sessionToken = jsonSession.getString(&quot;session_token&quot;);</span>
+<span class="nc" id="L140">                    cache.setSessionToken(sessionToken);</span>
 
                     // STEP 2 get full session information
-<span class="nc" id="L142">                    HashMap&lt;String, String&gt; header = new HashMap();</span>
-<span class="nc" id="L143">                    header.put(SESSION_TOKEN, cache.getSessionToken());</span>
-<span class="nc" id="L144">                    header.put(ACCEPT,APPLICATION_JSON);</span>
-<span class="nc" id="L145">                    header.put(CONTENT_TYPE,APPLICATION_JSON + &quot;;&quot; + CHARSET);</span>
-<span class="nc" id="L146">                    header.put(USER_AGENT,FLYVE_MDM);</span>
-<span class="nc" id="L147">                    header.put(REFERER,routes.getFullSession());</span>
+<span class="nc" id="L143">                    HashMap&lt;String, String&gt; header = new HashMap();</span>
+<span class="nc" id="L144">                    header.put(SESSION_TOKEN, sessionToken);</span>
+<span class="nc" id="L145">                    header.put(ACCEPT,APPLICATION_JSON);</span>
+<span class="nc" id="L146">                    header.put(CONTENT_TYPE,APPLICATION_JSON + &quot;;&quot; + CHARSET);</span>
+<span class="nc" id="L147">                    header.put(USER_AGENT,FLYVE_MDM);</span>
+<span class="nc" id="L148">                    header.put(REFERER,routes.getFullSession());</span>
 
-<span class="nc" id="L149">                    final String dataFullSession = getSyncWebData(routes.getFullSession(), &quot;GET&quot;, header);</span>
-<span class="nc" id="L150">                    final String errorMessageFullSession = manageError(dataFullSession);</span>
-<span class="nc bnc" id="L151" title="All 2 branches missed.">                    if(!errorMessageFullSession.equals(&quot;&quot;)) {</span>
-<span class="nc" id="L152">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
+<span class="nc" id="L150">                    final String dataFullSession = getSyncWebData(routes.getFullSession(), &quot;GET&quot;, header);</span>
+<span class="nc" id="L151">                    final String errorMessageFullSession = manageError(dataFullSession);</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">                    if(!errorMessageFullSession.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L153">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
                             public void run() {
-<span class="nc" id="L154">                                callback.onError(errorMessageFullSession);</span>
-<span class="nc" id="L155">                            }</span>
+<span class="nc" id="L155">                                callback.onError(errorMessageFullSession);</span>
+<span class="nc" id="L156">                            }</span>
                         });
-<span class="nc" id="L157">                        return;</span>
+<span class="nc" id="L158">                        return;</span>
                     }
 
-<span class="nc" id="L160">                    JSONObject jsonFullSession = new JSONObject(dataFullSession);</span>
-<span class="nc" id="L161">                    jsonSession = jsonFullSession.getJSONObject(&quot;session&quot;);</span>
-<span class="nc" id="L162">                    String profileId = jsonSession.getString(&quot;plugin_flyvemdm_guest_profiles_id&quot;);</span>
+<span class="nc" id="L161">                    JSONObject jsonFullSession = new JSONObject(dataFullSession);</span>
+<span class="nc" id="L162">                    jsonSession = jsonFullSession.getJSONObject(&quot;session&quot;);</span>
+<span class="nc" id="L163">                    String profileId = jsonSession.getString(&quot;plugin_flyvemdm_guest_profiles_id&quot;);</span>
 
-<span class="nc" id="L164">                    cache.setProfileId(profileId);</span>
+<span class="nc" id="L165">                    cache.setProfileId(profileId);</span>
 
                     // STEP 3 Activated the profile
-<span class="nc" id="L167">                    final String dataActiveProfile = getSyncWebData(routes.changeActiveProfile(cache.getProfileId()), &quot;POST&quot;, header);</span>
-<span class="nc" id="L168">                    final String errorActiveProfile = manageError(dataActiveProfile);</span>
-<span class="nc bnc" id="L169" title="All 2 branches missed.">                    if(!errorActiveProfile.equals(&quot;&quot;)) {</span>
-<span class="nc" id="L170">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
+<span class="nc" id="L168">                    final String dataActiveProfile = getSyncWebData(routes.changeActiveProfile(profileId), &quot;POST&quot;, header);</span>
+<span class="nc" id="L169">                    final String errorActiveProfile = manageError(dataActiveProfile);</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">                    if(!errorActiveProfile.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L171">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
                             public void run() {
-<span class="nc" id="L172">                                callback.onError(errorActiveProfile);</span>
-<span class="nc" id="L173">                            }</span>
+<span class="nc" id="L173">                                callback.onError(errorActiveProfile);</span>
+<span class="nc" id="L174">                            }</span>
                         });
                     } else {
                         // Success
-<span class="nc" id="L177">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
+<span class="nc" id="L178">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
                             public void run() {
-<span class="nc" id="L179">                                callback.onSuccess(cache.getSessionToken());</span>
-<span class="nc" id="L180">                            }</span>
+<span class="nc" id="L180">                                callback.onSuccess(sessionToken);</span>
+<span class="nc" id="L181">                            }</span>
                         });
                     }
 
-<span class="nc" id="L184">                } catch (final Exception ex) {</span>
-<span class="nc" id="L185">                    FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L186">                    EnrollmentHelper.runOnUI(new Runnable() {</span>
+<span class="nc" id="L185">                } catch (final Exception ex) {</span>
+<span class="nc" id="L186">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L187">                    EnrollmentHelper.runOnUI(new Runnable() {</span>
                         public void run() {
-<span class="nc" id="L188">                            callback.onError(ex.getMessage());</span>
-<span class="nc" id="L189">                        }</span>
+<span class="nc" id="L189">                            callback.onError(ex.getMessage());</span>
+<span class="nc" id="L190">                        }</span>
                     });
-<span class="nc" id="L191">                }</span>
-<span class="nc" id="L192">            }</span>
+<span class="nc" id="L192">                }</span>
+<span class="nc" id="L193">            }</span>
         });
-<span class="fc" id="L194">        t.start();</span>
-<span class="fc" id="L195">    }</span>
+<span class="fc" id="L195">        t.start();</span>
+<span class="fc" id="L196">    }</span>
 
     /**
      * Get the information to enroll
@@ -203,148 +201,148 @@ public class EnrollmentHelper {
      * @param callback
      */
     public void enrollment(final JSONObject payload, final EnrollCallBack callback) {
-<span class="nc" id="L203">        Thread t = new Thread(new Runnable()</span>
-<span class="nc" id="L204">        {</span>
+<span class="nc" id="L204">        Thread t = new Thread(new Runnable()</span>
+<span class="nc" id="L205">        {</span>
             public void run()
             {
                 try {
-<span class="nc" id="L208">                    HashMap&lt;String, String&gt; header = new HashMap();</span>
-<span class="nc" id="L209">                    header.put(SESSION_TOKEN, cache.getSessionToken());</span>
+<span class="nc" id="L209">                    HashMap&lt;String, String&gt; header = new HashMap();</span>
+<span class="nc" id="L210">                    header.put(SESSION_TOKEN, cache.getSessionToken());</span>
 
-<span class="nc" id="L211">                    header.put(ACCEPT,APPLICATION_JSON);</span>
-<span class="nc" id="L212">                    header.put(CONTENT_TYPE,APPLICATION_JSON + &quot;;&quot; + CHARSET);</span>
+<span class="nc" id="L212">                    header.put(ACCEPT,APPLICATION_JSON);</span>
+<span class="nc" id="L213">                    header.put(CONTENT_TYPE,APPLICATION_JSON + &quot;;&quot; + CHARSET);</span>
 
-<span class="nc" id="L214">                    JSONObject input = new JSONObject();</span>
-<span class="nc" id="L215">                    input.put(&quot;input&quot;, payload);</span>
+<span class="nc" id="L215">                    JSONObject input = new JSONObject();</span>
+<span class="nc" id="L216">                    input.put(&quot;input&quot;, payload);</span>
 
-<span class="nc" id="L217">                    String data = getSyncWebData(routes.pluginFlyvemdmAgent(), input, header);</span>
-<span class="nc bnc" id="L218" title="All 2 branches missed.">                    if(data.contains(&quot;ERROR&quot;)){</span>
-<span class="nc" id="L219">                        JSONArray jsonArr = new JSONArray(data);</span>
-<span class="nc" id="L220">                        final String msgError = jsonArr.get(1).toString();</span>
-<span class="nc" id="L221">                        FlyveLog.e(msgError + &quot; - Device serial: &quot; + Helpers.getDeviceSerial());</span>
+<span class="nc" id="L218">                    String data = getSyncWebData(routes.pluginFlyvemdmAgent(), input, header);</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">                    if(data.contains(&quot;ERROR&quot;)){</span>
+<span class="nc" id="L220">                        JSONArray jsonArr = new JSONArray(data);</span>
+<span class="nc" id="L221">                        final String msgError = jsonArr.get(1).toString();</span>
+<span class="nc" id="L222">                        FlyveLog.e(msgError + &quot; - Device serial: &quot; + Helpers.getDeviceSerial());</span>
 
-<span class="nc" id="L223">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
+<span class="nc" id="L224">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
                             public void run() {
-<span class="nc" id="L225">                                callback.onError(msgError);</span>
-<span class="nc" id="L226">                            }</span>
+<span class="nc" id="L226">                                callback.onError(msgError);</span>
+<span class="nc" id="L227">                            }</span>
                         });
-<span class="nc" id="L228">                    } else {</span>
-<span class="nc" id="L229">                        JSONObject jsonAgent = new JSONObject(data);</span>
-<span class="nc" id="L230">                        String agentId = jsonAgent.getString(&quot;id&quot;);</span>
+<span class="nc" id="L229">                    } else {</span>
+<span class="nc" id="L230">                        JSONObject jsonAgent = new JSONObject(data);</span>
+<span class="nc" id="L231">                        String agentId = jsonAgent.getString(&quot;id&quot;);</span>
 
-<span class="nc" id="L232">                        header = new HashMap();</span>
-<span class="nc" id="L233">                        header.put(SESSION_TOKEN, cache.getSessionToken());</span>
-<span class="nc" id="L234">                        header.put(ACCEPT,APPLICATION_JSON);</span>
-<span class="nc" id="L235">                        header.put(CONTENT_TYPE,APPLICATION_JSON + &quot;;&quot; + CHARSET);</span>
-<span class="nc" id="L236">                        header.put(USER_AGENT,FLYVE_MDM);</span>
-<span class="nc" id="L237">                        header.put(REFERER,routes.pluginFlyvemdmAgent());</span>
+<span class="nc" id="L233">                        header = new HashMap();</span>
+<span class="nc" id="L234">                        header.put(SESSION_TOKEN, cache.getSessionToken());</span>
+<span class="nc" id="L235">                        header.put(ACCEPT,APPLICATION_JSON);</span>
+<span class="nc" id="L236">                        header.put(CONTENT_TYPE,APPLICATION_JSON + &quot;;&quot; + CHARSET);</span>
+<span class="nc" id="L237">                        header.put(USER_AGENT,FLYVE_MDM);</span>
+<span class="nc" id="L238">                        header.put(REFERER,routes.pluginFlyvemdmAgent());</span>
 
-<span class="nc" id="L239">                        String dataAgent = ConnectionHTTP.getSyncWebData(routes.pluginFlyvemdmAgent(agentId), &quot;GET&quot;, header);</span>
+<span class="nc" id="L240">                        String dataAgent = ConnectionHTTP.getSyncWebData(routes.pluginFlyvemdmAgent(agentId), &quot;GET&quot;, header);</span>
 
-<span class="nc" id="L241">                        JSONObject jsonObject = new JSONObject(dataAgent);</span>
+<span class="nc" id="L242">                        JSONObject jsonObject = new JSONObject(dataAgent);</span>
 
-<span class="nc" id="L243">                        String mbroker = jsonObject.getString(&quot;broker&quot;);</span>
-<span class="nc" id="L244">                        String mport = jsonObject.getString(&quot;port&quot;);</span>
-<span class="nc" id="L245">                        String mssl = jsonObject.getString(&quot;tls&quot;);</span>
-<span class="nc" id="L246">                        String mtopic = jsonObject.getString(&quot;topic&quot;);</span>
-<span class="nc" id="L247">                        String mpassword = jsonObject.getString(&quot;mqttpasswd&quot;);</span>
-<span class="nc" id="L248">                        String mcert = jsonObject.getString(&quot;certificate&quot;);</span>
-<span class="nc" id="L249">                        String mNameEmail = jsonObject.getString(&quot;name&quot;);</span>
-<span class="nc" id="L250">                        int mComputersId = jsonObject.getInt(&quot;computers_id&quot;);</span>
-<span class="nc" id="L251">                        int mId = jsonObject.getInt(&quot;id&quot;);</span>
-<span class="nc" id="L252">                        FlyveLog.d(&quot;Id: &quot; + mId);</span>
-<span class="nc" id="L253">                        int mEntitiesId = jsonObject.getInt(&quot;entities_id&quot;);</span>
-<span class="nc" id="L254">                        int mFleetId = jsonObject.getInt(&quot;plugin_flyvemdm_fleets_id&quot;);</span>
+<span class="nc" id="L244">                        String mbroker = jsonObject.getString(&quot;broker&quot;);</span>
+<span class="nc" id="L245">                        String mport = jsonObject.getString(&quot;port&quot;);</span>
+<span class="nc" id="L246">                        String mssl = jsonObject.getString(&quot;tls&quot;);</span>
+<span class="nc" id="L247">                        String mtopic = jsonObject.getString(&quot;topic&quot;);</span>
+<span class="nc" id="L248">                        String mpassword = jsonObject.getString(&quot;mqttpasswd&quot;);</span>
+<span class="nc" id="L249">                        String mcert = jsonObject.getString(&quot;certificate&quot;);</span>
+<span class="nc" id="L250">                        String mNameEmail = jsonObject.getString(&quot;name&quot;);</span>
+<span class="nc" id="L251">                        int mComputersId = jsonObject.getInt(&quot;computers_id&quot;);</span>
+<span class="nc" id="L252">                        int mId = jsonObject.getInt(&quot;id&quot;);</span>
+<span class="nc" id="L253">                        FlyveLog.d(&quot;Id: &quot; + mId);</span>
+<span class="nc" id="L254">                        int mEntitiesId = jsonObject.getInt(&quot;entities_id&quot;);</span>
+<span class="nc" id="L255">                        int mFleetId = jsonObject.getInt(&quot;plugin_flyvemdm_fleets_id&quot;);</span>
 
-<span class="nc" id="L256">                        cache.setAgentId(agentId);</span>
-<span class="nc" id="L257">                        cache.setBroker(mbroker);</span>
-<span class="nc" id="L258">                        cache.setPort(mport);</span>
-<span class="nc" id="L259">                        cache.setTls(mssl);</span>
-<span class="nc" id="L260">                        cache.setTopic(mtopic);</span>
-<span class="nc" id="L261">                        cache.setMqttUser( Helpers.getDeviceSerial() );</span>
-<span class="nc" id="L262">                        cache.setMqttPasswd(mpassword);</span>
-<span class="nc" id="L263">                        cache.setCertificate(mcert);</span>
-<span class="nc" id="L264">                        cache.setName(mNameEmail);</span>
-<span class="nc" id="L265">                        cache.setComputersId(String.valueOf(mComputersId));</span>
-<span class="nc" id="L266">                        cache.setEntitiesId(String.valueOf(mEntitiesId));</span>
-<span class="nc" id="L267">                        cache.setPluginFlyvemdmFleetsId(String.valueOf(mFleetId));</span>
+<span class="nc" id="L257">                        cache.setAgentId(agentId);</span>
+<span class="nc" id="L258">                        cache.setBroker(mbroker);</span>
+<span class="nc" id="L259">                        cache.setPort(mport);</span>
+<span class="nc" id="L260">                        cache.setTls(mssl);</span>
+<span class="nc" id="L261">                        cache.setTopic(mtopic);</span>
+<span class="nc" id="L262">                        cache.setMqttUser( Helpers.getDeviceSerial() );</span>
+<span class="nc" id="L263">                        cache.setMqttPasswd(mpassword);</span>
+<span class="nc" id="L264">                        cache.setCertificate(mcert);</span>
+<span class="nc" id="L265">                        cache.setName(mNameEmail);</span>
+<span class="nc" id="L266">                        cache.setComputersId(String.valueOf(mComputersId));</span>
+<span class="nc" id="L267">                        cache.setEntitiesId(String.valueOf(mEntitiesId));</span>
+<span class="nc" id="L268">                        cache.setPluginFlyvemdmFleetsId(String.valueOf(mFleetId));</span>
 
-<span class="nc" id="L269">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
+<span class="nc" id="L270">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
                             public void run() {
-<span class="nc" id="L271">                                callback.onSuccess(&quot;success&quot;);</span>
-<span class="nc" id="L272">                            }</span>
+<span class="nc" id="L272">                                callback.onSuccess(&quot;success&quot;);</span>
+<span class="nc" id="L273">                            }</span>
                         });
                     }
-<span class="nc" id="L275">                } catch (Exception ex) {</span>
+<span class="nc" id="L276">                } catch (Exception ex) {</span>
 
-<span class="nc" id="L277">                    final String error  = ex.getMessage();</span>
-<span class="nc" id="L278">                    FlyveLog.e(error);</span>
+<span class="nc" id="L278">                    final String error  = ex.getMessage();</span>
+<span class="nc" id="L279">                    FlyveLog.e(error);</span>
 
-<span class="nc bnc" id="L280" title="All 2 branches missed.">                    if(error.contains(&quot;ERROR&quot;)) {</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">                    if(error.contains(&quot;ERROR&quot;)) {</span>
                         try {
-<span class="nc" id="L282">                            JSONArray jsonArr = new JSONArray(error);</span>
-<span class="nc" id="L283">                            final String msgError = jsonArr.get(1).toString();</span>
-<span class="nc" id="L284">                            FlyveLog.e(msgError + &quot; - Device serial: &quot; + Helpers.getDeviceSerial());</span>
+<span class="nc" id="L283">                            JSONArray jsonArr = new JSONArray(error);</span>
+<span class="nc" id="L284">                            final String msgError = jsonArr.get(1).toString();</span>
+<span class="nc" id="L285">                            FlyveLog.e(msgError + &quot; - Device serial: &quot; + Helpers.getDeviceSerial());</span>
 
-<span class="nc" id="L286">                            EnrollmentHelper.runOnUI(new Runnable() {</span>
+<span class="nc" id="L287">                            EnrollmentHelper.runOnUI(new Runnable() {</span>
                                 public void run() {
-<span class="nc" id="L288">                                    callback.onError(msgError);</span>
-<span class="nc" id="L289">                                }</span>
+<span class="nc" id="L289">                                    callback.onError(msgError);</span>
+<span class="nc" id="L290">                                }</span>
                             });
-<span class="nc" id="L291">                        } catch (final Exception ex1) {</span>
-<span class="nc" id="L292">                            FlyveLog.e(ex1.getMessage() + &quot; - Device serial: &quot; + Helpers.getDeviceSerial());</span>
+<span class="nc" id="L292">                        } catch (final Exception ex1) {</span>
+<span class="nc" id="L293">                            FlyveLog.e(ex1.getMessage() + &quot; - Device serial: &quot; + Helpers.getDeviceSerial());</span>
 
-<span class="nc" id="L294">                            EnrollmentHelper.runOnUI(new Runnable() {</span>
+<span class="nc" id="L295">                            EnrollmentHelper.runOnUI(new Runnable() {</span>
                                 public void run() {
-<span class="nc" id="L296">                                    callback.onError(ex1.getMessage());</span>
-<span class="nc" id="L297">                                }</span>
+<span class="nc" id="L297">                                    callback.onError(ex1.getMessage());</span>
+<span class="nc" id="L298">                                }</span>
                             });
-<span class="nc" id="L299">                        }</span>
+<span class="nc" id="L300">                        }</span>
                     } else {
-<span class="nc" id="L301">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
+<span class="nc" id="L302">                        EnrollmentHelper.runOnUI(new Runnable() {</span>
                             public void run() {
-<span class="nc" id="L303">                                FlyveLog.e(error + &quot; - Device serial: &quot; + Helpers.getDeviceSerial());</span>
-<span class="nc" id="L304">                                callback.onError(error);</span>
-<span class="nc" id="L305">                            }</span>
+<span class="nc" id="L304">                                FlyveLog.e(error + &quot; - Device serial: &quot; + Helpers.getDeviceSerial());</span>
+<span class="nc" id="L305">                                callback.onError(error);</span>
+<span class="nc" id="L306">                            }</span>
                         });
                     }
-<span class="nc" id="L308">                }</span>
-<span class="nc" id="L309">            }</span>
+<span class="nc" id="L309">                }</span>
+<span class="nc" id="L310">            }</span>
         });
-<span class="nc" id="L311">        t.start();</span>
-<span class="nc" id="L312">    }</span>
+<span class="nc" id="L312">        t.start();</span>
+<span class="nc" id="L313">    }</span>
 
     /**
      * Create X509 certificate
      */
     public void createX509cert(final EnrollCallBack callback) {
-<span class="fc" id="L318">        new Thread(new Runnable() {</span>
+<span class="fc" id="L319">        new Thread(new Runnable() {</span>
             public void run() {
                 try {
-<span class="nc" id="L321">                    AndroidCryptoProvider createCertificate = new AndroidCryptoProvider(context);</span>
-<span class="pc" id="L322">                    createCertificate.generateRequest(new AndroidCryptoProvider.GenerateCallback() {</span>
+<span class="nc" id="L322">                    AndroidCryptoProvider createCertificate = new AndroidCryptoProvider(context);</span>
+<span class="pc" id="L323">                    createCertificate.generateRequest(new AndroidCryptoProvider.GenerateCallback() {</span>
                         @Override
                         public void onGenerate(final boolean work) {
-<span class="nc" id="L325">                            EnrollmentHelper.runOnUI(new Runnable() {</span>
+<span class="nc" id="L326">                            EnrollmentHelper.runOnUI(new Runnable() {</span>
                                 public void run() {
-<span class="nc bnc" id="L327" title="All 2 branches missed.">                                    if(work) {</span>
-<span class="nc" id="L328">                                        callback.onSuccess(&quot;true&quot;);</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">                                    if(work) {</span>
+<span class="nc" id="L329">                                        callback.onSuccess(&quot;true&quot;);</span>
                                     }
-<span class="nc" id="L330">                                }</span>
+<span class="nc" id="L331">                                }</span>
                             });
-<span class="nc" id="L332">                        }</span>
+<span class="nc" id="L333">                        }</span>
                     });
-<span class="nc" id="L334">                } catch (Exception ex) {</span>
-<span class="nc" id="L335">                    FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L336">                    EnrollmentHelper.runOnUI(new Runnable() {</span>
+<span class="nc" id="L335">                } catch (Exception ex) {</span>
+<span class="nc" id="L336">                    FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L337">                    EnrollmentHelper.runOnUI(new Runnable() {</span>
                         public void run() {
-<span class="nc" id="L338">                            callback.onError(&quot;false&quot;);</span>
-<span class="nc" id="L339">                        }</span>
+<span class="nc" id="L339">                            callback.onError(&quot;false&quot;);</span>
+<span class="nc" id="L340">                        }</span>
                     });
-<span class="nc" id="L341">                }</span>
-<span class="nc" id="L342">            }</span>
-<span class="fc" id="L343">        }).start();</span>
-<span class="fc" id="L344">    }</span>
+<span class="nc" id="L342">                }</span>
+<span class="nc" id="L343">            }</span>
+<span class="fc" id="L344">        }).start();</span>
+<span class="fc" id="L345">    }</span>
 
     public interface EnrollCallBack {
         void onSuccess(String data);

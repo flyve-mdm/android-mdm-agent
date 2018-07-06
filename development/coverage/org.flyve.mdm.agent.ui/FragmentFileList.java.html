@@ -1,6 +1,3 @@
----
-layout: coverage
----
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../resources/report.css" type="text/css"/><link rel="shortcut icon" href="../resources/report.gif" type="image/gif"/><title>FragmentFileList.java</title><link rel="stylesheet" href="../resources/prettify.css" type="text/css"/><script type="text/javascript" src="../resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">FragmentFileList.java</span></div><h1>FragmentFileList.java</h1><pre class="source lang-java linenums">/*
  * Copyright Teclib. All rights reserved.
  *
@@ -39,14 +36,14 @@ import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.FilesAdapter;
-import org.flyve.mdm.agent.room.database.AppDataBase;
-import org.flyve.mdm.agent.room.entity.File;
+import org.flyve.mdm.agent.data.database.FileData;
+import org.flyve.mdm.agent.data.database.entity.File;
+import org.flyve.mdm.agent.utils.FlyveLog;
 
-<span class="nc" id="L42">public class FragmentFileList extends Fragment {</span>
+<span class="nc" id="L43">public class FragmentFileList extends Fragment {</span>
 
     private ListView lst;
     private ProgressBar pb;
-    private AppDataBase dataBase;
     private File[] files;
     private TextView txtNoData;
 
@@ -61,49 +58,47 @@ import org.flyve.mdm.agent.room.entity.File;
                              Bundle savedInstanceState) {
 <span class="nc" id="L59">        View v = inflater.inflate(R.layout.fragment_file_list, container, false);</span>
 
-<span class="nc" id="L61">        dataBase = AppDataBase.getAppDatabase(this.getActivity());</span>
+<span class="nc" id="L61">        pb = v.findViewById(R.id.progressBar);</span>
+<span class="nc" id="L62">        txtNoData = v.findViewById(R.id.txtNoData);</span>
 
-<span class="nc" id="L63">        pb = v.findViewById(R.id.progressBar);</span>
-<span class="nc" id="L64">        txtNoData = v.findViewById(R.id.txtNoData);</span>
-
-<span class="nc" id="L66">        final SwipeRefreshLayout swipeLayout = v.findViewById(R.id.swipe_container);</span>
-<span class="nc" id="L67">        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {</span>
+<span class="nc" id="L64">        final SwipeRefreshLayout swipeLayout = v.findViewById(R.id.swipe_container);</span>
+<span class="nc" id="L65">        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {</span>
             @Override
             public void onRefresh() {
-<span class="nc" id="L70">                swipeLayout.setRefreshing(false);</span>
-<span class="nc" id="L71">                loadData();</span>
-<span class="nc" id="L72">            }</span>
+<span class="nc" id="L68">                swipeLayout.setRefreshing(false);</span>
+<span class="nc" id="L69">                loadData();</span>
+<span class="nc" id="L70">            }</span>
         });
 
-<span class="nc" id="L75">        lst = v.findViewById(R.id.lst);</span>
-<span class="nc" id="L76">        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {</span>
+<span class="nc" id="L73">        lst = v.findViewById(R.id.lst);</span>
+<span class="nc" id="L74">        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {</span>
             @Override
             public void onItemClick(AdapterView&lt;?&gt; adapterView, View view, int i, long l) {
-<span class="nc" id="L79">                File file = files[i];</span>
-
-<span class="nc" id="L81">            }</span>
+<span class="nc" id="L77">                File file = files[i];</span>
+<span class="nc" id="L78">                FlyveLog.d(file.fileName);</span>
+<span class="nc" id="L79">            }</span>
         });
 
-<span class="nc" id="L84">        loadData();</span>
+<span class="nc" id="L82">        loadData();</span>
 
-<span class="nc" id="L86">        return v;</span>
+<span class="nc" id="L84">        return v;</span>
     }
 
     private void loadData() {
 
-<span class="nc" id="L91">        pb.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L89">        pb.setVisibility(View.VISIBLE);</span>
 
-<span class="nc" id="L93">        files = dataBase.FileDao().loadAll();</span>
+<span class="nc" id="L91">        files = new FileData(FragmentFileList.this.getContext()).getAllFiles();</span>
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">        if(files.length&gt;0) {</span>
-<span class="nc" id="L96">            FilesAdapter mAdapter = new FilesAdapter(FragmentFileList.this.getActivity(), files);</span>
-<span class="nc" id="L97">            lst.setAdapter(mAdapter);</span>
-<span class="nc" id="L98">            txtNoData.setVisibility(View.GONE);</span>
-<span class="nc" id="L99">        } else {</span>
-<span class="nc" id="L100">            txtNoData.setVisibility(View.VISIBLE);</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if(files.length&gt;0) {</span>
+<span class="nc" id="L94">            FilesAdapter mAdapter = new FilesAdapter(FragmentFileList.this.getActivity(), files);</span>
+<span class="nc" id="L95">            lst.setAdapter(mAdapter);</span>
+<span class="nc" id="L96">            txtNoData.setVisibility(View.GONE);</span>
+<span class="nc" id="L97">        } else {</span>
+<span class="nc" id="L98">            txtNoData.setVisibility(View.VISIBLE);</span>
         }
 
-<span class="nc" id="L103">        pb.setVisibility(View.GONE);</span>
-<span class="nc" id="L104">    }</span>
+<span class="nc" id="L101">        pb.setVisibility(View.GONE);</span>
+<span class="nc" id="L102">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>

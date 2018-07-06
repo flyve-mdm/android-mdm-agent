@@ -1,6 +1,3 @@
----
-layout: coverage
----
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../resources/report.css" type="text/css"/><link rel="shortcut icon" href="../resources/report.gif" type="image/gif"/><title>PoliciesFiles.java</title><link rel="stylesheet" href="../resources/prettify.css" type="text/css"/><script type="text/javascript" src="../resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.services</a> &gt; <span class="el_source">PoliciesFiles.java</span></div><h1>PoliciesFiles.java</h1><pre class="source lang-java linenums">/*
  * Copyright Teclib. All rights reserved.
  *
@@ -39,7 +36,7 @@ import android.support.v4.app.NotificationCompat.Builder;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
-import org.flyve.mdm.agent.room.database.AppDataBase;
+import org.flyve.mdm.agent.data.database.setup.AppDataBase;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -283,7 +280,7 @@ public class PoliciesFiles extends AsyncTask&lt;String, Integer, Integer&gt; {
     }
 
     private void addApplication(File file, String fileName) {
-<span class="nc" id="L283">        org.flyve.mdm.agent.room.entity.File dataFile = new org.flyve.mdm.agent.room.entity.File();</span>
+<span class="nc" id="L283">        org.flyve.mdm.agent.data.database.entity.File dataFile = new org.flyve.mdm.agent.data.database.entity.File();</span>
 <span class="nc" id="L284">        dataFile.fileName = fileName;</span>
 <span class="nc" id="L285">        dataFile.filePath = file.getAbsolutePath();</span>
 

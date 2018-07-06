@@ -1,6 +1,3 @@
----
-layout: coverage
----
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../resources/report.css" type="text/css"/><link rel="shortcut icon" href="../resources/report.gif" type="image/gif"/><title>MQTTConnectivityReceiver.java</title><link rel="stylesheet" href="../resources/prettify.css" type="text/css"/><script type="text/javascript" src="../resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.receivers</a> &gt; <span class="el_source">MQTTConnectivityReceiver.java</span></div><h1>MQTTConnectivityReceiver.java</h1><pre class="source lang-java linenums">/*
  * Copyright Teclib. All rights reserved.
  *
@@ -32,7 +29,7 @@ import android.content.Intent;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
-import org.flyve.mdm.agent.data.PoliciesData;
+import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.policies.AirplaneModePolicy;
 import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.GPSPolicy;
@@ -90,13 +87,13 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L87">            FlyveLog.i(&quot;is Online: %s&quot;, Helpers.isOnline(context));</span>
 
             // Disable / Enable Roaming
-<span class="nc" id="L90">            Boolean policy = Boolean.parseBoolean(cache.getValue(RoamingPolicy.POLICY_NAME).value);</span>
+<span class="nc" id="L90">            Boolean policy = Helpers.boolFromString(cache.getValue(RoamingPolicy.POLICY_NAME).value);</span>
 <span class="nc bnc" id="L91" title="All 2 branches missed.">            if(policy) {</span>
 <span class="nc" id="L92">                PoliciesConnectivity.disableRoaming(policy);</span>
             }
 
             // Disable / Enable Mobile line
-<span class="nc" id="L96">            policy = Boolean.parseBoolean(cache.getValue(MobileLinePolicy.POLICY_NAME).value);</span>
+<span class="nc" id="L96">            policy = Helpers.boolFromString(cache.getValue(MobileLinePolicy.POLICY_NAME).value);</span>
 <span class="nc bnc" id="L97" title="All 2 branches missed.">            if(policy) {</span>
 <span class="nc" id="L98">                PoliciesConnectivity.disableMobileLine(policy);</span>
             }
@@ -104,7 +101,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 
 <span class="nc bnc" id="L102" title="All 2 branches missed.">        if(&quot;android.intent.action.AIRPLANE_MODE&quot;.equalsIgnoreCase(action)) {</span>
             // Disable / Enable Airplane Mode
-<span class="nc" id="L104">            Boolean policy = Boolean.parseBoolean(cache.getValue(AirplaneModePolicy.POLICY_NAME).value);</span>
+<span class="nc" id="L104">            Boolean policy = Helpers.boolFromString(cache.getValue(AirplaneModePolicy.POLICY_NAME).value);</span>
 <span class="nc bnc" id="L105" title="All 2 branches missed.">            if(policy) {</span>
 <span class="nc" id="L106">                PoliciesConnectivity.disableAirplaneMode(policy);</span>
             }
@@ -115,13 +112,13 @@ import org.flyve.mdm.agent.utils.Helpers;
 <span class="nc" id="L112">            FlyveLog.i(&quot;is Online: %s&quot;, Helpers.isOnline(context));</span>
 
             // Disable / Enable Hostpot
-<span class="nc" id="L115">            Boolean policy = Boolean.parseBoolean(cache.getValue(HostpotTetheringPolicy.POLICY_NAME).value);</span>
+<span class="nc" id="L115">            Boolean policy = Helpers.boolFromString(cache.getValue(HostpotTetheringPolicy.POLICY_NAME).value);</span>
 <span class="nc bnc" id="L116" title="All 2 branches missed.">            if(policy) {</span>
 <span class="nc" id="L117">                PoliciesConnectivity.disableWifi(policy);</span>
             }
 
             // Disable / Enable Wifi
-<span class="nc" id="L121">            policy = Boolean.parseBoolean(cache.getValue(WifiPolicy.POLICY_NAME).value);</span>
+<span class="nc" id="L121">            policy = Helpers.boolFromString(cache.getValue(WifiPolicy.POLICY_NAME).value);</span>
 <span class="nc bnc" id="L122" title="All 2 branches missed.">            if(policy) {</span>
 <span class="nc" id="L123">                PoliciesConnectivity.disableHostpotTethering(policy);</span>
             }
@@ -129,7 +126,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 
         // Manage Bluetooth
 <span class="nc bnc" id="L128" title="All 2 branches missed.">        if (&quot;android.bluetooth.adapter.action.STATE_CHANGED&quot;.equalsIgnoreCase(action)) {</span>
-<span class="nc" id="L129">            Boolean policy = Boolean.parseBoolean(cache.getValue(BluetoothPolicy.POLICY_NAME).value);</span>
+<span class="nc" id="L129">            Boolean policy = Helpers.boolFromString(cache.getValue(BluetoothPolicy.POLICY_NAME).value);</span>
 <span class="nc bnc" id="L130" title="All 2 branches missed.">            if(policy) {</span>
 <span class="nc" id="L131">                PoliciesConnectivity.disableBluetooth(policy);</span>
             }
@@ -137,7 +134,7 @@ import org.flyve.mdm.agent.utils.Helpers;
 
         // Manage NFC
 <span class="nc bnc" id="L136" title="All 2 branches missed.">        if(&quot;android.nfc.extra.ADAPTER_STATE&quot;.equalsIgnoreCase(action)) {</span>
-<span class="nc" id="L137">            Boolean policy = Boolean.parseBoolean(cache.getValue(NFCPolicy.POLICY_NAME).value);</span>
+<span class="nc" id="L137">            Boolean policy = Helpers.boolFromString(cache.getValue(NFCPolicy.POLICY_NAME).value);</span>
 <span class="nc bnc" id="L138" title="All 2 branches missed.">            if(policy) {</span>
 <span class="nc" id="L139">                PoliciesConnectivity.disableNFC(policy);</span>
             }
@@ -172,7 +169,7 @@ import org.flyve.mdm.agent.utils.Helpers;
              *   adb reboot
              */
 
-<span class="nc" id="L172">            boolean disable = Boolean.parseBoolean(cache.getValue(GPSPolicy.POLICY_NAME).value);</span>
+<span class="nc" id="L172">            boolean disable = Helpers.boolFromString(cache.getValue(GPSPolicy.POLICY_NAME).value);</span>
 <span class="nc" id="L173">            PoliciesConnectivity.disableGps(disable);</span>
 <span class="nc" id="L174">            FlyveLog.i(&quot;Location providers change: &quot; + disable);</span>
         }
