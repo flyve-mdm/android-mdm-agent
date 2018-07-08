@@ -1,16 +1,11 @@
-body, td {
-  font-family:sans-serif;
-  font-size:10pt;
-}
-
 h1 {
   font-weight:bold;
   font-size:18pt;
 }
 
 .breadcrumb {
-  border:#d6d3ce 1px solid;
   padding:2px 4px 2px 4px;
+  margin: 25px 0 0;
 }
 
 .breadcrumb .info {
@@ -22,59 +17,27 @@ h1 {
 }
 
 .el_report {
-  padding-left:18px;
-  background-image:url(report.gif);
-  background-position:left center;
-  background-repeat:no-repeat;
 }
 
 .el_group {
-  padding-left:18px;
-  background-image:url(group.gif);
-  background-position:left center;
-  background-repeat:no-repeat;
 }
 
 .el_bundle {
-  padding-left:18px;
-  background-image:url(bundle.gif);
-  background-position:left center;
-  background-repeat:no-repeat;
 }
 
 .el_package {
-  padding-left:18px;
-  background-image:url(package.gif);
-  background-position:left center;
-  background-repeat:no-repeat;
 }
 
 .el_class {
-  padding-left:18px;
-  background-image:url(class.gif);
-  background-position:left center;
-  background-repeat:no-repeat;
 }
 
 .el_source {
-  padding-left:18px;
-  background-image:url(source.gif);
-  background-position:left center;
-  background-repeat:no-repeat;
 }
 
 .el_method {
-  padding-left:18px;
-  background-image:url(method.gif);
-  background-position:left center;
-  background-repeat:no-repeat;
 }
 
 .el_session {
-  padding-left:18px;
-  background-image:url(session.gif);
-  background-position:left center;
-  background-repeat:no-repeat;
 }
 
 pre.source {
@@ -232,6 +195,7 @@ table.coverage tfoot td.ctr2 {
   padding-top:2px;
   font-size:8pt;
   color:#a0a0a0;
+  display: none;
 }
 
 .footer a {
@@ -240,4 +204,18 @@ table.coverage tfoot td.ctr2 {
 
 .right {
   float:right;
+}
+
+.bar > img[src="resources/redbar.gif"],
+.bar > img[src="../resources/redbar.gif"] {
+  height: 0;
+  padding: 2px;
+  background: #EC2730;
+}
+
+.bar > img[src="resources/greenbar.gif"],
+.bar > img[src="../resources/greenbar.gif"] {
+  height: 0;
+  padding: 2px;
+  background: #158784;
 }
