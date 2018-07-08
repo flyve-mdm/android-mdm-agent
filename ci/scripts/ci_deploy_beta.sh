@@ -44,6 +44,9 @@ if [[ $GH_COMMIT_MESSAGE != *"ci(release): generate CHANGELOG.md for version"* &
 # create APK
 ./gradlew assemble
 
+# set the deploy type
+export DEPLOY_TYPE="beta"
+
 # run fastlane script
 ./ci/scripts/ci_fastlane.sh
 
