@@ -47,6 +47,9 @@ if [[ $GH_COMMIT_MESSAGE != *"ci(release): generate CHANGELOG.md for version"* &
 # run push changes script
 ./ci/scripts/ci_push_changes.sh
 
+# set the deploy type
+export DEPLOY_TYPE="playstore"
+
 # run fastlane script
 ./ci/scripts/ci_fastlane.sh
 
