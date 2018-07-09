@@ -18,12 +18,46 @@ package org.flyve.mdm.agent.core.deeplink;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
- * @author    rafaelhernandez
+ * @author    Rafael Hernandez
  * @date      9/7/18
  * @copyright Copyright © 2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
- */public class DeepLinkModelRoboTest {
+ */
+
+import org.flyve.mdm.agent.BuildConfig;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
+
+import static org.mockito.Mockito.mock;
+
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 16, packageName = "org.flyve.mdm.agent")
+public class DeepLinkModelRoboTest {
+
+    private Deeplink.Presenter presenter;
+    private DeeplinkModel model;
+
+    @Before
+    public void setUp() {
+        presenter = mock(Deeplink.Presenter.class);
+        model = new DeeplinkModel(presenter);
+    }
+
+    @Test
+    public void saveMQTTConfig() {
+        String url = "http://flyve.org";
+        String userToken = "41PtTmelVCT3jUb834fapiUnaq11111Z4oIFahv29";
+        String invitationToken = "d587e80887e3157f876b00b3eb84a20c11111f44e251bedd012a86355dd12c51";
+
+        model.saveMQTTConfig(RuntimeEnvironment.application, url, userToken, invitationToken);
+        Assert.assertTrue(true);
+    }
 }

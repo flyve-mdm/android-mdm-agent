@@ -1,16 +1,25 @@
 package org.flyve.mdm.agent.core.deeplink;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.util.Base64;
 
-import org.flyve.mdm.agent.ui.StartEnrollmentActivity;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -39,27 +48,45 @@ import static org.mockito.Mockito.mock;
  * ------------------------------------------------------------------------------
  */
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest( { Base64.class })
 public class DeeplinkModelTest {
 
-    private Context context;
+    private Deeplink.Presenter presenter;
     private DeeplinkModel model;
 
-    @Rule
-    public ActivityTestRule<StartEnrollmentActivity> rule  = new ActivityTestRule<>(StartEnrollmentActivity.class);
+    @Mock
+    private Context mockContext;
+
+    @Mock
+    private Resources mockResources;
 
     @Before
     public void setUp() {
-        context = InstrumentationRegistry.getTargetContext();
-        Deeplink.Presenter presenter = mock(Deeplink.Presenter.class);
+        presenter = mock(Deeplink.Presenter.class);
         model = new DeeplinkModel(presenter);
+
+        when(mockContext.getResources())
+                .thenReturn(mockResources);
+
+        when(mockResources.getString(anyInt())).thenReturn("mocked string");
+        when(mockResources.getStringArray(anyInt())).thenReturn(new String[]{"mocked string 1", "mocked string 2"});
+        when(mockResources.getColor(anyInt())).thenReturn(Color.BLACK);
+        when(mockResources.getBoolean(anyInt())).thenReturn(false);
+        when(mockResources.getDimension(anyInt())).thenReturn(100f);
+        when(mockResources.getIntArray(anyInt())).thenReturn(new int[]{1,2,3});
+
+        mockStatic(Base64.class);
+        when(Base64.encode(any(byte[].class), anyInt())).thenAnswer(invocation -> java.util.Base64.getEncoder().encode((byte[]) invocation.getArguments()[0]));
+        when(Base64.decode(anyString(), anyInt())).thenAnswer(invocation -> java.util.Base64.getMimeDecoder().decode((String) invocation.getArguments()[0]));
     }
 
 
     @Test
     public void lint() {
         String hash = "aHR0cHM6Ly9kZXYuZmx5dmUub3JnL2dscGkvYXBpcmVzdC5waHBcOzQxUHRUbWVsVkNUM2oxMTExMWZhcGlVbmFxWk9HdFo0b0lGYWh2MjlcO2Q1ODdlMTExMTFlMzE1N2Y4NzZiMDBiM2ViODRhMjBjMzQ4NjVmNDRlMjUxYmVkZDAxMmE4NjM1NWRkMTJjNTFcO0dyZWF0IHN1cHBvcnRcOyszMyAxMjM0NTY3ODlcO2h0dHBzOi8vbXlncmVhdHN1cHBvcnQuY29tXDtncmVhdHN1cHBvcnRAZXhhbXBsZS5jb20=";
-        model.lint(context, hash);
-        Assert.assertTrue(true);
+        model.lint(mockContext, hash);
+        verify(presenter).lintSuccess(any(DeeplinkSchema.class));
     }
 
     @Test
@@ -69,23 +96,7 @@ public class DeeplinkModelTest {
         String webSite = "http://flyve.org";
         String email = "info@flyve.org";
 
-        model.saveSupervisor(context, name, phone, webSite, email);
-        Assert.assertTrue(true);
-    }
-
-    @Test
-    public void saveMQTTConfig() {
-        String url = "http://flyve.org";
-        String userToken = "41PtTmelVCT3jUb834fapiUnaq11111Z4oIFahv29";
-        String invitationToken = "d587e80887e3157f876b00b3eb84a20c11111f44e251bedd012a86355dd12c51";
-
-        model.saveMQTTConfig(context, url, userToken, invitationToken);
-        Assert.assertTrue(true);
-    }
-
-    @Test
-    public void openEnrollment() {
-        model.openEnrollment(rule.getActivity(), 1);
+        model.saveSupervisor(mockContext, name, phone, webSite, email);
         Assert.assertTrue(true);
     }
 }
