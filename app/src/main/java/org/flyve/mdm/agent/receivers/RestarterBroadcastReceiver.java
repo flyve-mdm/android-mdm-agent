@@ -27,13 +27,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import org.flyve.mdm.agent.services.MQTTService;
+import org.flyve.mdm.agent.services.MDMService;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 /**
  * Broadcast for BOOT
  */
-public class MQTTRestarterBroadcastReceiver extends BroadcastReceiver {
+public class RestarterBroadcastReceiver extends BroadcastReceiver {
 
     /**
      * Re-starts the service if it stops
@@ -42,7 +42,7 @@ public class MQTTRestarterBroadcastReceiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        FlyveLog.d(MQTTRestarterBroadcastReceiver.class.getSimpleName(), "Service Stops!");
-        context.startService(new Intent(context, MQTTService.class));
+        FlyveLog.d(RestarterBroadcastReceiver.class.getSimpleName(), "Service Stops!");
+        context.startService(new Intent(context, MDMService.class));
     }
 }

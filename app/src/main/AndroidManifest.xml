@@ -156,7 +156,7 @@
             >
         </service>
         <service
-            android:name=".services.MQTTService"
+            android:name=".services.MDMService"
             android:enabled="true"
             android:label="M2M communications"
             >
@@ -168,7 +168,7 @@
 
         <!-- This receiver is for restart MQTT on reboot device -->
         <receiver
-            android:name=".receivers.MQTTRestarterBroadcastReceiver"
+            android:name=".receivers.RestarterBroadcastReceiver"
             android:enabled="true"
             android:exported="true"
             android:label="RestartServiceWhenStopped">
@@ -203,7 +203,7 @@
 
         <!-- This receiver is for information about Wifi or Bluetooth -->
         <receiver
-            android:name=".receivers.MQTTConnectivityReceiver"
+            android:name=".receivers.ConnectivityReceiver"
             android:exported="false">
             <intent-filter android:priority="100">
                 <action android:name="android.net.wifi.STATE_CHANGE" />

@@ -189,7 +189,7 @@ public class PoliciesController {
                 ((Service) context).stopSelf();
 
                 // restart MQTT connection with this new parameters
-                MQTTService.start(MDMAgent.getInstance());
+                MDMService.start(MDMAgent.getInstance());
 
                 // return the status of the task
                 sendTaskStatus(taskId, FEEDBACK_DONE);
@@ -201,7 +201,7 @@ public class PoliciesController {
                 ((Service) context).stopSelf();
 
                 // restart MQTT connection with this new parameters
-                MQTTService.start(MDMAgent.getInstance());
+                MDMService.start(MDMAgent.getInstance());
 
                 // return the status of the task
                 sendTaskStatus(taskId, FEEDBACK_DONE);

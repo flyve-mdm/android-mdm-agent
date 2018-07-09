@@ -30,24 +30,24 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import org.flyve.mdm.agent.services.MQTTService;
+import org.flyve.mdm.agent.services.MDMService;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class AppsReceiver extends BroadcastReceiver {
 
-    private MQTTService mqttService;
+    private MDMService MDMService;
 
     ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            mqttService = null;
+            MDMService = null;
         }
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            MQTTService.LocalBinder mLocalBinder = (MQTTService.LocalBinder)service;
-            mqttService = mLocalBinder.getServerInstance();
-            mqttService.sendInventory();
+            MDMService.LocalBinder mLocalBinder = (MDMService.LocalBinder)service;
+            MDMService = mLocalBinder.getServerInstance();
+            MDMService.sendInventory();
         }
     };
 
@@ -60,7 +60,7 @@ public class AppsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
-            Intent mIntent = new Intent(context, MQTTService.class);
+            Intent mIntent = new Intent(context, MDMService.class);
             context.bindService(mIntent, mConnection, Context.BIND_AUTO_CREATE);
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
