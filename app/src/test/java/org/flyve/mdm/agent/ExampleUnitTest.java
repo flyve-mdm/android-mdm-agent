@@ -1,4 +1,4 @@
-package org.flyve.inventory.agent;
+package org.flyve.mdm.agent;
 
 import org.junit.Test;
 
