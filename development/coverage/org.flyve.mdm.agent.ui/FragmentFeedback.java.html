@@ -1,6 +1,3 @@
----
-layout: coverage
----
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../resources/report.css" type="text/css"/><link rel="shortcut icon" href="../resources/report.gif" type="image/gif"/><title>FragmentFeedback.java</title><link rel="stylesheet" href="../resources/prettify.css" type="text/css"/><script type="text/javascript" src="../resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">org.flyve.mdm.agent.ui</a> &gt; <span class="el_source">FragmentFeedback.java</span></div><h1>FragmentFeedback.java</h1><pre class="source lang-java linenums">/*
  * Copyright Teclib. All rights reserved.
  *
@@ -99,41 +96,41 @@ import java.util.TreeMap;
 <span class="nc" id="L96">        map.put(&quot;Lock&quot;,false);</span>
 <span class="nc" id="L97">        map.put(&quot;Wipe&quot;,false);</span>
 <span class="nc" id="L98">        map.put(&quot;Unenroll&quot;,false);</span>
-<span class="nc" id="L99">        map.put(&quot;Password enabled&quot;, Boolean.parseBoolean(cache.getValue(PasswordEnablePolicy.POLICY_NAME).value));</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">        map.put(&quot;Password quality&quot;, !cache.getValue(PasswordQualityPolicy.POLICY_NAME).value.isEmpty());</span>
-<span class="nc" id="L101">        map.put(&quot;Password minimum length&quot;, moreThanCero(Integer.valueOf(cache.getValue(PasswordMinLengthPolicy.POLICY_NAME).value)));</span>
-<span class="nc" id="L102">        map.put(&quot;Password minimum lower case&quot;, moreThanCero(Integer.valueOf(cache.getValue(PasswordMinLowerCasePolicy.POLICY_NAME).value)));</span>
-<span class="nc" id="L103">        map.put(&quot;Password minimum upper case&quot;, moreThanCero(Integer.valueOf(cache.getValue(PasswordMinUpperCasePolicy.POLICY_NAME).value)));</span>
-<span class="nc" id="L104">        map.put(&quot;Password minimum non letter&quot;, moreThanCero(Integer.valueOf(cache.getValue(PasswordMinNonLetterPolicy.POLICY_NAME).value)));</span>
-<span class="nc" id="L105">        map.put(&quot;Password minimum letters&quot;, moreThanCero(Integer.valueOf(cache.getValue(PasswordMinLetterPolicy.POLICY_NAME).value)));</span>
-<span class="nc" id="L106">        map.put(&quot;Password minimum numeric&quot;, moreThanCero(Integer.valueOf(cache.getValue(PasswordMinNumericPolicy.POLICY_NAME).value)));</span>
-<span class="nc" id="L107">        map.put(&quot;Password minimum symbols&quot;, moreThanCero(Integer.valueOf(cache.getValue(PasswordMinSymbolsPolicy.POLICY_NAME).value)));</span>
-<span class="nc" id="L108">        map.put(&quot;Maximum failed passwords for wipe&quot;, moreThanCero(Integer.valueOf(cache.getValue(MaximumFailedPasswordForWipePolicy.POLICY_NAME).value)));</span>
-<span class="nc" id="L109">        map.put(&quot;Maximum time to lock&quot;, moreThanCero(Integer.valueOf(cache.getValue(MaximumTimeToLockPolicy.POLICY_NAME).value)));</span>
-<span class="nc" id="L110">        map.put(&quot;Storage encryption&quot;, Boolean.parseBoolean(cache.getValue(StorageEncryptionPolicy.POLICY_NAME).value));</span>
-<span class="nc" id="L111">        map.put(&quot;Disable camera&quot;, Boolean.parseBoolean(cache.getValue(CameraPolicy.POLICY_NAME).value));</span>
-<span class="nc" id="L112">        map.put(&quot;Disable bluetooth&quot;, Boolean.parseBoolean(cache.getValue(BluetoothPolicy.POLICY_NAME).value));</span>
-<span class="nc" id="L113">        map.put(&quot;Deploy app&quot;, true);</span>
-<span class="nc" id="L114">        map.put(&quot;Remove app&quot;,true);</span>
-<span class="nc" id="L115">        map.put(&quot;Deploy file&quot;,true);</span>
-<span class="nc" id="L116">        map.put(&quot;Remove file&quot;,true);</span>
-<span class="nc" id="L117">        map.put(&quot;Disable screen capture&quot;, Boolean.parseBoolean(cache.getValue(ScreenCapturePolicy.POLICY_NAME).value));</span>
-<span class="nc" id="L118">        map.put(&quot;Disable airplane mode&quot;, Boolean.parseBoolean(cache.getValue(AirplaneModePolicy.POLICY_NAME).value));</span>
-<span class="nc" id="L119">        map.put(&quot;Disable GPS&quot;, Boolean.parseBoolean(cache.getValue(GPSPolicy.POLICY_NAME).value));</span>
-<span class="nc" id="L120">        map.put(&quot;Disable Hostpot/Tethering&quot;, Boolean.parseBoolean(cache.getValue(HostpotTetheringPolicy.POLICY_NAME).value));</span>
-<span class="nc" id="L121">        map.put(&quot;Disable roaming&quot;, Boolean.parseBoolean(cache.getValue(RoamingPolicy.POLICY_NAME).value));</span>
-<span class="nc" id="L122">        map.put(&quot;Disable wifi&quot;, Boolean.parseBoolean(cache.getValue(WifiPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L99">        map.put(&quot;Deploy app&quot;, false);</span>
+<span class="nc" id="L100">        map.put(&quot;Remove app&quot;,false);</span>
+<span class="nc" id="L101">        map.put(&quot;Deploy file&quot;,false);</span>
+<span class="nc" id="L102">        map.put(&quot;Remove file&quot;,false);</span>
+<span class="nc" id="L103">        map.put(&quot;Password enabled&quot;, Helpers.boolFromString(cache.getValue(PasswordEnablePolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L104">        map.put(&quot;Password quality&quot;, emptyValue(cache.getValue(PasswordQualityPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L105">        map.put(&quot;Password minimum length&quot;, Helpers.moreThanZero(cache.getValue(PasswordMinLengthPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L106">        map.put(&quot;Password minimum lower case&quot;, Helpers.moreThanZero(cache.getValue(PasswordMinLowerCasePolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L107">        map.put(&quot;Password minimum upper case&quot;, Helpers.moreThanZero(cache.getValue(PasswordMinUpperCasePolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L108">        map.put(&quot;Password minimum non letter&quot;, Helpers.moreThanZero(cache.getValue(PasswordMinNonLetterPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L109">        map.put(&quot;Password minimum letters&quot;, Helpers.moreThanZero(cache.getValue(PasswordMinLetterPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L110">        map.put(&quot;Password minimum numeric&quot;, Helpers.moreThanZero(cache.getValue(PasswordMinNumericPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L111">        map.put(&quot;Password minimum symbols&quot;, Helpers.moreThanZero(cache.getValue(PasswordMinSymbolsPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L112">        map.put(&quot;Maximum failed passwords for wipe&quot;, Helpers.moreThanZero(cache.getValue(MaximumFailedPasswordForWipePolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L113">        map.put(&quot;Maximum time to lock&quot;, Helpers.moreThanZero(cache.getValue(MaximumTimeToLockPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L114">        map.put(&quot;Storage encryption&quot;, Helpers.boolFromString(cache.getValue(StorageEncryptionPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L115">        map.put(&quot;Disable camera&quot;, Helpers.boolFromString(cache.getValue(CameraPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L116">        map.put(&quot;Disable bluetooth&quot;, Helpers.boolFromString(cache.getValue(BluetoothPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L117">        map.put(&quot;Disable screen capture&quot;, Helpers.boolFromString(cache.getValue(ScreenCapturePolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L118">        map.put(&quot;Disable airplane mode&quot;, Helpers.boolFromString(cache.getValue(AirplaneModePolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L119">        map.put(&quot;Disable GPS&quot;, Helpers.boolFromString(cache.getValue(GPSPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L120">        map.put(&quot;Disable Hostpot/Tethering&quot;, Helpers.boolFromString(cache.getValue(HostpotTetheringPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L121">        map.put(&quot;Disable roaming&quot;, Helpers.boolFromString(cache.getValue(RoamingPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L122">        map.put(&quot;Disable wifi&quot;, Helpers.boolFromString(cache.getValue(WifiPolicy.POLICY_NAME).value));</span>
 //        map.put(&quot;Use TLS&quot;, cache.getUseTLS());
-<span class="nc" id="L124">        map.put(&quot;Disable mobile line&quot;, Boolean.parseBoolean(cache.getValue(MobileLinePolicy.POLICY_NAME).value));</span>
-<span class="nc" id="L125">        map.put(&quot;Disable NFC&quot;, Boolean.parseBoolean(cache.getValue(NFCPolicy.POLICY_NAME).value));</span>
-<span class="nc" id="L126">        map.put(&quot;Disable statusbar&quot;, Boolean.parseBoolean(cache.getValue(StatusBarPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L124">        map.put(&quot;Disable mobile line&quot;, Helpers.boolFromString(cache.getValue(MobileLinePolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L125">        map.put(&quot;Disable NFC&quot;, Helpers.boolFromString(cache.getValue(NFCPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L126">        map.put(&quot;Disable statusbar&quot;, Helpers.boolFromString(cache.getValue(StatusBarPolicy.POLICY_NAME).value));</span>
 //        map.put(&quot;ResetPassword&quot;,false);
-<span class="nc" id="L128">        map.put(&quot;Disable Usb Mtp&quot;, Boolean.parseBoolean(cache.getValue(UsbMtpPolicy.POLICY_NAME).value));</span>
-<span class="nc" id="L129">        map.put(&quot;Disable Usb Ptp&quot;, Boolean.parseBoolean(cache.getValue(UsbPtpPolicy.POLICY_NAME).value));</span>
-<span class="nc" id="L130">        map.put(&quot;Disable Usb Adb&quot;, Boolean.parseBoolean(cache.getValue(UsbAdbPolicy.POLICY_NAME).value));</span>
-<span class="nc" id="L131">        map.put(&quot;Disable speakerphone&quot;, Boolean.parseBoolean(cache.getValue(SpeakerphonePolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L128">        map.put(&quot;Disable Usb Mtp&quot;, Helpers.boolFromString(cache.getValue(UsbMtpPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L129">        map.put(&quot;Disable Usb Ptp&quot;, Helpers.boolFromString(cache.getValue(UsbPtpPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L130">        map.put(&quot;Disable Usb Adb&quot;, Helpers.boolFromString(cache.getValue(UsbAdbPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L131">        map.put(&quot;Disable speakerphone&quot;, Helpers.boolFromString(cache.getValue(SpeakerphonePolicy.POLICY_NAME).value));</span>
 //        map.put(&quot;DisableSmsMms&quot;,false);
-<span class="nc" id="L133">        map.put(&quot;Disable create VPN Profiles&quot;, Boolean.parseBoolean(cache.getValue(VPNPolicy.POLICY_NAME).value));</span>
+<span class="nc" id="L133">        map.put(&quot;Disable create VPN Profiles&quot;, Helpers.boolFromString(cache.getValue(VPNPolicy.POLICY_NAME).value));</span>
 
 <span class="nc" id="L135">        LinearLayout ln = v.findViewById(R.id.lnFields);</span>
 <span class="nc" id="L136">        editMessage = v.findViewById(R.id.editMessage);</span>
@@ -152,55 +149,59 @@ import java.util.TreeMap;
 <span class="nc" id="L149">        return v;</span>
     }
 
-    private Boolean moreThanCero(int value) {
-<span class="nc bnc" id="L153" title="All 2 branches missed.">        return (value&gt;0);</span>
+    private Boolean emptyValue(String value) {
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        if(value==null) {</span>
+<span class="nc" id="L154">            return false;</span>
+        } else {
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            return !value.isEmpty();</span>
+        }
     }
 
     private JSONObject createFeedbackJSON(Switch[] sw){
-<span class="nc" id="L157">        JSONObject jsonFeedback = new JSONObject();</span>
-<span class="nc" id="L158">        JSONObject jsonPolicy = new JSONObject();</span>
+<span class="nc" id="L161">        JSONObject jsonFeedback = new JSONObject();</span>
+<span class="nc" id="L162">        JSONObject jsonPolicy = new JSONObject();</span>
 
         try {
-<span class="nc bnc" id="L161" title="All 2 branches missed.">            for (int i=0; i &lt; sw.length; i++) {</span>
-<span class="nc" id="L162">                jsonPolicy.put(sw[i].getText().toString(), String.valueOf(sw[i].isChecked()));</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">            for (int i=0; i &lt; sw.length; i++) {</span>
+<span class="nc" id="L166">                jsonPolicy.put(sw[i].getText().toString(), String.valueOf(sw[i].isChecked()));</span>
             }
-<span class="nc" id="L164">            jsonPolicy.put(&quot;message&quot;, editMessage.getText().toString());</span>
-<span class="nc" id="L165">            jsonFeedback.put(&quot;feedback&quot;, jsonPolicy);</span>
-<span class="nc" id="L166">        } catch (Exception ex) {</span>
-<span class="nc" id="L167">            FlyveLog.e(ex.getMessage());</span>
-<span class="nc" id="L168">        }</span>
+<span class="nc" id="L168">            jsonPolicy.put(&quot;message&quot;, editMessage.getText().toString());</span>
+<span class="nc" id="L169">            jsonFeedback.put(&quot;feedback&quot;, jsonPolicy);</span>
+<span class="nc" id="L170">        } catch (Exception ex) {</span>
+<span class="nc" id="L171">            FlyveLog.e(ex.getMessage());</span>
+<span class="nc" id="L172">        }</span>
 
-<span class="nc" id="L170">        return jsonFeedback;</span>
+<span class="nc" id="L174">        return jsonFeedback;</span>
     }
 
     private void sendFeedbackChollima(JSONObject json) {
-<span class="nc" id="L174">        ConnectionHTTP.getWebData(&quot;&quot;, json, null, new ConnectionHTTP.DataCallback() {</span>
+<span class="nc" id="L178">        ConnectionHTTP.getWebData(&quot;&quot;, json, null, new ConnectionHTTP.DataCallback() {</span>
             @Override
             public void callback(String data) {
-<span class="nc" id="L177">                Helpers.snack(FragmentFeedback.this.getActivity(), getString(R.string.feedback_send_success));</span>
-<span class="nc" id="L178">            }</span>
+<span class="nc" id="L181">                Helpers.snack(FragmentFeedback.this.getActivity(), getString(R.string.feedback_send_success));</span>
+<span class="nc" id="L182">            }</span>
         });
-<span class="nc" id="L180">    }</span>
+<span class="nc" id="L184">    }</span>
 
     private void createField(Context context, Map&lt;String, Boolean&gt; map, LinearLayout ln) {
-<span class="nc" id="L183">        swPolicy = new Switch[map.size()];</span>
-<span class="nc" id="L184">        int index = 0;</span>
+<span class="nc" id="L187">        swPolicy = new Switch[map.size()];</span>
+<span class="nc" id="L188">        int index = 0;</span>
 
-<span class="nc bnc" id="L186" title="All 2 branches missed.">        for(Map.Entry&lt;String, Boolean&gt; entry : map.entrySet()) {</span>
-<span class="nc" id="L187">            String policy = entry.getKey();</span>
-<span class="nc" id="L188">            Boolean highlight = entry.getValue();</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">        for(Map.Entry&lt;String, Boolean&gt; entry : map.entrySet()) {</span>
+<span class="nc" id="L191">            String policy = entry.getKey();</span>
+<span class="nc" id="L192">            Boolean highlight = entry.getValue();</span>
 
-<span class="nc" id="L190">            swPolicy[index] = new Switch(context);</span>
-<span class="nc" id="L191">            swPolicy[index].setText(policy);</span>
-<span class="nc bnc" id="L192" title="All 2 branches missed.">            if(highlight) {</span>
-<span class="nc" id="L193">                swPolicy[index].setTextColor(Color.DKGRAY);</span>
+<span class="nc" id="L194">            swPolicy[index] = new Switch(context);</span>
+<span class="nc" id="L195">            swPolicy[index].setText(policy);</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">            if(highlight) {</span>
+<span class="nc" id="L197">                swPolicy[index].setTextColor(Color.DKGRAY);</span>
             } else {
-<span class="nc" id="L195">                swPolicy[index].setTextColor(Color.GRAY);</span>
+<span class="nc" id="L199">                swPolicy[index].setTextColor(Color.GRAY);</span>
             }
 
-<span class="nc" id="L198">            ln.addView(swPolicy[index]);</span>
-<span class="nc" id="L199">            index++;</span>
-<span class="nc" id="L200">        }</span>
-<span class="nc" id="L201">    }</span>
+<span class="nc" id="L202">            ln.addView(swPolicy[index]);</span>
+<span class="nc" id="L203">            index++;</span>
+<span class="nc" id="L204">        }</span>
+<span class="nc" id="L205">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span>Generated by the Android Gradle plugin 3.0.1</div></body></html>
