@@ -46,7 +46,7 @@ import org.flyve.mdm.agent.utils.Helpers;
  * Receive broadcast from android.net.wifi.STATE_CHANGE and android.bluetooth.adapter.action.STATE_CHANGED
  * on AndroidManifest.xml
  */
-public class MQTTConnectivityReceiver extends BroadcastReceiver {
+public class ConnectivityReceiver extends BroadcastReceiver {
 
     /**
      * It is called when it receives information about the state of the connectivity of the WIFI, Bluetooth and GPS

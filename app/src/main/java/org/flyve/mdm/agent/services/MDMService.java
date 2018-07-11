@@ -93,7 +93,7 @@ import javax.net.ssl.SSLContext;
 /**
  * This is the service get and send message from MQTT
  */
-public class MQTTService extends Service implements MqttCallback {
+public class MDMService extends Service implements MqttCallback {
 
     public static final String ACTION_START = "org.flyve.mdm.agent.ACTION_START";
     public static final String ACTION_INVENTORY = "org.flyve.mdm.agent.ACTION_INVENTORY";
@@ -117,8 +117,8 @@ public class MQTTService extends Service implements MqttCallback {
     IBinder mBinder = new LocalBinder();
 
     public static Intent start(Context context) {
-        MQTTService mMQTTService = new MQTTService();
-        Intent mServiceIntent = new Intent(context.getApplicationContext(), mMQTTService.getClass());
+        MDMService mMDMService = new MDMService();
+        Intent mServiceIntent = new Intent(context.getApplicationContext(), mMDMService.getClass());
 
         // Start the service
         context.startService(mServiceIntent);
@@ -129,13 +129,13 @@ public class MQTTService extends Service implements MqttCallback {
     /**
      * Constructor
      */
-    public MQTTService() {
+    public MDMService() {
         FlyveLog.d("MQTT Service Constructor");
     }
 
     public class LocalBinder extends Binder {
-        public MQTTService getServerInstance() {
-            return MQTTService.this;
+        public MDMService getServerInstance() {
+            return MDMService.this;
         }
     }
 
@@ -202,7 +202,7 @@ public class MQTTService extends Service implements MqttCallback {
         super.onDestroy();
         Helpers.deleteMQTTCache(getApplicationContext());
         try {
-            getApplicationContext().startService(new Intent(getApplicationContext(), MQTTService.class));
+            getApplicationContext().startService(new Intent(getApplicationContext(), MDMService.class));
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
@@ -376,7 +376,7 @@ public class MQTTService extends Service implements MqttCallback {
                     executeConnection = true;
                 }
 
-                if(!MQTTService.this.connected) {
+                if(!MDMService.this.connected) {
                     if(executeConnection) {
                         reconnectionCounter++;
 

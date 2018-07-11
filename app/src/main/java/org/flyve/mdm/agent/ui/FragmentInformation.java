@@ -236,7 +236,7 @@ public class FragmentInformation extends Fragment {
     }
 
     /**
-     * broadcastServiceStatus instance that receive service status from MQTTService
+     * broadcastServiceStatus instance that receive service status from MDMService
      */
     private BroadcastReceiver broadcastServiceStatus = new BroadcastReceiver() {
         @Override

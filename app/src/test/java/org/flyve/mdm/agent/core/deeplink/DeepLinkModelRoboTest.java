@@ -1,17 +1,4 @@
-package org.flyve.mdm.agent.core.permission;
-
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
-
-import org.flyve.mdm.agent.ui.EnrollmentActivity;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static org.mockito.Mockito.mock;
+package org.flyve.mdm.agent.core.deeplink;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -31,8 +18,8 @@ import static org.mockito.Mockito.mock;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
- * @author    rafaelhernandez
- * @date      25/6/18
+ * @author    Rafael Hernandez
+ * @date      9/7/18
  * @copyright Copyright © 2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android
@@ -40,31 +27,37 @@ import static org.mockito.Mockito.mock;
  * ------------------------------------------------------------------------------
  */
 
-public class PermissionModelTest {
+import org.flyve.mdm.agent.BuildConfig;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
-    private Context context;
-    private PermissionModel model;
+import static org.mockito.Mockito.mock;
+
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 23)
+public class DeepLinkModelRoboTest {
+
+    private Deeplink.Presenter presenter;
+    private DeeplinkModel model;
 
     @Before
     public void setUp() {
-        context = InstrumentationRegistry.getTargetContext();
-        Permission.Presenter presenter = mock(Permission.Presenter.class);
-        model = new PermissionModel(presenter);
+        presenter = mock(Deeplink.Presenter.class);
+        model = new DeeplinkModel(presenter);
     }
 
-    @Rule
-    public ActivityTestRule<EnrollmentActivity> rule  = new ActivityTestRule<>(EnrollmentActivity.class);
-
-
     @Test
-    public void showDialogShare() {
-        getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                model.showDialogShare(rule.getActivity());
-            }
-        });
+    public void saveMQTTConfig() {
+        String url = "http://flyve.org";
+        String userToken = "41PtTmelVCT3jUb834fapiUnaq11111Z4oIFahv29";
+        String invitationToken = "d587e80887e3157f876b00b3eb84a20c11111f44e251bedd012a86355dd12c51";
 
+        model.saveMQTTConfig(RuntimeEnvironment.application, url, userToken, invitationToken);
         Assert.assertTrue(true);
     }
 }

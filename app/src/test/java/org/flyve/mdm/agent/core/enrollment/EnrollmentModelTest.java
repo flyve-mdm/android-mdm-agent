@@ -1,18 +1,15 @@
-package org.flyve.mdm.agent.core.walkthrough;
+package org.flyve.mdm.agent.core.enrollment;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 
-import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.ui.MainActivity;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.ArrayList;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -41,26 +38,30 @@ import static org.mockito.Mockito.mock;
  * ------------------------------------------------------------------------------
  */
 
-public class WalkthroughModelTest {
+@RunWith(MockitoJUnitRunner.class)
+public class EnrollmentModelTest {
 
+    @Mock
     private Context context;
-    private WalkthroughModel model;
-
-    @Rule
-    public ActivityTestRule<MainActivity> rule  = new ActivityTestRule<>(MainActivity.class);
-
+    private EnrollmentModel model;
+    private Enrollment.Presenter presenter;
 
     @Before
     public void setUp() {
-        context = InstrumentationRegistry.getTargetContext();
-        Walkthrough.Presenter presenter = mock(Walkthrough.Presenter.class);
-        model = new WalkthroughModel(presenter);
+        presenter = mock(Enrollment.Presenter.class);
+        model = new EnrollmentModel(presenter);
     }
 
     @Test
-    public void createSlides() {
-        ArrayList<WalkthroughSchema> walkthrough = new ArrayList<>();
-        walkthrough.add(new WalkthroughSchema(R.drawable.wt_text_1, context.getResources().getString(R.string.walkthrough_step_link_1), R.drawable.ic_walkthroug_1));
-        model.createSlides(walkthrough, rule.getActivity().getSupportFragmentManager());
+    public void createInventory() {
+        model.createInventory(context);
+        verify(presenter).inventorySuccess("");
+    }
+
+
+    @Test
+    public void createX509certification() {
+        model.createX509certification(context);
+        verify(presenter).certificationX509Success();
     }
 }

@@ -1,13 +1,13 @@
-package org.flyve.mdm.agent.core.enrollment;
+package org.flyve.mdm.agent.core.permission;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.mockito.Mock;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -28,37 +28,30 @@ import org.junit.runner.RunWith;
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
  * @author    rafaelhernandez
- * @date      7/1/18
+ * @date      25/6/18
  * @copyright Copyright © 2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-@RunWith(AndroidJUnit4.class)
-public class EnrollmentHelperTest {
 
+public class PermissionModelTest {
+
+    @Mock
     private Context context;
-    private EnrollmentHelper enroll;
+    private PermissionModel model;
+    private Permission.Presenter presenter;
 
     @Before
-    public void setUp() throws Exception {
-        context = InstrumentationRegistry.getTargetContext();
-        enroll = new EnrollmentHelper(context);
+    public void setUp() {
+        presenter = mock(Permission.Presenter.class);
+        model = new PermissionModel(presenter);
     }
 
     @Test
-    public void createX509certificateSuccess() throws Exception {
-        enroll.createX509cert(new EnrollmentHelper.EnrollCallBack() {
-            @Override
-            public void onSuccess(String data) {
-                Assert.assertTrue(true);
-            }
-
-            @Override
-            public void onError(String error) {
-                Assert.assertTrue(false);
-            }
-        });
+    public void generateInventory() {
+        model.generateInventory(context);
+        verify(presenter).inventorySuccess("");
     }
 }
