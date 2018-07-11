@@ -71,10 +71,11 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.8.9'
+    testImplementation 'org.mockito:mockito-core:2.7.1'
     testImplementation "org.powermock:powermock-module-junit4:1.7.4"
-    testImplementation "org.powermock:powermock-api-mockito2:1.7.4"
+    testImplementation "org.powermock:powermock-api-mockito:1.7.4"
     testImplementation 'org.robolectric:robolectric:3.3.1'
+    testImplementation "org.robolectric:multidex:3.4.2"
 
     implementation 'com.android.support:multidex:1.0.2'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
