@@ -28,7 +28,7 @@
 #
 
 # increment version code, need to be unique to send to store
-./gradlew updateVersionCode -P vCode=$(($CIRCLE_BUILD_NUM))
+./gradlew updateVersionCode
 
 # increment version name on package.json, create tag and commit with changelog
 yarn run release -m "ci(release): generate CHANGELOG.md for version %s"
