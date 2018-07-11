@@ -1,17 +1,13 @@
 package org.flyve.mdm.agent.core.permission;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 
-import org.flyve.mdm.agent.ui.EnrollmentActivity;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -42,29 +38,20 @@ import static org.mockito.Mockito.mock;
 
 public class PermissionModelTest {
 
+    @Mock
     private Context context;
     private PermissionModel model;
+    private Permission.Presenter presenter;
 
     @Before
     public void setUp() {
-        context = InstrumentationRegistry.getTargetContext();
-        Permission.Presenter presenter = mock(Permission.Presenter.class);
+        presenter = mock(Permission.Presenter.class);
         model = new PermissionModel(presenter);
     }
 
-    @Rule
-    public ActivityTestRule<EnrollmentActivity> rule  = new ActivityTestRule<>(EnrollmentActivity.class);
-
-
     @Test
-    public void showDialogShare() {
-        getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                model.showDialogShare(rule.getActivity());
-            }
-        });
-
-        Assert.assertTrue(true);
+    public void generateInventory() {
+        model.generateInventory(context);
+        verify(presenter).inventorySuccess("");
     }
 }

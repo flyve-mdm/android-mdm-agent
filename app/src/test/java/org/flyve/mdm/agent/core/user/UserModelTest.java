@@ -1,17 +1,13 @@
 package org.flyve.mdm.agent.core.user;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 
-import org.flyve.mdm.agent.ui.EnrollmentActivity;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -42,34 +38,20 @@ import static org.mockito.Mockito.mock;
 
 public class UserModelTest {
 
+    @Mock
     private Context context;
     private UserModel model;
-
-    @Rule
-    public ActivityTestRule<EnrollmentActivity> rule  = new ActivityTestRule<>(EnrollmentActivity.class);
-
+    private User.Presenter presenter;
 
     @Before
     public void setUp() {
-        context = InstrumentationRegistry.getTargetContext();
-        User.Presenter presenter = mock(User.Presenter.class);
+        presenter = mock(User.Presenter.class);
         model = new UserModel(presenter);
     }
 
     @Test
     public void load() {
         model.load(context);
-        Assert.assertTrue(true);
-    }
-
-    @Test
-    public void selectPhoto() {
-        getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                model.selectPhoto(rule.getActivity(), 1, 1);
-            }
-        });
-        Assert.assertTrue(true);
+        verify(presenter).loadSuccess(new UserSchema());
     }
 }

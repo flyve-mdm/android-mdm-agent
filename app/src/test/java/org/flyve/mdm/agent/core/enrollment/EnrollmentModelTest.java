@@ -1,17 +1,15 @@
 package org.flyve.mdm.agent.core.enrollment;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 
-import org.flyve.mdm.agent.ui.EnrollmentActivity;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -40,43 +38,30 @@ import static org.mockito.Mockito.mock;
  * ------------------------------------------------------------------------------
  */
 
+@RunWith(MockitoJUnitRunner.class)
 public class EnrollmentModelTest {
 
+    @Mock
     private Context context;
     private EnrollmentModel model;
-
-    @Rule
-    public ActivityTestRule<EnrollmentActivity> rule  = new ActivityTestRule<>(EnrollmentActivity.class);
+    private Enrollment.Presenter presenter;
 
     @Before
     public void setUp() {
-        context = InstrumentationRegistry.getTargetContext();
-        Enrollment.Presenter presenter = mock(Enrollment.Presenter.class);
+        presenter = mock(Enrollment.Presenter.class);
         model = new EnrollmentModel(presenter);
     }
 
     @Test
     public void createInventory() {
         model.createInventory(context);
-        Assert.assertTrue(true);
+        verify(presenter).inventorySuccess("");
     }
 
 
     @Test
     public void createX509certification() {
         model.createX509certification(context);
-        Assert.assertTrue(true);
-    }
-
-    @Test
-    public void selectPhoto() {
-        getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                model.selectPhoto(rule.getActivity(), 2, 1);
-            }
-        });
-
-        Assert.assertTrue(true);
+        verify(presenter).certificationX509Success();
     }
 }

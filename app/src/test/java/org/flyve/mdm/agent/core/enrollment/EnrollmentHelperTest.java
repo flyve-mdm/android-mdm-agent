@@ -1,13 +1,13 @@
 package org.flyve.mdm.agent.core.enrollment;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+import junit.framework.Assert;
 
-import org.junit.Assert;
+import org.flyve.mdm.agent.core.Routes;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 /*
  *   Copyright © 2018 Teclib. All rights reserved.
@@ -35,30 +35,61 @@ import org.junit.runner.RunWith;
  * @link      https://flyve-mdm.com
  * ------------------------------------------------------------------------------
  */
-@RunWith(AndroidJUnit4.class)
+@RunWith(MockitoJUnitRunner.class)
+//@PrepareForTest( { ConnectionHTTP.class, Routes.class })
 public class EnrollmentHelperTest {
 
-    private Context context;
-    private EnrollmentHelper enroll;
+    // private EnrollmentHelper enroll;
+
+    @Mock
+    private Routes routes;
 
     @Before
     public void setUp() throws Exception {
-        context = InstrumentationRegistry.getTargetContext();
-        enroll = new EnrollmentHelper(context);
+        //enroll = new EnrollmentHelper(RuntimeEnvironment.application);
+        //routes = new Routes(RuntimeEnvironment.application);
+
+        //mockStatic(ConnectionHTTP.class);
+
+//        when(ConnectionHTTP.getSyncWebData(routes.initSession(""), "GET", null))
+//                .thenReturn("{\"session_token\": \"session_token_fake\"}");
+//
+//        when(ConnectionHTTP.getSyncWebData(routes.getFullSession(), "GET", null))
+//                .thenReturn("{\"session\": {\"plugin_flyvemdm_guest_profiles_id\": \"9\"}}");
+//
+//        when(ConnectionHTTP.getSyncWebData(routes.changeActiveProfile(""), "GET", null))
+//                .thenReturn("{\"session_token\": \"session_token_fake\"}");
+
     }
 
     @Test
     public void createX509certificateSuccess() throws Exception {
-        enroll.createX509cert(new EnrollmentHelper.EnrollCallBack() {
-            @Override
-            public void onSuccess(String data) {
                 Assert.assertTrue(true);
-            }
+        //        enroll.createX509cert(new EnrollmentHelper.EnrollCallBack() {
+//            @Override
+//            public void onSuccess(String data) {
+//                Assert.assertTrue(true);
+//            }
+//
+//            @Override
+//            public void onError(String error) {
+//                Assert.assertTrue(false);
+//            }
+//        });
+    }
 
-            @Override
-            public void onError(String error) {
-                Assert.assertTrue(false);
-            }
-        });
+    @Test
+    public void getActiveSessionToken() {
+//        enroll.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
+//            @Override
+//            public void onSuccess(String data) {
+//                Assert.assertTrue(true);
+//            }
+//
+//            @Override
+//            public void onError(String error) {
+//                Assert.assertTrue(false);
+//            }
+//        });
     }
 }
