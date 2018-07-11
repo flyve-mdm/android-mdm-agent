@@ -96,41 +96,41 @@ public class FragmentFeedback extends Fragment {
         map.put("Lock",false);
         map.put("Wipe",false);
         map.put("Unenroll",false);
-        map.put("Password enabled", Boolean.parseBoolean(cache.getValue(PasswordEnablePolicy.POLICY_NAME).value));
-        map.put("Password quality", !cache.getValue(PasswordQualityPolicy.POLICY_NAME).value.isEmpty());
-        map.put("Password minimum length", moreThanCero(Integer.valueOf(cache.getValue(PasswordMinLengthPolicy.POLICY_NAME).value)));
-        map.put("Password minimum lower case", moreThanCero(Integer.valueOf(cache.getValue(PasswordMinLowerCasePolicy.POLICY_NAME).value)));
-        map.put("Password minimum upper case", moreThanCero(Integer.valueOf(cache.getValue(PasswordMinUpperCasePolicy.POLICY_NAME).value)));
-        map.put("Password minimum non letter", moreThanCero(Integer.valueOf(cache.getValue(PasswordMinNonLetterPolicy.POLICY_NAME).value)));
-        map.put("Password minimum letters", moreThanCero(Integer.valueOf(cache.getValue(PasswordMinLetterPolicy.POLICY_NAME).value)));
-        map.put("Password minimum numeric", moreThanCero(Integer.valueOf(cache.getValue(PasswordMinNumericPolicy.POLICY_NAME).value)));
-        map.put("Password minimum symbols", moreThanCero(Integer.valueOf(cache.getValue(PasswordMinSymbolsPolicy.POLICY_NAME).value)));
-        map.put("Maximum failed passwords for wipe", moreThanCero(Integer.valueOf(cache.getValue(MaximumFailedPasswordForWipePolicy.POLICY_NAME).value)));
-        map.put("Maximum time to lock", moreThanCero(Integer.valueOf(cache.getValue(MaximumTimeToLockPolicy.POLICY_NAME).value)));
-        map.put("Storage encryption", Boolean.parseBoolean(cache.getValue(StorageEncryptionPolicy.POLICY_NAME).value));
-        map.put("Disable camera", Boolean.parseBoolean(cache.getValue(CameraPolicy.POLICY_NAME).value));
-        map.put("Disable bluetooth", Boolean.parseBoolean(cache.getValue(BluetoothPolicy.POLICY_NAME).value));
-        map.put("Deploy app", true);
-        map.put("Remove app",true);
-        map.put("Deploy file",true);
-        map.put("Remove file",true);
-        map.put("Disable screen capture", Boolean.parseBoolean(cache.getValue(ScreenCapturePolicy.POLICY_NAME).value));
-        map.put("Disable airplane mode", Boolean.parseBoolean(cache.getValue(AirplaneModePolicy.POLICY_NAME).value));
-        map.put("Disable GPS", Boolean.parseBoolean(cache.getValue(GPSPolicy.POLICY_NAME).value));
-        map.put("Disable Hostpot/Tethering", Boolean.parseBoolean(cache.getValue(HostpotTetheringPolicy.POLICY_NAME).value));
-        map.put("Disable roaming", Boolean.parseBoolean(cache.getValue(RoamingPolicy.POLICY_NAME).value));
-        map.put("Disable wifi", Boolean.parseBoolean(cache.getValue(WifiPolicy.POLICY_NAME).value));
+        map.put("Deploy app", false);
+        map.put("Remove app",false);
+        map.put("Deploy file",false);
+        map.put("Remove file",false);
+        map.put("Password enabled", Helpers.boolFromString(cache.getValue(PasswordEnablePolicy.POLICY_NAME).value));
+        map.put("Password quality", emptyValue(cache.getValue(PasswordQualityPolicy.POLICY_NAME).value));
+        map.put("Password minimum length", Helpers.moreThanZero(cache.getValue(PasswordMinLengthPolicy.POLICY_NAME).value));
+        map.put("Password minimum lower case", Helpers.moreThanZero(cache.getValue(PasswordMinLowerCasePolicy.POLICY_NAME).value));
+        map.put("Password minimum upper case", Helpers.moreThanZero(cache.getValue(PasswordMinUpperCasePolicy.POLICY_NAME).value));
+        map.put("Password minimum non letter", Helpers.moreThanZero(cache.getValue(PasswordMinNonLetterPolicy.POLICY_NAME).value));
+        map.put("Password minimum letters", Helpers.moreThanZero(cache.getValue(PasswordMinLetterPolicy.POLICY_NAME).value));
+        map.put("Password minimum numeric", Helpers.moreThanZero(cache.getValue(PasswordMinNumericPolicy.POLICY_NAME).value));
+        map.put("Password minimum symbols", Helpers.moreThanZero(cache.getValue(PasswordMinSymbolsPolicy.POLICY_NAME).value));
+        map.put("Maximum failed passwords for wipe", Helpers.moreThanZero(cache.getValue(MaximumFailedPasswordForWipePolicy.POLICY_NAME).value));
+        map.put("Maximum time to lock", Helpers.moreThanZero(cache.getValue(MaximumTimeToLockPolicy.POLICY_NAME).value));
+        map.put("Storage encryption", Helpers.boolFromString(cache.getValue(StorageEncryptionPolicy.POLICY_NAME).value));
+        map.put("Disable camera", Helpers.boolFromString(cache.getValue(CameraPolicy.POLICY_NAME).value));
+        map.put("Disable bluetooth", Helpers.boolFromString(cache.getValue(BluetoothPolicy.POLICY_NAME).value));
+        map.put("Disable screen capture", Helpers.boolFromString(cache.getValue(ScreenCapturePolicy.POLICY_NAME).value));
+        map.put("Disable airplane mode", Helpers.boolFromString(cache.getValue(AirplaneModePolicy.POLICY_NAME).value));
+        map.put("Disable GPS", Helpers.boolFromString(cache.getValue(GPSPolicy.POLICY_NAME).value));
+        map.put("Disable Hostpot/Tethering", Helpers.boolFromString(cache.getValue(HostpotTetheringPolicy.POLICY_NAME).value));
+        map.put("Disable roaming", Helpers.boolFromString(cache.getValue(RoamingPolicy.POLICY_NAME).value));
+        map.put("Disable wifi", Helpers.boolFromString(cache.getValue(WifiPolicy.POLICY_NAME).value));
 //        map.put("Use TLS", cache.getUseTLS());
-        map.put("Disable mobile line", Boolean.parseBoolean(cache.getValue(MobileLinePolicy.POLICY_NAME).value));
-        map.put("Disable NFC", Boolean.parseBoolean(cache.getValue(NFCPolicy.POLICY_NAME).value));
-        map.put("Disable statusbar", Boolean.parseBoolean(cache.getValue(StatusBarPolicy.POLICY_NAME).value));
+        map.put("Disable mobile line", Helpers.boolFromString(cache.getValue(MobileLinePolicy.POLICY_NAME).value));
+        map.put("Disable NFC", Helpers.boolFromString(cache.getValue(NFCPolicy.POLICY_NAME).value));
+        map.put("Disable statusbar", Helpers.boolFromString(cache.getValue(StatusBarPolicy.POLICY_NAME).value));
 //        map.put("ResetPassword",false);
-        map.put("Disable Usb Mtp", Boolean.parseBoolean(cache.getValue(UsbMtpPolicy.POLICY_NAME).value));
-        map.put("Disable Usb Ptp", Boolean.parseBoolean(cache.getValue(UsbPtpPolicy.POLICY_NAME).value));
-        map.put("Disable Usb Adb", Boolean.parseBoolean(cache.getValue(UsbAdbPolicy.POLICY_NAME).value));
-        map.put("Disable speakerphone", Boolean.parseBoolean(cache.getValue(SpeakerphonePolicy.POLICY_NAME).value));
+        map.put("Disable Usb Mtp", Helpers.boolFromString(cache.getValue(UsbMtpPolicy.POLICY_NAME).value));
+        map.put("Disable Usb Ptp", Helpers.boolFromString(cache.getValue(UsbPtpPolicy.POLICY_NAME).value));
+        map.put("Disable Usb Adb", Helpers.boolFromString(cache.getValue(UsbAdbPolicy.POLICY_NAME).value));
+        map.put("Disable speakerphone", Helpers.boolFromString(cache.getValue(SpeakerphonePolicy.POLICY_NAME).value));
 //        map.put("DisableSmsMms",false);
-        map.put("Disable create VPN Profiles", Boolean.parseBoolean(cache.getValue(VPNPolicy.POLICY_NAME).value));
+        map.put("Disable create VPN Profiles", Helpers.boolFromString(cache.getValue(VPNPolicy.POLICY_NAME).value));
 
         LinearLayout ln = v.findViewById(R.id.lnFields);
         editMessage = v.findViewById(R.id.editMessage);
@@ -149,8 +149,12 @@ public class FragmentFeedback extends Fragment {
         return v;
     }
 
-    private Boolean moreThanCero(int value) {
-        return (value>0);
+    private Boolean emptyValue(String value) {
+        if(value==null) {
+            return false;
+        } else {
+            return !value.isEmpty();
+        }
     }
 
     private JSONObject createFeedbackJSON(Switch[] sw){
