@@ -58,12 +58,30 @@ For more information visit our [Official Website](http://flyve.org/android-mdm-a
 
 ## Compatibility Matrix
 
+### Flyve MDM projects
+
 |MDM Agent|0.99.x|1.0.0|2.0.0-dev|
 |:---|---|---|---|
 |GLPI|9.1|9.2|9.2|
 |Flyve MDM plugin|-|2.0.0-dev|2.0.0-dev|
 |Web MDM Dashboard|-|2.0.0-dev|2.0.0-dev|
 |Legacy Dashboard|2.1.0|-|-|
+
+### MDM Agent & Android
+
+|API|Android|Support|SSL|
+|:---:|:---:|:---:|:---:|
+| 16 | Android 4.1 | X | - |
+| 17 | Android 4.2 | X | - |
+| 18 | Android 4.3 | X | - |
+| 19 | Android 4.4 | X | - |
+| 20 | Android 4.4 | X | - |
+| 21 | Android 5.0 | X | X |
+| 22 | Android 5.1 | X | X |
+| 23 | Android 6.0 | X | X |
+| 24 | Android 7.0 | X | X |
+| 25 | Android 7.1.1 | X | X |
+| 26 | Android 8.0 | - | - |
 
 ## Installation
 
