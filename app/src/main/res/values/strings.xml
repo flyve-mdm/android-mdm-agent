@@ -214,6 +214,7 @@
     <string name="ERROR_GLPI_DELETE">Error</string>
     <string name="ERROR_GLPI_PARTIAL_DELETE">Error</string>
     <string name="inventory_file_not_exists">The inventory file does not exist</string>
+    <string name="inventory_not_exists">The inventory does not exists</string>
     <string name="fail">fail</string>
     <string name="inventory_cannot_read_the_file">Inventory fail, cannot read the file</string>
     <string name="creating_inventory">Creating inventory...</string>
@@ -221,6 +222,7 @@
     <string name="inventory_fail">The inventory fail:</string>
     <string name="empty">Empty</string>
     <string name="connection_variables">Connection variables</string>
+    <string name="generate_client_id">Generate Client Id</string>
     <string name="error_on_client_connect">Error on client.connect</string>
     <string name="mqtt_exception">MQTT Exception:</string>
     <string name="general_exception">General Exception</string>
