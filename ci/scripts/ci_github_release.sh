@@ -28,10 +28,14 @@
 #
 
 # push tag to github
-yarn conventional-github-releaser -p angular -t $GITHUB_TOKEN -r 0 2> /dev/null || true
+yarn conventional-github-releaser -t $GH_TOKEN 2> /dev/null || true
 
+# get tag number
 GIT_TAG=$(jq -r ".version" package.json)
-FILE=$(find ./app/build/outputs/apk/release -name '*.apk')
+
+# get apk path
+FILE=$(find ./app/build/outputs/apk/release -name '*.apk' | head -1)
+
 # Update release name
 yarn github-release edit \
 --user $CIRCLE_PROJECT_USERNAME \
