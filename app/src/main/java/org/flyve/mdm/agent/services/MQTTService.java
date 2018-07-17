@@ -258,8 +258,16 @@ public class MQTTService extends Service implements MqttCallback {
             protocol = "ssl";
         }
 
-        String clientId = MqttClient.generateClientId();
-        client = new MqttAndroidClient(mContext, protocol + "://" + mBroker + ":" + mPort, clientId);
+        String clientId = "";
+        try {
+            clientId = MqttClient.generateClientId();
+            client = new MqttAndroidClient(mContext, protocol + "://" + mBroker + ":" + mPort, clientId);
+        } catch (ExceptionInInitializerError ex) {
+            FlyveLog.e(ex.getMessage());
+            storeLog(Helpers.broadCastMessage(MQTT_LOGIN, getString(R.string.generate_client_id), protocol + "://" + mBroker + ":" + mPort + " - Id: " + clientId));
+            reconnect();
+            return;
+        }
 
         client.setCallback( this );
 
