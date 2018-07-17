@@ -27,7 +27,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 
 import org.flyve.inventory.categories.Hardware;
@@ -40,10 +39,6 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -54,43 +49,6 @@ public class EnrollmentModel implements Enrollment.Model {
 
     public EnrollmentModel(Enrollment.Presenter presenter) {
         this.presenter = presenter;
-    }
-
-    @Override
-    public void createInventory(Context context) {
-
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-        File file = new File(path + "/Inventory.xml");
-
-        if(!file.exists()) {
-            presenter.showSnackError(context.getString(R.string.inventory_file_not_exists));
-        }
-
-        //Read text from file
-        StringBuilder inventory = new StringBuilder();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader(file));
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                inventory.append(line);
-            }
-            presenter.inventorySuccess(inventory.toString());
-            br.close();
-        } catch (IOException ex) {
-            inventory.append(context.getString(R.string.fail));
-            presenter.showSnackError(context.getString(R.string.inventory_cannot_read_the_file));
-            FlyveLog.e(ex.getMessage());
-        } finally {
-            if(br!=null) {
-                try {
-                    br.close();
-                } catch (IOException ex) {
-                    FlyveLog.e(ex.getMessage());
-                }
-            }
-        }
     }
 
     @Override
@@ -173,7 +131,7 @@ public class EnrollmentModel implements Enrollment.Model {
 
         // inventory running
         if(inventory.equals("")) {
-            errMsg.append(activity.getResources().getString(R.string.validate_inventory_wait) );
+            errMsg.append(activity.getResources().getString(R.string.inventory_not_exists) );
             allow = false;
         }
 

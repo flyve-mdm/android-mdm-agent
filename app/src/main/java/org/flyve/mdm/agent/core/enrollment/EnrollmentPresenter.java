@@ -70,20 +70,8 @@ public class EnrollmentPresenter implements Enrollment.Presenter {
     }
 
     @Override
-    public void inventorySuccess(String inventory) {
-        if(view!=null) {
-            view.inventorySuccess(inventory);
-        }
-    }
-
-    @Override
     public Uri getPhoto() {
         return model.getPhoto();
-    }
-
-    @Override
-    public void createInventory(Context context) {
-        model.createInventory(context);
     }
 
     @Override

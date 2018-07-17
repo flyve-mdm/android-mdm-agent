@@ -38,7 +38,6 @@ public interface Enrollment {
         void showSnackError(String message);
         void enrollSuccess();
         void certificationX509Success();
-        void inventorySuccess(String inventory);
     }
 
     interface Presenter {
@@ -47,11 +46,9 @@ public interface Enrollment {
         void showSnackError(String message);
         void enrollSuccess();
         void certificationX509Success();
-        void inventorySuccess(String inventory);
 
         // Models
         Uri getPhoto();
-        void createInventory(Context context);
         void createX509certification(Context context);
         void selectPhoto(final Activity activity, final int requestCamera, final int requestFile);
         void enroll(final Activity activity, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber);
@@ -59,7 +56,6 @@ public interface Enrollment {
 
     interface Model {
         Uri getPhoto();
-        void createInventory(Context context);
         void createX509certification(Context context);
         void selectPhoto(final Activity activity, final int requestCamera, final int requestFile);
         void enroll(final Activity activity, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber);
