@@ -56,13 +56,6 @@ public class EnrollmentModelTest {
     }
 
     @Test
-    public void createInventory() {
-        model.createInventory(context);
-        Assert.assertTrue(true);
-    }
-
-
-    @Test
     public void createX509certification() {
         model.createX509certification(context);
         Assert.assertTrue(true);
