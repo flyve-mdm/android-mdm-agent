@@ -28,7 +28,7 @@
 #
 
 # push tag to github
-yarn conventional-github-releaser -t $GH_TOKEN 2> /dev/null || true
+yarn conventional-github-releaser -t $GITHUB_TOKEN 2> /dev/null || true
 
 # get tag number
 GIT_TAG=$(jq -r ".version" package.json)
