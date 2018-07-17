@@ -183,10 +183,6 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
         // start creating a certificated
         pbx509.setVisibility(View.VISIBLE);
         presenter.createX509certification(EnrollmentActivity.this);
-
-        // starting inventory
-        presenter.createInventory(EnrollmentActivity.this);
-
     }
 
     /**
@@ -369,10 +365,5 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
             pd.dismiss();
             validateForm();
         }
-    }
-
-    @Override
-    public void inventorySuccess(String inventory) {
-        this.inventory = inventory;
     }
 }
