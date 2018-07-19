@@ -13,7 +13,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.mock;
 
 /*
- *   Copyright © 2018 Teclib. All rights reserved.
+ *   Copyright  2018 Teclib. All rights reserved.
  *
  *   This file is part of flyve-mdm-android
  *
@@ -32,7 +32,7 @@ import static org.mockito.Mockito.mock;
  * ------------------------------------------------------------------------------
  * @author    @rafaelje
  * @date      25/6/18
- * @copyright Copyright © 2018 Teclib. All rights reserved.
+ * @copyright Copyright  2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android
  * @link      https://flyve-mdm.com
