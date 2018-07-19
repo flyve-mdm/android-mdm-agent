@@ -33,7 +33,7 @@ GH_COMMIT_MESSAGE=$(git log --pretty=oneline -n 1 $CIRCLE_SHA1)
 if [[ $GH_COMMIT_MESSAGE != *"ci(release): generate CHANGELOG.md for version"* && $GH_COMMIT_MESSAGE != *"build(properties): add new properties values"* && $GH_COMMIT_MESSAGE != *"ci(release): update version on android manifest"* ]]; then
 
 # run generate documentation script
-./ci/scripts/ci_generate_documentation.sh
+./ci/scripts/generate_documentation.sh
 
 # Update layouts and styles of development folder for correct display on project site
 
