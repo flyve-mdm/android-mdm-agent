@@ -39,11 +39,12 @@ img {
   margin-left: 40px;
 }
 
-.policy-matrix {
+.zebra-style {
 
   table {
     border-collapse: collapse;
     border-spacing: 0;
+    margin-top: 25px;
   }
 
   th,
@@ -52,7 +53,7 @@ img {
   }
 
   tr {
-    &:nth-child(even) {
+    &:nth-child(odd) {
       background-color: $grey;
     }
   }
