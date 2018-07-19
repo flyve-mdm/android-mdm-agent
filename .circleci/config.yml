@@ -219,14 +219,14 @@ workflows:
                 - develop
       - documentation:
           requires:
-            - test_api_v16
+            - test_instrumentation_16
           filters:
             branches:
               only:
                 - develop
       - screenshot_api_16:
           requires:
-            - test_api_v16
+            - test_instrumentation_16
           filters:
             branches:
               only:
