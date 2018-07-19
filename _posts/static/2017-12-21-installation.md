@@ -19,7 +19,9 @@ category: user
 
 Check the following compatibility matrix to make sure, you're getting the right version.
 
-<table class="policy-matrix">
+### Flyve MDM projects
+
+<table class="zebra-style">
     <tr>
         <td>MDM Agent</td>
         <td>0.99.x</td>
@@ -47,6 +49,83 @@ Check the following compatibility matrix to make sure, you're getting the right 
     <tr>
         <td>Legacy Dashboard</td>
         <td>2.1.0</td>
+        <td align="center">-</td>
+        <td align="center">-</td>
+    </tr>
+</table>
+
+### MDM Agent & Android versions
+
+<table class="zebra-style">
+    <tr>
+        <td>API</td>
+        <td>Android</td>
+        <td>Support</td>
+        <td>SSL</td>
+    </tr>
+    <tr>
+        <td align="center">16</td>
+        <td align="center">Android 4.1</td>
+        <td align="center">X</td>
+        <td align="center">-</td>
+    </tr>
+    <tr>
+        <td align="center">17</td>
+        <td align="center">Android 4.2</td>
+        <td align="center">X</td>
+        <td align="center">-</td>
+    </tr>
+    <tr>
+        <td align="center">18</td>
+        <td align="center">Android 4.3</td>
+        <td align="center">X</td>
+        <td align="center">-</td>
+    </tr>
+    <tr>
+        <td align="center">19</td>
+        <td align="center">Android 4.4</td>
+        <td align="center">X</td>
+        <td align="center">-</td>
+    </tr>
+    <tr>
+        <td align="center">20</td>
+        <td align="center">Android 4.4</td>
+        <td align="center">X</td>
+        <td align="center">-</td>
+    </tr>
+    <tr>
+        <td align="center">21</td>
+        <td align="center">Android 5.0</td>
+        <td align="center">X</td>
+        <td align="center">X</td>
+    </tr>
+    <tr>
+        <td align="center">22</td>
+        <td align="center">Android 5.1</td>
+        <td align="center">X</td>
+        <td align="center">X</td>
+    </tr>
+    <tr>
+        <td align="center">23</td>
+        <td align="center">Android 6.0</td>
+        <td align="center">X</td>
+        <td align="center">X</td>
+    </tr>
+    <tr>
+        <td align="center">24</td>
+        <td align="center">Android 7.0</td>
+        <td align="center">X</td>
+        <td align="center">X</td>
+    </tr>
+    <tr>
+        <td align="center">25</td>
+        <td align="center">Android 7.1.1</td>
+        <td align="center">X</td>
+        <td align="center">X</td>
+    </tr>
+    <tr>
+        <td align="center">26</td>
+        <td align="center">Android 8.0</td>
         <td align="center">-</td>
         <td align="center">-</td>
     </tr>
