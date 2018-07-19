@@ -1,7 +1,7 @@
 package org.flyve.mdm.agent.policies;
 
 /*
- *   Copyright © 2018 Teclib. All rights reserved.
+ *   Copyright  2018 Teclib. All rights reserved.
  *
  *   This file is part of flyve-mdm-android
  *
@@ -20,7 +20,7 @@ package org.flyve.mdm.agent.policies;
  * ------------------------------------------------------------------------------
  * @author    rafael hernandez
  * @date      15/5/18
- * @copyright Copyright © 2018 Teclib. All rights reserved.
+ * @copyright Copyright  2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
  * @link      https://github.com/flyve-mdm/flyve-mdm-android
  * @link      https://flyve-mdm.com
