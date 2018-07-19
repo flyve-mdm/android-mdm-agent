@@ -37,7 +37,7 @@ Once the user receives the email with the invitation and clicks on the link or s
 
 * If the MDM Agent is [installed in the device](http://flyve.org/android-mdm-agent/howtos/installation), it will ask to Open with the App.
 
-<img src="https://raw.githubusercontent.com/Naylin15/Screenshots/master/android-mdm-agent/open-with.png" alt="Open with MDM Agent" width="300">
+<img src="{{ 'images/screenshots/open-with.png' | absolute_url }}" alt="Open with MDM Agent" width="300">
 
 <br>
 
@@ -50,16 +50,16 @@ Once the enrollment starts, the Agent will ask you to Allow the permissions it r
 <br>
 
 <div>
-<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/start-enrollment.png?raw=true" alt="Start Enrollment" width="300">
+<img src="{{ 'images/screenshots/start-enrollment.png' | absolute_url }}" alt="Start Enrollment" width="300">
 
-<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/permission.gif?raw=true" alt="Permission request" width="300">
+<img src="{{ 'images/screenshots/permission.gif' | absolute_url }}" alt="Permission request" width="300">
 </div>
 
 ### 1.3. Inventory
 
 The Agent must send an inventory of the device, you will be able to view and share it before continuing with the enrollment.
 
-<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/inventory.gif?raw=true" alt="Inventory" width="300">
+<img src="{{ 'images/screenshots/inventory.gif' | absolute_url }}" alt="Inventory" width="300">
 
 ### 1.4. User information
 
@@ -67,16 +67,16 @@ Add your information to finish the enrollment.
 
 <img src="{{ '/images/picto-information.png' | absolute_url }}" alt="Good to know:" height="16px"> The email must be the same in which the invitation was sent.
 
-<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/enrollment.png?raw=true" alt="Fill the form" width="300">
+<img src="{{ 'images/screenshots/enrollment.png' | absolute_url }}" alt="Fill the form" width="300">
 
 ## Success!
 
 Your device is enrolled! You can now see its online status and navigate through the menu.
 
 <div>
-<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/information.png?raw=true" alt="Information" width="300">
+<img src="{{ 'images/screenshots/information.png' | absolute_url }}" alt="Information" width="300">
 
-<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/menu.png?raw=true" alt="Menu" width="300">
+<img src="{{ 'images/screenshots/menu.png' | absolute_url }}" alt="Menu" width="300">
 </div>
 
 ## <a name="2"></a> 2. Activity
@@ -87,7 +87,7 @@ In the Activity section you'll be able to see the different actions taken place 
 
 Here you'll be able to see the MQTT Messages.
 
-<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/activity-log.png?raw=true" alt="Log" width="300">
+<img src="{{ 'images/screenshots/activity-log.png' | absolute_url }}" alt="Log" width="300">
 
 #### MQTT (MQ Telemetry Transport)
 
@@ -100,9 +100,9 @@ Thanks to it, the Agent is capable of maintaining a connection with the backend.
 Here you will be able to see which policies are assigned and the value it has.
 
 <div>
-<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/activity-connectivity.png?raw=true" alt="Connectivity" width="300">
+<img src="{{ 'images/screenshots/activity-connectivity.png' | absolute_url }}" alt="Connectivity" width="300">
 
-<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/activity-policies.png?raw=true" alt="Policies" width="300">
+<img src="{{ 'images/screenshots/activity-policies.png' | absolute_url }}" alt="Policies" width="300">
 </div>
 
 For more information, check our [Policies & API Level](http://flyve.org/android-mdm-agent/howtos/policies).
@@ -111,19 +111,19 @@ For more information, check our [Policies & API Level](http://flyve.org/android-
 
 All the applications deployed will be listed here.
 
-<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/activity-applications.png?raw=true" alt="Applications" width="300">
+<img src="{{ 'images/screenshots/activity-applications.png' | absolute_url }}" alt="Applications" width="300">
 
 ## <a name="3"></a> 3. Feedback
 
 You can send a feedback about which policies are working perfectly on the device, additionally with a message.
 
-<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/feedback.gif?raw=true" alt="Applications" width="300">
+<img src="{{ 'images/screenshots/feedback.gif' | absolute_url }}" alt="Applications" width="300">
 
 ## <a name="4"></a> 4. Configuration
 
 Disable the notifications and the log data.
 
-<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/configuration.png?raw=true" alt="Applications" width="300">
+<img src="{{ 'images/screenshots/configuration.png' | absolute_url }}" alt="Applications" width="300">
 
 ## <a name="5"></a> 5. Easter Egg
 
@@ -131,6 +131,6 @@ To access special features touch ten times the Flyve MDM in the Information sect
 
 In MQTT Configuration you will be able to edit the parameters, we really hope you know what you are doing here since any change may cause the lost of connection with the backend.
 
-<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/easteregg.gif?raw=true" alt="Easter Egg" width="300">
+<img src="{{ 'images/screenshots/easteregg.gif' | absolute_url }}" alt="Easter Egg" width="300">
 
 You can join the community in GitHub and participate to contribute, test and correct bugs: [Flyve MDM on GitHub](https://github.com/flyve-mdm)!
