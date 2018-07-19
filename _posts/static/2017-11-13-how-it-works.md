@@ -19,9 +19,9 @@ The Agent counts with an intuitive and simple User Interface that helps you thro
 <br>
 
 <div>
-<img src="https://github.com/Naylin15/Screenshots/blob/master/android-mdm-agent/start-enrollment.png?raw=true" alt="Start Enrollment" width="300">
+<img src="{{ 'images/screenshots/start-enrollment.png' | absolute_url }}" alt="Start Enrollment" width="300">
 
-<img src="https://raw.githubusercontent.com/Naylin15/Screenshots/master/android-mdm-agent/enrollment.png" alt="Enrollment" width="300">
+<img src="{{ 'images/screenshots/enrollment.png' | absolute_url }}" alt="Enrollment" width="300">
 </div>
 
 It will also provide you information of the user and supervisor of the infrastructure.
@@ -29,11 +29,11 @@ It will also provide you information of the user and supervisor of the infrastru
 <br>
 
 <div>
-<img src="https://raw.githubusercontent.com/Naylin15/Screenshots/master/android-mdm-agent/information.png" alt="Information" width="300">
+<img src="{{ 'images/screenshots/information.png' | absolute_url }}" alt="Information" width="300">
 
-<img src="https://raw.githubusercontent.com/Naylin15/Screenshots/master/android-mdm-agent/user-information.png" alt="User Information" width="300">
+<img src="{{ 'images/screenshots/user-information.png' | absolute_url }}" alt="User Information" width="300">
 
-<img src="https://raw.githubusercontent.com/Naylin15/Screenshots/master/android-mdm-agent/supervisor-information.png" alt="Supervisor Information" width="300">
+<img src="{{ 'images/screenshots/supervisor-information.png' | absolute_url }}" alt="Supervisor Information" width="300">
 </div>
 
 The Flyve MDM Agent requires Android 4.1 or higher
