@@ -38,14 +38,14 @@ sudo pip install -U crcmod
 echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
 
 # activate the account
-sudo gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
 
 # config the project
-sudo gcloud config set project $GCLOUD_PROJECT
+gcloud config set project ${GCLOUD_PROJECT}
 
 # Run Instrumented test
 gcloud firebase test android run \
-  --type instrumentation \
+  --type robo \
   --app $(ls -dt ~/flyve_mdm/app/build/outputs/apk/debug/*.apk | head -1) \
   --device model=Nexus6,version=21,locale=en,orientation=portrait  \
   --device model=Nexus7,version=19,locale=fr,orientation=landscape \
