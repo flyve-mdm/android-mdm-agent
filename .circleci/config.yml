@@ -80,7 +80,7 @@ jobs:
       - *save_gems_cache
       - run:
           name: Run Tests
-          command: source ci/script/google_cloud.sh
+          command: source ci/scripts/google_cloud.sh
       - store_artifacts:
           path: app/build/reports/
           destination: /reports/
