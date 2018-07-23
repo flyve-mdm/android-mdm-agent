@@ -37,9 +37,6 @@ sudo pip install -U crcmod
 # create json key file
 echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
 
-# update gcloud
-sudo gcloud --quiet components update
-
 # activate the account
 sudo gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
 
