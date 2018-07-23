@@ -38,13 +38,13 @@ sudo pip install -U crcmod
 echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
 
 # update gcloud
-sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
+sudo gcloud --quiet components update
 
 # activate the account
-sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+sudo gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
 
 # config the project
-sudo /opt/google-cloud-sdk/bin/gcloud config set project $GCLOUD_PROJECT
+sudo gcloud config set project $GCLOUD_PROJECT
 
 # Run Instrumented test
 gcloud firebase test android run \
