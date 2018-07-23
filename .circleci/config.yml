@@ -79,6 +79,9 @@ jobs:
       - *save_gradle_cache
       - *save_gems_cache
       - run:
+          name: Create debug apk
+          command: ./gradlew assembleDebug
+      - run:
           name: Run Tests
           command: source ci/scripts/google_cloud.sh
       - store_artifacts:
