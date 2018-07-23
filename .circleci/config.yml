@@ -54,29 +54,6 @@ reference:
       name: Download Android Dependencies
       command: ./gradlew androidDependencies
 
-  ## Simulator
-  emulator_setup_16: &emulator_setup_16
-    run:
-      name: Setup emulator
-      command: sdkmanager "system-images;android-16;default;armeabi-v7a" && echo "no" | avdmanager create avd -n device -k "system-images;android-16;default;armeabi-v7a"
-
-  emulator_launch: &emulator_launch
-    run:
-      name: Launch emulator
-      command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd device -noaudio -no-boot-anim -no-window -accel on
-      background: true
-
-  emulator_wait: &emulator_wait
-    run:
-      name: Wait emulator
-      command: |
-        # wait for it to have booted
-        circle-android wait-for-boot
-        # unlock the emulator screen
-        sleep 30
-        adb shell input keyevent 82
-
-
 jobs:
   # simple build
   build:
@@ -91,7 +68,7 @@ jobs:
       - *save_gems_cache
 
   # Test Instrumentation with Android 4.1 JELLY_BEAN API 16
-  test_instrumentation_16:
+  test_instrumentation:
     <<: *android_config
     steps:
       - checkout
@@ -101,51 +78,15 @@ jobs:
       - *android_dependencies
       - *save_gradle_cache
       - *save_gems_cache
-      - *emulator_setup_16
-      - *emulator_launch
-      - *emulator_wait
       - run:
           name: Run Tests
-          command: ./gradlew connectedAndroidTest
+          command: source ci/script/google_cloud.sh
       - store_artifacts:
           path: app/build/reports/
           destination: /reports/
       - store_test_results:
           path: app/build/test-results/
           destination: /test-results/
-
-  # Screen capture
-  screenshot_api_16:
-    <<: *android_config
-    steps:
-      - checkout
-      - *restore_gradle_cache
-      - *restore_gems_cache
-      - *ruby_dependencies
-      - *android_dependencies
-      - *save_gradle_cache
-      - *save_gems_cache
-      - *emulator_setup_16
-      - *emulator_launch
-      - *emulator_wait
-      - run:
-          name: Setup environment
-          command: source ci/scripts/setup_environment.sh
-      - run:
-          name: Update about information
-          command: source ci/scripts/create_about_data.sh
-      - run:
-          name: Assemble Android Tests
-          command: ./gradlew assembleDebug assembleAndroidTest
-      - run:
-          name: Run Fastlane Screengrab
-          command: fastlane screengrab
-      - run:
-          name: send screenshot to gh-pages
-          command: source ci/scripts/push_screenshot.sh
-      - store_artifacts:
-          path: fastlane/metadata
-          destination: screenshot
 
   deploy_beta:
     <<: *android_config
@@ -191,9 +132,6 @@ jobs:
       - *android_dependencies
       - *save_gradle_cache
       - *save_gems_cache
-      - *emulator_setup_16
-      - *emulator_launch
-      - *emulator_wait
       - run:
           name: Generate Documentation
           command: source ci/scripts/create_documentation.sh
@@ -203,7 +141,7 @@ workflows:
   build_test_and_deploy:
     jobs:
       - build
-      - test_instrumentation_16:
+      - test_instrumentation:
           requires:
             - build
           filters:
@@ -212,21 +150,14 @@ workflows:
                 - master
       - deploy_beta:
           requires:
-            - test_instrumentation_16
+            - test_instrumentation
           filters:
             branches:
               only:
                 - develop
       - documentation:
           requires:
-            - test_instrumentation_16
-          filters:
-            branches:
-              only:
-                - develop
-      - screenshot_api_16:
-          requires:
-            - test_instrumentation_16
+            - test_instrumentation
           filters:
             branches:
               only:
