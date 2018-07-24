@@ -27,30 +27,30 @@
 #  ------------------------------------------------------------------------------
 #
 
-# create code coverage report
-./gradlew createDebugCoverageReport
-
-# move code coverage
-mv -v app/build/reports/coverage development
-
-# move Android test
-mv -v app/build/reports/androidTests development
-
-# rename folders to match respective section on project site
-mv development/debug development/coverage
-mv development/androidTests/connected development/test-reports
-
-# replace .resources with resource because github doesn't support folders with "_" or "." at the beginning
-mv development/coverage/.resources development/coverage/resources
-
-# find and replace links to the old name of file
-grep -rl .resources development/coverage/ | xargs sed -i 's|.resources|resources|g'
-
-# replace .sessions
-mv development/coverage/.sessions.html development/coverage/sessions.html
-
-# find and replace links to the old name of file
-grep -rl .sessions.html development/coverage/ | xargs sed -i 's|.sessions.html|sessions.html|g'
+# # create code coverage report
+# ./gradlew createDebugCoverageReport
+#
+# # move code coverage
+# mv -v app/build/reports/coverage development
+#
+# # move Android test
+# mv -v app/build/reports/androidTests development
+#
+# # rename folders to match respective section on project site
+# mv development/debug development/coverage
+# mv development/androidTests/connected development/test-reports
+#
+# # replace .resources with resource because github doesn't support folders with "_" or "." at the beginning
+# mv development/coverage/.resources development/coverage/resources
+#
+# # find and replace links to the old name of file
+# grep -rl .resources development/coverage/ | xargs sed -i 's|.resources|resources|g'
+#
+# # replace .sessions
+# mv development/coverage/.sessions.html development/coverage/sessions.html
+#
+# # find and replace links to the old name of file
+# grep -rl .sessions.html development/coverage/ | xargs sed -i 's|.sessions.html|sessions.html|g'
 
 # Generate javadoc this folder must be on .gitignore
 javadoc -d ./development/code-documentation -sourcepath ./app/src/main/java -subpackages . -bootclasspath $ANDROID_HOME/platforms/android-26/android.jar
