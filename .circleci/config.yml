@@ -103,6 +103,9 @@ jobs:
           name: Setup environment
           command: source ci/scripts/setup_environment.sh
       - run:
+          name: Update version code
+          command: ./gradlew updateVersionCode
+      - run:
           name: Deploy Beta
           command: source ci/scripts/flow_beta.sh
 
@@ -122,6 +125,30 @@ jobs:
       - run:
           name: Deploy Production
           command: source ci/scripts/flow_production.sh
+
+  release:
+    <<: *android_config
+    steps:
+      - checkout
+      - *restore_gradle_cache
+      - *restore_gems_cache
+      - *ruby_dependencies
+      - *android_dependencies
+      - *save_gradle_cache
+      - *save_gems_cache
+      - run:
+          name: Create changelog
+          command: source ci/scripts/changelog.sh
+      - run:
+          name: Update version code
+          command: ./gradlew updateVersionCode
+      - run:
+          name: Update version name
+          command: ./gradlew updateVersionName -P vName=$GIT_TAG
+      - run:
+          name: Commit name
+          command: source ci/scripts/commit_version.sh
+
 
   documentation:
     <<: *android_config
@@ -156,13 +183,16 @@ workflows:
             branches:
               only:
                 - develop
-      - documentation:
-          requires:
-            - test_instrumentation
+      - release:
           filters:
             branches:
               only:
-                - develop
+                - /^release/.*/
+      - documentation:
+          filters:
+            branches:
+              only:
+                - /^release/.*/
       - deploy_production:
           filters:
             branches:
