@@ -18,7 +18,6 @@
 #  GNU General Public License for more details.
 #  --------------------------------------------------------------------------------
 #  @author    Rafael Hernandez - <rhernandez@teclib.com>
-#  @author    Naylin Medina    - <nmedina@teclib.com>
 #  @copyright Copyright (c) Teclib'
 #  @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
 #  @link      https://github.com/flyve-mdm/android-mdm-agent/
@@ -27,27 +26,8 @@
 #  --------------------------------------------------------------------------------
 #
 
-# increment version code, need to be unique to send to store
-./gradlew updateVersionCode
-
-# increment version name on package.json, create tag and commit with changelog
-yarn run release -m "ci(release): generate CHANGELOG.md for version %s"
-
-if [[ $CIRCLE_BRANCH == *"master"* ]]; then
-    # send changelog to gh-pages
-    yarn gh-pages --dist ./ --src CHANGELOG.md --dest ./_includes/ --add -m "docs(changelog): update changelog$1 with version ${GIT_TAG}"
-    
-    # Get version number from package.json
-    export GIT_TAG=$(jq -r ".version" package.json)
-
-    # update version name generate on package json
-    ./gradlew updateVersionName -P vName=$GIT_TAG
-fi
-
 git add app/src/main/AndroidManifest.xml
 git commit -m "ci(release): update version on android manifest"
 
-# push commits only in master branch
-if [[ $CIRCLE_BRANCH == *"master"* ]]; then
+# push commits only in release branch
 git push origin $CIRCLE_BRANCH
-fi
