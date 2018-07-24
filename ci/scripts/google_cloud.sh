@@ -45,8 +45,9 @@ gcloud config set project ${GCLOUD_PROJECT}
 
 # Run Instrumented test
 gcloud firebase test android run \
-  --type robo \
+  --type instrumentation \
   --app $(ls -dt ~/flyve_mdm/app/build/outputs/apk/debug/*.apk | head -1) \
+  --test $(ls -dt ~/flyve_mdm/app/build/outputs/apk/androidTest/debug/*.apk | head -1) \
   --device model=Nexus6,version=21,locale=en,orientation=portrait  \
   --device model=Nexus7,version=19,locale=fr,orientation=landscape \
   --timeout 90s

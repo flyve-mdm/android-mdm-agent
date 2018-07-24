@@ -80,7 +80,7 @@ jobs:
       - *save_gems_cache
       - run:
           name: Create debug apk
-          command: ./gradlew assembleDebug
+          command: ./gradlew assembleDebug assembleAndroidTest
       - run:
           name: Run Tests
           command: source ci/scripts/google_cloud.sh
