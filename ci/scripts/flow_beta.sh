@@ -32,9 +32,6 @@ GH_COMMIT_MESSAGE=$(git log --pretty=oneline -n 1 $CIRCLE_SHA1)
 # validate commit message to avoid repeated builds and loops
 if [[ $GH_COMMIT_MESSAGE != *"ci(release): generate CHANGELOG.md for version"* && $GH_COMMIT_MESSAGE != *"build(properties): add new properties values"* && $GH_COMMIT_MESSAGE != *"ci(release): update version on android manifest"* ]]; then
 
-# run update version script
-./ci/scripts/ci_updateversion.sh
-
 # run about script
 ./ci/scripts/ci_about.sh
 
