@@ -84,10 +84,6 @@ jobs:
       - run:
           name: Run Tests
           command: source ci/scripts/google_cloud.sh
-      - store_artifacts:
-          path: firebase/
-          destination: /firebase/
-
   deploy_beta:
     <<: *android_config
     steps:
