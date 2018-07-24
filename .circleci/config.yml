@@ -1,0 +1,31 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.5.1
+    working_directory: ~/project-site
+    environment:
+      NOKOGIRI_USE_SYSTEM_LIBRARIES: true
+    branches:
+      only:
+        - gh-pages
+        - /feature/.*/
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: "Install dependencies"
+          command: |
+             curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+             sudo apt-get install -y nodejs
+             npm install
+             bundle install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-cache-{{ checksum "package-lock.json" }}
+      - run: 
+          name: "Run tests"
+          command: npm test
