@@ -53,10 +53,12 @@ reference:
   save_apk_certified_cache: &save_apk_certified_cache
     save_cache:
       key: *apk_certified_key
+      environment:
+        WORKSPACE: *workspace
       paths:
-        - *workspace/app/build/outputs/apk/release/appCertified.apk
+        - $WORKSPACE/app/build/outputs/apk/release/appCertified.apk
       destination:
-        - *workspace/release/appCertified.apk
+        - $WORKSPACE/release/appCertified.apk
 
   ## Dependencies
   ruby_dependencies: &ruby_dependencies
@@ -71,7 +73,7 @@ reference:
 
 jobs:
   # unit test
-  test_unit:
+  build:
     <<: *android_config
     steps:
       - checkout
@@ -198,10 +200,10 @@ workflows:
   version: 2
   build_test_and_deploy:
     jobs:
-      - test_unit
+      - build
       - test_instrumentation:
           requires:
-            - test_unit
+            - build
           filters:
             branches:
               ignore:
