@@ -1,0 +1,1 @@
+fastlane android certification storepass:'$KEYSTORE' keypass:'$ALIAS'
