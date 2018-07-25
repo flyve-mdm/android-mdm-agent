@@ -28,4 +28,4 @@
 #
 
 # send to google play
-fastlane android $DEPLOY_TYPE storepass:'$KEYSTORE' keypass:'$ALIAS'
+fastlane android $DEPLOY_TYPE
