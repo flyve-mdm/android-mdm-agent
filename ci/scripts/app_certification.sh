@@ -26,9 +26,6 @@
 #  --------------------------------------------------------------------------------
 #
 
-# install all needed
-./ci/scripts/setup_enviroment.sh
-
 # run about script
 ./ci/scripts/create_about_data.sh
 
