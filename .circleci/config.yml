@@ -172,6 +172,7 @@ jobs:
       - *android_dependencies
       - *save_gradle_cache
       - *save_gems_cache
+      - *restore_apk_certified_cache
       - run:
           name: Create changelog, github release and push
           command: source ci/scripts/release.sh
