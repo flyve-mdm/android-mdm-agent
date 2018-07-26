@@ -200,8 +200,10 @@ workflows:
   version: 2
   build_test_and_deploy:
     jobs:
-      - build
+      - build:
+          context: org-global
       - test_instrumentation:
+          context: org-global
           requires:
             - build
           filters:
@@ -209,6 +211,7 @@ workflows:
               ignore:
                 - master
       - deploy_beta:
+          context: org-global
           requires:
             - certification
             - test_instrumentation
@@ -217,6 +220,7 @@ workflows:
               only:
                 - develop
       - deploy_production:
+          context: org-global
           requires:
             - certification
           filters:
@@ -224,6 +228,7 @@ workflows:
               only:
                 - master
       - release:
+          context: org-global
           requires:
             - test_instrumentation
           filters:
@@ -231,6 +236,7 @@ workflows:
               only:
                 - /^release/.*/
       - documentation:
+          context: org-global
           requires:
             - test_instrumentation
           filters:
@@ -238,6 +244,7 @@ workflows:
               only:
                 - /^release/.*/
       - certification:
+          context: org-global
           requires:
             - test_instrumentation
           filters:
