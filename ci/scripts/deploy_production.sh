@@ -32,25 +32,6 @@ GH_COMMIT_MESSAGE=$(git log --pretty=oneline -n 1 $CIRCLE_SHA1)
 # validate commit message to avoid repeated builds and loops
 if [[ $GH_COMMIT_MESSAGE != *"ci(release): generate CHANGELOG.md for version"* && $GH_COMMIT_MESSAGE != *"build(properties): add new properties values"* && $GH_COMMIT_MESSAGE != *"ci(release): update version on android manifest"* ]]; then
 
-# run about script
-./ci/scripts/ci_about.sh
-
-# run transifex script
-./ci/scripts/ci_transifex.sh
-
-# create APK
-./gradlew assemble
-
-# run push changes script
-./ci/scripts/ci_push_changes.sh
-
-# set the deploy type
-export DEPLOY_TYPE="playstore"
-
-# run fastlane script
-./ci/scripts/ci_fastlane.sh
-
-# run github release script
-./ci/scripts/ci_github_release.sh
+    fastlane android "playstore"
 
 fi
