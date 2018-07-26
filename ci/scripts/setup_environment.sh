@@ -45,17 +45,6 @@ sudo apt-get install ruby-full build-essential
 # install fastlane
 sudo gem install fastlane --no-rdoc --no-ri
 
-# install yarn
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-
-# install without Node since it'll be installed below
-sudo apt-get update && sudo apt-get install --no-install-recommends yarn
-
-# install Node.js v8 (version required by yarn)
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-sudo sudo apt-get install -y nodejs
-
 # install node package available on package.json
 yarn install
 
