@@ -54,7 +54,7 @@ git push --follow-tags origin $CIRCLE_BRANCH
 yarn conventional-github-releaser -p angular -t $GITHUB_TOKEN
 
 # get apk path
-FILE=$(find ./app/build/outputs/apk/release -name '*.apk' | head -1)
+export FILE=$(find ./app/build/outputs/apk/release -name '*.apk' | head -1)
 
 if [[ $CIRCLE_BRANCH != "$IS_PRERELEASE" ]]; then
 
@@ -62,7 +62,7 @@ if [[ $CIRCLE_BRANCH != "$IS_PRERELEASE" ]]; then
     yarn github-release upload \
     --user "${CIRCLE_PROJECT_USERNAME}" \
     --repo "${CIRCLE_PROJECT_REPONAME}" \
-    --tag "v${GIT_TAG}" \
+    --tag "${GIT_TAG}" \
     --name "MDMAgent-${GIT_TAG}.apk" \
     --file ${FILE}
 
