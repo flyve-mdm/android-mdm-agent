@@ -32,4 +32,7 @@
 # run transifex script
 ./ci/scripts/transifex.sh
 
+# create APK
+./gradlew assemble
+
 fastlane android certification storepass:'$KEYSTORE' keypass:'$ALIAS'
