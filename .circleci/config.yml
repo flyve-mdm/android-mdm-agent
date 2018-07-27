@@ -183,6 +183,8 @@ workflows:
                 - master
       - documentation:
           context: org-global
+          requires:
+            - test_instrumentation
           filters:
             branches:
               only:
