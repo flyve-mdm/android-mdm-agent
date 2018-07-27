@@ -79,7 +79,7 @@ else
     yarn github-release upload \
     --user "${CIRCLE_PROJECT_USERNAME}" \
     --repo "${CIRCLE_PROJECT_REPONAME}" \
-    --tag "v${GIT_TAG}" \
+    --tag "${GIT_TAG}" \
     --name "MDMAgent-${GIT_TAG}.apk" \
     --file ${FILE} \
     --pre-release
