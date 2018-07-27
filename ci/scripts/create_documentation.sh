@@ -51,15 +51,15 @@ sudo git clean -fdx
 
 # remove default stylesheet.css
 sudo rm ./development/code-documentation/stylesheet.css
-sudo rm ./development/coverage/resources/report.css
-sudo rm ./development/test-reports/css/base-style.css
-sudo rm ./development/test-reports/css/style.css
+# sudo rm ./development/coverage/resources/report.css
+# sudo rm ./development/test-reports/css/base-style.css
+# sudo rm ./development/test-reports/css/style.css
 
 # add new css
 cp ./css/codeDocumentation.css ./development/code-documentation/stylesheet.css
-cp ./css/coverage.css ./development/coverage/resources/report.css
-cp ./css/testReports.css ./development/test-reports/css/style.css
-touch ./development/test-reports/css/base-style.css
+# cp ./css/coverage.css ./development/coverage/resources/report.css
+# cp ./css/testReports.css ./development/test-reports/css/style.css
+# touch ./development/test-reports/css/base-style.css
 
 # change headers
 ruby ci/add_header.rb
