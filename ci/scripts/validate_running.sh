@@ -18,7 +18,6 @@
 #  GNU General Public License for more details.
 #  --------------------------------------------------------------------------------
 #  @author    Rafael Hernandez - <rhernandez@teclib.com>
-#  @author    Naylin Medina    - <nmedina@teclib.com>
 #  @copyright Copyright (c) Teclib'
 #  @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
 #  @link      https://github.com/flyve-mdm/android-mdm-agent/
@@ -27,12 +26,8 @@
 #  --------------------------------------------------------------------------------
 #
 
-# Get version number from package.json
-export GIT_TAG=$(jq -r ".version" package.json)
-
-echo "about.version=${GIT_TAG}" > app/src/main/assets/about.properties
-echo "about.build=$CIRCLE_BUILD_NUM" >> app/src/main/assets/about.properties
-echo "about.date=$(date "+%a %b %d %H:%M:%S %Y")" >> app/src/main/assets/about.properties
-echo "about.commit=${CIRCLE_SHA1:0:7}" >> app/src/main/assets/about.properties
-echo "about.commitFull=$CIRCLE_SHA1" >> app/src/main/assets/about.properties
-echo "about.github=https://github.com/flyve-mdm/flyve-mdm-android-agent" >> app/src/main/assets/about.properties
+GH_COMMIT_MESSAGE=$(git log --pretty=oneline -n 1 $CIRCLE_SHA1)
+if [[ $GH_COMMIT_MESSAGE == "build(manifest): increase version value" ]]; then
+    echo "Invalid running"
+    exit 1
+fi

@@ -41,9 +41,6 @@ else
 
 fi
 
-# Get version number from package.json
-export GIT_TAG=$(jq -r ".version" package.json)
-
 # send changelog to gh-pages
 yarn gh-pages --dist ./ --src CHANGELOG.md --dest ./_includes/ --add -m "docs(changelog): update changelog with version ${GIT_TAG}"
 
@@ -56,6 +53,9 @@ git commit -m "build(manifest): increase version value"
 
 # Push commits and tags to origin branch
 git push --follow-tags origin $CIRCLE_BRANCH
+
+# Get version number from package.json
+export GIT_TAG=$(jq -r ".version" package.json)
 
 # Create release with conventional-github-releaser
 yarn conventional-github-releaser -p angular -t $GITHUB_TOKEN
