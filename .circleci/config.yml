@@ -132,9 +132,6 @@ jobs:
           name: Update version name
           command: ./gradlew updateVersionName -P vName=$GIT_TAG
       - run:
-          name: Commit name
-          command: source ci/scripts/commit_version.sh
-      - run:
           name: Generate certified apk
           command: source ci/scripts/app_certification.sh
       - *save_apk_certified_cache
