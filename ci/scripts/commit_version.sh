@@ -28,6 +28,3 @@
 
 git add app/src/main/AndroidManifest.xml
 git commit -m "ci(release): update version on android manifest"
-
-# push commits only in release branch
-git push origin $CIRCLE_BRANCH
