@@ -41,9 +41,6 @@ else
 
 fi
 
-# Get version number from package.json
-export GIT_TAG=$(jq -r ".version" package.json)
-
 # send changelog to gh-pages
 yarn gh-pages --dist ./ --src CHANGELOG.md --dest ./_includes/ --add -m "docs(changelog): update changelog with version ${GIT_TAG}"
 
