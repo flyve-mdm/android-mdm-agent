@@ -58,12 +58,18 @@ reference:
       name: Download Android Dependencies
       command: ./gradlew androidDependencies
 
+  validate_running: &validate_running
+    run:
+      name: Validate running
+      command: source ci/scripts/validate_running.sh
+
 jobs:
   # unit test
   build:
     <<: *android_config
     steps:
       - checkout
+      - *validate_running
       - *restore_gradle_cache
       - *ruby_dependencies
       - *android_dependencies
@@ -77,6 +83,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *validate_running
       - *restore_gradle_cache
       - *ruby_dependencies
       - *android_dependencies
@@ -92,6 +99,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *validate_running
       - *restore_gradle_cache
       - *ruby_dependencies
       - *android_dependencies
@@ -105,6 +113,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *validate_running
       - *restore_gradle_cache
       - *ruby_dependencies
       - *android_dependencies
@@ -113,6 +122,17 @@ jobs:
       - run:
           name: Deploy Production
           command: source ci/scripts/deploy_production.sh
+
+  release:
+    <<: *android_config
+    steps:
+      - checkout
+      - *validate_running
+      - *restore_gradle_cache
+      - *ruby_dependencies
+      - *android_dependencies
+      - *save_gradle_cache
+      - *save_apk_certified_cache
 
   release:
     <<: *android_config
@@ -142,6 +162,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *validate_running
       - *restore_gradle_cache
       - *ruby_dependencies
       - *android_dependencies
