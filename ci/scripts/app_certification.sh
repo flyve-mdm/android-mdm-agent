@@ -35,4 +35,4 @@
 # create APK
 ./gradlew assemble
 
-fastlane android certification storepass:'$KEYSTORE' keypass:'$ALIAS'
+fastlane android certification storepass:'$FASTLANE_KEYPASS' keypass:'$FASTLANE_STOREPASS'
