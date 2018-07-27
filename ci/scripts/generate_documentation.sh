@@ -53,7 +53,7 @@
 # grep -rl .sessions.html development/coverage/ | xargs sed -i 's|.sessions.html|sessions.html|g'
 
 # Generate javadoc this folder must be on .gitignore
-javadoc -d ./development/code-documentation -sourcepath ./app/src/main/java -subpackages . -bootclasspath $ANDROID_HOME/platforms/android-26/android.jar
+javadoc -d ./development/code-documentation -sourcepath ./app/src/main/java -subpackages . -bootclasspath $ANDROID_HOME/platforms/android-28/android.jar
 
 # delete the index.html file
 sudo rm ./development/code-documentation/index.html

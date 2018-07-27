@@ -47,6 +47,13 @@ export GIT_TAG=$(jq -r ".version" package.json)
 # send changelog to gh-pages
 yarn gh-pages --dist ./ --src CHANGELOG.md --dest ./_includes/ --add -m "docs(changelog): update changelog with version ${GIT_TAG}"
 
+# remove from stash
+git checkout app/src/main/assets/setup.properties
+
+# update manifest changes
+git add app/src/main/AndroidManifest.xml
+git commit -m "build(manifest): increase version value"
+
 # Push commits and tags to origin branch
 git push --follow-tags origin $CIRCLE_BRANCH
 
@@ -54,7 +61,7 @@ git push --follow-tags origin $CIRCLE_BRANCH
 yarn conventional-github-releaser -p angular -t $GITHUB_TOKEN
 
 # get apk path
-FILE=$(find ./app/build/outputs/apk/release -name '*.apk' | head -1)
+export FILE="./app/build/outputs/apk/release/appCertified.apk"
 
 if [[ $CIRCLE_BRANCH != "$IS_PRERELEASE" ]]; then
 
@@ -62,7 +69,7 @@ if [[ $CIRCLE_BRANCH != "$IS_PRERELEASE" ]]; then
     yarn github-release upload \
     --user "${CIRCLE_PROJECT_USERNAME}" \
     --repo "${CIRCLE_PROJECT_REPONAME}" \
-    --tag "v${GIT_TAG}" \
+    --tag "${GIT_TAG}" \
     --name "MDMAgent-${GIT_TAG}.apk" \
     --file ${FILE}
 
@@ -72,7 +79,7 @@ else
     yarn github-release upload \
     --user "${CIRCLE_PROJECT_USERNAME}" \
     --repo "${CIRCLE_PROJECT_REPONAME}" \
-    --tag "v${GIT_TAG}" \
+    --tag "${GIT_TAG}" \
     --name "MDMAgent-${GIT_TAG}.apk" \
     --file ${FILE} \
     --pre-release
