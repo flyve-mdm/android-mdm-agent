@@ -212,8 +212,8 @@ workflows:
 #                - /^release/.*/
       - release:
           context: org-global
-          requires:
-            - documentation
+#          requires:
+#            - documentation
           filters:
             branches:
               only:
