@@ -127,7 +127,6 @@ jobs:
     <<: *android_config
     steps:
       - checkout
-      - *validate_running
       - *restore_gradle_cache
       - *ruby_dependencies
       - *android_dependencies
@@ -155,6 +154,9 @@ jobs:
           name: Generate certified apk
           command: source ci/scripts/app_certification.sh
       - *save_apk_certified_cache
+      - run:
+          name: Create changelog, github release and push
+          command: source ci/scripts/release.sh
 
   documentation:
     <<: *android_config
