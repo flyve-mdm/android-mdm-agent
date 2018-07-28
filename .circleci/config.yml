@@ -122,6 +122,16 @@ jobs:
       - *ruby_dependencies
       - *android_dependencies
       - *save_gradle_cache
+      - *save_apk_certified_cache
+
+  release:
+    <<: *android_config
+    steps:
+      - checkout
+      - *restore_gradle_cache
+      - *ruby_dependencies
+      - *android_dependencies
+      - *save_gradle_cache
       - run:
           name: Setup environment
           command: source ci/scripts/setup_environment.sh
@@ -170,6 +180,7 @@ workflows:
 #      - deploy_beta:
 #          context: org-global
 #          requires:
+#            - create_apk
 #            - test_instrumentation
 #          filters:
 #            branches:
@@ -177,14 +188,25 @@ workflows:
 #                - develop
 #      - deploy_production:
 #          context: org-global
+#          requires:
+#            - create_apk
 #          filters:
 #            branches:
 #              only:
 #                - master
 #      - documentation:
+#      - create_apk:
 #          context: org-global
 #          requires:
 #            - test_instrumentation
+#          filters:
+#            branches:
+#              only:
+#                - /^release/.*/
+#      - documentation:
+#          context: org-global
+#          requires:
+#            - create_apk
 #          filters:
 #            branches:
 #              only:
