@@ -46,6 +46,7 @@ yarn gh-pages --dist ./ --src CHANGELOG.md --dest ./_includes/ --add -m "docs(ch
 
 # remove from stash
 git checkout app/src/main/assets/setup.properties
+git checkout app/src/main/assets/about.properties
 
 # update manifest changes
 git add app/src/main/AndroidManifest.xml
