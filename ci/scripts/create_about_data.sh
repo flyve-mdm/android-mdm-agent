@@ -26,6 +26,7 @@
 #  @link      https://flyve-mdm.com/
 #  --------------------------------------------------------------------------------
 #
+
 # Get version number from package.json
 export GIT_TAG=$(jq -r ".version" package.json)
 
