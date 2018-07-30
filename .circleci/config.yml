@@ -168,43 +168,45 @@ workflows:
   version: 2
   build_test_and_deploy:
     jobs:
-      - build:
-          context: org-global
-      - test_instrumentation:
-          context: org-global
-          requires:
-            - build
-          filters:
-            branches:
-              ignore:
-                - master
-      - deploy_beta:
-          context: org-global
-          requires:
-            - test_instrumentation
-          filters:
-            branches:
-              only:
-                - develop
-      - deploy_production:
-          context: org-global
-          filters:
-            branches:
-              only:
-                - master
-      - documentation:
-          context: org-global
-          requires:
-            - test_instrumentation
-          filters:
-            branches:
-              only:
-                - /^release/.*/
       - release:
           context: org-global
-          requires:
-            - documentation
-          filters:
-            branches:
-              only:
-                - /^release/.*/
+#      - build:
+#          context: org-global
+#      - test_instrumentation:
+#          context: org-global
+#          requires:
+#            - build
+#          filters:
+#            branches:
+#              ignore:
+#                - master
+#      - deploy_beta:
+#          context: org-global
+#          requires:
+#            - test_instrumentation
+#          filters:
+#            branches:
+#              only:
+#                - develop
+#      - deploy_production:
+#          context: org-global
+#          filters:
+#            branches:
+#              only:
+#                - master
+#      - documentation:
+#          context: org-global
+#          requires:
+#            - test_instrumentation
+#          filters:
+#            branches:
+#              only:
+#                - /^release/.*/
+#      - release:
+#          context: org-global
+#          requires:
+#            - documentation
+#          filters:
+#            branches:
+#              only:
+#                - /^release/.*/
