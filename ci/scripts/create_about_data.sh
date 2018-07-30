@@ -29,9 +29,6 @@
 # Get version number from package.json
 export GIT_TAG=$(jq -r ".version" package.json)
 
-# Get version number from package.json
-export GIT_TAG=$(jq -r ".version" package.json)
-
 echo "about.version=${GIT_TAG}" > app/src/main/assets/about.properties
 echo "about.build=$CIRCLE_BUILD_NUM" >> app/src/main/assets/about.properties
 echo "about.date=$(date "+%a %b %d %H:%M:%S %Y")" >> app/src/main/assets/about.properties
