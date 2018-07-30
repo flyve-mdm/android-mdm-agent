@@ -39,22 +39,22 @@ platform :android do
     end
 end
 
-after_all do |lane|
-    telegram(
-        url_horn: ENV["TELEGRAM_WEBHOOKS"],
-        repo: ENV["GIT_REPO"],
-        branch: ENV["GIT_BRANCH"],
-        message: "Fastlane is OK"
-    )
-end
-
-error do |lane, exception|
-    telegram(
-        url_horn: ENV["TELEGRAM_WEBHOOKS"],
-        repo: ENV["GIT_REPO"],
-        branch: ENV["GIT_BRANCH"],
-        message: "`ERROR` Fastlane FAIL"
-    )
-end
+#after_all do |lane|
+#    telegram(
+#        url_horn: ENV["TELEGRAM_WEBHOOKS"],
+#        repo: ENV["GIT_REPO"],
+#        branch: ENV["GIT_BRANCH"],
+#        message: "Fastlane is OK"
+#    )
+#end
+#
+#error do |lane, exception|
+#    telegram(
+#        url_horn: ENV["TELEGRAM_WEBHOOKS"],
+#        repo: ENV["GIT_REPO"],
+#        branch: ENV["GIT_BRANCH"],
+#        message: "`ERROR` Fastlane FAIL"
+#    )
+#end
 
 # how to used it fastlane android beta storepass:'#KEYSTORE_PASSWORD' keypass:'#ALIAS_PASSWORD'
