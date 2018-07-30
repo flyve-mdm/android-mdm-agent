@@ -106,6 +106,9 @@ jobs:
       - *save_gradle_cache
       - *restore_apk_certified_cache
       - run:
+          name: Generate certified apk
+          command: source ci/scripts/app_certification.sh
+      - run:
           name: Deploy Beta
           command: source ci/scripts/deploy_beta.sh
 
@@ -119,6 +122,9 @@ jobs:
       - *android_dependencies
       - *save_gradle_cache
       - *restore_apk_certified_cache
+      - run:
+          name: Generate certified apk
+          command: source ci/scripts/app_certification.sh
       - run:
           name: Deploy Production
           command: source ci/scripts/deploy_production.sh
