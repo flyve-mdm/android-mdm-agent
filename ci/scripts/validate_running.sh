@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #
 #  LICENSE
 #
@@ -29,7 +29,7 @@
 GH_COMMIT_MESSAGE=$(git log --pretty=oneline -n 1 $CIRCLE_SHA1)
 echo $GH_COMMIT_MESSAGE
 
-if [[ $GH_COMMIT_MESSAGE == "build(manifest): increase version value" ]]; then
+if [[ $GH_COMMIT_MESSAGE = *"build(manifest): increase version value"* ]]; then
     echo "Invalid running"
     exit 1
 fi
