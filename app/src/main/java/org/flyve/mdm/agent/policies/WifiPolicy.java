@@ -23,7 +23,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * ------------------------------------------------------------------------------
- * @author    rafael hernandez
+ * @author    Rafael Hernandez
  * @date      15/5/18
  * @copyright Copyright  2018 Teclib. All rights reserved.
  * @license   GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
