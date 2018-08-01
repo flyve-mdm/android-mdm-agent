@@ -28,13 +28,15 @@ platform :android do
     lane :beta do |options|
         supply(
             track: 'beta',
-            apk: "app/build/outputs/apk/release/appCertified.apk"
+            apk: "app/build/outputs/apk/release/appCertified.apk",
+            skip_upload_aab: true
         )
     end
     lane :playstore do |options|
         supply(
             track: 'production',
-            apk: "app/build/outputs/apk/release/appCertified.apk"
+            apk: "app/build/outputs/apk/release/appCertified.apk",
+            skip_upload_aab: true
         )
     end
 end
