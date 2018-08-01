@@ -106,6 +106,9 @@ jobs:
       - *save_gradle_cache
       - *restore_apk_certified_cache
       - run:
+          name: Setup environment
+          command: source ci/scripts/setup_environment.sh
+      - run:
           name: Generate certified apk
           command: source ci/scripts/app_certification.sh
       - run:
@@ -122,6 +125,9 @@ jobs:
       - *android_dependencies
       - *save_gradle_cache
       - *restore_apk_certified_cache
+      - run:
+          name: Setup environment
+          command: source ci/scripts/setup_environment.sh
       - run:
           name: Generate certified apk
           command: source ci/scripts/app_certification.sh
