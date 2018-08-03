@@ -109,6 +109,9 @@ jobs:
           name: Setup environment
           command: source ci/scripts/setup_environment.sh
       - run:
+          name: Update version code
+          command: ./gradlew updateVersionCode
+      - run:
           name: Generate certified apk
           command: source ci/scripts/app_certification.sh
       - run:
@@ -128,6 +131,12 @@ jobs:
       - run:
           name: Setup environment
           command: source ci/scripts/setup_environment.sh
+      - run:
+          name: Update version code
+          command: ./gradlew updateVersionCode
+      - run:
+          name: Update version name
+          command: ./gradlew updateVersionName -P vName=$GIT_TAG
       - run:
           name: Generate certified apk
           command: source ci/scripts/app_certification.sh
