@@ -99,6 +99,9 @@ dependencies {
 
 }
 
+
+import groovy.json.JsonSlurper
+
 import java.util.regex.Pattern
 
 task updateVersionCode {
@@ -117,19 +120,32 @@ task updateVersionCode {
 
 task updateVersionName {
     doLast {
+
+        // Usage example:
+        // set manual version:
+        // gradlew updateVersionName -P vName=1.0.0
+        // or get the version from package.json:
+        // gradlew updateVersionName
+
+        def versionName
+
         if (project.hasProperty("vName")) {
-            def manifestFile = file("src/main/AndroidManifest.xml")
-            def patternVersionNumber = Pattern.compile("versionName=\"(\\d+)\\.(\\d+)\\.(\\d+)(?:\\S*)\"")
-            def manifestText = manifestFile.getText()
-            def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
-            matcherVersionNumber.find()
-
-            def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + vName + "\"")
-            manifestFile.write(manifestContent)
-
-            println "Version name: " + vName
+            versionName = vName
         } else {
-            println "please run: updateVersionName -P vName="
+            def packageFile = file('../package.json')
+            def json = new JsonSlurper().parseText(packageFile.text)
+            versionName = json.version
         }
+
+        def manifestFile = file("src/main/AndroidManifest.xml")
+        def patternVersionNumber = Pattern.compile("versionName=\"(\\d+)\\.(\\d+)\\.(\\d+)(?:\\S*)\"")
+        def manifestText = manifestFile.getText()
+        def matcherVersionNumber = patternVersionNumber.matcher(manifestText)
+        matcherVersionNumber.find()
+
+        def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + versionName + "\"")
+        manifestFile.write(manifestContent)
+
+        println "Version name: " + versionName
     }
 }
