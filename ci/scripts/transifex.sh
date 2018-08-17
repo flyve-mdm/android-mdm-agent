@@ -27,11 +27,6 @@
 #  --------------------------------------------------------------------------------
 #
 
-# install transifex CLI
-sudo apt-get -y install python-pip
-sudo pip install transifex-client
-sudo echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = '"$TRANSIFEX_USER"$'\npassword = '"$TRANSIFEX_TOKEN"$'\ntoken = '"$TRANSIFEX_TOKEN"$'\n' > ~/.transifexrc
-
 # get transifex status
 tx status
 
