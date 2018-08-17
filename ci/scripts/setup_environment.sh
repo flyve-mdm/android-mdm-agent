@@ -56,3 +56,8 @@ git remote add origin https://$GITHUB_USER:$GITHUB_TOKEN@github.com/$CIRCLE_PROJ
 
 # Get version number from package.json
 export GIT_TAG=$(jq -r ".version" package.json)
+
+# install transifex CLI
+sudo apt-get -y install python-pip
+sudo pip install transifex-client
+sudo echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = '"$TRANSIFEX_USER"$'\npassword = '"$TRANSIFEX_TOKEN"$'\ntoken = '"$TRANSIFEX_TOKEN"$'\n' > ~/.transifexrc
