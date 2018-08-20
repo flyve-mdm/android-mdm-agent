@@ -155,7 +155,7 @@ jobs:
           command: ./gradlew updateVersionCode
       - run:
           name: Update version name
-          command: ./gradlew updateVersionName -P vName=$GIT_TAG
+          command: ./gradlew updateVersionName
       - run:
           name: Generate certified apk
           command: source ci/scripts/app_certification.sh
@@ -180,7 +180,7 @@ jobs:
           command: ./gradlew updateVersionCode
       - run:
           name: Update version name
-          command: ./gradlew updateVersionName -P vName=$GIT_TAG
+          command: ./gradlew updateVersionName
       - run:
           name: Generate certified apk
           command: source ci/scripts/app_certification.sh
