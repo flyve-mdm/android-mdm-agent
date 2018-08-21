@@ -38,9 +38,9 @@ public class DeeplinkPresenter implements Deeplink.Presenter {
 
 
     @Override
-    public void showError(String message) {
+    public void showError(int type, String message) {
         if(view!=null) {
-            view.showError(message);
+            view.showError(type, message);
         }
     }
 

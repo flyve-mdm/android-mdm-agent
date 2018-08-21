@@ -36,6 +36,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.core.CommonErrorType;
 import org.flyve.mdm.agent.core.deeplink.Deeplink;
 import org.flyve.mdm.agent.core.deeplink.DeeplinkPresenter;
 import org.flyve.mdm.agent.core.deeplink.DeeplinkSchema;
@@ -102,7 +103,7 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
         try {
             deeplink = data.getQueryParameter("data");
         } catch (Exception ex) {
-            showError(ex.getMessage());
+            showError(CommonErrorType.DEEPLINK_GETQUERYPARAMETER, ex.getMessage());
         }
 
         TextView txtVersion = findViewById(R.id.txtVersion);
@@ -145,7 +146,7 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
      * @param message
      */
     @Override
-    public void showError(String message) {
+    public void showError(int type, String message) {
         txtTitle.setText(getResources().getString(R.string.fail_enroll));
         txtMessage.setText(message);
         Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
