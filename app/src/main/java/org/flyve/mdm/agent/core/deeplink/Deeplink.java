@@ -29,7 +29,7 @@ import android.content.Context;
 public interface Deeplink {
 
     interface View {
-        void showError(String message);
+        void showError(int type, String message);
         void lintSuccess(DeeplinkSchema deeplinkSchema);
         void openEnrollSuccess();
         void openEnrollFail();
@@ -38,7 +38,7 @@ public interface Deeplink {
 
     interface Presenter {
         // Views
-        void showError(String message);
+        void showError(int type, String message);
         void lintSuccess(DeeplinkSchema deeplinkSchema);
         void openEnrollSuccess();
         void openEnrollFail();
