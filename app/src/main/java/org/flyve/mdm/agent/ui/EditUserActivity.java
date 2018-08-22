@@ -348,6 +348,6 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
 
     @Override
     public void showDetailError(int type, String message) {
-        txtMessage.setText(message);
+        txtMessage.setText(getResources().getString(R.string.error_message_with_number, String.valueOf(type), message));
     }
 }
