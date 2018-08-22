@@ -30,14 +30,14 @@ public interface User {
 
     interface View {
         void saveSuccess();
-        void showError(String message);
+        void showError(int type, String message);
         void loadSuccess(UserSchema userSchema);
     }
 
     interface Presenter {
         // Views
         void saveSuccess();
-        void showError(String message);
+        void showError(int type, String message);
         void loadSuccess(UserSchema userSchema);
 
         // Models
