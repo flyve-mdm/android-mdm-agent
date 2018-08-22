@@ -50,4 +50,8 @@ public class CommonErrorType {
     public static final int PERMISSION_ACTIVE_SESSION = 302;
     public static final int PERMISSION_ONREQUESTPERMISSIONSRESULT = 303;
 
+    // USER
+    public static final int USER_SAVE_VALIDATION = 401;
+    public static final int USER_SAVE_EXCEPTION = 401;
+
 }
