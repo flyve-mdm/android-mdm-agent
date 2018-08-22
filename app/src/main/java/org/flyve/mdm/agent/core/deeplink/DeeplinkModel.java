@@ -52,7 +52,7 @@ public class DeeplinkModel implements Deeplink.Model {
         try {
             deepLinkData = Helpers.base64decode(deeplink);
         } catch(Exception ex) {
-            presenter.showError( CommonErrorType.DEEPLINK_BASE64DECODE, deepLinkErrorMessage);
+            presenter.showSnackError( CommonErrorType.DEEPLINK_BASE64DECODE, deepLinkErrorMessage);
             FlyveLog.e(deepLinkErrorMessage + " - " + ex.getMessage());
             return;
         }
@@ -72,7 +72,7 @@ public class DeeplinkModel implements Deeplink.Model {
                     deeplinkSchema.setUrl(url);
                 } else {
                     deepLinkErrorMessage = "URL " + deepLinkErrorMessage;
-                    presenter.showError( CommonErrorType.DEEPLINK_URL_EMPTY, deepLinkErrorMessage );
+                    presenter.showSnackError( CommonErrorType.DEEPLINK_URL_EMPTY, deepLinkErrorMessage );
                     return;
                 }
 
@@ -82,7 +82,7 @@ public class DeeplinkModel implements Deeplink.Model {
                     deeplinkSchema.setUserToken(userToken);
                 } else {
                     deepLinkErrorMessage = "USER " + deepLinkErrorMessage;
-                    presenter.showError( CommonErrorType.DEEPLINK_USER_TOKEN, deepLinkErrorMessage );
+                    presenter.showSnackError( CommonErrorType.DEEPLINK_USER_TOKEN, deepLinkErrorMessage );
                     return;
                 }
 
@@ -92,7 +92,7 @@ public class DeeplinkModel implements Deeplink.Model {
                     deeplinkSchema.setInvitationToken(invitationToken);
                 } else {
                     deepLinkErrorMessage = "TOKEN " + deepLinkErrorMessage;
-                    presenter.showError( CommonErrorType.DEEPLINK_INVITATION_TOKEN, deepLinkErrorMessage );
+                    presenter.showSnackError( CommonErrorType.DEEPLINK_INVITATION_TOKEN, deepLinkErrorMessage );
                     return;
                 }
 
@@ -120,7 +120,7 @@ public class DeeplinkModel implements Deeplink.Model {
                     deeplinkSchema.setEmail(email);
                 }
             } else {
-                presenter.showError( CommonErrorType.DEEPLINK_CSV_WRONG_FORMAT, deepLinkErrorMessage );
+                presenter.showSnackError( CommonErrorType.DEEPLINK_CSV_WRONG_FORMAT, deepLinkErrorMessage );
             }
 
             // Success
@@ -128,7 +128,7 @@ public class DeeplinkModel implements Deeplink.Model {
 
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-            presenter.showError( CommonErrorType.DEEPLINK_GENERAL_EXCEPTION, deepLinkErrorMessage );
+            presenter.showSnackError( CommonErrorType.DEEPLINK_GENERAL_EXCEPTION, deepLinkErrorMessage );
         }
     }
 
@@ -171,7 +171,7 @@ public class DeeplinkModel implements Deeplink.Model {
 
             @Override
             public void onError(String error) {
-                presenter.showError( CommonErrorType.DEEPLINK_ENROLLMENT_FAIL, error );
+                presenter.showSnackError( CommonErrorType.DEEPLINK_ENROLLMENT_FAIL, error );
                 presenter.openEnrollFail();
             }
         });
