@@ -30,6 +30,7 @@ import android.support.v7.app.AlertDialog;
 
 import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.core.CommonErrorType;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Inventory;
@@ -122,7 +123,7 @@ public class PermissionModel implements Permission.Model {
                     @Override
                     public void onError(String error) {
                         progress.dismiss();
-                        presenter.showError(error);
+                        presenter.showError(CommonErrorType.PERMISSION_ACTIVE_SESSION, error);
                     }
                 });
             }
@@ -130,7 +131,7 @@ public class PermissionModel implements Permission.Model {
             @Override
             public void onTaskError(Throwable throwable) {
                 progress.dismiss();
-                presenter.showError(context.getString(R.string.inventory_fail) + throwable.getMessage());
+                presenter.showError(CommonErrorType.PERMISSION_XML_INVENTORY, context.getString(R.string.inventory_fail) + throwable.getMessage());
             }
         });
     }

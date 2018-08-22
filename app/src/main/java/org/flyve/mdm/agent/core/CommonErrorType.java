@@ -45,4 +45,9 @@ public class CommonErrorType {
     public static final int ENROLLMENT_REQUEST = 203;
     public static final int ENROLLMENT_REQUEST_EXCEPTION = 204;
 
+    // PERMISSION
+    public static final int PERMISSION_XML_INVENTORY = 301;
+    public static final int PERMISSION_ACTIVE_SESSION = 302;
+    public static final int PERMISSION_ONREQUESTPERMISSIONSRESULT = 303;
+
 }
