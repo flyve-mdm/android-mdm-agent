@@ -114,7 +114,7 @@ public class UserModel implements User.Model {
         }
 
         if(!allow) {
-            presenter.showError(CommonErrorType.USER_SAVE_VALIDATION, errMsg.toString());
+            presenter.showDetailError(CommonErrorType.USER_SAVE_VALIDATION, errMsg.toString());
             return;
         }
 
@@ -137,7 +137,7 @@ public class UserModel implements User.Model {
             presenter.saveSuccess();
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-            presenter.showError(CommonErrorType.USER_SAVE_EXCEPTION, ex.getMessage());
+            presenter.showDetailError(CommonErrorType.USER_SAVE_EXCEPTION, ex.getMessage());
         }
     }
 }

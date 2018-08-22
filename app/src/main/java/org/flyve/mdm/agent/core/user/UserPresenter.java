@@ -44,9 +44,9 @@ public class UserPresenter implements User.Presenter {
     }
 
     @Override
-    public void showError(int type, String message) {
+    public void showDetailError(int type, String message) {
         if(view!=null) {
-            view.showError(type, message);
+            view.showDetailError(type, message);
         }
     }
 

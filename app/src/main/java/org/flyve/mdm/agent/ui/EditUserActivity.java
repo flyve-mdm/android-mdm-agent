@@ -347,7 +347,7 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
     }
 
     @Override
-    public void showError(int type, String message) {
+    public void showDetailError(int type, String message) {
         txtMessage.setText(message);
     }
 }
