@@ -36,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.core.CommonErrorType;
 import org.flyve.mdm.agent.core.permission.Permission;
 import org.flyve.mdm.agent.core.permission.PermissionPresenter;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -111,7 +112,7 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
     }
 
     @Override
-    public void showError(String message) {
+    public void showError(int type, String message) {
         Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,7 +142,7 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
                         && grantResults[5] == PackageManager.PERMISSION_GRANTED) {
                     presenter.generateInventory(PermissionEnrollmentActivity.this);
                 } else {
-                    presenter.showError(getString(R.string.permission_error_result));
+                    presenter.showError(CommonErrorType.PERMISSION_ONREQUESTPERMISSIONSRESULT, getString(R.string.permission_error_result));
                 }
             }
         }
