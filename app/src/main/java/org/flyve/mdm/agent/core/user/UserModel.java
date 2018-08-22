@@ -29,6 +29,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.core.CommonErrorType;
 import org.flyve.mdm.agent.data.localstorage.UserData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -113,7 +114,7 @@ public class UserModel implements User.Model {
         }
 
         if(!allow) {
-            presenter.showError(errMsg.toString());
+            presenter.showError(CommonErrorType.USER_SAVE_VALIDATION, errMsg.toString());
             return;
         }
 
@@ -136,7 +137,7 @@ public class UserModel implements User.Model {
             presenter.saveSuccess();
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-            presenter.showError(ex.getMessage());
+            presenter.showError(CommonErrorType.USER_SAVE_EXCEPTION, ex.getMessage());
         }
     }
 }
