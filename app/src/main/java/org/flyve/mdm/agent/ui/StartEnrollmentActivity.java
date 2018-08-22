@@ -148,8 +148,8 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
     @Override
     public void showSnackError(int type, String message) {
         txtTitle.setText(getResources().getString(R.string.fail_enroll));
-        txtMessage.setText(message);
-        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
+        txtMessage.setText(getResources().getString(R.string.error_message_with_number, String.valueOf(type), message));
+        Helpers.snack(this, getResources().getString(R.string.error_message_with_number, String.valueOf(type), message), this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }

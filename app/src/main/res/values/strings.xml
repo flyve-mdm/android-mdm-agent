@@ -232,4 +232,5 @@
     <string name="enable_dark_theme">Enable Dark Theme</string>
     <string name="delete_data">Delete Data</string>
     <string name="message_from_mqtt_service">Message from MQTT Service</string>
+    <string name="error_message_with_number">(%1$s) - %2$s</string>
 </resources>

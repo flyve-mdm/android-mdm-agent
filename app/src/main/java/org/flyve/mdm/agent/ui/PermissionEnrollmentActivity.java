@@ -113,7 +113,7 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
 
     @Override
     public void showSnackError(int type, String message) {
-        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
+        Helpers.snack(this, getResources().getString(R.string.error_message_with_number, String.valueOf(type), message), this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
