@@ -28,13 +28,13 @@ import android.content.Context;
 public interface Permission {
 
     interface View {
-        void showError(int type, String message);
+        void showSnackError(int type, String message);
         void inventorySuccess(String inventory);
     }
 
     interface Presenter {
         // Views
-        void showError(int type, String message);
+        void showSnackError(int type, String message);
         void inventorySuccess(String inventory);
 
         // Models
