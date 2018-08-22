@@ -32,6 +32,7 @@ import android.support.v7.app.AlertDialog;
 import org.flyve.inventory.categories.Hardware;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.core.CommonErrorType;
 import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.data.localstorage.UserData;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
@@ -62,7 +63,7 @@ public class EnrollmentModel implements Enrollment.Model {
 
             @Override
             public void onError(String error) {
-                presenter.showSnackError(error);
+                presenter.showSnackError(CommonErrorType.ENROLLMENT_X509CERTIFICATION, error);
             }
         });
     }
@@ -136,8 +137,8 @@ public class EnrollmentModel implements Enrollment.Model {
         }
 
         if(!allow) {
-            presenter.showSnackError(activity.getResources().getString(R.string.validate_check_details));
-            presenter.showDetailError(errMsg.toString());
+            presenter.showSnackError(CommonErrorType.ENROLLMENT_FIELD_VALIDATION, activity.getResources().getString(R.string.validate_check_details));
+            presenter.showDetailError(CommonErrorType.ENROLLMENT_FIELD_VALIDATION, errMsg.toString());
             return;
         }
 
@@ -191,11 +192,11 @@ public class EnrollmentModel implements Enrollment.Model {
 
                 @Override
                 public void onError(String error) {
-                    presenter.showSnackError(error);
+                    presenter.showSnackError(CommonErrorType.ENROLLMENT_REQUEST, error);
                 }
             });
         } catch (Exception ex) {
-            presenter.showSnackError(ex.getMessage());
+            presenter.showSnackError(CommonErrorType.ENROLLMENT_REQUEST_EXCEPTION, ex.getMessage());
         }
     }
 }

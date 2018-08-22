@@ -34,16 +34,16 @@ import java.util.List;
 public interface Enrollment {
 
     interface View {
-        void showDetailError(String message);
-        void showSnackError(String message);
+        void showDetailError(int type, String message);
+        void showSnackError(int type, String message);
         void enrollSuccess();
         void certificationX509Success();
     }
 
     interface Presenter {
         // Views
-        void showDetailError(String message);
-        void showSnackError(String message);
+        void showDetailError(int type, String message);
+        void showSnackError(int type, String message);
         void enrollSuccess();
         void certificationX509Success();
 
