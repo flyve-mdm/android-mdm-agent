@@ -112,8 +112,13 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
     }
 
     @Override
+<<<<<<< HEAD
     public void showSnackError(int type, String message) {
         Helpers.snack(this, getResources().getString(R.string.error_message_with_number, String.valueOf(type), message), this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
+=======
+    public void showError(int type, String message) {
+        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
+>>>>>>> feat(error): implement common error on permission
             @Override
             public void onClick(View v) {
             }
@@ -142,7 +147,11 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
                         && grantResults[5] == PackageManager.PERMISSION_GRANTED) {
                     presenter.generateInventory(PermissionEnrollmentActivity.this);
                 } else {
+<<<<<<< HEAD
                     presenter.showSnackError(CommonErrorType.PERMISSION_ONREQUESTPERMISSIONSRESULT, getString(R.string.permission_error_result));
+=======
+                    presenter.showError(CommonErrorType.PERMISSION_ONREQUESTPERMISSIONSRESULT, getString(R.string.permission_error_result));
+>>>>>>> feat(error): implement common error on permission
                 }
             }
         }

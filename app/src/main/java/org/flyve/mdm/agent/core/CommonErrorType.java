@@ -54,7 +54,6 @@ public class CommonErrorType {
     public static final int ENROLLMENT_HELPER_DATA_AGENT = 212;
     public static final int ENROLLMENT_HELPER_X509CERTIFICATION = 213;
 
-
     // PERMISSION
     public static final int PERMISSION_XML_INVENTORY = 301;
     public static final int PERMISSION_ACTIVE_SESSION = 302;
