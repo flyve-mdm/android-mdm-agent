@@ -29,13 +29,20 @@ package org.flyve.mdm.agent.core;
 
 public class CommonErrorType {
 
-    public static final int DEEPLINK_BASE64DECODE = 100;
-    public static final int DEEPLINK_URL_EMPTY = 101;
-    public static final int DEEPLINK_USER_TOKEN = 102;
-    public static final int DEEPLINK_INVITATION_TOKEN = 103;
-    public static final int DEEPLINK_CSV_WRONG_FORMAT = 104;
-    public static final int DEEPLINK_GENERAL_EXCEPTION = 105;
-    public static final int DEEPLINK_ENROLLMENT_FAIL = 106;
-    public static final int DEEPLINK_GETQUERYPARAMETER = 107;
+    // DEEPLINK
+    public static final int DEEPLINK_GENERAL_EXCEPTION = 100;
+    public static final int DEEPLINK_BASE64DECODE = 101;
+    public static final int DEEPLINK_URL_EMPTY = 102;
+    public static final int DEEPLINK_USER_TOKEN = 103;
+    public static final int DEEPLINK_INVITATION_TOKEN = 104;
+    public static final int DEEPLINK_CSV_WRONG_FORMAT = 105;
+    public static final int DEEPLINK_ENROLLMENT_FAIL = 107;
+    public static final int DEEPLINK_GETQUERYPARAMETER = 108;
+
+    // ENROLLMENT
+    public static final int ENROLLMENT_X509CERTIFICATION = 201;
+    public static final int ENROLLMENT_FIELD_VALIDATION = 202;
+    public static final int ENROLLMENT_REQUEST = 203;
+    public static final int ENROLLMENT_REQUEST_EXCEPTION = 204;
 
 }

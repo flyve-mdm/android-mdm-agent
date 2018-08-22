@@ -327,7 +327,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
     }
 
     @Override
-    public void showDetailError(String message) {
+    public void showDetailError(int type, String message) {
         pd.dismiss();
         pbx509.setVisibility(View.GONE);
 
@@ -335,7 +335,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
     }
 
     @Override
-    public void showSnackError(String message) {
+    public void showSnackError(int type, String message) {
         if(pd!=null) {
             pd.dismiss();
         }
