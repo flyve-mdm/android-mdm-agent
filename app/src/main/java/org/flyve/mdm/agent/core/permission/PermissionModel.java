@@ -123,7 +123,7 @@ public class PermissionModel implements Permission.Model {
                     @Override
                     public void onError(String error) {
                         progress.dismiss();
-                        presenter.showError(CommonErrorType.PERMISSION_ACTIVE_SESSION, error);
+                        presenter.showSnackError(CommonErrorType.PERMISSION_ACTIVE_SESSION, error);
                     }
                 });
             }
@@ -131,7 +131,7 @@ public class PermissionModel implements Permission.Model {
             @Override
             public void onTaskError(Throwable throwable) {
                 progress.dismiss();
-                presenter.showError(CommonErrorType.PERMISSION_XML_INVENTORY, context.getString(R.string.inventory_fail) + throwable.getMessage());
+                presenter.showSnackError(CommonErrorType.PERMISSION_XML_INVENTORY, context.getString(R.string.inventory_fail) + throwable.getMessage());
             }
         });
     }
