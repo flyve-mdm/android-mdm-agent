@@ -331,7 +331,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
         pd.dismiss();
         pbx509.setVisibility(View.GONE);
 
-        txtMessage.setText(message);
+        txtMessage.setText(getResources().getString(R.string.error_message_with_number, String.valueOf(type), message));
     }
 
     @Override
@@ -342,7 +342,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
 
         pbx509.setVisibility(View.GONE);
 
-        Helpers.snack(this, message, this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
+        Helpers.snack(this, getResources().getString(R.string.error_message_with_number, String.valueOf(type), message), this.getResources().getString(R.string.snackbar_close), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
