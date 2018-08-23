@@ -121,9 +121,9 @@ public class PermissionModel implements Permission.Model {
                     }
 
                     @Override
-                    public void onError(String error) {
+                    public void onError(int type, String error) {
                         progress.dismiss();
-                        presenter.showSnackError(CommonErrorType.PERMISSION_ACTIVE_SESSION, error);
+                        presenter.showSnackError(type, error);
                     }
                 });
             }

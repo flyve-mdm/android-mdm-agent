@@ -62,8 +62,8 @@ public class EnrollmentModel implements Enrollment.Model {
             }
 
             @Override
-            public void onError(String error) {
-                presenter.showSnackError(CommonErrorType.ENROLLMENT_X509CERTIFICATION, error);
+            public void onError(int type, String error) {
+                presenter.showSnackError(type, error);
             }
         });
     }
@@ -191,8 +191,8 @@ public class EnrollmentModel implements Enrollment.Model {
                 }
 
                 @Override
-                public void onError(String error) {
-                    presenter.showSnackError(CommonErrorType.ENROLLMENT_REQUEST, error);
+                public void onError(int type, String error) {
+                    presenter.showSnackError(type, error);
                 }
             });
         } catch (Exception ex) {
