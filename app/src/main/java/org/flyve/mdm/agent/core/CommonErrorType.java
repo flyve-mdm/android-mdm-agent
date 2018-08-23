@@ -44,6 +44,16 @@ public class CommonErrorType {
     public static final int ENROLLMENT_FIELD_VALIDATION = 202;
     public static final int ENROLLMENT_REQUEST = 203;
     public static final int ENROLLMENT_REQUEST_EXCEPTION = 204;
+    public static final int ENROLLMENT_HELPER_INITSESSION = 205;
+    public static final int ENROLLMENT_HELPER_FULLSESSION = 206;
+    public static final int ENROLLMENT_HELPER_CHANGEACTIVEPROFILE = 207;
+    public static final int ENROLLMENT_HELPER_GETACTIVESESSIONTOKEN = 208;
+    public static final int ENROLLMENT_HELPER_INPUT_PAYLOAD = 209;
+    public static final int ENROLLMENT_HELPER_REQUEST_PAYLOAD = 210;
+    public static final int ENROLLMENT_HELPER_AGENT_ID = 211;
+    public static final int ENROLLMENT_HELPER_DATA_AGENT = 212;
+    public static final int ENROLLMENT_HELPER_X509CERTIFICATION = 213;
+
 
     // PERMISSION
     public static final int PERMISSION_XML_INVENTORY = 301;

@@ -170,8 +170,8 @@ public class DeeplinkModel implements Deeplink.Model {
             }
 
             @Override
-            public void onError(String error) {
-                presenter.showSnackError( CommonErrorType.DEEPLINK_ENROLLMENT_FAIL, error );
+            public void onError(int type, String error) {
+                presenter.showSnackError( type, error );
                 presenter.openEnrollFail();
             }
         });
