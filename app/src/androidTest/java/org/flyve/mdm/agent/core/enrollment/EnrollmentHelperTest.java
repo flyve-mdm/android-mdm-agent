@@ -56,7 +56,7 @@ public class EnrollmentHelperTest {
             }
 
             @Override
-            public void onError(String error) {
+            public void onError(int type, String error) {
                 Assert.assertTrue(false);
             }
         });
