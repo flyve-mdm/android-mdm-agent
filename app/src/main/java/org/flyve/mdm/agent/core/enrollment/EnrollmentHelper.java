@@ -27,6 +27,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import org.flyve.mdm.agent.core.CommonErrorType;
 import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
@@ -129,7 +130,7 @@ public class EnrollmentHelper {
                     if(!errorMessage.equals("")) {
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
-                                callback.onError(errorMessage);
+                                callback.onError(CommonErrorType.ENROLLMENT_HELPER_INITSESSION, errorMessage);
                             }
                         });
                         return;
@@ -152,7 +153,7 @@ public class EnrollmentHelper {
                     if(!errorMessageFullSession.equals("")) {
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
-                                callback.onError(errorMessageFullSession);
+                                callback.onError(CommonErrorType.ENROLLMENT_HELPER_FULLSESSION, errorMessageFullSession);
                             }
                         });
                         return;
@@ -170,7 +171,7 @@ public class EnrollmentHelper {
                     if(!errorActiveProfile.equals("")) {
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
-                                callback.onError(errorActiveProfile);
+                                callback.onError(CommonErrorType.ENROLLMENT_HELPER_CHANGEACTIVEPROFILE, errorActiveProfile);
                             }
                         });
                     } else {
@@ -186,7 +187,7 @@ public class EnrollmentHelper {
                     FlyveLog.e(ex.getMessage());
                     EnrollmentHelper.runOnUI(new Runnable() {
                         public void run() {
-                            callback.onError(ex.getMessage());
+                            callback.onError(CommonErrorType.ENROLLMENT_HELPER_GETACTIVESESSIONTOKEN, ex.getMessage());
                         }
                     });
                 }
@@ -205,40 +206,60 @@ public class EnrollmentHelper {
         {
             public void run()
             {
+                HashMap<String, String> header = new HashMap();
+                header.put(SESSION_TOKEN, cache.getSessionToken());
+
+                header.put(ACCEPT,APPLICATION_JSON);
+                header.put(CONTENT_TYPE,APPLICATION_JSON + ";" + CHARSET);
+
+                JSONObject input;
                 try {
-                    HashMap<String, String> header = new HashMap();
-                    header.put(SESSION_TOKEN, cache.getSessionToken());
-
-                    header.put(ACCEPT,APPLICATION_JSON);
-                    header.put(CONTENT_TYPE,APPLICATION_JSON + ";" + CHARSET);
-
-                    JSONObject input = new JSONObject();
+                    input = new JSONObject();
                     input.put("input", payload);
+                } catch (final Exception ex) {
+                    EnrollmentHelper.runOnUI(new Runnable() {
+                        public void run() {
+                            callback.onError(CommonErrorType.ENROLLMENT_HELPER_INPUT_PAYLOAD, ex.getMessage());
+                        }
+                    });
+                    return;
+                }
 
-                    String data = getSyncWebData(routes.pluginFlyvemdmAgent(), input, header);
-                    if(data.contains("ERROR")){
-                        JSONArray jsonArr = new JSONArray(data);
-                        final String msgError = jsonArr.get(1).toString();
-                        FlyveLog.e(msgError + " - Device serial: " + Helpers.getDeviceSerial());
+                // Sending the payload to the backend
+                String data = getSyncWebData(routes.pluginFlyvemdmAgent(), input, header);
+                if(data.contains("ERROR")){
+                    final String msgError = manageError(data);
+                    FlyveLog.e(msgError + " - Device serial: " + Helpers.getDeviceSerial());
 
+                    EnrollmentHelper.runOnUI(new Runnable() {
+                        public void run() {
+                            callback.onError(CommonErrorType.ENROLLMENT_HELPER_REQUEST_PAYLOAD, msgError);
+                        }
+                    });
+                } else {
+                    String agentId;
+                    try {
+                        JSONObject jsonAgent = new JSONObject(data);
+                        agentId = jsonAgent.getString("id");
+                    } catch (final Exception ex) {
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
-                                callback.onError(msgError);
+                                callback.onError(CommonErrorType.ENROLLMENT_HELPER_AGENT_ID, ex.getMessage());
                             }
                         });
-                    } else {
-                        JSONObject jsonAgent = new JSONObject(data);
-                        String agentId = jsonAgent.getString("id");
+                        return;
+                    }
 
-                        header = new HashMap();
-                        header.put(SESSION_TOKEN, cache.getSessionToken());
-                        header.put(ACCEPT,APPLICATION_JSON);
-                        header.put(CONTENT_TYPE,APPLICATION_JSON + ";" + CHARSET);
-                        header.put(USER_AGENT,FLYVE_MDM);
-                        header.put(REFERER,routes.pluginFlyvemdmAgent());
+                    header = new HashMap();
+                    header.put(SESSION_TOKEN, cache.getSessionToken());
+                    header.put(ACCEPT,APPLICATION_JSON);
+                    header.put(CONTENT_TYPE,APPLICATION_JSON + ";" + CHARSET);
+                    header.put(USER_AGENT,FLYVE_MDM);
+                    header.put(REFERER,routes.pluginFlyvemdmAgent());
 
-                        String dataAgent = ConnectionHTTP.getSyncWebData(routes.pluginFlyvemdmAgent(agentId), "GET", header);
+                    String dataAgent = ConnectionHTTP.getSyncWebData(routes.pluginFlyvemdmAgent(agentId), "GET", header);
 
+                    try {
                         JSONObject jsonObject = new JSONObject(dataAgent);
 
                         String mbroker = jsonObject.getString("broker");
@@ -259,7 +280,7 @@ public class EnrollmentHelper {
                         cache.setPort(mport);
                         cache.setTls(mssl);
                         cache.setTopic(mtopic);
-                        cache.setMqttUser( Helpers.getDeviceSerial() );
+                        cache.setMqttUser(Helpers.getDeviceSerial());
                         cache.setMqttPasswd(mpassword);
                         cache.setCertificate(mcert);
                         cache.setName(mNameEmail);
@@ -267,45 +288,20 @@ public class EnrollmentHelper {
                         cache.setEntitiesId(String.valueOf(mEntitiesId));
                         cache.setPluginFlyvemdmFleetsId(String.valueOf(mFleetId));
 
+                    } catch (final Exception ex) {
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
-                                callback.onSuccess("success");
+                                callback.onError(CommonErrorType.ENROLLMENT_HELPER_DATA_AGENT, ex.getMessage());
                             }
                         });
+                        return;
                     }
-                } catch (Exception ex) {
 
-                    final String error  = ex.getMessage();
-                    FlyveLog.e(error);
-
-                    if(error.contains("ERROR")) {
-                        try {
-                            JSONArray jsonArr = new JSONArray(error);
-                            final String msgError = jsonArr.get(1).toString();
-                            FlyveLog.e(msgError + " - Device serial: " + Helpers.getDeviceSerial());
-
-                            EnrollmentHelper.runOnUI(new Runnable() {
-                                public void run() {
-                                    callback.onError(msgError);
-                                }
-                            });
-                        } catch (final Exception ex1) {
-                            FlyveLog.e(ex1.getMessage() + " - Device serial: " + Helpers.getDeviceSerial());
-
-                            EnrollmentHelper.runOnUI(new Runnable() {
-                                public void run() {
-                                    callback.onError(ex1.getMessage());
-                                }
-                            });
+                    EnrollmentHelper.runOnUI(new Runnable() {
+                        public void run() {
+                            callback.onSuccess("success");
                         }
-                    } else {
-                        EnrollmentHelper.runOnUI(new Runnable() {
-                            public void run() {
-                                FlyveLog.e(error + " - Device serial: " + Helpers.getDeviceSerial());
-                                callback.onError(error);
-                            }
-                        });
-                    }
+                    });
                 }
             }
         });
@@ -336,7 +332,7 @@ public class EnrollmentHelper {
                     FlyveLog.e(ex.getMessage());
                     EnrollmentHelper.runOnUI(new Runnable() {
                         public void run() {
-                            callback.onError("false");
+                            callback.onError(CommonErrorType.ENROLLMENT_HELPER_X509CERTIFICATION, "false");
                         }
                     });
                 }
@@ -346,6 +342,6 @@ public class EnrollmentHelper {
 
     public interface EnrollCallBack {
         void onSuccess(String data);
-        void onError(String error);
+        void onError(int type, String error);
     }
 }

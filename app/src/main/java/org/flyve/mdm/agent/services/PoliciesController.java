@@ -297,9 +297,9 @@ public class PoliciesController {
             }
 
             @Override
-            public void onError(String error) {
+            public void onError(int type, String error) {
                 FlyveLog.e(error);
-                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, ERROR, error));
+                broadcastReceivedLog(Helpers.broadCastMessage(String.valueOf(type), ERROR, error));
                 broadcastReceivedLog("Application fail: " + error);
 
                 // return the status of the task
@@ -332,9 +332,9 @@ public class PoliciesController {
             }
 
             @Override
-            public void onError(String error) {
+            public void onError(int type, String error) {
                 FlyveLog.e(error);
-                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on applicationOnDevices", error));
+                broadcastReceivedLog(Helpers.broadCastMessage(String.valueOf(type), "Error on applicationOnDevices", error));
 
                 // return the status of the task
                 sendTaskStatus(taskId, FEEDBACK_FAILED);
