@@ -192,7 +192,7 @@ public class EnrollmentModel implements Enrollment.Model {
 
                 @Override
                 public void onError(int type, String error) {
-                    presenter.showSnackError(CommonErrorType.ENROLLMENT_REQUEST, error);
+                    presenter.showSnackError(type, error);
                 }
             });
         } catch (Exception ex) {
