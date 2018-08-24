@@ -216,6 +216,7 @@ public class EnrollmentHelper {
                 try {
                     input = new JSONObject();
                     input.put("input", payload);
+                    FlyveLog.d("Flyve MDM Payload", input);
                 } catch (final Exception ex) {
                     EnrollmentHelper.runOnUI(new Runnable() {
                         public void run() {
