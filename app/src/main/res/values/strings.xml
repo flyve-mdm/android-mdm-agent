@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MDM Agent</string>
+    <string name="app_name">Flyve MDM Agent</string>
 
     <string name="walkthrough_step_1">&lt;a href="http://flyve-mdm.com"&gt;Flyve MDM&lt;/a&gt; is a mobile device management software that enables you to secure and manage all the mobile devices of your business or family via web-based console, click on link if you need more information</string>
     <string name="walkthrough_step_link_1">http://flyve-mdm.com</string>
