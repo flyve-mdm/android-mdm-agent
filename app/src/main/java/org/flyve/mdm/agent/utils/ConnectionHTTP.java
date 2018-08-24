@@ -121,6 +121,8 @@ public class ConnectionHTTP {
 			os.flush();
 			os.close();
 
+			FlyveLog.d("HTTP Response code", url + " Code: -> " + conn.getResponseCode());
+
 			if(conn.getResponseCode() >= 400) {
 				InputStream is = conn.getErrorStream();
 				return inputStreamToString(is);
