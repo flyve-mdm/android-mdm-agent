@@ -8,9 +8,9 @@ description: Be part of our awesome team
 category: contributing
 ---
 
-# Getting started
+Welcome to our ever growing community!
 
-Welcome to our ever growing community! We are more than happy to accept external contributions to the project in the form of feedback, [translations](http://flyve.org/android-mdm-agent/howtos/contribute-translating), bug reports and even better, pull requests!
+ We are more than happy to accept external contributions to the project in the form of feedback, [translations](http://flyve.org/android-mdm-agent/howtos/contribute-translating), bug reports and even better, pull requests!
 
 Here you'll learn everything you must know to start contributing in any of the Flyve MDM projects.
 
@@ -36,7 +36,7 @@ After installing git, run:
 ```terminal
 
 git config --global user.name "First.Name Last.Name"
-git config --global email "myemail@email.com"
+git config --global user.email "myemail@email.com"
 
 ```
 
