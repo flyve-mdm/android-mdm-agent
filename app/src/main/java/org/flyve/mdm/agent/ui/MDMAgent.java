@@ -26,7 +26,6 @@ package org.flyve.mdm.agent.ui;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.support.multidex.MultiDex;
 
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -70,8 +69,7 @@ public class MDMAgent extends Application {
             ex.getStackTrace();
         }
 
-        isDebuggable =  ( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
-
+        isDebuggable =  true; //( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
     }
 
     /**
@@ -90,7 +88,7 @@ public class MDMAgent extends Application {
         return isDebuggable;
     }
 
-    public static Boolean isSecureVersion() { return true; }
+    public static Boolean isSecureVersion() { return false; }
 
     public static String getCompleteVersion() {
         return BuildConfig.VERSION_NAME + "." + BuildConfig.VERSION_CODE;
