@@ -243,6 +243,7 @@ public class EnrollmentHelper {
                 } else {
                     String agentId;
                     try {
+                        FlyveLog.d("Agent ID: " + data);
                         JSONObject jsonAgent = new JSONObject(data);
                         agentId = jsonAgent.getString("id");
                     } catch (final Exception ex) {
