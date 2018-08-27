@@ -74,7 +74,7 @@ public class MDMAgent extends Application {
             ex.getStackTrace();
         }
 
-        isDebuggable =  true; //( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
+        isDebuggable = true; // ( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
     }
 
     /**
