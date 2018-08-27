@@ -89,7 +89,7 @@ public class MDMAgent extends Application {
         return isDebuggable;
     }
 
-    public static Boolean isSecureVersion() { return true; }
+    public static Boolean isSecureVersion() { return false; }
 
     public static String getCompleteVersion() {
         return BuildConfig.VERSION_NAME + "." + BuildConfig.VERSION_CODE;
