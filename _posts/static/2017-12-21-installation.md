@@ -8,49 +8,43 @@ description: Install it as System App!
 category: user
 ---
 
-# Index
+Flyve MDM Agent for Android can be installed from Google Play or as System App.
 
-* [Compatibility Matrix](#before)
+* [Compatibility Matrix](#matrix)
 * [Download APK](#download)
 * [Beta version](#beta-version)
 * [Install as System App](#system-app)
 
-## Before\.\.\.
+## <a name="matrix"></a> Compatibility Matrix
+
+### Flyve MDM Projects
 
 Check the following compatibility matrix to make sure, you're getting the right version.
-
-### Flyve MDM projects
 
 <table class="zebra-style">
     <tr>
         <td>MDM Agent</td>
         <td>0.99.x</td>
         <td>1.0.0</td>
-        <td>2.0.0-dev</td>
+        <td>2.0.0</td>
     </tr>
     <tr>
         <td>GLPI</td>
         <td>9.1</td>
         <td>9.2</td>
-        <td>9.2</td>
+        <td>9.2+</td>
     </tr>
     <tr>
         <td>Flyve MDM plugin</td>
         <td align="center">-</td>
-        <td>2.0.0-dev</td>
-        <td>2.0.0-dev</td>
+        <td>2.0.0</td>
+        <td>2.0.0</td>
     </tr>
     <tr>
         <td>Web MDM Dashboard</td>
         <td align="center">-</td>
-        <td>2.0.0-dev</td>
-        <td>2.0.0-dev</td>
-    </tr>
-    <tr>
-        <td>Legacy Dashboard</td>
-        <td>2.1.0</td>
-        <td align="center">-</td>
-        <td align="center">-</td>
+        <td>2.0.0</td>
+        <td>2.0.0</td>
     </tr>
 </table>
 
@@ -149,17 +143,15 @@ Or get the APK from the **Release** page on Github
 
 Download the [Beta testing app from Google Play](https://play.google.com/apps/testing/org.flyve.mdm.agent)
 
-## <a name="system-app"></a>Install as System App with ADB (Android Debug Bridge) tools
+## <a name="system-app"></a>As System App with Android Debug Bridge
 
-This simple guide asumes that you have some basic knowledge about command line, Android and ADB tool if not please feel free to review the ADB official information:
-
-[Android Debug Bridge](https://developer.android.com/studio/command-line/adb.html?hl=es-419)
+This simple guide asumes that you have some basic knowledge about command line, Android and ADB tool if not please feel free to review the ADB official information: [Android Debug Bridge](https://developer.android.com/studio/command-line/adb.html?hl=es-419).
 
 <img src="{{ '/images/picto-information.png' | absolute_url }}" alt="Good to know: " height="16px">  If the App is installed as System App it will be able to apply policies without requiring the user consent, like deploying apps and files directly to the device.
 
 #### Requirement:
 
-> You will requiere root access to do this.
+You will require root access to do this.
 
 ### Step 1:
 
@@ -179,7 +171,7 @@ $mount -o rw,remount /system
 
 You have two ways to move your apk to the system folder:
 
-#### Step 3.1:
+#### Option 1
 
 Copy the apk directly to the System folder.
 
@@ -195,7 +187,7 @@ $adb push yourAPKFile.apk /system/priv-app
 $adb push yourAPKFile.apk /system/app
 ```
 
-#### Step 3.2
+#### Option 2
 
 If you can't copy directly to the folder or has the apk in external sdcard, move the apk to the system folder.
 
