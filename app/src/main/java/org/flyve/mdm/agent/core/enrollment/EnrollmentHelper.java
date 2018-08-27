@@ -228,7 +228,6 @@ public class EnrollmentHelper {
 
                 // Sending the payload to the backend
                 String data = getSyncWebData(routes.pluginFlyvemdmAgent(), input, header);
-
                 FlyveLog.d("Payload return: " + data);
 
                 if(data.contains("ERROR")){
@@ -243,7 +242,6 @@ public class EnrollmentHelper {
                 } else {
                     String agentId;
                     try {
-                        FlyveLog.d("Agent ID: " + data);
                         JSONObject jsonAgent = new JSONObject(data);
                         agentId = jsonAgent.getString("id");
                     } catch (final Exception ex) {
