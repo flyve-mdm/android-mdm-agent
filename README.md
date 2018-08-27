@@ -60,12 +60,11 @@ For more information visit our [Official Website](http://flyve.org/android-mdm-a
 
 ### Flyve MDM projects
 
-|MDM Agent|0.99.x|1.0.0|2.0.0-dev|
+|MDM Agent|0.99.x|1.0.0|2.0.0|
 |:---|---|---|---|
 |GLPI|9.1|9.2|9.2|
-|Flyve MDM plugin|-|2.0.0-dev|2.0.0-dev|
-|Web MDM Dashboard|-|2.0.0-dev|2.0.0-dev|
-|Legacy Dashboard|2.1.0|-|-|
+|Flyve MDM plugin|-|2.0.0|2.0.0|
+|Web MDM Dashboard|-|2.0.0|2.0.0|
 
 ### MDM Agent & Android
 
