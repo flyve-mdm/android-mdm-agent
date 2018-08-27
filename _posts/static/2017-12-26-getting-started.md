@@ -11,15 +11,9 @@ date: 2017-12-20
 
 Flyve MDM is a Mobile device management software that enables you to secure and manage all the mobile devices of your business or family.
 
-## Introduction
+The Android MDM Agent works in conjunction with the [Web MDM Dashboard](http://flyve.org/web-mdm-dashboard/) and [Flyve MDM plugin](http://flyve.org/glpi-plugin/) for GLPI. The Agent will take control of the Android devices applying the commands given through the Dashboard or plugin for GLPI.
 
 Here you'll learn everything you need to start using your brand new MDM Agent.
-
-The Android MDM Agent works in conjunction with the [Web MDM Dashboard](http://flyve.org/web-mdm-dashboard/) and [Flyve MDM plugin](http://flyve.org/glpi-plugin/) for GLPI.
-
-The Agent will take control of the Android devices applying the commands given through the Dashboard or plugin for GLPI.
-
-## Index
 
 * [Enrollment](#1)
 * [Learn what is happening in Activity](#2)
@@ -31,9 +25,9 @@ The Agent will take control of the Android devices applying the commands given t
 
 ### 1.1. Invitation
 
-In order to enroll the devices, it is required to invite the user of the device. This can be done either from the Web Dashboard or Flyve MDM plugin for GLPI.
+In order to enroll the devices, it is required to invite the user of the device. This can be done either from the Web MDM Dashboard or Flyve MDM plugin for GLPI.
 
-Once the user receives the email with the invitation and clicks on the link or scan the QR code that comes within:
+Once the user receives the email with the invitation, he will be able to start the enrollment by opening the deeplink or scanning the QR code.
 
 * If the MDM Agent is [installed in the device](http://flyve.org/android-mdm-agent/howtos/installation), it will ask to Open with the App.
 
@@ -65,7 +59,7 @@ The Agent must send an inventory of the device, you will be able to view and sha
 
 Add your information to finish the enrollment.
 
-<img src="{{ '/images/picto-information.png' | absolute_url }}" alt="Good to know:" height="16px"> The email must be the same in which the invitation was sent.
+<img src="{{ '/images/picto-information.png' | absolute_url }}" alt="Good to know:" height="16px"> The email must be the same to which the invitation was sent.
 
 <img src="{{ 'images/screenshots/enrollment.png' | absolute_url }}" alt="Fill the form" width="300">
 
