@@ -25,6 +25,7 @@ package org.flyve.mdm.agent.utils;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -65,7 +66,6 @@ public class ConnectionHTTP {
 	public static String getSyncWebData(String url, String method, Map<String, String> header) {
 		try {
 			URL dataURL = new URL(url);
-			FlyveLog.d( "URL: " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 			conn.setConnectTimeout(timeout);
@@ -73,10 +73,14 @@ public class ConnectionHTTP {
 			conn.setInstanceFollowRedirects(true);
 			conn.setRequestMethod(method);
 
+			StringBuilder logHeader = new StringBuilder();
 			if(header != null) {
 				for (Map.Entry<String, String> entry : header.entrySet()) {
+					logHeader.append("- " + entry.getKey() + " : " + entry.getValue() + "\n");
 					conn.setRequestProperty(entry.getKey(), entry.getValue());
 				}
+			} else {
+				logHeader.append("Empty");
 			}
 
 			if(conn.getResponseCode() >= 400) {
@@ -85,7 +89,11 @@ public class ConnectionHTTP {
 			}
 
 			InputStream is = conn.getInputStream();
-			return inputStreamToString(is);
+			String requestResponse = inputStreamToString(is);
+			String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
+			Log(response);
+
+			return requestResponse;
 		}
 		catch (final Exception ex) {
 			FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
@@ -102,15 +110,19 @@ public class ConnectionHTTP {
 	public static String getSyncWebData(final String url, final JSONObject data, final Map<String, String> header) {
 		try {
 			URL dataURL = new URL(url);
-			FlyveLog.d( "URL: " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 			conn.setRequestMethod("POST");
 			conn.setConnectTimeout(timeout);
 			conn.setReadTimeout(readtimeout);
-
-			for (Map.Entry<String, String> entry : header.entrySet()) {
-				conn.setRequestProperty(entry.getKey(), entry.getValue());
+			StringBuilder logHeader = new StringBuilder();
+			if(header != null) {
+				for (Map.Entry<String, String> entry : header.entrySet()) {
+					logHeader.append("- " + entry.getKey() + " : " + entry.getValue() + "\n");
+					conn.setRequestProperty(entry.getKey(), entry.getValue());
+				}
+			} else {
+				logHeader.append("Empty");
 			}
 
 			// Send post request
@@ -121,16 +133,17 @@ public class ConnectionHTTP {
 			os.flush();
 			os.close();
 
-			FlyveLog.d("HTTP Response code: " + url + " Code: -> " + conn.getResponseCode());
-
 			if(conn.getResponseCode() >= 400) {
 				InputStream is = conn.getErrorStream();
 				return inputStreamToString(is);
 			}
 
 			InputStream is = conn.getInputStream();
-			return inputStreamToString(is);
+			String requestResponse = inputStreamToString(is);
+			String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
+			Log(response);
 
+			return requestResponse;
 		}
 		catch (final Exception ex) {
 			String error = EXCEPTION_HTTP + ex.getMessage();
@@ -151,7 +164,6 @@ public class ConnectionHTTP {
 
 		try {
 			URL dataURL = new URL(url);
-			FlyveLog.d( "URL: " + url);
 			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 			conn.setConnectTimeout(timeout);
@@ -162,7 +174,9 @@ public class ConnectionHTTP {
 			header.put("Accept","application/octet-stream");
 			header.put("Content-Type","application/json");
 
+			StringBuilder logHeader = new StringBuilder();
 			for (Map.Entry<String, String> entry : header.entrySet()) {
+				logHeader.append("- " + entry.getKey() + " : " + entry.getValue() + "\n");
 				conn.setRequestProperty(entry.getKey(), entry.getValue());
 			}
 
@@ -185,6 +199,9 @@ public class ConnectionHTTP {
 
 				output.write(data, 0, count);
 			}
+
+			String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n";
+			Log(response);
 
 			FlyveLog.d( "Download complete size: " + totalDataRead);
 			return true;
@@ -220,15 +237,20 @@ public class ConnectionHTTP {
 			try
 			{
 				URL dataURL = new URL(url);
-				FlyveLog.d( "URL: " + url);
 				HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 				conn.setRequestMethod("POST");
 				conn.setConnectTimeout(timeout);
 				conn.setReadTimeout(readtimeout);
 
-				for (Map.Entry<String, String> entry : header.entrySet()) {
-					conn.setRequestProperty(entry.getKey(), entry.getValue());
+				StringBuilder logHeader = new StringBuilder();
+				if(header != null) {
+					for (Map.Entry<String, String> entry : header.entrySet()) {
+						logHeader.append("- " + entry.getKey() + " : " + entry.getValue() + "\n");
+						conn.setRequestProperty(entry.getKey(), entry.getValue());
+					}
+				} else {
+					logHeader.append("Empty");
 				}
 
 				// Send post request
@@ -254,11 +276,14 @@ public class ConnectionHTTP {
 				}
 
 				InputStream is = conn.getInputStream();
-				final String result = inputStreamToString(is);
+				final String requestResponse = inputStreamToString(is);
+
+				String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
+				Log(response);
 
 				ConnectionHTTP.runOnUI(new Runnable() {
 					public void run() {
-						callback.callback(result);
+						callback.callback(requestResponse);
 					}
 				});
 
@@ -295,6 +320,12 @@ public class ConnectionHTTP {
 		br.close();
 		return sb.toString();
 	}
+
+	private static void Log(String message){
+		// write log file
+		Log.d("HTTP", message);
+	}
+
 
 	/**
 	 * This is the return data interface
