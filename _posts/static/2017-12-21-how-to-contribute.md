@@ -36,7 +36,7 @@ After installing git, run:
 ```terminal
 
 git config --global user.name "First.Name Last.Name"
-git config --global user.email "myemail@email.com"
+git config --global user.email "my.email@email.com"
 
 ```
 
@@ -79,7 +79,8 @@ This configuration requires some patience.
 1. Go to your Keybase account and generate a new GPG key.
 2. Sign in from a browser to your Keybase Account.
 3. Click on the ID of your PGP key.
-4. Copy everything between:
+4. Copy and paste the command to import your public GPG key on the terminal: ```curl https://keybase.io/MY_USER_NAME/pgp_keys.asc | gpg --import```
+5. Copy everything between:
 
     ```key
 
@@ -88,42 +89,46 @@ This configuration requires some patience.
 
     ```
 
-5. Paste it on your GitHub settings
+6. Paste it on your GitHub settings
    Go to settings > SSH and GPG keys > New GPG key
-6. Import your private key to your PC:
+7. Import your private key to your PC:
 
-      6.1. Go to your keybase account on your browser
+      7.1. Go to your keybase account on your browser
 
-      6.2. Next to your key ID, click on edit and select export private
+      7.2. Next to your key ID, click on edit and select export private
 
       <img src="https://github.com/Naylin15/Screenshots/blob/master/docs/Export-private-key.png?raw=true" alt="Export private key on Keybase">
 
-      6.3. Copy and paste your private key in a txt editor, and save it with the name ```private.key```
+      7.3. Copy and paste your private key in a txt editor, and save it with the name ```private.key```
 
       <img src="{{ '/images/picto-information.png' | absolute_url }}" alt="Awesome tips:" height="16px"> On Windows make sure it is on your user folder.
 
-      6.4. Go to command line and run:
+      7.4. Go to command line and run:
 
-   ```gpg --import private.key```
+      ```gpg --import private.key```
 
-    6.5 Check the key was imported by running:
+      7.5 Check the key was imported by running:
 
-   ```gpg --list-secret-keys --keyid-format LONG```
+      ```gpg --list-secret-keys --keyid-format LONG```
 
    Here should be listed your key, check the ID from keybase is the same on the sec line.
 
-    <div>
-        <img src="https://github.com/Naylin15/Screenshots/blob/master/docs/check-key-id-terminal.png?raw=true" alt="Key ID on Terminal">
-        <img src="https://github.com/Naylin15/Screenshots/blob/master/docs/check-key-id.png?raw=true" alt="Key ID on Keybase">
-    </div>
+     <div>
+       <img src="https://github.com/Naylin15/Screenshots/blob/master/docs/check-key-id-terminal.png?raw=true" alt="Key ID on Terminal">
+       <img src="https://github.com/Naylin15/Screenshots/blob/master/docs/check-key-id.png?raw=true" alt="Key ID on Keybase">
+     </div>
 
-7. Telling git of your GPG key, run:
+8. Telling git of your GPG key, run:
 
 ```git config --global user.signingkey B344E73DA95715F4```
 
 Also run the following command to sign all commits by default:
 
 ```git config --global commit.gpgsign true```
+
+* On Windows also run:
+
+  ```git config --global gpg.program "C:\Program Files (x86)\GnuPG\bin\gpg.exe"```
 
 ### Test it!
 
@@ -143,6 +148,17 @@ Also run the following command to sign all commits by default:
   * ```git push``` -> pushes the local changes to your remote repo (the repo on GitHub)
 
 <img src="{{ '/images/picto-information.png' | absolute_url }}" alt="Awesome tips:" height="16px"> Don't forget you can learn more about these git commands with the [Pro Git book](https://git-scm.com/book/en/v2), available in several languages, and [Try Git](https://try.github.io/levels/1/challenges/1) tutorial.
+
+<img src="{{ '/images/picto-warning.png' | absolute_url }}" alt="Watch out:" height="16px"> Make sure that the email address in git, the Primary email in your GitHub account and the one in your GPG key are all the same.
+
+In case you want to add an email account to your GPG, follow this guide [Associating an email account with your GPG key](https://help.github.com/articles/associating-an-email-with-your-gpg-key/)
+
+After adding your email account, remember to update your GPG on keybase, to do that, follow these steps:
+
+1. Sign in from a browser to your Keybase Account.
+2. Next to your key ID, click on edit and select _Update my key (I edited it elsewhere)_.
+3. Run again ```gpg –-armor –-export B344E73DA95715F4```
+4. Copy the output and paste it where indicated in keybase.
 
 ## Now that everything is set up
 
