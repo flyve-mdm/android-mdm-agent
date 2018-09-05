@@ -101,14 +101,10 @@ public class ApplicationsAdapter extends BaseAdapter {
 		TextView txtStatus = vi.findViewById(R.id.txtStatus);
 
 		String status;
-		if(app.appStatus.equals("1")) {
-			status = parent.getResources().getString(R.string.app_pending);
+		if(Helpers.isPackageInstalled(parent.getContext(), app.appPackage)) {
+			status = parent.getResources().getString(R.string.app_installed);
 		} else {
-			if(Helpers.isPackageInstalled(parent.getContext(), app.appPackage)) {
-				status = parent.getResources().getString(R.string.app_installed);
-			} else {
-				status = parent.getResources().getString(R.string.app_not_installed);
-			}
+			status = parent.getResources().getString(R.string.app_not_installed);
 		}
 
 		txtStatus.setText(status);
