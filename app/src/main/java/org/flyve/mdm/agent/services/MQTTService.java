@@ -95,9 +95,6 @@ import javax.net.ssl.SSLContext;
  */
 public class MQTTService extends Service implements MqttCallback {
 
-    public static final String ACTION_START = "org.flyve.mdm.agent.ACTION_START";
-    public static final String ACTION_INVENTORY = "org.flyve.mdm.agent.ACTION_INVENTORY";
-
     private static final String MQTT_LOGIN = "MQTT Login";
     private static final String ERROR = "ERROR";
     private static final String QUERY = "query";
@@ -169,11 +166,6 @@ public class MQTTService extends Service implements MqttCallback {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-
-        String action = "";
-        if (intent != null && intent.getAction() != null) {
-            action = intent.getAction();
-        }
 
         Context mContext = this.getApplicationContext();
         MqttData cache = new MqttData(mContext);
