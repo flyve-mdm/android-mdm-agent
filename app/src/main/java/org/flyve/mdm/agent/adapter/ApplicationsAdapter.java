@@ -116,7 +116,6 @@ public class ApplicationsAdapter extends BaseAdapter {
 			} catch (Exception ex) {
 				FlyveLog.e(ex.getMessage());
 			}
-
 		} else {
 			status = parent.getResources().getString(R.string.app_not_installed);
 		}
