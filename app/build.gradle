@@ -65,8 +65,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.9.0'
-    androidTestImplementation 'org.mockito:mockito-android:2.7.22'
+    testImplementation 'org.mockito:mockito-core:2.21.0'
+    androidTestImplementation 'org.mockito:mockito-android:2.21.0'
 
     // MQTT libraries
     implementation('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
