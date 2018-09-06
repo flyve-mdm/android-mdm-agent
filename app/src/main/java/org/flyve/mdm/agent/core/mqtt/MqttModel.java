@@ -109,6 +109,7 @@ public class MqttModel implements mqtt.Model {
     ;
 
     public MqttModel(mqtt.Presenter presenter) {
+
         this.presenter = presenter;
     }
 
