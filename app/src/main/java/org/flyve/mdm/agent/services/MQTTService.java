@@ -42,8 +42,6 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  */
 public class MQTTService extends Service implements MqttCallback, mqtt.View {
     private mqtt.Presenter presenter;
-    private Context context;
-
     IBinder mBinder = new LocalBinder();
 
     public static Intent start(Context context) {
@@ -61,9 +59,7 @@ public class MQTTService extends Service implements MqttCallback, mqtt.View {
      */
     public MQTTService() {
         FlyveLog.d("MQTT Service Constructor");
-
         presenter = new MqttPresenter(this);
-        context = getApplicationContext();
     }
 
     public class LocalBinder extends Binder {
@@ -73,7 +69,7 @@ public class MQTTService extends Service implements MqttCallback, mqtt.View {
     }
 
     public void sendInventory() {
-        presenter.sendInventory(this.context);
+        presenter.sendInventory(getApplicationContext());
     }
 
     /**
@@ -99,7 +95,7 @@ public class MQTTService extends Service implements MqttCallback, mqtt.View {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        presenter.connect(context, MQTTService.this);
+        presenter.connect(getApplicationContext(), MQTTService.this);
         return START_STICKY;
     }
 
@@ -110,7 +106,7 @@ public class MQTTService extends Service implements MqttCallback, mqtt.View {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.onDestroy(context);
+        presenter.onDestroy(getApplicationContext());
     }
 
     /**
@@ -120,7 +116,7 @@ public class MQTTService extends Service implements MqttCallback, mqtt.View {
     @Override
     public void connectionLost(Throwable cause) {
         // send to backend that agent lost connection
-        presenter.connectionLost(context, MQTTService.this, cause.getMessage());
+        presenter.connectionLost(getApplicationContext(), MQTTService.this, cause.getMessage());
     }
 
     /**
@@ -129,7 +125,7 @@ public class MQTTService extends Service implements MqttCallback, mqtt.View {
      */
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
-        presenter.deliveryComplete(context, token);
+        presenter.deliveryComplete(getApplicationContext(), token);
     }
 
     /**
@@ -140,6 +136,6 @@ public class MQTTService extends Service implements MqttCallback, mqtt.View {
      */
     @Override
     public void messageArrived(String topic, MqttMessage message) {
-        presenter.messageArrived(context, topic, message);
+        presenter.messageArrived(getApplicationContext(), topic, message);
     }
 }
