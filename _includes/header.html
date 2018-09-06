@@ -38,11 +38,63 @@
 
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Development<i class="glyph glyph-chevron-down-2"></i></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ 'development/code-documentation/' | absolute_url }}">Code documentation</a></li>
-                                <li class="divider"></li>
-                                <li><a href="{{ 'development/coverage/' | absolute_url }}">Coverage</a></li>
-                                <li><a href="{{ 'development/test-reports/' | absolute_url }}">Test Report</a></li>
+                            <ul class="dropdown-menu dropdown-menu2" role="menu">
+    
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        Code Documentation <i class="glyph glyph-chevron-down-2"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="{{ 'development/code-documentation/develop/' | absolute_url }}">Develop</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ 'development/code-documentation/master/' | absolute_url }}">Master</a>
+                                            </li>
+                                        {% for version in site.data.whitelist_version %}
+                                            <li>
+                                                <a href="{{ 'development/code-documentation/support/' | absolute_url }}{{ version }}">{{ version }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+    
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        Coverage <i class="glyph glyph-chevron-down-2"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ 'development/coverage/develop/' | absolute_url }}">Develop</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ 'development/coverage/master/' | absolute_url }}">Master</a>
+                                        </li>
+                                        {% for version in site.data.whitelist_version %}
+                                            <li>
+                                                <a href="{{ 'development/coverage/support/' | absolute_url }}{{ version }}">{{ version }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        Test Report <i class="glyph glyph-chevron-down-2"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ 'development/test-report/develop/' | absolute_url }}">Develop</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ 'development/test-report/master/' | absolute_url }}">Master</a>
+                                        </li>
+                                        {% for version in site.data.whitelist_version %}
+                                            <li>
+                                                <a href="{{ 'development/test-report/support/' | absolute_url }}{{ version }}">{{ version }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
 
