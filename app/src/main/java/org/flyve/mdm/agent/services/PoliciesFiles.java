@@ -243,7 +243,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
             File file = new File(filePath);
             if (file.exists()) {
                 FlyveLog.i("File exists: " + filePath);
-                addApplication(file, fileName);
+                addFile(file, fileName);
                 return file.getAbsolutePath();
             }
 
@@ -262,7 +262,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
                 mBuilder.setContentText(context.getString(R.string.download_complete, fileName));
                 FlyveLog.i(context.getString(R.string.download_file_ready) + file.getAbsolutePath());
 
-                addApplication(file, fileName);
+                addFile(file, fileName);
 
                 return file.getAbsolutePath();
             } else {
@@ -279,7 +279,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         }
     }
 
-    private void addApplication(File file, String fileName) {
+    private void addFile(File file, String fileName) {
         org.flyve.mdm.agent.data.database.entity.File dataFile = new org.flyve.mdm.agent.data.database.entity.File();
         dataFile.fileName = fileName;
         dataFile.filePath = file.getAbsolutePath();
