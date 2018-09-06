@@ -133,7 +133,7 @@ public class MqttModel implements mqtt.Model {
     @Override
     public void connect(final Context context, final MqttCallback callback) {
         // if the device is connected exit
-        if(getMqttClient().isConnected()) {
+        if(getMqttClient()!=null && getMqttClient().isConnected()) {
             return;
         }
 
@@ -293,6 +293,7 @@ public class MqttModel implements mqtt.Model {
     }
 
     public void messageArrived(Context context, String topic, MqttMessage message) {
+        FlyveLog.d("- Topic: " + topic + "\n\n- Message: " + new String(message.getPayload()));
 
         FlyveLog.d("- Topic: " + topic + "\n\n- Message: " + new String(message.getPayload()));
         int priority = topic.contains("fleet") ? 0 : 1;
