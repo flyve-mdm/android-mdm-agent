@@ -196,6 +196,7 @@
     <string name="inventory_not_exists">The inventory does not exists</string>
     <string name="fail">fail</string>
     <string name="inventory_cannot_read_the_file">Inventory fail, cannot read the file</string>
+    <string name="inventory_cannot_send_offline">Cannot sent the inventory the device is offline</string>
     <string name="creating_inventory">Creating inventory...</string>
     <string name="creating_session">Creating session...</string>
     <string name="inventory_fail">The inventory fail:</string>
