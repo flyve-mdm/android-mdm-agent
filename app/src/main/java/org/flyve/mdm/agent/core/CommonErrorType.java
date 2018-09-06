@@ -64,4 +64,28 @@ public class CommonErrorType {
     public static final int USER_SAVE_VALIDATION = 401;
     public static final int USER_SAVE_EXCEPTION = 401;
 
+    // MQTT
+    public static final int MQTT_INVENTORY_FAIL = 501;
+    public static final int MQTT_IN_INITIALIZER_ERROR = 502;
+    public static final int MQTT_CONNECTION_LOST = 503;
+    public static final int MQTT_OPTIONS = 504;
+    public static final int MQTT_CONNECTION = 505;
+    public static final int MQTT_ACTION_CALLBACK = 506;
+    public static final int MQTT_PING = 507;
+    public static final int MQTT_GEOLOCATE = 508;
+    public static final int MQTT_INVENTORY = 509;
+    public static final int MQTT_LOCK = 510;
+    public static final int MQTT_WIPE = 511;
+    public static final int MQTT_UNENROLL = 512;
+    public static final int MQTT_SUBSCRIBE = 513;
+    public static final int MQTT_RESETPASSWORD = 514;
+    public static final int MQTT_USETLS = 515;
+    public static final int MQTT_DEPLOYAPP = 516;
+    public static final int MQTT_REMOVEAPP = 517;
+    public static final int MQTT_DEPLOYFILE = 518;
+    public static final int MQTT_REMOVEFILE = 519;
+    public static final int MQTT_CALLPOLICY_NEWINSTANCE = 520;
+    public static final int MQTT_CALLPOLICY_JSON_PARSE = 521;
+    public static final int MQTT_DESTROY_START_SERVICE = 522;
+    public static final int MQTT_DELIVERY_COMPLETE = 523;
 }
