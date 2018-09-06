@@ -21,67 +21,67 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.core.deeplink;
+package org.flyve.mdm.agent.core.mqtt;
 
-import android.app.Activity;
 import android.content.Context;
 
-public class DeeplinkPresenter implements Deeplink.Presenter {
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-    private Deeplink.View view;
-    private Deeplink.Model model;
+public class MqttPresenter implements mqtt.Presenter {
 
-    public DeeplinkPresenter(Deeplink.View view){
+    private mqtt.View view;
+    private mqtt.Model model;
+
+    public MqttPresenter(mqtt.View view){
         this.view = view;
-        model = new DeeplinkModel(this);
-    }
-
-
-    @Override
-    public void showSnackError(int type, String message) {
-        if(view!=null) {
-            view.showSnackError(type, message);
-        }
+        model = new MqttModel(this);
     }
 
     @Override
-    public void lintSuccess(DeeplinkSchema deeplinkSchema) {
-        if(view!=null) {
-            view.lintSuccess(deeplinkSchema);
-        }
+    public void connect(Context context, MqttCallback callback) {
+        model.connect(context, callback);
     }
 
     @Override
-    public void openEnrollSuccess() {
-        if(view!=null) {
-            view.openEnrollSuccess();
-        }
+    public void connectionLost(Context context, MqttCallback callback, String message) {
+        model.connectionLost(context, callback, message);
     }
 
     @Override
-    public void openEnrollFail() {
-        if(view!=null) {
-            view.openEnrollFail();
-        }
+    public void showDetailError(Context context, int type, String message) {
+        model.showDetailError(context, type, message);
     }
 
     @Override
-    public void lint(Context context, String deeplink) {
-        model.lint(context, deeplink);
+    public void onDestroy(Context context) {
+        model.onDestroy(context);
     }
 
     @Override
-    public void saveSupervisor(Context context, String name, String phone, String webSite, String email) {
-        model.saveSupervisor(context, name, phone, webSite, email);
+    public void deliveryComplete(Context context, IMqttDeliveryToken token) {
+        model.deliveryComplete(context, token);
     }
 
     @Override
-    public void saveMQTTConfig(Context context, String url, String userToken, String invitationToken) {
-        model.saveMQTTConfig(context, url, userToken, invitationToken);
+    public MqttAndroidClient getMqttClient() {
+        return model.getMqttClient();
     }
 
     @Override
-    public void openEnrollment(Activity activity, int request) {
-        model.openEnrollment(activity, request);
+    public Boolean isConnected() {
+        return model.isConnected();
+    }
+
+    @Override
+    public void sendInventory(Context context) {
+        model.sendInventory(context);
+    }
+
+    @Override
+    public void messageArrived(Context context, String topic, MqttMessage message) {
+        model.messageArrived(context, topic, message);
     }
 }

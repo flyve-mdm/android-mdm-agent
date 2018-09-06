@@ -21,39 +21,45 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.core.deeplink;
+package org.flyve.mdm.agent.core.mqtt;
 
-import android.app.Activity;
 import android.content.Context;
 
-public interface Deeplink {
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+public interface mqtt {
 
     interface View {
-        void showSnackError(int type, String message);
-        void lintSuccess(DeeplinkSchema deeplinkSchema);
-        void openEnrollSuccess();
-        void openEnrollFail();
 
     }
 
     interface Presenter {
         // Views
-        void showSnackError(int type, String message);
-        void lintSuccess(DeeplinkSchema deeplinkSchema);
-        void openEnrollSuccess();
-        void openEnrollFail();
 
         // Models
-        void lint(Context context, String deeplink);
-        void saveSupervisor(Context context, String name, String phone, String webSite, String email);
-        void saveMQTTConfig(Context context, String url, String userToken, String invitationToken);
-        void openEnrollment(final Activity activity, final int request);
+        MqttAndroidClient getMqttClient();
+        Boolean isConnected();
+        void sendInventory(Context context);
+        void connect(Context context, MqttCallback callback);
+        void connectionLost(Context context, MqttCallback callback, String message);
+        void messageArrived(Context context, String topic, MqttMessage message);
+        void showDetailError(Context context, int type, String message);
+        void onDestroy(Context context);
+        void deliveryComplete(Context context, IMqttDeliveryToken token);
     }
 
     interface Model {
-        void lint(Context context, String deeplink);
-        void saveSupervisor(Context context, String name, String phone, String webSite, String email);
-        void saveMQTTConfig(Context context, String url, String userToken, String invitationToken);
-        void openEnrollment(final Activity activity, final int request);
+        MqttAndroidClient getMqttClient();
+        Boolean isConnected();
+        void sendInventory(Context context);
+        void connect(Context context, MqttCallback callback);
+        void connectionLost(Context context, MqttCallback callback, String message);
+        void messageArrived(Context context, String topic, MqttMessage message);
+        void showDetailError(Context context, int type, String message);
+        void onDestroy(Context context);
+        void deliveryComplete(Context context, IMqttDeliveryToken token);
     }
 }
