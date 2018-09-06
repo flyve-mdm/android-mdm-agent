@@ -7,6 +7,30 @@ header {
     }
   }
 
+  .dropdown-submenu {
+    display: list-item;
+    position: relative;
+  
+    &>.dropdown-menu {
+      left: 100%;
+      margin-top: -52px;
+      top: 0;
+    }
+  
+    .pull-left {
+      float: none;
+  
+      &>.dropdown-menu {
+        left: -100%;
+      }
+    }
+  
+    i {
+      font-size: 6px;
+      line-height: 15px;
+    }
+  }
+
   @media (max-width: 1084px) {
     .logo {
       height: 30px;
