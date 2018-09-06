@@ -84,7 +84,6 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -109,7 +108,6 @@ public class MqttModel implements mqtt.Model {
     ;
 
     public MqttModel(mqtt.Presenter presenter) {
-
         this.presenter = presenter;
     }
 
@@ -135,7 +133,7 @@ public class MqttModel implements mqtt.Model {
     @Override
     public void connect(final Context context, final MqttCallback callback) {
         // if the device is connected exit
-        if(getMqttClient()!=null && getMqttClient().isConnected()) {
+        if(getMqttClient().isConnected()) {
             return;
         }
 
@@ -262,7 +260,6 @@ public class MqttModel implements mqtt.Model {
                     } else {
                         executeConnection = false;
                     }
-
                 } else {
                     timeLastReconnection = new Date().getTime();
                     executeConnection = true;
@@ -296,8 +293,8 @@ public class MqttModel implements mqtt.Model {
     }
 
     public void messageArrived(Context context, String topic, MqttMessage message) {
-        FlyveLog.d("- Topic: " + topic + "\n\n- Message: " + new String(message.getPayload()));
 
+        FlyveLog.d("- Topic: " + topic + "\n\n- Message: " + new String(message.getPayload()));
         int priority = topic.contains("fleet") ? 0 : 1;
 
         String messageBody = new String(message.getPayload());
@@ -569,6 +566,7 @@ public class MqttModel implements mqtt.Model {
         // Policy/deployApp
         String DEPLOY_APP = "deployApp";
         if(topic.toLowerCase().contains(DEPLOY_APP.toLowerCase())) {
+
             MDMAgent.setMqttClient(getMqttClient());
             AppThreadManager manager = MDMAgent.getAppThreadManager();
             try {
