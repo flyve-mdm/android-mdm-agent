@@ -32,6 +32,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -60,7 +61,6 @@ import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.data.localstorage.AppData;
 import org.flyve.mdm.agent.ui.ErrorActivity;
-import org.flyve.mdm.agent.ui.InstallAppActivity;
 import org.flyve.mdm.agent.ui.MainActivity;
 import org.json.JSONObject;
 
@@ -90,19 +90,45 @@ public class Helpers {
 	private Helpers() {
 	}
 
-	public static void installApk(Context context, String id, String filename) {
+	public static void installApk(Context context, String id, String appPath) {
 
 		// check if the app is installed
-		Application[] apps = new ApplicationData(context).getApplicationsById(id);
+		ApplicationData apps = new ApplicationData(context);
+		Application[] appsArray = apps.getApplicationsById(id);
 
-		if(apps.length > 0 && Helpers.isPackageInstalled(context, apps[0].appPackage)) {
-			FlyveLog.d("This app is installed: " + apps[0].appName);
+		if(appsArray.length > 0 && Helpers.isPackageInstalled(context, appsArray[0].appPackage)) {
+			FlyveLog.d("This app is installed: " + appsArray[0].appName);
 		} else {
-			Intent intent = new Intent(context, InstallAppActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			intent.putExtra("APP_ID", id);
-			intent.putExtra("APP_PATH", filename);
-			context.startActivity(intent);
+			PackageManager packageManager = context.getPackageManager();
+
+			PackageInfo packageInfo = packageManager.getPackageArchiveInfo(appPath, 0);
+			packageInfo.applicationInfo.sourceDir = appPath;
+			packageInfo.applicationInfo.publicSourceDir = appPath;
+
+			String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
+			String appPackage = packageInfo.packageName;
+
+			apps.deleteAll();
+
+			if(appsArray.length <=0) {
+				// add into the database
+				Application appsData = new Application();
+				appsData.appId = id;
+				appsData.appName = appName;
+				appsData.appPath = appPath;
+				appsData.appStatus = "1"; // 1 pending | 2 installed
+				appsData.appPackage = appPackage;
+
+				apps.create(appsData);
+
+				// update the array information
+				appsArray = apps.getApplicationsById(id);
+			}
+
+			if(appsArray[0].appStatus.equalsIgnoreCase("1")) {
+				// add notification
+				Helpers.sendToNotificationBar(context, Integer.parseInt(id), context.getString(R.string.app_pending_to_install), appName, true, MainActivity.class, "DeployApp");
+			}
 		}
 	}
 
