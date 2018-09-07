@@ -162,35 +162,18 @@ public class InstallAppActivity extends Activity {
             packageInfo.applicationInfo.sourceDir = appPath;
             packageInfo.applicationInfo.publicSourceDir = appPath;
 
-            String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
             String appPackage = packageInfo.packageName;
-
-            if(appData.getApplicationsById(id).length <= 0) {
-                Application apps = new Application();
-
-                apps.appId = id;
-                apps.appName = appName;
-                apps.appPath = appPath;
-                apps.appStatus = status; // 1 pending | 2 installed
-                apps.appPackage = appPackage;
-
-                appData.create(apps);
-            } else {
-                // update status to installed
-                if(isPackageInstalled(appPackage, packageManager)) {
-                    appData.updateStatus(id, "2");
-                }
-            }
 
             if(status.equals("2")) {
                 // remove notifications if exists
                 NotificationManager notificationManager = (NotificationManager) InstallAppActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(Integer.parseInt(id));
 
-            } else {
-                Helpers.sendToNotificationBar(InstallAppActivity.this, Integer.parseInt(id), getString(R.string.app_pending_to_install), appName, true, MainActivity.class, "DeployApp");
+                // update status to installed
+                if(isPackageInstalled(appPackage, packageManager)) {
+                    appData.updateStatus(id, "2");
+                }
             }
-
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
         }
