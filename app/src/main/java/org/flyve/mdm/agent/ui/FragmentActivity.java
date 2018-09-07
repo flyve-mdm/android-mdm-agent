@@ -61,7 +61,7 @@ public class FragmentActivity extends Fragment {
 
     public void setup(String extra) {
         if(extra.equalsIgnoreCase("DeployApp")) {
-            selectTab = 3;
+            selectTab = 2;
         }
     }
 
