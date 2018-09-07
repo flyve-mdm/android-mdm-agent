@@ -11,8 +11,7 @@
     "test-sass": "./node_modules/.bin/sass-lint --config .sass-lint.yml '**/*.scss' --verbose --no-exit",
     "test-js": "./node_modules/.bin/eslint js/*.js",
     "test-yaml": "ci/yamllint.sh",
-    "test-site": "ci/test-jekyll.sh",
-    "test": "npm run test-sass & npm run test-js & npm run test-yaml & npm run test-site"
+    "test": "npm run test-sass & npm run test-js & npm run test-yaml"
   },
   "keywords": [],
   "author": "",
@@ -22,10 +21,10 @@
   },
   "homepage": "http://flyve.org/android-mdm-agent/",
   "devDependencies": {
-    "eslint": "^4.7.2",
-    "eslint-config-google": "^0.9.1",
-    "htmlhint": "^0.9.13",
-    "sass-lint": "^1.11.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "sass-lint": "^1.12.1",
     "yaml-lint": "^1.0.0"
   }
 }
