@@ -100,6 +100,7 @@ public class Helpers {
 			FlyveLog.d("This app is installed: " + appsArray[0].appName);
 		} else {
 			PackageManager packageManager = context.getPackageManager();
+
 			String appName = "";
 			String appPackage = "";
 			String appVersionCode = "";
@@ -136,6 +137,7 @@ public class Helpers {
 				// update the array information
 				appsArray = apps.getApplicationsById(id);
 			}
+
 
 			if(appsArray.length>0 && appsArray[0].appStatus.equalsIgnoreCase("1")) {
 				// add notification
