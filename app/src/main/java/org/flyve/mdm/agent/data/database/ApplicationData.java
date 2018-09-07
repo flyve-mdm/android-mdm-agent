@@ -54,4 +54,8 @@ public class ApplicationData {
     public void updateStatus(String id, String status) {
         dataBase.applicationDao().updateStatus(id, status);
     }
+
+    public void deleteAll() {
+        dataBase.applicationDao().deleteAll();
+    }
 }
