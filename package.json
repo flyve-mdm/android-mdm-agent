@@ -8,10 +8,11 @@
   },
   "sasslintConfig": ".sass-lint.yml",
   "scripts": {
+    "update-version": "ci/update_version_list.sh",
     "test-sass": "./node_modules/.bin/sass-lint --config .sass-lint.yml '**/*.scss' --verbose --no-exit",
     "test-js": "./node_modules/.bin/eslint js/*.js",
     "test-yaml": "ci/yamllint.sh",
-    "test": "npm run test-sass & npm run test-js & npm run test-yaml"
+    "test": "npm run test-sass & npm run test-js & npm run test-yaml & npm run update-version"
   },
   "keywords": [],
   "author": "",
