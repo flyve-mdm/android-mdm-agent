@@ -23,16 +23,12 @@
 
 package org.flyve.mdm.agent.services;
 
-import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.PowerManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.Builder;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
@@ -49,9 +45,6 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
 
     private Context context;
     private Routes routes;
-    private NotificationManager mNotifyManager;
-    private Builder mBuilder;
-    private Integer idNotification;
 
     /**
      * This constructor loads the context of the current class
@@ -60,36 +53,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
     public PoliciesFiles(Context context) {
         this.context = context;
         routes = new Routes(context);
-
-        idNotification = Helpers.getIntID();
-
-        mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mBuilder = new NotificationCompat.Builder(context);
-        mBuilder.setContentTitle(context.getString(R.string.download))
-                .setContentText(context.getString(R.string.download_in_progress));
-
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mBuilder.setSmallIcon(R.drawable.ic_notification_white);
-        } else {
-            mBuilder.setSmallIcon(R.drawable.icon);
-        }
-
     }
-
-    @Override // onPreExecute and onProgressUpdate run on ui thread so you can update ui from here
-    protected void onPreExecute() {
-        // Displays the progress bar for the first time.
-        mBuilder.setProgress(100, 0, false);
-    }
-
-    @Override
-    protected void onProgressUpdate(Integer... values) {
-        // Update progress
-        mBuilder.setProgress(100, values[0], false);
-        mNotifyManager.notify(idNotification, mBuilder.build());
-        super.onProgressUpdate(values);
-    }
-
 
     /**
      * Thread to download files or package on background
@@ -227,7 +191,6 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
             // Both has name
             if (jsonObjDownload.has("name")) {
                 fileName = jsonObjDownload.getString("name");
-                mBuilder.setContentText(context.getString(R.string.Downloading) + fileName);
             }
 
             // is APK
@@ -247,9 +210,6 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
                 return file.getAbsolutePath();
             }
 
-            mBuilder.setContentText(filePath);
-            mNotifyManager.notify(idNotification, mBuilder.build());
-
             Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath, new ConnectionHTTP.ProgressCallback() {
                 @Override
                 public void progress(int value) {
@@ -259,7 +219,6 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
 
             if (isSave) {
                 publishProgress(100);
-                mBuilder.setContentText(context.getString(R.string.download_complete, fileName));
                 FlyveLog.i(context.getString(R.string.download_file_ready) + file.getAbsolutePath());
 
                 addFile(file, fileName);
@@ -267,7 +226,6 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
                 return file.getAbsolutePath();
             } else {
                 publishProgress(100);
-                mBuilder.setContentText(context.getString(R.string.download_fail, fileName));
                 FlyveLog.e("Download fail: " + data);
 
                 return "";
