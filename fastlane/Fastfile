@@ -26,25 +26,25 @@ platform :android do
         Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/apksigner verify ../app/build/outputs/apk/release/appCertified.apk", log: true)
     end
     lane :alpha do |options|
-        supply(
-            track: 'alpha',
-            apk: "app/build/outputs/apk/release/appCertified.apk",
-            skip_upload_aab: true
-        )
+        #supply(
+        #    track: 'alpha',
+        #    apk: "app/build/outputs/apk/release/appCertified.apk",
+        #    skip_upload_aab: true
+        #)
     end
     lane :beta do |options|
-        supply(
-            track: 'beta',
-            apk: "app/build/outputs/apk/release/appCertified.apk",
-            skip_upload_aab: true
-        )
+        #supply(
+        #    track: 'beta',
+        #    apk: "app/build/outputs/apk/release/appCertified.apk",
+        #    skip_upload_aab: true
+        #)
     end
     lane :playstore do |options|
-        supply(
-            track: 'production',
-            apk: "app/build/outputs/apk/release/appCertified.apk",
-            skip_upload_aab: true
-        )
+        #supply(
+        #    track: 'production',
+        #    apk: "app/build/outputs/apk/release/appCertified.apk",
+        #    skip_upload_aab: true
+        #)
     end
 end
 
