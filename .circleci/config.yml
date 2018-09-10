@@ -280,11 +280,3 @@ workflows:
             branches:
               only:
                 - /^release/.*/
-      - release:
-          context: org-global
-          requires:
-            - documentation
-          filters:
-            branches:
-              only:
-                - /^release/.*/
