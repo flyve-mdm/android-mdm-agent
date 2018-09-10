@@ -260,4 +260,8 @@ workflows:
             branches:
               only:
                 - master
+<<<<<<< HEAD
                 - develop
+=======
+                - develop
+>>>>>>> 57db948b... ci(circle): add develop to documentation
