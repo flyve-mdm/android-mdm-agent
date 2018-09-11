@@ -213,14 +213,6 @@ workflows:
             branches:
               only:
                 - develop
-      - deploy_beta:
-          context: org-global
-          requires:
-            - test_instrumentation
-          filters:
-            branches:
-              only:
-                - master
       - deploy_production:
           context: org-global
           requires:
