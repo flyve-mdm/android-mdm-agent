@@ -32,6 +32,16 @@ GH_COMMIT_MESSAGE=$(git log --pretty=oneline -n 1 $CIRCLE_SHA1)
 # validate commit message to avoid repeated builds and loops
 if [[ $GH_COMMIT_MESSAGE != *"ci(release): generate CHANGELOG.md for version"* && $GH_COMMIT_MESSAGE != *"build(properties): add new properties values"* && $GH_COMMIT_MESSAGE != *"ci(release): update version on android manifest"* ]]; then
 
-    fastlane android "playstore"
+    # Get the version number from package.json
+    export GIT_TAG=$(jq -r ".version" package.json)
+
+    # get if is a release or a pre release with "-"
+    IS_PRERELEASE="$( cut -d '-' -f 2 <<< "$GIT_TAG" )";
+
+    if [[ $GIT_TAG != "$IS_PRERELEASE" ]]; then
+        fastlane android "playstore"
+    else
+        fastlane android "beta"
+    fi
 
 fi
