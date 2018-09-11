@@ -96,4 +96,5 @@ git stash
 git fetch origin develop
 git checkout develop
 git merge $CIRCLE_BRANCH
+
 git push origin develop --force
