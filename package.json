@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/flyve-mdm/android-mdm-agent.git"
+    "url": "git+https://github.com/rafaelje/android-mdm-agent.git"
   },
   "keywords": [
     "Android",
