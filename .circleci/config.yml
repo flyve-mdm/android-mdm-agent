@@ -166,31 +166,6 @@ jobs:
           name: Deploy Production
           command: source ci/scripts/deploy_production.sh
 
-  release:
-    <<: *android_config
-    steps:
-      - checkout
-      - *validate_running
-      - *restore_gradle_cache
-      - *ruby_dependencies
-      - *android_dependencies
-      - *save_gradle_cache
-      - run:
-          name: Setup environment
-          command: source ci/scripts/setup_environment.sh
-      - run:
-          name: Update version code
-          command: ./gradlew updateVersionCode
-      - run:
-          name: Update version name
-          command: ./gradlew updateVersionName
-      - run:
-          name: Generate certified apk
-          command: source ci/scripts/app_certification.sh
-      - run:
-          name: Create changelog, github release and push
-          command: source ci/scripts/release.sh
-
   documentation:
     <<: *android_config
     steps:
