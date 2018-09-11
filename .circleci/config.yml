@@ -215,6 +215,8 @@ workflows:
                 - develop
       - deploy_production:
           context: org-global
+          requires:
+            - build
           filters:
             branches:
               only:
