@@ -160,11 +160,11 @@ jobs:
           name: Generate certified apk
           command: source ci/scripts/app_certification.sh
       - run:
-          name: Create changelog, github release and push
-          command: source ci/scripts/release.sh
-      - run:
           name: Deploy Production
           command: source ci/scripts/deploy_production.sh
+      - run:
+          name: Create changelog, github release and push
+          command: source ci/scripts/release.sh
 
   documentation:
     <<: *android_config
