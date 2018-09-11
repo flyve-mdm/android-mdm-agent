@@ -137,29 +137,6 @@ jobs:
           name: Deploy Alpha
           command: source ci/scripts/deploy_alpha.sh
 
-  deploy_beta:
-    <<: *android_config
-    steps:
-      - checkout
-      - *validate_running
-      - *restore_gradle_cache
-      - *ruby_dependencies
-      - *android_dependencies
-      - *save_gradle_cache
-      - *restore_apk_certified_cache
-      - run:
-          name: Setup environment
-          command: source ci/scripts/setup_environment.sh
-      - run:
-          name: Update version code
-          command: ./gradlew updateVersionCode -P vVersion=$CIRCLE_BUILD_NUM
-      - run:
-          name: Generate certified apk
-          command: source ci/scripts/app_certification.sh
-      - run:
-          name: Deploy Alpha
-          command: source ci/scripts/deploy_alpha.sh
-
   deploy_production:
     <<: *android_config
     steps:
@@ -236,14 +213,6 @@ workflows:
             branches:
               only:
                 - develop
-      - deploy_beta:
-          context: org-global
-          requires:
-            - test_instrumentation
-          filters:
-            branches:
-              only:
-                - master
       - deploy_production:
           context: org-global
           requires:
