@@ -52,6 +52,9 @@ git checkout app/src/main/assets/about.properties
 git add app/src/main/AndroidManifest.xml
 git commit -m "build(manifest): increase version value"
 
+# remove others files
+git checkout . -f
+
 # Push commits and tags to origin branch
 git push --follow-tags origin $CIRCLE_BRANCH
 
