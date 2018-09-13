@@ -96,8 +96,4 @@ git stash
 git fetch origin develop
 git checkout develop
 git merge $CIRCLE_BRANCH
-<<<<<<< HEAD
 git push origin develop --force
-=======
-git push origin develop
->>>>>>> ff572c4e... ci(release): remove the delete branch
