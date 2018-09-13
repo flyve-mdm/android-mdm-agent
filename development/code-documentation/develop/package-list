@@ -2,6 +2,7 @@ org.flyve.mdm.agent.adapter
 org.flyve.mdm.agent.core
 org.flyve.mdm.agent.core.deeplink
 org.flyve.mdm.agent.core.enrollment
+org.flyve.mdm.agent.core.mqtt
 org.flyve.mdm.agent.core.permission
 org.flyve.mdm.agent.core.user
 org.flyve.mdm.agent.core.walkthrough
