@@ -35,12 +35,12 @@ IS_PRERELEASE="$( cut -d '-' -f 2 <<< "$GIT_TAG" )";
 if [[ $CIRCLE_BRANCH != "$IS_PRERELEASE" ]]; then
 
   PREFIX_PRERELEASE="$( cut -d '.' -f 1 <<< "$IS_PRERELEASE" )";
-  yarn release -m "ci(release): generate CHANGELOG.md for version %s" --prerelease "$PREFIX_PRERELEASE"
+  yarn release --skip.bump=true -m "ci(release): generate CHANGELOG.md for version %s" --prerelease "$PREFIX_PRERELEASE"
 
 else
 
   # create CHANGELOG and update the number on package.json
-  yarn release -m "ci(release): generate CHANGELOG.md for version %s"
+  yarn release --skip.bump=true -m "ci(release): generate CHANGELOG.md for version %s"
 
 fi
 
