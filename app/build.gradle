@@ -104,6 +104,11 @@ import groovy.json.JsonSlurper
 
 import java.util.regex.Pattern
 
+task createAbout(type:Exec) {
+    workingDir '../ci/scripts'
+    commandLine './create_about_data.sh'
+}
+
 task updateVersionCode {
     doLast {
         def manifestFile = file("src/main/AndroidManifest.xml")
@@ -117,6 +122,9 @@ task updateVersionCode {
         manifestFile.write(manifestContent)
     }
 }
+
+preBuild.dependsOn createAbout
+preBuild.dependsOn updateVersionCode
 
 task updateVersionName {
     doLast {
