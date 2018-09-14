@@ -32,6 +32,12 @@ GH_COMMIT_MESSAGE=$(git log --pretty=oneline -n 1 $CIRCLE_SHA1)
 # validate commit message to avoid repeated builds and loops
 if [[ $GH_COMMIT_MESSAGE != *"ci(release): generate CHANGELOG.md for version"* && $GH_COMMIT_MESSAGE != *"build(properties): add new properties values"* && $GH_COMMIT_MESSAGE != *"ci(release): update version on android manifest"* ]]; then
 
+    # update manifest changes
+    git add app/src/main/AndroidManifest.xml
+    git commit -m "ci(release): update version on android manifest"
+    git checkout . -f
+    git push origin develop
+
     fastlane android "alpha"
 
 fi
