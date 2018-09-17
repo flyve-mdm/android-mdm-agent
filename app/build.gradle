@@ -111,13 +111,27 @@ task createAbout(type:Exec) {
 
 task updateVersionCode {
     doLast {
+
+        // Usage example:
+        // set manual version:
+        // gradlew updateVersionCode -P vVersion=123
+        // or autoincrement from AndroidManifest
+        // gradlew updateVersionCode
+
         def manifestFile = file("src/main/AndroidManifest.xml")
         def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
         def manifestText = manifestFile.getText()
         def matcher = pattern.matcher(manifestText)
         matcher.find()
         def versionCode = Integer.parseInt(matcher.group(1))
-        def manifestContent = matcher.replaceAll("versionCode=\"" + ++versionCode + "\"")
+
+        if(project.hasProperty("vVersion")) {
+            versionCode = vVersion
+        } else {
+            ++versionCode
+        }
+
+        def manifestContent = matcher.replaceAll("versionCode=\"" + versionCode + "\"")
         println "Version Code: " + versionCode
         manifestFile.write(manifestContent)
     }
