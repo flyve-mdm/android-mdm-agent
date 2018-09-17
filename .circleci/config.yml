@@ -128,6 +128,9 @@ jobs:
           name: Setup environment
           command: source ci/scripts/setup_environment.sh
       - run:
+          name: Update version code
+          command: ./gradlew updateVersionCode -P vVersion=$CIRCLE_BUILD_NUM
+      - run:
           name: Generate certified apk
           command: source ci/scripts/app_certification.sh
       - run:
