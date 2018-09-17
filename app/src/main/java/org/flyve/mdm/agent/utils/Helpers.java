@@ -108,8 +108,6 @@ public class Helpers {
 			String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
 			String appPackage = packageInfo.packageName;
 
-			apps.deleteAll();
-
 			if(appsArray.length <=0) {
 				// add into the database
 				Application appsData = new Application();
