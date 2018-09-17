@@ -138,7 +138,6 @@ task updateVersionCode {
 }
 
 preBuild.dependsOn createAbout
-preBuild.dependsOn updateVersionCode
 
 task updateVersionName {
     doLast {
