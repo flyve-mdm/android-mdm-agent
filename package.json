@@ -26,7 +26,7 @@
   "homepage": "http://flyve.org/android-mdm-agent/",
   "devDependencies": {
     "conventional-github-releaser": "^3.1.2",
-    "gh-pages": "^1.2.0",
+    "gh-pages": "^2.0.0",
     "node-github-release": "^0.2.1",
     "standard-version": "^4.4.0"
   }
