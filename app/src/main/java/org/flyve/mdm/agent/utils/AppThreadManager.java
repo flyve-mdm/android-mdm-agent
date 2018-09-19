@@ -90,7 +90,6 @@ public class AppThreadManager {
                 String versionCode = jsonObj.getString("versionCode");
                 String taskId = jsonObj.getString("taskId");
 
-<<<<<<< HEAD
                 ApplicationData apps = new ApplicationData(context);
                 Application[] appsArray = apps.getApplicationsById(id);
 
@@ -107,13 +106,6 @@ public class AppThreadManager {
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
-=======
-                // execute the policy
-                PoliciesController policiesController = new PoliciesController(context, this.client);
-                policiesController.installPackage(deployApp, id, versionCode, taskId);
-            } catch (Exception ex) {
-                FlyveLog.e("");
->>>>>>> d8b9c459... fix(apps): add thread manager
             }
         }
     }
