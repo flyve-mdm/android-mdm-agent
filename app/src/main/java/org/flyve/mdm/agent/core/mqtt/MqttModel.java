@@ -34,7 +34,6 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.CommonErrorType;
@@ -224,7 +223,14 @@ public class MqttModel implements mqtt.Model {
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable ex) {
-                    showDetailError(context, CommonErrorType.MQTT_ACTION_CALLBACK, ex.getCause().toString());
+                    String messageError;
+                    if(ex.getCause() != null) {
+                        messageError = ex.getCause().toString();
+                    } else {
+                        messageError = ex.getMessage();
+                    }
+
+                    showDetailError(context, CommonErrorType.MQTT_ACTION_CALLBACK, messageError);
                 }
             });
         }
