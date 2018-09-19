@@ -77,7 +77,9 @@ import org.flyve.mdm.agent.policies.VPNPolicy;
 import org.flyve.mdm.agent.policies.WifiPolicy;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.services.PoliciesController;
+import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.ui.MainActivity;
+import org.flyve.mdm.agent.utils.AppThreadManager;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
@@ -566,20 +568,18 @@ public class MqttModel implements mqtt.Model {
         // Policy/deployApp
         String DEPLOY_APP = "deployApp";
         if(topic.toLowerCase().contains(DEPLOY_APP.toLowerCase())) {
+            MDMAgent.setMqttClient(getMqttClient());
+            AppThreadManager manager = MDMAgent.getAppThreadManager();
             try {
+
                 JSONObject jsonObj = new JSONObject(messageBody);
 
                 if(jsonObj.has(DEPLOY_APP)) {
-                    String deployApp = jsonObj.getString(DEPLOY_APP);
-                    String id = jsonObj.getString("id");
-                    String versionCode = jsonObj.getString("versionCode");
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    policiesController.installPackage(deployApp, id, versionCode, taskId);
+                    manager.add(context, jsonObj);
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_DEPLOYAPP, ex.getMessage());
+                manager.finishProcess(context);
             }
         }
 

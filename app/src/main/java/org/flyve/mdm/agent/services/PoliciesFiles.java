@@ -33,6 +33,8 @@ import android.os.PowerManager;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.data.database.setup.AppDataBase;
+import org.flyve.mdm.agent.ui.MDMAgent;
+import org.flyve.mdm.agent.utils.AppThreadManager;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -40,6 +42,8 @@ import org.flyve.mdm.agent.utils.StorageFolder;
 import org.json.JSONObject;
 
 import java.io.File;
+
+import static org.flyve.mdm.agent.ui.MDMAgent.getMqttClient;
 
 public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
 
@@ -146,6 +150,10 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         if(completeFilePath.equalsIgnoreCase("")) {
             return false;
         } else {
+
+            MDMAgent.setMqttClient(getMqttClient());
+            AppThreadManager manager = MDMAgent.getAppThreadManager();
+            manager.finishProcess(context);
 
             if(Helpers.isSystemApp(context).equalsIgnoreCase("1")) {
                 // Silently for System apps
