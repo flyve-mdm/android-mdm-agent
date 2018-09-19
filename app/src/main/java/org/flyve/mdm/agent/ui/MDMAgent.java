@@ -33,7 +33,10 @@ import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.flyve.mdm.agent.BuildConfig;
+import org.flyve.mdm.agent.utils.AppThreadManager;
+import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.UtilsCrash;
 
 /**
@@ -43,6 +46,8 @@ public class MDMAgent extends Application {
 
     private static MDMAgent instance;
     private static Boolean isDebuggable;
+    private static AppThreadManager appThreadManager;
+    private static MqttAndroidClient mqttAndroidClient;
 
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -78,6 +83,27 @@ public class MDMAgent extends Application {
      */
     public static MDMAgent getInstance(){
         return instance;
+    }
+
+    /**
+     * Thread manager
+     * @return
+     */
+    public static AppThreadManager getAppThreadManager() {
+        if(mqttAndroidClient!=null) {
+            return AppThreadManager.getAppThreadManager(mqttAndroidClient);
+        } else {
+            FlyveLog.d("mqttAndroidClient is null please set with setMqttClient");
+            return null;
+        }
+    }
+
+    public static MqttAndroidClient getMqttClient() {
+        return mqttAndroidClient;
+    }
+
+    public static void setMqttClient(MqttAndroidClient client) {
+        mqttAndroidClient = client;
     }
 
     /**
