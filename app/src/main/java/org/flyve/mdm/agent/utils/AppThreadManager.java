@@ -62,6 +62,7 @@ public class AppThreadManager {
     }
 
     public void add(Context context, JSONObject jsonObj) {
+<<<<<<< HEAD
         if(!item.isEmpty()) {
             for (int i = 0; i < item.size(); i++) {
                 if (item.get(i).toString().trim().contains(jsonObj.toString().trim())) {
@@ -70,6 +71,8 @@ public class AppThreadManager {
             }
         }
 
+=======
+>>>>>>> fix(apps): add thread manager
         item.add(jsonObj);
         process(context);
     }
@@ -98,6 +101,7 @@ public class AppThreadManager {
                 String versionCode = jsonObj.getString("versionCode");
                 String taskId = jsonObj.getString("taskId");
 
+<<<<<<< HEAD
                 ApplicationData apps = new ApplicationData(context);
                 Application[] appsArray = apps.getApplicationsById(id);
 
@@ -116,6 +120,13 @@ public class AppThreadManager {
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
+=======
+                // execute the policy
+                PoliciesController policiesController = new PoliciesController(context, this.client);
+                policiesController.installPackage(deployApp, id, versionCode, taskId);
+            } catch (Exception ex) {
+                FlyveLog.e("");
+>>>>>>> fix(apps): add thread manager
             }
         }
     }
