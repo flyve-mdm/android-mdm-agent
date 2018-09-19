@@ -100,13 +100,18 @@ public class Helpers {
 			FlyveLog.d("This app is installed: " + appsArray[0].appName);
 		} else {
 			PackageManager packageManager = context.getPackageManager();
+			String appName = "";
+			String appPackage = "";
+			try {
+				PackageInfo packageInfo = packageManager.getPackageArchiveInfo(appPath, 0);
+				packageInfo.applicationInfo.sourceDir = appPath;
+				packageInfo.applicationInfo.publicSourceDir = appPath;
 
-			PackageInfo packageInfo = packageManager.getPackageArchiveInfo(appPath, 0);
-			packageInfo.applicationInfo.sourceDir = appPath;
-			packageInfo.applicationInfo.publicSourceDir = appPath;
-
-			String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
-			String appPackage = packageInfo.packageName;
+				appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
+				appPackage = packageInfo.packageName;
+			} catch (Exception ex) {
+				FlyveLog.e(ex.getMessage());
+			}
 
 			if(appsArray.length <=0) {
 				// add into the database
@@ -117,7 +122,9 @@ public class Helpers {
 				appsData.appStatus = "1"; // 1 pending | 2 installed
 				appsData.appPackage = appPackage;
 
-				apps.create(appsData);
+				if(!appPackage.isEmpty()) {
+					apps.create(appsData);
+				}
 
 				// update the array information
 				appsArray = apps.getApplicationsById(id);
