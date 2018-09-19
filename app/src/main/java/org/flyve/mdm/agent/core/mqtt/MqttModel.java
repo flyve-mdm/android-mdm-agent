@@ -567,7 +567,6 @@ public class MqttModel implements mqtt.Model {
         // Policy/deployApp
         String DEPLOY_APP = "deployApp";
         if(topic.toLowerCase().contains(DEPLOY_APP.toLowerCase())) {
-
             MDMAgent.setMqttClient(getMqttClient());
             AppThreadManager manager = MDMAgent.getAppThreadManager();
             try {
