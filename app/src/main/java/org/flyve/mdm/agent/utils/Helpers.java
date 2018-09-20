@@ -102,6 +102,8 @@ public class Helpers {
 			PackageManager packageManager = context.getPackageManager();
 			String appName = "";
 			String appPackage = "";
+			String appVersionCode = "";
+			String appVersionName = "";
 			try {
 				PackageInfo packageInfo = packageManager.getPackageArchiveInfo(appPath, 0);
 				packageInfo.applicationInfo.sourceDir = appPath;
@@ -109,6 +111,8 @@ public class Helpers {
 
 				appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
 				appPackage = packageInfo.packageName;
+				appVersionCode = String.valueOf(packageInfo.versionCode);
+				appVersionName = String.valueOf(packageInfo.versionName);
 			} catch (Exception ex) {
 				FlyveLog.e(ex.getMessage());
 			}
@@ -121,6 +125,8 @@ public class Helpers {
 				appsData.appPath = appPath;
 				appsData.appStatus = "1"; // 1 pending | 2 installed
 				appsData.appPackage = appPackage;
+				appsData.appVersionCode = appVersionCode;
+				appsData.appVersionName = appVersionName;
 
 				if(!appPackage.isEmpty()) {
 					apps.create(appsData);
@@ -130,7 +136,7 @@ public class Helpers {
 				appsArray = apps.getApplicationsById(id);
 			}
 
-			if(appsArray[0].appStatus.equalsIgnoreCase("1")) {
+			if(appsArray.length>0 && appsArray[0].appStatus.equalsIgnoreCase("1")) {
 				// add notification
 				Helpers.sendToNotificationBar(context, Integer.parseInt(id), context.getString(R.string.app_pending_to_install), appName, true, MainActivity.class, "DeployApp");
 			}

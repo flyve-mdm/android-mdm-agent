@@ -138,6 +138,7 @@
     <string name="app_not_installed">Not installed</string>
     <string name="app_no_data">No applications available</string>
     <string name="app_pending_to_install">Pending to install</string>
+    <string name="app_ready_to_update">Ready to update</string>
 
     <string name="file_no_data">No files available</string>
 
@@ -214,6 +215,8 @@
     <string name="Downloading">Downloading</string>
     <string name="download_complete">Download %1$s complete</string>
     <string name="download_fail">Download %1$s fail</string>
+    <string name="version_code">Version Code: %1$s</string>
+    <string name="version_name">Version Name: %1$s</string>
     <string name="mdm_agent_about">Flyve MDM Agent, version %1$s, build %2$s.<br /> Built on %3$s. Last commit <a href='%4$s/commit/%5$s'>%6$s</a>.<br /> (&#169;) <a href='http://teclib-edition.com/'>Teclib'</a> Licensed under <a href='https://www.gnu.org/licenses/gpl-3.0.en.html'>GPLv3</a>. <a href='https://flyve-mdm.com/'>Flyve MDM</a> (R)</string>
     <string name="log">Log</string>
     <string name="policies">Policies</string>
