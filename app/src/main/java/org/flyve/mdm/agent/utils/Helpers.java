@@ -138,7 +138,6 @@ public class Helpers {
 				appsArray = apps.getApplicationsById(id);
 			}
 
-
 			if(appsArray.length>0 && appsArray[0].appStatus.equalsIgnoreCase("1")) {
 				// add notification
 				Helpers.sendToNotificationBar(context, Integer.parseInt(id), context.getString(R.string.app_pending_to_install), appName, true, MainActivity.class, "DeployApp");
