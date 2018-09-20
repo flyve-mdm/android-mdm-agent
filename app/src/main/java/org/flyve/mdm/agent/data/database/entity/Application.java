@@ -45,6 +45,12 @@ public class Application {
     @ColumnInfo (name = "app_path")
     public String appPath;
 
+    @ColumnInfo (name = "app_version_code")
+    public String appVersionCode;
+
+    @ColumnInfo (name = "app_version_name")
+    public String appVersionName;
+
     @ColumnInfo (name = "app_status")
     public String appStatus;
 
