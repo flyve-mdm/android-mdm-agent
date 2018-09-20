@@ -30,6 +30,8 @@ package org.flyve.mdm.agent.utils;
 import android.content.Context;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.flyve.mdm.agent.data.database.ApplicationData;
+import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.services.PoliciesController;
 import org.json.JSONObject;
 
@@ -88,11 +90,22 @@ public class AppThreadManager {
                 String versionCode = jsonObj.getString("versionCode");
                 String taskId = jsonObj.getString("taskId");
 
-                // execute the policy
-                PoliciesController policiesController = new PoliciesController(context, this.client);
-                policiesController.installPackage(deployApp, id, versionCode, taskId);
+                ApplicationData apps = new ApplicationData(context);
+                Application[] appsArray = apps.getApplicationsById(id);
+
+                // check if the app exists with same version or older
+                Boolean bDownload = true;
+                if(appsArray.length>0 && Integer.parseInt(versionCode) > Integer.parseInt(appsArray[0].appVersionCode)) {
+                    bDownload = false;
+                }
+
+                if(bDownload) {
+                    // execute the policy
+                    PoliciesController policiesController = new PoliciesController(context, this.client);
+                    policiesController.installPackage(deployApp, id, versionCode, taskId);
+                }
             } catch (Exception ex) {
-                FlyveLog.e("");
+                FlyveLog.e(ex.getMessage());
             }
         }
     }

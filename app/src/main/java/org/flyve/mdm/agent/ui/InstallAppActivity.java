@@ -67,8 +67,20 @@ public class InstallAppActivity extends Activity {
             Application[] apps = appData.getApplicationsById(id);
 
             if(apps.length > 0 && Helpers.isPackageInstalled(InstallAppActivity.this, apps[0].appPackage)) {
+                PackageManager pm = getPackageManager();
                 FlyveLog.d(apps[0].appPackage + " " + apps[0].appId);
-                finish();
+
+                // check if is a new version or newest
+                try {
+                    PackageInfo packageInfo = pm.getPackageInfo(apps[0].appPackage, 0);
+                    if (Integer.parseInt(apps[0].appVersionCode) <= packageInfo.versionCode) {
+                        // is the same version of the app or older
+                        finish();
+                    }
+                } catch (Exception ex) {
+                    FlyveLog.e(ex.getMessage());
+                    finish();
+                }
             } else {
                 try {
                     installApk(appPath);
