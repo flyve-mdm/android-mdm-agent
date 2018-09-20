@@ -58,4 +58,33 @@
         style="@style/regularText"
         />
 
+    <TextView
+        android:id="@+id/txtVersionCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtPackageName"
+        android:layout_toRightOf="@+id/imgApp"
+        android:layout_toEndOf="@+id/imgApp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        tools:text="Version Code: 1230"
+
+        />
+
+    <TextView
+        android:id="@+id/txtVersionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtPackageName"
+        android:layout_toRightOf="@+id/txtVersionCode"
+        android:layout_toEndOf="@+id/txtVersionCode"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        tools:text="Version Name: 1.0.0"
+
+        />
+
+
 </RelativeLayout>

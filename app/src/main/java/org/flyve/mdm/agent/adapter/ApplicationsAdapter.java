@@ -25,6 +25,8 @@ package org.flyve.mdm.agent.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,9 +102,21 @@ public class ApplicationsAdapter extends BaseAdapter {
 
 		TextView txtStatus = vi.findViewById(R.id.txtStatus);
 
-		String status;
+		String status = "";
 		if(Helpers.isPackageInstalled(parent.getContext(), app.appPackage)) {
-			status = parent.getResources().getString(R.string.app_installed);
+
+			try {
+				PackageManager pm = parent.getContext().getPackageManager();
+				PackageInfo packageInfo = pm.getPackageInfo(app.appPackage, 0);
+				if(Integer.parseInt(app.appVersionCode) > packageInfo.versionCode) {
+					status = parent.getResources().getString(R.string.app_ready_to_update);
+				} else {
+					status = parent.getResources().getString(R.string.app_installed);
+				}
+			} catch (Exception ex) {
+				FlyveLog.e(ex.getMessage());
+			}
+
 		} else {
 			status = parent.getResources().getString(R.string.app_not_installed);
 		}
@@ -114,6 +128,12 @@ public class ApplicationsAdapter extends BaseAdapter {
 
 		TextView txtPackageName = vi.findViewById(R.id.txtPackageName);
 		txtPackageName.setText(app.appPackage);
+
+		TextView txtVersionCode =  vi.findViewById(R.id.txtVersionCode);
+		txtVersionCode.setText(parent.getContext().getString(R.string.version_code, app.appVersionCode));
+
+		TextView txtVersionName =  vi.findViewById(R.id.txtVersionName);
+		txtVersionName.setText(parent.getContext().getString(R.string.version_name, app.appVersionName));
 
 		ImageView imgApp = vi.findViewById(R.id.imgApp);
 		imgApp.setImageDrawable(Helpers.getApplicationImage(parent.getContext(), app.appPackage));
