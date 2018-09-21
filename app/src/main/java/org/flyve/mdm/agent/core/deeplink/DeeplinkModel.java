@@ -152,9 +152,11 @@ public class DeeplinkModel implements Deeplink.Model {
     @Override
     public void saveMQTTConfig(Context context, String url, String userToken, String invitationToken) {
         MqttData cache = new MqttData(context);
-        cache.setUrl(url);
-        cache.setUserToken(userToken);
-        cache.setInvitationToken(invitationToken);
+        if(cache.getUrl().isEmpty()) {
+            cache.setUrl(url);
+            cache.setUserToken(userToken);
+            cache.setInvitationToken(invitationToken);
+        }
     }
 
     @Override
