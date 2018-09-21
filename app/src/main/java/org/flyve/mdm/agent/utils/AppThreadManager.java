@@ -62,6 +62,14 @@ public class AppThreadManager {
     }
 
     public void add(Context context, JSONObject jsonObj) {
+        if(!item.isEmpty()) {
+            for (int i = 0; i < item.size(); i++) {
+                if (item.get(i).toString().trim().contains(jsonObj.toString().trim())) {
+                    return;
+                }
+            }
+        }
+
         item.add(jsonObj);
         process(context);
     }
@@ -95,7 +103,7 @@ public class AppThreadManager {
 
                 // check if the app exists with same version or older
                 Boolean bDownload = true;
-                if(appsArray.length>0 && Integer.parseInt(versionCode) > Integer.parseInt(appsArray[0].appVersionCode)) {
+                if(appsArray.length>0 && Integer.parseInt(versionCode) >= Integer.parseInt(appsArray[0].appVersionCode)) {
                     bDownload = false;
                 }
 
@@ -103,6 +111,8 @@ public class AppThreadManager {
                     // execute the policy
                     PoliciesController policiesController = new PoliciesController(context, this.client);
                     policiesController.installPackage(deployApp, id, versionCode, taskId);
+                } else {
+                    finishProcess(context);
                 }
             } catch (Exception ex) {
                 FlyveLog.e(ex.getMessage());
