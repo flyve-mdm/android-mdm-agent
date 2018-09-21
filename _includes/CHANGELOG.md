@@ -2,6 +2,54 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.4"></a>
+# [2.0.0-rc.4](https://github.com/flyve-mdm/android-mdm-agent/compare/2.0.0-rc.3...2.0.0-rc.4) (2018-09-21)
+
+
+### Bug Fixes
+
+* **app:** add version code and name on database ([8f2c6a5](https://github.com/flyve-mdm/android-mdm-agent/commit/8f2c6a5))
+* **app:** check application package ([e95c3f5](https://github.com/flyve-mdm/android-mdm-agent/commit/e95c3f5))
+* **app:** check application package ([ce10d49](https://github.com/flyve-mdm/android-mdm-agent/commit/ce10d49))
+* **app:** implement version code and name ([9c24980](https://github.com/flyve-mdm/android-mdm-agent/commit/9c24980))
+* **app:** remove delete all ([bc422e8](https://github.com/flyve-mdm/android-mdm-agent/commit/bc422e8))
+* **app:** select the correct application tab ([3bd9d91](https://github.com/flyve-mdm/android-mdm-agent/commit/3bd9d91))
+* **app:** validate if item thread exists ([aa41508](https://github.com/flyve-mdm/android-mdm-agent/commit/aa41508))
+* **app:** validate information of the app ([887cce5](https://github.com/flyve-mdm/android-mdm-agent/commit/887cce5))
+* **app:** validate information packagee ([43a58d8](https://github.com/flyve-mdm/android-mdm-agent/commit/43a58d8))
+* **application:** improve the application status ([f5f1e78](https://github.com/flyve-mdm/android-mdm-agent/commit/f5f1e78))
+* **apps:** add thread manager ([3d605bd](https://github.com/flyve-mdm/android-mdm-agent/commit/3d605bd))
+* **apps:** add thread manager ([c526ea7](https://github.com/flyve-mdm/android-mdm-agent/commit/c526ea7))
+* **apps:** implement thread manager ([b1a15f0](https://github.com/flyve-mdm/android-mdm-agent/commit/b1a15f0))
+* **apps:** implement thread manager ([d72abb8](https://github.com/flyve-mdm/android-mdm-agent/commit/d72abb8))
+* **deeplink:** savoid rewrite mqtt information ([029b684](https://github.com/flyve-mdm/android-mdm-agent/commit/029b684))
+* **download:** remove download progress notification ([906b0ce](https://github.com/flyve-mdm/android-mdm-agent/commit/906b0ce))
+* **files:** reword addApplication method to addFile ([68f51af](https://github.com/flyve-mdm/android-mdm-agent/commit/68f51af))
+* **inventory:** implement inventory library  0.9.0 ([3d6c400](https://github.com/flyve-mdm/android-mdm-agent/commit/3d6c400))
+* **mqtt:** get cause error on set action callback ([cd11187](https://github.com/flyve-mdm/android-mdm-agent/commit/cd11187))
+* **mqtt:** manage error exception ([136ae0c](https://github.com/flyve-mdm/android-mdm-agent/commit/136ae0c))
+* **name:** reword the name to Flyve MDM Agent ([3ccc135](https://github.com/flyve-mdm/android-mdm-agent/commit/3ccc135))
+* **qr:** set the scan view to landscape fixed ([2be4e0d](https://github.com/flyve-mdm/android-mdm-agent/commit/2be4e0d))
+
+
+### Features
+
+* **error:** add error classification on enrollment helper ([7f5e693](https://github.com/flyve-mdm/android-mdm-agent/commit/7f5e693))
+* **error:** create common error type class ([f2a61e5](https://github.com/flyve-mdm/android-mdm-agent/commit/f2a61e5))
+* **error:** implement a new error message with number ([4d85424](https://github.com/flyve-mdm/android-mdm-agent/commit/4d85424))
+* **error:** implement common error on enrollment ([73a1290](https://github.com/flyve-mdm/android-mdm-agent/commit/73a1290))
+* **error:** implement common error on permission ([5ac60c8](https://github.com/flyve-mdm/android-mdm-agent/commit/5ac60c8))
+* **error:** implement common error on user ([ca5061f](https://github.com/flyve-mdm/android-mdm-agent/commit/ca5061f))
+* **error:** implement common error type ([b7de271](https://github.com/flyve-mdm/android-mdm-agent/commit/b7de271))
+* **log:** add agent id log ([f69ddb5](https://github.com/flyve-mdm/android-mdm-agent/commit/f69ddb5))
+* **log:** add new debug logs ([f958aff](https://github.com/flyve-mdm/android-mdm-agent/commit/f958aff))
+* **log:** add payload return log ([4944f7c](https://github.com/flyve-mdm/android-mdm-agent/commit/4944f7c))
+* **log:** improve http logs with more information ([e3d580f](https://github.com/flyve-mdm/android-mdm-agent/commit/e3d580f))
+* **log:** set debuggable to true ([8f3fe72](https://github.com/flyve-mdm/android-mdm-agent/commit/8f3fe72))
+* **secure:** set secure version to false by default ([bac122c](https://github.com/flyve-mdm/android-mdm-agent/commit/bac122c))
+
+
+
 <a name="2.0.0-rc.3"></a>
 # [2.0.0-rc.3](https://github.com/flyve-mdm/android-mdm-agent/compare/2.0.0-rc.2...2.0.0-rc.3) (2018-08-20)
 
