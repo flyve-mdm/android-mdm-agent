@@ -75,6 +75,8 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
             args[1].isEmpty() ||
             args[2].isEmpty()  ||
             args[3].isEmpty()) {
+            AppThreadManager manager = MDMAgent.getAppThreadManager();
+            manager.finishProcess(context);
             return 0;
         }
 
@@ -142,12 +144,16 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         try {
             filePath = new StorageFolder(context).getApkDir();
         } catch (Exception ex) {
+            AppThreadManager manager = MDMAgent.getAppThreadManager();
+            manager.finishProcess(context);
             FlyveLog.e(ex.getMessage());
         }
 
         final String url = routes.pluginFlyvemdmPackage(id, sessionToken);
         String completeFilePath = download(url, filePath);
         if(completeFilePath.equalsIgnoreCase("")) {
+            AppThreadManager manager = MDMAgent.getAppThreadManager();
+            manager.finishProcess(context);
             return false;
         } else {
 
@@ -178,7 +184,10 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         String data = ConnectionHTTP.getSyncWebData(url, "GET",null);
         if(data.contains("ERROR")) {
             Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_fail));
-            FlyveLog.e(data);
+            AppThreadManager manager = MDMAgent.getAppThreadManager();
+            manager.finishProcess(context);
+
+            FlyveLog.e(data + "\n" + url);
         } else {
             try {
                 JSONObject jsonObjDownload = new JSONObject(data);
