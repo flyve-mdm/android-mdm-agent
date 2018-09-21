@@ -113,11 +113,8 @@ public class Helpers {
 
 				appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
 				appPackage = packageInfo.packageName;
-<<<<<<< HEAD
 				appVersionCode = String.valueOf(packageInfo.versionCode);
 				appVersionName = String.valueOf(packageInfo.versionName);
-=======
->>>>>>> e7643a1c... fix(app): check application package
 			} catch (Exception ex) {
 				FlyveLog.e(ex.getMessage());
 			}
