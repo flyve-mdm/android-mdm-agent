@@ -35,7 +35,10 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.BuildConfig;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
+import org.flyve.mdm.agent.data.database.ApplicationData;
+import org.flyve.mdm.agent.data.database.FileData;
 import org.flyve.mdm.agent.data.database.MqttData;
+import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -398,6 +401,12 @@ public class PoliciesController {
 
             // clear cache
             mqttData.deleteAll();
+
+            // Remove all the information
+            new ApplicationData(context).deleteAll();
+            new FileData(context).deleteAll();
+            new MqttData(context).deleteAll();
+            new PoliciesData(context).deleteAll();
 
             // send message
             Helpers.sendBroadcast(Helpers.broadCastMessage("action", "open", "splash"), Helpers.BROADCAST_MSG, this.context);
