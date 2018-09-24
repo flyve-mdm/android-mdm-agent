@@ -27,20 +27,19 @@
 #  ------------------------------------------------------------------------------
 #
 
+DOC_PATH="development/code-documentation/$CIRCLE_BRANCH"
+
 # Generate javadoc this folder must be on .gitignore
-javadoc -d ./development/code-documentation/"$CIRCLE_BRANCH"/ -sourcepath ./app/src/main/java -subpackages . -bootclasspath $ANDROID_HOME/platforms/android-28/android.jar
+javadoc -d $DOC_PATH -sourcepath ./app/src/main/java -subpackages . -bootclasspath $ANDROID_HOME/platforms/android-28/android.jar
 
 # delete the index.html file
-sudo rm ./development/code-documentation/"$CIRCLE_BRANCH"/index.html
+sudo rm $DOC_PATH/index.html
 
 # rename the overview-summary.html file to index.html
-mv ./development/code-documentation/"$CIRCLE_BRANCH"/overview-summary.html ./development/code-documentation/"$CIRCLE_BRANCH"/index.html
+mv $DOC_PATH/overview-summary.html $DOC_PATH/index.html
 
 # find and replace links to the old name of file
-grep -rl overview-summary.html development/code-documentation/"$CIRCLE_BRANCH"/ | xargs sed -i 's|overview-summary.html|index.html|g'
+grep -rl overview-summary.html $DOC_PATH | xargs sed -i 's|overview-summary.html|index.html|g'
 
 # send development folder to project site with the documentation updated, also removes the folder with old docs
-yarn gh-pages --dist ./development/ --dest ./development/ -m "docs(development): update documentation
-
-update coverage and test reports
-update code documentation"
+yarn gh-pages --dist $DOC_PATH --dest $DOC_PATH -m "docs(development): update code documentation"
