@@ -54,4 +54,6 @@ public interface PoliciesDao {
     @Query("Select * FROM policies where policyName = :policyName and priority = :priority order by priority desc limit 1")
     List<Policies> getPolicyBy(String policyName, int priority);
 
+    @Query("DELETE FROM policies")
+    void deleteAll();
 }

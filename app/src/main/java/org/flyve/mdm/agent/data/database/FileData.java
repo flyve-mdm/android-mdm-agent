@@ -42,4 +42,8 @@ public class FileData {
     public File[] getAllFiles() {
         return dataBase.FileDao().loadAll();
     }
+
+    public void deleteAll() {
+        dataBase.FileDao().deleteAll();
+    }
 }
