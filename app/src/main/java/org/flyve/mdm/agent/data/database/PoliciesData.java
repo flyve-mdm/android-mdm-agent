@@ -77,4 +77,8 @@ public class PoliciesData {
         Policies policies = dataBase.PoliciesDao().getPolicyBy(policyName, priority).get(0);
         dataBase.PoliciesDao().delete(policies);
     }
+
+    public void deleteAll() {
+        dataBase.PoliciesDao().deleteAll();
+    }
 }
