@@ -27,6 +27,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.CommonErrorType;
 import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.data.database.MqttData;
@@ -53,6 +54,8 @@ public class EnrollmentHelper {
     private static final String USER_AGENT = "User-Agent";
     private static final String FLYVE_MDM = "Flyve MDM";
     private static final String REFERER = "Referer";
+    private String sessionToken = "";
+    private String data = "";
 
     static {
         uiHandler = new Handler(Looper.getMainLooper());
@@ -122,9 +125,13 @@ public class EnrollmentHelper {
         {
             public void run()
             {
+                String profileId = "";
+                JSONObject jsonSession;
+                HashMap<String, String> header = new HashMap();
+
                 try {
                     // STEP 1 get session token
-                    final String data = getSyncWebData(routes.initSession(cache.getUserToken()), "GET", null);
+                    data = getSyncWebData(routes.initSession(cache.getUserToken()), "GET", null);
 
                     final String errorMessage = manageError(data);
                     if(!errorMessage.equals("")) {
@@ -136,20 +143,29 @@ public class EnrollmentHelper {
                         return;
                     }
 
-                    JSONObject jsonSession = new JSONObject(data);
-                    final String sessionToken = jsonSession.getString("session_token");
+                    jsonSession = new JSONObject(data);
+                    sessionToken = jsonSession.getString("session_token");
                     cache.setSessionToken(sessionToken);
 
+                } catch (final Exception ex) {
+                    FlyveLog.e(ex.getMessage());
+                    EnrollmentHelper.runOnUI(new Runnable() {
+                        public void run() {
+                            callback.onError(CommonErrorType.ENROLLMENT_HELPER_INITSESSION, context.getString(R.string.wrong_json_format, data, ex.getMessage()));
+                        }
+                    });
+                }
+
+                try {
                     // STEP 2 get full session information
-                    HashMap<String, String> header = new HashMap();
                     header.put(SESSION_TOKEN, sessionToken);
                     header.put(ACCEPT,APPLICATION_JSON);
                     header.put(CONTENT_TYPE,APPLICATION_JSON + ";" + CHARSET);
                     header.put(USER_AGENT,FLYVE_MDM);
                     header.put(REFERER,routes.getFullSession());
 
-                    final String dataFullSession = getSyncWebData(routes.getFullSession(), "GET", header);
-                    final String errorMessageFullSession = manageError(dataFullSession);
+                    data = getSyncWebData(routes.getFullSession(), "GET", header);
+                    final String errorMessageFullSession = manageError(data);
                     if(!errorMessageFullSession.equals("")) {
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
@@ -159,15 +175,25 @@ public class EnrollmentHelper {
                         return;
                     }
 
-                    JSONObject jsonFullSession = new JSONObject(dataFullSession);
+                    JSONObject jsonFullSession = new JSONObject(data);
                     jsonSession = jsonFullSession.getJSONObject("session");
-                    String profileId = jsonSession.getString("plugin_flyvemdm_guest_profiles_id");
+                    profileId = jsonSession.getString("plugin_flyvemdm_guest_profiles_id");
 
                     cache.setProfileId(profileId);
 
+                } catch (final Exception ex) {
+                    FlyveLog.e(ex.getMessage());
+                    EnrollmentHelper.runOnUI(new Runnable() {
+                        public void run() {
+                            callback.onError(CommonErrorType.ENROLLMENT_HELPER_FULLSESSION, context.getString(R.string.wrong_json_format, data, ex.getMessage()));
+                        }
+                    });
+                }
+
+                try {
                     // STEP 3 Activated the profile
-                    final String dataActiveProfile = getSyncWebData(routes.changeActiveProfile(profileId), "POST", header);
-                    final String errorActiveProfile = manageError(dataActiveProfile);
+                    data = getSyncWebData(routes.changeActiveProfile(profileId), "POST", header);
+                    final String errorActiveProfile = manageError(data);
                     if(!errorActiveProfile.equals("")) {
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
@@ -182,12 +208,11 @@ public class EnrollmentHelper {
                             }
                         });
                     }
-
                 } catch (final Exception ex) {
                     FlyveLog.e(ex.getMessage());
                     EnrollmentHelper.runOnUI(new Runnable() {
                         public void run() {
-                            callback.onError(CommonErrorType.ENROLLMENT_HELPER_GETACTIVESESSIONTOKEN, ex.getMessage());
+                            callback.onError(CommonErrorType.ENROLLMENT_HELPER_CHANGEACTIVEPROFILE, context.getString(R.string.wrong_json_format, data, ex.getMessage()));
                         }
                     });
                 }
