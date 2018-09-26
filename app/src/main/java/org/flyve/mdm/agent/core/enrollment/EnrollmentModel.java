@@ -154,7 +154,7 @@ public class EnrollmentModel implements Enrollment.Model {
 
             JSONObject payload = new JSONObject();
 
-            String mInventory = Helpers.base64encode( inventory.toString() );
+            String mInventory = Helpers.base64encode( inventory.trim() );
 
             payload.put("_email", arrEmails.get(0).getEmail()); // get first email
             payload.put("_invitation_token", invitationToken);
