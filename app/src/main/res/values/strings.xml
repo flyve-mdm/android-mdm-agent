@@ -172,7 +172,7 @@
     </string-array>
 
     <string name="permission_title">Permissions</string>
-    <string name="permission_message">This application requires special permits to work properly, then if required we will request you to approve them, we will also generate an inventory of your device that you will be able to review and share.\n\n <b>Permission list:</b>\n\n - Access photos, media, and files on your device\n - Make and manage phone calls\n - Take picture and record video\n - Device's location\n - Send and view SMS messages</string>
+    <string name="permission_message">This application requires special permits to work properly, then if required we will request you to approve them, we will also generate an inventory of your device that you will be able to review and share.\n\n <b>Permission list:</b>\n\n - Access photos, media, and files on your device\n - Make and manage phone calls\n - Take picture and record video\n - Device\'s location\n - Send and view SMS messages</string>
     <string name="permission_button_request">Request Permission</string>
     <string name="permission_button_share">Share the inventory</string>
     <string name="permission_button_continue">Continue</string>
@@ -217,7 +217,7 @@
     <string name="download_fail">Download %1$s fail</string>
     <string name="version_code">Version Code: %1$s</string>
     <string name="version_name">Version Name: %1$s</string>
-    <string name="mdm_agent_about">Flyve MDM Agent, version %1$s, build %2$s.<br /> Built on %3$s. Last commit <a href='%4$s/commit/%5$s'>%6$s</a>.<br /> (&#169;) <a href='http://teclib-edition.com/'>Teclib'</a> Licensed under <a href='https://www.gnu.org/licenses/gpl-3.0.en.html'>GPLv3</a>. <a href='https://flyve-mdm.com/'>Flyve MDM</a> (R)</string>
+    <string name="mdm_agent_about">Flyve MDM Agent, version %1$s, build %2$s.<br /> Built on %3$s. Last commit <a href='%4$s/commit/%5$s'>%6$s</a>.<br /> (&#169;) <a href='http://teclib-edition.com/'>Teclib\'</a> Licensed under <a href='https://www.gnu.org/licenses/gpl-3.0.en.html'>GPLv3</a>. <a href='https://flyve-mdm.com/'>Flyve MDM</a> (R)</string>
     <string name="log">Log</string>
     <string name="policies">Policies</string>
     <string name="applications">Applications</string>
