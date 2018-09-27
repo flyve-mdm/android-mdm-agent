@@ -32,6 +32,10 @@ export GIT_TAG=$(jq -r ".version" package.json)
 # Generate CHANGELOG.md and increment version
 IS_PRERELEASE="$( cut -d '-' -f 2 <<< "$GIT_TAG" )";
 
+# update manifest changes
+git add app/src/main/AndroidManifest.xml
+git commit -m "build(manifest): increase version value"
+
 if [[ $CIRCLE_BRANCH != "$IS_PRERELEASE" ]]; then
 
   PREFIX_PRERELEASE="$( cut -d '.' -f 1 <<< "$IS_PRERELEASE" )";
@@ -50,10 +54,6 @@ yarn gh-pages --dist ./ --src CHANGELOG.md --dest ./_includes/ --add -m "docs(ch
 # remove from stash
 git checkout app/src/main/assets/setup.properties
 git checkout app/src/main/assets/about.properties
-
-# update manifest changes
-git add app/src/main/AndroidManifest.xml
-git commit -m "build(manifest): increase version value"
 
 # remove others files
 git checkout . -f
