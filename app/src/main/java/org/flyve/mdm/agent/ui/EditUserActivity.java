@@ -161,19 +161,24 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
         List<EditText> emailEdit = editEmail.getEditList();
         List<Spinner> emailTypeEdit = editEmail.getSpinnList();
 
-        for (int i=0; i<emailEdit.size(); i++) {
-            UserData.EmailsData emails = new UserData(EditUserActivity.this).new EmailsData();
-            EditText editText = emailEdit.get(i);
-            Spinner spinner = emailTypeEdit.get(i);
+        if(!emailEdit.isEmpty()) {
+            for (int i = 0; i < emailEdit.size(); i++) {
+                UserData.EmailsData emails = new UserData(EditUserActivity.this).new EmailsData();
+                EditText editText = emailEdit.get(i);
+                Spinner spinner = emailTypeEdit.get(i);
 
-            if(!editText.getText().toString().equals("")) {
-                emails.setEmail(editText.getText().toString());
-                emails.setType(spinner.getSelectedItem().toString());
-                arrEmails.add(emails);
+                if (!editText.getText().toString().equals("")) {
+                    emails.setEmail(editText.getText().toString());
+                    emails.setType(spinner.getSelectedItem().toString());
+                    arrEmails.add(emails);
+                }
             }
         }
 
-        userSchema.setEmails(arrEmails);
+        if(!arrEmails.isEmpty()) {
+            userSchema.setEmails(arrEmails);
+        }
+
         userSchema.setFirstName(editName.getText().toString());
         userSchema.setLastName(editLastName.getText().toString());
         userSchema.setPicture(strPicture);
