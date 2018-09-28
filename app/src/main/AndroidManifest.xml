@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.flyve.mdm.agent"
     android:versionCode="2590"
-    android:versionName="2.0.0-rc.4">
+    android:versionName="2.0.0-rc.5">
 
     <!-- For writing logfiles -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
