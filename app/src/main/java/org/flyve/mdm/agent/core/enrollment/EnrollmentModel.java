@@ -187,6 +187,13 @@ public class EnrollmentModel implements Enrollment.Model {
                     userData.setLanguage(language);
                     userData.setAdministrativeNumber(administrativeNumber);
 
+                    // -------------------------------
+                    // Remove Deeplink information
+                    // -------------------------------
+                    MqttData cache = new MqttData(activity);
+                    cache.setInvitationToken("");
+                    cache.setUserToken("");
+
                     presenter.enrollSuccess();
                 }
 
@@ -199,4 +206,5 @@ public class EnrollmentModel implements Enrollment.Model {
             presenter.showSnackError(CommonErrorType.ENROLLMENT_REQUEST_EXCEPTION, ex.getMessage());
         }
     }
+
 }
