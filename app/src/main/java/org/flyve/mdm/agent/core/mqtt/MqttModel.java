@@ -76,7 +76,6 @@ import org.flyve.mdm.agent.policies.UsbPtpPolicy;
 import org.flyve.mdm.agent.policies.VPNPolicy;
 import org.flyve.mdm.agent.policies.WifiPolicy;
 import org.flyve.mdm.agent.services.MQTTService;
-import org.flyve.mdm.agent.services.PoliciesController;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.ui.MainActivity;
 import org.flyve.mdm.agent.utils.AppThreadManager;
@@ -113,7 +112,7 @@ public class MqttModel implements mqtt.Model {
     private Boolean executeConnection = true;
     private int tryEverySeconds = 30;
 
-    private PoliciesController policiesController = null;
+    private MqttPoliciesController policiesController = null;
 
     public MqttModel(mqtt.Presenter presenter) {
         this.presenter = presenter;
@@ -132,7 +131,7 @@ public class MqttModel implements mqtt.Model {
     @Override
     public void sendInventory(Context context) {
         if(isConnected()) {
-            new PoliciesController(context, getMqttClient()).createInventory();
+            new MqttPoliciesController(context, getMqttClient()).createInventory();
         } else {
             showDetailError(context, CommonErrorType.MQTT_INVENTORY_FAIL, context.getString(R.string.inventory_cannot_send_offline));
         }
@@ -251,7 +250,7 @@ public class MqttModel implements mqtt.Model {
                     Helpers.storeLog("MQTT", "Connection Success", "");
 
                     // Everything ready waiting for message
-                    policiesController = new PoliciesController(context, client);
+                    policiesController = new MqttPoliciesController(context, client);
 
                     // We are connected
                     setStatus(context, callback, true);
@@ -340,7 +339,7 @@ public class MqttModel implements mqtt.Model {
         int priority = topic.contains("fleet") ? 0 : 1;
 
         String messageBody = new String(message.getPayload());
-        PoliciesController policiesController = new PoliciesController(context, getMqttClient());
+        MqttPoliciesController mqttPoliciesController = new MqttPoliciesController(context, getMqttClient());
 
         Helpers.storeLog("MQTT Message", "Body", messageBody);
 
@@ -355,7 +354,7 @@ public class MqttModel implements mqtt.Model {
                 JSONObject jsonObj = new JSONObject(messageBody);
                 if (jsonObj.has(QUERY)
                         && "Ping".equalsIgnoreCase(jsonObj.getString(QUERY))) {
-                    policiesController.sendKeepAlive();
+                    mqttPoliciesController.sendKeepAlive();
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_PING, ex.getMessage());
@@ -368,7 +367,7 @@ public class MqttModel implements mqtt.Model {
                 JSONObject jsonObj = new JSONObject(messageBody);
                 if (jsonObj.has(QUERY)
                         && "Geolocate".equalsIgnoreCase(jsonObj.getString(QUERY))) {
-                    policiesController.sendGPS();
+                    mqttPoliciesController.sendGPS();
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_GEOLOCATE, ex.getMessage());
@@ -381,7 +380,7 @@ public class MqttModel implements mqtt.Model {
                 JSONObject jsonObj = new JSONObject(messageBody);
                 if (jsonObj.has(QUERY)
                         && "Inventory".equalsIgnoreCase(jsonObj.getString(QUERY))) {
-                    policiesController.createInventory();
+                    mqttPoliciesController.createInventory();
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_INVENTORY, ex.getMessage());
@@ -395,7 +394,7 @@ public class MqttModel implements mqtt.Model {
 
                 if (jsonObj.has("lock")) {
                     String lock = jsonObj.getString("lock");
-                    policiesController.lockDevice(lock.equalsIgnoreCase("now"));
+                    mqttPoliciesController.lockDevice(lock.equalsIgnoreCase("now"));
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_LOCK, ex.getMessage());
@@ -408,7 +407,7 @@ public class MqttModel implements mqtt.Model {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
                 if(jsonObj.has("wipe") && "NOW".equalsIgnoreCase(jsonObj.getString("wipe")) ) {
-                    policiesController.wipe();
+                    mqttPoliciesController.wipe();
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_WIPE, ex.getMessage());
@@ -422,7 +421,7 @@ public class MqttModel implements mqtt.Model {
 
                 if(jsonObj.has("unenroll") && "NOW".equalsIgnoreCase(jsonObj.getString("unenroll")) ) {
                     FlyveLog.d("unroll");
-                    policiesController.unenroll();
+                    mqttPoliciesController.unenroll();
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_UNENROLL, ex.getMessage());
@@ -443,7 +442,7 @@ public class MqttModel implements mqtt.Model {
                         FlyveLog.d(channel);
 
                         // Add new channel
-                        policiesController.subscribe(channel);
+                        mqttPoliciesController.subscribe(channel);
                     }
                 }
             } catch (Exception ex) {
@@ -463,7 +462,7 @@ public class MqttModel implements mqtt.Model {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    //policiesController.resetPassword(taskId, disable);
+                    //mqttPoliciesController.resetPassword(taskId, disable);
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_RESETPASSWORD, ex.getMessage());
@@ -481,7 +480,7 @@ public class MqttModel implements mqtt.Model {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.useTLS(taskId, enable);
+                    mqttPoliciesController.useTLS(taskId, enable);
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_USETLS, ex.getMessage());
@@ -634,7 +633,7 @@ public class MqttModel implements mqtt.Model {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.removePackage(taskId, removeApp);
+                    mqttPoliciesController.removePackage(taskId, removeApp);
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_REMOVEAPP, ex.getMessage());
@@ -654,7 +653,7 @@ public class MqttModel implements mqtt.Model {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.downloadFile(deployFile, id, versionCode, taskId);
+                    mqttPoliciesController.downloadFile(deployFile, id, versionCode, taskId);
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_DEPLOYFILE, ex.getMessage());
@@ -672,7 +671,7 @@ public class MqttModel implements mqtt.Model {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policiesController.removeFile(taskId, removeFile);
+                    mqttPoliciesController.removeFile(taskId, removeFile);
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_REMOVEFILE, ex.getMessage());
