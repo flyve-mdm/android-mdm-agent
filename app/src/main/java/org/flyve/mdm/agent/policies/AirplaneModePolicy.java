@@ -44,7 +44,7 @@ public class AirplaneModePolicy extends BasePolicies {
     protected boolean process() {
         try {
             boolean disable = Boolean.parseBoolean(this.policyValue.toString());
-            PoliciesConnectivity.disableRoaming(disable);
+            PoliciesConnectivity.disableAirplaneMode(disable);
             return true;
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
