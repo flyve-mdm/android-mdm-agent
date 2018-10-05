@@ -21,7 +21,7 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.services;
+package org.flyve.mdm.agent.core.mqtt;
 
 import android.app.Service;
 import android.content.Context;
@@ -41,6 +41,8 @@ import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.ui.LockActivity;
+import org.flyve.mdm.agent.services.MQTTService;
+import org.flyve.mdm.agent.services.PoliciesFiles;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -52,7 +54,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class PoliciesController {
+public class MqttPoliciesController {
 
     private static final String ERROR = "ERROR";
     private static final String MQTT_SEND = "MQTT Send";
@@ -72,7 +74,7 @@ public class PoliciesController {
     private String mTopic;
     private AndroidPolicies androidPolicies;
 
-    public PoliciesController(Context context, MqttAndroidClient client) {
+    public MqttPoliciesController(Context context, MqttAndroidClient client) {
         this.client = client;
         this.context = context;
         mqttData = new MqttData(context);
@@ -262,7 +264,7 @@ public class PoliciesController {
 
     public void removePackage(String taskId, String packageName) {
         try {
-            PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
+            PoliciesFiles policiesFiles = new PoliciesFiles(MqttPoliciesController.this.context);
             policiesFiles.removeApk(packageName.trim());
 
             // return the status of the task
@@ -287,7 +289,7 @@ public class PoliciesController {
                 try {
                     FlyveLog.d("Install package: " + deployApp + " id: " + id);
 
-                    PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
+                    PoliciesFiles policiesFiles = new PoliciesFiles(MqttPoliciesController.this.context);
                     policiesFiles.execute("package", deployApp, id, sessionToken);
 
                     broadcastReceivedLog(MQTT_SEND, "Install package", "name: " + deployApp + " id: " + id);
@@ -326,7 +328,7 @@ public class PoliciesController {
         sToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
             @Override
             public void onSuccess(String sessionToken) {
-                PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
+                PoliciesFiles policiesFiles = new PoliciesFiles(MqttPoliciesController.this.context);
 
                 if("true".equals(policiesFiles.execute("file", deployFile, id, sessionToken))) {
                     FlyveLog.d("File was stored on: " + deployFile);
@@ -350,7 +352,7 @@ public class PoliciesController {
 
     public void removeFile(String taskId, String removeFile) {
         try {
-            PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
+            PoliciesFiles policiesFiles = new PoliciesFiles(MqttPoliciesController.this.context);
             policiesFiles.removeFile(removeFile);
 
             FlyveLog.d("Remove file: " + removeFile);
