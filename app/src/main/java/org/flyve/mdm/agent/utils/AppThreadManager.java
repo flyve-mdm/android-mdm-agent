@@ -32,7 +32,7 @@ import android.content.Context;
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.entity.Application;
-import org.flyve.mdm.agent.services.PoliciesController;
+import org.flyve.mdm.agent.core.mqtt.MqttPoliciesController;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -103,8 +103,8 @@ public class AppThreadManager {
 
                 if(bDownload) {
                     // execute the policy
-                    PoliciesController policiesController = new PoliciesController(context, this.client);
-                    policiesController.installPackage(deployApp, id, versionCode, taskId);
+                    MqttPoliciesController mqttPoliciesController = new MqttPoliciesController(context, this.client);
+                    mqttPoliciesController.installPackage(deployApp, id, versionCode, taskId);
                 } else {
                     finishProcess(context);
                 }
