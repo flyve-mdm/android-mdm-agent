@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent.firebase;
+package org.flyve.mdm.agent.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
