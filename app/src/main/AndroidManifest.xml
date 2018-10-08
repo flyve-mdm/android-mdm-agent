@@ -10,7 +10,6 @@
     <!-- Allows for storing and retrieving screenshots -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <!-- For restart service -->
@@ -23,7 +22,10 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.USB_PERMISSION" />
-    <uses-feature android:name="android.hardware.nfc" android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="false" />
 
     <!-- for location information -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -34,22 +36,21 @@
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
 
     <!-- works on ROOTED phones if the app is moved to /system/app -->
-    <!--This permission are required to enable GPS-->
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
+    <!-- This permission are required to enable GPS -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
 
     <!-- this is required to enable or disable SMS -->
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.BROADCAST_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.WRITE_SMS"/>
+    <uses-permission android:name="android.permission.WRITE_SMS" />
 
     <!-- Lock screen -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.REORDER_TASKS" />
-
     <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.REBOOT" />
@@ -62,34 +63,42 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
-            android:value="b6bc7ce0da33f92fe6c49c568af43963"/>
+            android:value="b6bc7ce0da33f92fe6c49c568af43963" />
 
-        <activity android:name=".ui.InstallAppActivity"
-            android:launchMode="singleTask">
-        </activity>
+        <!--
+             Set custom default icon. This is used when no icon is set for incoming notification messages.
+             See README(https://goo.gl/l4GJaQ) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notification_white" />
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
 
-        <activity android:name=".ui.ScanActivity"
+        <activity
+            android:name=".ui.InstallAppActivity"
+            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".ui.ScanActivity"
             android:launchMode="singleInstance"
-            android:screenOrientation="landscape"
-            >
-        </activity>
-
+            android:screenOrientation="landscape"></activity>
         <activity
             android:name=".ui.LockActivity"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            >
-        </activity>
-        <activity android:name=".ui.PermissionEnrollmentActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.PermissionEnrollmentActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
-            android:theme="@style/NoActionBar"
-            >
-        </activity>
+            android:theme="@style/NoActionBar"></activity>
         <activity
             android:name=".ui.SplashActivity"
             android:configChanges="orientation|screenSize"
@@ -97,13 +106,13 @@
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.MainActivity"
             android:configChanges="orientation|screenSize">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -111,41 +120,35 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="flyve"
                     android:host="robotest"
-                    />
+                    android:scheme="flyve" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ui.EnrollmentActivity"
-            android:configChanges="orientation|screenSize">
-        </activity>
+            android:configChanges="orientation|screenSize"></activity>
         <activity
             android:name=".ui.EditUserActivity"
-            android:configChanges="orientation|screenSize">
-        </activity>
+            android:configChanges="orientation|screenSize"></activity>
         <activity
             android:name=".ui.ErrorActivity"
-            android:configChanges="orientation|screenSize">
-        </activity>
+            android:configChanges="orientation|screenSize"></activity>
         <activity
             android:name=".ui.PreviewSupervisorActivity"
-            android:configChanges="orientation|screenSize">
-        </activity>
+            android:configChanges="orientation|screenSize"></activity>
         <activity
             android:name=".ui.DisclosureActivity"
-            android:configChanges="orientation|screenSize">
-        </activity>
+            android:configChanges="orientation|screenSize"></activity>
         <activity
             android:name=".ui.PreviewUserActivity"
-            android:configChanges="orientation|screenSize">
-        </activity>
+            android:configChanges="orientation|screenSize"></activity>
+        <activity
+            android:name=".ui.PushPoliciesActivity"
+            android:configChanges="orientation|screenSize"></activity>
         <activity
             android:name=".ui.StartEnrollmentActivity"
             android:configChanges="orientation|screenSize"
-            android:launchMode="singleTask"
-            >
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -153,32 +156,37 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
                     android:host="flyve.org"
                     android:pathPrefix="/deeplink"
-                     />
+                    android:scheme="http" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="flyve"
-                    android:host="register" />
+
+                <data
+                    android:host="register"
+                    android:scheme="flyve" />
             </intent-filter>
         </activity>
 
-        <service android:name="org.eclipse.paho.android.service.MqttService"
-            android:label="Paho MQTT Service"
-            >
-        </service>
+        <service
+            android:name="org.eclipse.paho.android.service.MqttService"
+            android:label="Paho MQTT Service"></service>
         <service
             android:name=".services.MQTTService"
             android:enabled="true"
-            android:label="M2M communications"
-            >
+            android:label="M2M communications">
             <intent-filter>
-                <action android:name="org.flyve.mdm.agent.ACTION_START"/>
-                <action android:name="org.flyve.mdm.agent.ACTION_INVENTORY"/>
+                <action android:name="org.flyve.mdm.agent.ACTION_START" />
+                <action android:name="org.flyve.mdm.agent.ACTION_INVENTORY" />
+            </intent-filter>
+        </service>
+        <service android:name=".firebase.MessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
@@ -202,8 +210,7 @@
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
-                android:resource="@xml/device_admin">
-            </meta-data>
+                android:resource="@xml/device_admin"></meta-data>
 
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
@@ -227,7 +234,7 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
                 <action android:name="android.location.PROVIDERS_CHANGED" />
-                <action android:name="android.intent.action.AIRPLANE_MODE"/>
+                <action android:name="android.intent.action.AIRPLANE_MODE" />
                 <action android:name="android.intent.action.PHONE_STATE" />
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
                 <action android:name="android.hardware.usb.action.USB_STATE" />
@@ -237,9 +244,9 @@
         <!-- This receiver is for information about Wifi or Bluetooth -->
         <receiver
             android:name=".receivers.SMSReceiver"
-            android:permission="android.permission.BROADCAST_SMS"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
             <intent-filter android:priority="100">
                 <action android:name="android.provider.Telephony.SMS_DELIVER" />
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
@@ -253,7 +260,8 @@
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.ACTION_PACKAGE_REMOVED" />
                 <action android:name="android.intent.action.ACTION_PACKAGE_REPLACED" />
-                <data android:scheme="package"/>
+
+                <data android:scheme="package" />
             </intent-filter>
         </receiver>
 
@@ -266,6 +274,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
     </application>
 
 </manifest>
