@@ -48,8 +48,8 @@ public class MessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 
-        sendNotification(remoteMessage.getNotification().getBody());
 
+        sendNotification(remoteMessage.getData().get("topic"), remoteMessage.getNotification().getBody());
     }
 
 
@@ -57,11 +57,12 @@ public class MessagingService extends FirebaseMessagingService {
      * Create and show a simple notification containing the received FCM message.
      */
 
-    private void sendNotification(String message) {
+    private void sendNotification(String topic, String message) {
 
         FlyveLog.d("Notification: " + message);
         Intent resultIntent = new Intent(this, org.flyve.mdm.agent.firebase.PushPoliciesActivity.class);
         resultIntent.putExtra("payload", message);
+        resultIntent.putExtra("topic", topic);
         resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent piResult = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_ONE_SHOT);
 

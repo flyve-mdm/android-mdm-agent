@@ -54,7 +54,9 @@ public class PushPoliciesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_push_policies);
 
         String payload = getIntent().getStringExtra("payload");
+        String topic = getIntent().getStringExtra("topic");
 
+        messageArrived(PushPoliciesActivity.this, topic, payload);
     }
 
     private void showDetailError(Context context, int ErrorType, String message){
