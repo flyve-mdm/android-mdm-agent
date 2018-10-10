@@ -15,6 +15,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.ui.PushPoliciesActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
 public class MessagingService extends FirebaseMessagingService {
@@ -48,7 +49,6 @@ public class MessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 
-        remoteMessage.getNotification().getClickAction();
         sendNotification(remoteMessage.getData().get("topic"), remoteMessage.getData().get("taskId"), remoteMessage.getData().get("policy"), remoteMessage.getNotification().getBody());
     }
 
@@ -60,13 +60,12 @@ public class MessagingService extends FirebaseMessagingService {
     private void sendNotification(String topic, String taskId, String policy, String message) {
 
         FlyveLog.d("Notification: " + message);
-        Intent intent = new Intent();
-        intent.setData(Uri.parse("flyve://pushpolicy"));
+
+        Intent intent = new Intent(this, PushPoliciesActivity.class);
         intent.putExtra("policy", policy);
         intent.putExtra("taskId", taskId);
         intent.putExtra("topic", topic);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.setAction(Intent.ACTION_VIEW);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
