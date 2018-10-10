@@ -147,17 +147,10 @@
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             >
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
+            <intent-filter>
+                <action android:name="OPEN_POLICY" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="pushpolicy"
-                    android:scheme="flyve" />
-            </intent-filter>
-        </activity>
+            </intent-filter>        </activity>
         <activity
             android:name=".ui.StartEnrollmentActivity"
             android:configChanges="orientation|screenSize"
