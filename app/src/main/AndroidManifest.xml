@@ -144,7 +144,20 @@
             android:configChanges="orientation|screenSize"></activity>
         <activity
             android:name=".ui.PushPoliciesActivity"
-            android:configChanges="orientation|screenSize"></activity>
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask"
+            >
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="pushpolicy"
+                    android:scheme="flyve" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.StartEnrollmentActivity"
             android:configChanges="orientation|screenSize"
