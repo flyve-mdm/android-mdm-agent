@@ -48,8 +48,8 @@ public class MessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 
-
-        sendNotification(remoteMessage.getData().get("topic"), remoteMessage.getNotification().getBody());
+        remoteMessage.getNotification().getClickAction();
+        sendNotification(remoteMessage.getData().get("topic"), remoteMessage.getData().get("taskId"), remoteMessage.getData().get("policy"), remoteMessage.getNotification().getBody());
     }
 
 
@@ -57,14 +57,17 @@ public class MessagingService extends FirebaseMessagingService {
      * Create and show a simple notification containing the received FCM message.
      */
 
-    private void sendNotification(String topic, String message) {
+    private void sendNotification(String topic, String taskId, String policy, String message) {
 
         FlyveLog.d("Notification: " + message);
-        Intent resultIntent = new Intent(this, org.flyve.mdm.agent.firebase.PushPoliciesActivity.class);
-        resultIntent.putExtra("payload", message);
-        resultIntent.putExtra("topic", topic);
-        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent piResult = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_ONE_SHOT);
+        Intent intent = new Intent();
+        intent.setData(Uri.parse("flyve://pushpolicy"));
+        intent.putExtra("policy", policy);
+        intent.putExtra("taskId", taskId);
+        intent.putExtra("topic", topic);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setAction(Intent.ACTION_VIEW);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -72,10 +75,10 @@ public class MessagingService extends FirebaseMessagingService {
                 .setSmallIcon(R.drawable.ic_notification_white)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setContentTitle(getResources().getString(R.string.app_name))
-                .setContentText(message)
+                .setContentText(getResources().getString(R.string.policy_notification))
                 .setSound(defaultSoundUri)
                 .setAutoCancel(true)
-                .setContentIntent(piResult);
+                .setContentIntent(pendingIntent);
 
         if (Build.VERSION.SDK_INT < 16) {
             builder.setContentText(message);
