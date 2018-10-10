@@ -242,4 +242,7 @@
     <string name="deeplink_url">URL: %1$s</string>
     <string name="deeplink_invitation_token">Invitation Token: %1$s</string>
     <string name="deeplink_user_token">User Token: %1$s</string>
+
+    <string name="policy_notification">Please sync your agent</string>
+    <string name="policy_installed">The MDM Agent is update</string>
 </resources>
