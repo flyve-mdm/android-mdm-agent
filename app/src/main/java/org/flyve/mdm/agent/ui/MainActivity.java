@@ -27,6 +27,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -36,6 +37,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.DrawerAdapter;
@@ -116,7 +123,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         loadListDrawer(menuItemSelected, extra);
+        subscribeToNotifications();
         checkNotifications();
+    }
+
+    private void subscribeToNotifications() {
+        FirebaseMessaging.getInstance().subscribeToTopic("global");
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            FlyveLog.e("Firebase token", "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        // Log
+                        FlyveLog.d("Firebase token: " + token);
+                    }
+                });
     }
 
     private void checkNotifications() {
