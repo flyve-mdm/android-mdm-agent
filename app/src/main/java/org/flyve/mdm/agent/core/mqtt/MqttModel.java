@@ -275,9 +275,9 @@ public class MqttModel implements mqtt.Model {
                     if(executeConnection) {
                         reconnectionCounter++;
 
-//                        if((reconnectionCounter % 10)==0) {
-//                            tryEverySeconds *= 2;
-//                        }
+                        if((reconnectionCounter % 10)==0) {
+                            tryEverySeconds *= 2;
+                        }
 
                         String message = "Reconnecting " + reconnectionCounter + " times";
 
