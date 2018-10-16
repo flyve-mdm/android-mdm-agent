@@ -163,18 +163,21 @@ public class MqttModel implements mqtt.Model {
         }
 
         String clientId;
-        try {
-            clientId = MqttClient.generateClientId();
-            client = new MqttAndroidClient(context, protocol + "://" + mBroker + ":" + mPort, clientId);
-        } catch (ExceptionInInitializerError ex) {
-            showDetailError(context, CommonErrorType.MQTT_IN_INITIALIZER_ERROR, ex.getMessage());
-            reconnect(context, callback);
-            return;
+        MqttConnectOptions options;
+
+        if(client==null) {
+            try {
+                clientId = MqttClient.generateClientId();
+                client = new MqttAndroidClient(context, protocol + "://" + mBroker + ":" + mPort, clientId);
+            } catch (ExceptionInInitializerError ex) {
+                showDetailError(context, CommonErrorType.MQTT_IN_INITIALIZER_ERROR, ex.getMessage());
+                reconnect(context, callback);
+                return;
+            }
+
+            client.setCallback(callback);
         }
 
-        client.setCallback( callback );
-
-        MqttConnectOptions options;
         try {
             options = new MqttConnectOptions();
             options.setPassword(mPassword.toCharArray());
@@ -199,6 +202,7 @@ public class MqttModel implements mqtt.Model {
             showDetailError(context, CommonErrorType.MQTT_OPTIONS, ex.getMessage());
             return;
         }
+
 
         try {
             IMqttToken token = client.connect(options);
@@ -259,6 +263,7 @@ public class MqttModel implements mqtt.Model {
                         executeConnection = true;
                     } else {
                         executeConnection = false;
+                        return;
                     }
                 } else {
                     timeLastReconnection = new Date().getTime();
@@ -269,9 +274,9 @@ public class MqttModel implements mqtt.Model {
                     if(executeConnection) {
                         reconnectionCounter++;
 
-                        if((reconnectionCounter % 10)==0) {
-                            tryEverySeconds *= 2;
-                        }
+//                        if((reconnectionCounter % 10)==0) {
+//                            tryEverySeconds *= 2;
+//                        }
 
                         String message = "Reconnecting " + reconnectionCounter + " times";
 
@@ -280,7 +285,6 @@ public class MqttModel implements mqtt.Model {
                         }
 
                         FlyveLog.d(message);
-
                         connect(context, callback);
                     }
                 } else {
