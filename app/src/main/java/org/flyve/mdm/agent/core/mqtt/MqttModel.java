@@ -134,6 +134,7 @@ public class MqttModel implements mqtt.Model {
     public void connect(final Context context, final MqttCallback callback) {
         // if the device is connected exit
         if(getMqttClient()!=null && getMqttClient().isConnected()) {
+            setStatus(context, callback, true);
             return;
         }
 
