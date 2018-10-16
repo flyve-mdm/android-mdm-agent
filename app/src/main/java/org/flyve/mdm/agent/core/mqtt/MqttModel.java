@@ -213,6 +213,9 @@ public class MqttModel implements mqtt.Model {
                     // We are connected
                     setStatus(context, callback, true);
 
+                    // set the reconnection counter to 0
+                    reconnectionCounter = 0;
+
                     // Everything ready waiting for message
                     PoliciesController policiesController = new PoliciesController(context, client);
 
@@ -276,6 +279,7 @@ public class MqttModel implements mqtt.Model {
                         reconnectionCounter++;
 
                         if((reconnectionCounter % 10)==0) {
+                            reconnectionCounter = 0;
                             tryEverySeconds *= 2;
                         }
 
