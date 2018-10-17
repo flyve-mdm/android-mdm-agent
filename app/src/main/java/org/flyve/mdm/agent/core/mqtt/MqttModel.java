@@ -84,11 +84,18 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.security.KeyStore;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 
 public class MqttModel implements mqtt.Model {
 
@@ -194,9 +201,37 @@ public class MqttModel implements mqtt.Model {
 
             // If TLS is active needs ssl connection option
             if (mTLS.equals("1")) {
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+
+                KeyStore caKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                caKeyStore.load(null, null);
+
+                CertificateFactory caCF = CertificateFactory.getInstance("X.509");
+                X509Certificate ca = (X509Certificate) caCF.generateCertificate(context.getResources().openRawResource(R.raw.flyve_org));
+                String alias = ca.getSubjectX500Principal().getName();
+
+                // Set propper alias name
+                caKeyStore.setCertificateEntry(alias, ca);
+                tmf.init(caKeyStore);
+
+                FlyveLog.v("Certificate Owner: %s", ca.getSubjectDN().toString());
+                FlyveLog.v("Certificate Issuer: %s", ca.getIssuerDN().toString());
+                FlyveLog.v("Certificate Serial Number: %s", ca.getSerialNumber().toString());
+                FlyveLog.v("Certificate Algorithm: %s", ca.getSigAlgName());
+                FlyveLog.v("Certificate Version: %s", ca.getVersion());
+                FlyveLog.v("Certificate OID: %s", ca.getSigAlgOID());
+                Enumeration<String> aliasesCA = caKeyStore.aliases();
+                for (; aliasesCA.hasMoreElements(); ) {
+                    String o = aliasesCA.nextElement();
+                    FlyveLog.v("Alias: %s isKeyEntry:%s isCertificateEntry:%s", o, caKeyStore.isKeyEntry(o), caKeyStore.isCertificateEntry(o));
+                }
+
+                KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
+                kmf.init(null,null);
+
                 // SSL
                 SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
-                sslContext.init(null, null, null);
+                sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
                 options.setSocketFactory(sslContext.getSocketFactory());
             }
         } catch (Exception ex) {
