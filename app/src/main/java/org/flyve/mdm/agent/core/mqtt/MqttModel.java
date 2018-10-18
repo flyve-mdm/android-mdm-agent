@@ -230,7 +230,7 @@ public class MqttModel implements mqtt.Model {
                 keyManagerFactory.init(null,null);
 
                 // SSL
-                SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+                SSLContext sslContext = SSLContext.getInstance("TLS");
                 sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
                 options.setSocketFactory(sslContext.getSocketFactory());
             }
