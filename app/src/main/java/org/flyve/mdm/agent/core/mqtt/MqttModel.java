@@ -312,12 +312,6 @@ public class MqttModel implements mqtt.Model {
                 if(!isConnected()) {
                     if(executeConnection) {
                         reconnectionCounter++;
-
-                        if((reconnectionCounter % 10)==0) {
-                            reconnectionCounter = 0;
-                            tryEverySeconds *= 2;
-                        }
-
                         String message = "Reconnecting " + reconnectionCounter + " times";
 
                         if(new AppData(context).getEnableNotificationConnection()) {
