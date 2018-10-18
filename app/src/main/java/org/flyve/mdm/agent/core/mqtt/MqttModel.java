@@ -201,18 +201,18 @@ public class MqttModel implements mqtt.Model {
 
             // If TLS is active needs ssl connection option
             if (mTLS.equals("1")) {
-                TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+                TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 
                 KeyStore caKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
                 caKeyStore.load(null, null);
 
-                CertificateFactory caCF = CertificateFactory.getInstance("X.509");
-                X509Certificate ca = (X509Certificate) caCF.generateCertificate(context.getResources().openRawResource(R.raw.flyve_org));
+                CertificateFactory certificationFactory = CertificateFactory.getInstance("X.509");
+                X509Certificate ca = (X509Certificate) certificationFactory.generateCertificate(context.getResources().openRawResource(R.raw.flyve_org));
                 String alias = ca.getSubjectX500Principal().getName();
 
                 // Set propper alias name
                 caKeyStore.setCertificateEntry(alias, ca);
-                tmf.init(caKeyStore);
+                trustManagerFactory.init(caKeyStore);
 
                 FlyveLog.v("Certificate Owner: %s", ca.getSubjectDN().toString());
                 FlyveLog.v("Certificate Issuer: %s", ca.getIssuerDN().toString());
@@ -226,12 +226,12 @@ public class MqttModel implements mqtt.Model {
                     FlyveLog.v("Alias: %s isKeyEntry:%s isCertificateEntry:%s", o, caKeyStore.isKeyEntry(o), caKeyStore.isCertificateEntry(o));
                 }
 
-                KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
-                kmf.init(null,null);
+                KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("X509");
+                keyManagerFactory.init(null,null);
 
                 // SSL
                 SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
-                sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+                sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
                 options.setSocketFactory(sslContext.getSocketFactory());
             }
         } catch (Exception ex) {
