@@ -60,21 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private AppData cache;
 
     /**
-     * Perform the final clenup before the activity is destroyed
-     */
-    @Override
-    public void onDestroy() {
-        // stop the service
-        if(mServiceIntent!=null) {
-            stopService(mServiceIntent);
-        }
-
-        FlyveLog.i("onDestroy!");
-
-        super.onDestroy();
-    }
-
-    /**
      * Called when the activity is starting 
      * @param savedInstanceState if the activity is being re-initialized, it contains the data it most recently supplied
      */
