@@ -613,6 +613,13 @@ public class MqttModel implements mqtt.Model {
 
                 if(jsonObj.has(DEPLOY_APP)) {
                     manager.add(context, jsonObj);
+                    String deployApp = jsonObj.getString(DEPLOY_APP);
+                    String taskId = jsonObj.getString("taskId");
+                    String id = jsonObj.getString("id");
+                    String versionCode = jsonObj.getString("versionCode");
+
+                    // execute the policy
+                    policiesController.installPackage(deployApp, id, versionCode, taskId);
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_DEPLOYAPP, ex.getMessage());
@@ -620,7 +627,7 @@ public class MqttModel implements mqtt.Model {
             }
         }
 
-        // Policy/deployApp
+        // Policy/removeApp
         String REMOVE_APP = "removeApp";
         if(topic.toLowerCase().contains(REMOVE_APP.toLowerCase())) {
             try {
