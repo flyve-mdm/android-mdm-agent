@@ -196,8 +196,8 @@ public class MqttModel implements mqtt.Model {
             options.setAutomaticReconnect(true);
 
             // Create a testament to send when MQTT connection is down
-            String will = "{ online: false }";
-            options.setWill("/Status/Online", will.getBytes(), 0, false);
+            String will = "{ \"online\": false }";
+            options.setWill("/Status/Online", will.getBytes(), 0, true);
 
             // If TLS is active needs ssl connection option
             if (mTLS.equals("1")) {
