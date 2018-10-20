@@ -504,16 +504,16 @@ public class PoliciesController {
 
     /**
      * Send the Status version of the agent
-     * payload: {"online": "true"}
+     * payload: {"online": true}
      */
     public void sendOnlineStatus(Boolean status) {
         String topic = mTopic + "/Status/Online";
-        String payload = "{\"online\": \"" + Boolean.toString( status ) + "\"}";
+        String payload = "{\"online\": " + Boolean.toString( status ) + "}";
         byte[] encodedPayload = new byte[0];
         try {
             encodedPayload = payload.getBytes(UTF_8);
             MqttMessage message = new MqttMessage(encodedPayload);
-            IMqttDeliveryToken token = client.publish(topic, message);
+            IMqttDeliveryToken token = client.publish(topic, payload.getBytes(), 0, true, null, null);
             broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Send Online Status", "ID: " + token.getMessageId()));
         } catch (Exception ex) {
             broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on sendStatusVersion", ex.getMessage()));
