@@ -192,12 +192,13 @@ public class MqttModel implements mqtt.Model {
             options.setUserName(mUser);
             options.setCleanSession(true);
             options.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1);
-            options.setConnectionTimeout(0);
+            options.setConnectionTimeout(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT);
+            options.setKeepAliveInterval(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT);
             options.setAutomaticReconnect(true);
 
             // Create a testament to send when MQTT connection is down
             String will = "{ \"online\": false }";
-            options.setWill("/Status/Online", will.getBytes(), 0, true);
+            options.setWill(mTopic + "/Status/Online", will.getBytes(), 0, true);
 
             // If TLS is active needs ssl connection option
             if (mTLS.equals("1")) {
