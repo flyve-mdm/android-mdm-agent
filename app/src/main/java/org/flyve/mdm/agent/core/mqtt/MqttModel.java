@@ -34,6 +34,7 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.CommonErrorType;
@@ -99,6 +100,9 @@ import javax.net.ssl.TrustManagerFactory;
 
 public class MqttModel implements mqtt.Model {
 
+
+    private static int mqttModelInstanceCount = 0;
+
     private static final String QUERY = "query";
 
     private mqtt.Presenter presenter;
@@ -112,9 +116,13 @@ public class MqttModel implements mqtt.Model {
     private long timeLastReconnection = 0;
     private Boolean executeConnection = true;
     private int tryEverySeconds = 30;
-    ;
+
+
+
+
 
     public MqttModel(mqtt.Presenter presenter) {
+        mqttModelInstanceCount++;
         this.presenter = presenter;
     }
 
@@ -140,6 +148,9 @@ public class MqttModel implements mqtt.Model {
     @Override
     public void connect(final Context context, final MqttCallback callback) {
         // if the device is connected exit
+
+
+        FlyveLog.d("MQTT Model connect method call: modelCount " + mqttModelInstanceCount);
         if(getMqttClient()!=null && getMqttClient().isConnected()) {
             setStatus(context, callback, true);
             return;
@@ -184,6 +195,15 @@ public class MqttModel implements mqtt.Model {
             }
 
             client.setCallback(callback);
+        } else {
+            //May be here ?
+            try{
+                FlyveLog.d("MQTT Model Connect Methodd: Forcing disconnect ...");
+                client.disconnect();
+                FlyveLog.d("MQTT Model Connect Methodd: Forcing disconnect done");
+            } catch (MqttException mqttException){
+                FlyveLog.d("MQTT Model Connect Methodd: Error while Forcing disconnect ..." + mqttException.getMessage(), mqttException);
+            }
         }
 
         try {

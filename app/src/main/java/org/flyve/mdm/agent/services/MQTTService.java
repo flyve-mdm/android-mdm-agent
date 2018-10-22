@@ -41,6 +41,10 @@ import org.flyve.mdm.agent.utils.FlyveLog;
  * This is the service get and send message from MQTT
  */
 public class MQTTService extends Service implements MqttCallback, mqtt.View {
+
+
+    private static int instanceCount = 0;
+    private static int connectCount = 0;
     private mqtt.Presenter presenter;
     IBinder mBinder = new LocalBinder();
 
@@ -58,7 +62,9 @@ public class MQTTService extends Service implements MqttCallback, mqtt.View {
      * Constructor
      */
     public MQTTService() {
-        FlyveLog.d("MQTT Service Constructor");
+
+        instanceCount++;
+        FlyveLog.d("MQTT Service Constructor " + instanceCount);
         presenter = new MqttPresenter(this);
     }
 
@@ -95,6 +101,8 @@ public class MQTTService extends Service implements MqttCallback, mqtt.View {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
+        connectCount++;
+        FlyveLog.d("MQTT Service Connect Call Count (onStartCommand): " + connectCount + "(instance count: " + instanceCount + ")");
         presenter.connect(getApplicationContext(), MQTTService.this);
         return START_STICKY;
     }

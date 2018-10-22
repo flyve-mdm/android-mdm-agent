@@ -32,10 +32,14 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MqttPresenter implements mqtt.Presenter {
 
+
+    private static int mqttPresenterInstanceCount = 0;
+
     private mqtt.View view;
     private mqtt.Model model;
 
     public MqttPresenter(mqtt.View view){
+        mqttPresenterInstanceCount++;
         this.view = view;
         model = new MqttModel(this);
     }
