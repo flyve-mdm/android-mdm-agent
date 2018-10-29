@@ -41,9 +41,7 @@ import java.util.List;
 public class AppThreadManager {
 
     private static AppThreadManager singleton;
-    private int index;
     private MqttAndroidClient client;
-    private Boolean lock;
 
     private List<JSONObject> item;
 
@@ -56,9 +54,7 @@ public class AppThreadManager {
 
     private AppThreadManager(MqttAndroidClient client) {
         this.item = new ArrayList<>();
-        this.index = 0;
         this.client = client;
-        this.lock = false;
     }
 
     public void add(Context context, JSONObject jsonObj) {
@@ -78,7 +74,6 @@ public class AppThreadManager {
         if(!item.isEmpty()) {
             item.remove(0);
         }
-        this.lock = false;
 
         FlyveLog.i("Finish Processing");
         process(context);
@@ -86,8 +81,7 @@ public class AppThreadManager {
     }
 
     public void process(Context context) {
-        if(!item.isEmpty() && !lock) {
-            this.lock = true;
+        if(!item.isEmpty()) {
 
             FlyveLog.i("Processing item 0 from item size -> " + item.size());
             JSONObject jsonObj = item.get(0);
