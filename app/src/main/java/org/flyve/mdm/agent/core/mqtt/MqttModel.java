@@ -116,10 +116,7 @@ public class MqttModel implements mqtt.Model {
     private long timeLastReconnection = 0;
     private Boolean executeConnection = true;
     private int tryEverySeconds = 30;
-
-
-
-
+    private static int mqtt_object_count = 0;
 
     public MqttModel(mqtt.Presenter presenter) {
         mqttModelInstanceCount++;
@@ -185,6 +182,8 @@ public class MqttModel implements mqtt.Model {
         MqttConnectOptions options;
 
         if(client==null) {
+            mqtt_object_count++;
+            FlyveLog.d("MQTT Connect Call Count (connect): " + mqtt_object_count);
             try {
                 clientId = MqttClient.generateClientId();
                 client = new MqttAndroidClient(context, protocol + "://" + mBroker + ":" + mPort, clientId);
