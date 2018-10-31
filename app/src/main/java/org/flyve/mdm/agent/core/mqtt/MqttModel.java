@@ -333,8 +333,6 @@ public class MqttModel implements mqtt.Model {
 
     public void messageArrived(Context context, String topic, MqttMessage message) {
         FlyveLog.d("- Topic: " + topic + "\n\n- Message: " + new String(message.getPayload()));
-
-        FlyveLog.d("- Topic: " + topic + "\n\n- Message: " + new String(message.getPayload()));
         int priority = topic.contains("fleet") ? 0 : 1;
 
         String messageBody = new String(message.getPayload());
