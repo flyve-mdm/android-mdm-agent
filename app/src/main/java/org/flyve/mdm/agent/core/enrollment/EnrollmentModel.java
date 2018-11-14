@@ -192,7 +192,6 @@ public class EnrollmentModel implements Enrollment.Model {
                     // -------------------------------
                     MqttData cache = new MqttData(activity);
                     cache.setInvitationToken("");
-                    cache.setUserToken("");
 
                     presenter.enrollSuccess();
                 }
