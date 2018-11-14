@@ -31,6 +31,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
+import static android.app.admin.DevicePolicyManager.WIPE_EXTERNAL_STORAGE;
 
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.ui.LockActivity;
@@ -141,7 +142,7 @@ public class PoliciesDeviceManager {
      * Erase all data of the device
      */
     public void wipe() {
-        mDPM.wipeData(0);
+        mDPM.wipeData(WIPE_EXTERNAL_STORAGE);
     }
 
     /**
