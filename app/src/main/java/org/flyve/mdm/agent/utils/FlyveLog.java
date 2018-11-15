@@ -154,7 +154,6 @@ public class FlyveLog {
     /**
      * Logs the message in a directory
      * @param message
-     * @param filename
      */
     public static void f(String message, String filename) {
         String state = Environment.getExternalStorageState();
@@ -181,11 +180,32 @@ public class FlyveLog {
             }
         }
 
+        int fileSize = Integer.parseInt(String.valueOf(logFile.length()/1024));
+        if(fileSize >= 3) {
+            PrintWriter writer = null;
+            try {
+                writer = new PrintWriter(logFile);
+                writer.print("");
+                writer.close();
+            } catch (Exception ex) {
+                Log.i("Log", ex.getMessage());
+            } finally {
+                if(writer!=null) {
+                    try {
+                        writer.close();
+                    } catch(Exception ex) {
+                        Log.i("Log", ex.getMessage());
+                    }
+                }
+            }
+        }
+
         FileWriter fw = null;
 
         try {
             //BufferedWriter for performance, true to set append to file flag
             fw = new FileWriter(logFile, true);
+
             BufferedWriter buf = new BufferedWriter(fw);
 
             buf.write(message);
@@ -206,7 +226,6 @@ public class FlyveLog {
                 }
             }
         }
-
     }
 
     /**
