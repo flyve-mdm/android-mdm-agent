@@ -39,4 +39,8 @@ public class MDMLog {
 
     @ColumnInfo (name = "type")
     public String type;
+
+    @ColumnInfo (name = "date")
+    public int date;
+
 }
