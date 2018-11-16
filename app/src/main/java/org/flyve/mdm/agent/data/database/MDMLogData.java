@@ -47,9 +47,16 @@ public class MDMLogData {
         dataBase.MDMLogDao().deleteAll();
     }
 
+    private void keepClear() {
+        dataBase.MDMLogDao().keepClear();
+    }
+
     public void addLog(String message) {
+        keepClear();
+
         MDMLog log = new MDMLog();
         log.description = message;
+        log.date = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
         dataBase.MDMLogDao().insert(log);
     }
 }
