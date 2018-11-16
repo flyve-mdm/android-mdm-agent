@@ -28,17 +28,19 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import org.flyve.mdm.agent.data.database.entity.File;
 import org.flyve.mdm.agent.data.database.dao.ApplicationDao;
 import org.flyve.mdm.agent.data.database.dao.FileDao;
+import org.flyve.mdm.agent.data.database.dao.MDMLogDao;
 import org.flyve.mdm.agent.data.database.dao.MQTTDao;
 import org.flyve.mdm.agent.data.database.dao.PoliciesDao;
 import org.flyve.mdm.agent.data.database.entity.Application;
+import org.flyve.mdm.agent.data.database.entity.File;
+import org.flyve.mdm.agent.data.database.entity.MDMLog;
 import org.flyve.mdm.agent.data.database.entity.MQTT;
 import org.flyve.mdm.agent.data.database.entity.Policies;
 
 
-@Database(entities = {Application.class, MQTT.class, Policies.class, File.class}, version = 8, exportSchema = false)
+@Database(entities = {Application.class, MQTT.class, Policies.class, File.class, MDMLog.class}, version = 9, exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
 
     private static AppDataBase instance;
@@ -47,6 +49,7 @@ public abstract class AppDataBase extends RoomDatabase {
     public abstract MQTTDao MQTTDao();
     public abstract PoliciesDao PoliciesDao();
     public abstract FileDao FileDao();
+    public abstract MDMLogDao MDMLogDao();
 
     public static AppDataBase getAppDatabase(Context context) {
         if (instance == null) {
