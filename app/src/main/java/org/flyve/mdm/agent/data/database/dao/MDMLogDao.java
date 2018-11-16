@@ -44,4 +44,7 @@ public interface MDMLogDao {
 
     @Query("DELETE FROM log")
     void deleteAll();
+
+    @Query("DELETE FROM log WHERE id NOT IN ( SELECT id FROM ( SELECT id FROM log ORDER BY id DESC LIMIT 200 ) logs );")
+    void keepClear();
 }
