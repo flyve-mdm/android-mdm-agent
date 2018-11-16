@@ -138,7 +138,7 @@ public abstract class BasePolicies {
     protected void Log(String message){
         // write log file
         if(enableLog) {
-            FlyveLog.f(message, FlyveLog.FILE_NAME_LOG);
+            FlyveLog.f(message);
         }
     }
 
