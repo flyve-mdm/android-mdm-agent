@@ -70,8 +70,6 @@ public class FragmentLog extends Fragment  {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FlyveLog.clearLog( FlyveLog.FILE_NAME_LOG );
-                arrData.clear();
                 loadLogFile();
             }
         });
