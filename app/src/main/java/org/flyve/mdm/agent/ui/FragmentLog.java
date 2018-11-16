@@ -36,11 +36,12 @@ import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.LogAdapter;
+import org.flyve.mdm.agent.data.database.MDMLogData;
+import org.flyve.mdm.agent.data.database.entity.MDMLog;
 import org.flyve.mdm.agent.utils.FlyveLog;
-import org.flyve.mdm.agent.utils.LogFileReader;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -98,29 +99,43 @@ public class FragmentLog extends Fragment  {
     private void loadLogFile() {
         pb.setVisibility(View.VISIBLE);
 
-        LogFileReader.loadLog(FlyveLog.FILE_NAME_LOG, new LogFileReader.LogFileCallback() {
-            @Override
-            public void onSuccess(List<HashMap<String, String>> data) {
-                pb.setVisibility(View.GONE);
-
-                // order data last first
-                Collections.reverse(data);
-                arrData = data;
-                if(arrData.isEmpty()) {
-                    txtMessage.setText(getResources().getString(R.string.without_data_to_show));
-                } else {
-                    txtMessage.setText("");
-                }
-
-                LogAdapter mAdapter = new LogAdapter(FragmentLog.this.getActivity(), arrData);
-                lst.setAdapter(mAdapter);
+        MDMLogData logsData = new MDMLogData(FragmentLog.this.getContext());
+        MDMLog[] logs = logsData.getAllLogs();
+        for(MDMLog log : logs) {
+            HashMap<String, String> data = addLine(log.description);
+            if(data!=null) {
+                arrData.add(data);
             }
+        }
 
-            @Override
-            public void onError(String error) {
-                pb.setVisibility(View.GONE);
-                txtMessage.setText(getResources().getString(R.string.we_can_not_show_the_log));
-            }
-        });
+        if(arrData.isEmpty()) {
+            txtMessage.setText(getResources().getString(R.string.without_data_to_show));
+        } else {
+            txtMessage.setText("");
+        }
+
+        LogAdapter mAdapter = new LogAdapter(FragmentLog.this.getActivity(), arrData);
+        lst.setAdapter(mAdapter);
+        pb.setVisibility(View.GONE);
     }
+
+    private HashMap<String, String> addLine(String line) {
+        try {
+            HashMap<String, String> map = new HashMap<>();
+
+            JSONObject json = new JSONObject(line);
+
+            map.put("type", json.getString("type"));
+            map.put("title", json.getString("title"));
+            map.put("body", json.getString("body"));
+            map.put("date", json.getString("date"));
+
+            return map;
+        } catch (Exception ex) {
+            FlyveLog.e("ERROR: " + line + " - " + ex.getMessage());
+        }
+
+        return null;
+    }
+
 }
