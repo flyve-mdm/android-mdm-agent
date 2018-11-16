@@ -39,7 +39,7 @@ public class MDMLogData {
         dataBase = AppDataBase.getAppDatabase(context);
     }
 
-    public MDMLog[] getAllFiles() {
+    public MDMLog[] getAllLogs() {
         return dataBase.MDMLogDao().loadAll();
     }
 
