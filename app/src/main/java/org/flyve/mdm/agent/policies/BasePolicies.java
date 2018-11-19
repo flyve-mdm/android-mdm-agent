@@ -35,7 +35,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.data.database.entity.Policies;
 import org.flyve.mdm.agent.utils.FlyveLog;
-import org.flyve.mdm.agent.utils.Helpers;
 
 public abstract class BasePolicies {
 
@@ -120,12 +119,12 @@ public abstract class BasePolicies {
             MqttMessage message = new MqttMessage(encodedPayload);
             IMqttDeliveryToken token = this.mqttClient.publish(topic, message);
 
-            Log(Helpers.broadCastMessage(MQTT_SEND, "Send Status", "ID: " + token.getMessageId()));
+            Log(MQTT_SEND, "Send Status", "ID: " + token.getMessageId());
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
 
             // send broadcast
-            Log(Helpers.broadCastMessage(ERROR, "Error sending status", ex.getMessage()));
+            Log(ERROR, "Error sending status", ex.getMessage());
         }
     }
 
@@ -135,10 +134,10 @@ public abstract class BasePolicies {
         }
     }
 
-    protected void Log(String message){
+    protected void Log(String type, String title, String message){
         // write log file
         if(enableLog) {
-            FlyveLog.f(message);
+            FlyveLog.f(type, title, message);
         }
     }
 
@@ -166,7 +165,7 @@ public abstract class BasePolicies {
 
     public void execute() throws PoliciesException {
         validate();
-        Log("Start the policy: " + this.policyName + " value: " + this.policyValue + " priority: " + this.policyPriority);
+        Log("Execute Policy", "Policy " + this.policyName, "Start the policy: " + this.policyName + "\nvalue: " + this.policyValue + "\npriority:" + this.policyPriority);
         boolean status = process();
         if(status) {
             policyDone();
@@ -182,7 +181,7 @@ public abstract class BasePolicies {
     }
 
     protected void policyFail() {
-        Log("Policy Fail: " + this.policyName + " value: " + this.policyValue + " priority: " + this.policyPriority);
+        Log("Policy ERROR", "Policy " + this.policyName,"Policy Fail: " + this.policyName + "\nvalue: " + this.policyValue + "\npriority: " + this.policyPriority);
         if(mqttEnable) {
             mqttResponse(MQTT_FEEDBACK_FAILED);
         }

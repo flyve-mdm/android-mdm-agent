@@ -162,9 +162,9 @@ public class Helpers {
 		context.startActivity(intent);
 	}
 
-	public static void storeLog(String message) {
+	public static void storeLog(String type, String title, String message) {
 		// write log file
-		FlyveLog.f(message);
+		FlyveLog.f(type, title, message);
 	}
 
 
