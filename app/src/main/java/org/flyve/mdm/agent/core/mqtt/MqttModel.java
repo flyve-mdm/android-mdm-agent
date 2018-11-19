@@ -246,7 +246,7 @@ public class MqttModel implements mqtt.Model {
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    Helpers.storeLog("MQTT", "Connection Success", asyncActionToken.getTopics().toString());
+                    Helpers.storeLog("MQTT", "Connection Success", "");
 
                     // We are connected
                     setStatus(context, callback, true);
@@ -325,7 +325,7 @@ public class MqttModel implements mqtt.Model {
                     }
                 } else {
                     FlyveLog.d("Reconnection finish");
-                    Helpers.storeLog("MQTT", "Reconnection Success", "at " + reconnectionCounter);
+                    Helpers.storeLog("MQTT", "Reconnection Success", "");
                     reconnectionCounter = 0;
                     reconnectionTimer.cancel();
                     reconnectionTimer = null;
@@ -742,7 +742,7 @@ public class MqttModel implements mqtt.Model {
 
     @Override
     public void connectionLost(Context context, MqttCallback callback, String message) {
-        showDetailError(context, CommonErrorType.MQTT_CONNECTION_LOST, "Method: connectionLost" + message);
+        showDetailError(context, CommonErrorType.MQTT_CONNECTION_LOST, "Method: connectionLost " + message);
         setStatus(context, callback, false);
     }
 
