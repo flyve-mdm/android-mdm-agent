@@ -162,7 +162,7 @@ public class MqttModel implements mqtt.Model {
         connectionInformation.append("TLS: " + mTLS + "\n");
 
         Log.d("MQTT", connectionInformation.toString());
-        Helpers.storeLog(Helpers.broadCastMessage("MQTT", "Connection Information", connectionInformation.toString()));
+        Helpers.storeLog("MQTT", "Connection Information", connectionInformation.toString());
 
         String protocol = "tcp";
         // TLS is active change protocol
@@ -338,7 +338,7 @@ public class MqttModel implements mqtt.Model {
         String messageBody = new String(message.getPayload());
         PoliciesController policiesController = new PoliciesController(context, getMqttClient());
 
-        Helpers.storeLog(Helpers.broadCastMessage("MQTT Message", "Body", messageBody));
+        Helpers.storeLog("MQTT Message", "Body", messageBody);
 
         if(topic.isEmpty()) {
             // exit if the topic if empty
@@ -695,7 +695,7 @@ public class MqttModel implements mqtt.Model {
     public void deliveryComplete(Context context, IMqttDeliveryToken token) {
         try {
             FlyveLog.d("deliveryComplete Token: " + token.isComplete() + " : " + token.getMessage().toString());
-            Helpers.storeLog(Helpers.broadCastMessage(context.getString(R.string.mqtt_delivery), context.getString(R.string.response_id), String.valueOf(token.getMessageId())));
+            Helpers.storeLog(context.getString(R.string.mqtt_delivery), context.getString(R.string.response_id), String.valueOf(token.getMessageId()));
         } catch (Exception ex) {
             showDetailError(context, CommonErrorType.MQTT_DELIVERY_COMPLETE, ex.getMessage());
         }
