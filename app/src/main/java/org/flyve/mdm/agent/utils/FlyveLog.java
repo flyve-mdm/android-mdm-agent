@@ -150,6 +150,10 @@ public class FlyveLog {
      * @param message
      */
     public static void f(String type, String title, String message) {
+        type = (type == null) ? "" : type;
+        title = (title == null) ? "" : title;
+        message = (message == null) ? "" : message;
+
         String msg = Helpers.broadCastMessage(type, title,  message);
         MDMLogData log = new MDMLogData(MDMAgent.getInstance());
         log.addLog(msg);
