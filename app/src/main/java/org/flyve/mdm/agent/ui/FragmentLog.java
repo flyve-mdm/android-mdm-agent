@@ -51,6 +51,7 @@ public class FragmentLog extends Fragment  {
     private List<HashMap<String, String>> arrData;
     private ListView lst;
     private ProgressBar pb;
+    private MDMLogData logsData;
 
     /**
      * Called to have the fragments instantiate its user interface View
@@ -67,10 +68,14 @@ public class FragmentLog extends Fragment  {
         txtMessage = v.findViewById(R.id.txtMessage);
         pb = v.findViewById(R.id.progressBar);
 
+        logsData = new MDMLogData(FragmentLog.this.getContext());
+
         FloatingActionButton btnDelete = v.findViewById(R.id.btnDelete);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                logsData.deleteAll();
+                arrData.clear();
                 loadLogFile();
             }
         });
@@ -99,7 +104,6 @@ public class FragmentLog extends Fragment  {
     private void loadLogFile() {
         pb.setVisibility(View.VISIBLE);
 
-        MDMLogData logsData = new MDMLogData(FragmentLog.this.getContext());
         MDMLog[] logs = logsData.getAllLogs();
         for(MDMLog log : logs) {
             HashMap<String, String> data = addLine(log.description);
