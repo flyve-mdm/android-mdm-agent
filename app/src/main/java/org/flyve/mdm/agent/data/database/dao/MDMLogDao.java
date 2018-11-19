@@ -39,7 +39,7 @@ public interface MDMLogDao {
     @Update
     void update(MDMLog... log);
 
-    @Query("SELECT * FROM log")
+    @Query("SELECT * FROM log order by id desc")
     MDMLog[] loadAll();
 
     @Query("DELETE FROM log")
