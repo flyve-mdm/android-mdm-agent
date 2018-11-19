@@ -98,7 +98,7 @@ public class FlyveLog {
     public static void e(Throwable throwable, String message, Object... args) {
         if(MDMAgent.getIsDebuggable() && message != null) {
             Logger.e(throwable, message, args);
-            f(message);
+            f("ERROR", throwable.getMessage(), message);
         }
     }
 
@@ -110,7 +110,7 @@ public class FlyveLog {
     public static void e(String message, Object... args) {
         if(MDMAgent.getIsDebuggable() && message != null) {
             Logger.e(message, args);
-            f(message);
+            f("Error", "General Error", message);
         }
     }
 
@@ -149,11 +149,10 @@ public class FlyveLog {
      * Logs the message in a directory
      * @param message
      */
-    public static void f(String message) {
-
+    public static void f(String type, String title, String message) {
+        String msg = Helpers.broadCastMessage(type, title,  message);
         MDMLogData log = new MDMLogData(MDMAgent.getInstance());
-        log.addLog(message);
-
+        log.addLog(msg);
     }
 
 

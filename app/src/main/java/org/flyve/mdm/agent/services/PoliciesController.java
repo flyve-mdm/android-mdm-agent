@@ -135,7 +135,7 @@ public class PoliciesController {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // The message was published
                     FlyveLog.i("Subscribed topics: " + Arrays.toString(topics));
-                    broadcastReceivedLog(Helpers.broadCastMessage("TOPIC", "Subscribed", channel));
+                    broadcastReceivedLog("TOPIC", "Subscribed", channel);
                 }
 
                 @Override
@@ -148,7 +148,7 @@ public class PoliciesController {
                         errorMessage = exception.getMessage();
                     }
                     FlyveLog.e("ERROR on subscribe: " + errorMessage);
-                    broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on subscribe", errorMessage));
+                    broadcastReceivedLog(ERROR, "Error on subscribe", errorMessage);
                 }
             });
         } catch (Exception ex) {
@@ -167,14 +167,14 @@ public class PoliciesController {
             public void onTaskSuccess(String s) {
                 // send inventory to MQTT
                 sendInventory(s);
-                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Inventory", "Inventory Send"));
+                broadcastReceivedLog(MQTT_SEND, "Inventory", "Inventory Send");
             }
 
             @Override
             public void onTaskError(Throwable throwable) {
                 FlyveLog.e(throwable.getMessage());
                 //send broadcast
-                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on createInventory", throwable.getMessage()));
+                broadcastReceivedLog(ERROR, "Error on createInventory", throwable.getMessage());
             }
         });
     }
@@ -233,12 +233,12 @@ public class PoliciesController {
             if(lock) {
                 mdm.lockScreen();
                 mdm.lockDevice();
-                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Lock", "Device Lock"));
+                broadcastReceivedLog(MQTT_SEND, "Lock", "Device Lock");
             } else {
                 Helpers.sendBroadcast("unlock", "org.flyvemdm.finishlock", context);
             }
         } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on lockDevice", ex.getMessage()));
+            broadcastReceivedLog(ERROR, "Error on lockDevice", ex.getMessage());
             FlyveLog.e(ex.getCause().getMessage());
         }
     }
@@ -247,12 +247,12 @@ public class PoliciesController {
         try {
             if(!newPassword.isEmpty()) {
                 new PoliciesDeviceManager(context).resetPassword(newPassword);
-                broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Reset Password", "Reset Password : ****"));
+                broadcastReceivedLog(MQTT_SEND, "Reset Password", "Reset Password : ****");
             } else {
-                broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Reset Password", "the new password is empty"));
+                broadcastReceivedLog(ERROR, "Error on Reset Password", "the new password is empty");
             }
         } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on Reset Password", ex.getMessage()));
+            broadcastReceivedLog(ERROR, "Error on Reset Password", ex.getMessage());
         }
     }
 
@@ -286,13 +286,13 @@ public class PoliciesController {
                     PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
                     policiesFiles.execute("package", deployApp, id, sessionToken);
 
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Install package", "name: " + deployApp + " id: " + id));
+                    broadcastReceivedLog(MQTT_SEND, "Install package", "name: " + deployApp + " id: " + id);
 
                     // return the status of the task
                     sendTaskStatus(taskId, FEEDBACK_RECEIVED);
                 } catch (Exception ex) {
                     FlyveLog.e(ex.getMessage());
-                    broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on getActiveSessionToken", ex.getMessage()));
+                    broadcastReceivedLog(ERROR, "Error on getActiveSessionToken", ex.getMessage());
 
                     // return the status of the task
                     sendTaskStatus(taskId, FEEDBACK_FAILED);
@@ -302,8 +302,7 @@ public class PoliciesController {
             @Override
             public void onError(int type, String error) {
                 FlyveLog.e(error);
-                broadcastReceivedLog(Helpers.broadCastMessage(String.valueOf(type), ERROR, error));
-                broadcastReceivedLog("Application fail: " + error);
+                broadcastReceivedLog(String.valueOf(type), ERROR, error);
 
                 // return the status of the task
                 sendTaskStatus(taskId, FEEDBACK_FAILED);
@@ -327,7 +326,7 @@ public class PoliciesController {
 
                 if("true".equals(policiesFiles.execute("file", deployFile, id, sessionToken))) {
                     FlyveLog.d("File was stored on: " + deployFile);
-                    broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "File was stored on", deployFile));
+                    broadcastReceivedLog(MQTT_SEND, "File was stored on", deployFile);
 
                     // return the status of the task
                     sendTaskStatus(taskId, FEEDBACK_DONE);
@@ -337,7 +336,7 @@ public class PoliciesController {
             @Override
             public void onError(int type, String error) {
                 FlyveLog.e(error);
-                broadcastReceivedLog(Helpers.broadCastMessage(String.valueOf(type), "Error on applicationOnDevices", error));
+                broadcastReceivedLog(String.valueOf(type), "Error on applicationOnDevices", error);
 
                 // return the status of the task
                 sendTaskStatus(taskId, FEEDBACK_FAILED);
@@ -351,7 +350,7 @@ public class PoliciesController {
             policiesFiles.removeFile(removeFile);
 
             FlyveLog.d("Remove file: " + removeFile);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Remove file", removeFile));
+            broadcastReceivedLog(MQTT_SEND, "Remove file", removeFile);
 
             // return the status of the task
             sendTaskStatus(taskId, FEEDBACK_DONE);
@@ -374,10 +373,10 @@ public class PoliciesController {
         try {
             PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
             mdm.wipe();
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Wipe", "Wipe success"));
+            broadcastReceivedLog(MQTT_SEND, "Wipe", "Wipe success");
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on wipe", ex.getMessage()));
+            broadcastReceivedLog(ERROR, "Error on wipe", ex.getMessage());
         }
     }
 
@@ -397,7 +396,7 @@ public class PoliciesController {
             encodedPayload = payload.getBytes(UTF_8);
             MqttMessage message = new MqttMessage(encodedPayload);
             client.publish(topic, message);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Unenroll", "Unenroll success"));
+            broadcastReceivedLog(MQTT_SEND, "Unenroll", "Unenroll success");
 
             // clear cache
             mqttData.deleteAll();
@@ -417,7 +416,7 @@ public class PoliciesController {
             return true;
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on unenroll", ex.getMessage()));
+            broadcastReceivedLog(ERROR, "Error on unenroll", ex.getMessage());
             return false;
         }
     }
@@ -434,10 +433,10 @@ public class PoliciesController {
             encodedPayload = payload.getBytes(UTF_8);
             MqttMessage message = new MqttMessage(encodedPayload);
             IMqttDeliveryToken token = client.publish(topic, message);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "PING", "ID: " + token.getMessageId()));
+            broadcastReceivedLog(MQTT_SEND, "PING", "ID: " + token.getMessageId());
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on sendKeepAlive", ex.getMessage()));
+            broadcastReceivedLog(ERROR, "Error on sendKeepAlive", ex.getMessage());
         }
     }
 
@@ -454,12 +453,12 @@ public class PoliciesController {
             IMqttDeliveryToken token = client.publish(topic, message);
 
             // send broadcast
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Send Inventory", "ID: " + token.getMessageId()));
+            broadcastReceivedLog(MQTT_SEND, "Send Inventory", "ID: " + token.getMessageId());
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
 
             // send broadcast
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on sendKeepAlive", ex.getMessage()));
+            broadcastReceivedLog(ERROR, "Error on sendKeepAlive", ex.getMessage());
         }
     }
 
@@ -474,12 +473,12 @@ public class PoliciesController {
             IMqttDeliveryToken token = client.publish(topic, message);
 
             // send broadcast
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Send Inventory", "ID: " + token.getMessageId()));
+            broadcastReceivedLog(MQTT_SEND, "Send Inventory", "ID: " + token.getMessageId());
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
 
             // send broadcast
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on sendKeepAlive", ex.getMessage()));
+            broadcastReceivedLog(ERROR, "Error on sendKeepAlive", ex.getMessage());
         }
     }
 
@@ -495,10 +494,10 @@ public class PoliciesController {
             encodedPayload = payload.getBytes(UTF_8);
             MqttMessage message = new MqttMessage(encodedPayload);
             IMqttDeliveryToken token = client.publish(topic, message);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Send Status Version", "ID: " + token.getMessageId()));
+            broadcastReceivedLog(MQTT_SEND, "Send Status Version", "ID: " + token.getMessageId());
         } catch (Exception ex) {
             FlyveLog.e(ex.getMessage());
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on sendStatusVersion", ex.getMessage()));
+            broadcastReceivedLog(ERROR, "Error on sendStatusVersion", ex.getMessage());
         }
     }
 
@@ -514,9 +513,9 @@ public class PoliciesController {
             encodedPayload = payload.getBytes(UTF_8);
             MqttMessage message = new MqttMessage(encodedPayload);
             IMqttDeliveryToken token = client.publish(topic, payload.getBytes(), 0, true, null, null);
-            broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Send Online Status", "ID: " + token.getMessageId()));
+            broadcastReceivedLog(MQTT_SEND, "Send Online Status", "ID: " + token.getMessageId());
         } catch (Exception ex) {
-            broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on sendStatusVersion", ex.getMessage()));
+            broadcastReceivedLog(ERROR, "Error on sendStatusVersion", ex.getMessage());
         }
     }
 
@@ -553,10 +552,10 @@ public class PoliciesController {
                         IMqttDeliveryToken token = client.publish(topic, message);
 
                         // send broadcast
-                        broadcastReceivedLog(Helpers.broadCastMessage(MQTT_SEND, "Send Geolocation", "ID: " + token.getMessageId()));
+                        broadcastReceivedLog(MQTT_SEND, "Send Geolocation", "ID: " + token.getMessageId());
                     } catch (Exception ex) {
                         FlyveLog.e(ex.getMessage());
-                        broadcastReceivedLog(Helpers.broadCastMessage(ERROR, "Error on GPS location", ex.getMessage()));
+                        broadcastReceivedLog(ERROR, "Error on GPS location", ex.getMessage());
                     }
                 }
             }
@@ -567,9 +566,9 @@ public class PoliciesController {
      * Broadcast the received log
      * @param message
      */
-    private void broadcastReceivedLog(String message){
+    private void broadcastReceivedLog(String type, String title, String message){
         // write log file
-        FlyveLog.f(message);
+        FlyveLog.f(type, title, message);
     }
 
 }
