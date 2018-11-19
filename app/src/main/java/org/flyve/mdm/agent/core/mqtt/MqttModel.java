@@ -246,6 +246,8 @@ public class MqttModel implements mqtt.Model {
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+                    Helpers.storeLog("MQTT", "Connection Success", asyncActionToken.getTopics().toString());
+
                     // We are connected
                     setStatus(context, callback, true);
 
@@ -274,7 +276,6 @@ public class MqttModel implements mqtt.Model {
                     } else {
                         messageError = ex.getMessage();
                     }
-
                     showDetailError(context, CommonErrorType.MQTT_ACTION_CALLBACK, messageError);
                 }
             });
@@ -314,7 +315,7 @@ public class MqttModel implements mqtt.Model {
                     if(executeConnection) {
                         reconnectionCounter++;
                         String message = "Reconnecting " + reconnectionCounter + " times";
-
+                        Helpers.storeLog("MQTT", "Reconnection", message);
                         if(new AppData(context).getEnableNotificationConnection()) {
                             Helpers.sendToNotificationBar(context, 101, context.getString(R.string.app_name), message, false, MainActivity.class, "service_disconnect");
                         }
@@ -324,6 +325,8 @@ public class MqttModel implements mqtt.Model {
                     }
                 } else {
                     FlyveLog.d("Reconnection finish");
+                    Helpers.storeLog("MQTT", "Reconnection Success", "at " + reconnectionCounter);
+                    reconnectionCounter = 0;
                     reconnectionTimer.cancel();
                     reconnectionTimer = null;
                 }
@@ -739,7 +742,7 @@ public class MqttModel implements mqtt.Model {
 
     @Override
     public void connectionLost(Context context, MqttCallback callback, String message) {
-        showDetailError(context, CommonErrorType.MQTT_CONNECTION_LOST, message);
+        showDetailError(context, CommonErrorType.MQTT_CONNECTION_LOST, "Method: connectionLost" + message);
         setStatus(context, callback, false);
     }
 
