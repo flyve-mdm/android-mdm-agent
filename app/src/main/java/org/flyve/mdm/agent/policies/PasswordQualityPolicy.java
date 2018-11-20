@@ -47,7 +47,7 @@ public class PasswordQualityPolicy extends BasePolicies {
             new PoliciesDeviceManager(context).setPasswordQuality(quality);
             return true;
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
             return false;
         }
     }

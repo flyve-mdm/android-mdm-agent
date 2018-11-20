@@ -92,7 +92,7 @@ public class FilesAdapter extends BaseAdapter {
 		try {
 			file = data[position];
 		} catch (Exception ex) {
-			FlyveLog.e(ex.getMessage());
+			FlyveLog.e(this.getClass().getName() + ", getView", ex.getMessage());
 			return vi;
 		}
 

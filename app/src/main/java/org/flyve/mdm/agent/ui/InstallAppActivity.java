@@ -78,14 +78,14 @@ public class InstallAppActivity extends Activity {
                         finish();
                     }
                 } catch (Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                    FlyveLog.e(this.getClass().getName() + ", onCreate", ex.getMessage());
                     finish();
                 }
             } else {
                 try {
                     installApk(appPath);
                 } catch (Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                    FlyveLog.e(this.getClass().getName() + ", onCreate", ex.getMessage());
                 }
             }
         } else {
@@ -150,7 +150,7 @@ public class InstallAppActivity extends Activity {
         try {
             startActivityForResult(intent, APP_INSTALL_REQUEST);
         } catch (ActivityNotFoundException e) {
-            FlyveLog.e(e.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", installApk", e.getMessage());
         }
     }
 
@@ -163,7 +163,7 @@ public class InstallAppActivity extends Activity {
                     FlyveLog.d("Package Installation Success");
                     status = "2"; // installed
                 } else {
-                    FlyveLog.e("Installation failed or is installed");
+                    FlyveLog.e(this.getClass().getName() + ", onActivityResult", "Installation failed or is installed");
                 }
         }
 
@@ -187,7 +187,7 @@ public class InstallAppActivity extends Activity {
                 }
             }
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", onActivityResult", ex.getMessage());
         }
 
         finish();

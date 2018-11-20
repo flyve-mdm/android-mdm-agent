@@ -88,7 +88,7 @@ public class EnrollmentHelper {
         String errorMessage = "";
 
         if(error.contains("EXCEPTION_HTTP") || error.contains("ERROR")) {
-            FlyveLog.e(error);
+            FlyveLog.e(this.getClass().getName() + ", manageError", error);
 
             errorMessage = error;
 
@@ -107,7 +107,7 @@ public class EnrollmentHelper {
                     errorMessage = errorArray[0];
                 }
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", manageError", ex.getMessage());
             }
 
             return errorMessage;
@@ -148,7 +148,7 @@ public class EnrollmentHelper {
                     cache.setSessionToken(sessionToken);
 
                 } catch (final Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                    FlyveLog.e(this.getClass().getName() + ", getActiveSessionToken", ex.getMessage());
                     EnrollmentHelper.runOnUI(new Runnable() {
                         public void run() {
                             callback.onError(CommonErrorType.ENROLLMENT_HELPER_INITSESSION, context.getString(R.string.wrong_json_format, data, ex.getMessage()));
@@ -182,7 +182,7 @@ public class EnrollmentHelper {
                     cache.setProfileId(profileId);
 
                 } catch (final Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                    FlyveLog.e(this.getClass().getName() + ", getActiveSessionToken", ex.getMessage());
                     EnrollmentHelper.runOnUI(new Runnable() {
                         public void run() {
                             callback.onError(CommonErrorType.ENROLLMENT_HELPER_FULLSESSION, context.getString(R.string.wrong_json_format, data, ex.getMessage()));
@@ -209,7 +209,7 @@ public class EnrollmentHelper {
                         });
                     }
                 } catch (final Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                    FlyveLog.e(this.getClass().getName() + ", getActiveSessionToken", ex.getMessage());
                     EnrollmentHelper.runOnUI(new Runnable() {
                         public void run() {
                             callback.onError(CommonErrorType.ENROLLMENT_HELPER_CHANGEACTIVEPROFILE, context.getString(R.string.wrong_json_format, data, ex.getMessage()));
@@ -257,7 +257,7 @@ public class EnrollmentHelper {
 
                 if(data.contains("ERROR")){
                     final String msgError = manageError(data);
-                    FlyveLog.e(msgError + " - Device serial: " + Helpers.getDeviceSerial());
+                    FlyveLog.e(this.getClass().getName() + ", enrollment", msgError + " - Device serial: " + Helpers.getDeviceSerial());
 
                     EnrollmentHelper.runOnUI(new Runnable() {
                         public void run() {
@@ -357,7 +357,7 @@ public class EnrollmentHelper {
                         }
                     });
                 } catch (Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                    FlyveLog.e(this.getClass().getName() + ", createX509cert", ex.getMessage());
                     EnrollmentHelper.runOnUI(new Runnable() {
                         public void run() {
                             callback.onError(CommonErrorType.ENROLLMENT_HELPER_X509CERTIFICATION, "false");

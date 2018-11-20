@@ -52,7 +52,7 @@ public class PreviewSupervisorActivity extends AppCompatActivity {
             try {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", onCreate", ex.getMessage());
             }
 
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -91,7 +91,7 @@ public class PreviewSupervisorActivity extends AppCompatActivity {
                 txtWebsite.setText(supervisor.getWebsite());
             }
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", onCreate", ex.getMessage());
         }
     }
 }

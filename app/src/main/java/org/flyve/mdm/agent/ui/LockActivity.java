@@ -121,7 +121,7 @@ public class LockActivity extends AppCompatActivity {
                 txtDescriptionSupervisor.setText(supervisor.getEmail());
             }
         } catch(Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", loadSupervisor", ex.getMessage());
         }
     }
 

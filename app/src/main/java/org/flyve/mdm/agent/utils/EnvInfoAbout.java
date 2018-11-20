@@ -40,7 +40,7 @@ public class EnvInfoAbout {
             InputStream inputStream = assetManager.open("about.properties");
             properties.load(inputStream);
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", EnvInfoAbout", ex.getMessage());
             isLoaded = false;
         }
         isLoaded = true;

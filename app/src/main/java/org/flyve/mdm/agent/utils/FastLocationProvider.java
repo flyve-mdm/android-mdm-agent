@@ -54,13 +54,13 @@ public class FastLocationProvider {
         try {
             gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);}
         catch(Exception ex){
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", getLocation",ex.getMessage());
         }
 
         try {
             networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         } catch(Exception ex){
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", getLocation",ex.getMessage());
         }
 
         //don't start listeners if no provider is enabled
@@ -77,7 +77,7 @@ public class FastLocationProvider {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);
             }
         } catch (SecurityException ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", getLocation", ex.getMessage());
         }
 
         timer = new Timer();
@@ -143,7 +143,7 @@ public class FastLocationProvider {
                     netLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 }
             } catch (SecurityException ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", GetLastLocation", ex.getMessage());
             }
 
             //if there are both values use the latest one

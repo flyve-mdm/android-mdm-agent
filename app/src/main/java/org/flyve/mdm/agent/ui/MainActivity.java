@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(1009);
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", checkNotifications", ex.getMessage());
             }
         }
     }
@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
             selectedItem = arrDrawer.get(menuItemSelected);
             loadFragment(selectedItem, extra);
         } catch(Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", loadListDrawer", ex.getMessage());
         }
     }
 }

@@ -47,7 +47,7 @@ public class StorageEncryptionPolicy extends BasePolicies {
             new PoliciesDeviceManager(this.context).storageEncryptionDevice(enable);
             return true;
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
             return false;
         }
     }

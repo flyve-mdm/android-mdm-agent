@@ -48,7 +48,7 @@ public class StreamMusicPolicy extends BasePolicies {
             PoliciesConnectivity.disableSounds(AudioManager.STREAM_MUSIC, disable);
             return true;
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
             return false;
         }
     }

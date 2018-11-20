@@ -53,7 +53,7 @@ public class DeeplinkModel implements Deeplink.Model {
             deepLinkData = Helpers.base64decode(deeplink);
         } catch(Exception ex) {
             presenter.showSnackError( CommonErrorType.DEEPLINK_BASE64DECODE, deepLinkErrorMessage);
-            FlyveLog.e(deepLinkErrorMessage + " - " + ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", lint", deepLinkErrorMessage + " - " + ex.getMessage());
             return;
         }
 
@@ -127,7 +127,7 @@ public class DeeplinkModel implements Deeplink.Model {
             presenter.lintSuccess(deeplinkSchema);
 
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", lint", ex.getMessage());
             presenter.showSnackError( CommonErrorType.DEEPLINK_GENERAL_EXCEPTION, deepLinkErrorMessage );
         }
     }

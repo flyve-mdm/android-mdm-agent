@@ -47,7 +47,7 @@ public class CameraPolicy extends BasePolicies {
             mdm.disableCamera(Boolean.valueOf(this.policyValue.toString()));
             return true;
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
             return false;
         }
     }

@@ -48,7 +48,7 @@ public class StreamNotificationPolicy extends BasePolicies {
             PoliciesConnectivity.disableSounds(AudioManager.STREAM_NOTIFICATION, disable);
             return true;
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
             return false;
         }
     }

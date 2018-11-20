@@ -31,13 +31,14 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
-import static android.app.admin.DevicePolicyManager.WIPE_EXTERNAL_STORAGE;
 
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.ui.LockActivity;
 import org.flyve.mdm.agent.ui.MainActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
+
+import static android.app.admin.DevicePolicyManager.WIPE_EXTERNAL_STORAGE;
 
 public class PoliciesDeviceManager {
 
@@ -57,7 +58,7 @@ public class PoliciesDeviceManager {
             try {
                 mDPM.setGlobalSetting(mDeviceAdmin, Settings.Global.DATA_ROAMING, disable ? "0" : "1");
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", disableRoaming", ex.getMessage());
             }
         } else {
             FlyveLog.i("Disable roaming policy is available on devices with api equals or mayor than 21");
@@ -70,7 +71,7 @@ public class PoliciesDeviceManager {
             try {
                 mDPM.setScreenCaptureDisabled(mDeviceAdmin, disable);
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", disableCaptureScreen", ex.getMessage());
             }
         } else {
             FlyveLog.i("Screen capture policy is available on devices with api equals or mayor than 21");
@@ -83,7 +84,7 @@ public class PoliciesDeviceManager {
             try {
                 mDPM.setAlwaysOnVpnPackage(mDeviceAdmin, null, !disable);
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", disableVPN", ex.getMessage());
             }
         } else {
             FlyveLog.i("VPN policy is available on devices with api equals or mayor than 24");
@@ -96,7 +97,7 @@ public class PoliciesDeviceManager {
             try {
                 mDPM.setStatusBarDisabled(mDeviceAdmin, disable);
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", disableStatusBar", ex.getMessage());
             }
         }
     }
@@ -112,7 +113,7 @@ public class PoliciesDeviceManager {
                         context.startActivity(intent);
                     }
                 } catch (Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                    FlyveLog.e(this.getClass().getName() + ", enablePassword", ex.getMessage());
                 }
             } else {
                 Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
@@ -130,7 +131,7 @@ public class PoliciesDeviceManager {
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
             pm.reboot(null);
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", reboot", ex.getMessage());
         }
     }
 

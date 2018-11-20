@@ -48,7 +48,7 @@ public class ErrorActivity extends AppCompatActivity {
             TextView txtMessage = findViewById(R.id.txtMessage);
             txtMessage.setText(message);
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", onCreate", ex.getMessage());
         }
 
         Button btnClose = findViewById(R.id.btnClose);

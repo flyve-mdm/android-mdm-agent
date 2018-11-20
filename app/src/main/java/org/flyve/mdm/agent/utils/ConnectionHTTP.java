@@ -25,7 +25,6 @@ package org.flyve.mdm.agent.utils;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -96,7 +95,7 @@ public class ConnectionHTTP {
 			return requestResponse;
 		}
 		catch (final Exception ex) {
-			FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
+			FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getSyncWebData", ex.getClass() +" : " + ex.getMessage());
 			return EXCEPTION_HTTP + ex.getMessage();
 		}
 	}
@@ -147,7 +146,7 @@ public class ConnectionHTTP {
 		}
 		catch (final Exception ex) {
 			String error = EXCEPTION_HTTP + ex.getMessage();
-			FlyveLog.e(error);
+			FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getSyncWebData", error);
 			return error;
 		}
 	}
@@ -207,7 +206,7 @@ public class ConnectionHTTP {
 			return true;
 		}
 		catch (final Exception ex) {
-			FlyveLog.e(ex.getClass() +" : " + ex.getMessage());
+			FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getSyncFile", ex.getClass() +" : " + ex.getMessage());
 			return false;
 		}
 		finally {
@@ -215,7 +214,7 @@ public class ConnectionHTTP {
 				try {
 					output.close();
 				} catch (Exception ex) {
-					FlyveLog.e(ex.getMessage());
+					FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getSyncFile", ex.getMessage());
 				}
 			}
 		}
@@ -295,7 +294,7 @@ public class ConnectionHTTP {
 					public void run()
 					{
 						callback.callback(EXCEPTION_HTTP + ex.getMessage());
-						FlyveLog.e(ex.getClass() + " : " + ex.getMessage());
+						FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getWebData",ex.getClass() + " : " + ex.getMessage());
 					}
 				});
 			}
@@ -323,7 +322,7 @@ public class ConnectionHTTP {
 
 	private static void Log(String message){
 		// write log file
-		Log.d("HTTP", message);
+		FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", Log", message);
 	}
 
 

@@ -47,7 +47,7 @@ public class ScreenCapturePolicy extends BasePolicies {
             new PoliciesDeviceManager(context).disableCaptureScreen(disable);
             return true;
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
             return false;
         }
     }
