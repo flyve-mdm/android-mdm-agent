@@ -47,7 +47,7 @@ public class PasswordMinLetterPolicy extends BasePolicies {
             new PoliciesDeviceManager(context).setPasswordMinimumLetters(minimum);
             return true;
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
             return false;
         }
     }

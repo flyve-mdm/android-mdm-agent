@@ -93,7 +93,7 @@ public class DrawerAdapter extends BaseAdapter {
 		try {
 			hashdata = data.get(position);
 		} catch (Exception ex) {
-			FlyveLog.e(ex.getMessage());
+			FlyveLog.e(this.getClass().getName() + ", getView", ex.getMessage());
 			return vi;
 		}
 

@@ -185,7 +185,7 @@ public class FragmentTestPolicies extends Fragment {
                 try {
                     Helpers.deleteMQTTCache(FragmentTestPolicies.this.getContext());
                 } catch (Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                    FlyveLog.e(this.getClass().getName() + ", onCreateView", ex.getMessage());
                 }
             }
         });

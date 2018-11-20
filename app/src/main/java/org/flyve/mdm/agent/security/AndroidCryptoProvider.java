@@ -93,7 +93,7 @@ public class AndroidCryptoProvider {
             }
             return fileData;
         } catch (IOException e) {
-            FlyveLog.e("loadFileToBytes IOException",e);
+            FlyveLog.e(this.getClass().getName() + ", loadFileToBytes","loadFileToBytes IOException",e);
             return new byte[0];
         } finally {
             try {
@@ -101,7 +101,7 @@ public class AndroidCryptoProvider {
                     fin.close();
                 }
             } catch (Exception e) {
-                FlyveLog.e("close FileInputStream, IO exception", e);
+                FlyveLog.e(this.getClass().getName() + ", loadFileToBytes", "close FileInputStream, IO exception", e);
             }
         }
     }
@@ -168,7 +168,7 @@ public class AndroidCryptoProvider {
                 return;
             }
         } catch (Exception ex) {
-            FlyveLog.e("generateRequest",ex);
+            FlyveLog.e(this.getClass().getName() + ", generateRequest", "generateRequest",ex);
             callback.onGenerate(false);
             return;
         }
@@ -276,14 +276,14 @@ public class AndroidCryptoProvider {
             certWriter.close();
 
         } catch (Exception e) {
-            FlyveLog.e("saveCertKey",e);
+            FlyveLog.e(this.getClass().getName() + ", saveCertKey", "saveCertKey",e);
         } finally {
             try {
                 if(certOut!=null) {
                     certOut.close();
                 }
             } catch (Exception e){
-                FlyveLog.e("saveCertKey, IOException", e);
+                FlyveLog.e(this.getClass().getName() + ", saveCertKey", "saveCertKey, IOException", e);
             }
         }
     }

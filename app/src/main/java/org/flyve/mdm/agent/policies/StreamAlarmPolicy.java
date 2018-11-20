@@ -62,12 +62,12 @@ public class StreamAlarmPolicy extends BasePolicies {
                     aManager.setStreamMute(AudioManager.STREAM_ALARM, disable);
                 }
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
             }
 
             return true;
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
             return false;
         }
     }

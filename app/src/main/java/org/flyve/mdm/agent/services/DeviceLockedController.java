@@ -69,7 +69,7 @@ public class DeviceLockedController {
             KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE); //api 16+
             return keyguardManager.isKeyguardSecure();
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", isPassOrPinSet", ex.getMessage());
             return false;
         }
     }
@@ -83,7 +83,7 @@ public class DeviceLockedController {
             KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE); //api 23+
             return keyguardManager.isDeviceSecure();
         } catch (Exception ex) {
-         FlyveLog.e(ex.getMessage());
+         FlyveLog.e(this.getClass().getName() + ", isDeviceLocked", ex.getMessage());
             return false;
         }
     }

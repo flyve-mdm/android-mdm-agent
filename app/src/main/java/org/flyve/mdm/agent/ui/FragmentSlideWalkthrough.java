@@ -77,7 +77,7 @@ public class FragmentSlideWalkthrough extends Fragment {
             mMessage = walkthroughData.getMessage();
             mImage = walkthroughData.getImage();
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", onCreateView", ex.getMessage());
         }
 
 

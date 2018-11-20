@@ -681,7 +681,7 @@ public class MqttModel implements mqtt.Model {
 
     @Override
     public void showDetailError(Context context, int type, String message) {
-        FlyveLog.e(context.getResources().getString(R.string.error_message_with_number, String.valueOf(type), message));
+        FlyveLog.e(this.getClass().getName() + ", showDetailError", context.getResources().getString(R.string.error_message_with_number, String.valueOf(type), message));
     }
 
     @Override

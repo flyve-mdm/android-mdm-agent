@@ -65,7 +65,7 @@ public class TimeAlarm extends BroadcastReceiver {
         try {
             am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), time, pi);
         } catch (NullPointerException ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", setAlarm", ex.getMessage());
         }
     }
 

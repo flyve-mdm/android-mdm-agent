@@ -116,7 +116,7 @@ public class Helpers {
 				appVersionCode = String.valueOf(packageInfo.versionCode);
 				appVersionName = String.valueOf(packageInfo.versionName);
 			} catch (Exception ex) {
-				FlyveLog.e(ex.getMessage());
+				FlyveLog.e(Helpers.class.getClass().getName() + ", installApk", ex.getMessage());
 			}
 
 			if(appsArray.length <=0) {
@@ -188,7 +188,7 @@ public class Helpers {
 				Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", command});
 				proc.waitFor();
 			} catch (Exception ex) {
-				FlyveLog.e(ex.getMessage());
+				FlyveLog.e(Helpers.class.getClass().getName() + ", installApkSilently", ex.getMessage());
 			}
 		} else {
 			FlyveLog.d("File " + file.getAbsolutePath() +  " does not exists");
@@ -200,7 +200,7 @@ public class Helpers {
 			return context.getPackageManager().getApplicationIcon(packageApp);
 		}
 		catch (PackageManager.NameNotFoundException ex) {
-			FlyveLog.e(ex.getMessage());
+			FlyveLog.e(Helpers.class.getClass().getName() + ", getApplicationImage", ex.getMessage());
 			return null;
 		}
 	}
@@ -212,7 +212,7 @@ public class Helpers {
 				InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 			} catch (NullPointerException ex) {
-				FlyveLog.e(ex.getMessage());
+				FlyveLog.e(Helpers.class.getClass().getName() + ", hideKeyboard", ex.getMessage());
 			}
 		}
 	}
@@ -259,7 +259,7 @@ public class Helpers {
             FlyveLog.d(path.getAbsolutePath());
             deleteFolder(path.getAbsolutePath());
         } catch (Exception ex) {
-		    FlyveLog.e(ex.getMessage());
+		    FlyveLog.e(Helpers.class.getClass().getName() + ", deleteMQTTCache", ex.getMessage());
         }
 	}
 
@@ -273,7 +273,7 @@ public class Helpers {
 			try {
 				runtime.exec(deleteCmd);
 			} catch (IOException ex) {
-				FlyveLog.e(ex.getMessage());
+				FlyveLog.e(Helpers.class.getClass().getName() + ", deleteFolder", ex.getMessage());
 			}
 		}
 	}
@@ -320,7 +320,7 @@ public class Helpers {
 				notificationManager.createNotificationChannel(notificationChannel);
 				builder.setChannelId(notificationChannelId);
 			} catch (Exception ex) {
-				FlyveLog.e(ex.getMessage());
+				FlyveLog.e(Helpers.class.getClass().getName() + ", sendToNotificationBar", ex.getMessage());
 			}
 		}
 
@@ -337,7 +337,7 @@ public class Helpers {
 		try {
 			notificationManager.notify(id, builder.build());
 		} catch (Exception ex) {
-			FlyveLog.e(ex.getMessage());
+			FlyveLog.e(Helpers.class.getClass().getName() + ", deleteFolder", ex.getMessage());
 		}
 	}
 
@@ -363,7 +363,7 @@ public class Helpers {
 				return "1";
 			}
 		} catch (Exception ex) {
-			FlyveLog.e(ex.getMessage());
+			FlyveLog.e(Helpers.class.getClass().getName() + ", isSystemApp", ex.getMessage());
 			return "0";
 		}
 	}
@@ -409,7 +409,7 @@ public class Helpers {
 			byte[] bdata = Base64.decode(text, Base64.DEFAULT);
 			rtext = new String(bdata, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			FlyveLog.e(e.getMessage());
+			FlyveLog.e(Helpers.class.getClass().getName() + ", base64decode", e.getMessage());
 		}
 		return rtext.trim();
 	}
@@ -428,7 +428,7 @@ public class Helpers {
 			rtext = rtext.replaceAll("-", "+");
 			rtext = rtext.replaceAll(" ", "+");
 		} catch (UnsupportedEncodingException e) {
-			FlyveLog.e(e.getMessage());
+			FlyveLog.e(Helpers.class.getClass().getName() + ", base64decode", e.getMessage());
 		}
 		
 		return rtext;
@@ -540,7 +540,7 @@ public class Helpers {
 				FlyveLog.d("Rows deleted: " + rowsDeleted);
 			}
 		} catch (Exception ex) {
-			FlyveLog.e(ex.getMessage());
+			FlyveLog.e(Helpers.class.getClass().getName() + ", deleteAllSMS", ex.getMessage());
 		}
 	}
 
@@ -594,7 +594,7 @@ public class Helpers {
 			byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
 			return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
 		} catch(Exception e) {
-			FlyveLog.e(e.getMessage());
+			FlyveLog.e(Helpers.class.getClass().getName() + ", stringToBitmap", e.getMessage());
 			return null;
 		}
 	}

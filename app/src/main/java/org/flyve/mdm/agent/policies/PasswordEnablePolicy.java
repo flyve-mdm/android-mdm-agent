@@ -47,7 +47,7 @@ public class PasswordEnablePolicy extends BasePolicies {
             new PoliciesDeviceManager(context).enablePassword(true, type);
             return true;
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
             return false;
         }
     }
