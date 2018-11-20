@@ -160,6 +160,15 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
     public void lintSuccess(DeeplinkSchema deeplinkSchema) {
         presenter.saveMQTTConfig(StartEnrollmentActivity.this, deeplinkSchema.getUrl(), deeplinkSchema.getUserToken(), deeplinkSchema.getInvitationToken());
         presenter.saveSupervisor(StartEnrollmentActivity.this, deeplinkSchema.getName(), deeplinkSchema.getPhone(), deeplinkSchema.getWebsite(), deeplinkSchema.getEmail());
+
+        TextView txtURL = findViewById(R.id.txtURL);
+        txtURL.setText(getResources().getString(R.string.deeplink_url, deeplinkSchema.getUrl().substring(0,15)));
+
+        TextView txtInvitationToken = findViewById(R.id.txtInvitationToken);
+        txtInvitationToken.setText(getResources().getString(R.string.deeplink_invitation_token, deeplinkSchema.getInvitationToken().substring(0,15)));
+
+        TextView txtUserToken = findViewById(R.id.txtUserToken);
+        txtUserToken.setText(getResources().getString(R.string.deeplink_user_token, deeplinkSchema.getUserToken().substring(0,15)));
     }
 
     @Override
