@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.flyve.mdm.agent"
-    android:versionCode="2869"
+    android:versionCode="2883"
     android:versionName="2.0.0-rc.5">
 
     <!-- For writing logfiles -->
