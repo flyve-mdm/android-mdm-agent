@@ -42,6 +42,7 @@ import org.flyve.mdm.agent.utils.StorageFolder;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.HashMap;
 
 import static org.flyve.mdm.agent.ui.MDMAgent.getMqttClient;
 
@@ -119,8 +120,8 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
             FlyveLog.e(ex.getMessage());
         }
 
-        final String url = routes.pluginFlyvemdmFile(id, sessionToken);
-        String completeFilePath = download(url, filePath);
+        final String url = routes.pluginFlyvemdmFile(id);
+        String completeFilePath = download(url, filePath, sessionToken);
 
         return(completeFilePath.equalsIgnoreCase(""));
     }
@@ -149,8 +150,8 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
             FlyveLog.e(ex.getMessage());
         }
 
-        final String url = routes.pluginFlyvemdmPackage(id, sessionToken);
-        String completeFilePath = download(url, filePath);
+        final String url = routes.pluginFlyvemdmPackage(id);
+        String completeFilePath = download(url, filePath, sessionToken);
         if(completeFilePath.equalsIgnoreCase("")) {
             AppThreadManager manager = MDMAgent.getAppThreadManager();
             manager.finishProcess(context);
@@ -179,9 +180,11 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
      * @param path String path to save
      * @return String complete path with name of the file
      */
-    private String download(final String url, final String path) {
+    private String download(final String url, final String path, String sessionToken) {
+        HashMap<String, String> header = new HashMap();
+        header.put("Session-Token", sessionToken);
 
-        String data = ConnectionHTTP.getSyncWebData(url, "GET",null);
+        String data = ConnectionHTTP.getSyncWebData(url, "GET",header);
         if(data.contains("ERROR")) {
             Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_fail));
             AppThreadManager manager = MDMAgent.getAppThreadManager();
