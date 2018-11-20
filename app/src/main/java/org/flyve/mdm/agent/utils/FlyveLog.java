@@ -95,10 +95,10 @@ public class FlyveLog {
      * @param message String message
      * @param args Objects
      */
-    public static void e(Throwable throwable, String message, Object... args) {
+    public static void e(String where, Throwable throwable, String message, Object... args) {
         if(MDMAgent.getIsDebuggable() && message != null) {
             Logger.e(throwable, message, args);
-            f("ERROR", throwable.getMessage(), message);
+            f("ERROR", where, message);
         }
     }
 
@@ -107,10 +107,10 @@ public class FlyveLog {
      * @param message String message
      * @param args Objects
      */
-    public static void e(String message, Object... args) {
+    public static void e(String where, String message, Object... args) {
         if(MDMAgent.getIsDebuggable() && message != null) {
             Logger.e(message, args);
-            f("Error", "General Error", message);
+            f("Error", where, message);
         }
     }
 

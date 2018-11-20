@@ -72,7 +72,7 @@ public class LogFileReader {
 
             arrData.add(map);
         } catch (Exception ex) {
-            FlyveLog.e("ERROR: " + line + " - " + ex.getMessage());
+            FlyveLog.e(LogFileReader.class.getClass().getName() + ", addLine","ERROR: " + line + " - " + ex.getMessage());
         }
     }
 
@@ -112,7 +112,7 @@ public class LogFileReader {
                     });
 
                 } catch (final Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                    FlyveLog.e(LogFileReader.class.getClass().getName() + ", loadLog", ex.getMessage());
                     LogFileReader.runOnUI(new Runnable() {
                         public void run() {
                             callback.onError(ex.getMessage());
@@ -124,7 +124,7 @@ public class LogFileReader {
                         try {
                             br.close();
                         } catch(Exception ex) {
-                            FlyveLog.e(ex.getMessage());
+                            FlyveLog.e(LogFileReader.class.getClass().getName() + ", loadLog", ex.getMessage());
                         }
                     }
 
@@ -132,7 +132,7 @@ public class LogFileReader {
                         try {
                             fr.close();
                         } catch (Exception ex) {
-                            FlyveLog.e(ex.getMessage());
+                            FlyveLog.e(LogFileReader.class.getClass().getName() + ", loadLog", ex.getMessage());
                         }
                     }
                 }

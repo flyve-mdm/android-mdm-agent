@@ -56,7 +56,7 @@ public class PreviewUserActivity extends AppCompatActivity {
             try {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", onCreate", ex.getMessage());
             }
 
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -147,7 +147,7 @@ public class PreviewUserActivity extends AppCompatActivity {
             TextView txtAdministrativeNumber = findViewById(R.id.txtAdministrativeNumber);
             txtAdministrativeNumber.setText(user.getAdministrativeNumber());
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", loadData", ex.getMessage());
         }
     }
 

@@ -96,7 +96,7 @@ public class ApplicationsAdapter extends BaseAdapter {
 		try {
 			app = data[position];
 		} catch (Exception ex) {
-			FlyveLog.e(ex.getMessage());
+			FlyveLog.e(this.getClass().getName() + ", getView",ex.getMessage());
 			return vi;
 		}
 
@@ -114,7 +114,7 @@ public class ApplicationsAdapter extends BaseAdapter {
 					status = parent.getResources().getString(R.string.app_installed);
 				}
 			} catch (Exception ex) {
-				FlyveLog.e(ex.getMessage());
+				FlyveLog.e(this.getClass().getName() + ", getView", ex.getMessage());
 			}
 		} else {
 			status = parent.getResources().getString(R.string.app_not_installed);

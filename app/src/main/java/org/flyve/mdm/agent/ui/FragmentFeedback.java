@@ -168,7 +168,7 @@ public class FragmentFeedback extends Fragment {
             jsonPolicy.put("message", editMessage.getText().toString());
             jsonFeedback.put("feedback", jsonPolicy);
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", createFeedbackJSON", ex.getMessage());
         }
 
         return jsonFeedback;

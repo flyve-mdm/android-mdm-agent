@@ -63,7 +63,7 @@ public class AppsReceiver extends BroadcastReceiver {
             Intent mIntent = new Intent(context, MQTTService.class);
             context.bindService(mIntent, mConnection, Context.BIND_AUTO_CREATE);
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", onReceive", ex.getMessage());
         }
     }
 }

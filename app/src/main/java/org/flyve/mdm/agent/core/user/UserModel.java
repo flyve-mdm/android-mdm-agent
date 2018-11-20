@@ -136,7 +136,7 @@ public class UserModel implements User.Model {
 
             presenter.saveSuccess();
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", save", ex.getMessage());
             presenter.showDetailError(CommonErrorType.USER_SAVE_EXCEPTION, ex.getMessage());
         }
     }

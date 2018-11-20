@@ -101,7 +101,7 @@ public class PermissionModel implements Permission.Model {
 
             @Override
             public void onTaskError(Throwable throwable) {
-                FlyveLog.e(throwable.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", generateInventory", throwable.getMessage());
             }
         });
 

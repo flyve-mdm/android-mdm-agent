@@ -98,7 +98,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
             try {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", onCreate", ex.getMessage());
             }
 
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -199,7 +199,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
         try {
             filePhoto = new File(presenter.getPhoto().getPath());
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", onActivityResult", ex.getMessage());
             return;
         }
 
@@ -213,7 +213,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
                 try {
                     bitmap = Helpers.modifyOrientation(bitmap, filePhoto.getAbsolutePath());
                 } catch (Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                    FlyveLog.e(this.getClass().getName() + ", onActivityResult", ex.getMessage());
                 }
 
                 strPicture = Helpers.bitmapToString(bitmap);
@@ -233,7 +233,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
             try {
                 bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
             } catch (IOException e) {
-                FlyveLog.e(e.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", onSelectFromGalleryResult", e.getMessage());
             }
         }
 

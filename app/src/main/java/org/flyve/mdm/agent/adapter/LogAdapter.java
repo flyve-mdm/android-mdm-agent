@@ -45,7 +45,7 @@ public class LogAdapter extends BaseAdapter {
 		try {
 			inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		} catch (Exception ex) {
-			FlyveLog.e(ex.getMessage());
+			FlyveLog.e(this.getClass().getName() + ", LogAdapter", ex.getMessage());
 		}
 	}
 
@@ -94,7 +94,7 @@ public class LogAdapter extends BaseAdapter {
 		try {
 			hashdata = data.get(position);
 		} catch (Exception ex) {
-			FlyveLog.e(ex.getMessage());
+			FlyveLog.e(this.getClass().getName() + ", getView", ex.getMessage());
 			return vi;
 		}
 

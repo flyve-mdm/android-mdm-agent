@@ -121,7 +121,7 @@ public abstract class BasePolicies {
 
             Log(MQTT_SEND, "Send Status", "ID: " + token.getMessageId());
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", mqttSendTaskStatus", ex.getMessage());
 
             // send broadcast
             Log(ERROR, "Error sending status", ex.getMessage());

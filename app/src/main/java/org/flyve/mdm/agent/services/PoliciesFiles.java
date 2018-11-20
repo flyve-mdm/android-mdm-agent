@@ -117,7 +117,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         try {
             filePath = new StorageFolder(context).convertPath(path);
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", downloadFile", ex.getMessage());
         }
 
         final String url = routes.pluginFlyvemdmFile(id);
@@ -147,7 +147,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         } catch (Exception ex) {
             AppThreadManager manager = MDMAgent.getAppThreadManager();
             manager.finishProcess(context);
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", downloadApk", ex.getMessage());
         }
 
         final String url = routes.pluginFlyvemdmPackage(id);
@@ -190,13 +190,13 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
             AppThreadManager manager = MDMAgent.getAppThreadManager();
             manager.finishProcess(context);
 
-            FlyveLog.e(data + "\n" + url);
+            FlyveLog.e(this.getClass().getName() + ", download", data + "\n" + url);
         } else {
             try {
                 JSONObject jsonObjDownload = new JSONObject(data);
                 return getFile(jsonObjDownload, path, url, data);
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", download", ex.getMessage() + "\n" + url);
                 return "";
             }
         } // endif Exception
@@ -246,13 +246,13 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
                 return file.getAbsolutePath();
             } else {
                 publishProgress(100);
-                FlyveLog.e("Download fail: " + data);
+                FlyveLog.e(this.getClass().getName() + ", getFile", "Download fail: " + data + "\n" + url);
 
                 return "";
             }
 
         } catch(Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", getFile", ex.getMessage()+ "\n" + url);
             return "";
         }
     }
@@ -278,7 +278,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
             File file = new File(realPath);
             return file.delete();
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", removeFile", ex.getMessage() + "\n" + filePath);
             return false;
         }
     }
@@ -295,7 +295,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         try {
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            FlyveLog.e(e.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", removeApk", e.getMessage() + "\n" + mPackage);
             return 0;
         }
         return 1;

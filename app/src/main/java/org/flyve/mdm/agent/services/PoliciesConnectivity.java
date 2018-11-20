@@ -131,7 +131,7 @@ public class PoliciesConnectivity {
 
                 m2.invoke(iTelephony, false);
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(PoliciesConnectivity.class.getClass().getName() + ", disableMobileLine", ex.getMessage());
             }
         }
     }
@@ -224,7 +224,7 @@ public class PoliciesConnectivity {
                 aManager.setStreamMute(streamType, disable);
             }
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(PoliciesConnectivity.class.getClass().getName() + ", disableSounds", ex.getMessage());
         }
     }
 

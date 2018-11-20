@@ -89,7 +89,7 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
             try {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", onCreate", ex.getMessage());
             }
 
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -235,7 +235,7 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
                     strPicture = Helpers.bitmapToString(bitmap);
                     imgPhoto.setImageBitmap(bitmap);
                 } catch (Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                    FlyveLog.e(this.getClass().getName() + ", onActivityResult", ex.getMessage());
                 }
             }
         }
@@ -253,7 +253,7 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
                 strPicture = Helpers.bitmapToString(bm);
                 imgPhoto.setImageBitmap(bm);
             } catch (IOException e) {
-                FlyveLog.e(e.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", onSelectFromGalleryResult", e.getMessage());
             }
         }
     }
@@ -266,7 +266,7 @@ public class EditUserActivity extends AppCompatActivity implements User.View {
             try {
                 imgPhoto.setImageBitmap(Helpers.stringToBitmap(userSchema.getPicture()));
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", loadSuccess", ex.getMessage());
             }
         }
 

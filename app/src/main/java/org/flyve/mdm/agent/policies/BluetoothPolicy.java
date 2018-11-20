@@ -47,7 +47,7 @@ public class BluetoothPolicy extends BasePolicies {
             PoliciesConnectivity.disableBluetooth(disable);
             return true;
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
             return false;
         }
     }

@@ -186,7 +186,7 @@ public class FragmentInformation extends Fragment {
                 txtDescriptionSupervisor.setText(supervisor.getEmail());
             }
         } catch(Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", loadSupervisor", ex.getMessage());
         }
     }
 
@@ -212,12 +212,12 @@ public class FragmentInformation extends Fragment {
                 try {
                     imgUser.setImageBitmap(Helpers.stringToBitmap(user.getPicture()));
                 } catch (Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                    FlyveLog.e(this.getClass().getName() + ", loadClientInfo", ex.getMessage());
                     imgUser.setImageResource(R.drawable.ic_user_round);
                 }
             }
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", loadClientInfo", ex.getMessage());
         }
     }
 
@@ -251,7 +251,7 @@ public class FragmentInformation extends Fragment {
                         statusMQTT(Boolean.parseBoolean(msg));
                     }
                 } catch (Exception ex) {
-                    FlyveLog.e(ex.getMessage());
+                    FlyveLog.e(this.getClass().getName() + ", broadcastServiceStatus", ex.getMessage());
                 }
             }
         }

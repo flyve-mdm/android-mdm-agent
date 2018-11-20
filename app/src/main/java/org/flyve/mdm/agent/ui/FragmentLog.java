@@ -136,7 +136,7 @@ public class FragmentLog extends Fragment  {
 
             return map;
         } catch (Exception ex) {
-            FlyveLog.e("ERROR: " + line + " - " + ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", addLine", "ERROR: " + line + " - " + ex.getMessage());
         }
 
         return null;

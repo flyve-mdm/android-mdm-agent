@@ -75,7 +75,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             // Register listener for LISTEN_CALL_STATE
             tmgr.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
         } catch (Exception ex) {
-            FlyveLog.e(ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", onReceive", ex.getMessage());
         }
 
         if(action.contains("USB")) {
