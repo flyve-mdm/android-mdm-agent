@@ -128,10 +128,11 @@ public class EnrollmentHelper {
                 String profileId = "";
                 JSONObject jsonSession;
                 HashMap<String, String> header = new HashMap();
+                header.put("user_token", cache.getUserToken());
 
                 try {
                     // STEP 1 get session token
-                    data = getSyncWebData(routes.initSession(cache.getUserToken()), "GET", null);
+                    data = getSyncWebData(routes.initSession(cache.getUserToken()), "GET", header);
 
                     final String errorMessage = manageError(data);
                     if(!errorMessage.equals("")) {
