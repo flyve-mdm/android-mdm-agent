@@ -32,6 +32,7 @@ import android.os.PowerManager;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
+import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.data.database.setup.AppDataBase;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.AppThreadManager;
@@ -50,6 +51,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
 
     private Context context;
     private Routes routes;
+    private MqttData cache;
 
     /**
      * This constructor loads the context of the current class
@@ -58,6 +60,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
     public PoliciesFiles(Context context) {
         this.context = context;
         routes = new Routes(context);
+        cache =  new MqttData(context);
     }
 
     /**
@@ -194,7 +197,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         } else {
             try {
                 JSONObject jsonObjDownload = new JSONObject(data);
-                return getFile(jsonObjDownload, path, url, data);
+                return getFile(jsonObjDownload, path, url, data, sessionToken);
             } catch (Exception ex) {
                 FlyveLog.e(this.getClass().getName() + ", download", ex.getMessage() + "\n" + url);
                 return "";
@@ -203,7 +206,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         return "";
     }
 
-    private String getFile(JSONObject jsonObjDownload, String path, String url, String data) {
+    private String getFile(JSONObject jsonObjDownload, String path, String url, String data, String sessionToken) {
 
         String fileName = "";
 
@@ -230,7 +233,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
                 return file.getAbsolutePath();
             }
 
-            Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath, new ConnectionHTTP.ProgressCallback() {
+            Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath , sessionToken, new ConnectionHTTP.ProgressCallback() {
                 @Override
                 public void progress(int value) {
                     publishProgress(value);
