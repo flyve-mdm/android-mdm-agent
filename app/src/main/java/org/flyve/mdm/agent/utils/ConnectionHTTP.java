@@ -157,7 +157,7 @@ public class ConnectionHTTP {
 	 * @param pathFile String place to save
 	 * @return Boolean if file is write
 	 */
-	public static Boolean getSyncFile(final String url, final String pathFile, final ProgressCallback callback) {
+	public static Boolean getSyncFile(final String url, final String pathFile, String sessionToken, final ProgressCallback callback) {
 
 		OutputStream output = null;
 
@@ -172,6 +172,7 @@ public class ConnectionHTTP {
 			HashMap<String, String> header = new HashMap();
 			header.put("Accept","application/octet-stream");
 			header.put("Content-Type","application/json");
+			header.put("Session-Token", sessionToken);
 
 			StringBuilder logHeader = new StringBuilder();
 			for (Map.Entry<String, String> entry : header.entrySet()) {
