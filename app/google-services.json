@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "168702443781",
+    "firebase_url": "https://mdm-agent-87886.firebaseio.com",
+    "project_id": "mdm-agent-87886",
+    "storage_bucket": "mdm-agent-87886.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168702443781:android:214d3b7b6e9a657f",
+        "android_client_info": {
+          "package_name": "org.flyve.mdm.agent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "168702443781-3uhk08suh50fklp9a5o58dfkggpso9ln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS3fAqNc29B1RoiA5aAjeJLWmg-yxb4Uw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
