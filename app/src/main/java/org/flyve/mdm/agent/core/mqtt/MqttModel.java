@@ -112,7 +112,8 @@ public class MqttModel implements mqtt.Model {
     private long timeLastReconnection = 0;
     private Boolean executeConnection = true;
     private int tryEverySeconds = 30;
-    ;
+
+    private PoliciesController policiesController = null;
 
     public MqttModel(mqtt.Presenter presenter) {
         this.presenter = presenter;
@@ -255,10 +256,7 @@ public class MqttModel implements mqtt.Model {
                     reconnectionCounter = 0;
 
                     // Everything ready waiting for message
-                    PoliciesController policiesController = new PoliciesController(context, client);
-
-                    // send status online true to MQTT
-                    policiesController.sendOnlineStatus(true);
+                    policiesController = new PoliciesController(context, client);
 
                     // main topic
                     String topic = mTopic + "/#";
@@ -270,6 +268,7 @@ public class MqttModel implements mqtt.Model {
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable ex) {
+                    setStatus(context, callback, false);
                     String messageError;
                     if(ex.getCause() != null) {
                         messageError = ex.getCause().toString();
@@ -281,6 +280,7 @@ public class MqttModel implements mqtt.Model {
             });
         }
         catch (Exception ex) {
+            setStatus(context, callback, false);
             showDetailError(context, CommonErrorType.MQTT_CONNECTION, ex.getMessage());
         }
     }
@@ -753,6 +753,11 @@ public class MqttModel implements mqtt.Model {
         // reconnect
         if(!isConnected) {
             reconnect(context, callback);
+        } else {
+            // send to mqtt the status connected
+            if(policiesController != null) {
+                policiesController.sendOnlineStatus(isConnected);
+            }
         }
 
         AppData cache = new AppData(context);
