@@ -301,7 +301,7 @@ public class PushPoliciesActivity extends AppCompatActivity {
                     policies.execute();
                 }
             } catch (Exception ex) {
-                FlyveLog.e(ex.getMessage());
+                FlyveLog.e(this.getClass().getName() + ", callPolicy",ex.getMessage());
             }
         }
     }
