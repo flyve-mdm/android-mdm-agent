@@ -25,6 +25,7 @@ package org.flyve.mdm.agent.utils;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 
 import org.json.JSONObject;
 
@@ -43,17 +44,28 @@ import java.util.Map;
 public class ConnectionHTTP {
 
 	private static Handler uiHandler;
+	private ConnectionModel connectionModel;
+
+	public ConnectionHTTP(ConnectionModel connectionModel) {
+		this.connectionModel = connectionModel;
+	}
 
 	static {
 		uiHandler = new Handler(Looper.getMainLooper());
 	}
 
-	private static int timeout = 1800000;
-	private static int readtimeout = 600000;
 	private static final String EXCEPTION_HTTP = "EXCEPTION_HTTP_";
 
 	private static void runOnUI(Runnable runnable) {
 		uiHandler.post(runnable);
+	}
+
+	public void getCall(CallResponse callResponse) {
+	}
+
+	public interface CallResponse {
+		String onResponse();
+		String onFailure();
 	}
 
 	/**
@@ -64,35 +76,9 @@ public class ConnectionHTTP {
 	 */
 	public static String getSyncWebData(String url, String method, Map<String, String> header) {
 		try {
-			URL dataURL = new URL(url);
-			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
-
-			conn.setConnectTimeout(timeout);
-			conn.setReadTimeout(readtimeout);
-			conn.setInstanceFollowRedirects(true);
-			conn.setRequestMethod(method);
-
-			StringBuilder logHeader = new StringBuilder();
-			if(header != null) {
-				for (Map.Entry<String, String> entry : header.entrySet()) {
-					logHeader.append("- " + entry.getKey() + " : " + entry.getValue() + "\n");
-					conn.setRequestProperty(entry.getKey(), entry.getValue());
-				}
-			} else {
-				logHeader.append("Empty");
-			}
-
-			if(conn.getResponseCode() >= 400) {
-				InputStream is = conn.getErrorStream();
-				return inputStreamToString(is);
-			}
-
-			InputStream is = conn.getInputStream();
-			String requestResponse = inputStreamToString(is);
-			String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
-			Log(response);
-
-			return requestResponse;
+			HttpURLConnection conn = getHttpURLConnection(url, method);
+			StringBuilder logHeader = getStringBuilder(header, conn);
+			return responseHTTP(url, conn, logHeader);
 		}
 		catch (final Exception ex) {
 			FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getSyncWebData", ex.getClass() +" : " + ex.getMessage());
@@ -108,41 +94,12 @@ public class ConnectionHTTP {
 	 */
 	public static String getSyncWebData(final String url, final JSONObject data, final Map<String, String> header) {
 		try {
-			URL dataURL = new URL(url);
-			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
-
-			conn.setRequestMethod("POST");
-			conn.setConnectTimeout(timeout);
-			conn.setReadTimeout(readtimeout);
-			StringBuilder logHeader = new StringBuilder();
-			if(header != null) {
-				for (Map.Entry<String, String> entry : header.entrySet()) {
-					logHeader.append("- " + entry.getKey() + " : " + entry.getValue() + "\n");
-					conn.setRequestProperty(entry.getKey(), entry.getValue());
-				}
-			} else {
-				logHeader.append("Empty");
-			}
-
-			// Send post request
-			conn.setDoOutput(true);
-
-			DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-			os.writeBytes(data.toString());
-			os.flush();
-			os.close();
-
-			if(conn.getResponseCode() >= 400) {
-				InputStream is = conn.getErrorStream();
-				return inputStreamToString(is);
-			}
-
-			InputStream is = conn.getInputStream();
-			String requestResponse = inputStreamToString(is);
-			String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
-			Log(response);
-
-			return requestResponse;
+			/* Without setInstanceFollowRedirects */
+			HttpURLConnection conn = getHttpURLConnection(url, "POST");
+			StringBuilder logHeader = getStringBuilder(header, conn);
+			// Send post request - Special
+			senPost(data, conn);
+			return responseHTTP(url, conn, logHeader);
 		}
 		catch (final Exception ex) {
 			String error = EXCEPTION_HTTP + ex.getMessage();
@@ -153,35 +110,25 @@ public class ConnectionHTTP {
 
 	/**
 	 * Download and save files on device
-	 * @param url String the url to download the file
+	 *
+	 * @param url      String the url to download the file
 	 * @param pathFile String place to save
 	 * @return Boolean if file is write
 	 */
 	public static Boolean getSyncFile(final String url, final String pathFile, String sessionToken, final ProgressCallback callback) {
-
 		OutputStream output = null;
-
 		try {
-			URL dataURL = new URL(url);
-			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
+			/* Without method */
+			HttpURLConnection conn = getHttpURLConnection(url, "");
 
-			conn.setConnectTimeout(timeout);
-			conn.setReadTimeout(readtimeout);
-			conn.setInstanceFollowRedirects(true);
-
-			HashMap<String, String> header = new HashMap();
-			header.put("Accept","application/octet-stream");
-			header.put("Content-Type","application/json");
+			HashMap<String, String> header = new HashMap<>();
+			header.put("Accept", "application/octet-stream");
+			header.put("Content-Type", "application/json");
 			header.put("Session-Token", sessionToken);
 
-			StringBuilder logHeader = new StringBuilder();
-			for (Map.Entry<String, String> entry : header.entrySet()) {
-				logHeader.append("- " + entry.getKey() + " : " + entry.getValue() + "\n");
-				conn.setRequestProperty(entry.getKey(), entry.getValue());
-			}
+			StringBuilder logHeader = getStringBuilder(header, conn);
 
 			int fileLength = conn.getContentLength();
-
 			InputStream input = conn.getInputStream();
 			output = new FileOutputStream(pathFile);
 
@@ -194,24 +141,19 @@ public class ConnectionHTTP {
 				//publish progress only if total length is known
 				if (fileLength > 0) {
 					float percent = (totalDataRead * 100) / fileLength;
-					callback.progress( Math.round(percent) );
+					callback.progress(Math.round(percent));
 				}
-
 				output.write(data, 0, count);
 			}
 
-			String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n";
-			Log(response);
-
-			FlyveLog.d( "Download complete size: " + totalDataRead);
+			FlyveLog.d("Download complete size: " + totalDataRead);
+			FlyveLog.i(responseHTTP(url, conn, logHeader));
 			return true;
-		}
-		catch (final Exception ex) {
-			FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getSyncFile", ex.getClass() +" : " + ex.getMessage());
+		} catch (final Exception ex) {
+			FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getSyncFile", ex.getClass() + " : " + ex.getMessage());
 			return false;
-		}
-		finally {
-			if(output!=null){
+		} finally {
+			if (output != null) {
 				try {
 					output.close();
 				} catch (Exception ex) {
@@ -228,80 +170,98 @@ public class ConnectionHTTP {
 	 * @param header Map with al the header information
 	 * @param callback DataCallback
 	 */
-	public static void getWebData(final String url, final JSONObject data, final Map<String, String> header, final DataCallback callback)
-	{
-		Thread t = new Thread(new Runnable()
-		{
-			public void run()
-			{
-			try
-			{
-				URL dataURL = new URL(url);
-				HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
+	public static void getWebData(final String url, final JSONObject data, final Map<String, String> header, final DataCallback callback) {
+		Thread t = new Thread(new Runnable() {
+			public void run() {
+				try {
+					/* Without setInstanceFollowRedirects */
+					HttpURLConnection conn = getHttpURLConnection(url, "POST");
+					StringBuilder logHeader = getStringBuilder(header, conn);
 
-				conn.setRequestMethod("POST");
-				conn.setConnectTimeout(timeout);
-				conn.setReadTimeout(readtimeout);
+					// Send post request
+					senPost(data, conn);
 
-				StringBuilder logHeader = new StringBuilder();
-				if(header != null) {
-					for (Map.Entry<String, String> entry : header.entrySet()) {
-						logHeader.append("- " + entry.getKey() + " : " + entry.getValue() + "\n");
-						conn.setRequestProperty(entry.getKey(), entry.getValue());
+					/* Callback */
+					if (conn.getResponseCode() >= 400) {
+						InputStream is = conn.getErrorStream();
+						final String result = inputStreamToString(is);
+						ConnectionHTTP.runOnUI(new Runnable() {
+							public void run() {
+								callback.callback(result);
+							}
+						});
+						return;
 					}
-				} else {
-					logHeader.append("Empty");
-				}
 
-				// Send post request
-				conn.setDoOutput(true);
+					final String requestResponse = inputStreamToString(conn.getInputStream());
+					Log(responseHTTP(url, conn, logHeader));
 
-				DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-				os.writeBytes(data.toString());
-				os.flush();
-				os.close();
-
-				if(conn.getResponseCode() >= 400) {
-					InputStream is = conn.getErrorStream();
-					final String result = inputStreamToString(is);
-
-					ConnectionHTTP.runOnUI(new Runnable()
-					{
-						public void run()
-						{
-							callback.callback(result);
+					ConnectionHTTP.runOnUI(new Runnable() {
+						public void run() {
+							callback.callback(requestResponse);
 						}
 					});
-					return;
+
+				} catch (final Exception ex) {
+					ConnectionHTTP.runOnUI(new Runnable() {
+						public void run() {
+							callback.callback(EXCEPTION_HTTP + ex.getMessage());
+							FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getWebData", ex.getClass() + " : " + ex.getMessage());
+						}
+					});
 				}
-
-				InputStream is = conn.getInputStream();
-				final String requestResponse = inputStreamToString(is);
-
-				String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
-				Log(response);
-
-				ConnectionHTTP.runOnUI(new Runnable() {
-					public void run() {
-						callback.callback(requestResponse);
-					}
-				});
-
-			}
-			catch (final Exception ex)
-			{
-				ConnectionHTTP.runOnUI(new Runnable()
-				{
-					public void run()
-					{
-						callback.callback(EXCEPTION_HTTP + ex.getMessage());
-						FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getWebData",ex.getClass() + " : " + ex.getMessage());
-					}
-				});
-			}
 			}
 		});
 		t.start();
+	}
+
+	private static HttpURLConnection getHttpURLConnection(String url, String method) throws IOException {
+		URL dataURL = new URL(url);
+		HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
+		conn.setConnectTimeout(1800000);
+		conn.setReadTimeout(600000);
+		conn.setInstanceFollowRedirects(true);
+		conn.setRequestMethod(method);
+		return conn;
+	}
+
+	@NonNull
+	private static StringBuilder getStringBuilder(Map<String, String> header, HttpURLConnection conn) {
+		StringBuilder logHeader = new StringBuilder();
+		if (header != null) {
+			for (Map.Entry<String, String> entry : header.entrySet()) {
+				logHeader.append("- ").append(entry.getKey()).append(" : ").append(entry.getValue()).append("\n");
+				conn.setRequestProperty(entry.getKey(), entry.getValue());
+			}
+		} else {
+			logHeader.append("Empty");
+		}
+		return logHeader;
+	}
+
+	@NonNull
+	private static String responseHTTP(String url, HttpURLConnection conn, StringBuilder logHeader) throws IOException {
+		if (conn.getResponseCode() >= 400) {
+			InputStream is = conn.getErrorStream();
+			return inputStreamToString(is);
+		}
+
+		InputStream is = conn.getInputStream();
+		String requestResponse = inputStreamToString(is);
+		String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod()
+				+ "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage()
+				+ "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
+		Log(response);
+
+		return requestResponse;
+	}
+
+	private static void senPost(JSONObject data, HttpURLConnection conn) throws IOException {
+		conn.setDoOutput(true);
+		DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+		os.writeBytes(data.toString());
+		os.flush();
+		os.close();
 	}
 
 	/**
@@ -313,19 +273,17 @@ public class ConnectionHTTP {
 	private static String inputStreamToString(final InputStream stream) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
 		StringBuilder sb = new StringBuilder();
-		String line = null;
+		String line;
 		while ((line = br.readLine()) != null) {
-			sb.append(line + "\n");
+			sb.append(line).append("\n");
 		}
 		br.close();
 		return sb.toString();
 	}
 
 	private static void Log(String message){
-		// write log file
 		FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", Log", message);
 	}
-
 
 	/**
 	 * This is the return data interface

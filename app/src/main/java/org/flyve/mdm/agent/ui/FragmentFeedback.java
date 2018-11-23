@@ -178,7 +178,7 @@ public class FragmentFeedback extends Fragment {
         ConnectionHTTP.getWebData("", json, null, new ConnectionHTTP.DataCallback() {
             @Override
             public void callback(String data) {
-                Helpers.snack(FragmentFeedback.this.getActivity(), getString(R.string.feedback_send_success));
+                Helpers.snack(FragmentFeedback.this.requireActivity(), getString(R.string.feedback_send_success));
             }
         });
     }

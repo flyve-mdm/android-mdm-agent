@@ -33,6 +33,8 @@ import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.security.AndroidCryptoProvider;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
+import org.flyve.mdm.agent.utils.ConnectionInterface;
+import org.flyve.mdm.agent.utils.ConnectionModel;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
@@ -127,12 +129,26 @@ public class EnrollmentHelper {
             {
                 String profileId = "";
                 JSONObject jsonSession;
-                HashMap<String, String> header = new HashMap();
+                HashMap<String, String> header = new HashMap<>();
                 header.put("user_token", cache.getUserToken());
 
                 try {
                     // STEP 1 get session token
-                    data = getSyncWebData(routes.initSession(cache.getUserToken()), "GET", header);
+                    ConnectionModel model = new ConnectionInterface(context).activateSessionToken(header);
+                    new ConnectionHTTP(model).getCall(new ConnectionHTTP.CallResponse() {
+                        @Override
+                        public String onResponse() {
+                            return null;
+                        }
+
+                        @Override
+                        public String onFailure() {
+                            return null;
+                        }
+                    });
+
+                    String url = routes.initSession(cache.getUserToken());
+                    data = ConnectionHTTP.getSyncWebData(url, "GET", header);
 
                     final String errorMessage = manageError(data);
                     if(!errorMessage.equals("")) {
