@@ -512,7 +512,7 @@ public class PoliciesController {
         try {
             encodedPayload = payload.getBytes(UTF_8);
             MqttMessage message = new MqttMessage(encodedPayload);
-            IMqttDeliveryToken token = client.publish(topic, payload.getBytes(), 0, true, null, null);
+            IMqttDeliveryToken token = client.publish(topic, message);
             broadcastReceivedLog(MQTT_SEND, "Send Online Status", "ID: " + token.getMessageId());
         } catch (Exception ex) {
             broadcastReceivedLog(ERROR, "Error on sendStatusVersion", ex.getMessage());
