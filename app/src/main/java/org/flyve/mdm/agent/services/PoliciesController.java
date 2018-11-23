@@ -528,8 +528,21 @@ public class PoliciesController {
         new FastLocationProvider().getLocation(context, new FastLocationProvider.LocationResult() {
             @Override
             public void gotLocation(Location location) {
+                String topic = mTopic + "/Status/Geolocation";
+
                 if(location == null) {
-                    FlyveLog.d("without location yet...");
+                    // if the GPS not response then send this character ?
+                    FlyveLog.e(this.getClass().getName() + ", sendGPS", "without location yet...");
+                    try {
+                        byte[] encodedPayload;
+                        String payload = "?";
+                        encodedPayload = payload.getBytes(UTF_8);
+                        MqttMessage message = new MqttMessage(encodedPayload);
+                        client.publish(topic, message);
+                    } catch (Exception ex) {
+                        FlyveLog.e(this.getClass().getName() + ", sendGPS", "Fail sending the ? payload");
+                    }
+
                 } else {
                     FlyveLog.d("lat: " + location.getLatitude() + " lon: " + location.getLongitude());
 
@@ -543,7 +556,6 @@ public class PoliciesController {
                         jsonGPS.put("longitude", longitude);
                         jsonGPS.put("datetime", Helpers.getUnixTime());
 
-                        String topic = mTopic + "/Status/Geolocation";
                         String payload = jsonGPS.toString();
                         byte[] encodedPayload;
 
@@ -552,7 +564,7 @@ public class PoliciesController {
                         IMqttDeliveryToken token = client.publish(topic, message);
 
                         // send broadcast
-                        broadcastReceivedLog(MQTT_SEND, "Send Geolocation", "ID: " + token.getMessageId());
+                        broadcastReceivedLog(MQTT_SEND, "Sended Geolocation", "ID: " + token.getMessageId());
                     } catch (Exception ex) {
                         FlyveLog.e(this.getClass().getName() + ", sendGPS", ex.getMessage());
                         broadcastReceivedLog(ERROR, "Error on GPS location", ex.getMessage());
