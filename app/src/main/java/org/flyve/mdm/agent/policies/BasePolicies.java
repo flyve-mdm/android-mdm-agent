@@ -119,7 +119,7 @@ public abstract class BasePolicies {
             MqttMessage message = new MqttMessage(encodedPayload);
             IMqttDeliveryToken token = this.mqttClient.publish(topic, message);
 
-            Log(MQTT_SEND, "Send Status", "ID: " + token.getMessageId());
+            Log(MQTT_SEND, "Policy Status", "TaskID: " + taskId + " Status: " + status);
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", mqttSendTaskStatus", ex.getMessage());
 
