@@ -86,6 +86,18 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        String policy = getIntent().getStringExtra("policy");
+        if(policy!=null) {
+            String taskId = getIntent().getStringExtra("taskId");
+            String topic = getIntent().getStringExtra("topic");
+
+            Intent intent = new Intent(this, PushPoliciesActivity.class);
+            intent.putExtra("policy", policy);
+            intent.putExtra("taskId", taskId);
+            intent.putExtra("topic", topic);
+            SplashActivity.this.startActivity(intent);
+        }
+
         MqttData cache = new MqttData( SplashActivity.this );
 
         // if broker is on cache open the main activity
