@@ -81,7 +81,7 @@ public class FastLocationProvider {
         }
 
         timer = new Timer();
-        timer.schedule(new GetLastLocation(), 10000);
+        timer.schedule(new GetLastLocation(), 3000);
 
         return true;
     }
@@ -144,6 +144,7 @@ public class FastLocationProvider {
                 }
             } catch (SecurityException ex) {
                 FlyveLog.e(this.getClass().getName() + ", GetLastLocation", ex.getMessage());
+                locationResult.gotLocation(null);
             }
 
             //if there are both values use the latest one

@@ -525,7 +525,8 @@ public class PoliciesController {
      */
     public void sendGPS() {
 
-        new FastLocationProvider().getLocation(context, new FastLocationProvider.LocationResult() {
+        FastLocationProvider fastLocationProvider = new FastLocationProvider();
+        Boolean isAvailable = fastLocationProvider.getLocation(context, new FastLocationProvider.LocationResult() {
             @Override
             public void gotLocation(Location location) {
                 String topic = mTopic + "/Status/Geolocation";
@@ -572,6 +573,20 @@ public class PoliciesController {
                 }
             }
         });
+
+        if(!isAvailable) {
+            String topic = mTopic + "/Status/Geolocation";
+            try {
+                byte[] encodedPayload;
+                String payload = "?";
+                encodedPayload = payload.getBytes(UTF_8);
+                MqttMessage message = new MqttMessage(encodedPayload);
+                client.publish(topic, message);
+            } catch (Exception ex) {
+                FlyveLog.e(this.getClass().getName() + ", sendGPS", "Fail sending the ? payload");
+            }
+
+        }
     }
 
     /**
