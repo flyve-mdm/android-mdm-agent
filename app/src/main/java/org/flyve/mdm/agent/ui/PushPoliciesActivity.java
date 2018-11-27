@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.CommonErrorType;
@@ -58,6 +59,9 @@ public class PushPoliciesActivity extends AppCompatActivity {
         String policy = getIntent().getStringExtra("policy");
         String topic = getIntent().getStringExtra("topic");
         String taskId = getIntent().getStringExtra("taskId");
+
+        TextView txtPolicies = findViewById(R.id.txtPolicies);
+        txtPolicies.setText(policy);
 
         messageArrived(PushPoliciesActivity.this, topic, policy);
 
