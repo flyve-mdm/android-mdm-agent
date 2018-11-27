@@ -244,19 +244,20 @@ public class MqttModel implements mqtt.Model {
 
         try {
             IMqttToken token = client.connect(options);
+
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Helpers.storeLog("MQTT", "Connection Success", "");
+
+                    // Everything ready waiting for message
+                    policiesController = new PoliciesController(context, client);
 
                     // We are connected
                     setStatus(context, callback, true);
 
                     // set the reconnection counter to 0
                     reconnectionCounter = 0;
-
-                    // Everything ready waiting for message
-                    policiesController = new PoliciesController(context, client);
 
                     // main topic
                     String topic = mTopic + "/#";
