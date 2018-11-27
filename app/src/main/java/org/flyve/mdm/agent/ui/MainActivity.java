@@ -52,6 +52,7 @@ import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.policies.manager.AndroidPolicies;
 import org.flyve.policies.manager.DeviceLockedController;
+import org.flyve.mdm.agent.utils.Helpers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
                         // Log
-                        FlyveLog.d("Firebase token: " + token);
+                        Helpers.storeLog("Firebase", "token", token);
                     }
                 });
     }
