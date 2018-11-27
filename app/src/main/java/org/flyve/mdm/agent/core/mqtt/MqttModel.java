@@ -264,7 +264,7 @@ public class MqttModel implements mqtt.Model {
                     policiesController.subscribe(topic);
 
                     // subscribe to manifest
-                    policiesController.subscribe("/FlyvemdmManifest/Status/Version");
+                    policiesController.subscribe("FlyvemdmManifest/Status/Version");
                 }
 
                 @Override
