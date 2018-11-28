@@ -3,8 +3,8 @@ package org.flyve.mdm.agent.policies;
 import android.content.Context;
 import android.media.AudioManager;
 
-import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.policies.manager.CustomPolicies;
 
 /*
  *   Copyright  2018 Teclib. All rights reserved.
@@ -45,7 +45,10 @@ public class StreamNotificationPolicy extends BasePolicies {
     protected boolean process() {
         try {
             boolean disable = Boolean.parseBoolean(this.policyValue.toString());
-            PoliciesConnectivity.disableSounds(AudioManager.STREAM_NOTIFICATION, disable);
+
+            CustomPolicies customPolicies = new CustomPolicies(context);
+            customPolicies.disableSounds(AudioManager.STREAM_NOTIFICATION, disable);
+
             return true;
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());

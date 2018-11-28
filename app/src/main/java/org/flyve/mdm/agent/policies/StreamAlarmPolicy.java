@@ -1,13 +1,9 @@
 package org.flyve.mdm.agent.policies;
 
 import android.content.Context;
-import android.media.AudioManager;
-import android.os.Build;
 
-import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.FlyveLog;
-
-import static android.content.Context.AUDIO_SERVICE;
+import org.flyve.policies.manager.CustomPolicies;
 
 /*
  *   Copyright  2018 Teclib. All rights reserved.
@@ -49,21 +45,8 @@ public class StreamAlarmPolicy extends BasePolicies {
         try {
             boolean disable = Boolean.parseBoolean(this.policyValue.toString());
 
-            AudioManager aManager = (AudioManager) MDMAgent.getInstance().getApplicationContext().getSystemService(AUDIO_SERVICE);
-            try {
-                if (Build.VERSION.SDK_INT >= 23) {
-                    if(disable) {
-                        aManager.setStreamVolume(AudioManager.STREAM_ALARM, 0, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
-                    } else {
-                        aManager.setStreamVolume(AudioManager.STREAM_ALARM, 100, 0);
-                    }
-                } else {
-                    //media
-                    aManager.setStreamMute(AudioManager.STREAM_ALARM, disable);
-                }
-            } catch (Exception ex) {
-                FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
-            }
+            CustomPolicies customPolicies = new CustomPolicies(context);
+            customPolicies.disableAlarm(disable);
 
             return true;
         } catch (Exception ex) {

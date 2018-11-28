@@ -45,17 +45,19 @@ import org.flyve.mdm.agent.policies.MobileLinePolicy;
 import org.flyve.mdm.agent.policies.NFCPolicy;
 import org.flyve.mdm.agent.policies.StorageEncryptionPolicy;
 import org.flyve.mdm.agent.policies.WifiPolicy;
-import org.flyve.mdm.agent.services.PoliciesConnectivity;
-import org.flyve.mdm.agent.services.PoliciesDeviceManager;
+import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.StorageFolder;
+import org.flyve.policies.manager.AndroidPolicies;
+import org.flyve.policies.manager.CustomPolicies;
 
 public class FragmentTestPolicies extends Fragment {
 
     private PoliciesData cache;
-    private PoliciesDeviceManager mdm;
+    private AndroidPolicies mdm;
+    private CustomPolicies customPolicies;
     private static final int PRIORITY = 0;
 
     @Override
@@ -66,8 +68,8 @@ public class FragmentTestPolicies extends Fragment {
         View v = inflater.inflate(R.layout.fragment_test_policies, container, false);
 
         cache = new PoliciesData(FragmentTestPolicies.this.getContext());
-        mdm = new PoliciesDeviceManager(FragmentTestPolicies.this.getContext());
-
+        mdm = new AndroidPolicies(FragmentTestPolicies.this.getContext(),FlyveAdminReceiver.class);
+        customPolicies = new CustomPolicies(FragmentTestPolicies.this.getContext());
         Switch swGPS = v.findViewById(R.id.swGPS);
 
         swGPS.setChecked(Boolean.parseBoolean(cache.getValue(GPSPolicy.POLICY_NAME).value));
@@ -75,7 +77,7 @@ public class FragmentTestPolicies extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
-                    PoliciesConnectivity.disableGps(isChecked);
+                    customPolicies.disableGps(isChecked);
                 }
             }
         });
@@ -85,7 +87,7 @@ public class FragmentTestPolicies extends Fragment {
         swAirplane.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                PoliciesConnectivity.disableAirplaneMode(isChecked);
+                customPolicies.disableAirplaneMode(isChecked);
             }
         });
 
@@ -95,7 +97,7 @@ public class FragmentTestPolicies extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
-                    PoliciesConnectivity.disableBluetooth(isChecked);
+                    customPolicies.disableBluetooth(isChecked);
                 }
             }
         });
@@ -106,7 +108,7 @@ public class FragmentTestPolicies extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
-                    PoliciesConnectivity.disableWifi(isChecked);
+                    customPolicies.disableWifi(isChecked);
                 }
             }
         });
@@ -117,7 +119,7 @@ public class FragmentTestPolicies extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
-                    PoliciesConnectivity.disableNFC(isChecked);
+                    customPolicies.disableNFC(isChecked);
                 }
             }
         });
@@ -128,7 +130,7 @@ public class FragmentTestPolicies extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
-                    PoliciesConnectivity.disableHostpotTethering(isChecked);
+                    customPolicies.disableHostpotTethering(isChecked);
                 }
             }
         });
@@ -139,7 +141,7 @@ public class FragmentTestPolicies extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
-                    PoliciesConnectivity.disableMobileLine(isChecked);
+                    customPolicies.disableMobileLine(isChecked);
                 }
             }
         });
@@ -148,7 +150,7 @@ public class FragmentTestPolicies extends Fragment {
         btnLock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mdm.lockScreen();
+                mdm.lockScreen(LockActivity.class);
             }
         });
 
@@ -230,7 +232,7 @@ public class FragmentTestPolicies extends Fragment {
         btnPasswordEnable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mdm.enablePassword(true, "");
+                mdm.enablePassword(true, "", MainActivity.class);
             }
         });
 
