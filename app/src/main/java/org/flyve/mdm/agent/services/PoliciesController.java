@@ -39,11 +39,14 @@ import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.FileData;
 import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.data.database.PoliciesData;
+import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
+import org.flyve.mdm.agent.ui.LockActivity;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.Inventory;
+import org.flyve.policies.manager.AndroidPolicies;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -67,12 +70,13 @@ public class PoliciesController {
     private Context context;
     private MqttData mqttData;
     private String mTopic;
+    private AndroidPolicies androidPolicies;
 
     public PoliciesController(Context context, MqttAndroidClient client) {
         this.client = client;
         this.context = context;
         mqttData = new MqttData(context);
-
+        androidPolicies = new AndroidPolicies(context, FlyveAdminReceiver.class);
         mTopic = mqttData.getTopic();
 
         arrTopics = new ArrayList<>();
@@ -228,11 +232,11 @@ public class PoliciesController {
         }
 
         try {
-            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
+
 
             if(lock) {
-                mdm.lockScreen();
-                mdm.lockDevice();
+                androidPolicies.lockScreen(LockActivity.class);
+                androidPolicies.lockDevice();
                 broadcastReceivedLog(MQTT_SEND, "Lock", "Device Lock");
             } else {
                 Helpers.sendBroadcast("unlock", "org.flyvemdm.finishlock", context);
@@ -246,7 +250,7 @@ public class PoliciesController {
     public void resetPassword(String newPassword) {
         try {
             if(!newPassword.isEmpty()) {
-                new PoliciesDeviceManager(context).resetPassword(newPassword);
+                androidPolicies.resetPassword(newPassword);
                 broadcastReceivedLog(MQTT_SEND, "Reset Password", "Reset Password : ****");
             } else {
                 broadcastReceivedLog(ERROR, "Error on Reset Password", "the new password is empty");
@@ -371,8 +375,7 @@ public class PoliciesController {
         }
 
         try {
-            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-            mdm.wipe();
+            androidPolicies.wipe();
             broadcastReceivedLog(MQTT_SEND, "Wipe", "Wipe success");
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", wipe", ex.getMessage());

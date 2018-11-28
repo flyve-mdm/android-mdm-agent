@@ -38,9 +38,9 @@ import org.flyve.mdm.agent.policies.MobileLinePolicy;
 import org.flyve.mdm.agent.policies.NFCPolicy;
 import org.flyve.mdm.agent.policies.RoamingPolicy;
 import org.flyve.mdm.agent.policies.WifiPolicy;
-import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.policies.manager.CustomPolicies;
 
 /**
  * Receive broadcast from android.net.wifi.STATE_CHANGE and android.bluetooth.adapter.action.STATE_CHANGED
@@ -59,6 +59,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         FlyveLog.d("Connectivity receiver: " + action);
 
         PoliciesData cache = new PoliciesData(context);
+        CustomPolicies customPolicies = new CustomPolicies(context);
 
         if(action==null) {
             return;
@@ -80,7 +81,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
 
         if(action.contains("USB")) {
             FlyveLog.d("USB Device Attached");
-            PoliciesConnectivity.disableAllUsbFileTransferProtocols( true );
+            customPolicies.disableAllUsbFileTransferProtocols( true );
         }
 
         if("android.net.conn.CONNECTIVITY_CHANGE".equalsIgnoreCase(action)) {
@@ -89,13 +90,13 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             // Disable / Enable Roaming
             Boolean policy = Helpers.boolFromString(cache.getValue(RoamingPolicy.POLICY_NAME).value);
             if(policy) {
-                PoliciesConnectivity.disableRoaming(policy);
+                customPolicies.disableRoaming(policy);
             }
 
             // Disable / Enable Mobile line
             policy = Helpers.boolFromString(cache.getValue(MobileLinePolicy.POLICY_NAME).value);
             if(policy) {
-                PoliciesConnectivity.disableMobileLine(policy);
+                customPolicies.disableMobileLine(policy);
             }
         }
 
@@ -103,7 +104,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             // Disable / Enable Airplane Mode
             Boolean policy = Helpers.boolFromString(cache.getValue(AirplaneModePolicy.POLICY_NAME).value);
             if(policy) {
-                PoliciesConnectivity.disableAirplaneMode(policy);
+                customPolicies.disableAirplaneMode(policy);
             }
         }
 
@@ -114,13 +115,13 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
             // Disable / Enable Hostpot
             Boolean policy = Helpers.boolFromString(cache.getValue(HostpotTetheringPolicy.POLICY_NAME).value);
             if(policy) {
-                PoliciesConnectivity.disableWifi(policy);
+                customPolicies.disableWifi(policy);
             }
 
             // Disable / Enable Wifi
             policy = Helpers.boolFromString(cache.getValue(WifiPolicy.POLICY_NAME).value);
             if(policy) {
-                PoliciesConnectivity.disableHostpotTethering(policy);
+                customPolicies.disableHostpotTethering(policy);
             }
         }
 
@@ -128,7 +129,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         if ("android.bluetooth.adapter.action.STATE_CHANGED".equalsIgnoreCase(action)) {
             Boolean policy = Helpers.boolFromString(cache.getValue(BluetoothPolicy.POLICY_NAME).value);
             if(policy) {
-                PoliciesConnectivity.disableBluetooth(policy);
+                customPolicies.disableBluetooth(policy);
             }
         }
 
@@ -136,7 +137,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
         if("android.nfc.extra.ADAPTER_STATE".equalsIgnoreCase(action)) {
             Boolean policy = Helpers.boolFromString(cache.getValue(NFCPolicy.POLICY_NAME).value);
             if(policy) {
-                PoliciesConnectivity.disableNFC(policy);
+                customPolicies.disableNFC(policy);
             }
         }
 
@@ -170,7 +171,7 @@ public class MQTTConnectivityReceiver extends BroadcastReceiver {
              */
 
             boolean disable = Helpers.boolFromString(cache.getValue(GPSPolicy.POLICY_NAME).value);
-            PoliciesConnectivity.disableGps(disable);
+            customPolicies.disableGps(disable);
             FlyveLog.i("Location providers change: " + disable);
         }
     }

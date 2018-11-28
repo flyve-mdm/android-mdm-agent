@@ -2,8 +2,10 @@ package org.flyve.mdm.agent.policies;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.services.PoliciesDeviceManager;
+import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
+import org.flyve.mdm.agent.ui.MainActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.policies.manager.AndroidPolicies;
 
 /*
  *   Copyright  2018 Teclib. All rights reserved.
@@ -44,7 +46,10 @@ public class PasswordEnablePolicy extends BasePolicies {
     protected boolean process() {
         try {
             String type = this.policyValue.toString();
-            new PoliciesDeviceManager(context).enablePassword(true, type);
+
+            AndroidPolicies androidPolicies = new AndroidPolicies(context, FlyveAdminReceiver.class);
+            androidPolicies.enablePassword(true, type, MainActivity.class);
+
             return true;
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());

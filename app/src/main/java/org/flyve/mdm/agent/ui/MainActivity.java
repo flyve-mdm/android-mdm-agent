@@ -40,10 +40,11 @@ import android.widget.TextView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.DrawerAdapter;
 import org.flyve.mdm.agent.data.localstorage.AppData;
-import org.flyve.mdm.agent.services.DeviceLockedController;
+import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.services.MQTTService;
-import org.flyve.mdm.agent.services.PoliciesDeviceManager;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.policies.manager.AndroidPolicies;
+import org.flyve.policies.manager.DeviceLockedController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
                     extra = "DeployApp";
                     break;
                 case "PasswordPolicy":
-                    new PoliciesDeviceManager(MainActivity.this).enablePassword(true, "");
+                    AndroidPolicies androidPolicies = new AndroidPolicies(MainActivity.this, FlyveAdminReceiver.class);
+                    androidPolicies.enablePassword(true, "", MainActivity.class);
             }
         }
 

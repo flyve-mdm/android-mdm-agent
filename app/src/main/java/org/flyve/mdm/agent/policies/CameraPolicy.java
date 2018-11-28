@@ -2,8 +2,9 @@ package org.flyve.mdm.agent.policies;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.services.PoliciesDeviceManager;
+import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.policies.manager.AndroidPolicies;
 
 /*
  *   Copyright  2018 Teclib. All rights reserved.
@@ -43,8 +44,11 @@ public class CameraPolicy extends BasePolicies {
     @Override
     protected boolean process() {
         try {
-            PoliciesDeviceManager mdm = new PoliciesDeviceManager(this.context);
-            mdm.disableCamera(Boolean.valueOf(this.policyValue.toString()));
+            boolean disable = Boolean.valueOf(this.policyValue.toString());
+
+            AndroidPolicies androidPolicies = new AndroidPolicies(context, FlyveAdminReceiver.class);
+            androidPolicies.disableCamera(disable);
+
             return true;
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());

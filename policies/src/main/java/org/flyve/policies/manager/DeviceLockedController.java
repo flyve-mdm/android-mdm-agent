@@ -21,7 +21,7 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.services;
+package org.flyve.policies.manager;
 
 import android.annotation.TargetApi;
 import android.app.KeyguardManager;
@@ -30,7 +30,7 @@ import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
 
-import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.policies.utils.FlyveLog;
 
 public class DeviceLockedController {
 
