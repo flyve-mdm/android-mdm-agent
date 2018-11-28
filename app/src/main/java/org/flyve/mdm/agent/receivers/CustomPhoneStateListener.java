@@ -28,9 +28,9 @@ import android.telephony.PhoneStateListener;
 
 import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.policies.SpeakerphonePolicy;
-import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.policies.manager.CustomPolicies;
 
 public class CustomPhoneStateListener extends PhoneStateListener {
 
@@ -45,7 +45,8 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 
         if (state == 2) {
             // Disable Speaker Phone
-            PoliciesConnectivity.disableSpeakerphone(disable);
+            CustomPolicies customPolicies = new CustomPolicies(context);
+            customPolicies.disableSpeakerphone(disable);
         }
     }
 }

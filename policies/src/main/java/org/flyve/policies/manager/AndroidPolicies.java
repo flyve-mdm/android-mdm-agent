@@ -21,7 +21,7 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent.services;
+package org.flyve.policies.manager;
 
 import android.annotation.TargetApi;
 import android.app.admin.DevicePolicyManager;
@@ -32,24 +32,21 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
 
-import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
-import org.flyve.mdm.agent.ui.LockActivity;
-import org.flyve.mdm.agent.ui.MainActivity;
-import org.flyve.mdm.agent.utils.FlyveLog;
-import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.policies.utils.FlyveLog;
+import org.flyve.policies.utils.Helpers;
 
 import static android.app.admin.DevicePolicyManager.WIPE_EXTERNAL_STORAGE;
 
-public class PoliciesDeviceManager {
+public class AndroidPolicies {
 
     private DevicePolicyManager mDPM;
     private ComponentName mDeviceAdmin;
     private Context context;
 
-    public PoliciesDeviceManager(Context context) {
+    public AndroidPolicies(Context context, Class<?> adminReceiver) {
         this.context = context;
         mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
-        mDeviceAdmin = new ComponentName(context, FlyveAdminReceiver.class);
+        mDeviceAdmin = new ComponentName(context, adminReceiver);
     }
 
     @TargetApi(21)
@@ -102,7 +99,7 @@ public class PoliciesDeviceManager {
         }
     }
 
-    public void enablePassword(boolean enable, String typeRecommended) {
+    public void enablePassword(boolean enable, String typeRecommended, Class<?> mainActivity) {
         if(enable) {
             DeviceLockedController pwd = new DeviceLockedController(context);
             if (pwd.isDeviceScreenLocked()) {
@@ -121,7 +118,7 @@ public class PoliciesDeviceManager {
                 context.startActivity(intent);
 
                 String type = typeRecommended.equals("PASSWORD_PASSWD") ? "Password" : "PIN Password";
-                Helpers.sendToNotificationBar(context, 1009, "MDM Agent", "Please create a " + type, true, MainActivity.class, "PasswordPolicy");
+                Helpers.sendToNotificationBar(context, 1009, "MDM Agent", "Please create a " + type, true, mainActivity, "PasswordPolicy");
             }
         }
     }
@@ -149,8 +146,8 @@ public class PoliciesDeviceManager {
     /**
      * Launch lock activity
      */
-    public void lockScreen() {
-        Intent intent = new Intent(context, LockActivity.class);
+    public void lockScreen(Class<?> lockActivity) {
+        Intent intent = new Intent(context, lockActivity);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }

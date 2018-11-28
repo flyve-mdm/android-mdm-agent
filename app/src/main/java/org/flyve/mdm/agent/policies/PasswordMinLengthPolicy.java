@@ -2,8 +2,9 @@ package org.flyve.mdm.agent.policies;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.services.PoliciesDeviceManager;
+import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.policies.manager.AndroidPolicies;
 
 /*
  *   Copyright  2018 Teclib. All rights reserved.
@@ -44,7 +45,10 @@ public class PasswordMinLengthPolicy extends BasePolicies {
     protected boolean process() {
         try {
             int length = Integer.parseInt(this.policyValue.toString());
-            new PoliciesDeviceManager(context).setPasswordLength(length);
+
+            AndroidPolicies androidPolicies = new AndroidPolicies(context, FlyveAdminReceiver.class);
+            androidPolicies.setPasswordLength(length);
+
             return true;
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());

@@ -2,8 +2,9 @@ package org.flyve.mdm.agent.policies;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.services.PoliciesDeviceManager;
+import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.policies.manager.AndroidPolicies;
 
 /*
  *   Copyright  2018 Teclib. All rights reserved.
@@ -44,7 +45,10 @@ public class PasswordQualityPolicy extends BasePolicies {
     protected boolean process() {
         try {
             String quality = this.policyValue.toString();
-            new PoliciesDeviceManager(context).setPasswordQuality(quality);
+
+            AndroidPolicies androidPolicies = new AndroidPolicies(context, FlyveAdminReceiver.class);
+            androidPolicies.setPasswordQuality(quality);
+
             return true;
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());

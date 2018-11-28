@@ -2,8 +2,8 @@ package org.flyve.mdm.agent.policies;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.services.PoliciesConnectivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.policies.manager.CustomPolicies;
 
 /*
  *   Copyright  2018 Teclib. All rights reserved.
@@ -44,7 +44,10 @@ public class GPSPolicy extends BasePolicies {
     protected boolean process() {
         try {
             boolean disable = Boolean.parseBoolean(this.policyValue.toString());
-            PoliciesConnectivity.disableGps(disable);
+
+            CustomPolicies customPolicies = new CustomPolicies(context);
+            customPolicies.disableGps(disable);
+
             return true;
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
