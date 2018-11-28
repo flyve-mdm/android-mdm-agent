@@ -79,11 +79,9 @@ dependencies {
     implementation 'com.madgag.spongycastle:pkix:1.54.0.0'
     implementation 'com.google.code.gson:gson:2.8.1'
     implementation 'com.google.zxing:core:3.3.0'
-
     //Firebase
     implementation 'com.google.firebase:firebase-core:16.0.5'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
-
     // Google libraries
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.android.support:appcompat-v7:27.1.1'
