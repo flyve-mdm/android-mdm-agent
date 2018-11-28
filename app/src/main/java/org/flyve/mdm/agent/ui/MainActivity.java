@@ -50,9 +50,9 @@ import org.flyve.mdm.agent.data.localstorage.AppData;
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.policies.manager.AndroidPolicies;
 import org.flyve.policies.manager.DeviceLockedController;
-import org.flyve.mdm.agent.utils.Helpers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
