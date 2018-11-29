@@ -1,0 +1,33 @@
+---
+layout: page
+permalink: news/
+---
+
+<div class="container">
+  <h1>News post</h1>
+
+  <ul class="news">
+    {% for post in site.posts %}
+      {% if post.layout == 'news' %}
+        <li>
+          {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
+
+          <h3>
+            <a href="{{ post.url | absolute_url }}">
+              {{ post.title | escape }}
+            </a>
+          </h3>
+
+          <span>
+            {{ post.date | date: date_format }}
+          </span>
+
+          <p>
+            {{ post.content | strip_html | truncatewords: 70 }}
+          </p>
+
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</div>
