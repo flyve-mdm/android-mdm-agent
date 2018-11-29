@@ -6,3 +6,7 @@ files:
     - 'css/highlight.scss' 
     - 'node_modules/**'
     - 'vendor/bundle/ruby/**'
+rules:
+  class-name-format:
+    - 1
+    - convention: hyphenatedbem
