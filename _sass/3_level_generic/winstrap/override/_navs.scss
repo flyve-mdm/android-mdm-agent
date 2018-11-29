@@ -1,0 +1,147 @@
+//
+// Static resources
+//
+$pivot-horizontal-padding: 12px;
+$pivot-hover-color: rgba($color-type-primary, .8);
+$pivot-hover-color-alt: rgba($color-type-primary-alt, .8);
+
+//
+// Navbar
+//
+.navbar {
+  .nav {
+    li {
+      margin: 0;
+    }
+
+    // Open dropdowns
+    .open > a {
+      &,
+      &:hover,
+      &:focus {
+        border: 0;
+      }
+    }
+  }
+}
+
+// Need to get real specific to override Bootstrap here, hence descendant child selectors
+// Without this .side-navigation gets ugly backgrounds on hover & focus
+.nav > li {
+  > a:hover,
+  > a:focus {
+    background-color: transparent;
+  }
+}
+
+//
+// Nav pills
+//
+.page-header .nav-pills {
+  margin: spacing(xs) 0;
+
+  li {
+    margin: 0;
+  }
+
+  > li > a {
+    color: $color-type-primary;
+    margin: 0 spacing(xs) 0 0;
+    padding: spacing(xxs) 0;
+
+    &:hover {
+      background: none;
+      color: $brand-primary;
+      text-decoration: underline;
+    }
+  }
+
+  > li.active > a,
+  > li.active > a:hover,
+  > li.active > a:focus {
+    background: none;
+    color: $brand-primary;
+    text-decoration: none;
+  }
+}
+
+//
+// Tabs
+// RavadaUI: Pivot control
+//
+.nav-tabs {
+  border-bottom: 0;
+  margin-left: -($pivot-horizontal-padding); // Offsetting padding on the individual tabs
+  margin-right: -($pivot-horizontal-padding); // Offsetting padding on the individual tabs
+
+  > li {
+    margin: 0;
+
+    // Main tabs
+    // Resetting most of the Bootstrap styles
+    > a {
+      @include type(t4);
+      border: 0;
+      border-radius: 0;
+      margin: 0;
+      padding-left: $pivot-horizontal-padding;
+      padding-right: $pivot-horizontal-padding;
+
+      &:hover,
+      &:focus {
+        background: transparent;
+        border: 0;
+      }
+    }
+
+    // Active tab
+    &.active > a {
+      &,
+      &:hover,
+      &:focus {
+        background: transparent;
+        border: 0;
+      }
+    }
+  }
+
+  // Default colors
+  > li > a {
+    color: $color-type-secondary;
+
+    &:hover,
+    &:focus {
+      color: $pivot-hover-color;
+    }
+  }
+
+  > li.active > a {
+    color: $color-type-primary;
+
+    &:hover,
+    &:focus {
+      color: $pivot-hover-color;
+    }
+  }
+
+  // Alt colors
+  &.theme-alt {
+    > li > a {
+      color: $color-type-secondary-alt;
+
+      &:hover,
+      &:focus {
+        color: $pivot-hover-color-alt;
+      }
+    }
+
+    > li.active > a {
+      color: $color-type-primary-alt;
+
+      &:hover,
+      &:focus {
+        color: $pivot-hover-color-alt;
+      }
+    }
+  }
+}

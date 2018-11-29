@@ -1,0 +1,25 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+pre {
+  @include type(t8);
+  border: 0;
+  border-left: 5px solid $pre-border-color;
+  margin: spacing(xxs) 0 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+blockquote {
+  @include type(t7, set-line-height, responsive);
+  margin: spacing(xs) 0 0;
+  padding: spacing(xxxs, -4) 0 spacing(xxxs, -4) spacing(xs, -3);
+}

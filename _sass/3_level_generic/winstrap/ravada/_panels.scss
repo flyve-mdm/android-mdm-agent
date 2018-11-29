@@ -1,0 +1,96 @@
+.panel-clean {
+  border: 0;
+
+  .panel-heading,
+  .panel-footer {
+    @include clearfix();
+    background: $color-dim-mid;
+    padding: 15px 20px;
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  .panel-heading + .panel-heading {
+    padding-bottom: 10px;
+    padding-top: 0;
+  }
+
+  .panel-body {
+    padding: 25px 0 0;
+  }
+
+  .panel-footer {
+    border: 0;
+  }
+
+  .nav-pills > li > a {
+    background: none;
+    border-left: 1px solid $color-vivid-mid;
+    color: $color-type-primary;
+    padding: 0 1em;
+
+    &:hover {
+      background: none;
+      color: $brand-primary;
+      text-decoration: underline;
+    }
+  }
+
+  .nav-pills > li:first-child > a {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .nav-pills > li.active > a {
+    color: $brand-primary;
+    cursor: default;
+    text-decoration: none;
+  }
+}
+
+.panel-line {
+  border: 0;
+  border-top: 1px solid $color-neutral-mid;
+  margin: 0 0 15px;
+
+  .panel-heading,
+  .panel-footer {
+    background: none;
+    padding: 20px 0;
+  }
+
+  .panel-body {
+    padding: 0;
+  }
+
+  .panel-footer {
+    .glyph-flag,
+    .glyph-completed {
+      font-size: 1.2em;
+    }
+  }
+
+  .list-inline {
+    display: inline;
+
+    li {
+      padding: 0 0 0 3em;
+
+      &.active {
+        a {
+          color: $color-type-secondary;
+        }
+      }
+
+      .glyph-completed {
+        color: $color-type-primary;
+      }
+    }
+  }
+
+  .rating-inline {
+    margin-right: 1em;
+  }
+}

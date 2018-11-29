@@ -1,0 +1,29 @@
+// Stacked alerts on top of the screen
+.alert-stack {
+  //
+  // Color
+  //
+  // ensure background is not transparent
+  background-color: $color-white;
+
+  // Added by Bootstrap Affix when scrolling
+  &.affix {
+    top: 0; // position is fixed
+    width: 100%;
+    z-index: 1000;
+  }
+
+  .alert {
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    margin: 0 0 1px;
+    padding-right: ($grid-gutter-width / 2); // space for the close glyph
+
+    p {
+      @include type(t8);
+      margin-bottom: 0;
+      padding-top: 4px;
+    }
+  }
+}

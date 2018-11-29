@@ -1,0 +1,23 @@
+﻿.panel {
+  box-shadow: none;
+
+  .pager {
+    margin: 0;
+
+    li > a {
+      padding: 0;
+    }
+
+    i[class*='glyph-'] {
+      font-size: 1.7em;
+    }
+  }
+
+  .nav-pills > .dropdown > a {
+    background: none;
+    border-left: 0;
+    color: $color-type-primary;
+    margin: 0 25px;
+    padding: 0;
+  }
+}

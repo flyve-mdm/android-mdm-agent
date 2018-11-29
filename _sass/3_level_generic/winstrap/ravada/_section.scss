@@ -1,0 +1,49 @@
+﻿// Section
+.section {
+  margin-bottom: 1.5em;
+}
+
+.section-header {
+  margin-bottom: 1.5em;
+  position: relative;
+
+  .section-title {
+    @include type(t2);
+    color: $headings-color;
+    margin-bottom: 0;
+
+    a {
+      color: inherit;
+
+      &:hover,
+      &:focus {
+        color: $brand-primary;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.section-header-aside {
+  position: absolute;
+  right: ($grid-gutter-width / 2);
+  top: .25em;
+}
+
+.section-header-more {
+  margin-left: .5em;
+
+  &.btn-link {
+    padding-right: 0;
+  }
+}
+
+.section-body {
+  margin-bottom: 1.5em;
+}
+
+.section-gallery {
+  .media {
+    margin-bottom: 2 * ($grid-gutter-width / 2);
+  }
+}

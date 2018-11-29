@@ -1,0 +1,134 @@
+.share-bar {
+  .share-bar__irc {
+    i {
+      color: $irc;
+    }
+
+    &:hover {
+      background-color: $irc;
+    }
+  }
+
+  .share-bar__telegram {
+    i {
+      color: $telegram;
+    }
+
+    &:hover {
+      background-color: $telegram;
+    }
+  }
+
+
+  .share-bar__facebook {
+    i {
+      color: $facebook;
+    }
+
+    &:hover {
+      background-color: $facebook;
+    }
+  }
+
+  .share-bar__twitter {
+    i {
+      color: $twitter;
+    }
+
+    &:hover {
+      background-color: $twitter;
+    }
+  }
+
+  .share-bar__google-plus {
+    i {
+      color: $google-plus;
+    }
+
+    &:hover {
+      background-color: $google-plus;
+    }
+  }
+
+  .share-bar__google-group {
+    i {
+      color: $google-group;
+    }
+
+    &:hover {
+      background-color: $google-group;
+    }
+  }
+
+  .share-bar__pinterest {
+    i {
+      color: $pinterest;
+    }
+
+    &:hover {
+      background-color: $pinterest;
+    }
+  }
+
+  .share-bar__tumblr {
+    i {
+      color: $tumblr;
+    }
+
+    &:hover {
+      background-color: $tumblr;
+    }
+  }
+
+
+  .share-bar__reddit {
+    i {
+      color: $reddit;
+    }
+
+    &:hover {
+      background-color: $reddit;
+    }
+  }
+
+  .share-bar__linkedin {
+    i {
+      color: $linkedin;
+    }
+
+    &:hover {
+      background-color: $linkedin;
+    }
+  }
+
+  .share-bar__email {
+    i {
+      color: $email;
+    }
+
+    &:hover {
+      background-color: $email;
+    }
+  }
+
+  .btn {
+    background-color: $white;
+    color: $body-text;
+    min-width: 36px;
+    text-align: center;
+
+    span {
+      display: inline-block;
+      margin-top: 10px;
+      width: 100px;
+    }
+
+    &:hover {
+      color: $white;
+
+      i {
+        color: $white;
+      }
+    }
+  }
+}

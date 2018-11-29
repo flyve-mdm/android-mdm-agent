@@ -1,0 +1,56 @@
+//
+// Static resources
+//
+$backtotop-button-size:  48px;
+
+.back-to-top {
+  @include translate(0, ($backtotop-button-size / 2));
+  @include transition(opacity .3s, transform .3s, -webkit-transform .3s);
+  height: $backtotop-button-size;
+  opacity: 0;
+  padding: spacing(xxs, -2) spacing(xxs) spacing(xxs);
+  visibility: hidden;
+  width: $backtotop-button-size;
+
+  // Added by Bootstrap Affix when scrolling
+  &.affix {
+    @include translate(0, 0);
+    bottom: spacing(xxs);
+    opacity: 1;
+    right: spacing(xs);
+    visibility: visible;
+    z-index: $zindex-navbar-fixed; // same level as a fixed nav bar
+  }
+
+  [class*='glyph-'] {
+    font-size: ($backtotop-button-size / 2);
+  }
+
+  //
+  // Colors
+  //
+  &,
+  &:focus {
+    background: $color-dim-mid;
+    color: $color-vivid-low;
+  }
+
+  &:hover {
+    background: $color-neutral-mid;
+    color: $color-vivid-high;
+  }
+
+  // On dark surface
+  &.theme-alt {
+    &,
+    &:focus {
+      background: $color-dim-mid-alt;
+      color: $color-vivid-low-alt;
+    }
+
+    &:hover {
+      background: $color-neutral-mid-alt;
+      color: $color-vivid-high-alt;
+    }
+  }
+}

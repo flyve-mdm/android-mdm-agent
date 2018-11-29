@@ -1,0 +1,359 @@
+﻿// Add color transitions to buttons
+
+.btn-group {
+  margin: spacing(xxs) 0 0;
+
+  @media (min-width: $screen-md-min) {
+    margin: spacing(xs) 0 0;
+  }
+
+  @media (min-width: $screen-xl-min) {
+    margin: spacing(xs) 0 0;
+  }
+}
+
+.btn {
+  @include type(t7);
+  border-style: solid;
+  border-width: 1px;
+  line-height: 1;
+  margin: 12px 8px 0 0;
+  min-width: 120px;
+  padding: 9px 12px 10px;
+  text-decoration: none;
+
+  &.theme-light,
+  &.theme-dark {
+    // <a> with .theme-light or .theme-dark is always underlined by default.
+    // This overrides that default style.
+    text-decoration: none;
+  }
+
+  //
+  // Color
+  //
+  &.btn-primary {
+    &,
+    &.theme-default {
+      @include btn-primary-default();
+    }
+
+    // Alt theme
+    &.theme-alt {
+      @include btn-primary-alt();
+    }
+
+    // On solid color
+    &.theme-on-color,
+    &.theme-on-img-dark,
+    &.theme-dark {
+      @include btn-primary-dark();
+    }
+
+    // On light images
+    &.theme-on-img-light,
+    &.theme-light {
+      @include btn-primary-light();
+    }
+  }
+
+  // Map Bootstrap's .btn-default to our .btn-secondary
+  &.btn-secondary,
+  &.btn-default {
+    &,
+    &.theme-default {
+      @include btn-secondary-default();
+    }
+
+    // Alt theme
+    &.theme-alt {
+      @include btn-secondary-alt();
+    }
+
+    // Dark background
+    &.theme-on-color,
+    &.theme-on-img-dark,
+    &.theme-dark {
+      @include btn-secondary-dark();
+    }
+
+    // Light background
+    &.theme-on-img-light,
+    &.theme-light {
+      @include btn-secondary-light();
+    }
+  }
+
+  // Override Bootstrap alternate buttons
+  &.btn-success {
+    @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  }
+
+  &.btn-info {
+    @include button-variant($btn-info-color, $btn-info-bg, $btn-info-border);
+
+    &:active,
+    &.active {
+      @include box-shadow(none);
+      background-color: $color-neutral-high;
+    }
+  }
+
+  // Warning appears as orange
+  &.btn-warning {
+    @include button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border);
+  }
+
+  // Danger and error appear as red
+  &.btn-danger {
+    @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border);
+  }
+}
+
+// Override Bootstrap link buttons
+// Make a button look and behave like a link
+.btn-link {
+  @include type(t7);
+  border: 0;
+  border-radius: 0;
+  font-weight: normal;
+  line-height: 1;
+  min-width: 120px;
+  padding: 9px 12px 10px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus,
+  &:active,
+  &.active {
+    text-decoration: none;
+  }
+
+  //
+  // Color
+  //
+  &,
+  &.theme-default {
+    @include btn-link-default()
+  }
+
+  // Alt theme
+  &.theme-alt {
+    @include btn-link-alt()
+  }
+
+  // Dark background
+  &.theme-on-color,
+  &.theme-on-img-dark,
+  &.theme-dark {
+    @include btn-link-dark();
+  }
+
+  // Light background
+  &.theme-on-img-light,
+  &.theme-light {
+    @include btn-link-light();
+  }
+}
+
+// .btn-lightweight is the RavadaUI name for .btn-link
+// Using @extend here to make sure .btn-lightweight picks up all the styles set by Bootstrap
+.btn-lightweight {
+  @extend .btn-link;
+}
+
+// Dropdown button
+.btn-dropdown {
+  background: none;
+  border: 1px solid $color-neutral-mid;
+
+  .caret {
+    border-top-width: 7px;
+    margin-left: .5em;
+  }
+}
+
+// Toggle buttons
+// These apply to toggle button and select
+.btn[data-toggle='button'] {
+  &.active {
+    @include box-shadow(none);
+    background-color: $color-accent;
+    border-color: transparent;
+    color: $color-white;
+  }
+
+  &.active:active {
+    @include box-shadow(none);
+    background-color: darken($color-accent, 5%);
+    border-color: transparent;
+    color: $color-type-primary;
+  }
+
+  &:hover {
+    border-color: $color-accent;
+  }
+}
+
+// These only apply to select
+.btn[data-toggle='button']:not(.btn-toggle-switch),
+.btn-group[data-toggle='buttons'] .btn:not(.btn-toggle-switch) {
+  margin: 0 spacing(xxxs) spacing(xxxs) 0;
+
+  //
+  // Colors
+  //
+
+  // On light surface and on light image
+  &,
+  &.theme-default {
+    background-color: $color-vivid-high-alt;
+    border-color: $color-neutral-high;
+    color: $color-type-primary;
+
+    &:hover {
+      border-color: $color-vivid-mid;
+      color: $color-type-primary;
+    }
+
+    &:active {
+      background-color: $color-vivid-high-alt;
+      border-color: $color-accent-vivid-high;
+      color: $color-type-primary;
+    }
+
+    &.active {
+      border-color: $color-vivid-high;
+      box-shadow: 0 0 0 1px $color-vivid-high inset;
+      color: $color-type-primary;
+
+      &:hover {
+        border-color: shade($color-accent-vivid-high, 40%);
+        box-shadow: 0 0 0 1px shade($color-accent-vivid-high, 40%) inset;
+        color: $color-type-primary;
+      }
+    }
+
+    &:disabled {
+      background-color: $color-neutral-low-alt;
+      border-color: $color-neutral-low;
+      color: $color-type-disabled;
+    }
+  }
+
+  &.theme-on-img-light,
+  &.theme-light {
+    &,
+    &:hover,
+    &:active,
+    &.active {
+      background-color: $color-vivid-high-alt;
+    }
+  }
+
+  // On dark surface and on dark image
+  &.theme-on-img-dark,
+  &.theme-alt {
+    background-color: $color-vivid-high;
+    border-color: $color-neutral-high-alt;
+    color: $color-type-primary-alt;
+
+    &:hover {
+      border-color: $color-vivid-mid-alt;
+      color: $color-type-primary-alt;
+    }
+
+    &:active {
+      background-color: $color-vivid-high;
+      border-color: $color-accent-vivid-high;
+      color: $color-type-primary-alt;
+    }
+
+    &.active {
+      background-color: $color-vivid-high;
+      border-color: $color-vivid-high-alt;
+      box-shadow: 0 0 0 1px $color-vivid-high-alt inset;
+      color: $color-type-primary-alt;
+
+      &:hover {
+        border-color: tint($color-accent-vivid-high, 40%);
+        box-shadow: 0 0 0 1px tint($color-accent-vivid-high, 40%) inset;
+      }
+    }
+
+    &:disabled {
+      background-color: $color-neutral-low;
+      border-color: $color-neutral-low-alt;
+      color: $color-type-disabled-alt;
+    }
+  }
+
+  // On colored surface
+  &.theme-on-color
+  &.theme-dark {
+    background-color: transparent;
+    border-color: $color-neutral-high-alt;
+    color: $color-type-primary-alt;
+
+    &:hover {
+      border-color: $color-vivid-high-alt;
+    }
+
+    &:active {
+      background-color: $color-neutral-high-alt;
+      border-color: $color-vivid-high-alt;
+      color: $color-type-primary-alt;
+    }
+
+    &.active {
+      background-color: transparent;
+      border-color: $color-vivid-high-alt;
+      box-shadow: 0 0 0 1px $color-vivid-high-alt inset;
+      color: $color-type-primary-alt;
+
+      &:hover {
+        border-color: tint($color-accent-vivid-high, 40%);
+        box-shadow: 0 0 0 1px tint($color-accent-vivid-high, 40%) inset;
+      }
+    }
+
+    &:disabled {
+      border-color: $color-neutral-low-alt;
+      color: $color-type-disabled-alt;
+    }
+  }
+}
+
+// Button which collapses or expands an element
+.btn[data-toggle='collapse'] {
+  i[class*='glyph-'] {
+    font-size: .9em;
+  }
+
+  &[aria-expanded='true'] {
+    .button-label-collapsed {
+      display: none;
+    }
+  }
+
+  &[aria-expanded='false'] {
+    .button-label-expanded {
+      display: none;
+    }
+  }
+}
+
+// restore Bootstrap button size ramp
+.btn-xs {
+  padding: 0 5px;
+}
+
+.btn-sm {
+  padding: 2px 7px;
+}
+
+.btn-lg {
+  padding: 10px 16px;
+}

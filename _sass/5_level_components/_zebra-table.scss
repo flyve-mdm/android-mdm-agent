@@ -1,0 +1,15 @@
+.zebra-table {
+  margin-top: 20px;
+
+  th,
+  td {
+    padding: 16px;
+    width: 200px;
+  }
+
+  tr {
+    &:nth-child(odd) {
+      background-color: $neutral-light;
+    }
+  }
+}

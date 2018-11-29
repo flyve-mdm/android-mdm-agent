@@ -1,0 +1,12 @@
+.sub-header {
+  background-color: $theme-primary;
+  line-height: 32px;
+
+  .sub-header__text-primary {
+    color: $white;
+  }
+
+  .sub-header__text-secondary {
+    color: $body-text;
+  }
+}

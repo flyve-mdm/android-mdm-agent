@@ -1,0 +1,101 @@
+﻿.progress-ring {
+  height: 20px;
+  position: relative;
+  width: 20px;
+
+  .progress-circle {
+    @include rotate(225deg);
+    @include animation(progress-ring-animation 5s infinite);
+    height: 20px;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 20px;
+
+    &::after {
+      color: $color-accent;
+      content: '\2022';
+      font-size: 10px;
+      position: absolute;
+    }
+
+    &:nth-child(2) { @include animation-delay(300ms); }
+    &:nth-child(3) { @include animation-delay(600ms); }
+    &:nth-child(4) { @include animation-delay(900ms); }
+    &:nth-child(5) { @include animation-delay(1200ms); }
+  }
+
+  &.progress-medium {
+    height: 40px;
+    width: 40px;
+  }
+
+  &.progress-large {
+    height: 60px;
+    width: 60px;
+  }
+
+  &.progress-medium .progress-circle {
+    height: 40px;
+    width: 40px;
+
+    &::after {
+      font-size: 16px;
+    }
+  }
+
+  &.progress-large .progress-circle {
+    height: 60px;
+    width: 60px;
+
+    &::after {
+      font-size: 20px;
+    }
+  }
+}
+
+
+@include keyframes(progress-ring-animation) {
+  0% {
+    @include rotate(225deg);
+    @include animation-timing-function(ease-out);
+    opacity: 1;
+  }
+
+  7% {
+    @include rotate(345deg);
+    @include animation-timing-function(linear);
+  }
+
+  30% {
+    @include rotate(455deg);
+    @include animation-timing-function(ease-in-out);
+  }
+
+  39% {
+    @include rotate(690deg);
+    @include animation-timing-function(linear);
+  }
+
+  70% {
+    @include rotate(815deg);
+    @include animation-timing-function(ease-out);
+    opacity: 1;
+  }
+
+  75% {
+    @include rotate(945deg);
+    @include animation-timing-function(ease-out);
+  }
+
+  76% {
+    @include rotate(945deg);
+    opacity: 0;
+  }
+
+  100% {
+    @include rotate(945deg);
+    opacity: 0;
+  }
+}

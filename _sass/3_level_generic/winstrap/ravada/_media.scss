@@ -1,0 +1,250 @@
+﻿// Generic media container (image + text)
+.media {
+  margin: 0;
+  position: relative;
+
+  .media-img {
+    font-size: 0; // remove space between inline-block elements
+    height: 0;
+    overflow: hidden;
+    padding-bottom: 100%; // Default square ratio
+    position: relative;
+    white-space: nowrap;
+
+    // Ratio of a movie cover
+    &.ratio-movie {
+      padding-bottom: 137%;
+    }
+
+    // Ratio 2:1
+    &.ratio-2-1 {
+      padding-bottom: percentage(1 / 2);
+    }
+
+    // Ratio 16:9
+    &.ratio-16-9 {
+      padding-bottom: percentage(9 / 16);
+    }
+
+    // Ratio square 1:1
+    &.ratio-1-1 {
+      padding-bottom: percentage(1);
+    }
+
+    a {
+      bottom: 0;
+      cursor: pointer;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+
+      // Overlay for hover effect
+      &::after {
+        @include transition(background-color .3s);
+        background-color: rgba($body-bg, 0);
+        bottom: 0;
+        content: '';
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+
+      &:hover::after {
+        background-color: rgba($body-bg, .3);
+      }
+
+      // Ghost element to align the image vertically
+      // http://css-tricks.com/centering-in-the-unknown/
+      &::before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: bottom;
+        width: 0;
+      }
+    }
+
+    &.media-img-has-play {
+      a {
+        i[class*='glyph-'] {
+          z-index: 1;
+        }
+
+        &::after {
+          background-color: $color-neutral-mid;
+        }
+
+        &:hover::after {
+          background-color: rgba($color-gray, 0);
+        }
+      }
+    }
+
+    img {
+      @include transition(opacity .5s);
+      display: inline-block;
+      vertical-align: bottom;
+      width: 100%;
+
+      &.loading {
+        opacity: 0;
+      }
+
+      &.loaded {
+        opacity: 1;
+      }
+    }
+
+    i[class*='glyph-'] {
+      color: #fff;
+      font-size: 60px;
+      left: 50%;
+      margin-left: -30px;
+      margin-top: -30px;
+      position: absolute;
+      top: 50%;
+    }
+
+    .progress {
+      bottom: 0;
+      left: 0;
+      margin: 0;
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  // Horizontal media, image must be aligned on top
+  &.row {
+    .media-img {
+      margin-bottom: ($grid-gutter-width / 2);
+
+      a::before,
+      img {
+        vertical-align: top;
+      }
+    }
+
+    .media-header {
+      margin-top: 0;
+    }
+  }
+
+  .media-header {
+    @include type(t7);
+    color: $headings-color;
+    font-family: $font-family-semibold;
+    font-weight: 500;
+    margin: .5em 0 .25em;
+
+    a {
+      color: $brand-primary;
+    }
+  }
+
+  // Limit the media header to n lines
+  $media-header-line-height: 1.3em;
+
+  [class*='media-header-clamp-'] {
+    overflow: hidden;
+    position: relative;
+
+    &::after {
+      background: linear-gradient(to right, rgba($body-bg, 0), $body-bg);
+      bottom: 0;
+      content: '';
+      height: $media-header-line-height;
+      pointer-events: none;
+      position: absolute;
+      right: 0;
+      width: 2em;
+    }
+  }
+
+  // Limit to 1 line
+  .media-header-clamp-1 {
+    height: $media-header-line-height;
+  }
+
+  // Limit to 2 lines
+  .media-header-clamp-2 {
+    height: 2 * $media-header-line-height;
+  }
+
+  .media-subheader {
+    @include type(t9);
+    color: $color-type-primary;
+
+    a {
+      color: inherit;
+    }
+  }
+
+  .media-caption {
+    font-size: $font-size-base;
+    white-space: normal;
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  .rating {
+    margin-bottom: .25em;
+  }
+
+  // Media with label
+  .media-img-has-label {
+    a::before,
+    img {
+      vertical-align: top;
+    }
+
+    i[class*='glyph-'] {
+      top: 36%;
+    }
+  }
+
+  .media-img-label {
+    background: $color-vivid-mid;
+    bottom: 0;
+    color: #fff;
+    font-size: $font-size-small;
+    left: 0;
+    min-height: 27%;
+    padding: 10% .75em 12%;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+  }
+}
+
+.media-play-overlay {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  .btn-glyph {
+    @include transition(background-color .3s);
+    background: $color-neutral-mid;
+    border: 0;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    &:hover {
+      background: rgba($color-gray, 0);
+    }
+  }
+}
+
+.media-info {
+  @include type(t9);
+  color: $color-type-secondary;
+}
