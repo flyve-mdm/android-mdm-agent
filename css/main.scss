@@ -1,13 +1,49 @@
 ---
 ---
-@import
-'404',
-'contact',
-'footer',
-'general',
-'header',
-'home',
-'post',
-'products'
-;
 
+// Level 1
+@import
+'./1_level_settings/sizes',
+'./1_level_settings/colors';
+
+// Level 2
+@import
+'./2_level_tools/mixins';
+
+// Level 3
+@import
+'./3_level_generic/winstrap/main',
+'./3_level_generic/fontawesome/main';
+
+// Level 4
+@import
+'./4_level_elements/body',
+'./4_level_elements/code',
+'./4_level_elements/footer',
+'./4_level_elements/header',
+'./4_level_elements/hr',
+'./4_level_elements/html',
+'./4_level_elements/img';
+
+// Level 5
+@import
+'./5_level_components/404',
+'./5_level_components/article-wiki',
+'./5_level_components/contact',
+'./5_level_components/modal',
+'./5_level_components/screenshots',
+'./5_level_components/upvote-bar',
+'./5_level_components/title-page',
+'./5_level_components/sub-header',
+'./5_level_components/howtos-sidebar',
+'./5_level_components/empty-message',
+'./5_level_components/news',
+'./5_level_components/share-bar',
+'./5_level_components/projects',
+'./5_level_components/container__page',
+'./5_level_components/zebra-table';
+
+// Level 6
+@import
+'./6_level_utilities/jumbotron',
+'./6_level_utilities/row-eq-height';
