@@ -1,0 +1,68 @@
+---
+layout: default
+---
+
+<div class="sub-header">
+  <div class="container">
+    {% assign name = site.github.project_title | replace: "flyve-mdm-", "" %}
+    {% assign name = name | replace: "-", " " %}
+    <span class="sub-header__text-primary">
+      {{ name }}
+    </span>
+    <span class="sub-header__text-secondary">
+      {{ site.github.latest_release.tag_name }}
+    </span>
+  </div>
+</div>
+
+<p class="goHome container">
+  <a href="{{ "/news" | absolute_url }}">
+    <span class="glyph glyph-back" aria-hidden="true"></span>
+    &nbsp; Back to index
+  </a>
+</p>
+
+<article class="post container" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="post__header" itemprop="articleBody">
+    <h1 class="post-title" itemprop="name headline">
+      {{ page.title | escape }}
+    </h1>
+
+    <p class="post__meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {% assign date_format = site.date_format | default: "%b %-d, %Y" %}
+        {{ page.date | date: date_format }}
+      </time>
+
+      {% if page.author %}
+        • <span
+            itemprop="author"
+            itemscope
+            itemtype="http://schema.org/Person"
+          >
+            <span itemprop="name">
+              {{ page.author }}
+            </span>
+          </span>
+      {% endif %}
+    </p>
+
+    <div class="social-networks">
+      {% include share-bar.html %}
+      {% include upvote-bar.html %}
+    </div>
+  </div>
+
+  <div class="post__content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  <blockquote>
+    Have feedback on this post? Let
+    <a href="https://twitter.com/{{ site.twitter }}">@{{ site.twitter }}</a>
+    know on Twitter.
+    <br/>
+    <br/>
+    Need help or found a bug? <a href="{{ '/contact' | absolute_url }}">Contact us</a>.
+  </blockquote>
+</article>
