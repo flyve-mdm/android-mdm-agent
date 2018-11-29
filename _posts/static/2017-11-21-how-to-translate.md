@@ -1,6 +1,5 @@
 ---
-layout: post
-howtos: true
+layout: howtos
 published: true
 title: Contribute Translating
 permalink: howtos/contribute-translating
