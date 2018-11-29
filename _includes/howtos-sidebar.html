@@ -1,0 +1,62 @@
+<a class="btn btn-lightweight no-outline navigation-btn">Index</a>
+
+<ul
+  role="navigation"
+  id="sidenav-small"
+  class="howtos-sidebar nav side-navigation side-navigation-small"
+>
+  <button type="button" class="close" data-dismiss="side-navigation" aria-label="close">
+    <i class="glyph glyph-cancel"></i>
+  </button>
+
+  <li class="side-nav-c2">
+    <a data-toggle="collapse" data-parent="#sidenav-small" href="#user-documentation" aria-expanded="true" aria-controls="#user-documentation">
+      User Documentation <i class="glyph glyph-chevron-down-2"></i>
+    </a>
+    <ul class="nav collapse in" id="user-documentation">
+      {% for post in site.categories.user %}
+        {% if post.layout == 'howtos' %}
+          <li>
+            <a href="{{ post.url | absolute_url }}">
+              {{ post.title | escape }}
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </li>
+
+  <li class="side-nav-c2">
+    <a data-toggle="collapse" data-parent="#sidenav-small" href="#docker" aria-expanded="true" aria-controls="#docker">
+      Docker environment <i class="glyph glyph-chevron-down-2"></i>
+    </a>
+    <ul class="nav collapse in" id="docker">
+      {% for post in site.categories.docker %}
+        {% if post.layout == 'howtos' %}
+          <li>
+            <a href="{{ post.url | absolute_url }}">
+              {{ post.title | escape }}
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </li>
+
+  <li class="side-nav-c2">
+    <a data-toggle="collapse" data-parent="#sidenav-small" href="#contribute" aria-expanded="true" aria-controls="#contribute">
+      Want to Contribute? <i class="glyph glyph-chevron-down-2"></i>
+    </a>
+    <ul class="nav collapse in" id="contribute">
+      {% for post in site.categories.contributing %}
+        {% if post.layout == 'howtos' %}
+          <li>
+            <a href="{{ post.url | absolute_url }}">
+              {{ post.title | escape }}
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </li>
+</ul>
