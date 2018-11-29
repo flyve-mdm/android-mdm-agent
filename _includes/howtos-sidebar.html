@@ -27,23 +27,6 @@
   </li>
 
   <li class="side-nav-c2">
-    <a data-toggle="collapse" data-parent="#sidenav-small" href="#docker" aria-expanded="true" aria-controls="#docker">
-      Docker environment <i class="glyph glyph-chevron-down-2"></i>
-    </a>
-    <ul class="nav collapse in" id="docker">
-      {% for post in site.categories.docker %}
-        {% if post.layout == 'howtos' %}
-          <li>
-            <a href="{{ post.url | absolute_url }}">
-              {{ post.title | escape }}
-            </a>
-          </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-  </li>
-
-  <li class="side-nav-c2">
     <a data-toggle="collapse" data-parent="#sidenav-small" href="#contribute" aria-expanded="true" aria-controls="#contribute">
       Want to Contribute? <i class="glyph glyph-chevron-down-2"></i>
     </a>
