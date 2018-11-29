@@ -1,13 +1,20 @@
-title: android agent
-email: ml-flyvemdm@teclib.com
-twitter: flyvemdm
+title: android mdm agent
 baseurl: "/android-mdm-agent"
-url: "http://flyve.org"   
+url: "http://flyve.org"
 image: http://flyve.org/android-mdm-agent/images/logo2.png
-  
+email: ml-flyvemdm@teclib.com
+twitter: https://twitter.com/flyvemdm
+facebook: https://www.facebook.com/FlyveMDM
+googlePlus: https://plus.google.com/collection/c32TsB
+telegram: https://t.me/flyvemdm
+irc: http://webchat.freenode.net/?channels=flyve-mdm
+reddit: https://www.reddit.com/r/FlyveMDM/
 
 # Build settings
 markdown: kramdown
+
+sass:
+  style: compressed
 
 plugins:
   - jekyll-github-metadata
@@ -15,16 +22,6 @@ plugins:
   - jekyll-sitemap
 
 repository: flyve-mdm/android-mdm-agent
-
-defaults:
-    scope:
-      path: "" # an empty string here means all files in the project
-    values:
-      layout: "default"
-
-collections:
-  coverage:
-    output: true
 
 prose:
 
