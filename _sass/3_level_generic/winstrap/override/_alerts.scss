@@ -1,0 +1,72 @@
+//
+// Static Resources
+//
+$alert-glyph-base: 48px;
+
+// Override
+.alert {
+  border: 0;
+  color: $color-type-primary;
+  min-height: $alert-glyph-base;
+  padding: spacing(xxs) spacing(xxs) spacing(xxs) spacing(xs, -4);
+  position: relative;
+
+  &.alert-dismissible {
+    padding-right: spacing(md);
+  }
+
+  .alert-title {
+    @include type(t6, set-line-height);
+    margin-bottom: spacing(xxs, -7);
+    margin-top: spacing(xxs, -11);
+  }
+
+  p {
+    @include type(t8, set-line-height);
+    margin: 0;
+    padding: spacing(xxs, -8) 0 0;
+  }
+
+  .close {
+    height: $alert-glyph-base;
+    line-height: 1;
+    opacity: 1;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: $alert-glyph-base;
+    z-index: 1;
+
+    span {
+      font-size: 16px;
+      position: relative;
+      top: -5px;
+    }
+  }
+
+  &.with-glyph {
+    padding-left: spacing(md);
+  }
+
+  .alert-glyph {
+    font-size: $alert-glyph-base / 2;
+    height: $alert-glyph-base / 2;
+    left: spacing(xxs);
+    position: absolute;
+    top: spacing(xxs);
+    width: $alert-glyph-base / 2;
+  }
+
+  &.alert-info {
+    background-color: $color-bg-light-vivid-mid;
+    color: $color-type-primary;
+  }
+
+  &.alert-warning {
+    background-color: rgba($color-lightyellow, .4);
+  }
+
+  &.alert-danger {
+    background-color: rgba($color-alert, .3);
+  }
+}

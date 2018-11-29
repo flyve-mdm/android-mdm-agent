@@ -1,0 +1,284 @@
+//Override bootstrap mixins for button variants
+@mixin button-variant($color, $background, $border) {
+  background-color: $background;
+  border-color: $border;
+  color: $color;
+
+  &:hover,
+  &:focus,
+  &.focus,
+  .open > &.dropdown-toggle {
+    background-color: $background;
+    border-color: $color-neutral-high;
+    color: $color;
+  }
+
+  //Active and disabled states for all buttons is the same
+  &:active,
+  &.active,
+  .open > &.dropdown-toggle {
+    background-color: darken($background, 10%);
+    background-image: none;
+    border-color: transparent;
+    color: $color;
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active {
+      background-color: $color-neutral-mid;
+      border-color: transparent;
+      color: $color-type-secondary;
+    }
+  }
+}
+
+@mixin btn-primary-default() {
+  background-color: $color-accent;
+  border-color: transparent;
+  color: $color-type-primary-alt;
+
+  &:hover {
+    background-color: darken($color-accent-vivid-high, 5%);
+    border-color: $color-neutral-high;
+    color: $color-type-primary-alt;
+  }
+
+  &:focus,
+  &:active,
+  &.active {
+    @include box-shadow(none);
+    background-color: darken($color-accent-vivid-high, 10%);
+    border-color: transparent;
+  }
+
+  &:disabled,
+  &.disabled {
+    background-color: $color-accent-neutral-low;
+  }
+}
+
+@mixin btn-primary-alt() {
+  &:hover {
+    background-color: lighten($color-accent-vivid-high, 5%);
+    border-color: $color-neutral-high-alt;
+  }
+
+  &:focus,
+  &:active,
+  &.active {
+    background-color: lighten($color-accent-vivid-high, 10%);
+  }
+
+  &:disabled,
+  &.disabled {
+    color: $color-type-disabled-alt;
+  }
+}
+
+@mixin btn-primary-dark() {
+  background-color: $color-vivid-high-alt;
+  color: $color-type-primary;
+
+  &:hover {
+    background-color: $color-vivid-mid-alt;
+    border-color: $color-vivid-high-alt;
+  }
+
+  &:focus,
+  &:active,
+  &.active {
+    background-color: $color-vivid-low-alt;
+    border-color: transparent;
+  }
+
+  &:disabled,
+  &.disabled {
+    background-color: $color-neutral-low-alt;
+    color: $color-type-disabled-alt;
+  }
+}
+
+@mixin btn-primary-light() {
+  background-color: $color-vivid-high;
+  color: $color-type-primary-alt;
+
+  &:hover {
+    background-color: $color-vivid-mid;
+    border-color: $color-neutral-high;
+  }
+
+  &:focus,
+  &:active,
+  &.active {
+    background-color: $color-vivid-low;
+    border-color: transparent;
+  }
+
+  &:disabled,
+  &.disabled {
+    background-color: $color-neutral-low;
+    color: $color-type-disabled;
+  }
+}
+
+@mixin btn-secondary-default() {
+  @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
+
+  &:hover {
+    background-color: $color-neutral-mid;
+  }
+
+  &:focus,
+  &:active,
+  &.active {
+    @include box-shadow(none);
+    background-color: $color-neutral-high;
+  }
+
+  &:disabled,
+  &.disabled {
+    background-color: $color-neutral-low;
+    color: $color-type-disabled;
+  }
+}
+
+@mixin btn-secondary-alt() {
+  background-color: $color-neutral-low-alt;
+  color: $color-type-primary-alt;
+
+  &:hover {
+    border-color: $color-neutral-high-alt;
+  }
+
+  &:focus,
+  &:active,
+  &.active {
+    background-color: $color-neutral-high-alt;
+  }
+
+  &:disabled,
+  &.disabled {
+    background-color: $color-neutral-low-alt;
+    border-color: transparent;
+    color: $color-type-disabled-alt;
+    opacity: 1;
+  }
+}
+
+@mixin btn-secondary-dark() {
+  background-color: transparent;
+  border-color: $color-vivid-high-alt;
+  color: $color-type-primary-alt;
+
+  &:hover {
+    background-color: $color-neutral-low-alt;
+    border-color: $color-vivid-high-alt;
+    color: $color-vivid-mid-alt;
+  }
+
+  &:focus,
+  &:active,
+  &.active {
+    background-color: $color-neutral-high-alt;
+  }
+
+  &:disabled,
+  &.disabled {
+    background-color: $color-neutral-low-alt;
+    border-color: $color-neutral-low-alt;
+    color: $color-type-disabled-alt;
+  }
+}
+
+@mixin btn-secondary-light() {
+  background-color: transparent;
+  border-color: $color-vivid-high;
+  color: $color-type-primary;
+
+  &:hover {
+    background-color: $color-neutral-low;
+    border-color: $color-neutral-high;
+  }
+
+  &:focus,
+  &:active,
+  &.active {
+    background-color: $color-neutral-high;
+  }
+
+  &:disabled,
+  &.disabled {
+    background-color: $color-neutral-low;
+    border-color: $color-neutral-high;
+    color: $color-type-disabled;
+  }
+}
+
+@mixin btn-link-default() {
+  color: $color-accent-vivid-high;
+
+  &:focus,
+  &:active {
+    border-color: transparent;
+    color: darken($color-accent-vivid-high, 5%);
+  }
+
+  &:disabled,
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] {
+    @include box-shadow(none);
+    background-color: transparent;
+    color: $color-type-disabled;
+  }
+}
+
+@mixin btn-link-alt() {
+  &:disabled,
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] {
+    @include box-shadow(none);
+    background-color: transparent;
+    color: $color-type-disabled-alt;
+  }
+}
+
+@mixin btn-link-dark() {
+  color: $color-type-primary-alt;
+
+  &:focus,
+  &:active {
+    color: $color-vivid-low-alt;
+  }
+
+  &:disabled,
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] {
+    color: $color-type-disabled-alt;
+  }
+}
+
+@mixin btn-link-light() {
+  color: $color-type-primary;
+
+  &:focus,
+  &:active {
+    color: $color-vivid-low;
+  }
+
+  &:disabled,
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] {
+    color: $color-type-disabled;
+  }
+}

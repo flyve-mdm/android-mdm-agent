@@ -1,0 +1,16 @@
+﻿.labels-list {
+  display: inline;
+  list-style: none;
+  margin: 0 1em 0 0;
+  padding: 0;
+
+  li {
+    margin: 0 .25em;
+  }
+}
+
+.label {
+  border-radius: 0;
+  font-family: $font-family-bold;
+  font-weight: normal;
+}

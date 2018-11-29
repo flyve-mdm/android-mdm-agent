@@ -1,0 +1,11 @@
+.jumbotron {
+  &.theme-default {
+    background-color: $body-background;
+  }
+
+  &.theme-dark {
+    h3 {
+      padding-top: 0;
+    }
+  }
+}

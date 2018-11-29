@@ -1,0 +1,283 @@
+// This is for viewports 1 & 2 and lives outside the .side-navigation structure to be visible when .side-navigation is not
+a.navigation-btn {
+  margin-top: spacing(xs);
+  padding-left: spacing(sm);
+  position: relative;
+  text-align: left;
+
+  [dir='rtl'] & {
+    padding-right: spacing(sm);
+    text-align: right;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &::before {
+    @include glyph(back);
+    left: spacing(n);
+    position: absolute;
+
+    // This may change depending on the decided method for RTL
+    [dir='rtl'] & {
+      content: glyph(forward);
+      left: auto;
+      right: spacing(n);
+    }
+  }
+
+  @media (min-width: $screen-md) {
+    // Have to use !important because show/hide behavior via JavaScript is styled inline
+    display: none !important;
+  }
+
+  //
+  // Color
+  //
+  &,
+  &.theme-default,
+  &.btn-lightweight:hover {
+    color: $color-type-secondary;
+  }
+
+  &.theme-alt {
+    color: $color-type-secondary-alt;
+
+    &.btn-lightweight:hover {
+      color: $color-type-secondary-alt;
+    }
+  }
+}
+
+.side-navigation {
+  li {
+    margin: spacing(n);
+  }
+
+  &.side-navigation-large {
+    cursor: text;
+    display: none;
+    @media (min-width: $screen-md) {
+      display: block;
+      max-width: 225px;
+    }
+
+    &.side-navigation-affix {
+      @media (min-width: $screen-md) {
+        &.affix {
+          top: spacing(n);
+        }
+
+        &.affix-bottom {
+          position: absolute;
+        }
+      }
+    }
+
+    ul {
+      padding: spacing(n);
+
+      li {
+        list-style-type: none;
+        padding: spacing(xxs) spacing(n);
+        word-break: normal;
+        word-wrap: break-word;
+      }
+    }
+
+    .close {
+      font-size: 18px;
+      padding: spacing(xxxs, 1);
+      position: absolute;
+      right: 9px;
+      top: 23px;
+      @media (min-width: $screen-md) {
+        display: none;
+      }
+    }
+  }
+
+  &.side-navigation-small {
+    display:  none;
+    margin-top: spacing(lg);
+    max-width: calc(100% - 32px); // make space for .close on $vp1 & $vp2
+    word-break: normal;
+    word-wrap: break-word;
+
+    &.affix {
+      margin-top: spacing(n);
+      position: fixed;
+      top: spacing(xxs);
+    }
+
+    &.affix-bottom {
+      position: absolute;
+    }
+
+    @media (min-width: $screen-md) {
+      display: block;
+      max-width: initial; // then let it be full-width on $vp3 and higher
+    }
+
+    &.nav {
+      >li a {
+        cursor: pointer;
+        padding-bottom: spacing(n);
+        padding-top: spacing(n);
+      }
+
+      .side-nav-c2 {
+        @include type(t7);
+        position: relative;
+
+        a {
+          padding-left: spacing(n);
+        }
+
+        &.with-icon {
+          a {
+            padding-left: spacing(xxs);
+          }
+
+          &::before {
+            @include glyph(add);
+            font-size: 10px;
+            position: absolute;
+            top: 7px;
+          }
+
+          &.active {
+            &.with-icon::before {
+              content: glyph(remove);
+            }
+          }
+        }
+      }
+
+      .side-nav-c2:not(:first-of-type) {
+        margin-top: spacing(xxs);
+      }
+
+      .nav {
+        // display: none;
+        margin: spacing(n);
+        padding-left: spacing(xs);
+
+        li a {
+          @include type(t8);
+          padding-bottom: spacing(xxxs) / 4;
+          padding-top: spacing(xxxs) / 4;
+        }
+      }
+
+      // Override Panel settings
+      // Panel is required for Bootstrap's accordion
+      .panel {
+        background: transparent;
+        border: 0;
+        border-color: transparent;
+        box-shadow: none;
+        margin: initial;
+      }
+    }
+
+    .close {
+      font-size: 15px;
+      padding: spacing(xxxs);
+      position: absolute;
+      right: 10px;
+      top: -8px;
+      @media (min-width: $screen-md) {
+        display: none;
+      }
+    }
+  }
+
+  .navigation-label {
+    @include type(t4);
+    // position: relative;
+    font-weight: 400;
+    margin-top: spacing(xs);
+    @media (min-width: $screen-md) {
+      margin-top: spacing(md);
+      pointer-events: none;
+    }
+  }
+
+  //
+  // Colors
+  //
+
+  // Default Theme
+  &,
+  &.theme-default {
+    &.navigation-modal {
+      background-color: $color-vivid-high-alt;
+    }
+
+    a {
+      color: $color-type-secondary;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .active {
+      color: $color-type-primary;
+      font-weight: 400;
+    }
+
+    .side-nav-c2 {
+      a {
+        color: $color-type-secondary;
+
+        &:hover {
+          background-color: transparent;
+          text-decoration: underline;
+        }
+      }
+
+      &.active > a,
+      .active {
+        background-color: transparent;
+        color: $color-type-primary;
+      }
+    }
+  }
+
+  // Alt Theme
+  &.theme-alt {
+    &.navigation-modal {
+      background-color: $color-bg-dark-vivid-high;
+    }
+
+    .navigation-label {
+      color: $color-type-primary-alt;
+
+      &::after {
+        color: $color-vivid-low-alt;
+      }
+    }
+
+    a {
+      color: $color-type-secondary-alt;
+    }
+
+    .active {
+      color: $color-type-primary-alt;
+    }
+
+    .side-nav-c2 {
+      a {
+        color: $color-type-secondary-alt;
+      }
+
+      &.active > a,
+      .active {
+        color: $color-type-primary-alt;
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+.contact {
+  .contact__card {
+    padding: 15px;
+    text-align: center;
+  }
+
+  .contact__header {
+    background-color: $theme-lighter-alt;
+    border-bottom: 1px solid $neutral-quaternary;
+  }
+
+  .share-bar {
+    margin-top: 38px;
+    text-align: center;
+  }
+
+  .page-header {
+    padding-bottom: 20px;
+  }
+
+  form {
+    margin-top: 50px;
+
+    input {
+      height: 25px;
+      min-height: 25px;
+    }
+
+    .checkbox {
+      display: inline-block;
+      margin: 5px 5px 0 0;
+    }
+
+    .contact__input {
+      margin-left: 10px;
+    }
+  }
+}

@@ -1,0 +1,159 @@
+﻿// Rating component with stars
+.rating {
+  .rating-label {
+    @include type(t4);
+    line-height: 44px;
+    margin-bottom: 1px;
+    vertical-align: bottom;
+
+    &.rating-label-left {
+      display: inline-block;
+      margin-right: 16px;
+    }
+
+    &.rating-label-right {
+      display: inline-block;
+    }
+  }
+
+  .rating-stars {
+    display: inline-block;
+    font-size: 24px;
+    line-height: 1;
+    margin-left: -10px;
+    position: relative;
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      white-space: nowrap;
+
+      li {
+        display: inline-block;
+        margin: 0;
+        padding: 6px 10px 10px;
+      }
+    }
+
+    .rating-stars-value {
+      left: 0;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+    }
+
+    .rating-stars-input {
+      left: 0;
+      position: absolute;
+      top: 0;
+
+      .rating-btn {
+        background: none;
+        border: 0;
+        line-height: 1;
+        padding: 6px 10px 10px;
+
+        .glyph-star {
+          visibility: hidden;
+        }
+
+        &.active .glyph-star {
+          visibility: visible;
+        }
+      }
+    }
+  }
+
+  &.rating-small {
+    .rating-label {
+      @include type(t8);
+      line-height: 16px;
+
+      &.rating-label-left {
+        margin-right: 5px;
+      }
+
+      &.rating-label-right {
+        margin-left: 3px;
+      }
+    }
+
+    .rating-stars {
+      font-size: 12px;
+      margin-left: -2px;
+
+      ul {
+        li {
+          padding: 0 2px 2px;
+        }
+      }
+
+      .rating-stars-input {
+        .rating-btn {
+          padding: 0 2px 2px;
+        }
+      }
+    }
+  }
+
+  // Default colors
+  .rating-stars {
+    .glyph-star {
+      color: $color-neutral-low;
+    }
+  }
+
+  .rating-stars-value {
+    .glyph-star {
+      color: $color-vivid-high;
+    }
+
+    &.rating-stars-value-user {
+      .glyph-star {
+        color: $color-accent;
+      }
+    }
+  }
+
+  .rating-btn.active {
+    .glyph-star {
+      color: $color-vivid-mid;
+    }
+  }
+
+  .rating-label {
+    color: $color-type-primary;
+  }
+
+  // Alt colors
+  &.color-alt {
+    .rating-stars {
+      .glyph-star {
+        color: $color-neutral-low-alt;
+      }
+    }
+
+    .rating-stars-value {
+      .glyph-star {
+        color: $color-vivid-high-alt;
+      }
+
+      &.rating-stars-value-user {
+        .glyph-star {
+          color: $color-accent;
+        }
+      }
+    }
+
+    .rating-btn.active {
+      .glyph-star {
+        color: $color-vivid-mid-alt;
+      }
+    }
+
+    .rating-label {
+      color: $color-type-primary-alt;
+    }
+  }
+}

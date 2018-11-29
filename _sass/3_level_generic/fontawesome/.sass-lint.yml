@@ -1,0 +1,8 @@
+files:
+  include:
+    - '_sass/3_level_generic/fontawesome/*.s+(a|c)ss'
+rules:
+  "no-duplicate-properties": 0
+  "no-vendor-prefixes": 0
+  "force-pseudo-nesting": 0
+  "force-element-nesting": 0

@@ -1,0 +1,16 @@
+.howtos-sidebar {
+  &.side-navigation-small {
+    margin-top: 45px;
+
+    &.affix {
+      height: 80%;
+      overflow: auto;
+      top: 55px;
+    }
+  }
+
+  .glyph-chevron-down-2 {
+    font-size: 6px;
+    line-height: 12px;
+  }
+}
