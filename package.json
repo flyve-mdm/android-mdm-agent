@@ -2,17 +2,20 @@
   "name": "android-mdm-agent",
   "version": "1.0.0",
   "description": "Branch created with the intention of functioning as an introduction web site of the project, a small point of entry where anyone can find out what it is about and to be able to get relevant information.",
+  "sasslintConfig": ".sass-lint.yml",
+  "scripts": {
+    "start": "bundle exec jekyll serve",
+    "build": "bundle exec jekyll build",
+    "install": "bundle install",
+    "update-version": "ci/update_version_list.sh",
+    "test-sass": "./node_modules/.bin/sass-lint -c app/config/.sass-lint.yml 'css/**/*.scss, _sass/**/*.scss' -v -q",
+    "test-js": "./node_modules/.bin/eslint **/*.js  --fix",
+    "test-yaml": "ci/yamllint.sh",
+    "test": "npm run test-sass & npm run test-js & npm run test-yaml & npm run update-version"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/flyve-mdm/android-mdm-agent.git"
-  },
-  "sasslintConfig": ".sass-lint.yml",
-  "scripts": {
-    "update-version": "ci/update_version_list.sh",
-    "test-sass": "./node_modules/.bin/sass-lint --config .sass-lint.yml '**/*.scss' --verbose --no-exit",
-    "test-js": "./node_modules/.bin/eslint js/*.js",
-    "test-yaml": "ci/yamllint.sh",
-    "test": "npm run test-sass & npm run test-js & npm run test-yaml & npm run update-version"
   },
   "keywords": [],
   "author": "",
