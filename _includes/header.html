@@ -1,151 +1,185 @@
 <header class="site-header" role="banner">
-
   <div class="wrapper">
-  
     <nav class="navbar navbar-default">
-    
-        <div class="navbar-global theme-default">
-            <div class="container">
-                <div class="navbar-header">
-                    <a href="{{ site.url }}{{ site.baseurl }}/" class="navbar-brand">
-                        <img src="{{ 'images/typo.png' | absolute_url }}"  height="23" alt="Flyve MDM" />
-                    </a>
-                </div>
+      <div class="navbar-global navbar-default">
+        <div class="container">
+          <div class="navbar-header">
+            <button
+              type="button"
+              class="navbar-toggle collapsed"
+              data-toggle="collapse"
+              data-target="#bs-example-navbar-collapse-2"
+            >
+              <span class="sr-only">Toggle navigation</span>
+              <i class="glyph glyph-hamburger"></i>
+            </button>
+
+            <div class="navbar__logo">
+              <a
+                href="https://flyve-mdm.com/"
+                class="navbar__logo--first"
+              >
+
+                {% include image-WebP.html img="images/typo.png" alt="Flyve MDM" %}
+
+              </a>
+
+              <div class="navbar__separator"></div>
+
+              <a
+                href="{{ '/' | absolute_url }}"
+                class="navbar__logo--second"
+              >
+
+                {% include image-WebP.html img="images/logo2.png" alt="Home" %}
+
+              </a>
             </div>
-        </div>
-    
-        <div class="navbar-local color-accent theme-dark">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                        <span class="sr-only">Toggle navigation</span>
-                        <i class="glyph glyph-hamburger"></i>
-                    </button>
-                    <a href="{{ '/' | absolute_url }}" class="navbar-brand">
-                        <img src="{{ 'images/logo.png' | absolute_url }}" alt="Home" class="logo"/>
+          </div>
+
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+              <li>
+                <a
+                  class="color-type-secondary"
+                  href="{{ '/news' | absolute_url }}"
+                >
+                  News
+                </a>
+              </li>
+
+              <li class="hidden">
+                <a class="color-type-secondary" href="{{ '/screenshots' | absolute_url }}">
+                  Screenshots
+                </a>
+              </li>
+
+              <li class="dropdown">
+                <a
+                  href="#"
+                  class="dropdown-toggle"
+                  data-toggle="dropdown"
+                  role="button"
+                  aria-expanded="false"
+                  aria-label="Development"
+                >
+                  Development <i class="glyph glyph-chevron-down-2"></i>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                  <li class="dropdown-submenu">
+                    <a
+                      href="#"
+                      class="dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-label="Code documentation"
+                    >
+                      Code documentation <i class="glyph glyph-chevron-down-2"></i>
                     </a>
-                </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                    <ul class="nav navbar-nav">
-                        
+                    <ul class="dropdown-menu">
+                      <li><a href="{{ '/development/code-documentation/develop' | absolute_url }}">Develop</a></li>
+                      <li><a href="{{ '/development/code-documentation/master' | absolute_url }}">Master</a></li>
+                      {% for version in site.data.whitelist_version %}
                         <li>
-                            <a class="color-type-secondary" href="{{ '/news' | absolute_url }}">News</a>
+                          <a href="{{ 'development/code-documentation/support/' | absolute_url }}{{ version }}">{{ version }}</a>
                         </li>
-
-                        <li class="hidden">
-                            <a class="color-type-secondary" href="{{ '/screenshots' | absolute_url }}">Screenshots</a>
-                        </li>
-
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Development<i class="glyph glyph-chevron-down-2"></i></a>
-                            <ul class="dropdown-menu dropdown-menu2" role="menu">
-    
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                        Code Documentation <i class="glyph glyph-chevron-down-2"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                            <li>
-                                                <a href="{{ 'development/code-documentation/develop/' | absolute_url }}">Develop</a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ 'development/code-documentation/master/' | absolute_url }}">Master</a>
-                                            </li>
-                                        {% for version in site.data.whitelist_version %}
-                                            <li>
-                                                <a href="{{ 'development/code-documentation/support/' | absolute_url }}{{ version }}">{{ version }}</a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                                <!-- This is commented in order to avoid failures with the tests on CI
-                                     once the information is available we can uncomment this section -->
-                                <!-- <li class="dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                        Coverage <i class="glyph glyph-chevron-down-2"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="{{ 'development/coverage/develop/' | absolute_url }}">Develop</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ 'development/coverage/master/' | absolute_url }}">Master</a>
-                                        </li>
-                                        {% for version in site.data.whitelist_version %}
-                                            <li>
-                                                <a href="{{ 'development/coverage/support/' | absolute_url }}{{ version }}">{{ version }}</a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                        Test Report <i class="glyph glyph-chevron-down-2"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="{{ 'development/test-report/develop/' | absolute_url }}">Develop</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ 'development/test-report/master/' | absolute_url }}">Master</a>
-                                        </li>
-                                        {% for version in site.data.whitelist_version %}
-                                            <li>
-                                                <a href="{{ 'development/test-report/support/' | absolute_url }}{{ version }}">{{ version }}</a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>-->
-                            </ul>
-                        </li>
-
-                        <li>
-                            <a class="color-type-secondary" href="{{ '/howtos' | absolute_url }}">How-tos</a>
-                        </li>
-
-                        <li>
-                            <a class="color-type-secondary" href="{{ '/projects' | absolute_url }}">Projects</a>
-                        </li>
-
-                        <li>
-                            <a type="button" class="color-type-secondary" data-toggle="modal" data-target="#myModal" href="#" >
-                                Changelog
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a class="color-type-secondary" href="{{ '/contact' | absolute_url }}">Contact</a>
-                        </li>
-                        
-                        <li class="hidden">
-                            <a class="color-type-secondary" href="#">Roadmap</a>
-                        </li>
-                        
+                      {% endfor %}
                     </ul>
-                </div>
-            </div>
-        
+                  </li>
+                  <!-- <li class="divider"></li>
+                  <li class="dropdown-submenu">
+                    <a
+                      href="#"
+                      class="dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-label="Coverage"
+                    >
+                      Coverage<i class="glyph glyph-chevron-down-2"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{{ '/development/coverage/develop/lcov-report' | absolute_url }}">Develop</a></li>
+                        <li><a href="{{ '/development/coverage/master/lcov-report' | absolute_url }}">Master</a></li>
+                        {% for version in site.data.whitelist_version %}
+                          <li>
+                            <a href="{{ 'development/coverage/support/' | absolute_url | append: version | append: "/lcov-report/" }}">{{ version }}</a>
+                          </li>
+                        {% endfor %}
+                    </ul>
+                  </li> -->
+                </ul>
+              </li>
+
+              <li>
+                <a class="color-type-secondary" href="{{ '/howtos' | absolute_url }}">
+                  How-tos
+                </a>
+              </li>
+
+              <li>
+                <a class="color-type-secondary" href="{{ '/projects' | absolute_url }}">
+                  Projects
+                </a>
+              </li>
+
+              <li>
+                <a
+                  type="button"
+                  class="color-type-secondary"
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  aria-label="Changelog"
+                  href="#"
+                >
+                  Changelog
+                </a>
+              </li>
+
+              <li>
+                <a class="color-type-secondary" href="{{ '/contact' | absolute_url }}">
+                  Contact
+                </a>
+              </li>
+
+              <!-- <li>
+                <a class="color-type-secondary" href="#">
+                  Roadmap
+                </a>
+              </li> -->
+            </ul>
+          </div>
         </div>
+      </div>
+    </nav>
+  </div>
 </header>
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                             		{% capture my_include %}{% include CHANGELOG.md %}{% endcapture %}
-                		{{ my_include | markdownify }}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary"
-                        data-dismiss="modal">
-                    Close
-                </button>
-            </div>
-        </div>
+<div
+  class="modal fade"
+  id="myModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% capture my_include %}{% include CHANGELOG.md %}{% endcapture %}
+        {{ my_include | markdownify }}
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
     </div>
+  </div>
 </div>

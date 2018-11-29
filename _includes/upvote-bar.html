@@ -1,0 +1,33 @@
+
+<div class="upvote-bar">
+  {% if page.redditURL or page.hackerNewsURL %}
+    <h4>Upvote for this:</h4>
+  {% endif %}
+
+  {% if page.redditURL %}
+    <div class="reddit">
+      <script type="text/javascript">
+        reddit_url = "{{page.redditURL}}"
+      </script>
+      <script type="text/javascript" src="//www.redditstatic.com/button/button1.js">
+      </script>
+    </div>
+  {% endif %}
+
+  {% if page.hackerNewsURL %}
+    <div class="hacker-news">
+      <a
+        href="http://news.ycombinator.com/submit"
+        class="hn-share-button"
+        data-title="{{page.title}}"
+        data-url="{{ page.hackerNewsURL }}"
+      >
+        Vote on HN
+      </a>
+      <script src="//hnbutton.appspot.com/static/hn.min.js"></script>
+    </div>
+  {% endif %}
+</div>
+
+
+

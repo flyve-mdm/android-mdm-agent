@@ -1,0 +1,78 @@
+{% assign openRow = 0 %}
+{% assign my_counter = 0 %}
+
+{% for screenshot in page.screenshots %}
+  {% assign modulo = my_counter | modulo: 4 %}
+
+  {% if modulo == 0 %}
+    <div class="row">
+    {% assign openRow = openRow | plus: 1 %}
+  {% endif %}
+
+  <div class="col-sm-6">
+    <figure class="media">
+      <div class="media-img ratio-1-1">
+        <a
+          href="#"
+          data-toggle="modal"
+          data-target="#modal-{{ my_counter }}"
+          aria-label="image-{{ my_counter }}"
+        >
+          {% include image-WebP.html img=screenshot.image alt=screenshot.title lazy=include.lazy %}
+        </a>
+      </div>
+      <figcaption class="media-caption">
+        <h4 class="media-header">
+          <a
+            href="#"
+            data-toggle="modal"
+            data-target="#modal-{{ my_counter }}"
+            aria-label="modal-{{ my_counter }}"
+          >
+            {{ screenshot.title }}
+          </a>
+        </h4>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div
+    class="modal"
+    id="modal-{{ my_counter }}"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="modal-{{ my_counter }}-label"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <i class="glyph glyph-clear" data-dismiss="modal"></i>
+        </div>
+        <div class="modal-body">
+
+          {% include image-WebP.html img=screenshot.image alt=screenshot.title lazy=include.lazy %}
+
+          {% for paragraph in screenshot.description %}
+            <p>
+              {{ paragraph }}
+            </p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% assign my_counter = my_counter | plus: 1 %}
+  {% assign modulo = my_counter | modulo: 4 %}
+
+  {% if modulo == 0 %}
+    </div>
+    {% assign openRow = openRow | minus: 1 %}
+  {% endif %}
+
+{% endfor %}
+
+{% if openRow != 0 %}
+  </div>
+{% endif %}
