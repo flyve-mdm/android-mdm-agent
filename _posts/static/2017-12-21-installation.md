@@ -20,7 +20,7 @@ Flyve MDM Agent for Android can be installed from Google Play or as System App.
 
 Check the following compatibility matrix to make sure, you're getting the right version.
 
-<table class="zebra-style">
+<table class="zebra-table">
     <tr>
         <td>MDM Agent</td>
         <td>0.99.x</td>
@@ -49,7 +49,7 @@ Check the following compatibility matrix to make sure, you're getting the right 
 
 ### MDM Agent & Android versions
 
-<table class="zebra-style">
+<table class="zebra-table">
     <tr>
         <td>API</td>
         <td>Android</td>
