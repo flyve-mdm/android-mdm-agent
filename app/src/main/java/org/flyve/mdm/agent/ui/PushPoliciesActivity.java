@@ -45,7 +45,6 @@ import org.flyve.mdm.agent.policies.UsbMtpPolicy;
 import org.flyve.mdm.agent.policies.UsbPtpPolicy;
 import org.flyve.mdm.agent.policies.VPNPolicy;
 import org.flyve.mdm.agent.policies.WifiPolicy;
-import org.flyve.mdm.agent.utils.AppThreadManager;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.json.JSONObject;
 
@@ -202,18 +201,18 @@ public class PushPoliciesActivity extends AppCompatActivity {
         String DEPLOY_APP = "deployApp";
         if(topic.toLowerCase().contains(DEPLOY_APP.toLowerCase())) {
             //MDMAgent.setMqttClient(getMqttClient());
-            AppThreadManager manager = MDMAgent.getAppThreadManager();
-            try {
-
-                JSONObject jsonObj = new JSONObject(policy);
-
-                if(jsonObj.has(DEPLOY_APP)) {
-                    manager.add(context, jsonObj);
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_DEPLOYAPP, ex.getMessage());
-                manager.finishProcess(context);
-            }
+//            AppThreadManager manager = MDMAgent.getAppThreadManager();
+//            try {
+//
+//                JSONObject jsonObj = new JSONObject(policy);
+//
+//                if(jsonObj.has(DEPLOY_APP)) {
+//                    manager.add(context, jsonObj);
+//                }
+//            } catch (Exception ex) {
+//                showDetailError(context, CommonErrorType.MQTT_DEPLOYAPP, ex.getMessage());
+//                manager.finishProcess(context);
+//            }
         }
 
         // Policy/deployApp
