@@ -8,14 +8,12 @@ static def releaseTime() {
 android {
     compileSdkVersion 27
     buildToolsVersion '28.0.2'
-
     defaultConfig {
-        applicationId "org.flyve.mdm.agent"
+        applicationId 'org.flyve.mdm.agent'
         minSdkVersion 16
         targetSdkVersion 27
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -25,7 +23,6 @@ android {
             testCoverageEnabled true
         }
     }
-
     flavorDimensions "mdm"
     productFlavors {
         gplay {
@@ -37,7 +34,6 @@ android {
             applicationIdSuffix ".fdroid"
         }
     }
-
     android.applicationVariants.all { variant ->
         variant.outputs.all { output ->
             def outputFile = output.outputFile
@@ -49,16 +45,13 @@ android {
             }
         }
     }
-
     dexOptions {
         preDexLibraries true
         maxProcessCount 8
     }
-
     lintOptions {
         abortOnError false
     }
-
     defaultConfig {
         multiDexEnabled true
     }
