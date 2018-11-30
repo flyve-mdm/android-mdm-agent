@@ -48,7 +48,6 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.DrawerAdapter;
 import org.flyve.mdm.agent.data.localstorage.AppData;
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
-import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.policies.manager.AndroidPolicies;
@@ -76,9 +75,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // start MQTT
-        globalStartMQTT();
 
         cache = new AppData(this);
 
@@ -156,16 +152,6 @@ public class MainActivity extends AppCompatActivity {
                 FlyveLog.e(this.getClass().getName() + ", checkNotifications", ex.getMessage());
             }
         }
-    }
-
-    /**
-     * if you need restart MQTT connection you need call this method
-     */
-    public void globalStartMQTT() {
-        // ------------------
-        // MQTT SERVICE
-        // ------------------
-        mServiceIntent = MQTTService.start( this.getApplicationContext() );
     }
 
     /**

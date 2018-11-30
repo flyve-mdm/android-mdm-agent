@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.flyve.mdm.agent"
     android:versionCode="3067"
     android:versionName="2.0.0-rc.5">
@@ -177,109 +178,6 @@
                     android:scheme="flyve" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name="org.eclipse.paho.android.service.MqttService"
-            android:label="Paho MQTT Service"></service>
-        <service
-            android:name=".services.MQTTService"
-            android:enabled="true"
-            android:label="M2M communications">
-            <intent-filter>
-                <action android:name="org.flyve.mdm.agent.ACTION_START" />
-                <action android:name="org.flyve.mdm.agent.ACTION_INVENTORY" />
-            </intent-filter>
-        </service>
-        <service android:name=".firebase.MessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
-        <!-- This receiver is for restart MQTT on reboot device -->
-        <receiver
-            android:name=".receivers.MQTTRestarterBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:label="RestartServiceWhenStopped">
-            <intent-filter>
-                <action android:name="org.flyve.mdm.agent.restart" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
-        <!-- This receiver is for Device Admin Policies -->
-        <receiver
-            android:name=".receivers.FlyveAdminReceiver"
-            android:permission="android.permission.BIND_DEVICE_ADMIN">
-            <meta-data
-                android:name="android.app.device_admin"
-                android:resource="@xml/device_admin"></meta-data>
-
-            <intent-filter>
-                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-                <action android:name="android.app.action.ACTION_DEVICE_ADMIN_DISABLE_REQUESTED" />
-                <action android:name="android.app.action.ACTION_DEVICE_ADMIN_DISABLED" />
-                <action android:name="android.app.action.ACTION_PASSWORD_CHANGED" />
-                <action android:name="android.app.action.ACTION_PASSWORD_EXPIRING" />
-                <action android:name="android.app.action.ACTION_PASSWORD_FAILED" />
-                <action android:name="android.app.action.ACTION_PASSWORD_SUCCEEDED" />
-                <action android:name="android.nfc.extra.ADAPTER_STATE" />
-            </intent-filter>
-        </receiver>
-
-        <!-- This receiver is for information about Wifi or Bluetooth -->
-        <receiver
-            android:name=".receivers.MQTTConnectivityReceiver"
-            android:exported="false">
-            <intent-filter android:priority="100">
-                <action android:name="android.net.wifi.STATE_CHANGE" />
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
-                <action android:name="android.location.PROVIDERS_CHANGED" />
-                <action android:name="android.intent.action.AIRPLANE_MODE" />
-                <action android:name="android.intent.action.PHONE_STATE" />
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-                <action android:name="android.hardware.usb.action.USB_STATE" />
-            </intent-filter>
-        </receiver>
-
-        <!-- This receiver is for information about Wifi or Bluetooth -->
-        <receiver
-            android:name=".receivers.SMSReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.BROADCAST_SMS">
-            <intent-filter android:priority="100">
-                <action android:name="android.provider.Telephony.SMS_DELIVER" />
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-                <action android:name="android.provider.Telephony.WAP_PUSH_RECEIVED" />
-            </intent-filter>
-        </receiver>
-
-        <!-- This receiver check if any app is installed, deleted or updated -->
-        <receiver android:name=".receivers.AppsReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.ACTION_PACKAGE_REMOVED" />
-                <action android:name="android.intent.action.ACTION_PACKAGE_REPLACED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
 
     </application>
 
