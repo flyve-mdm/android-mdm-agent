@@ -539,7 +539,7 @@ public class PoliciesController {
                     FlyveLog.e(this.getClass().getName() + ", sendGPS", "without location yet...");
                     try {
                         byte[] encodedPayload;
-                        String payload = "?";
+                        String payload = "{\"datetime\":" + Helpers.getUnixTime() + ",\"gps\":\"off\"}";
                         encodedPayload = payload.getBytes(UTF_8);
                         MqttMessage message = new MqttMessage(encodedPayload);
                         client.publish(topic, message);
@@ -581,7 +581,7 @@ public class PoliciesController {
             String topic = mTopic + "/Status/Geolocation";
             try {
                 byte[] encodedPayload;
-                String payload = "?";
+                String payload = "{\"datetime\":" + Helpers.getUnixTime() + ",\"gps\":\"off\"}";
                 encodedPayload = payload.getBytes(UTF_8);
                 MqttMessage message = new MqttMessage(encodedPayload);
                 client.publish(topic, message);
