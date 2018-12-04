@@ -51,13 +51,13 @@ public interface Enrollment {
         Uri getPhoto();
         void createX509certification(Context context);
         void selectPhoto(final Activity activity, final int requestCamera, final int requestFile);
-        void enroll(final Activity activity, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber);
+        void enroll(final Activity activity, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber, final String notificationToken);
     }
 
     interface Model {
         Uri getPhoto();
         void createX509certification(Context context);
         void selectPhoto(final Activity activity, final int requestCamera, final int requestFile);
-        void enroll(final Activity activity, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber);
+        void enroll(final Activity activity, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber, final String notificationToken);
     }
 }
