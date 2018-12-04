@@ -71,6 +71,7 @@
     <string name="validate_inventory">- Inventory fail please close enrollment and try again.\n</string>
     <string name="validate_inventory_wait">- Inventory is running please wait and try again.\n</string>
     <string name="validate_check_details">Please check problem details at the bottom of the form</string>
+    <string name="validate_fcm_token">The FCM token is not present, close the app and try again</string>
 
     <string name="lock_message">This device has been blocked by user, please enter your code to unlock</string>
     <string name="lock_email">Please enter your email</string>

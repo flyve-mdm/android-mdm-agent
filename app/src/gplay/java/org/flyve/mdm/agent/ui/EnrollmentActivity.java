@@ -30,6 +30,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -42,6 +43,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.enrollment.Enrollment;
@@ -79,6 +86,7 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
     private ImageView imgPhoto;
     private ProgressDialog pd;
     private File filePhoto;
+    private String fcmToken = "";
     public static String inventory = "";
     private Enrollment.Presenter presenter;
 
@@ -171,6 +179,8 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
                 return false;
             }
         });
+
+        getFCMToken();
 
         ImageView btnRegister = findViewById(R.id.btnSave);
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -312,9 +322,35 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
                 inventory,
                 strPicture,
                 spinnerLanguage.getSelectedItem().toString(),
-                editAdministrative.getText().toString()
+                editAdministrative.getText().toString(),
+                fcmToken
         );
     }
+
+    private void getFCMToken() {
+        FirebaseMessaging.getInstance().subscribeToTopic("global");
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            FlyveLog.e("getFCMToken", "getInstanceId failed", task.getException());
+                            fcmToken = "";
+                            return;
+                        }
+
+                        try {
+                            // Get new Instance ID token
+                            fcmToken = task.getResult().getToken();
+                            // Log
+                            Helpers.storeLog("FCM", "token", fcmToken);
+                        } catch (NullPointerException ex) {
+                            FlyveLog.e("getFCMToken", "token null", ex.getMessage());
+                        }
+                    }
+                });
+    }
+
 
     /**
      * Open the next activity

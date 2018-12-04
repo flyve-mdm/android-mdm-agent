@@ -101,7 +101,7 @@ public class EnrollmentModel implements Enrollment.Model {
     }
 
     @Override
-    public void enroll(final Activity activity, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber) {
+    public void enroll(final Activity activity, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber, final String notificationToken) {
 
         StringBuilder errMsg = new StringBuilder(activity.getResources().getString(R.string.validate_error) );
         boolean allow = true;
@@ -120,6 +120,11 @@ public class EnrollmentModel implements Enrollment.Model {
 
         if(lastName.trim().equals("")) {
             errMsg.append(activity.getResources().getString(R.string.validate_last_name) );
+            allow = false;
+        }
+
+        if(notificationToken.equals("")) {
+            errMsg.append(activity.getResources().getString(R.string.validate_fcm_token) );
             allow = false;
         }
 
@@ -160,6 +165,10 @@ public class EnrollmentModel implements Enrollment.Model {
             payload.put("type", "android");
             payload.put("has_system_permission", Helpers.isSystemApp(activity));
             payload.put("inventory", mInventory);
+            // could be mqtt or fcm
+            payload.put("notification_type", "fcm");
+            // this is the token get from fcm register
+            payload.put("notification_token", notificationToken);
 
             FlyveLog.d(mInventory);
 
