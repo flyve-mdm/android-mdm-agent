@@ -3,8 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.flyve.mdm.agent"
     >
-
     <application>
+        <activity
+            android:name=".ui.PushPoliciesActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask"
+            >
+            <intent-filter>
+                <action android:name="OPEN_POLICY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <service android:name=".firebase.MessagingService">
             <intent-filter>
