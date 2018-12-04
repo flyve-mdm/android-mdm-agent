@@ -144,15 +144,6 @@
             android:name=".ui.PreviewUserActivity"
             android:configChanges="orientation|screenSize"></activity>
         <activity
-            android:name=".ui.PushPoliciesActivity"
-            android:configChanges="orientation|screenSize"
-            android:launchMode="singleTask"
-            >
-            <intent-filter>
-                <action android:name="OPEN_POLICY" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>        </activity>
-        <activity
             android:name=".ui.StartEnrollmentActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask">
