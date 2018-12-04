@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logoflyve"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            />
+
+        <RelativeLayout
+            android:id="@+id/rlSupervisor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            >
+
+            <org.flyve.mdm.agent.utils.RoundedImageView
+                android:id="@+id/imgLogoSupervisor"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_teclib"
+                android:layout_marginRight="10dp"
+                android:layout_centerVertical="true"
+                />
+
+            <TextView
+                android:id="@+id/txtTitleSupervisor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/device_supervised_by_title"
+                android:layout_toRightOf="@id/imgLogoSupervisor"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                style="@style/regularText"
+                />
+
+            <TextView
+                android:id="@+id/txtNameSupervisor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/imgLogoSupervisor"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/txtTitleSupervisor"
+                style="@style/titleText"
+                android:text="@string/not_available"
+                />
+
+            <TextView
+                android:id="@+id/txtDescriptionSupervisor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/imgLogoSupervisor"
+                android:layout_below="@+id/txtNameSupervisor"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                style="@style/regularText"
+                android:text="@string/not_available"
+                />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="80dp"
+            android:background="@android:color/darker_gray"
+            />
+
+        <RelativeLayout
+            android:id="@+id/rlUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rlSupervisor"
+            android:layout_marginTop="20dp"
+            android:padding="20dp"
+            >
+
+            <org.flyve.mdm.agent.utils.RoundedImageView
+                android:id="@+id/imgLogoUser"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_user_round"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                />
+
+            <TextView
+                android:id="@+id/txtTitleUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/imgLogoUser"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/user_information_title"
+                style="@style/regularText"
+                />
+
+            <TextView
+                android:id="@+id/txtNameUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="User Name"
+                android:layout_toRightOf="@id/imgLogoUser"
+                android:layout_below="@+id/txtTitleUser"
+                android:layout_marginLeft="10dp"
+                style="@style/titleText"
+                />
+
+            <TextView
+                android:id="@+id/txtDescriptionUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="User Email"
+                android:layout_toRightOf="@id/imgLogoUser"
+                android:layout_below="@+id/txtNameUser"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                style="@style/regularText"
+                />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="80dp"
+            android:background="@android:color/darker_gray"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:paddingBottom="20dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"
+            >
+            <ImageView
+                android:id="@+id/imgOnline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_online"
+                />
+
+            <TextView
+                android:id="@+id/txtOnline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/online"
+                android:layout_marginLeft="10dp"
+                style="@style/regularText"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
+
