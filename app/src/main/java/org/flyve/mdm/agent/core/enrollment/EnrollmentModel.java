@@ -168,6 +168,10 @@ public class EnrollmentModel implements Enrollment.Model {
             payload.put("type", "android");
             payload.put("has_system_permission", Helpers.isSystemApp(activity));
             payload.put("inventory", mInventory);
+            // could be mqtt or fcm
+            payload.put("notification_type", "mqtt");
+            // this is the token get from fcm register
+            payload.put("notification_token", "");
 
             FlyveLog.d(mInventory);
 
