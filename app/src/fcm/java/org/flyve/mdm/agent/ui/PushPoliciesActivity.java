@@ -299,6 +299,7 @@ public class PushPoliciesActivity extends AppCompatActivity {
 
                     // execute the policy
                     policies.setMqttEnable(false);
+                    policies.setParameters(topic, taskId);
                     policies.setValue(value);
                     policies.setPriority(policyPriority);
                     policies.execute();
