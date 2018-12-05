@@ -100,6 +100,86 @@ public class ConnectionHTTP {
 		}
 	}
 
+	public static void sendHttpResponse(final String url, final String data, final String sessionToken, final DataCallback callback) {
+		Thread t = new Thread(new Runnable()
+		{
+			public void run()
+			{
+				try
+				{
+					URL dataURL = new URL(url);
+					HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
+
+					conn.setRequestMethod("PUT");
+					conn.setConnectTimeout(timeout);
+					conn.setReadTimeout(readtimeout);
+
+					HashMap<String, String> header = new HashMap();
+					header.put("Accept","application/octet-stream");
+					header.put("Content-Type","application/json");
+					header.put("Session-Token", sessionToken);
+
+					StringBuilder logHeader = new StringBuilder();
+					if(header != null) {
+						for (Map.Entry<String, String> entry : header.entrySet()) {
+							logHeader.append("- " + entry.getKey() + " : " + entry.getValue() + "\n");
+							conn.setRequestProperty(entry.getKey(), entry.getValue());
+						}
+					} else {
+						logHeader.append("Empty");
+					}
+
+					// Send post request
+					conn.setDoOutput(true);
+
+					DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+					os.writeBytes(data);
+					os.flush();
+					os.close();
+
+					if(conn.getResponseCode() >= 400) {
+						InputStream is = conn.getErrorStream();
+						final String result = inputStreamToString(is);
+
+						ConnectionHTTP.runOnUI(new Runnable()
+						{
+							public void run()
+							{
+								callback.callback(result);
+							}
+						});
+						return;
+					}
+
+					InputStream is = conn.getInputStream();
+					final String requestResponse = inputStreamToString(is);
+
+					String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
+					Log(response);
+
+					ConnectionHTTP.runOnUI(new Runnable() {
+						public void run() {
+							callback.callback(requestResponse);
+						}
+					});
+
+				}
+				catch (final Exception ex)
+				{
+					ConnectionHTTP.runOnUI(new Runnable()
+					{
+						public void run()
+						{
+							callback.callback(EXCEPTION_HTTP + ex.getMessage());
+							FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getWebData",ex.getClass() + " : " + ex.getMessage());
+						}
+					});
+				}
+			}
+		});
+		t.start();
+	}
+
 	/**
 	 * Get the data in a synchronous way
 	 * @param url the url
