@@ -69,6 +69,11 @@ public abstract class BasePolicies {
         }
     }
 
+    public void setParameters(String topic, String taskId) {
+        this.mqttTopic = topic;
+        this.mqttTaskId = taskId;
+    }
+
     public void setMqttEnable(boolean enable) {
         this.mqttEnable = enable;
     }
@@ -100,27 +105,12 @@ public abstract class BasePolicies {
     }
 
     private void sendTaskStatus(String topic, String taskId, String status) {
-        String mTopic = topic + "/Status/Task/" + taskId;
-        byte[] encodedPayload;
-        try {
-            String payload = "{ \"status\": \"" + status + "\" }";
-            encodedPayload = payload.getBytes("UTF-8");
 
-            //TODO send the task status by http
 
-            Log(MQTT_SEND, "Policy Status", "TaskID: " + taskId + " Status: " + status);
-        } catch (Exception ex) {
-            FlyveLog.e(this.getClass().getName() + ", sendTaskStatus", ex.getMessage());
-
-            // send broadcast
-            Log(ERROR, "Error sending status", ex.getMessage());
-        }
     }
 
     private void mqttResponse(String status) {
-        if(mqttEnable) {
-            this.sendTaskStatus(this.mqttTopic, this.mqttTaskId, status);
-        }
+        this.sendTaskStatus(this.mqttTopic, this.mqttTaskId, status);
     }
 
     protected void Log(String type, String title, String message){
