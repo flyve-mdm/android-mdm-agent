@@ -99,8 +99,8 @@ public abstract class BasePolicies {
         }
     }
 
-    private void mqttSendTaskStatus(String mqttTopic, String taskId, String status) {
-        String topic = mqttTopic + "/Status/Task/" + taskId;
+    private void sendTaskStatus(String topic, String taskId, String status) {
+        String mTopic = topic + "/Status/Task/" + taskId;
         byte[] encodedPayload;
         try {
             String payload = "{ \"status\": \"" + status + "\" }";
@@ -110,7 +110,7 @@ public abstract class BasePolicies {
 
             Log(MQTT_SEND, "Policy Status", "TaskID: " + taskId + " Status: " + status);
         } catch (Exception ex) {
-            FlyveLog.e(this.getClass().getName() + ", mqttSendTaskStatus", ex.getMessage());
+            FlyveLog.e(this.getClass().getName() + ", sendTaskStatus", ex.getMessage());
 
             // send broadcast
             Log(ERROR, "Error sending status", ex.getMessage());
@@ -119,7 +119,7 @@ public abstract class BasePolicies {
 
     private void mqttResponse(String status) {
         if(mqttEnable) {
-            this.mqttSendTaskStatus(this.mqttTopic, this.mqttTaskId, status);
+            this.sendTaskStatus(this.mqttTopic, this.mqttTaskId, status);
         }
     }
 
