@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:168702443781:android:214d3b7b6e9a657f",
         "android_client_info": {
-          "package_name": "org.flyve.mdm.agent.fdroid"
+          "package_name": "org.flyve.mdm.agent.fcm"
         }
       },
       "oauth_client": [

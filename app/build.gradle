@@ -25,13 +25,13 @@ android {
     }
     flavorDimensions "mdm"
     productFlavors {
-        gplay {
+        fcm {
             dimension "mdm"
-            applicationIdSuffix ".gplay"
+            applicationIdSuffix ".fcm"
         }
-        fdroid {
+        mqtt {
             dimension "mdm"
-            applicationIdSuffix ".fdroid"
+            applicationIdSuffix ".mqtt"
         }
     }
     android.applicationVariants.all { variant ->
@@ -74,19 +74,19 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.21.0'
     androidTestImplementation 'org.mockito:mockito-android:2.21.0'
     // MQTT libraries
-    fdroidImplementation('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
+    mqttImplementation('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
         exclude module: 'support-v4'
         transitive = true
     }
-    fdroidImplementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
-    fdroidImplementation 'com.madgag.spongycastle:core:1.54.0.0'
-    fdroidImplementation 'com.madgag.spongycastle:prov:1.54.0.0'
-    fdroidImplementation 'com.madgag.spongycastle:pkix:1.54.0.0'
+    mqttImplementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    mqttImplementation 'com.madgag.spongycastle:core:1.54.0.0'
+    mqttImplementation 'com.madgag.spongycastle:prov:1.54.0.0'
+    mqttImplementation 'com.madgag.spongycastle:pkix:1.54.0.0'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.google.zxing:core:3.3.0'
     //Firebase
-    gplayImplementation 'com.google.firebase:firebase-core:16.0.5'
-    gplayImplementation 'com.google.firebase:firebase-messaging:17.3.4'
+    fcmImplementation 'com.google.firebase:firebase-core:16.0.5'
+    fcmImplementation 'com.google.firebase:firebase-messaging:17.3.4'
     // Google libraries
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.android.support:appcompat-v7:27.1.1'
