@@ -2,6 +2,58 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.6"></a>
+# [2.0.0-rc.6](https://github.com/flyve-mdm/android-mdm-agent/compare/2.0.0-rc.5...2.0.0-rc.6) (2018-12-05)
+
+
+### Bug Fixes
+
+* **connection:** add session token ([c1cd8f0](https://github.com/flyve-mdm/android-mdm-agent/commit/c1cd8f0))
+* **connection:** add user token on initsession ([2794374](https://github.com/flyve-mdm/android-mdm-agent/commit/2794374))
+* **download:** add session token on header ([126f26d](https://github.com/flyve-mdm/android-mdm-agent/commit/126f26d))
+* **enroll:** remove mqtt restriction t to save ([04c747a](https://github.com/flyve-mdm/android-mdm-agent/commit/04c747a))
+* **log:** add connection and reconnection logs ([f9ec199](https://github.com/flyve-mdm/android-mdm-agent/commit/f9ec199))
+* **log:** add date and keep clear the log ([e9a6e99](https://github.com/flyve-mdm/android-mdm-agent/commit/e9a6e99))
+* **log:** add limit on the log file text with 3MB ([1b1ea98](https://github.com/flyve-mdm/android-mdm-agent/commit/1b1ea98))
+* **log:** add log data structure ([c7dcfcd](https://github.com/flyve-mdm/android-mdm-agent/commit/c7dcfcd))
+* **log:** check the message value ([dc40d93](https://github.com/flyve-mdm/android-mdm-agent/commit/dc40d93))
+* **log:** clear the data with ui ([188bf3c](https://github.com/flyve-mdm/android-mdm-agent/commit/188bf3c))
+* **log:** implement log with sqllite ([7ef05bb](https://github.com/flyve-mdm/android-mdm-agent/commit/7ef05bb))
+* **log:** implement where  on log ([ea6013a](https://github.com/flyve-mdm/android-mdm-agent/commit/ea6013a))
+* **log:** load logs from sqllite ([0c86500](https://github.com/flyve-mdm/android-mdm-agent/commit/0c86500))
+* **log:** refactor the save log ([ffdd295](https://github.com/flyve-mdm/android-mdm-agent/commit/ffdd295))
+* **mqtt:** add certification ([318b619](https://github.com/flyve-mdm/android-mdm-agent/commit/318b619))
+* **mqtt:** add TrustManagerFactory on  the mqtt options ([915cd60](https://github.com/flyve-mdm/android-mdm-agent/commit/915cd60))
+* **mqtt:** fix the FlyvemdmManifest topic ([bacaf17](https://github.com/flyve-mdm/android-mdm-agent/commit/bacaf17))
+* **mqtt:** remove increase tryEverySeconds ([a7d9267](https://github.com/flyve-mdm/android-mdm-agent/commit/a7d9267))
+* **mqtt:** remove the retained true ([327586d](https://github.com/flyve-mdm/android-mdm-agent/commit/327586d))
+* **mqtt:** replace the TLSv1.2 for TLS ([fede198](https://github.com/flyve-mdm/android-mdm-agent/commit/fede198))
+* **mqtt:** restore increase seconds ([3a893c2](https://github.com/flyve-mdm/android-mdm-agent/commit/3a893c2))
+* **mqtt:** rewords variables ([b2f6f7c](https://github.com/flyve-mdm/android-mdm-agent/commit/b2f6f7c))
+* **mqtt:** send ? when gps is not available ([316ea15](https://github.com/flyve-mdm/android-mdm-agent/commit/316ea15))
+* **mqtt:** send online status ([073bc2d](https://github.com/flyve-mdm/android-mdm-agent/commit/073bc2d))
+* **mqtt:** send the status connected ([27ce044](https://github.com/flyve-mdm/android-mdm-agent/commit/27ce044))
+* **mqtt:** set reconnection counter to zero ([5ae89ff](https://github.com/flyve-mdm/android-mdm-agent/commit/5ae89ff))
+* **mqtt:** set status true if is  connected ([9a83eb1](https://github.com/flyve-mdm/android-mdm-agent/commit/9a83eb1))
+* **mqtt:** validate unique mqtt client ([b0a2936](https://github.com/flyve-mdm/android-mdm-agent/commit/b0a2936))
+* **MqttModel:** fix will for online status ([0eb4276](https://github.com/flyve-mdm/android-mdm-agent/commit/0eb4276))
+* **MqttModel:** offline will not on the good topic ([791a5cb](https://github.com/flyve-mdm/android-mdm-agent/commit/791a5cb))
+* **policy:** remove lock  var on thread manager ([38f9bd9](https://github.com/flyve-mdm/android-mdm-agent/commit/38f9bd9))
+* **policy:** send ? character iif gps fail ([236fe67](https://github.com/flyve-mdm/android-mdm-agent/commit/236fe67))
+* **policy:** update the log  message ([9c13ff6](https://github.com/flyve-mdm/android-mdm-agent/commit/9c13ff6))
+* **policy:** use the right policies connectiviity ([a9fe7cb](https://github.com/flyve-mdm/android-mdm-agent/commit/a9fe7cb))
+* **service:** remove stop service from ui ([0cc9b27](https://github.com/flyve-mdm/android-mdm-agent/commit/0cc9b27))
+
+
+### Features
+
+* **deeplink:** add  the textview information ([f59b0c9](https://github.com/flyve-mdm/android-mdm-agent/commit/f59b0c9))
+* **deeplink:** show the deeplink infomrmation ([0546ae2](https://github.com/flyve-mdm/android-mdm-agent/commit/0546ae2))
+* **policies:** add policies module ([625ceca](https://github.com/flyve-mdm/android-mdm-agent/commit/625ceca))
+* **wipe:** set external storage flag on wipe ([#623](https://github.com/flyve-mdm/android-mdm-agent/issues/623)) ([33c6dd2](https://github.com/flyve-mdm/android-mdm-agent/commit/33c6dd2))
+
+
+
 <a name="2.0.0-rc.5"></a>
 # [2.0.0-rc.5](https://github.com/flyve-mdm/android-mdm-agent/compare/2.0.0-rc.4...2.0.0-rc.5) (2018-10-03)
 
