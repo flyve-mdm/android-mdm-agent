@@ -33,9 +33,7 @@ import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.data.database.entity.Policies;
-import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
-import org.flyve.mdm.agent.utils.Helpers;
 
 public abstract class BasePolicies {
 
@@ -112,18 +110,6 @@ public abstract class BasePolicies {
         Routes routes = new Routes(context);
         MqttData cache = new MqttData(context);
 
-        if(topic.toLowerCase().contains("ping")) {
-            String url = routes.pluginFlyvemdmAgent(cache.getAgentId());
-            String data = "{\"input\":{\"_pong\":\"!\"}}";
-            String sessionToken = cache.getSessionToken();
-
-            ConnectionHTTP.sendHttpResponse(url, data, sessionToken, new ConnectionHTTP.DataCallback() {
-                @Override
-                public void callback(String data) {
-                    Helpers.storeLog("fcm", "http response", data);
-                }
-            });
-        }
 
 
     }
