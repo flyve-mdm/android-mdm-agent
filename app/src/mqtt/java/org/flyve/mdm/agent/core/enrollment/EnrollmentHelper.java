@@ -267,6 +267,7 @@ public class EnrollmentHelper {
                     });
                 } else {
                     String agentId;
+                    FlyveLog.d("Data return: " + data);
                     try {
                         JSONObject jsonAgent = new JSONObject(data);
                         agentId = jsonAgent.getString("id");
@@ -289,6 +290,7 @@ public class EnrollmentHelper {
                     String dataAgent = ConnectionHTTP.getSyncWebData(routes.pluginFlyvemdmAgent(agentId), "GET", header);
 
                     try {
+                        FlyveLog.d("Data agent: " + dataAgent);
                         JSONObject jsonObject = new JSONObject(dataAgent);
 
                         String mbroker = jsonObject.getString("broker");
