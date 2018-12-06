@@ -17,6 +17,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.ui.PushPoliciesActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 
 public class MessagingService extends FirebaseMessagingService {
 
@@ -49,7 +50,24 @@ public class MessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 
-        sendNotification(remoteMessage.getData().get("topic"), remoteMessage.getData().get("taskId"), remoteMessage.getData().get("policy"), remoteMessage.getNotification().getBody());
+        String topic = remoteMessage.getData().get("topic");
+        if(topic==null) {
+            Helpers.storeLog("fcm", "topic null", "topic cannot be null");
+            return;
+        }
+
+        String message = remoteMessage.getData().get("message");
+        if(message==null) {
+            Helpers.storeLog("fcm", "message null", "message cannot be null");
+            return;
+        }
+
+        String body = remoteMessage.getNotification().getBody();
+        if(body==null) {
+            body = "Please sync your device";
+        }
+
+        sendNotification(topic, message, body);
     }
 
 
@@ -57,14 +75,13 @@ public class MessagingService extends FirebaseMessagingService {
      * Create and show a simple notification containing the received FCM message.
      */
 
-    private void sendNotification(String topic, String taskId, String policy, String message) {
+    private void sendNotification(String topic, String message, String body) {
 
-        FlyveLog.d("Notification: " + message);
+        FlyveLog.d("Notification: " + body);
 
         Intent intent = new Intent(this, PushPoliciesActivity.class);
-        intent.putExtra("policy", policy);
-        intent.putExtra("taskId", taskId);
         intent.putExtra("topic", topic);
+        intent.putExtra("message", message);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -80,9 +97,9 @@ public class MessagingService extends FirebaseMessagingService {
                 .setContentIntent(pendingIntent);
 
         if (Build.VERSION.SDK_INT < 16) {
-            builder.setContentText(message);
+            builder.setContentText(body);
         } else {
-            builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+            builder.setStyle(new NotificationCompat.BigTextStyle().bigText(body));
         }
 
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
