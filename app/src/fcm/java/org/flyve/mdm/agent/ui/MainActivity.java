@@ -113,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
 
         loadListDrawer(menuItemSelected, extra);
         checkNotifications();
+
+        PushPoliciesActivity.sendStatusbyHttp(MainActivity.this, true);
     }
 
     private void checkNotifications() {
