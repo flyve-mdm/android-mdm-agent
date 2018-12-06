@@ -68,14 +68,13 @@ public class PushPoliciesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_policies);
 
-        String policy = getIntent().getStringExtra("policy");
+        String message = getIntent().getStringExtra("message");
         String topic = getIntent().getStringExtra("topic");
-        String taskId = getIntent().getStringExtra("taskId");
 
         TextView txtPolicies = findViewById(R.id.txtPolicies);
-        txtPolicies.setText(policy);
+        txtPolicies.setText(message);
 
-        messageArrived(PushPoliciesActivity.this, topic, policy);
+        messageArrived(PushPoliciesActivity.this, topic, message);
 
         Button btnClose = findViewById(R.id.btnClose);
         btnClose.setOnClickListener(new View.OnClickListener() {
@@ -106,125 +105,125 @@ public class PushPoliciesActivity extends AppCompatActivity {
         }
     }
 
-    private void messageArrived(final Context context, String topic, String policy) {
+    private void messageArrived(final Context context, String topic, String message) {
         int priority = 1;
 
         // Policy/passwordEnabled
-        callPolicy(context, PasswordEnablePolicy.class, PasswordEnablePolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, PasswordEnablePolicy.class, PasswordEnablePolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/passwordQuality
-        callPolicy(context, PasswordQualityPolicy.class, PasswordQualityPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, PasswordQualityPolicy.class, PasswordQualityPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/passwordMinLength
-        callPolicy(context, PasswordMinLengthPolicy.class, PasswordMinLengthPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, PasswordMinLengthPolicy.class, PasswordMinLengthPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/passwordMinLowerCase
-        callPolicy(context, PasswordMinLowerCasePolicy.class, PasswordMinLowerCasePolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, PasswordMinLowerCasePolicy.class, PasswordMinLowerCasePolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/passwordMinUpperCase
-        callPolicy(context, PasswordMinUpperCasePolicy.class, PasswordMinUpperCasePolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, PasswordMinUpperCasePolicy.class, PasswordMinUpperCasePolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/passwordMinNonLetter
-        callPolicy(context, PasswordMinNonLetterPolicy.class, PasswordMinNonLetterPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, PasswordMinNonLetterPolicy.class, PasswordMinNonLetterPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/passwordMinLetters
-        callPolicy(context, PasswordMinLetterPolicy.class, PasswordMinLetterPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, PasswordMinLetterPolicy.class, PasswordMinLetterPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/passwordMinNumeric
-        callPolicy(context, PasswordMinNumericPolicy.class, PasswordMinNumericPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, PasswordMinNumericPolicy.class, PasswordMinNumericPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/passwordMinSymbols
-        callPolicy(context, PasswordMinSymbolsPolicy.class, PasswordMinSymbolsPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, PasswordMinSymbolsPolicy.class, PasswordMinSymbolsPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/MaximumFailedPasswordsForWipe
-        callPolicy(context, MaximumFailedPasswordForWipePolicy.class, MaximumFailedPasswordForWipePolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, MaximumFailedPasswordForWipePolicy.class, MaximumFailedPasswordForWipePolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/MaximumTimeToLock
-        callPolicy(context, MaximumTimeToLockPolicy.class, MaximumTimeToLockPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, MaximumTimeToLockPolicy.class, MaximumTimeToLockPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/storageEncryption
-        callPolicy(context, StorageEncryptionPolicy.class, StorageEncryptionPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, StorageEncryptionPolicy.class, StorageEncryptionPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableCamera
-        callPolicy(context, CameraPolicy.class, CameraPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, CameraPolicy.class, CameraPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableBluetooth
-        callPolicy(context, BluetoothPolicy.class, BluetoothPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, BluetoothPolicy.class, BluetoothPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableHostpotTethering
-        callPolicy(context, HostpotTetheringPolicy.class, HostpotTetheringPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, HostpotTetheringPolicy.class, HostpotTetheringPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableRoaming
-        callPolicy(context, RoamingPolicy.class, RoamingPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, RoamingPolicy.class, RoamingPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableWifi
-        callPolicy(context, WifiPolicy.class, WifiPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, WifiPolicy.class, WifiPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableSpeakerphone
-        callPolicy(context, SpeakerphonePolicy.class, SpeakerphonePolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, SpeakerphonePolicy.class, SpeakerphonePolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableUsbOnTheGo
-        callPolicy(context, SMSPolicy.class, SMSPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, SMSPolicy.class, SMSPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableCreateVpnProfiles
-        callPolicy(context, VPNPolicy.class, VPNPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, VPNPolicy.class, VPNPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableStreamMusic
-        callPolicy(context, StreamMusicPolicy.class, StreamMusicPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, StreamMusicPolicy.class, StreamMusicPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableStreamRing
-        callPolicy(context, StreamRingPolicy.class, StreamRingPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, StreamRingPolicy.class, StreamRingPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableStreamAlarm
-        callPolicy(context, StreamAlarmPolicy.class, StreamAlarmPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, StreamAlarmPolicy.class, StreamAlarmPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableStreamNotification
-        callPolicy(context, StreamNotificationPolicy.class, StreamNotificationPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, StreamNotificationPolicy.class, StreamNotificationPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableStreamAccessibility
-        callPolicy(context, StreamAccessibilityPolicy.class, StreamAccessibilityPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, StreamAccessibilityPolicy.class, StreamAccessibilityPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableStreamVoiceCall
-        callPolicy(context, StreamVoiceCallPolicy.class, StreamVoiceCallPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, StreamVoiceCallPolicy.class, StreamVoiceCallPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableStreamDTMF
-        callPolicy(context, StreamVoiceCallPolicy.class, StreamVoiceCallPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, StreamVoiceCallPolicy.class, StreamVoiceCallPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableScreenCapture
         //  ROOT REQUIRED
-        callPolicy(context, ScreenCapturePolicy.class, ScreenCapturePolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, ScreenCapturePolicy.class, ScreenCapturePolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableAirplaneMode
         //  ROOT REQUIRED
-        callPolicy(context, AirplaneModePolicy.class, AirplaneModePolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, AirplaneModePolicy.class, AirplaneModePolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableGPS
         //  ROOT REQUIRED
-        callPolicy(context, GPSPolicy.class, GPSPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, GPSPolicy.class, GPSPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableMobileLine
         // ROOT
-        callPolicy(context, MobileLinePolicy.class, MobileLinePolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, MobileLinePolicy.class, MobileLinePolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableNfc
         // ROOT
-        callPolicy(context, NFCPolicy.class, NFCPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, NFCPolicy.class, NFCPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableStatusBar
         // ROOT
-        callPolicy(context, StatusBarPolicy.class, StatusBarPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, StatusBarPolicy.class, StatusBarPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableUsbMtp
         // ROOT
-        callPolicy(context, UsbMtpPolicy.class, UsbMtpPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, UsbMtpPolicy.class, UsbMtpPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableUsbPtp
         // ROOT
-        callPolicy(context, UsbPtpPolicy.class, UsbPtpPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, UsbPtpPolicy.class, UsbPtpPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/disableUsbAdb
         // ROOT
-        callPolicy(context, UsbAdbPolicy.class, UsbAdbPolicy.POLICY_NAME, priority, topic, policy);
+        callPolicy(context, UsbAdbPolicy.class, UsbAdbPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/deployApp
         String DEPLOY_APP = "deployApp";
@@ -248,7 +247,7 @@ public class PushPoliciesActivity extends AppCompatActivity {
         String REMOVE_APP = "removeApp";
         if(topic.toLowerCase().contains(REMOVE_APP.toLowerCase())) {
             try {
-                JSONObject jsonObj = new JSONObject(policy);
+                JSONObject jsonObj = new JSONObject(message);
 
                 if(jsonObj.has(REMOVE_APP)) {
                     String removeApp = jsonObj.getString(REMOVE_APP);
@@ -266,7 +265,7 @@ public class PushPoliciesActivity extends AppCompatActivity {
         String DEPLOY_FILE = "deployFile";
         if(topic.toLowerCase().contains(DEPLOY_FILE.toLowerCase())) {
             try {
-                JSONObject jsonObj = new JSONObject(policy);
+                JSONObject jsonObj = new JSONObject(message);
 
                 if(jsonObj.has(DEPLOY_FILE)) {
                     String deployFile = jsonObj.getString(DEPLOY_FILE);
@@ -286,7 +285,7 @@ public class PushPoliciesActivity extends AppCompatActivity {
         String REMOVE_FILE = "removeFile";
         if(topic.toLowerCase().contains(REMOVE_FILE.toLowerCase())) {
             try {
-                JSONObject jsonObj = new JSONObject(policy);
+                JSONObject jsonObj = new JSONObject(message);
 
                 if(jsonObj.has(REMOVE_FILE)) {
                     String removeFile = jsonObj.getString(REMOVE_FILE);
