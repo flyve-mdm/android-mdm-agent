@@ -405,7 +405,7 @@ public class PushPoliciesActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonPayload = new JSONObject();
 
-                        jsonPayload.put("_inventory", s);
+                        jsonPayload.put("_inventory", Helpers.base64encode(s));
 
                         JSONObject jsonInput = new JSONObject();
                         jsonInput.put("input", jsonPayload);
