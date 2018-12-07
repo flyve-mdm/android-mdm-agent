@@ -125,6 +125,54 @@ public class EnrollmentHelper {
         {
             public void run()
             {
+                JSONObject jsonSession;
+                HashMap<String, String> header = new HashMap();
+                header.put("user_token", cache.getApiToken());
+
+                try {
+                    // STEP 1 get session token
+                    data = getSyncWebData(routes.initSession(), "GET", header);
+
+                    final String errorMessage = manageError(data);
+                    if(!errorMessage.equals("")) {
+                        EnrollmentHelper.runOnUI(new Runnable() {
+                            public void run() {
+                                callback.onError(CommonErrorType.ENROLLMENT_HELPER_INITSESSION, errorMessage);
+                            }
+                        });
+                        return;
+                    }
+
+                    jsonSession = new JSONObject(data);
+                    sessionToken = jsonSession.getString("session_token");
+                    cache.setSessionToken(sessionToken);
+
+                } catch (final Exception ex) {
+                    FlyveLog.e(this.getClass().getName() + ", getActiveSessionToken", ex.getMessage());
+                    EnrollmentHelper.runOnUI(new Runnable() {
+                        public void run() {
+                            callback.onError(CommonErrorType.ENROLLMENT_HELPER_INITSESSION, context.getString(R.string.wrong_json_format, data, ex.getMessage()));
+                        }
+                    });
+                }
+
+                // Success
+                EnrollmentHelper.runOnUI(new Runnable() {
+                    public void run() {
+                        callback.onSuccess(sessionToken);
+                    }
+                });
+            }
+        });
+        t.start();
+    }
+
+    public void getActiveSessionTokenEnrollment(final EnrollCallBack callback) {
+
+        Thread t = new Thread(new Runnable()
+        {
+            public void run()
+            {
                 String profileId = "";
                 JSONObject jsonSession;
                 HashMap<String, String> header = new HashMap();
@@ -132,7 +180,7 @@ public class EnrollmentHelper {
 
                 try {
                     // STEP 1 get session token
-                    data = getSyncWebData(routes.initSession(cache.getUserToken()), "GET", header);
+                    data = getSyncWebData(routes.initSession(), "GET", header);
 
                     final String errorMessage = manageError(data);
                     if(!errorMessage.equals("")) {
