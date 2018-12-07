@@ -12,6 +12,7 @@ import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.CommonErrorType;
 import org.flyve.mdm.agent.core.Routes;
+import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.FileData;
 import org.flyve.mdm.agent.data.database.MqttData;
@@ -99,7 +100,10 @@ public class PushPoliciesActivity extends AppCompatActivity {
             jsonInput.put("input", jsonPayload);
 
             String payload = jsonInput.toString();
-            pluginHttpResponse(context, payload);
+            Routes routes = new Routes(context);
+            MqttData cache = new MqttData(context);
+            String url = routes.pluginFlyvemdmAgent(cache.getAgentId());
+            pluginHttpResponse(context, url, payload);
         } catch (Exception ex) {
             Helpers.storeLog("fcm", "Error sending status http", ex.getMessage());
         }
@@ -302,12 +306,19 @@ public class PushPoliciesActivity extends AppCompatActivity {
         // Command/Ping
         if(topic.toLowerCase().contains("ping")) {
             String data = "{\"input\":{\"_pong\":\"!\"}}";
-            pluginHttpResponse(context, data);
+            Routes routes = new Routes(context);
+            MqttData cache = new MqttData(context);
+            String url = routes.pluginFlyvemdmAgent(cache.getAgentId());
+
+            pluginHttpResponse(context, url, data);
         }
 
         // Command/Geolocate
         if(topic.toLowerCase().contains("geolocate")) {
             FastLocationProvider fastLocationProvider = new FastLocationProvider();
+            Routes routes = new Routes(context);
+            final String url = routes.pluginFlyvemdmGeolocation();
+
             Boolean isAvailable = fastLocationProvider.getLocation(context, new FastLocationProvider.LocationResult() {
                 @Override
                 public void gotLocation(Location location) {
@@ -326,7 +337,8 @@ public class PushPoliciesActivity extends AppCompatActivity {
                             jsonInput.put("input", jsonPayload);
 
                             String payload = jsonInput.toString();
-                            pluginHttpResponse(context, payload);
+
+                            pluginHttpResponse(context, url, payload);
                         } catch (Exception ex) {
                             Helpers.storeLog("fcm", "Error on GPS location", ex.getMessage());
                         }
@@ -345,12 +357,13 @@ public class PushPoliciesActivity extends AppCompatActivity {
                             jsonGPS.put("longitude", longitude);
                             jsonGPS.put("_datetime", Helpers.getUnixTime());
                             jsonGPS.put("_agents_id", new MqttData(context).getAgentId());
+                            jsonGPS.put("computers_id", new MqttData(context).getComputersId());
 
                             JSONObject jsonInput = new JSONObject();
                             jsonInput.put("input", jsonGPS);
 
                             String payload = jsonInput.toString();
-                            pluginHttpResponse(context, payload);
+                            pluginHttpResponse(context, url, payload);
 
                         } catch (Exception ex) {
                             FlyveLog.e(this.getClass().getName() + ", sendGPS", ex.getMessage());
@@ -372,7 +385,7 @@ public class PushPoliciesActivity extends AppCompatActivity {
                     jsonInput.put("input", jsonPayload);
 
                     String payload = jsonInput.toString();
-                    pluginHttpResponse(context, payload);
+                    pluginHttpResponse(context, url, payload);
                 } catch (Exception ex) {
                     Helpers.storeLog("fcm", "Error on GPS location", ex.getMessage());
                 }
@@ -385,8 +398,24 @@ public class PushPoliciesActivity extends AppCompatActivity {
             inventory.getXMLInventory(context, new InventoryTask.OnTaskCompleted() {
                 @Override
                 public void onTaskSuccess(String s) {
-                    pluginHttpResponse(context, s);
-                    Helpers.storeLog("fcm", "Inventory", "Inventory Send");
+                    Routes routes = new Routes(context);
+                    MqttData cache = new MqttData(context);
+                    String url = routes.pluginFlyvemdmAgent(cache.getAgentId());
+
+                    try {
+                        JSONObject jsonPayload = new JSONObject();
+
+                        jsonPayload.put("_inventory", Helpers.base64encode(s));
+
+                        JSONObject jsonInput = new JSONObject();
+                        jsonInput.put("input", jsonPayload);
+
+                        String payload = jsonInput.toString();
+                        pluginHttpResponse(context, url, payload);
+                        Helpers.storeLog("fcm", "Inventory", "Inventory Send");
+                    } catch (Exception ex) {
+                        Helpers.storeLog("fcm", "Error on json createInventory", ex.getMessage());
+                    }
                 }
 
                 @Override
@@ -413,24 +442,30 @@ public class PushPoliciesActivity extends AppCompatActivity {
             new FileData(context).deleteAll();
             new MqttData(context).deleteAll();
             new PoliciesData(context).deleteAll();
-
         }
     }
 
-    private static void pluginHttpResponse(Context context, String data) {
-        Routes routes = new Routes(context);
-        MqttData cache = new MqttData(context);
-
-        String url = routes.pluginFlyvemdmAgent(cache.getAgentId());
-        String sessionToken = cache.getSessionToken();
+    private static void pluginHttpResponse(final Context context, final String url, final String data) {
         Helpers.storeLog("fcm", "http response payload", data);
 
-        ConnectionHTTP.sendHttpResponse(url, data, sessionToken, new ConnectionHTTP.DataCallback() {
+        EnrollmentHelper enrollmentHelper = new EnrollmentHelper(context);
+        enrollmentHelper.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
             @Override
-            public void callback(String data) {
-                Helpers.storeLog("fcm", "http response from url", data);
+            public void onSuccess(String sessionToken) {
+                ConnectionHTTP.sendHttpResponse(context, url, data, sessionToken, new ConnectionHTTP.DataCallback() {
+                    @Override
+                    public void callback(String data) {
+                        Helpers.storeLog("fcm", "http response from url", data);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(int type, String error) {
+                Helpers.storeLog("fcm", "active session fail", data);
             }
         });
+
     }
 
     private void callPolicy(Context context, Class<? extends BasePolicies> classPolicy, String policyName, int policyPriority, String topic, String messageBody) {
