@@ -111,7 +111,7 @@ public class PermissionModel implements Permission.Model {
                 progress.setMessage(context.getString(R.string.creating_session));
 
                 EnrollmentHelper sessionToken = new EnrollmentHelper(context);
-                sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
+                sessionToken.getActiveSessionTokenEnrollment(new EnrollmentHelper.EnrollCallBack() {
                     @Override
                     public void onSuccess(String data) {
                         // Active EnrollmentHelper Token is stored on cache
