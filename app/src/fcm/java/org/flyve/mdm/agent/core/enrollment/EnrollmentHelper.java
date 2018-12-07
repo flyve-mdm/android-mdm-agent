@@ -124,10 +124,58 @@ public class EnrollmentHelper {
         {
             public void run()
             {
+                JSONObject jsonSession;
+                HashMap<String, String> header = new HashMap();
+                header.put("Authorization", "user_token " + cache.getApiToken());
+
+                try {
+                    // STEP 1 get session token
+                    data = getSyncWebData(routes.initSession(cache.getApiToken()), "GET", header);
+
+                    final String errorMessage = manageError(data);
+                    if(!errorMessage.equals("")) {
+                        EnrollmentHelper.runOnUI(new Runnable() {
+                            public void run() {
+                                callback.onError(CommonErrorType.ENROLLMENT_HELPER_INITSESSION, errorMessage);
+                            }
+                        });
+                        return;
+                    }
+
+                    jsonSession = new JSONObject(data);
+                    sessionToken = jsonSession.getString("session_token");
+                    cache.setSessionToken(sessionToken);
+
+                } catch (final Exception ex) {
+                    FlyveLog.e(this.getClass().getName() + ", getActiveSessionToken", ex.getMessage());
+                    EnrollmentHelper.runOnUI(new Runnable() {
+                        public void run() {
+                            callback.onError(CommonErrorType.ENROLLMENT_HELPER_INITSESSION, context.getString(R.string.wrong_json_format, data, ex.getMessage()));
+                        }
+                    });
+                }
+
+                // Success
+                EnrollmentHelper.runOnUI(new Runnable() {
+                    public void run() {
+                        callback.onSuccess(sessionToken);
+                    }
+                });
+            }
+        });
+        t.start();
+    }
+
+    public void getActiveSessionTokenEnrollment(final EnrollCallBack callback) {
+
+        Thread t = new Thread(new Runnable()
+        {
+            public void run()
+            {
                 String profileId = "";
                 JSONObject jsonSession;
                 HashMap<String, String> header = new HashMap();
-                header.put("user_token", cache.getUserToken());
+                header.put("Authorization", "user_token " + cache.getUserToken());
 
                 try {
                     // STEP 1 get session token
@@ -302,6 +350,7 @@ public class EnrollmentHelper {
                         FlyveLog.d("Id: " + mId);
                         int mEntitiesId = jsonObject.getInt("entities_id");
                         int mFleetId = jsonObject.getInt("plugin_flyvemdm_fleets_id");
+                        String mApiToken = jsonObject.getString("api_token");
 
                         cache.setAgentId(agentId);
                         cache.setBroker(mbroker);
@@ -315,7 +364,9 @@ public class EnrollmentHelper {
                         cache.setComputersId(String.valueOf(mComputersId));
                         cache.setEntitiesId(String.valueOf(mEntitiesId));
                         cache.setPluginFlyvemdmFleetsId(String.valueOf(mFleetId));
+                        cache.setApiToken(mApiToken);
 
+                        ConnectionHTTP.killSession(context, cache.getSessionToken());
                     } catch (final Exception ex) {
                         EnrollmentHelper.runOnUI(new Runnable() {
                             public void run() {
