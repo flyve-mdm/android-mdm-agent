@@ -57,6 +57,7 @@ public class MqttData {
     private static final String ENTITIES_ID = "entitiesId";
     private static final String PLUGIN_FLYVE_MDM_FLEETS_ID = "pluginFlyvemdmFleetsId";
     private static final String PORT = "port";
+    private static final String API_TOKEN = "api_token";
 
     private AppDataBase dataBase;
 
@@ -95,6 +96,14 @@ public class MqttData {
 
     public String getUserToken() {
         return getStringValue(USER_TOKEN);
+    }
+
+    public void setApiToken(String value) {
+        setStringValue(API_TOKEN, value);
+    }
+
+    public String getApiToken() {
+        return getStringValue(API_TOKEN);
     }
 
     public void setUserToken(String value) {
