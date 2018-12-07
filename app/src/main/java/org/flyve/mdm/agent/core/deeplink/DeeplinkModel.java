@@ -161,7 +161,7 @@ public class DeeplinkModel implements Deeplink.Model {
     public void openEnrollment(final Activity activity, final int request) {
 
         EnrollmentHelper sessionToken = new EnrollmentHelper(activity);
-        sessionToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
+        sessionToken.getActiveSessionTokenEnrollment(new EnrollmentHelper.EnrollCallBack() {
             @Override
             public void onSuccess(String data) {
                 // Active EnrollmentHelper Token is stored on cache
