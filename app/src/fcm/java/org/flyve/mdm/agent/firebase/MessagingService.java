@@ -19,6 +19,10 @@ import org.flyve.mdm.agent.ui.PushPoliciesActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class MessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MessageService";
@@ -62,9 +66,11 @@ public class MessagingService extends FirebaseMessagingService {
             return;
         }
 
-        String body = remoteMessage.getNotification().getBody();
-        if(body==null) {
+        String body;
+        if(remoteMessage.getNotification() == null || remoteMessage.getNotification().getBody().equals("")) {
             body = "Please sync your device";
+        } else {
+            body = remoteMessage.getNotification().getBody();
         }
 
         sendNotification(topic, message, body);
@@ -90,8 +96,8 @@ public class MessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notification_white)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
-                .setContentTitle(getResources().getString(R.string.app_name))
-                .setContentText(getResources().getString(R.string.policy_notification))
+                .setContentTitle(topic)
+                .setContentText(message)
                 .setSound(defaultSoundUri)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
@@ -103,6 +109,11 @@ public class MessagingService extends FirebaseMessagingService {
         }
 
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(121, builder.build());
+        notificationManager.notify(getID(), builder.build());
+    }
+
+    private int getID() {
+        Date now = new Date();
+        return Integer.parseInt(new SimpleDateFormat("ddHHmmss",  Locale.US).format(now));
     }
 }
