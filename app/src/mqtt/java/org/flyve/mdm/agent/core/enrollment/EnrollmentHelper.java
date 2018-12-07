@@ -131,7 +131,7 @@ public class EnrollmentHelper {
 
                 try {
                     // STEP 1 get session token
-                    data = getSyncWebData(routes.initSession(), "GET", header);
+                    data = getSyncWebData(routes.initSession(cache.getApiToken()), "GET", header);
 
                     final String errorMessage = manageError(data);
                     if(!errorMessage.equals("")) {
@@ -180,7 +180,7 @@ public class EnrollmentHelper {
 
                 try {
                     // STEP 1 get session token
-                    data = getSyncWebData(routes.initSession(), "GET", header);
+                    data = getSyncWebData(routes.initSession(cache.getApiToken()), "GET", header);
 
                     final String errorMessage = manageError(data);
                     if(!errorMessage.equals("")) {
