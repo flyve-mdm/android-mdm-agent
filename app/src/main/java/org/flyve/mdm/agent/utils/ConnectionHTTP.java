@@ -23,9 +23,13 @@
 
 package org.flyve.mdm.agent.utils;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import org.flyve.mdm.agent.core.Routes;
+import org.flyve.mdm.agent.data.database.MqttData;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -100,7 +104,69 @@ public class ConnectionHTTP {
 		}
 	}
 
-	public static void sendHttpResponse(final String url, final String data, final String sessionToken, final DataCallback callback) {
+	public static void killSession(final Context context, final String sessionToken) {
+		Thread t = new Thread(new Runnable()
+		{
+			public void run()
+			{
+				try
+				{
+					Routes routes = new Routes(context);
+					MqttData cache = new MqttData(context);
+					String url = routes.pluginFlyvemdmAgent(cache.getAgentId());
+					URL dataURL = new URL(url);
+					HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
+
+					conn.setRequestMethod("GET");
+					conn.setConnectTimeout(timeout);
+					conn.setReadTimeout(readtimeout);
+
+					HashMap<String, String> header = new HashMap();
+					header.put("Accept","application/octet-stream");
+					header.put("Content-Type","application/json");
+					header.put("Session-Token", sessionToken);
+
+					StringBuilder logHeader = new StringBuilder();
+					if(header != null) {
+						for (Map.Entry<String, String> entry : header.entrySet()) {
+							logHeader.append("- " + entry.getKey() + " : " + entry.getValue() + "\n");
+							conn.setRequestProperty(entry.getKey(), entry.getValue());
+						}
+					} else {
+						logHeader.append("Empty");
+					}
+
+					if(conn.getResponseCode() >= 400) {
+						InputStream is = conn.getErrorStream();
+						String result = inputStreamToString(is);
+						Log(result);
+						return;
+					}
+
+					InputStream is = conn.getInputStream();
+					final String requestResponse = inputStreamToString(is);
+
+					String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
+					Log(response);
+
+				}
+				catch (final Exception ex)
+				{
+					ConnectionHTTP.runOnUI(new Runnable()
+					{
+						public void run()
+						{
+							FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getWebData",ex.getClass() + " : " + ex.getMessage());
+						}
+					});
+				}
+			}
+		});
+		t.start();
+
+	}
+
+	public static void sendHttpResponse(final Context context, final String url, final String data, final String sessionToken, final DataCallback callback) {
 		Thread t = new Thread(new Runnable()
 		{
 			public void run()
@@ -110,7 +176,11 @@ public class ConnectionHTTP {
 					URL dataURL = new URL(url);
 					HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
-					conn.setRequestMethod("PUT");
+					if(url.contains("PluginFlyvemdmGeolocation")) {
+						conn.setRequestMethod("POST");
+					} else {
+						conn.setRequestMethod("PUT");
+					}
 					conn.setConnectTimeout(timeout);
 					conn.setReadTimeout(readtimeout);
 
@@ -180,13 +250,18 @@ public class ConnectionHTTP {
 		t.start();
 	}
 
-	public static void sendHttpResponse(final String url, final String agentId, final String taskId, final String data, final String sessionToken, final DataCallback callback) {
+	public static void sendHttpResponse(final Context context, final String url, final String taskId, final String data, final String sessionToken, final DataCallback callback) {
 		Thread t = new Thread(new Runnable()
 		{
 			public void run()
 			{
 				try
 				{
+					Routes routes = new Routes(context);
+					MqttData cache = new MqttData(context);
+					String url = routes.PluginFlyvemdmTaskstatus(cache.getAgentId(), taskId);
+
+					// First step get the taskstatus_id
 					URL dataURL = new URL(url);
 					HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
@@ -234,8 +309,38 @@ public class ConnectionHTTP {
 					InputStream is = conn.getInputStream();
 					final String requestResponse = inputStreamToString(is);
 
+					String taskStatusId = "";
+					try {
+						JSONObject objResponse = new JSONObject(requestResponse);
+
+						JSONArray arrayData = objResponse.getJSONArray("data");
+						taskStatusId = arrayData.getJSONObject(0).getString("2");
+					} catch (Exception ex) {
+						FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getWebData",ex.getClass() + " : " + ex.getMessage());
+					}
+
 					String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
 					Log(response);
+
+					try {
+						// second step update the status task
+						url = routes.PluginFlyvemdmTaskstatus(taskStatusId);
+
+						dataURL = new URL(url);
+						conn = (HttpURLConnection)dataURL.openConnection();
+
+						conn.setRequestMethod("PUT");
+						conn.setConnectTimeout(timeout);
+						conn.setReadTimeout(readtimeout);
+
+
+					} catch (Exception ex) {
+
+					}
+
+
+
+
 
 					ConnectionHTTP.runOnUI(new Runnable() {
 						public void run() {
