@@ -87,8 +87,20 @@ public class Routes {
         return url + "/PluginFlyvemdmAgent/" + agentId;
     }
 
+    public String pluginFlyvemdmGeolocation() {
+        return url + "/PluginFlyvemdmGeolocation";
+    }
+
     public String PluginFlyvemdmTaskstatus(String agentId, String taskId) {
-        return url + "PluginFlyvemdmTaskstatus/?criteria[0][field]=5&criteria[0][searchtype]=contains&criteria[0][value]="+ agentId +"&criteria[1][field]=6&criteria[1][searchtype]=contains&criteria[1][value]="+ taskId +"&forcedisplay=2";
+        return url + "/PluginFlyvemdmTaskstatus/?criteria[0][field]=5&criteria[0][searchtype]=contains&criteria[0][value]="+ agentId +"&criteria[1][field]=6&criteria[1][searchtype]=contains&criteria[1][value]="+ taskId +"&forcedisplay=2";
+    }
+
+    public String PluginFlyvemdmTaskstatus(String taskStatusId) {
+        return url + "/PluginFlyvemdmTaskstatus/" + taskStatusId;
+    }
+
+    public String killSession() {
+        return url + "/killSession";
     }
 
     /**
