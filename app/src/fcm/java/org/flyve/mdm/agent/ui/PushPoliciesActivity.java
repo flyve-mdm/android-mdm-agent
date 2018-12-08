@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.flyve.inventory.InventoryTask;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.CommonErrorType;
@@ -60,6 +62,7 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.mdm.agent.utils.Inventory;
 import org.flyve.policies.manager.AndroidPolicies;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class PushPoliciesActivity extends AppCompatActivity {
@@ -443,6 +446,21 @@ public class PushPoliciesActivity extends AppCompatActivity {
             new MqttData(context).deleteAll();
             new PoliciesData(context).deleteAll();
         }
+
+        if(topic.toLowerCase().contains("subscribe")) {
+            try {
+                JSONObject jsonMessage = new JSONObject(message);
+                JSONArray jsonSubscribe = jsonMessage.getJSONArray("subscribe");
+                String newTopic = jsonSubscribe.getJSONObject(0).getString("topic");
+
+                if(!newTopic.contains("null")) {
+                    FirebaseMessaging.getInstance().subscribeToTopic(newTopic);
+                }
+            } catch (Exception ex) {
+                Helpers.storeLog("fcm", "subscribe fail", message);
+            }
+        }
+
     }
 
     private static void pluginHttpResponse(final Context context, final String url, final String data) {
