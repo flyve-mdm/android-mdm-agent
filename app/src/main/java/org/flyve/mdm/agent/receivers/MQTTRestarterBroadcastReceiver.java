@@ -44,5 +44,6 @@ public class MQTTRestarterBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         FlyveLog.d(MQTTRestarterBroadcastReceiver.class.getSimpleName(), "Service Stops!");
         context.startService(new Intent(context, MQTTService.class));
+
     }
 }
