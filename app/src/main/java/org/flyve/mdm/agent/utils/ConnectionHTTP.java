@@ -250,7 +250,7 @@ public class ConnectionHTTP {
 		t.start();
 	}
 
-	public static void sendHttpResponse(final Context context, final String url, final String taskId, final String data, final String sessionToken, final DataCallback callback) {
+	public static void sendHttpResponsePolicies(final Context context, final String taskId, final String data, final String sessionToken, final DataCallback callback) {
 		Thread t = new Thread(new Runnable()
 		{
 			public void run()
@@ -259,7 +259,7 @@ public class ConnectionHTTP {
 				{
 					Routes routes = new Routes(context);
 					MqttData cache = new MqttData(context);
-					String url = routes.PluginFlyvemdmTaskstatus(cache.getAgentId(), taskId);
+					String url = routes.PluginFlyvemdmTaskstatusSearch(cache.getAgentId(), taskId);
 
 					// First step get the taskstatus_id
 					URL dataURL = new URL(url);
@@ -270,7 +270,6 @@ public class ConnectionHTTP {
 					conn.setReadTimeout(readtimeout);
 
 					HashMap<String, String> header = new HashMap();
-					header.put("Accept","application/octet-stream");
 					header.put("Content-Type","application/json");
 					header.put("Session-Token", sessionToken);
 
@@ -283,14 +282,6 @@ public class ConnectionHTTP {
 					} else {
 						logHeader.append("Empty");
 					}
-
-					// Send post request
-					conn.setDoOutput(true);
-
-					DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-					os.writeBytes(data);
-					os.flush();
-					os.close();
 
 					if(conn.getResponseCode() >= 400) {
 						InputStream is = conn.getErrorStream();
@@ -317,6 +308,7 @@ public class ConnectionHTTP {
 						taskStatusId = arrayData.getJSONObject(0).getString("2");
 					} catch (Exception ex) {
 						FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getWebData",ex.getClass() + " : " + ex.getMessage());
+						return;
 					}
 
 					String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
@@ -333,20 +325,65 @@ public class ConnectionHTTP {
 						conn.setConnectTimeout(timeout);
 						conn.setReadTimeout(readtimeout);
 
+						header = new HashMap();
+						header.put("Content-Type","application/json");
+						header.put("Session-Token", sessionToken);
 
-					} catch (Exception ex) {
+						logHeader = new StringBuilder();
+						if(header != null) {
+							for (Map.Entry<String, String> entry : header.entrySet()) {
+								logHeader.append("- " + entry.getKey() + " : " + entry.getValue() + "\n");
+								conn.setRequestProperty(entry.getKey(), entry.getValue());
+							}
+						} else {
+							logHeader.append("Empty");
+						}
 
+						// Send post request
+						conn.setDoOutput(true);
+
+						DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+						os.writeBytes(data);
+						os.flush();
+						os.close();
+
+						if(conn.getResponseCode() >= 400) {
+							is = conn.getErrorStream();
+							final String result = inputStreamToString(is);
+
+							ConnectionHTTP.runOnUI(new Runnable()
+							{
+								public void run()
+								{
+									callback.callback(result);
+								}
+							});
+							return;
+						}
+
+						is = conn.getInputStream();
+						final String requestResponsePut = inputStreamToString(is);
+
+						response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
+						Log(response);
+
+						ConnectionHTTP.runOnUI(new Runnable() {
+							public void run() {
+								callback.callback(requestResponsePut);
+							}
+						});
+
+
+					} catch (final Exception ex) {
+						ConnectionHTTP.runOnUI(new Runnable()
+						{
+							public void run()
+							{
+								callback.callback(ex.getMessage());
+							}
+						});
 					}
 
-
-
-
-
-					ConnectionHTTP.runOnUI(new Runnable() {
-						public void run() {
-							callback.callback(requestResponse);
-						}
-					});
 
 				}
 				catch (final Exception ex)
