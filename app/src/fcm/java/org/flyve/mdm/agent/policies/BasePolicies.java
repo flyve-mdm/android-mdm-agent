@@ -29,11 +29,13 @@ package org.flyve.mdm.agent.policies;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.core.Routes;
-import org.flyve.mdm.agent.data.database.MqttData;
+import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.data.database.entity.Policies;
+import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
+import org.json.JSONObject;
 
 public abstract class BasePolicies {
 
@@ -106,12 +108,39 @@ public abstract class BasePolicies {
         }
     }
 
-    private void sendTaskStatus(String topic, String taskId, String status) {
-        Routes routes = new Routes(context);
-        MqttData cache = new MqttData(context);
+    private void sendTaskStatus(String topic, final String taskId, final String status) {
+        EnrollmentHelper enrollmentHelper = new EnrollmentHelper(context);
+        enrollmentHelper.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
+            @Override
+            public void onSuccess(String sessionToken) {
+                Helpers.storeLog("fcm", "http response session token", sessionToken);
+                String payload = "";
+                try {
+                    JSONObject jsonPayload = new JSONObject();
 
+                    jsonPayload.put("status", status);
 
+                    JSONObject jsonInput = new JSONObject();
+                    jsonInput.put("input", jsonPayload);
 
+                    payload = jsonInput.toString();
+                } catch (Exception ex) {
+                    Helpers.storeLog("fcm", "Error sending status http", ex.getMessage());
+                }
+
+                ConnectionHTTP.sendHttpResponsePolicies(context, taskId, payload, sessionToken, new ConnectionHTTP.DataCallback() {
+                    @Override
+                    public void callback(String data) {
+                        Helpers.storeLog("fcm", "http response from policy", data);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(int type, String error) {
+                Helpers.storeLog("fcm", "problem with session token", error);
+            }
+        });
     }
 
     private void mqttResponse(String status) {
@@ -147,16 +176,12 @@ public abstract class BasePolicies {
     }
 
     protected void policyDone() {
-        if(mqttEnable) {
-            mqttResponse(MQTT_FEEDBACK_DONE);
-        }
+        mqttResponse(MQTT_FEEDBACK_DONE);
     }
 
     protected void policyFail() {
         Log("Policy ERROR", "Policy " + this.policyName,"Policy Fail: " + this.policyName + "\nvalue: " + this.policyValue + "\npriority: " + this.policyPriority);
-        if(mqttEnable) {
-            mqttResponse(MQTT_FEEDBACK_FAILED);
-        }
+        mqttResponse(MQTT_FEEDBACK_FAILED);
     }
 
     protected abstract boolean process();
