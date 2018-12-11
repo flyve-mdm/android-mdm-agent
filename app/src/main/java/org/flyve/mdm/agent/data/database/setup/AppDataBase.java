@@ -40,7 +40,7 @@ import org.flyve.mdm.agent.data.database.entity.MQTT;
 import org.flyve.mdm.agent.data.database.entity.Policies;
 
 
-@Database(entities = {Application.class, MQTT.class, Policies.class, File.class, MDMLog.class}, version = 10, exportSchema = false)
+@Database(entities = {Application.class, MQTT.class, Policies.class, File.class, MDMLog.class}, version = 11, exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
 
     private static AppDataBase instance;
