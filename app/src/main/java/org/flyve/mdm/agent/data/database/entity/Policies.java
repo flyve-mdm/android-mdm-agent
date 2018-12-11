@@ -37,6 +37,9 @@ public class Policies {
     @PrimaryKey (autoGenerate = true)
     public int id;
 
+    @ColumnInfo (name = "taskId")
+    public String taskId;
+
     @ColumnInfo (name = "policyName")
     public String policyName;
 

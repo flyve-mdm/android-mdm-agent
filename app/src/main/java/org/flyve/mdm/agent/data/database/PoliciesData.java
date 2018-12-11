@@ -55,10 +55,11 @@ public class PoliciesData {
         }
     }
 
-    public Object setValue(String policyName, String value, int priority) {
+    public Object setValue(String policyName, String taskId, String value, int priority) {
         if(dataBase.PoliciesDao().getPolicyBy(policyName, priority).isEmpty()) {
             Policies policies = new Policies();
             policies.policyName = policyName;
+            policies.taskId = taskId;
             policies.value = value;
             policies.priority = priority;
             dataBase.PoliciesDao().insert(policies);
