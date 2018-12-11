@@ -77,6 +77,7 @@ public class FragmentPolicies extends Fragment {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("description", Helpers.splitCapitalized(arrPolicies.get(i).policyName));
                 map.put("value", String.valueOf(arrPolicies.get(i).value));
+                map.put("taskId", String.valueOf(arrPolicies.get(i).taskId));
                 arr.add(map);
             }
         }
