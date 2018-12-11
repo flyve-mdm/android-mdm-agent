@@ -246,4 +246,6 @@
 
     <string name="policy_notification">Please sync your agent</string>
     <string name="policy_installed">The MDM Agent is update</string>
+
+    <string name="splash_error_scan">The scan have some problem with the QR</string>
 </resources>
