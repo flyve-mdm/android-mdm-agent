@@ -45,6 +45,7 @@ import org.flyve.mdm.agent.core.walkthrough.WalkthroughPresenter;
 import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughSchema;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
 
 import java.util.ArrayList;
 
@@ -156,6 +157,8 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
             Intent miIntent = new Intent(SplashActivity.this, StartEnrollmentActivity.class);
             miIntent.putExtra("data", input);
             SplashActivity.this.startActivity(miIntent);
+        } else {
+            Helpers.snack(SplashActivity.this, getResources().getString(R.string.splash_error_scan));
         }
     }
 
