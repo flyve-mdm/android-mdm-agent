@@ -98,8 +98,8 @@ public abstract class BasePolicies {
     }
 
     private void storage()  {
-        if(!policyName.isEmpty() && !this.policyValue.toString().isEmpty()) {
-            data.setValue(this.policyName, String.valueOf(this.policyValue), this.policyPriority);
+        if(!policyName.isEmpty() && !this.policyValue.toString().isEmpty() && !this.mqttTaskId.isEmpty()) {
+            data.setValue(this.policyName, this.mqttTaskId, String.valueOf(this.policyValue), this.policyPriority);
         }
     }
 
