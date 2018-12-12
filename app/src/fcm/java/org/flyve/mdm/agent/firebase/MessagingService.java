@@ -94,7 +94,7 @@ public class MessagingService extends FirebaseMessagingService {
         intent.putExtra("topic", topic);
         intent.putExtra("message", message);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, getID(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -106,6 +106,7 @@ public class MessagingService extends FirebaseMessagingService {
                 .setSound(defaultSoundUri)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
+
 
         if (Build.VERSION.SDK_INT < 16) {
             builder.setContentText(body);
