@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -54,19 +55,19 @@ public class MessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 
-        String topic = remoteMessage.getData().get("topic");
+        final String topic = remoteMessage.getData().get("topic");
         if(topic==null) {
             Helpers.storeLog("fcm", "topic null", "topic cannot be null");
             return;
         }
 
-        String message = remoteMessage.getData().get("message");
+        final String message = remoteMessage.getData().get("message");
         if(message==null) {
             Helpers.storeLog("fcm", "message null", "message cannot be null");
             return;
         }
 
-        String body;
+        final String body;
         if(remoteMessage.getNotification() == null || remoteMessage.getNotification().getBody().equals("")) {
             body = "Please sync your device";
         } else {
@@ -74,6 +75,10 @@ public class MessagingService extends FirebaseMessagingService {
         }
 
         sendNotification(topic, message, body);
+
+        // sometimes the messages are a lot and the notification
+        // manager cannot handled, need some delay to do it
+        SystemClock.sleep(1000);
     }
 
 
