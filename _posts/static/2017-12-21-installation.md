@@ -51,74 +51,86 @@ Check the following compatibility matrix to make sure, you're getting the right 
 
 <table class="zebra-table">
     <tr>
-        <td>API</td>
-        <td>Android</td>
-        <td>Support</td>
-        <td>SSL</td>
+        <td align="center">API</td>
+        <td align="center">Android</td>
+        <td align="center">Support</td>
+        <td align="center">SSL</td>
     </tr>
     <tr>
         <td align="center">16</td>
         <td align="center">Android 4.1</td>
-        <td align="center">X</td>
+        <td align="center">✔︎</td>
         <td align="center">-</td>
     </tr>
     <tr>
         <td align="center">17</td>
         <td align="center">Android 4.2</td>
-        <td align="center">X</td>
+        <td align="center">✔︎</td>
         <td align="center">-</td>
     </tr>
     <tr>
         <td align="center">18</td>
         <td align="center">Android 4.3</td>
-        <td align="center">X</td>
+        <td align="center">✔︎</td>
         <td align="center">-</td>
     </tr>
     <tr>
         <td align="center">19</td>
         <td align="center">Android 4.4</td>
-        <td align="center">X</td>
+        <td align="center">✔︎</td>
         <td align="center">-</td>
     </tr>
     <tr>
         <td align="center">20</td>
         <td align="center">Android 4.4</td>
-        <td align="center">X</td>
+        <td align="center">✔︎</td>
         <td align="center">-</td>
     </tr>
     <tr>
         <td align="center">21</td>
         <td align="center">Android 5.0</td>
-        <td align="center">X</td>
-        <td align="center">X</td>
+        <td align="center">✔︎</td>
+        <td align="center">✔︎</td>
     </tr>
     <tr>
         <td align="center">22</td>
         <td align="center">Android 5.1</td>
-        <td align="center">X</td>
-        <td align="center">X</td>
+        <td align="center">✔︎</td>
+        <td align="center">✔︎</td>
     </tr>
     <tr>
         <td align="center">23</td>
         <td align="center">Android 6.0</td>
-        <td align="center">X</td>
-        <td align="center">X</td>
+        <td align="center">✔︎</td>
+        <td align="center">✔︎</td>
     </tr>
     <tr>
         <td align="center">24</td>
         <td align="center">Android 7.0</td>
-        <td align="center">X</td>
-        <td align="center">X</td>
+        <td align="center">✔︎</td>
+        <td align="center">✔︎</td>
     </tr>
     <tr>
         <td align="center">25</td>
         <td align="center">Android 7.1.1</td>
-        <td align="center">X</td>
-        <td align="center">X</td>
+        <td align="center">✔︎</td>
+        <td align="center">✔︎</td>
     </tr>
     <tr>
         <td align="center">26</td>
         <td align="center">Android 8.0</td>
+        <td align="center">-</td>
+        <td align="center">-</td>
+    </tr>
+    <tr>
+        <td align="center">27</td>
+        <td align="center">Android 8.1</td>
+        <td align="center">-</td>
+        <td align="center">-</td>
+    </tr>
+    <tr>
+        <td align="center">28</td>
+        <td align="center">Android 9</td>
         <td align="center">-</td>
         <td align="center">-</td>
     </tr>
