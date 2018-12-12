@@ -78,15 +78,9 @@ In the Activity section you'll be able to see the different actions taken place 
 
 ### 2.1 Log
 
-Here you'll be able to see the MQTT Messages.
+Here you'll be able to see the MQTT or FCM Messages.
 
 <img src="{{ 'images/screenshots/activity-log.png' | absolute_url }}" alt="Log" width="300">
-
-#### MQTT (MQ Telemetry Transport)
-
-The MQTT is a Machine to Machine protocol we implemented, is useful for connections with remote locations due to its design as an extremely lightweight message transport. Ideal for mobile applications due to its small size, low power usage and efficient distribution of information to one or many receivers.
-
-Thanks to it, the Agent is capable of maintaining a connection with the backend.
 
 ### 2.2 Connectivity & Policies
 

@@ -11,12 +11,13 @@ Flyve MDM Agent for Android can be installed from Google Play or as System App.
 
 * [Compatibility Matrix](#matrix)
 * [Download APK](#download)
+* [Android 8 or later](#android-later)
 * [Beta version](#beta-version)
 * [Install as System App](#system-app)
 
-## <a name="matrix"></a> Compatibility Matrix
+### <a name="matrix"></a> Compatibility Matrix
 
-### Flyve MDM Projects
+#### Flyve MDM Projects
 
 Check the following compatibility matrix to make sure, you're getting the right version.
 
@@ -47,7 +48,7 @@ Check the following compatibility matrix to make sure, you're getting the right 
     </tr>
 </table>
 
-### MDM Agent & Android versions
+#### MDM Agent & Android versions
 
 <table class="zebra-table">
     <tr>
@@ -60,31 +61,31 @@ Check the following compatibility matrix to make sure, you're getting the right 
         <td align="center">16</td>
         <td align="center">Android 4.1</td>
         <td align="center">✔︎</td>
-        <td align="center">-</td>
+        <td align="center">✗</td>
     </tr>
     <tr>
         <td align="center">17</td>
         <td align="center">Android 4.2</td>
         <td align="center">✔︎</td>
-        <td align="center">-</td>
+        <td align="center">✗</td>
     </tr>
     <tr>
         <td align="center">18</td>
         <td align="center">Android 4.3</td>
         <td align="center">✔︎</td>
-        <td align="center">-</td>
+        <td align="center">✗</td>
     </tr>
     <tr>
         <td align="center">19</td>
         <td align="center">Android 4.4</td>
         <td align="center">✔︎</td>
-        <td align="center">-</td>
+        <td align="center">✗</td>
     </tr>
     <tr>
         <td align="center">20</td>
         <td align="center">Android 4.4</td>
         <td align="center">✔︎</td>
-        <td align="center">-</td>
+        <td align="center">✗</td>
     </tr>
     <tr>
         <td align="center">21</td>
@@ -136,7 +137,9 @@ Check the following compatibility matrix to make sure, you're getting the right 
     </tr>
 </table>
 
-## Download
+### Download
+
+> Only for Android 4.1 to 7.1
 
 You can install the application by downloading it from the **Play Store**
 
@@ -150,25 +153,45 @@ Or get the APK from the **Release** page on Github
 
 <a href="https://github.com/flyve-mdm/android-mdm-agent/releases" target="_blank"><img src="https://user-images.githubusercontent.com/663460/26973090-f8fdc986-4d14-11e7-995a-e7c5e79ed925.png" width="300" alt="Download from the Release page on Github"></a>
 
-## Beta version
+### <a name="android-later"></a>For Android 8 or later
+
+To use the MDM Agent in Android 8 or later, you must compile your own MDM Agent, due to the Firebase configuration file.
+
+You'll require:
+
+* Google account, to access Firebase console
+* Android Studio latest version
+
+Then follow the [Firebase Official Documentation](https://firebase.google.com/docs/android/setup).
+
+Basically, these are the steps you must follow:
+
+* Create a project
+* Add the MDM Agent app to your project, for that you'll require the package name ```org.flyve.mdm.agent```
+* Download the ```google-services.json``` and add it to the MDM Agent
+* Add the SDK of Firebase
+
+<img src="{{ '/images/picto-information.png' | absolute_url }}" alt="Awesome tip:" height="16px"> It must be added the Server Key Token to the backend, you can find it in your Project settings > Cloud Messaging
+
+### Beta version
 
 Download the [Beta testing app from Google Play](https://play.google.com/apps/testing/org.flyve.mdm.agent)
 
-## <a name="system-app"></a>As System App with Android Debug Bridge
+### <a name="system-app"></a>System App with ADB
 
 This simple guide asumes that you have some basic knowledge about command line, Android and ADB tool if not please feel free to review the ADB official information: [Android Debug Bridge](https://developer.android.com/studio/command-line/adb.html?hl=es-419).
 
 <img src="{{ '/images/picto-information.png' | absolute_url }}" alt="Good to know: " height="16px">  If the App is installed as System App it will be able to apply policies without requiring the user consent, like deploying apps and files directly to the device.
 
-#### Requirement:
+##### Requirement:
 
 You will require root access to do this.
 
-### Step 1:
+#### Step 1:
 
 Connect your device to the computer.
 
-### Step 2:
+#### Step 2:
 
 Run these commands:
 
@@ -178,43 +201,43 @@ $su
 $mount -o rw,remount /system
 ```
 
-### Step 3:
+#### Step 3:
 
 You have two ways to move your apk to the system folder:
 
-#### Option 1
+##### Option 1
 
 Copy the apk directly to the System folder.
 
-##### For Android 4.3 or newest
+###### For Android 4.3 or newest
 
 ```shell
 $adb push yourAPKFile.apk /system/priv-app
 ```
 
-##### Older Android version
+###### Older Android version
 
 ```shell
 $adb push yourAPKFile.apk /system/app
 ```
 
-#### Option 2
+##### Option 2
 
 If you can't copy directly to the folder or has the apk in external sdcard, move the apk to the system folder.
 
-##### For Android 4.3 or newest
+###### For Android 4.3 or newest
 
 ```shell
 $mv /storage/sdcard1/yourAPKFile.apk /system/priv-app
 ```
 
-##### Older Android version
+###### Older Android version
 
 ```shell
 $mv /storage/sdcard1/yourAPKFile.apk /system/app
 ```
 
-### Step 4:
+#### Step 4:
 
 Add permission to the APK.
 
@@ -222,7 +245,7 @@ Add permission to the APK.
 $chmod 644 yourAPKFile.apk
 ```
 
-### Step 5:
+#### Step 5:
 
 Reboot the device.
 
