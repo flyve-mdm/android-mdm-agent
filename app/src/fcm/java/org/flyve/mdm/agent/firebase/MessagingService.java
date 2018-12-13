@@ -15,7 +15,9 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.flyve.mdm.agent.MessagePolicies;
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.ui.PushPoliciesActivity;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -89,6 +91,12 @@ public class MessagingService extends FirebaseMessagingService {
     private void sendNotification(String topic, String message, String body) {
 
         FlyveLog.d("Notification: " + body);
+
+        // if Command/Ping try to response directly
+        if(topic.toLowerCase().contains("ping")) {
+            MessagePolicies messagePolicies = new MessagePolicies();
+            messagePolicies.messageArrived(MDMAgent.getInstance(), topic, message);
+        }
 
         Intent intent = new Intent(this, PushPoliciesActivity.class);
         intent.putExtra("topic", topic);
