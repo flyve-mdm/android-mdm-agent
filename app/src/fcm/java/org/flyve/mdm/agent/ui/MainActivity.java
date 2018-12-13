@@ -37,6 +37,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.flyve.mdm.agent.MessagePolicies;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.DrawerAdapter;
 import org.flyve.mdm.agent.data.localstorage.AppData;
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         loadListDrawer(menuItemSelected, extra);
         checkNotifications();
 
-        PushPoliciesActivity.sendStatusbyHttp(MainActivity.this, true);
+        MessagePolicies.sendStatusbyHttp(MainActivity.this, true);
     }
 
     private void checkNotifications() {
