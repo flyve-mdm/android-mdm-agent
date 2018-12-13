@@ -13,6 +13,7 @@ import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.FileData;
 import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.data.database.PoliciesData;
+import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.policies.AirplaneModePolicy;
 import org.flyve.mdm.agent.policies.BasePolicies;
 import org.flyve.mdm.agent.policies.BluetoothPolicy;
@@ -216,19 +217,37 @@ public class MessagePolicies {
         // Policy/deployApp
         String DEPLOY_APP = "deployApp";
         if(topic.toLowerCase().contains(DEPLOY_APP.toLowerCase())) {
-            //MDMAgent.setMqttClient(getMqttClient());
-//            AppThreadManager manager = MDMAgent.getAppThreadManager();
-//            try {
-//
-//                JSONObject jsonObj = new JSONObject(policy);
-//
-//                if(jsonObj.has(DEPLOY_APP)) {
-//                    manager.add(context, jsonObj);
-//                }
-//            } catch (Exception ex) {
-//                showDetailError(context, CommonErrorType.MQTT_DEPLOYAPP, ex.getMessage());
-//                manager.finishProcess(context);
-//            }
+            try {
+                JSONObject jsonObj = new JSONObject(message);
+                if(jsonObj.has(DEPLOY_APP)) {
+
+                    try {
+                        String deployApp = jsonObj.getString("deployApp");
+                        String id = jsonObj.getString("id");
+                        String versionCode = jsonObj.getString("versionCode");
+                        String taskId = jsonObj.getString("taskId");
+
+                        ApplicationData apps = new ApplicationData(context);
+                        Application[] appsArray = apps.getApplicationsById(id);
+
+                        // check if the app exists with same version or older
+                        Boolean bDownload = true;
+                        if(appsArray.length>0 && Integer.parseInt(versionCode) >= Integer.parseInt(appsArray[0].appVersionCode)) {
+                            bDownload = false;
+                        }
+
+                        if(bDownload) {
+                            // execute the policy
+                            MqttPoliciesController mqttPoliciesController = new MqttPoliciesController(context);
+                            mqttPoliciesController.installPackage(deployApp, id, versionCode, taskId);
+                        }
+                    } catch (Exception ex) {
+                        FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
+                    }
+                }
+            } catch (Exception ex) {
+                showDetailError(context, CommonErrorType.MQTT_DEPLOYAPP, ex.getMessage());
+            }
         }
 
         // Policy/deployApp
@@ -242,7 +261,8 @@ public class MessagePolicies {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    //mqttPoliciesController.removePackage(taskId, removeApp);
+                    MqttPoliciesController mqttPoliciesController = new MqttPoliciesController(context);
+                    mqttPoliciesController.removePackage(taskId, removeApp);
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_REMOVEAPP, ex.getMessage());
@@ -262,7 +282,8 @@ public class MessagePolicies {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    //mqttPoliciesController.downloadFile(deployFile, id, versionCode, taskId);
+                    MqttPoliciesController mqttPoliciesController = new MqttPoliciesController(context);
+                    mqttPoliciesController.downloadFile(deployFile, id, versionCode, taskId);
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_DEPLOYFILE, ex.getMessage());
@@ -280,7 +301,8 @@ public class MessagePolicies {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    //mqttPoliciesController.removeFile(taskId, removeFile);
+                    MqttPoliciesController mqttPoliciesController = new MqttPoliciesController(context);
+                    mqttPoliciesController.removeFile(taskId, removeFile);
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_REMOVEFILE, ex.getMessage());
@@ -444,7 +466,7 @@ public class MessagePolicies {
 
     }
 
-    private static void pluginHttpResponse(final Context context, final String url, final String data) {
+    public static void pluginHttpResponse(final Context context, final String url, final String data) {
         Helpers.storeLog("fcm", "http response payload", data);
 
         EnrollmentHelper enrollmentHelper = new EnrollmentHelper(context);
