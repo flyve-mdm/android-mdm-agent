@@ -104,8 +104,8 @@ public abstract class BasePolicies {
     }
 
     public void remove() {
-        if(!policyName.isEmpty()) {
-            data.removeValue(policyName, policyPriority);
+        if(!this.mqttTaskId.isEmpty()) {
+            data.removeValue(this.mqttTaskId);
         }
     }
 
