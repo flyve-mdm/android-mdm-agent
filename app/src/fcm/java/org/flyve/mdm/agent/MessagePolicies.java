@@ -97,6 +97,18 @@ public class MessagePolicies {
     public void messageArrived(final Context context, String topic, String message) {
         int priority = 1;
 
+        // Delete policy information
+        if(message.contains("default")) {
+            try {
+
+                String taskId = new JSONObject(message).getString("taskId");
+                new PoliciesData(context).removeValue(taskId);
+            } catch (Exception ex) {
+                FlyveLog.e("fcm", "error deleting policy " + message + " - " + topic, ex.getMessage());
+            }
+            return;
+        }
+
         // Policy/passwordEnabled
         callPolicy(context, PasswordEnablePolicy.class, PasswordEnablePolicy.POLICY_NAME, priority, topic, message);
 

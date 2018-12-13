@@ -56,7 +56,7 @@ public class PoliciesData {
     }
 
     public Object setValue(String policyName, String taskId, String value, int priority) {
-        if(dataBase.PoliciesDao().getPolicyBy(policyName, priority).isEmpty()) {
+        if(dataBase.PoliciesDao().getPolicyByTaskId(taskId).isEmpty()) {
             Policies policies = new Policies();
             policies.policyName = policyName;
             policies.taskId = taskId;
@@ -64,18 +64,18 @@ public class PoliciesData {
             policies.priority = priority;
             dataBase.PoliciesDao().insert(policies);
         } else {
-            Policies policies = dataBase.PoliciesDao().getPolicyBy(policyName, priority).get(0);
+            Policies policies = dataBase.PoliciesDao().getPolicyByTaskId(taskId).get(0);
             policies.value = value;
             dataBase.PoliciesDao().update(policies);
         }
 
         // Return the priority value
-        Policies policies = dataBase.PoliciesDao().getPolicyByName(policyName).get(0);
+        Policies policies = dataBase.PoliciesDao().getPolicyByTaskId(taskId).get(0);
         return policies.value;
     }
 
-    public void removeValue(String policyName, int priority) {
-        Policies policies = dataBase.PoliciesDao().getPolicyBy(policyName, priority).get(0);
+    public void removeValue(String taskId) {
+        Policies policies = dataBase.PoliciesDao().getPolicyByTaskId(taskId).get(0);
         dataBase.PoliciesDao().delete(policies);
     }
 

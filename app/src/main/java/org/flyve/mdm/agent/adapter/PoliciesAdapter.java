@@ -109,6 +109,14 @@ public class PoliciesAdapter extends BaseAdapter {
 
 		lblValue.setText(value);
 
+		String taskId = hashdata.get("taskId");
+		if(taskId.equals("") || taskId.equals("null")) {
+			taskId = "-";
+		}
+
+		TextView lblTaskId = vi.findViewById(R.id.lblTaskId);
+		lblTaskId.setText(taskId);
+
 		return vi;
 	}
 }
