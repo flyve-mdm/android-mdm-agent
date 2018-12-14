@@ -353,6 +353,7 @@ public class EnrollmentHelper {
                         FlyveLog.d("Id: " + mId);
                         int mEntitiesId = jsonObject.getInt("entities_id");
                         int mFleetId = jsonObject.getInt("plugin_flyvemdm_fleets_id");
+                        String mApiToken = jsonObject.getString("api_token");
 
                         cache.setAgentId(agentId);
                         cache.setBroker(mbroker);
@@ -366,6 +367,7 @@ public class EnrollmentHelper {
                         cache.setComputersId(String.valueOf(mComputersId));
                         cache.setEntitiesId(String.valueOf(mEntitiesId));
                         cache.setPluginFlyvemdmFleetsId(String.valueOf(mFleetId));
+                        cache.setApiToken(mApiToken);
 
                     } catch (final Exception ex) {
                         EnrollmentHelper.runOnUI(new Runnable() {
