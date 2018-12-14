@@ -32,20 +32,19 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.adapter.PoliciesAdapter;
-import org.flyve.mdm.agent.data.database.PoliciesData;
-import org.flyve.mdm.agent.data.database.entity.Policies;
-import org.flyve.mdm.agent.utils.Helpers;
+import org.flyve.mdm.agent.adapter.TopicsAdapter;
+import org.flyve.mdm.agent.data.database.TopicsData;
+import org.flyve.mdm.agent.data.database.entity.Topics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class FragmentPolicies extends Fragment {
+public class FragmentTopics extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_policies, null);
+        View v = inflater.inflate(R.layout.fragment_topics, null);
 
         final ListView lst = v.findViewById(R.id.lst);
         loadData(lst);
@@ -63,26 +62,22 @@ public class FragmentPolicies extends Fragment {
     }
 
     private void loadData(ListView lst) {
-        List<Policies> arrPolicies = new PoliciesData(FragmentPolicies.this.getContext()).getAllPolicies();
+        List<Topics> arrTopics = new TopicsData(FragmentTopics.this.getContext()).getAllTopics();
 
         ArrayList arr = new ArrayList<HashMap<String, Boolean>>();
 
-        if(arrPolicies.isEmpty()) {
+        if(arrTopics.isEmpty()) {
             HashMap<String, String> map = new HashMap<>();
-            map.put("description", "0 policies");
-            map.put("value", "");
-            map.put("taskId", "");
+            map.put("topic", "");
             arr.add(map);
         } else {
-            for (int i = 0; i < arrPolicies.size(); i++) {
+            for (int i = 0; i < arrTopics.size(); i++) {
                 HashMap<String, String> map = new HashMap<>();
-                map.put("description", Helpers.splitCapitalized(arrPolicies.get(i).policyName));
-                map.put("value", String.valueOf(arrPolicies.get(i).value));
-                map.put("taskId", String.valueOf(arrPolicies.get(i).taskId));
+                map.put("topic", String.valueOf(arrTopics.get(i).topic));
                 arr.add(map);
             }
         }
 
-        lst.setAdapter( new PoliciesAdapter(FragmentPolicies.this.getActivity(), arr));
+        lst.setAdapter( new TopicsAdapter(FragmentTopics.this.getActivity(), arr));
     }
 }
