@@ -69,11 +69,13 @@ public class FragmentTopics extends Fragment {
         if(arrTopics.isEmpty()) {
             HashMap<String, String> map = new HashMap<>();
             map.put("topic", "");
+            map.put("status", "");
             arr.add(map);
         } else {
             for (int i = 0; i < arrTopics.size(); i++) {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("topic", String.valueOf(arrTopics.get(i).topic));
+                map.put("status", String.valueOf(arrTopics.get(i).status));
                 arr.add(map);
             }
         }
