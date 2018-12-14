@@ -50,4 +50,8 @@ public interface TopicsDao {
 
     @Query("DELETE FROM topics")
     void deleteAll();
+
+    @Query("select * FROM topics where topic = :topic")
+    List<Topics> getByTopic(String topic);
+
 }
