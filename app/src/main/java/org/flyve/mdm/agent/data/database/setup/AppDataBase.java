@@ -33,14 +33,16 @@ import org.flyve.mdm.agent.data.database.dao.FileDao;
 import org.flyve.mdm.agent.data.database.dao.MDMLogDao;
 import org.flyve.mdm.agent.data.database.dao.MQTTDao;
 import org.flyve.mdm.agent.data.database.dao.PoliciesDao;
+import org.flyve.mdm.agent.data.database.dao.TopicsDao;
 import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.data.database.entity.File;
 import org.flyve.mdm.agent.data.database.entity.MDMLog;
 import org.flyve.mdm.agent.data.database.entity.MQTT;
 import org.flyve.mdm.agent.data.database.entity.Policies;
+import org.flyve.mdm.agent.data.database.entity.Topics;
 
 
-@Database(entities = {Application.class, MQTT.class, Policies.class, File.class, MDMLog.class}, version = 11, exportSchema = false)
+@Database(entities = {Application.class, MQTT.class, Policies.class, File.class, MDMLog.class, Topics.class}, version = 12, exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
 
     private static AppDataBase instance;
@@ -50,6 +52,7 @@ public abstract class AppDataBase extends RoomDatabase {
     public abstract PoliciesDao PoliciesDao();
     public abstract FileDao FileDao();
     public abstract MDMLogDao MDMLogDao();
+    public abstract TopicsDao TopicsDao();
 
     public static AppDataBase getAppDatabase(Context context) {
         if (instance == null) {
