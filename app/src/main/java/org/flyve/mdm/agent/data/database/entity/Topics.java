@@ -43,4 +43,7 @@ public class Topics {
     @ColumnInfo (name = "qos")
     public int qos;
 
+    @ColumnInfo (name = "status")
+    public int status;
+
 }

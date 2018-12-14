@@ -40,6 +40,7 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.CommonErrorType;
 import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.MqttData;
+import org.flyve.mdm.agent.data.database.TopicsData;
 import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.data.localstorage.AppData;
 import org.flyve.mdm.agent.policies.AirplaneModePolicy;
@@ -242,10 +243,11 @@ public class MqttModel implements mqtt.Model {
             return;
         }
 
+        // set all the topics on database to unconnected
+        new TopicsData(context).clearTopics();
 
         try {
             IMqttToken token = client.connect(options);
-
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {

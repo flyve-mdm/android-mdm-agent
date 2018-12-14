@@ -133,20 +133,24 @@ public class MqttPoliciesController {
         String[] lstTopics = new String[topics.size()];
         int[] lstQos = new int[topics.size()];
         for(int i=0; i< topics.size(); i++) {
-            lstTopics[i] = topics.get(i).topic;
-            lstQos[i] = topics.get(i).qos;
+            // if not subscribed
+            if(topics.get(i).status != 1) {
+                lstTopics[i] = topics.get(i).topic;
+                lstQos[i] = topics.get(i).qos;
+            }
         }
 
         try {
-            // unsubscribe to prevent duplicated values
-            client.unsubscribe(lstTopics);
-
             IMqttToken subToken = client.subscribe(lstTopics, lstQos);
             subToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // The message was published
-                    broadcastReceivedLog("TOPIC", "Subscribed", channel);
+                    for(String topic : asyncActionToken.getTopics()) {
+                        new TopicsData(context).setStatusTopic(topic, 1);
+                    }
+
+                    broadcastReceivedLog("TOPIC", "Subscribed", String.valueOf(asyncActionToken.getTopics().length));
                 }
 
                 @Override

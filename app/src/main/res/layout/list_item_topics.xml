@@ -7,6 +7,14 @@
     >
 
     <TextView
+        android:id="@+id/lblStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="1"
+        android:layout_alignParentRight="true"
+        />
+
+    <TextView
         android:id="@+id/lblTopics"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
