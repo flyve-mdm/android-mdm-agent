@@ -223,6 +223,7 @@
     <string name="policies">Policies</string>
     <string name="applications">Applications</string>
     <string name="files">Files</string>
+    <string name="topics">Topics</string>
     <string name="danger">DANGER</string>
     <string name="erase_all_data_question">Are you sure do you want erase all the data?</string>
     <string name="YES">YES</string>
