@@ -97,7 +97,7 @@ public class TopicsAdapter extends BaseAdapter {
 		}
 
 		TextView lblTopics = vi.findViewById(R.id.lblTopics);
-		lblTopics.setText(hashdata.get("topics"));
+		lblTopics.setText(hashdata.get("topic"));
 
 		return vi;
 	}
