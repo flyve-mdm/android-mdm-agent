@@ -30,11 +30,13 @@ package org.flyve.mdm.agent.policies;
 import android.content.Context;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.data.database.entity.Policies;
+import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.utils.Helpers;
+import org.json.JSONObject;
 
 public abstract class BasePolicies {
 
@@ -109,29 +111,43 @@ public abstract class BasePolicies {
         }
     }
 
-    private void sendTaskStatus(String topic, String taskId, String status) {
-        String mTopic = mqttTopic + "/Status/Task/" + taskId;
-        byte[] encodedPayload;
-        try {
-            String payload = "{ \"status\": \"" + status + "\" }";
+    private void sendTaskStatus(String topic, final String taskId, final String status) {
+        EnrollmentHelper enrollmentHelper = new EnrollmentHelper(context);
+        enrollmentHelper.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
+            @Override
+            public void onSuccess(String sessionToken) {
+                Helpers.storeLog("mqtt", "http response session token", sessionToken);
+                String payload = "";
+                try {
+                    JSONObject jsonPayload = new JSONObject();
 
-            encodedPayload = payload.getBytes("UTF-8");
-            MqttMessage message = new MqttMessage(encodedPayload);
-            IMqttDeliveryToken token = this.mqttClient.publish(mTopic, message);
+                    jsonPayload.put("status", status);
 
-            Log(MQTT_SEND, "Policy Status", "TaskID: " + taskId + " Status: " + status);
-        } catch (Exception ex) {
-            FlyveLog.e(this.getClass().getName() + ", sendTaskStatus", ex.getMessage());
+                    JSONObject jsonInput = new JSONObject();
+                    jsonInput.put("input", jsonPayload);
 
-            // send broadcast
-            Log(ERROR, "Error sending status", ex.getMessage());
-        }
+                    payload = jsonInput.toString();
+                } catch (Exception ex) {
+                    Helpers.storeLog("mqtt", "Error sending status http", ex.getMessage());
+                }
+
+                ConnectionHTTP.sendHttpResponsePolicies(context, taskId, payload, sessionToken, new ConnectionHTTP.DataCallback() {
+                    @Override
+                    public void callback(String data) {
+                        Helpers.storeLog("mqtt", "http response from policy", data);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(int type, String error) {
+                Helpers.storeLog("mqtt", "problem with session token", error);
+            }
+        });
     }
 
     private void mqttResponse(String status) {
-        if(mqttEnable) {
-            this.sendTaskStatus(this.mqttTopic, this.mqttTaskId, status);
-        }
+        this.sendTaskStatus(this.mqttTopic, this.mqttTaskId, status);
     }
 
     protected void Log(String type, String title, String message){
@@ -175,16 +191,12 @@ public abstract class BasePolicies {
     }
 
     protected void policyDone() {
-        if(mqttEnable) {
-            mqttResponse(MQTT_FEEDBACK_DONE);
-        }
+        mqttResponse(MQTT_FEEDBACK_DONE);
     }
 
     protected void policyFail() {
         Log("Policy ERROR", "Policy " + this.policyName,"Policy Fail: " + this.policyName + "\nvalue: " + this.policyValue + "\npriority: " + this.policyPriority);
-        if(mqttEnable) {
-            mqttResponse(MQTT_FEEDBACK_FAILED);
-        }
+        mqttResponse(MQTT_FEEDBACK_FAILED);
     }
 
     protected abstract boolean process();
