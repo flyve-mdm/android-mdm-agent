@@ -51,9 +51,15 @@ public class TopicsData {
 
     public List<Topics> setValue(String topic, int qos) {
         if(dataBase.TopicsDao().getByTopic(topic).isEmpty()) {
+            // remove previous fleet to keep just one
+            if(topic.contains("fleet")) {
+                dataBase.TopicsDao().deleteFleets();
+            }
+
             Topics topics = new Topics();
             topics.topic = topic;
             topics.qos = qos;
+            topics.status = 0;
             dataBase.TopicsDao().insert(topics);
         } else {
             Topics topics = dataBase.TopicsDao().getByTopic(topic).get(0);
@@ -62,5 +68,15 @@ public class TopicsData {
         }
 
         return getAllTopics();
+    }
+
+    public void setStatusTopic(String topic, int status) {
+        Topics topics = dataBase.TopicsDao().getByTopic(topic).get(0);
+        topics.status = status;
+        dataBase.TopicsDao().update(topics);
+    }
+
+    public void clearTopics() {
+        dataBase.TopicsDao().clearTopics();
     }
 }
