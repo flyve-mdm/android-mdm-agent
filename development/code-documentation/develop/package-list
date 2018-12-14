@@ -1,8 +1,6 @@
 org.flyve.mdm.agent.adapter
 org.flyve.mdm.agent.core
 org.flyve.mdm.agent.core.deeplink
-org.flyve.mdm.agent.core.enrollment
-org.flyve.mdm.agent.core.mqtt
 org.flyve.mdm.agent.core.permission
 org.flyve.mdm.agent.core.user
 org.flyve.mdm.agent.core.walkthrough
@@ -13,7 +11,5 @@ org.flyve.mdm.agent.data.database.setup
 org.flyve.mdm.agent.data.localstorage
 org.flyve.mdm.agent.policies
 org.flyve.mdm.agent.receivers
-org.flyve.mdm.agent.security
-org.flyve.mdm.agent.services
 org.flyve.mdm.agent.ui
 org.flyve.mdm.agent.utils
