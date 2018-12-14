@@ -25,6 +25,7 @@ package org.flyve.mdm.agent.core.mqtt;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.util.Log;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -37,7 +38,9 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.CommonErrorType;
+import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.MqttData;
+import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.data.localstorage.AppData;
 import org.flyve.mdm.agent.policies.AirplaneModePolicy;
 import org.flyve.mdm.agent.policies.BasePolicies;
@@ -78,7 +81,6 @@ import org.flyve.mdm.agent.policies.WifiPolicy;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.ui.MainActivity;
-import org.flyve.mdm.agent.utils.AppThreadManager;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
@@ -608,17 +610,34 @@ public class MqttModel implements mqtt.Model {
         String DEPLOY_APP = "deployApp";
         if(topic.toLowerCase().contains(DEPLOY_APP.toLowerCase())) {
             MDMAgent.setMqttClient(getMqttClient());
-            AppThreadManager manager = MDMAgent.getAppThreadManager();
             try {
 
                 JSONObject jsonObj = new JSONObject(messageBody);
 
                 if(jsonObj.has(DEPLOY_APP)) {
-                    manager.add(context, jsonObj);
+
+                    String deployApp = jsonObj.getString("deployApp");
+                    String id = jsonObj.getString("id");
+                    String versionCode = jsonObj.getString("versionCode");
+                    String taskId = jsonObj.getString("taskId");
+
+                    ApplicationData apps = new ApplicationData(context);
+                    Application[] appsArray = apps.getApplicationsById(id);
+
+                    // check if the app exists with same version or older
+                    Boolean bDownload = true;
+                    if(appsArray.length>0 && Integer.parseInt(versionCode) >= Integer.parseInt(appsArray[0].appVersionCode)) {
+                        bDownload = false;
+                    }
+
+                    if(bDownload) {
+                        // execute the policy
+                        mqttPoliciesController.installPackage(deployApp, id, versionCode, taskId);
+                        SystemClock.sleep(2000);
+                    }
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_DEPLOYAPP, ex.getMessage());
-                manager.finishProcess(context);
             }
         }
 
