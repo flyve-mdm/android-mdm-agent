@@ -48,4 +48,12 @@ public class TopicsData {
     public void deleteAll() {
         dataBase.TopicsDao().deleteAll();
     }
+
+    public void setValue(String topic) {
+        if(dataBase.TopicsDao().getByTopic(topic).isEmpty()) {
+            Topics topics = new Topics();
+            topics.topic = topic;
+            dataBase.TopicsDao().insert(topics);
+        }
+    }
 }
