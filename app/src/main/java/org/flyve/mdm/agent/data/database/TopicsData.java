@@ -49,7 +49,7 @@ public class TopicsData {
         dataBase.TopicsDao().deleteAll();
     }
 
-    public List<Topics> setValue(String topic, String qos) {
+    public List<Topics> setValue(String topic, int qos) {
         if(dataBase.TopicsDao().getByTopic(topic).isEmpty()) {
             Topics topics = new Topics();
             topics.topic = topic;

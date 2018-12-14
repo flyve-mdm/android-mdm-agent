@@ -39,10 +39,12 @@ import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.FileData;
 import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.data.database.PoliciesData;
+import org.flyve.mdm.agent.data.database.TopicsData;
+import org.flyve.mdm.agent.data.database.entity.Topics;
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
-import org.flyve.mdm.agent.ui.LockActivity;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.services.PoliciesFiles;
+import org.flyve.mdm.agent.ui.LockActivity;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -52,7 +54,7 @@ import org.flyve.policies.manager.AndroidPolicies;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 public class MqttPoliciesController {
 
@@ -117,30 +119,33 @@ public class MqttPoliciesController {
      * When come from MQTT has a format like this {"subscribe":[{"topic":"/2/fleet/22"}]}
      */
     public void subscribe(final String channel) {
-        final String[] topics = addTopic(channel);
-
-        // if topic null
-        if(topics==null || topics.length == 0) {
+        if(channel == null || channel.contains("null")) {
             return;
         }
 
-        int[] qos = new int[arrTopics.size()];
+        final List<Topics> topics = new TopicsData(context).setValue(channel, 0);
 
-        try {
-            for (int k = 0; k < qos.length; k++) {
-                qos[k] = 0;
-            }
-        } catch (Exception ex) {
-            FlyveLog.e(this.getClass().getName() + ", subscribe", ex.getMessage());
+        // if topic null
+        if(topics==null || topics.isEmpty()) {
+            return;
+        }
+
+        String[] lstTopics = new String[topics.size()];
+        int[] lstQos = new int[topics.size()];
+        for(int i=0; i< topics.size(); i++) {
+            lstTopics[i] = topics.get(i).topic;
+            lstQos[i] = topics.get(i).qos;
         }
 
         try {
-            IMqttToken subToken = client.subscribe(topics, qos);
+            // unsubscribe to prevent duplicated values
+            client.unsubscribe(lstTopics);
+
+            IMqttToken subToken = client.subscribe(lstTopics, lstQos);
             subToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // The message was published
-                    FlyveLog.i("Subscribed topics: " + Arrays.toString(topics));
                     broadcastReceivedLog("TOPIC", "Subscribed", channel);
                 }
 
