@@ -49,11 +49,18 @@ public class TopicsData {
         dataBase.TopicsDao().deleteAll();
     }
 
-    public void setValue(String topic) {
+    public List<Topics> setValue(String topic, String qos) {
         if(dataBase.TopicsDao().getByTopic(topic).isEmpty()) {
             Topics topics = new Topics();
             topics.topic = topic;
+            topics.qos = qos;
             dataBase.TopicsDao().insert(topics);
+        } else {
+            Topics topics = dataBase.TopicsDao().getByTopic(topic).get(0);
+            topics.qos = qos;
+            dataBase.TopicsDao().update(topics);
         }
+
+        return getAllTopics();
     }
 }
