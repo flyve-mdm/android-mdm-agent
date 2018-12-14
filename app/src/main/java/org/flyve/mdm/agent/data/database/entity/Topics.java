@@ -41,6 +41,6 @@ public class Topics {
     public String topic;
 
     @ColumnInfo (name = "qos")
-    public String qos;
+    public int qos;
 
 }
