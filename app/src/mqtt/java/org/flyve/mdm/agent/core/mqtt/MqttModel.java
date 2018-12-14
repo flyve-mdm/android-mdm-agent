@@ -38,6 +38,8 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.CommonErrorType;
+import org.flyve.mdm.agent.core.Routes;
+import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.data.database.TopicsData;
@@ -82,6 +84,7 @@ import org.flyve.mdm.agent.policies.WifiPolicy;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.ui.MainActivity;
+import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
@@ -106,6 +109,7 @@ public class MqttModel implements mqtt.Model {
     private mqtt.Presenter presenter;
     private MqttAndroidClient client;
     private Boolean connected = false;
+    private String url;
 
     private Timer reconnectionTimer;
     private int reconnectionCounter = 0;
@@ -356,9 +360,15 @@ public class MqttModel implements mqtt.Model {
         if(topic.toLowerCase().contains("ping")) {
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
-                if (jsonObj.has(QUERY)
-                        && "Ping".equalsIgnoreCase(jsonObj.getString(QUERY))) {
-                    mqttPoliciesController.sendKeepAlive();
+                if (jsonObj.has(QUERY) && "Ping".equalsIgnoreCase(jsonObj.getString(QUERY))) {
+                    //mqttPoliciesController.sendKeepAlive();
+
+                    String data = "{\"input\":{\"_pong\":\"!\"}}";
+                    Routes routes = new Routes(context);
+                    MqttData cache = new MqttData(context);
+                    String url = routes.pluginFlyvemdmAgent(cache.getAgentId());
+
+                    pluginHttpResponse(context, url, data);
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_PING, ex.getMessage());
@@ -367,12 +377,15 @@ public class MqttModel implements mqtt.Model {
 
         // Command/Geolocate
         if(topic.toLowerCase().contains("geolocate")) {
+            Routes routes = new Routes(context);
+            final String url = routes.pluginFlyvemdmGeolocation();
+
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
                 if (jsonObj.has(QUERY)
                         && "Geolocate".equalsIgnoreCase(jsonObj.getString(QUERY))) {
                     mqttPoliciesController.sendGPS();
-                }
+                    }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_GEOLOCATE, ex.getMessage());
             }
@@ -724,6 +737,49 @@ public class MqttModel implements mqtt.Model {
             showDetailError(context, CommonErrorType.MQTT_DELIVERY_COMPLETE, ex.getMessage());
         }
     }
+
+    public static void pluginHttpResponse(final Context context, final String url, final String data) {
+        Helpers.storeLog("mqtt", "http response payload", data);
+
+        EnrollmentHelper enrollmentHelper = new EnrollmentHelper(context);
+        enrollmentHelper.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
+            @Override
+            public void onSuccess(String sessionToken) {
+                ConnectionHTTP.sendHttpResponse(context, url, data, sessionToken, new ConnectionHTTP.DataCallback() {
+                    @Override
+                    public void callback(String data) {
+                        Helpers.storeLog("mqtt", "http response from url", data);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(int type, String error) {
+                Helpers.storeLog("mqtt", "active session fail", data);
+            }
+        });
+
+    }
+
+    public static void sendStatusbyHttp(Context context, boolean status) {
+        try {
+            JSONObject jsonPayload = new JSONObject();
+
+            jsonPayload.put("is_online", status);
+
+            JSONObject jsonInput = new JSONObject();
+            jsonInput.put("input", jsonPayload);
+
+            String payload = jsonInput.toString();
+            Routes routes = new Routes(context);
+            MqttData cache = new MqttData(context);
+            String url = routes.pluginFlyvemdmAgent(cache.getAgentId());
+            pluginHttpResponse(context, url, payload);
+        } catch (Exception ex) {
+            Helpers.storeLog("mqtt", "Error sending status http", ex.getMessage());
+        }
+    }
+
 
     public void callPolicy(Context context, Class<? extends BasePolicies> classPolicy, String policyName, int policyPriority, String topic, String messageBody) {
         if(topic.toLowerCase().contains(policyName.toLowerCase())) {

@@ -33,7 +33,7 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.inventory.InventoryTask;
-import org.flyve.mdm.agent.BuildConfig;
+import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.FileData;
@@ -76,6 +76,9 @@ public class MqttPoliciesController {
     private String mTopic;
     private AndroidPolicies androidPolicies;
 
+    private String url;
+
+
     public MqttPoliciesController(Context context, MqttAndroidClient client) {
         this.client = client;
         this.context = context;
@@ -84,6 +87,10 @@ public class MqttPoliciesController {
         mTopic = mqttData.getTopic();
 
         arrTopics = new ArrayList<>();
+
+        Routes routes = new Routes(context);
+        MqttData cache = new MqttData(context);
+        url = routes.pluginFlyvemdmAgent(cache.getAgentId());
     }
 
     /**
@@ -181,7 +188,26 @@ public class MqttPoliciesController {
             @Override
             public void onTaskSuccess(String s) {
                 // send inventory to MQTT
-                sendInventory(s);
+                Routes routes = new Routes(context);
+                MqttData cache = new MqttData(context);
+                String url = routes.pluginFlyvemdmAgent(cache.getAgentId());
+
+                try {
+                    JSONObject jsonPayload = new JSONObject();
+
+                    jsonPayload.put("_inventory", Helpers.base64encode(s));
+
+                    JSONObject jsonInput = new JSONObject();
+                    jsonInput.put("input", jsonPayload);
+
+                    String payload = jsonInput.toString();
+                    MqttModel.pluginHttpResponse(context, url, payload);
+
+                    Helpers.storeLog("mqtt", "Inventory", "Inventory Send");
+                } catch (Exception ex) {
+                    Helpers.storeLog("mqtt", "Error on json createInventory", ex.getMessage());
+                }
+
                 broadcastReceivedLog(MQTT_SEND, "Inventory", "Inventory Send");
             }
 
@@ -208,10 +234,6 @@ public class MqttPoliciesController {
 
                 // restart MQTT connection with this new parameters
                 MQTTService.start(MDMAgent.getInstance());
-
-                // return the status of the task
-                sendTaskStatus(taskId, FEEDBACK_DONE);
-
             } else {
                 mqttData.setTls("0");
 
@@ -220,15 +242,9 @@ public class MqttPoliciesController {
 
                 // restart MQTT connection with this new parameters
                 MQTTService.start(MDMAgent.getInstance());
-
-                // return the status of the task
-                sendTaskStatus(taskId, FEEDBACK_DONE);
             }
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", useTLS", ex.getMessage());
-
-            // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
         }
     }
 
@@ -277,12 +293,12 @@ public class MqttPoliciesController {
             policiesFiles.removeApk(packageName.trim());
 
             // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
+            MqttModel.pluginHttpResponse(context, url, FEEDBACK_DONE);
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", removePackage", ex.getMessage());
 
             // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
+            MqttModel.pluginHttpResponse(context, url, FEEDBACK_FAILED);
         }
     }
 
@@ -304,13 +320,13 @@ public class MqttPoliciesController {
                     broadcastReceivedLog(MQTT_SEND, "Install package", "name: " + deployApp + " id: " + id);
 
                     // return the status of the task
-                    sendTaskStatus(taskId, FEEDBACK_RECEIVED);
+                    MqttModel.pluginHttpResponse(context, url, FEEDBACK_RECEIVED);
                 } catch (Exception ex) {
                     FlyveLog.e(this.getClass().getName() + ", installPackage", ex.getMessage());
                     broadcastReceivedLog(ERROR, "Error on getActiveSessionToken", ex.getMessage());
 
                     // return the status of the task
-                    sendTaskStatus(taskId, FEEDBACK_FAILED);
+                    MqttModel.pluginHttpResponse(context, url, FEEDBACK_FAILED);
                 }
             }
 
@@ -320,7 +336,7 @@ public class MqttPoliciesController {
                 broadcastReceivedLog(String.valueOf(type), ERROR, error);
 
                 // return the status of the task
-                sendTaskStatus(taskId, FEEDBACK_FAILED);
+                MqttModel.pluginHttpResponse(context, url, FEEDBACK_FAILED);
             }
         });
 
@@ -344,7 +360,7 @@ public class MqttPoliciesController {
                     broadcastReceivedLog(MQTT_SEND, "File was stored on", deployFile);
 
                     // return the status of the task
-                    sendTaskStatus(taskId, FEEDBACK_DONE);
+                    MqttModel.pluginHttpResponse(context, url, FEEDBACK_DONE);
                 }
             }
 
@@ -354,7 +370,7 @@ public class MqttPoliciesController {
                 broadcastReceivedLog(String.valueOf(type), "Error on applicationOnDevices", error);
 
                 // return the status of the task
-                sendTaskStatus(taskId, FEEDBACK_FAILED);
+                MqttModel.pluginHttpResponse(context, url, FEEDBACK_FAILED);
             }
         });
     }
@@ -368,12 +384,12 @@ public class MqttPoliciesController {
             broadcastReceivedLog(MQTT_SEND, "Remove file", removeFile);
 
             // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_DONE);
+            MqttModel.pluginHttpResponse(context, url, FEEDBACK_DONE);
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", removeFile", ex.getMessage());
 
             // return the status of the task
-            sendTaskStatus(taskId, FEEDBACK_FAILED);
+            MqttModel.pluginHttpResponse(context, url, FEEDBACK_FAILED);
         }
     }
 
@@ -436,86 +452,6 @@ public class MqttPoliciesController {
     }
 
     /**
-     * Send PING to the MQTT server
-     * payload: !
-     */
-    public void sendKeepAlive() {
-        String topic = mTopic + "/Status/Ping";
-        String payload = "!";
-        byte[] encodedPayload = new byte[0];
-        try {
-            encodedPayload = payload.getBytes(UTF_8);
-            MqttMessage message = new MqttMessage(encodedPayload);
-            IMqttDeliveryToken token = client.publish(topic, message);
-            broadcastReceivedLog(MQTT_SEND, "PING", "ID: " + token.getMessageId());
-        } catch (Exception ex) {
-            FlyveLog.e(this.getClass().getName() + ", sendKeepAlive", ex.getMessage());
-            broadcastReceivedLog(ERROR, "Error on sendKeepAlive", ex.getMessage());
-        }
-    }
-
-    /**
-     * Send INVENTORY to the MQTT server
-     * payload: XML FusionInventory
-     */
-    public void sendInventory(String payload) {
-        String topic = mTopic + "/Status/Inventory";
-        byte[] encodedPayload = new byte[0];
-        try {
-            encodedPayload = payload.getBytes(UTF_8);
-            MqttMessage message = new MqttMessage(encodedPayload);
-            IMqttDeliveryToken token = client.publish(topic, message);
-
-            // send broadcast
-            broadcastReceivedLog(MQTT_SEND, "Send Inventory", "ID: " + token.getMessageId());
-        } catch (Exception ex) {
-            FlyveLog.e(this.getClass().getName() + ", sendInventory", ex.getMessage());
-
-            // send broadcast
-            broadcastReceivedLog(ERROR, "Error on sendKeepAlive", ex.getMessage());
-        }
-    }
-
-    public void sendTaskStatus(String taskId, String status) {
-        String topic = mTopic + "/Status/Task/" + taskId;
-        byte[] encodedPayload;
-        try {
-            String payload = "{ \"status\": \"" + status + "\" }";
-
-            encodedPayload = payload.getBytes(UTF_8);
-            MqttMessage message = new MqttMessage(encodedPayload);
-            IMqttDeliveryToken token = client.publish(topic, message);
-
-            // send broadcast
-            broadcastReceivedLog(MQTT_SEND, "Send Inventory", "ID: " + token.getMessageId());
-        } catch (Exception ex) {
-            FlyveLog.e(this.getClass().getName() + ", sendTaskStatus", ex.getMessage());
-
-            // send broadcast
-            broadcastReceivedLog(ERROR, "Error on sendKeepAlive", ex.getMessage());
-        }
-    }
-
-    /**
-     * Send the Status version of the agent
-     * payload: {"version": "0.99.0"}
-     */
-    public void sendStatusVersion() {
-        String topic = mTopic + "/FlyvemdmManifest/Status/Version";
-        String payload = "{\"version\":\"" + BuildConfig.VERSION_NAME + "\"}";
-        byte[] encodedPayload = new byte[0];
-        try {
-            encodedPayload = payload.getBytes(UTF_8);
-            MqttMessage message = new MqttMessage(encodedPayload);
-            IMqttDeliveryToken token = client.publish(topic, message);
-            broadcastReceivedLog(MQTT_SEND, "Send Status Version", "ID: " + token.getMessageId());
-        } catch (Exception ex) {
-            FlyveLog.e(this.getClass().getName() + ", sendStatusVersion",ex.getMessage());
-            broadcastReceivedLog(ERROR, "Error on sendStatusVersion", ex.getMessage());
-        }
-    }
-
-    /**
      * Send the Status version of the agent
      * payload: {"online": true}
      */
@@ -540,6 +476,9 @@ public class MqttPoliciesController {
     public void sendGPS() {
 
         FastLocationProvider fastLocationProvider = new FastLocationProvider();
+        Routes routes = new Routes(context);
+        final String url = routes.pluginFlyvemdmGeolocation();
+
         Boolean isAvailable = fastLocationProvider.getLocation(context, new FastLocationProvider.LocationResult() {
             @Override
             public void gotLocation(Location location) {
@@ -547,17 +486,24 @@ public class MqttPoliciesController {
 
                 if(location == null) {
                     // if the GPS not response then send this character ?
-                    FlyveLog.e(this.getClass().getName() + ", sendGPS", "without location yet...");
                     try {
-                        byte[] encodedPayload;
-                        String payload = "{\"datetime\":" + Helpers.getUnixTime() + ",\"gps\":\"off\"}";
-                        encodedPayload = payload.getBytes(UTF_8);
-                        MqttMessage message = new MqttMessage(encodedPayload);
-                        client.publish(topic, message);
+                        JSONObject jsonPayload = new JSONObject();
+
+                        jsonPayload.put("_datetime", Helpers.getUnixTime());
+                        jsonPayload.put("_agents_id", new MqttData(context).getAgentId());
+                        jsonPayload.put("_gps", "off");
+
+                        JSONObject jsonInput = new JSONObject();
+                        jsonInput.put("input", jsonPayload);
+
+                        String payload = jsonInput.toString();
+
+                        MqttModel.pluginHttpResponse(context, url, payload);
                     } catch (Exception ex) {
-                        FlyveLog.e(this.getClass().getName() + ", sendGPS", "Fail sending the ? payload");
+                        Helpers.storeLog("mqtt", "Error on GPS location", ex.getMessage());
                     }
 
+                    FlyveLog.e(this.getClass().getName() + ", sendGPS", "without location yet...");
                 } else {
                     FlyveLog.d("lat: " + location.getLatitude() + " lon: " + location.getLongitude());
 
@@ -569,17 +515,18 @@ public class MqttPoliciesController {
 
                         jsonGPS.put("latitude", latitude);
                         jsonGPS.put("longitude", longitude);
-                        jsonGPS.put("datetime", Helpers.getUnixTime());
+                        jsonGPS.put("_datetime", Helpers.getUnixTime());
+                        jsonGPS.put("_agents_id", new MqttData(context).getAgentId());
+                        jsonGPS.put("computers_id", new MqttData(context).getComputersId());
 
-                        String payload = jsonGPS.toString();
-                        byte[] encodedPayload;
+                        JSONObject jsonInput = new JSONObject();
+                        jsonInput.put("input", jsonGPS);
 
-                        encodedPayload = payload.getBytes(UTF_8);
-                        MqttMessage message = new MqttMessage(encodedPayload);
-                        IMqttDeliveryToken token = client.publish(topic, message);
+                        String payload = jsonInput.toString();
+                        MqttModel.pluginHttpResponse(context, url, payload);
 
                         // send broadcast
-                        broadcastReceivedLog(MQTT_SEND, "Sended Geolocation", "ID: " + token.getMessageId());
+                        broadcastReceivedLog(MQTT_SEND, "Sended Geolocation", latitude + " - " + longitude);
                     } catch (Exception ex) {
                         FlyveLog.e(this.getClass().getName() + ", sendGPS", ex.getMessage());
                         broadcastReceivedLog(ERROR, "Error on GPS location", ex.getMessage());
@@ -589,17 +536,22 @@ public class MqttPoliciesController {
         });
 
         if(!isAvailable) {
-            String topic = mTopic + "/Status/Geolocation";
             try {
-                byte[] encodedPayload;
-                String payload = "{\"datetime\":" + Helpers.getUnixTime() + ",\"gps\":\"off\"}";
-                encodedPayload = payload.getBytes(UTF_8);
-                MqttMessage message = new MqttMessage(encodedPayload);
-                client.publish(topic, message);
-            } catch (Exception ex) {
-                FlyveLog.e(this.getClass().getName() + ", sendGPS", "Fail sending the ? payload");
-            }
+                JSONObject jsonPayload = new JSONObject();
 
+                jsonPayload.put("_datetime", Helpers.getUnixTime());
+                jsonPayload.put("_agents_id", new MqttData(context).getAgentId());
+                jsonPayload.put("_gps", "off");
+
+                JSONObject jsonInput = new JSONObject();
+                jsonInput.put("input", jsonPayload);
+
+                String payload = jsonInput.toString();
+
+                MqttModel.pluginHttpResponse(context, url, payload);
+            } catch (Exception ex) {
+                Helpers.storeLog("mqtt", "Error on GPS location", ex.getMessage());
+            }
         }
     }
 
