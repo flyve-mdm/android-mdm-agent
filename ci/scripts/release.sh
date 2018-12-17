@@ -91,9 +91,9 @@ else
 fi
 
 # Update develop branch
-git add .
-git stash
-git fetch origin develop
-git checkout develop
-git merge $CIRCLE_BRANCH
-git push origin develop --force
+# git add .
+# git stash
+# git fetch origin develop
+# git checkout develop
+# git merge $CIRCLE_BRANCH
+# git push origin develop --force
