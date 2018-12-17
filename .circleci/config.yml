@@ -197,18 +197,10 @@ workflows:
               ignore:
                 - master
                 - develop
-      - test_instrumentation:
-          context: org-global
-          requires:
-            - build
-          filters:
-            branches:
-              ignore:
-                - master
       - deploy_alpha:
           context: org-global
           requires:
-            - test_instrumentation
+            - build
           filters:
             branches:
               only:
@@ -224,7 +216,7 @@ workflows:
       - documentation:
           context: org-global
           requires:
-            - test_instrumentation
+            - build
           filters:
             branches:
               only:
