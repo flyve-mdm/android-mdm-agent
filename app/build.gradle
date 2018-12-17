@@ -27,7 +27,6 @@ android {
     productFlavors {
         fcm {
             dimension "mdm"
-            applicationIdSuffix ".fcm"
         }
         mqtt {
             dimension "mdm"
