@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 minimum_perc = 80
-lang_map = pt_BR: pt-rBR, ru_RU: ru-rRU, fr_FR: fr-rFR, es_MX: es-rMX, es_ES: es-rES, es_AR: es-rAR, en_GB: en-rGB, ko_KR: ko-rKR, cs_CZ: cs-rCZ, ca_ES: ca-rES
+lang_map = pt_BR: pt-rBR, ru_RU: ru-rRU, fr_FR: fr-rFR, eu_ES: eu-rES, es_MX: es-rMX, es_ES: es-rES, es_AR: es-rAR, en_GB: en-rGB, ko_KR: ko-rKR, cs_CZ: cs-rCZ, ca_ES: ca-rES
 
 [android-mdm-agent.stringsxml-android]
 file_filter = app/src/main/res/values-<lang>/strings.xml
