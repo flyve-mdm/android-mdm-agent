@@ -22,7 +22,7 @@ platform :android do
     lane :certification do |options|
         Fastlane::Actions.sh("pwd", log: true)
         Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/zipalign -v -p 4 $(ls -dt ../app/build/outputs/apk/fcm/release/*.apk | head -1) ../app/build/outputs/apk/fcm/release/app-release-unsigned-aligned.apk", log: true)
-        Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/apksigner sign --ks ../ci/release.keystore --ks-key-alias mdmagent --ks-pass pass:"+ options[:storepass] +" --key-pass pass:"+ options[:keypass] +"  --out ../app/build/outputs/apk/release/fcm/appCertified.apk ../app/build/outputs/apk/release/fcm/app-release-unsigned-aligned.apk", log: true)
+        Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/apksigner sign --ks ../ci/release.keystore --ks-key-alias mdmagent --ks-pass pass:"+ options[:storepass] +" --key-pass pass:"+ options[:keypass] +"  --out ../app/build/outputs/apk/fcm/release/appCertified.apk ../app/build/outputs/apk/fcm/release/app-release-unsigned-aligned.apk", log: true)
         Fastlane::Actions.sh("$ANDROID_HOME/build-tools/$BUILD_TOOL/apksigner verify ../app/build/outputs/apk/fcm/release/appCertified.apk", log: true)
     end
     lane :alpha do |options|
