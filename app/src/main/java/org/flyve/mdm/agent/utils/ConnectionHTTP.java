@@ -41,6 +41,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -607,6 +608,185 @@ public class ConnectionHTTP {
 		t.start();
 	}
 
+	public static String getPolicyName(Context context, int policyId, Map<String, String> header) {
+		try {
+			Routes routes = new Routes(context);
+			String url = routes.pluginFlyvemdmPolicy(policyId);
+			URL dataURL = new URL(url);
+			HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
+
+			conn.setRequestMethod("GET");
+			conn.setConnectTimeout(timeout);
+			conn.setReadTimeout(readtimeout);
+
+			StringBuilder logHeader = new StringBuilder();
+			if(header != null) {
+				for (Map.Entry<String, String> entry : header.entrySet()) {
+					logHeader.append("- " + entry.getKey() + " : " + entry.getValue() + "\n");
+					conn.setRequestProperty(entry.getKey(), entry.getValue());
+				}
+			} else {
+				logHeader.append("Empty");
+			}
+
+			if(conn.getResponseCode() >= 400) {
+				InputStream is = conn.getErrorStream();
+				final String result = inputStreamToString(is);
+				return "";
+			}
+
+			InputStream is = conn.getInputStream();
+			final String requestResponse = inputStreamToString(is);
+
+			String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
+			Log(response);
+
+			JSONObject jsonPolicy = new JSONObject(requestResponse);
+			return jsonPolicy.getString("symbol");
+
+
+		}
+		catch (final Exception ex)
+		{
+			return "";
+		}
+	}
+
+	public static void getActivePolicies(final Context context, final int taskId, final Map<String, String> header, final PoliciesDataCallback callback)
+	{
+		Thread t = new Thread(new Runnable()
+		{
+			public void run()
+			{
+				try
+				{
+					Routes routes = new Routes(context);
+
+					// -------------------------------
+					// FIRST STEP GET THE FLEET
+					// -------------------------------
+					String url = routes.pluginFlyvemdmTask(taskId);
+					URL dataURL = new URL(url);
+					HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
+
+					conn.setRequestMethod("GET");
+					conn.setConnectTimeout(timeout);
+					conn.setReadTimeout(readtimeout);
+
+					StringBuilder logHeader = new StringBuilder();
+					if(header != null) {
+						for (Map.Entry<String, String> entry : header.entrySet()) {
+							logHeader.append("- " + entry.getKey() + " : " + entry.getValue() + "\n");
+							conn.setRequestProperty(entry.getKey(), entry.getValue());
+						}
+					} else {
+						logHeader.append("Empty");
+					}
+
+					if(conn.getResponseCode() >= 400) {
+						InputStream is = conn.getErrorStream();
+						final String result = inputStreamToString(is);
+
+						ConnectionHTTP.runOnUI(new Runnable()
+						{
+							public void run()
+							{
+								callback.error(result);
+							}
+						});
+						return;
+					}
+
+					InputStream is = conn.getInputStream();
+					final String requestResponse = inputStreamToString(is);
+
+					String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
+					Log(response);
+
+					JSONObject jsonTask = new JSONObject(requestResponse);
+					String fleetId = jsonTask.getString("items_id_applied");
+
+					// -------------------------------
+					// SECOND STEP GET THE POLICIES
+					// -------------------------------
+
+					url = routes.pluginFlyvemdmTaskSearchFleet(Integer.valueOf(fleetId));
+					dataURL = new URL(url);
+					conn = (HttpURLConnection)dataURL.openConnection();
+
+					conn.setRequestMethod("GET");
+					conn.setConnectTimeout(timeout);
+					conn.setReadTimeout(readtimeout);
+
+					logHeader = new StringBuilder();
+					if(header != null) {
+						for (Map.Entry<String, String> entry : header.entrySet()) {
+							logHeader.append("- " + entry.getKey() + " : " + entry.getValue() + "\n");
+							conn.setRequestProperty(entry.getKey(), entry.getValue());
+						}
+					} else {
+						logHeader.append("Empty");
+					}
+
+					if(conn.getResponseCode() >= 400) {
+						is = conn.getErrorStream();
+						final String result = inputStreamToString(is);
+
+						ConnectionHTTP.runOnUI(new Runnable()
+						{
+							public void run()
+							{
+								callback.error(result);
+							}
+						});
+						return;
+					}
+
+					is = conn.getInputStream();
+					final String requestResponse2 = inputStreamToString(is);
+
+					response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse2 + "\n\n";
+					Log(response);
+
+					// get all the policies
+					JSONArray jsonPolicies = new JSONObject(requestResponse2).getJSONArray("data");
+
+					final ArrayList<HashMap<String,String>> arrPolicies = new ArrayList<>();
+					for(int i=0; i<jsonPolicies.length(); i++) {
+						JSONObject obj = jsonPolicies.getJSONObject(i);
+						String policyType = getPolicyName(context, obj.getInt("PluginFlyvemdmTask.PluginFlyvemdmPolicy.id"), header);
+						String policyValue = obj.getString("PluginFlyvemdmTask.value");
+
+						HashMap<String,String> map = new HashMap<>();
+
+						map.put("type", policyType);
+						map.put("value", policyValue);
+						arrPolicies.add(map);
+					}
+
+					ConnectionHTTP.runOnUI(new Runnable() {
+						public void run() {
+							callback.callback(arrPolicies);
+						}
+					});
+
+				}
+				catch (final Exception ex)
+				{
+					ConnectionHTTP.runOnUI(new Runnable()
+					{
+						public void run()
+						{
+							callback.error(EXCEPTION_HTTP + ex.getMessage());
+							FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getWebData",ex.getClass() + " : " + ex.getMessage());
+						}
+					});
+				}
+			}
+		});
+		t.start();
+	}
+
 	/**
 	 * Convert inputStream to String
 	 * @param stream InputStream to convert
@@ -635,6 +815,11 @@ public class ConnectionHTTP {
 	 */
 	public interface DataCallback {
 		void callback(String data);
+	}
+
+	public interface PoliciesDataCallback {
+		void callback(ArrayList data);
+		void error(String message);
 	}
 
 	public interface ProgressCallback {
