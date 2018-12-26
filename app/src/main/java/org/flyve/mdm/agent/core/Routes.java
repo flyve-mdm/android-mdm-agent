@@ -120,4 +120,16 @@ public class Routes {
     public String pluginFlyvemdmPackage(String fileId) {
         return url + "/PluginFlyvemdmPackage/" + fileId;
     }
+
+    public String pluginFlyvemdmTask(int taskId) {
+        return url + "/PluginFlyvemdmTask/" + taskId;
+    }
+
+    public String pluginFlyvemdmTaskSearchFleet(int fleetId) {
+        return url + "/search/PluginFlyvemdmTask/?criteria[0][link]=and&criteria[0][field]=9&criteria[0][searchtype]=equals&criteria[0][value]=PluginFlyvemdmFleet&criteria[1][link]=and&criteria[1][field]=10&criteria[1][searchtype]=equals&criteria[1][value]="+ fleetId +"&uid_cols=true&forcedisplay[0]=1&forcedisplay[1]=2&forcedisplay[2]=3&forcedisplay[3]=5&forcedisplay[4]=6&forcedisplay[5]=7&range=0-7&";
+    }
+
+    public String pluginFlyvemdmPolicy(int policyId) {
+        return url + "/PluginFlyvemdmPolicy/" + policyId;
+    }
 }
