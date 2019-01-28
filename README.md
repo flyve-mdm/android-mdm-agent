@@ -84,7 +84,7 @@ For more information visit our [Official Website](http://flyve.org/android-mdm-a
 
 ## Installation
 
-[<img src="https://user-images.githubusercontent.com/663460/26973322-4ddf78a4-4d16-11e7-8b58-4c03b4bc2490.png" alt="Get it on Google Play" height="60">](https://play.google.com/store/apps/details?id=org.flyve.mdm.agent) [<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="60">](https://f-droid.org/app/org.flyve.mdm.agent) [<img src="https://user-images.githubusercontent.com/663460/26973090-f8fdc986-4d14-11e7-995a-e7c5e79ed925.png" alt="Download APK from GitHub" height="60">](https://github.com/flyve-mdm/android-mdm-agent/releases/latest)
+[<img src="https://user-images.githubusercontent.com/663460/26973322-4ddf78a4-4d16-11e7-8b58-4c03b4bc2490.png" alt="Get it on Google Play" height="60">](https://play.google.com/store/apps/details?id=org.flyve.mdm.agent) [<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="60">](https://f-droid.org/packages/org.flyve.mdm.agent.mqtt/) [<img src="https://user-images.githubusercontent.com/663460/26973090-f8fdc986-4d14-11e7-995a-e7c5e79ed925.png" alt="Download APK from GitHub" height="60">](https://github.com/flyve-mdm/android-mdm-agent/releases/latest)
 
 ### As System App
 
