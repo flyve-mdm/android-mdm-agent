@@ -37,10 +37,18 @@ public class PasswordMinNonLetterPolicy extends BasePolicies {
 
     public static final String POLICY_NAME = "passwordMinNonLetter";
 
+    /**
+     * A simple constructor
+     * @param context
+     */
     public PasswordMinNonLetterPolicy(Context context) {
         super(context, POLICY_NAME);
     }
 
+    /**
+     * Return if the policy is true or is not.
+     * @return
+     */
     @Override
     protected boolean process() {
         try {

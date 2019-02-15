@@ -36,10 +36,18 @@ public class StreamAlarmPolicy extends BasePolicies {
 
     public static final String POLICY_NAME = "disableStreamAlarm";
 
+    /**
+     * A simple constructor
+     * @param context
+     */
     public StreamAlarmPolicy(Context context) {
         super(context, POLICY_NAME);
     }
 
+    /**
+     * Return if the policy is true or is not.
+     * @return
+     */
     @Override
     protected boolean process() {
         try {

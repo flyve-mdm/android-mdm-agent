@@ -54,6 +54,11 @@ public abstract class AppDataBase extends RoomDatabase {
     public abstract MDMLogDao MDMLogDao();
     public abstract TopicsDao TopicsDao();
 
+    /**
+     * Get the context of AppDatabase
+     * @param context
+     * @return instance
+     */
     public static AppDataBase getAppDatabase(Context context) {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),

@@ -33,10 +33,18 @@ public class SMSPolicy extends BasePolicies {
 
     public static final String POLICY_NAME = "disableSmsMms";
 
+    /**
+     * A simple constructor
+     * @param context
+     */
     public SMSPolicy(Context context) {
         super(context, POLICY_NAME);
     }
 
+    /**
+     * Return if the policy is true or is not.
+     * @return
+     */
     @Override
     protected boolean process() {
         //TODO create a SMS / MMS policy

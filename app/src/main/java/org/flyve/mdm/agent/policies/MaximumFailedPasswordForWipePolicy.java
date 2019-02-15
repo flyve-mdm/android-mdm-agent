@@ -37,10 +37,18 @@ public class MaximumFailedPasswordForWipePolicy extends BasePolicies {
 
     public static final String POLICY_NAME = "maximumFailedPasswordsForWipe";
 
+    /**
+     * A simple constructor
+     * @param context
+     */
     public MaximumFailedPasswordForWipePolicy(Context context) {
         super(context, POLICY_NAME);
     }
 
+    /**
+     * Return if the policy is true or is not.
+     * @return
+     */
     @Override
     protected boolean process() {
         try {
