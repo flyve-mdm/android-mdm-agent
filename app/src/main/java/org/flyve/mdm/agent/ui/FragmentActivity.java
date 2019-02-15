@@ -44,6 +44,13 @@ public class FragmentActivity extends Fragment {
     public static ViewPager viewPager;
     private int selectTab = 0;
 
+    /**
+     * Create the Fragment view
+     * @param inflater the object that can be used to inflate any views in the fragment
+     * @param container the parent View the fragment's UI should be attached to
+     * @param savedInstanceState this fragment is being re-constructed from a previous saved state
+     * @return View the View for the fragment's UI
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_activity, null);
@@ -59,12 +66,20 @@ public class FragmentActivity extends Fragment {
         return v;
     }
 
+    /**
+     * Indicates the number of the Tab
+     * @param extra
+     */
     public void setup(String extra) {
         if(extra.equalsIgnoreCase("DeployApp")) {
             selectTab = 2;
         }
     }
 
+    /**
+     * Include fragments, FragmentLog, FragmentPolicies, FragmentApplications, FragmentFiles, FargmentTopics
+     * @param viewPager
+     */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
 
