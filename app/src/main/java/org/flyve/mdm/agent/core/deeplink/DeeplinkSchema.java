@@ -36,58 +36,114 @@ public class DeeplinkSchema {
     public DeeplinkSchema() {
     }
 
+    /**
+     * Get the message of the Url
+     * @return String url
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Set the message of Url
+     * @param url String Url
+     */
     public void setUrl(String url) {
         this.url = url;
     }
 
+    /**
+     * Get the message of UserToken
+     * @return String UserToken
+     */
     public String getUserToken() {
         return userToken;
     }
 
+    /**
+     * Set the message of UserToken
+     * @param userToken
+     */
     public void setUserToken(String userToken) {
         this.userToken = userToken;
     }
 
+    /**
+     * Get the message of InvitationToken
+     * @return String InvitationToken
+     */
     public String getInvitationToken() {
         return invitationToken;
     }
 
+    /**
+     * Set the message of InvitationToken
+     * @param invitationToken
+     */
     public void setInvitationToken(String invitationToken) {
         this.invitationToken = invitationToken;
     }
 
+    /**
+     * Get the message of the Name
+     * @return String Name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set the message of the Name
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get the message of the Phone
+     * @return String phone
+     */
     public String getPhone() {
         return phone;
     }
 
+    /**
+     * Set the message of the Phone
+     * @param phone
+     */
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
+    /**
+     * Get the message of Website
+     * @return String Website
+     */
     public String getWebsite() {
         return website;
     }
 
+    /**
+     * Set the message of Website
+     * @param website
+     */
     public void setWebsite(String website) {
         this.website = website;
     }
 
+    /**
+     * Get the message of Email
+     * @return String email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Set the message of  Email
+     * @param email
+     */
     public void setEmail(String email) {
         this.email = email;
     }

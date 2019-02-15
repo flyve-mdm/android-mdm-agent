@@ -38,10 +38,18 @@ public class StreamAccessibilityPolicy extends BasePolicies {
 
     public static final String POLICY_NAME = "disableStreamAccessibility";
 
+    /**
+     * A simple constructor
+     * @param context
+     */
     public StreamAccessibilityPolicy(Context context) {
         super(context, POLICY_NAME);
     }
 
+    /**
+     * Return if the policy is true or is not.
+     * @return
+     */
     @Override
     protected boolean process() {
         if (Build.VERSION.SDK_INT <= 26) {

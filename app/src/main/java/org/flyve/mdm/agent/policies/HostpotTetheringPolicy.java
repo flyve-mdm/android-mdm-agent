@@ -36,10 +36,18 @@ public class HostpotTetheringPolicy extends BasePolicies {
 
     public static final String POLICY_NAME = "disableHostpotTethering";
 
+    /**
+     * A simple constructor
+     * @param context
+     */
     public HostpotTetheringPolicy(Context context) {
         super(context, POLICY_NAME);
     }
 
+    /**
+     * Return if the policy is true or is not.
+     * @return
+     */
     @Override
     protected boolean process() {
         try {
