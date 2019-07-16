@@ -25,7 +25,9 @@ package org.flyve.mdm.agent.core.mqtt;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.NetworkOnMainThreadException;
 import android.os.SystemClock;
+import android.util.Base64;
 import android.util.Log;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -89,8 +91,21 @@ import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.spongycastle.util.encoders.Base64Encoder;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.security.KeyStore;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Date;
@@ -98,9 +113,28 @@ import java.util.Enumeration;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class MqttModel implements mqtt.Model {
 
@@ -209,38 +243,53 @@ public class MqttModel implements mqtt.Model {
 
             // If TLS is active needs ssl connection option
             if (mTLS.equals("1")) {
-                TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 
-                KeyStore caKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-                caKeyStore.load(null, null);
+                try{
+                    //load ssl certificate from broker and put it in file
+                    //need to be done in anothger
+                    new MqttDownloadSSL().execute(mBroker, Integer.valueOf(mPort), context);
 
-                CertificateFactory certificationFactory = CertificateFactory.getInstance("X.509");
-                X509Certificate ca = (X509Certificate) certificationFactory.generateCertificate(context.getResources().openRawResource(R.raw.flyve_org));
-                String alias = ca.getSubjectX500Principal().getName();
+                    TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 
-                // Set propper alias name
-                caKeyStore.setCertificateEntry(alias, ca);
-                trustManagerFactory.init(caKeyStore);
+                    KeyStore caKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                    caKeyStore.load(null, null);
 
-                FlyveLog.v("Certificate Owner: %s", ca.getSubjectDN().toString());
-                FlyveLog.v("Certificate Issuer: %s", ca.getIssuerDN().toString());
-                FlyveLog.v("Certificate Serial Number: %s", ca.getSerialNumber().toString());
-                FlyveLog.v("Certificate Algorithm: %s", ca.getSigAlgName());
-                FlyveLog.v("Certificate Version: %s", ca.getVersion());
-                FlyveLog.v("Certificate OID: %s", ca.getSigAlgOID());
-                Enumeration<String> aliasesCA = caKeyStore.aliases();
-                for (; aliasesCA.hasMoreElements(); ) {
-                    String o = aliasesCA.nextElement();
-                    FlyveLog.v("Alias: %s isKeyEntry:%s isCertificateEntry:%s", o, caKeyStore.isKeyEntry(o), caKeyStore.isCertificateEntry(o));
+                    CertificateFactory certificationFactory = CertificateFactory.getInstance("X.509");
+
+                    //load certificate file previously loaded from broker
+                    FileInputStream inputStream;
+                    inputStream = context.openFileInput("broker_cert");
+                    X509Certificate ca = (X509Certificate) certificationFactory.generateCertificate(inputStream);
+                    String alias = ca.getSubjectX500Principal().getName();
+                    // Set proper alias name
+                    caKeyStore.setCertificateEntry(alias, ca);
+                    trustManagerFactory.init(caKeyStore);
+
+                    FlyveLog.v("Certificate Owner: %s", ca.getSubjectDN().toString());
+                    FlyveLog.v("Certificate Issuer: %s", ca.getIssuerDN().toString());
+                    FlyveLog.v("Certificate Serial Number: %s", ca.getSerialNumber().toString());
+                    FlyveLog.v("Certificate Algorithm: %s", ca.getSigAlgName());
+                    FlyveLog.v("Certificate Version: %s", ca.getVersion());
+                    FlyveLog.v("Certificate OID: %s", ca.getSigAlgOID());
+                    Enumeration<String> aliasesCA = caKeyStore.aliases();
+                    for (; aliasesCA.hasMoreElements(); ) {
+                        String o = aliasesCA.nextElement();
+                        FlyveLog.v("Alias: %s isKeyEntry:%s isCertificateEntry:%s", o, caKeyStore.isKeyEntry(o), caKeyStore.isCertificateEntry(o));
+                    }
+
+                    KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("X509");
+                    keyManagerFactory.init(null,null);
+
+                    // SSL
+                    SSLContext sslContext = SSLContext.getInstance("TLS");
+                    sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
+                    options.setSocketFactory(sslContext.getSocketFactory());
+                }catch (Exception ex) {
+                    //restart connection
+                    setStatus(context, callback, false);
+                    showDetailError(context, CommonErrorType.MQTT_CONNECTION, ex.getMessage());
                 }
 
-                KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("X509");
-                keyManagerFactory.init(null,null);
-
-                // SSL
-                SSLContext sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
-                options.setSocketFactory(sslContext.getSocketFactory());
             }
         } catch (Exception ex) {
             showDetailError(context, CommonErrorType.MQTT_OPTIONS, ex.getMessage());
@@ -385,7 +434,7 @@ public class MqttModel implements mqtt.Model {
                 if (jsonObj.has(QUERY)
                         && "Geolocate".equalsIgnoreCase(jsonObj.getString(QUERY))) {
                     mqttPoliciesController.sendGPS();
-                    }
+                }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_GEOLOCATE, ex.getMessage());
             }
