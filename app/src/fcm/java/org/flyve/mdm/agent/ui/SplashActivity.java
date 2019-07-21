@@ -44,6 +44,7 @@ import org.flyve.mdm.agent.core.walkthrough.Walkthrough;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughPresenter;
 import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.core.walkthrough.WalkthroughSchema;
+import org.flyve.mdm.agent.service.RunOnStartup;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
@@ -86,6 +87,13 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //if create from RunOnStartup
+        //move to background
+        if(getIntent().getBooleanExtra(RunOnStartup.START_AFTER_BOOTING, false)) {
+            FlyveLog.d("Start from RunOnStartUp move app to background");
+            moveTaskToBack(true);
+        }
 
         String topic = getIntent().getStringExtra("topic");
         if(topic!=null) {
