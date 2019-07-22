@@ -51,7 +51,7 @@ reference:
   ruby_dependencies: &ruby_dependencies
     run:
       name: Download Ruby Dependencies
-      command: bundler update --bundler || bundle check || bundle install --path vendor/bundle
+      command: source ci/scripts/setup_ruby_gems.sh
 
   android_dependencies: &android_dependencies
     run:
