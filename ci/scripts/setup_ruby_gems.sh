@@ -44,5 +44,8 @@ sudo gem install bundler
 # update Gemfile.lock
 sudo bundler update --bundler
 
+# install gem bundler local
+gem install bundler
+
 # check bundle
 bundle check || bundle install --path vendor/bundle
