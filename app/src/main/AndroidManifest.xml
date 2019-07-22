@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.flyve.mdm.agent"
-    android:versionCode="3318"
+    android:versionCode="3346"
     android:versionName="2.0.0-rc.7">
 
     <!-- For writing logfiles -->
