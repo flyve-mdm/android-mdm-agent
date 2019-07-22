@@ -48,11 +48,14 @@ sudo apt-get install ruby-full build-essential
 # update Rubygems
 sudo gem update --system
 
-# update Gemfile.lock
-bundler update --bundler
-
 # install fastlane
 sudo gem install fastlane --no-rdoc --no-ri
+
+# update bundler
+sudo gem install bundler
+
+# update Gemfile.lock
+sudo bundler update --bundler
 
 # install node package available on package.json
 yarn install
