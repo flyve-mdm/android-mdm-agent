@@ -49,7 +49,7 @@ sudo apt-get install ruby-full build-essential
 sudo gem update --system
 
 # install fastlane
-sudo gem install fastlane --no-rdoc --no-ri
+sudo gem install fastlane
 
 # update bundler
 sudo gem install bundler
