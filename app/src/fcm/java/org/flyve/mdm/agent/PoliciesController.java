@@ -28,27 +28,31 @@ import android.content.Context;
 import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.database.MqttData;
+import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
+import org.json.JSONObject;
 
-public class MqttPoliciesController {
+public class PoliciesController {
 
     private static final String ERROR = "ERROR";
     private static final String MQTT_SEND = "MQTT Send";
     private static final String UTF_8 = "UTF-8";
 
-    private static final String FEEDBACK_PENDING = "pending";
-    private static final String FEEDBACK_RECEIVED = "received";
-    private static final String FEEDBACK_DONE = "done";
-    private static final String FEEDBACK_FAILED = "failed";
-    private static final String FEEDBACK_CANCELED = "canceled";
-    private static final String FEEDBACK_WAITING = "waiting";
+    public static final String FEEDBACK_PENDING = "pending";
+    public static final String FEEDBACK_RECEIVED = "received";
+    public static final String FEEDBACK_DONE = "done";
+    public static final String FEEDBACK_FAILED = "failed";
+    public static final String FEEDBACK_CANCELED = "canceled";
+    public static final String FEEDBACK_WAITING = "waiting";
+
+    private String status;
 
 
     private Context context;
     private String url;
 
-    public MqttPoliciesController(Context context) {
+    public PoliciesController(Context context) {
         this.context = context;
 
         Routes routes = new Routes(context);
@@ -57,21 +61,6 @@ public class MqttPoliciesController {
     }
 
 
-    public void removePackage(String taskId, String packageName) {
-        try {
-            PoliciesFiles policiesFiles = new PoliciesFiles(MqttPoliciesController.this.context);
-            policiesFiles.removeApk(packageName.trim());
-
-            // return the status of the task
-
-            MessagePolicies.pluginHttpResponse(context, url, FEEDBACK_DONE);
-        } catch (Exception ex) {
-            FlyveLog.e(this.getClass().getName() + ", removePackage", ex.getMessage());
-
-            // return the status of the task
-            MessagePolicies.pluginHttpResponse(context, url, FEEDBACK_FAILED);
-        }
-    }
 
     /**
      * Application
@@ -84,20 +73,14 @@ public class MqttPoliciesController {
             public void onSuccess(String sessionToken) {
                 try {
                     FlyveLog.d("Install package: " + deployApp + " id: " + id);
-
-                    PoliciesFiles policiesFiles = new PoliciesFiles(MqttPoliciesController.this.context);
+                    PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
                     policiesFiles.execute("package", deployApp, id, sessionToken);
-
-                    Helpers.broadCastMessage(MQTT_SEND, "Install package", "name: " + deployApp + " id: " + id);
-
-                    // return the status of the task
-                    MessagePolicies.pluginHttpResponse(context, url, FEEDBACK_RECEIVED);
                 } catch (Exception ex) {
                     FlyveLog.e(this.getClass().getName() + ", installPackage", ex.getMessage());
                     Helpers.broadCastMessage(ERROR, "Error on getActiveSessionToken", ex.getMessage());
 
                     // return the status of the task
-                    MessagePolicies.pluginHttpResponse(context, url, FEEDBACK_FAILED);
+                    MessagePolicies.sendTaskStatusbyHttp(context, FEEDBACK_FAILED, taskId);
                 }
             }
 
@@ -107,10 +90,22 @@ public class MqttPoliciesController {
                 Helpers.broadCastMessage(String.valueOf(type), ERROR, error);
 
                 // return the status of the task
-                MessagePolicies.pluginHttpResponse(context, url, FEEDBACK_FAILED);
+                MessagePolicies.sendTaskStatusbyHttp(context, FEEDBACK_FAILED, taskId);
             }
         });
 
+
+    }
+
+    public void removePackage(String taskId, String packageName) {
+        try {
+            PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
+            policiesFiles.removeApk(packageName.trim(), taskId);
+        } catch (Exception ex) {
+            FlyveLog.e(this.getClass().getName() + ", removePackage", ex.getMessage());
+            // return the status of the task
+            MessagePolicies.sendTaskStatusbyHttp(context, FEEDBACK_FAILED, taskId);
+        }
 
     }
 
@@ -124,15 +119,9 @@ public class MqttPoliciesController {
         sToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
             @Override
             public void onSuccess(String sessionToken) {
-                PoliciesFiles policiesFiles = new PoliciesFiles(MqttPoliciesController.this.context);
-
-                if("true".equals(policiesFiles.execute("file", deployFile, id, sessionToken))) {
-                    FlyveLog.d("File was stored on: " + deployFile);
-                    Helpers.broadCastMessage(MQTT_SEND, "File was stored on", deployFile);
-
-                    // return the status of the task
-                    MessagePolicies.pluginHttpResponse(context, url, FEEDBACK_DONE);
-                }
+                FlyveLog.d("Install file: " + deployFile + " id: " + id);
+                PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
+                policiesFiles.execute("file", deployFile, id, sessionToken, taskId);
             }
 
             @Override
@@ -141,26 +130,19 @@ public class MqttPoliciesController {
                 Helpers.broadCastMessage(String.valueOf(type), "Error on applicationOnDevices", error);
 
                 // return the status of the task
-                MessagePolicies.pluginHttpResponse(context, url, FEEDBACK_FAILED);
+                MessagePolicies.sendTaskStatusbyHttp(context, FEEDBACK_FAILED, taskId);
             }
         });
     }
 
-    public void removeFile(String taskId, String removeFile) {
+    public void removeFile(String taskId, String removeFile, Context context) {
         try {
-            PoliciesFiles policiesFiles = new PoliciesFiles(MqttPoliciesController.this.context);
-            policiesFiles.removeFile(removeFile);
-
-            FlyveLog.d("Remove file: " + removeFile);
-            Helpers.broadCastMessage(MQTT_SEND, "Remove file", removeFile);
-
-            // return the status of the task
-            MessagePolicies.pluginHttpResponse(context, url, FEEDBACK_DONE);
+            PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
+            policiesFiles.removeFile(removeFile, taskId);
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", removeFile", ex.getMessage());
-
             // return the status of the task
-            MessagePolicies.pluginHttpResponse(context, url, FEEDBACK_FAILED);
+            MessagePolicies.sendTaskStatusbyHttp(context, FEEDBACK_FAILED, taskId);
         }
     }
 

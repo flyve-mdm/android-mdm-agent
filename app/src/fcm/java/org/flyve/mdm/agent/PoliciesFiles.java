@@ -31,8 +31,10 @@ import android.os.AsyncTask;
 import android.os.PowerManager;
 
 import org.flyve.mdm.agent.core.Routes;
+import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.data.database.setup.AppDataBase;
+import org.flyve.mdm.agent.policies.BasePolicies;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -42,11 +44,16 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.HashMap;
 
-public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
+public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
 
     private Context context;
     private Routes routes;
     private MqttData cache;
+    private String taskId;
+    private String type;
+    private String deployFile;
+    private String url;
+    private String status;
 
     /**
      * This constructor loads the context of the current class
@@ -56,6 +63,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         this.context = context;
         routes = new Routes(context);
         cache =  new MqttData(context);
+
     }
 
     /**
@@ -64,37 +72,52 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
      *             args[1] = "file path (/storage/sdcard/documents)"
      *             args[2] = "file id on the server"
      *             args[3] = "valid session token"
+     *             args[4] = "taskId"
      * @return
      */
     @Override
-    protected Integer doInBackground(String... args) {
+    protected Boolean doInBackground(String... args) {
 
         // check values
         if(args[0].isEmpty() ||
-            args[1].isEmpty() ||
-            args[2].isEmpty()  ||
-            args[3].isEmpty()) {
-            return 0;
+                args[1].isEmpty() ||
+                args[2].isEmpty() ||
+                args[3].isEmpty() ||
+                args[4].isEmpty()) {
+            return false;
         }
 
-        if(args[0].equals("file")) {
+        this.type = args[0];
+        this.taskId = args[4];
+        this.deployFile = args[1];
+        this.url = routes.PluginFlyvemdmTaskstatus(taskId);
+        this.status = PoliciesController.FEEDBACK_WAITING;
 
+        if(type.equals("file")) {
             if(downloadFile(args[1], args[2], args[3])) {
-                return 1;
+                return true;
             }
-
-        } else if (args[0].equals("package")) {
+        } else if (type.equals("package")) {
             if(downloadApk(args[1], args[2], args[3])) {
-                return 1;
+                return true;
             }
         }
 
-        return 0;
+        return false;
     }
 
-    protected void onPostExecute(Integer result) {
-        super.onPostExecute(result);
+    protected void onPostExecute(Boolean result) {
+        if(result){
+            FlyveLog.d(type + " was stored on: " + deployFile);
+            status = PoliciesController.FEEDBACK_DONE;
+        }else{
+            FlyveLog.d("Failed to download "+type);
+            status = PoliciesController.FEEDBACK_FAILED;
+        }
+        MessagePolicies.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
+
     }
+
 
     /**
      * Download and save file from Id to path
@@ -119,7 +142,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         final String url = routes.pluginFlyvemdmFile(id);
         String completeFilePath = download(url, filePath, sessionToken);
 
-        return(completeFilePath.equalsIgnoreCase(""));
+        return(!completeFilePath.isEmpty());
     }
 
     /**
@@ -146,7 +169,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
 
         final String url = routes.pluginFlyvemdmPackage(id);
         String completeFilePath = download(url, filePath, sessionToken);
-        if(completeFilePath.equalsIgnoreCase("")) {
+        if(completeFilePath.isEmpty()) {
             return false;
         } else {
             if(Helpers.isSystemApp(context).equalsIgnoreCase("1")) {
@@ -156,7 +179,6 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
                 // Regular app
                 Helpers.installApk(context, id, completeFilePath);
             }
-
             return true;
         }
     }
@@ -257,15 +279,25 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
      * @param filePath
      * @return boolean true if file deleted, false otherwise
      */
-    public boolean removeFile(String filePath) {
+    public void removeFile(String filePath, final String taskId) {
+        this.status = PoliciesController.FEEDBACK_FAILED;
+        this.taskId = taskId;
         try {
             String realPath = new StorageFolder(context).convertPath(filePath);
             File file = new File(realPath);
-            return file.delete();
+            if(file.delete()){
+                FlyveLog.d("Remove file: " + filePath);
+                this.status = PoliciesController.FEEDBACK_DONE;
+            }else{
+                this.status = PoliciesController.FEEDBACK_FAILED;
+            }
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", removeFile", ex.getMessage() + "\n" + filePath);
-            return false;
+            this.status = PoliciesController.FEEDBACK_FAILED;
         }
+
+        MessagePolicies.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
+
     }
 
     /**
@@ -273,7 +305,10 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
      * @param mPackage to uninstall
      * @return int if it succeed 1, otherwise 0
      */
-    public int removeApk(String mPackage){
+    public void removeApk(String mPackage, final String taskId){
+        this.status = PoliciesController.FEEDBACK_FAILED;
+        this.taskId = taskId;
+
         Uri packageUri = Uri.parse("package:"+mPackage);
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -281,8 +316,11 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
             FlyveLog.e(this.getClass().getName() + ", removeApk", e.getMessage() + "\n" + mPackage);
-            return 0;
+            this.status = PoliciesController.FEEDBACK_FAILED;
         }
-        return 1;
+        this.status = PoliciesController.FEEDBACK_DONE;
+
+        MessagePolicies.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
     }
+
 }

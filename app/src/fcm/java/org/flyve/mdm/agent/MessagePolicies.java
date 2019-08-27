@@ -145,8 +145,8 @@ public class MessagePolicies {
 
                         if(bDownload) {
                             // execute the policy
-                            MqttPoliciesController mqttPoliciesController = new MqttPoliciesController(context);
-                            mqttPoliciesController.installPackage(deployApp, id, versionCode, taskId);
+                            PoliciesController policiesController = new PoliciesController(context);
+                            policiesController.installPackage(deployApp, id, versionCode, taskId);
                         }
                     } catch (Exception ex) {
                         FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
@@ -168,8 +168,8 @@ public class MessagePolicies {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    MqttPoliciesController mqttPoliciesController = new MqttPoliciesController(context);
-                    mqttPoliciesController.removePackage(taskId, removeApp);
+                    PoliciesController policiesController = new PoliciesController(context);
+                    policiesController.removePackage(taskId, removeApp);
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_REMOVEAPP, ex.getMessage());
@@ -189,8 +189,8 @@ public class MessagePolicies {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    MqttPoliciesController mqttPoliciesController = new MqttPoliciesController(context);
-                    mqttPoliciesController.downloadFile(deployFile, id, versionCode, taskId);
+                    PoliciesController policiesController = new PoliciesController(context);
+                    policiesController.downloadFile(deployFile, id, versionCode, taskId);
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_DEPLOYFILE, ex.getMessage());
@@ -208,8 +208,8 @@ public class MessagePolicies {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    MqttPoliciesController mqttPoliciesController = new MqttPoliciesController(context);
-                    mqttPoliciesController.removeFile(taskId, removeFile);
+                    PoliciesController policiesController = new PoliciesController(context);
+                    policiesController.removeFile(taskId, removeFile, context);
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_REMOVEFILE, ex.getMessage());
@@ -287,6 +287,40 @@ public class MessagePolicies {
             }
         });
 
+    }
+
+    public static void sendTaskStatusbyHttp(final Context context,final String status, final String taskId ){
+        EnrollmentHelper enrollmentHelper = new EnrollmentHelper(context);
+        enrollmentHelper.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
+            @Override
+            public void onSuccess(String sessionToken) {
+                Helpers.storeLog("fcm", "http response session token", sessionToken);
+                String payload = "";
+                try {
+                    JSONObject jsonPayload = new JSONObject();
+                    jsonPayload.put("status", status);
+
+                    JSONObject jsonInput = new JSONObject();
+                    jsonInput.put("input", jsonPayload);
+
+                    payload = jsonInput.toString();
+                } catch (Exception ex) {
+                    Helpers.storeLog("fcm", "Error sending status http", ex.getMessage());
+                }
+
+                ConnectionHTTP.sendHttpResponsePolicies(context, taskId, payload, sessionToken, new ConnectionHTTP.DataCallback() {
+                    @Override
+                    public void callback(String data) {
+                        Helpers.storeLog("fcm", "http response from policy", data);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(int type, String error) {
+                Helpers.storeLog("fcm", "problem with session token", error);
+            }
+        });
     }
 
     public static void sendStatusbyHttp(Context context, boolean status) {

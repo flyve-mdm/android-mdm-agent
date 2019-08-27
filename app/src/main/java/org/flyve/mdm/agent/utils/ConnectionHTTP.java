@@ -174,6 +174,7 @@ public class ConnectionHTTP {
 				try
 				{
 					URL dataURL = new URL(url);
+					FlyveLog.d("Get url: "+url);
 					HttpURLConnection conn = (HttpURLConnection)dataURL.openConnection();
 
 					if(url.contains("PluginFlyvemdmGeolocation")) {
