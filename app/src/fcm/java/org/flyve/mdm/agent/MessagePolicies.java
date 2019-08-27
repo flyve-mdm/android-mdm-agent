@@ -2,6 +2,8 @@ package org.flyve.mdm.agent;
 
 import android.content.Context;
 import android.location.Location;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -52,6 +54,7 @@ import org.flyve.mdm.agent.policies.VPNPolicy;
 import org.flyve.mdm.agent.policies.WifiPolicy;
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.ui.MDMAgent;
+import org.flyve.mdm.agent.ui.PoliciesAsyncTask;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FastLocationProvider;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -90,11 +93,17 @@ import org.json.JSONObject;
 
 public class MessagePolicies {
 
+    public static final int PING = 1;
+    public static final int GEOLOCATE = 2;
+    public static final int INVENTORY = 3;
+    public static final int POLICIES = 4;
+
     public MessagePolicies() {
 
     }
 
     public void messageArrived(final Context context, String topic, String message) {
+
         int priority = 1;
 
         // Delete policy information
@@ -109,122 +118,8 @@ public class MessagePolicies {
             return;
         }
 
-        // Policy/passwordEnabled
-        callPolicy(context, PasswordEnablePolicy.class, PasswordEnablePolicy.POLICY_NAME, priority, topic, message);
+        new PoliciesAsyncTask().execute(context,this.POLICIES, topic, message);
 
-        // Policy/passwordQuality
-        callPolicy(context, PasswordQualityPolicy.class, PasswordQualityPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/passwordMinLength
-        callPolicy(context, PasswordMinLengthPolicy.class, PasswordMinLengthPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/passwordMinLowerCase
-        callPolicy(context, PasswordMinLowerCasePolicy.class, PasswordMinLowerCasePolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/passwordMinUpperCase
-        callPolicy(context, PasswordMinUpperCasePolicy.class, PasswordMinUpperCasePolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/passwordMinNonLetter
-        callPolicy(context, PasswordMinNonLetterPolicy.class, PasswordMinNonLetterPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/passwordMinLetters
-        callPolicy(context, PasswordMinLetterPolicy.class, PasswordMinLetterPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/passwordMinNumeric
-        callPolicy(context, PasswordMinNumericPolicy.class, PasswordMinNumericPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/passwordMinSymbols
-        callPolicy(context, PasswordMinSymbolsPolicy.class, PasswordMinSymbolsPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/MaximumFailedPasswordsForWipe
-        callPolicy(context, MaximumFailedPasswordForWipePolicy.class, MaximumFailedPasswordForWipePolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/MaximumTimeToLock
-        callPolicy(context, MaximumTimeToLockPolicy.class, MaximumTimeToLockPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/storageEncryption
-        callPolicy(context, StorageEncryptionPolicy.class, StorageEncryptionPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableCamera
-        callPolicy(context, CameraPolicy.class, CameraPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableBluetooth
-        callPolicy(context, BluetoothPolicy.class, BluetoothPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableHostpotTethering
-        callPolicy(context, HostpotTetheringPolicy.class, HostpotTetheringPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableRoaming
-        callPolicy(context, RoamingPolicy.class, RoamingPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableWifi
-        callPolicy(context, WifiPolicy.class, WifiPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableSpeakerphone
-        callPolicy(context, SpeakerphonePolicy.class, SpeakerphonePolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableUsbOnTheGo
-        callPolicy(context, SMSPolicy.class, SMSPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableCreateVpnProfiles
-        callPolicy(context, VPNPolicy.class, VPNPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableStreamMusic
-        callPolicy(context, StreamMusicPolicy.class, StreamMusicPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableStreamRing
-        callPolicy(context, StreamRingPolicy.class, StreamRingPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableStreamAlarm
-        callPolicy(context, StreamAlarmPolicy.class, StreamAlarmPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableStreamNotification
-        callPolicy(context, StreamNotificationPolicy.class, StreamNotificationPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableStreamAccessibility
-        callPolicy(context, StreamAccessibilityPolicy.class, StreamAccessibilityPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableStreamVoiceCall
-        callPolicy(context, StreamVoiceCallPolicy.class, StreamVoiceCallPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableStreamDTMF
-        callPolicy(context, StreamVoiceCallPolicy.class, StreamVoiceCallPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableScreenCapture
-        //  ROOT REQUIRED
-        callPolicy(context, ScreenCapturePolicy.class, ScreenCapturePolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableAirplaneMode
-        //  ROOT REQUIRED
-        callPolicy(context, AirplaneModePolicy.class, AirplaneModePolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableGPS
-        //  ROOT REQUIRED
-        callPolicy(context, GPSPolicy.class, GPSPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableMobileLine
-        // ROOT
-        callPolicy(context, MobileLinePolicy.class, MobileLinePolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableNfc
-        // ROOT
-        callPolicy(context, NFCPolicy.class, NFCPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableStatusBar
-        // ROOT
-        callPolicy(context, StatusBarPolicy.class, StatusBarPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableUsbMtp
-        // ROOT
-        callPolicy(context, UsbMtpPolicy.class, UsbMtpPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableUsbPtp
-        // ROOT
-        callPolicy(context, UsbPtpPolicy.class, UsbPtpPolicy.POLICY_NAME, priority, topic, message);
-
-        // Policy/disableUsbAdb
-        // ROOT
-        callPolicy(context, UsbAdbPolicy.class, UsbAdbPolicy.POLICY_NAME, priority, topic, message);
 
         // Policy/deployApp
         String DEPLOY_APP = "deployApp";
@@ -323,124 +218,17 @@ public class MessagePolicies {
 
         // Command/Ping
         if(topic.toLowerCase().contains("ping")) {
-            String data = "{\"input\":{\"_pong\":\"!\"}}";
-            Routes routes = new Routes(context);
-            MqttData cache = new MqttData(context);
-            String url = routes.pluginFlyvemdmAgent(cache.getAgentId());
-
-            pluginHttpResponse(context, url, data);
+            new PoliciesAsyncTask().execute(context,this.PING, topic,message);
         }
 
         // Command/Geolocate
         if(topic.toLowerCase().contains("geolocate")) {
-            FastLocationProvider fastLocationProvider = new FastLocationProvider();
-            Routes routes = new Routes(context);
-            final String url = routes.pluginFlyvemdmGeolocation();
-
-            Boolean isAvailable = fastLocationProvider.getLocation(context, new FastLocationProvider.LocationResult() {
-                @Override
-                public void gotLocation(Location location) {
-                    if(location == null) {
-                        FlyveLog.e(this.getClass().getName() + ", sendGPS", "without location yet...");
-                        //{"input":{"_agents_id":":id","_datetime":":string","_gps":"off"}}
-
-                        try {
-                            JSONObject jsonPayload = new JSONObject();
-
-                            jsonPayload.put("_datetime", Helpers.getUnixTime());
-                            jsonPayload.put("_agents_id", new MqttData(context).getAgentId());
-                            jsonPayload.put("_gps", "off");
-
-                            JSONObject jsonInput = new JSONObject();
-                            jsonInput.put("input", jsonPayload);
-
-                            String payload = jsonInput.toString();
-
-                            pluginHttpResponse(context, url, payload);
-                        } catch (Exception ex) {
-                            Helpers.storeLog("fcm", "Error on GPS location", ex.getMessage());
-                        }
-
-                    } else {
-                        FlyveLog.d("lat: " + location.getLatitude() + " lon: " + location.getLongitude());
-
-                        try {
-                            String latitude = String.valueOf(location.getLatitude());
-                            String longitude = String.valueOf(location.getLongitude());
-
-                            //"{"input":{"_agents_id":":id","_datetime":":string","latitude":":float","longitude":":float"}}"
-                            JSONObject jsonGPS = new JSONObject();
-
-                            jsonGPS.put("latitude", latitude);
-                            jsonGPS.put("longitude", longitude);
-                            jsonGPS.put("_datetime", Helpers.getUnixTime());
-                            jsonGPS.put("_agents_id", new MqttData(context).getAgentId());
-                            jsonGPS.put("computers_id", new MqttData(context).getComputersId());
-
-                            JSONObject jsonInput = new JSONObject();
-                            jsonInput.put("input", jsonGPS);
-
-                            String payload = jsonInput.toString();
-                            pluginHttpResponse(context, url, payload);
-
-                        } catch (Exception ex) {
-                            FlyveLog.e(this.getClass().getName() + ", sendGPS", ex.getMessage());
-                            Helpers.storeLog("fcm", "Error on GPS location", ex.getMessage());
-                        }
-                    }
-                }
-            });
-
-            if(!isAvailable) {
-                try {
-                    JSONObject jsonPayload = new JSONObject();
-
-                    jsonPayload.put("_datetime", Helpers.getUnixTime());
-                    jsonPayload.put("_agents_id", new MqttData(context).getAgentId());
-                    jsonPayload.put("_gps", "off");
-
-                    JSONObject jsonInput = new JSONObject();
-                    jsonInput.put("input", jsonPayload);
-
-                    String payload = jsonInput.toString();
-                    pluginHttpResponse(context, url, payload);
-                } catch (Exception ex) {
-                    Helpers.storeLog("fcm", "Error on GPS location", ex.getMessage());
-                }
-            }
+            new PoliciesAsyncTask().execute(context,this.GEOLOCATE, topic,message);
         }
 
         // Command/Inventory
         if(topic.toLowerCase().contains("inventory")) {
-            Inventory inventory = new Inventory();
-            inventory.getXMLInventory(context, new InventoryTask.OnTaskCompleted() {
-                @Override
-                public void onTaskSuccess(String s) {
-                    Routes routes = new Routes(context);
-                    MqttData cache = new MqttData(context);
-                    String url = routes.pluginFlyvemdmAgent(cache.getAgentId());
-
-                    try {
-                        JSONObject jsonPayload = new JSONObject();
-
-                        jsonPayload.put("_inventory", Helpers.base64encode(s));
-
-                        JSONObject jsonInput = new JSONObject();
-                        jsonInput.put("input", jsonPayload);
-
-                        String payload = jsonInput.toString();
-                        pluginHttpResponse(context, url, payload);
-                        Helpers.storeLog("fcm", "Inventory", "Inventory Send");
-                    } catch (Exception ex) {
-                        Helpers.storeLog("fcm", "Error on json createInventory", ex.getMessage());
-                    }
-                }
-
-                @Override
-                public void onTaskError(Throwable throwable) {
-                    Helpers.storeLog("fcm", "Error on createInventory", throwable.getMessage());
-                }
-            });
+            new PoliciesAsyncTask().execute(context,this.INVENTORY, topic,message);
         }
 
         // Command/Wipe
@@ -521,7 +309,11 @@ public class MessagePolicies {
     }
 
 
-    private void callPolicy(Context context, Class<? extends BasePolicies> classPolicy, String policyName, int policyPriority, String topic, String messageBody) {
+    public static void callPolicy(Context context, Class<? extends BasePolicies> classPolicy, String policyName, int policyPriority, String topic, String messageBody) {
+
+        FlyveLog.d("Call policies "+messageBody);
+
+
         if(topic.toLowerCase().contains(policyName.toLowerCase())) {
 
             BasePolicies policies;
@@ -552,7 +344,7 @@ public class MessagePolicies {
                     policies.execute();
                 }
             } catch (Exception ex) {
-                FlyveLog.e(this.getClass().getName() + ", callPolicy",ex.getMessage());
+                FlyveLog.e("MessagePolicies " + ", callPolicy",ex.getMessage());
             }
         }
     }

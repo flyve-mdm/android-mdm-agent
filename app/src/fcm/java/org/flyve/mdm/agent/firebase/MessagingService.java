@@ -89,41 +89,10 @@ public class MessagingService extends FirebaseMessagingService {
      */
 
     private void sendNotification(String topic, String message, String body) {
-
-        FlyveLog.d("Notification: " + body);
-
-        // if Command/Ping try to response directly
-        if(topic.toLowerCase().contains("ping")) {
-            MessagePolicies messagePolicies = new MessagePolicies();
-            messagePolicies.messageArrived(MDMAgent.getInstance(), topic, message);
-        }
-
-        Intent intent = new Intent(this, PushPoliciesActivity.class);
-        intent.putExtra("topic", topic);
-        intent.putExtra("message", message);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, getID(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_notification_white)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
-                .setContentTitle(topic)
-                .setContentText(message)
-                .setSound(defaultSoundUri)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent);
-
-
-        if (Build.VERSION.SDK_INT < 16) {
-            builder.setContentText(body);
-        } else {
-            builder.setStyle(new NotificationCompat.BigTextStyle().bigText(body));
-        }
-
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(getID(), builder.build());
+        FlyveLog.d("Notification (body): " + body);
+        FlyveLog.d("Notification (message): " + message);
+        MessagePolicies messagePolicies = new MessagePolicies();
+        messagePolicies.messageArrived(MDMAgent.getInstance(), topic, message);
     }
 
     private int getID() {
