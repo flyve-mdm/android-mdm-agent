@@ -29,7 +29,10 @@ package org.flyve.mdm.agent.policies;
 
 import android.content.Context;
 
+import org.flyve.mdm.agent.MessagePolicies;
+import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
+import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.data.database.entity.Policies;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
@@ -42,12 +45,12 @@ public abstract class BasePolicies {
     private static final String ERROR = "ERROR";
     private static final String MQTT_SEND = "MQTT Send";
 
-    private static final String MQTT_FEEDBACK_PENDING = "pending";
-    private static final String MQTT_FEEDBACK_RECEIVED = "received";
-    private static final String MQTT_FEEDBACK_DONE = "done";
-    private static final String MQTT_FEEDBACK_FAILED = "failed";
-    private static final String MQTT_FEEDBACK_CANCELED = "canceled";
-    private static final String MQTT_FEEDBACK_WAITING = "waiting";
+    private static final String FCM_FEEDBACK_PENDING = "pending";
+    private static final String FCM_FEEDBACK_RECEIVED = "received";
+    private static final String FCM_FEEDBACK_DONE = "done";
+    private static final String FCM_FEEDBACK_FAILED = "failed";
+    private static final String FCM_FEEDBACK_CANCELED = "canceled";
+    private static final String FCM_FEEDBACK_WAITING = "waiting";
 
     private boolean enableLog;
     protected Context context;
@@ -56,15 +59,13 @@ public abstract class BasePolicies {
     protected Object policyValue;
     protected int policyPriority;
 
-    private boolean mqttEnable;
-    private String mqttTopic;
-    private String mqttTaskId;
+    private String taskId;
+    private String topic;
 
     public BasePolicies(Context context, String name) {
         this.context = context;
         this.policyName = name;
         this.data = new PoliciesData(context);
-        this.mqttEnable = true;
 
         Policies policies = data.getValue(this.policyName);
         if(policies!=null) {
@@ -74,12 +75,8 @@ public abstract class BasePolicies {
     }
 
     public void setParameters(String topic, String taskId) {
-        this.mqttTopic = topic;
-        this.mqttTaskId = taskId;
-    }
-
-    public void setMqttEnable(boolean enable) {
-        this.mqttEnable = enable;
+        this.taskId = taskId;
+        this.topic = topic;
     }
 
     public void setValue(Object value) {
@@ -97,18 +94,18 @@ public abstract class BasePolicies {
     }
 
     private void storage()  {
-        if(!policyName.isEmpty() && !this.policyValue.toString().isEmpty() && !this.mqttTaskId.isEmpty()) {
-            data.setValue(this.policyName, this.mqttTaskId, String.valueOf(this.policyValue), this.policyPriority);
+        if(!policyName.isEmpty() && !this.policyValue.toString().isEmpty() && !this.taskId.isEmpty()) {
+            data.setValue(this.policyName, this.taskId, String.valueOf(this.policyValue), this.policyPriority);
         }
     }
 
     public void remove() {
-        if(!this.mqttTaskId.isEmpty()) {
-            data.removeValue(this.mqttTaskId);
+        if(!this.taskId.isEmpty()) {
+            data.removeValue(this.taskId);
         }
     }
 
-    private void sendTaskStatus(String topic, final String taskId, final String status) {
+    private void sendTaskStatus(final String taskId, final String status) {
         EnrollmentHelper enrollmentHelper = new EnrollmentHelper(context);
         enrollmentHelper.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
             @Override
@@ -143,9 +140,10 @@ public abstract class BasePolicies {
         });
     }
 
-    private void mqttResponse(String status) {
-        this.sendTaskStatus(this.mqttTopic, this.mqttTaskId, status);
+    private void policyResponse(String status) {
+        this.sendTaskStatus(this.taskId, status);
     }
+
 
     protected void Log(String type, String title, String message){
         // write log file
@@ -176,12 +174,12 @@ public abstract class BasePolicies {
     }
 
     protected void policyDone() {
-        mqttResponse(MQTT_FEEDBACK_DONE);
+        policyResponse(FCM_FEEDBACK_DONE);
     }
 
     protected void policyFail() {
         Log("Policy ERROR", "Policy " + this.policyName,"Policy Fail: " + this.policyName + "\nvalue: " + this.policyValue + "\npriority: " + this.policyPriority);
-        mqttResponse(MQTT_FEEDBACK_FAILED);
+        policyResponse(FCM_FEEDBACK_FAILED);
     }
 
     protected abstract boolean process();

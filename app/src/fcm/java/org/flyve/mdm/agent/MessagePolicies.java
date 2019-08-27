@@ -545,7 +545,6 @@ public class MessagePolicies {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policies.setMqttEnable(false);
                     policies.setParameters(topic, taskId);
                     policies.setValue(value);
                     policies.setPriority(policyPriority);
