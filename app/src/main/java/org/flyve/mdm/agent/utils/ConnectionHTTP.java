@@ -94,7 +94,7 @@ public class ConnectionHTTP {
 			InputStream is = conn.getInputStream();
 			String requestResponse = inputStreamToString(is);
 			String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
-			Log(response);
+			LogInfo(response);
 
 			return requestResponse;
 		}
@@ -147,7 +147,7 @@ public class ConnectionHTTP {
 					final String requestResponse = inputStreamToString(is);
 
 					String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
-					Log(response);
+					LogInfo(response);
 
 				}
 				catch (final Exception ex)
@@ -226,7 +226,7 @@ public class ConnectionHTTP {
 					final String requestResponse = inputStreamToString(is);
 
 					String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
-					Log(response);
+					LogInfo(response);
 
 					ConnectionHTTP.runOnUI(new Runnable() {
 						public void run() {
@@ -313,7 +313,7 @@ public class ConnectionHTTP {
 					}
 
 					String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
-					Log(response);
+					LogInfo(response);
 
 					try {
 						// second step update the status task
@@ -366,7 +366,7 @@ public class ConnectionHTTP {
 						final String requestResponsePut = inputStreamToString(is);
 
 						response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
-						Log(response);
+						LogInfo(response);
 
 						ConnectionHTTP.runOnUI(new Runnable() {
 							public void run() {
@@ -444,7 +444,7 @@ public class ConnectionHTTP {
 			InputStream is = conn.getInputStream();
 			String requestResponse = inputStreamToString(is);
 			String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
-			Log(response);
+			LogInfo(response);
 
 			return requestResponse;
 		}
@@ -505,7 +505,7 @@ public class ConnectionHTTP {
 			}
 
 			String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n";
-			Log(response);
+			LogInfo(response);
 
 			FlyveLog.d( "Download complete size: " + totalDataRead);
 			return true;
@@ -583,7 +583,7 @@ public class ConnectionHTTP {
 				final String requestResponse = inputStreamToString(is);
 
 				String response = "\n URL:\n" + url + "\n\n Method:\n" + conn.getRequestMethod() + "\n\n Code:\n" + conn.getResponseCode() + " " + conn.getResponseMessage() + "\n\n Header:\n" + logHeader + "\n\n Response:\n" + requestResponse + "\n\n";
-				Log(response);
+				LogInfo(response);
 
 				ConnectionHTTP.runOnUI(new Runnable() {
 					public void run() {
@@ -628,6 +628,11 @@ public class ConnectionHTTP {
 	private static void Log(String message){
 		// write log file
 		FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", Log", message);
+	}
+
+	private static void LogInfo(String message){
+		// write log file
+		FlyveLog.i(ConnectionHTTP.class.getClass().getName() + message,message);
 	}
 
 
