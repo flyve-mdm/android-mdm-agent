@@ -109,112 +109,18 @@ public class MessagePolicies {
         // Delete policy information
         if(message.contains("default")) {
             try {
-
                 String taskId = new JSONObject(message).getString("taskId");
                 new PoliciesData(context).removeValue(taskId);
+                FlyveLog.i("Deleting policy " + message + " - " + topic);
             } catch (Exception ex) {
                 FlyveLog.e("fcm", "error deleting policy " + message + " - " + topic, ex.getMessage());
             }
             return;
         }
 
+        //Command/Policies
         new PoliciesAsyncTask().execute(context,this.POLICIES, topic, message);
 
-
-        // Policy/deployApp
-        String DEPLOY_APP = "deployApp";
-        if(topic.toLowerCase().contains(DEPLOY_APP.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(message);
-                if(jsonObj.has(DEPLOY_APP)) {
-
-                    try {
-                        String deployApp = jsonObj.getString("deployApp");
-                        String id = jsonObj.getString("id");
-                        String versionCode = jsonObj.getString("versionCode");
-                        String taskId = jsonObj.getString("taskId");
-
-                        ApplicationData apps = new ApplicationData(context);
-                        Application[] appsArray = apps.getApplicationsById(id);
-
-                        // check if the app exists with same version or older
-                        Boolean bDownload = true;
-                        if(appsArray.length>0 && Integer.parseInt(versionCode) >= Integer.parseInt(appsArray[0].appVersionCode)) {
-                            bDownload = false;
-                        }
-
-                        if(bDownload) {
-                            // execute the policy
-                            PoliciesController policiesController = new PoliciesController(context);
-                            policiesController.installPackage(deployApp, id, versionCode, taskId);
-                        }
-                    } catch (Exception ex) {
-                        FlyveLog.e(this.getClass().getName() + ", process", ex.getMessage());
-                    }
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_DEPLOYAPP, ex.getMessage());
-            }
-        }
-
-        // Policy/deployApp
-        String REMOVE_APP = "removeApp";
-        if(topic.toLowerCase().contains(REMOVE_APP.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(message);
-
-                if(jsonObj.has(REMOVE_APP)) {
-                    String removeApp = jsonObj.getString(REMOVE_APP);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    PoliciesController policiesController = new PoliciesController(context);
-                    policiesController.removePackage(taskId, removeApp);
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_REMOVEAPP, ex.getMessage());
-            }
-        }
-
-        // Policy/deployFile
-        String DEPLOY_FILE = "deployFile";
-        if(topic.toLowerCase().contains(DEPLOY_FILE.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(message);
-
-                if(jsonObj.has(DEPLOY_FILE)) {
-                    String deployFile = jsonObj.getString(DEPLOY_FILE);
-                    String id = jsonObj.getString("id");
-                    String versionCode = jsonObj.getString("version");
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    PoliciesController policiesController = new PoliciesController(context);
-                    policiesController.downloadFile(deployFile, id, versionCode, taskId);
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_DEPLOYFILE, ex.getMessage());
-            }
-        }
-
-        // Policy/deployFile
-        String REMOVE_FILE = "removeFile";
-        if(topic.toLowerCase().contains(REMOVE_FILE.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(message);
-
-                if(jsonObj.has(REMOVE_FILE)) {
-                    String removeFile = jsonObj.getString(REMOVE_FILE);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    PoliciesController policiesController = new PoliciesController(context);
-                    policiesController.removeFile(taskId, removeFile, context);
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_REMOVEFILE, ex.getMessage());
-            }
-        }
 
         // Command/Ping
         if(topic.toLowerCase().contains("ping")) {
@@ -369,7 +275,7 @@ public class MessagePolicies {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policies.setParameters(topic, taskId);
+                    policies.setParameters(topic, taskId, messageBody);
                     policies.setValue(value);
                     policies.setPriority(policyPriority);
                     policies.execute();
