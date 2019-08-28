@@ -13,6 +13,8 @@ import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.policies.AirplaneModePolicy;
 import org.flyve.mdm.agent.policies.BluetoothPolicy;
 import org.flyve.mdm.agent.policies.CameraPolicy;
+import org.flyve.mdm.agent.policies.DeployAppPolicy;
+import org.flyve.mdm.agent.policies.DeployFilePolicy;
 import org.flyve.mdm.agent.policies.GPSPolicy;
 import org.flyve.mdm.agent.policies.HostpotTetheringPolicy;
 import org.flyve.mdm.agent.policies.MaximumFailedPasswordForWipePolicy;
@@ -28,6 +30,8 @@ import org.flyve.mdm.agent.policies.PasswordMinNumericPolicy;
 import org.flyve.mdm.agent.policies.PasswordMinSymbolsPolicy;
 import org.flyve.mdm.agent.policies.PasswordMinUpperCasePolicy;
 import org.flyve.mdm.agent.policies.PasswordQualityPolicy;
+import org.flyve.mdm.agent.policies.RemoveAppPolicy;
+import org.flyve.mdm.agent.policies.RemoveFilePolicy;
 import org.flyve.mdm.agent.policies.RoamingPolicy;
 import org.flyve.mdm.agent.policies.SMSPolicy;
 import org.flyve.mdm.agent.policies.ScreenCapturePolicy;
@@ -310,6 +314,22 @@ public class PoliciesAsyncTask extends AsyncTask<Object, Integer, Boolean> {
                         // Policy/disableUsbAdb
                         // ROOT
                         MessagePolicies.callPolicy(context, UsbAdbPolicy.class, UsbAdbPolicy.POLICY_NAME, priority, topic, message);
+
+                        // Policy/deployApp
+                        // ROOT
+                        MessagePolicies.callPolicy(context, DeployAppPolicy.class, DeployAppPolicy.POLICY_NAME, priority, topic, message);
+
+                        // Policy/removeApp
+                        // ROOT
+                        MessagePolicies.callPolicy(context, RemoveAppPolicy.class, RemoveAppPolicy.POLICY_NAME, priority, topic, message);
+
+                        // Policy/deployFile
+                        // ROOT
+                        MessagePolicies.callPolicy(context, DeployFilePolicy.class, DeployFilePolicy.POLICY_NAME, priority, topic, message);
+
+                        // Policy/removeFile
+                        // ROOT
+                        MessagePolicies.callPolicy(context, RemoveFilePolicy.class, RemoveFilePolicy.POLICY_NAME, priority, topic, message);
                     }
                     break;
                     default:

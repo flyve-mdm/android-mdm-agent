@@ -58,6 +58,8 @@ public abstract class BasePolicies {
     protected PoliciesData data;
     protected Object policyValue;
     protected int policyPriority;
+    protected String message;
+
 
     private String taskId;
     private String topic;
@@ -74,9 +76,10 @@ public abstract class BasePolicies {
         }
     }
 
-    public void setParameters(String topic, String taskId) {
+    public void setParameters(String topic, String taskId, String message) {
         this.taskId = taskId;
         this.topic = topic;
+        this.message = message;
     }
 
     public void setValue(Object value) {
