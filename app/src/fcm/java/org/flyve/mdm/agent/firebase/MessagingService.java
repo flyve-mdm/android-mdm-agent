@@ -89,8 +89,8 @@ public class MessagingService extends FirebaseMessagingService {
      */
 
     private void sendNotification(String topic, String message, String body) {
-        FlyveLog.d("Notification (body): " + body);
-        FlyveLog.d("Notification (message): " + message);
+        String debugInfo = "Notification (body): " + body + "\n" + "Notification (message): " + message + "\n" + "Notification (topic): " + topic;
+        FlyveLog.d(debugInfo);
         MessagePolicies messagePolicies = new MessagePolicies();
         messagePolicies.messageArrived(MDMAgent.getInstance(), topic, message);
     }
