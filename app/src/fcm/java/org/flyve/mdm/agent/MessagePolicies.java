@@ -345,11 +345,9 @@ public class MessagePolicies {
 
     public static void callPolicy(Context context, Class<? extends BasePolicies> classPolicy, String policyName, int policyPriority, String topic, String messageBody) {
 
-        FlyveLog.d("Call policies "+messageBody);
-
-
         if(topic.toLowerCase().contains(policyName.toLowerCase())) {
-
+            
+            FlyveLog.d("Call policies "+messageBody);
             BasePolicies policies;
 
             try {
