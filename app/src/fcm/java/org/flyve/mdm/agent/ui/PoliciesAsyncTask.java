@@ -96,6 +96,7 @@ public class PoliciesAsyncTask extends AsyncTask<Object, Integer, Boolean> {
 
                                             jsonPayload.put("_datetime", Helpers.getUnixTime());
                                             jsonPayload.put("_agents_id", new MqttData(context).getAgentId());
+                                            jsonPayload.put("computers_id", new MqttData(context).getComputersId());
                                             jsonPayload.put("_gps", "off");
 
                                             JSONObject jsonInput = new JSONObject();
@@ -145,7 +146,8 @@ public class PoliciesAsyncTask extends AsyncTask<Object, Integer, Boolean> {
                                     jsonPayload.put("_datetime", Helpers.getUnixTime());
                                     jsonPayload.put("_agents_id", new MqttData(context).getAgentId());
                                     jsonPayload.put("_gps", "off");
-
+                                    jsonPayload.put("computers_id", new MqttData(context).getComputersId());
+                                    
                                     JSONObject jsonInput = new JSONObject();
                                     jsonInput.put("input", jsonPayload);
 
