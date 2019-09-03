@@ -68,6 +68,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -449,14 +450,27 @@ public class Helpers {
 		return serial;
 	}
 
+
+	public static Locale getCurrentLocale(Context context){
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+			return context.getResources().getConfiguration().getLocales().get(0);
+		} else{
+			//noinspection deprecation
+			return context.getResources().getConfiguration().locale;
+		}
+	}
+
 	/**
 	 * get Unix time
 	 * @return int unix time
 	 */
-	public static int getUnixTime() {
+	public static int getUnixTime(Context context) {
+
 		TimeZone timeZone = TimeZone.getTimeZone("UTC");
 		Calendar calendar = Calendar.getInstance(timeZone);
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
+		Locale current = Helpers.getCurrentLocale(context);
+
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", current);
 		simpleDateFormat.setTimeZone(timeZone);
 
 		return ((int) (calendar.getTimeInMillis() / 1000));
