@@ -2,7 +2,6 @@ package org.flyve.mdm.agent.policies;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.PoliciesController;
 import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.utils.FlyveLog;

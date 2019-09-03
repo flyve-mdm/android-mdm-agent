@@ -21,17 +21,16 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent;
+package org.flyve.mdm.agent.policies;
 
 import android.content.Context;
 
+import org.flyve.mdm.agent.MessagePolicies;
 import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.database.MqttData;
-import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
-import org.json.JSONObject;
 
 public class PoliciesController {
 
