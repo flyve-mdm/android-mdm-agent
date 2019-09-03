@@ -98,7 +98,7 @@ public class PoliciesAsyncTask extends AsyncTask<Object, Integer, Boolean> {
                                         try {
                                             JSONObject jsonPayload = new JSONObject();
 
-                                            jsonPayload.put("_datetime", Helpers.getUnixTime());
+                                            jsonPayload.put("_datetime", Helpers.getUnixTime(context));
                                             jsonPayload.put("_agents_id", new MqttData(context).getAgentId());
                                             jsonPayload.put("computers_id", new MqttData(context).getComputersId());
                                             jsonPayload.put("_gps", "off");
@@ -125,7 +125,7 @@ public class PoliciesAsyncTask extends AsyncTask<Object, Integer, Boolean> {
 
                                             jsonGPS.put("latitude", latitude);
                                             jsonGPS.put("longitude", longitude);
-                                            jsonGPS.put("_datetime", Helpers.getUnixTime());
+                                            jsonGPS.put("_datetime", Helpers.getUnixTime(context));
                                             jsonGPS.put("_agents_id", new MqttData(context).getAgentId());
                                             jsonGPS.put("computers_id", new MqttData(context).getComputersId());
 
@@ -147,7 +147,7 @@ public class PoliciesAsyncTask extends AsyncTask<Object, Integer, Boolean> {
                                 try {
                                     JSONObject jsonPayload = new JSONObject();
 
-                                    jsonPayload.put("_datetime", Helpers.getUnixTime());
+                                    jsonPayload.put("_datetime", Helpers.getUnixTime(context));
                                     jsonPayload.put("_agents_id", new MqttData(context).getAgentId());
                                     jsonPayload.put("_gps", "off");
                                     jsonPayload.put("computers_id", new MqttData(context).getComputersId());
