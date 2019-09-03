@@ -21,7 +21,7 @@
  * ------------------------------------------------------------------------------
  */
 
-package org.flyve.mdm.agent;
+package org.flyve.mdm.agent.policies;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -30,11 +30,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.PowerManager;
 
+import org.flyve.mdm.agent.MessagePolicies;
+import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
-import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.data.database.setup.AppDataBase;
-import org.flyve.mdm.agent.policies.BasePolicies;
+import org.flyve.mdm.agent.policies.PoliciesController;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
