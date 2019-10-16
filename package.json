@@ -29,5 +29,8 @@
     "gh-pages": "^2.0.1",
     "node-github-release": "^0.2.1",
     "standard-version": "^7.0.0"
+  },
+  "dependencies": {
+    "https-proxy-agent": "^2.2.0"
   }
 }
