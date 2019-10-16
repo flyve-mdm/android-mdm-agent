@@ -489,7 +489,7 @@ public class MqttPoliciesController {
                     try {
                         JSONObject jsonPayload = new JSONObject();
 
-                        jsonPayload.put("_datetime", Helpers.getUnixTime());
+                        jsonPayload.put("_datetime", Helpers.getUnixTime(context));
                         jsonPayload.put("_agents_id", new MqttData(context).getAgentId());
                         jsonPayload.put("_gps", "off");
 
@@ -515,7 +515,7 @@ public class MqttPoliciesController {
 
                         jsonGPS.put("latitude", latitude);
                         jsonGPS.put("longitude", longitude);
-                        jsonGPS.put("_datetime", Helpers.getUnixTime());
+                        jsonGPS.put("_datetime", Helpers.getUnixTime(context));
                         jsonGPS.put("_agents_id", new MqttData(context).getAgentId());
                         jsonGPS.put("computers_id", new MqttData(context).getComputersId());
 
@@ -539,7 +539,7 @@ public class MqttPoliciesController {
             try {
                 JSONObject jsonPayload = new JSONObject();
 
-                jsonPayload.put("_datetime", Helpers.getUnixTime());
+                jsonPayload.put("_datetime", Helpers.getUnixTime(context));
                 jsonPayload.put("_agents_id", new MqttData(context).getAgentId());
                 jsonPayload.put("_gps", "off");
 
