@@ -11,5 +11,6 @@ org.flyve.mdm.agent.data.database.setup
 org.flyve.mdm.agent.data.localstorage
 org.flyve.mdm.agent.policies
 org.flyve.mdm.agent.receivers
+org.flyve.mdm.agent.service
 org.flyve.mdm.agent.ui
 org.flyve.mdm.agent.utils
