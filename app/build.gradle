@@ -7,7 +7,7 @@ static def releaseTime() {
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '28.0.2'
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId 'org.flyve.mdm.agent'
         minSdkVersion 16
@@ -35,9 +35,9 @@ android {
     }
     android.applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                def fileName = outputFile.name.replace("app",
+            def outputFile = outputFileName
+            if (outputFile != null && outputFile.endsWith('.apk')) {
+                def fileName = outputFile.replace("app",
                         "${defaultConfig.applicationId}_${releaseTime()}")
                 outputFileName = fileName
 
