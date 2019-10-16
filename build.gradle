@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.5.1'
         classpath 'com.google.gms:google-services:4.1.0'
         classpath 'com.google.firebase:firebase-core:16.0.5' //need to prevent warning about missing dependencies on build
         // NOTE: Do not place your application dependencies here; they belong
