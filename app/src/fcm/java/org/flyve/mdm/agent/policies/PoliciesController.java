@@ -73,7 +73,7 @@ public class PoliciesController {
                 try {
                     FlyveLog.d("Install package: " + deployApp + " id: " + id);
                     PoliciesFiles policiesFiles = new PoliciesFiles(PoliciesController.this.context);
-                    policiesFiles.execute("package", deployApp, id, sessionToken);
+                    policiesFiles.execute("package", deployApp, id, sessionToken, taskId);
                 } catch (Exception ex) {
                     FlyveLog.e(this.getClass().getName() + ", installPackage", ex.getMessage());
                     Helpers.broadCastMessage(ERROR, "Error on getActiveSessionToken", ex.getMessage());
