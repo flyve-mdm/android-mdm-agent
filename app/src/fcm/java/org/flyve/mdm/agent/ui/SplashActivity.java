@@ -88,6 +88,7 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         //if create from RunOnStartup
         //move to background
         if(getIntent().getBooleanExtra(RunOnStartup.START_AFTER_BOOTING, false)) {
@@ -108,8 +109,9 @@ public class SplashActivity extends FragmentActivity implements Walkthrough.View
         MqttData cache = new MqttData( SplashActivity.this );
 
         // if broker is on cache open the main activity
-        String broker = cache.getBroker();
-        if(!broker.isEmpty()) {
+        String agent = cache.getAgentId();
+        if(!agent.isEmpty()) {
+
             // if user is enrolled show landing screen
             FlyveLog.d(cache.getSessionToken());
 
