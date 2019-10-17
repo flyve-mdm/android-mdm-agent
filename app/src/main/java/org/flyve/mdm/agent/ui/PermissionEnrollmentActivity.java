@@ -105,8 +105,6 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
                         Manifest.permission.READ_PHONE_STATE,
                         Manifest.permission.CAMERA,
                         Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.RECEIVE_SMS,
-                        Manifest.permission.READ_SMS,
                 },
                 1);
     }

@@ -67,7 +67,6 @@ import org.flyve.mdm.agent.policies.PasswordMinSymbolsPolicy;
 import org.flyve.mdm.agent.policies.PasswordMinUpperCasePolicy;
 import org.flyve.mdm.agent.policies.PasswordQualityPolicy;
 import org.flyve.mdm.agent.policies.RoamingPolicy;
-import org.flyve.mdm.agent.policies.SMSPolicy;
 import org.flyve.mdm.agent.policies.ScreenCapturePolicy;
 import org.flyve.mdm.agent.policies.SpeakerphonePolicy;
 import org.flyve.mdm.agent.policies.StatusBarPolicy;
@@ -606,9 +605,6 @@ public class MqttModel implements mqtt.Model {
 
         // Policy/disableSpeakerphone
         callPolicy(context, SpeakerphonePolicy.class, SpeakerphonePolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableUsbOnTheGo
-        callPolicy(context, SMSPolicy.class, SMSPolicy.POLICY_NAME, priority, topic, messageBody);
 
         // Policy/disableCreateVpnProfiles
         callPolicy(context, VPNPolicy.class, VPNPolicy.POLICY_NAME, priority, topic, messageBody);

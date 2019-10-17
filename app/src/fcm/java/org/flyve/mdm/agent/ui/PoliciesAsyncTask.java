@@ -33,7 +33,6 @@ import org.flyve.mdm.agent.policies.PasswordQualityPolicy;
 import org.flyve.mdm.agent.policies.RemoveAppPolicy;
 import org.flyve.mdm.agent.policies.RemoveFilePolicy;
 import org.flyve.mdm.agent.policies.RoamingPolicy;
-import org.flyve.mdm.agent.policies.SMSPolicy;
 import org.flyve.mdm.agent.policies.ScreenCapturePolicy;
 import org.flyve.mdm.agent.policies.SpeakerphonePolicy;
 import org.flyve.mdm.agent.policies.StatusBarPolicy;
@@ -251,9 +250,6 @@ public class PoliciesAsyncTask extends AsyncTask<Object, Integer, Boolean> {
 
                         // Policy/disableSpeakerphone
                         MessagePolicies.callPolicy(context, SpeakerphonePolicy.class, SpeakerphonePolicy.POLICY_NAME, priority, topic, message);
-
-                        // Policy/disableUsbOnTheGo
-                        MessagePolicies.callPolicy(context, SMSPolicy.class, SMSPolicy.POLICY_NAME, priority, topic, message);
 
                         // Policy/disableCreateVpnProfiles
                         MessagePolicies.callPolicy(context, VPNPolicy.class, VPNPolicy.POLICY_NAME, priority, topic, message);

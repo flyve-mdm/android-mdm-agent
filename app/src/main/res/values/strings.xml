@@ -173,7 +173,7 @@
     </string-array>
 
     <string name="permission_title">Permissions</string>
-    <string name="permission_message">This application requires special permits to work properly, then if required we will request you to approve them, we will also generate an inventory of your device that you will be able to review and share.\n\n <b>Permission list:</b>\n\n - Access photos, media, and files on your device\n - Make and manage phone calls\n - Take picture and record video\n - Device\'s location\n - Send and view SMS messages</string>
+    <string name="permission_message">This application requires special permits to work properly, then if required we will request you to approve them, we will also generate an inventory of your device that you will be able to review and share.\n\n <b>Permission list:</b>\n\n - Access photos, media, and files on your device\n - Make and manage phone calls\n - Take picture and record video\n - Device\'s location</string>
     <string name="permission_button_request">Request Permission</string>
     <string name="permission_button_share">Share the inventory</string>
     <string name="permission_button_continue">Continue</string>
