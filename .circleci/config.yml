@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.10-stretch-node
+      - image: circleci/golang:1.13-stretch-node
     working_directory: ~/project-site
     branches:
       only:
