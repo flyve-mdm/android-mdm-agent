@@ -37,10 +37,18 @@ public class PasswordMinSymbolsPolicy extends BasePolicies {
 
     public static final String POLICY_NAME = "passwordMinSymbols";
 
+    /**
+     * A simple constructor
+     * @param context
+     */
     public PasswordMinSymbolsPolicy(Context context) {
         super(context, POLICY_NAME);
     }
 
+    /**
+     * Return if the policy is true or is not.
+     * @return
+     */
     @Override
     protected boolean process() {
         try {

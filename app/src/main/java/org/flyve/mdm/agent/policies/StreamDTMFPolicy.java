@@ -37,10 +37,18 @@ public class StreamDTMFPolicy extends BasePolicies {
 
     public static final String POLICY_NAME = "disableStreamDTMF";
 
+    /**
+     * A simple constructor
+     * @param context
+     */
     public StreamDTMFPolicy(Context context) {
         super(context, POLICY_NAME);
     }
 
+    /**
+     * Return if the policy is true or is not.
+     * @return
+     */
     @Override
     protected boolean process() {
         try {

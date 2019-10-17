@@ -79,6 +79,13 @@ public class FragmentFeedback extends Fragment {
     private Switch[] swPolicy;
     private EditText editMessage;
 
+    /**
+     * Create the Fragment view
+     * @param inflater the object that can be used to inflate any views in the fragment
+     * @param container the parent View the fragment's UI should be attached to
+     * @param savedInstanceState this fragment is being re-constructed from a previous saved state
+     * @return View the View for the fragment's UI
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

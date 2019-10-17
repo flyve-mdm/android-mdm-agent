@@ -38,9 +38,9 @@ public class FragmentAbout extends Fragment {
 
     /**
      * Called when the activity is starting, inflates the activity's UI
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
+     * @param inflater the object that can be used to inflate any views in the fragment
+     * @param container the parent View the fragment's UI should be attached to
+     * @param savedInstanceState this fragment is being re-constructed from a previous saved state
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +63,16 @@ public class FragmentAbout extends Fragment {
         return v;
     }
 
+    /**
+     * Show the information of the Application
+     * @param version
+     * @param build
+     * @param date
+     * @param commit
+     * @param commitFull
+     * @param github
+     * @return
+     */
     private String aboutStr(String version, String build, String date, String commit, String commitFull, String github) {
         String str = "Flyve MDM Agent, version "+ version +", build "+ build +".<br />";
         str += "Built on "+ date +". Last commit <a href='"+github+"/commit/"+commitFull+"'>"+ commit +"</a>.<br />";

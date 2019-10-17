@@ -37,10 +37,18 @@ public class PasswordMinLetterPolicy extends BasePolicies {
 
     public static final String POLICY_NAME = "passwordMinLetters";
 
+    /**
+     * A simple constructor
+     * @param context
+     */
     public PasswordMinLetterPolicy(Context context) {
         super(context, POLICY_NAME);
     }
 
+    /**
+     * Return if the policy is true or is not.
+     * @return
+     */
     @Override
     protected boolean process() {
         try {

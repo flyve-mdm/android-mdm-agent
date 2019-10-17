@@ -37,10 +37,18 @@ public class StreamVoiceCallPolicy extends BasePolicies {
 
     public static final String POLICY_NAME = "disableStreamVoiceCall";
 
+    /**
+     * A simple constructor
+     * @param context
+     */
     public StreamVoiceCallPolicy(Context context) {
         super(context, POLICY_NAME);
     }
 
+    /**
+     * Return if the policy is true or is not.
+     * @return
+     */
     @Override
     protected boolean process() {
         try {
