@@ -36,6 +36,9 @@ public class Application {
     @ColumnInfo (name = "app_id")
     public String appId;
 
+    @ColumnInfo (name = "task_id")
+    public String taskId;
+
     @ColumnInfo (name = "app_name")
     public String appName;
 

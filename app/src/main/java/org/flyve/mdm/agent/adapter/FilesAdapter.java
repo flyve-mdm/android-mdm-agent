@@ -41,8 +41,6 @@ public class FilesAdapter extends BaseAdapter {
 	private LayoutInflater inflater = null;
 
 	public FilesAdapter(Activity activity, File[] data) {
-		FlyveLog.d(activity.getLocalClassName());
-
 		this.data = data;
 		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}

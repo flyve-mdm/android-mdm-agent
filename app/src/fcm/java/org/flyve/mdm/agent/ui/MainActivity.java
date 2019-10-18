@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         if (type != null) {
             switch (type) {
                 case "DeployApp":
+                case "RemoveApp":
                     menuItemSelected = 1;
                     extra = "DeployApp";
                     break;

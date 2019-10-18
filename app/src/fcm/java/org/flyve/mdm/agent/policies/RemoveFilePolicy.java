@@ -22,8 +22,12 @@ public class RemoveFilePolicy extends BasePolicies {
                 String taskId = jsonObj.getString("taskId");
 
                 // execute the policy
-                PoliciesController policiesController = new PoliciesController(context);
-                policiesController.removeFile(taskId, removeFile, context);
+                try {
+                    PoliciesFiles policiesFiles = new PoliciesFiles(this.context);
+                    policiesFiles.removeFile(removeFile, taskId);
+                } catch (Exception ex) {
+                    FlyveLog.e(this.getClass().getName() + ", removeFile", ex.getMessage());
+                }
             }
             return true;
         } catch (Exception ex) {

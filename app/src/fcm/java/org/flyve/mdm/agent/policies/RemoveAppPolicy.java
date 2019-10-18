@@ -23,8 +23,13 @@ public class RemoveAppPolicy extends BasePolicies {
                 String taskId = jsonObj.getString("taskId");
 
                 // execute the policy
-                PoliciesController policiesController = new PoliciesController(context);
-                policiesController.removePackage(taskId, removeApp);
+                try {
+                    PoliciesFiles policiesFiles = new PoliciesFiles(this.context);
+                    policiesFiles.removeApk(removeApp.trim(), taskId);
+                } catch (Exception ex) {
+                    FlyveLog.e(this.getClass().getName() + ", removePackage", ex.getMessage());
+                }
+
             }
             return true;
         } catch (Exception ex) {

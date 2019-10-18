@@ -58,4 +58,8 @@ public class ApplicationData {
     public void deleteAll() {
         dataBase.applicationDao().deleteAll();
     }
+
+    public void deleteByPackageName(String mPackage) { dataBase.applicationDao().deleteByPackageName(mPackage);}
+
+    public void deleteById(String id) { dataBase.applicationDao().deleteById(id);}
 }

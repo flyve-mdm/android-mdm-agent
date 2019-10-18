@@ -306,7 +306,7 @@ public class ConnectionHTTP {
 						JSONArray arrayData = objResponse.getJSONArray("data");
 						taskStatusId = arrayData.getJSONObject(0).getString("2");
 					} catch (Exception ex) {
-						FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getWebData",ex.getClass() + " : " + ex.getMessage());
+						FlyveLog.e(ConnectionHTTP.class.getClass().getName() + ", getWebData",ex.getClass() + " : " + ex.getMessage() + " Data : " + data + "Route : " + url);
 						return;
 					}
 
