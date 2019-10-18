@@ -45,12 +45,12 @@ public abstract class BasePolicies {
     private static final String ERROR = "ERROR";
     private static final String MQTT_SEND = "MQTT Send";
 
-    private static final String FCM_FEEDBACK_PENDING = "pending";
-    private static final String FCM_FEEDBACK_RECEIVED = "received";
-    private static final String FCM_FEEDBACK_DONE = "done";
-    private static final String FCM_FEEDBACK_FAILED = "failed";
-    private static final String FCM_FEEDBACK_CANCELED = "canceled";
-    private static final String FCM_FEEDBACK_WAITING = "waiting";
+    public static final String FCM_FEEDBACK_PENDING = "pending";
+    public static final String FCM_FEEDBACK_RECEIVED = "received";
+    public static final String FCM_FEEDBACK_DONE = "done";
+    public static final String FCM_FEEDBACK_FAILED = "failed";
+    public static final String FCM_FEEDBACK_CANCELED = "canceled";
+    public static final String FCM_FEEDBACK_WAITING = "waiting";
 
     private boolean enableLog;
     protected Context context;

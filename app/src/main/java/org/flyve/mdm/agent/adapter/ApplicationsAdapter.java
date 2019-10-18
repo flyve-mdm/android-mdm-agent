@@ -24,30 +24,40 @@
 package org.flyve.mdm.agent.adapter;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
+import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.data.database.entity.Application;
+import org.flyve.mdm.agent.data.database.entity.Policies;
+import org.flyve.mdm.agent.ui.FragmentPolicies;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
+
+import java.util.List;
 
 public class ApplicationsAdapter extends BaseAdapter {
 
 	private Application[] data;
+	private Context context;
 	private LayoutInflater inflater = null;
 
-	public ApplicationsAdapter(Activity activity, Application[] data) {
-		FlyveLog.d(activity.getLocalClassName());
-
+	public ApplicationsAdapter(Activity activity, Application[] data, Context context) {
 		this.data = data;
+		this.context = context;
 		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -91,7 +101,7 @@ public class ApplicationsAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		View vi = inflater.inflate(R.layout.list_item_application, null);
-		Application app;
+		final Application app;
 
 		try {
 			app = data[position];
@@ -101,6 +111,7 @@ public class ApplicationsAdapter extends BaseAdapter {
 		}
 
 		TextView txtStatus = vi.findViewById(R.id.txtStatus);
+		ImageButton img_trash = vi.findViewById(R.id.btnUninstall);
 
 		String status = "";
 		if(Helpers.isPackageInstalled(parent.getContext(), app.appPackage)) {
@@ -110,14 +121,70 @@ public class ApplicationsAdapter extends BaseAdapter {
 				PackageInfo packageInfo = pm.getPackageInfo(app.appPackage, 0);
 				if(Integer.parseInt(app.appVersionCode) > packageInfo.versionCode) {
 					status = parent.getResources().getString(R.string.app_ready_to_update);
+					img_trash.setVisibility(View.GONE);
 				} else {
 					status = parent.getResources().getString(R.string.app_installed);
+					//for this app if we have removeApp policies
+					Policies policies = new PoliciesData(this.context).getByTaskId(app.taskId);
+					if(policies.policyName.equalsIgnoreCase("removeApp")){
+						status = parent.getResources().getString(R.string.app_need_to_be_uninstall);
+						img_trash.setVisibility(View.VISIBLE);
+						//on click  start activity to uninstall app
+						img_trash.setOnClickListener(new ImageButton.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								Intent intent = new Intent();
+								String mPackage = app.appPackage;
+
+								if (Build.VERSION.SDK_INT < 14) {
+									intent.setAction(Intent.ACTION_DELETE);
+									//intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									intent.setDataAndType(Uri.parse("package:"+mPackage), "application/vnd.android.package-archive");
+								} else if (Build.VERSION.SDK_INT < 16) {
+									intent.setAction(Intent.ACTION_UNINSTALL_PACKAGE);
+									intent.setData(Uri.parse("package:"+mPackage));
+									//intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
+									intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+									intent.putExtra(Intent.EXTRA_ALLOW_REPLACE, true);
+								} else if (Build.VERSION.SDK_INT < 24) {
+									intent.setAction(Intent.ACTION_UNINSTALL_PACKAGE);
+									intent.setData(Uri.parse("package:"+mPackage));
+									//intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
+									intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+								} else { // Android N
+									intent.setAction(Intent.ACTION_UNINSTALL_PACKAGE);
+									intent.setData(Uri.parse("package:"+mPackage));
+									// grant READ permission for this content Uri
+									//intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+									intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
+									intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+								}
+
+								try {
+									v.getContext().startActivity(intent);
+								} catch (ActivityNotFoundException e) {
+									FlyveLog.e(this.getClass().getName() + ", un	installApk", e.getMessage());
+								}
+
+							}});
+					}else{
+						img_trash.setVisibility(View.GONE);
+					}
 				}
 			} catch (Exception ex) {
 				FlyveLog.e(this.getClass().getName() + ", getView", ex.getMessage());
 			}
 		} else {
 			status = parent.getResources().getString(R.string.app_not_installed);
+			Policies policies = new PoliciesData(this.context).getByTaskId(app.taskId);
+			if(policies.policyName.equalsIgnoreCase("deployApp")) {
+				status = parent.getResources().getString(R.string.app_pending_to_install);
+			}
+
+			img_trash.setVisibility(View.GONE);
 		}
 
 		txtStatus.setText(status);

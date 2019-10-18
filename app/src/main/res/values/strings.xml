@@ -136,6 +136,7 @@
 
     <string name="app_pending">Pending</string>
     <string name="app_installed">Installed</string>
+    <string name="app_need_to_be_uninstall">Need to be uninstall</string>
     <string name="app_not_installed">Not installed</string>
     <string name="app_no_data">No applications available</string>
     <string name="app_pending_to_install">Pending to install</string>

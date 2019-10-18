@@ -52,6 +52,11 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
     private Context context;
     private Routes routes;
     private MqttData cache;
+    private String taskId;
+    private String type;
+    private String deployFile;
+    private String url;
+
 
     /**
      * This constructor loads the context of the current class
@@ -69,6 +74,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
      *             args[1] = "file path (/storage/sdcard/documents)"
      *             args[2] = "file id on the server"
      *             args[3] = "valid session token"
+     *             args[4] = "task id"
      * @return
      */
     @Override
@@ -78,11 +84,17 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
         if(args[0].isEmpty() ||
             args[1].isEmpty() ||
             args[2].isEmpty()  ||
-            args[3].isEmpty()) {
+                args[3].isEmpty()||
+                args[4].isEmpty()) {
             AppThreadManager manager = MDMAgent.getAppThreadManager();
             manager.finishProcess(context);
             return 0;
         }
+
+        this.type = args[0];
+        this.taskId = args[4];
+        this.deployFile = args[1];
+        this.url = routes.PluginFlyvemdmTaskstatus(taskId);
 
         if(args[0].equals("file")) {
 
@@ -91,7 +103,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
             }
 
         } else if (args[0].equals("package")) {
-            if(downloadApk(args[1], args[2], args[3])) {
+            if(downloadApk(args[1], args[2], args[3], args[4])) {
                 return 1;
             }
         }
@@ -135,7 +147,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
      * @param id String Id from
      * @param sessionToken
      */
-    public Boolean downloadApk(String appName, String id, String sessionToken) {
+    public Boolean downloadApk(String appName, String id, String sessionToken, String taskId) {
 
         FlyveLog.d("Application name: " + appName);
 
@@ -170,7 +182,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Integer> {
                 Helpers.installApkSilently(completeFilePath);
             } else {
                 // Regular app
-                Helpers.installApk(context, id, completeFilePath);
+                Helpers.installApk(context, id, completeFilePath, taskId);
             }
 
             return true;

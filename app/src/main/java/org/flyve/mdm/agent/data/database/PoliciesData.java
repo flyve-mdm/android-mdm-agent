@@ -55,6 +55,15 @@ public class PoliciesData {
         }
     }
 
+    public Policies getByTaskId(String taskId) {
+        List<Policies> arrPolicies = dataBase.PoliciesDao().getPolicyByTaskId(taskId);
+        if(!arrPolicies.isEmpty()) {
+            return arrPolicies.get(0);
+        } else {
+            return new Policies();
+        }
+    }
+
     public Object setValue(String policyName, String taskId, String value, int priority) {
         if(dataBase.PoliciesDao().getPolicyByTaskId(taskId).isEmpty()) {
             Policies policies = new Policies();

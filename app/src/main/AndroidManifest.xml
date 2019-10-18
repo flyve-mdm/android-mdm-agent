@@ -105,6 +105,9 @@
             android:name=".ui.InstallAppActivity"
             android:launchMode="singleTask"></activity>
         <activity
+            android:name=".ui.UninstallAppActivity"
+            android:launchMode="singleTask"></activity>
+        <activity
             android:name=".ui.ScanActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="landscape"></activity>

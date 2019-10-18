@@ -2,6 +2,7 @@ package org.flyve.mdm.agent.policies;
 
 import android.content.Context;
 
+import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -19,10 +20,10 @@ public class DeployAppPolicy extends BasePolicies {
     protected boolean process() {
         try {
             JSONObject jsonObj = new JSONObject(message);
-            String deployApp = jsonObj.getString("deployApp");
-            String id = jsonObj.getString("id");
-            String versionCode = jsonObj.getString("versionCode");
-            String taskId = jsonObj.getString("taskId");
+            final String deployApp = jsonObj.getString("deployApp");
+            final String id = jsonObj.getString("id");
+            final String versionCode = jsonObj.getString("versionCode");
+            final String taskId = jsonObj.getString("taskId");
 
             ApplicationData apps = new ApplicationData(context);
             Application[] appsArray = apps.getApplicationsById(id);
@@ -34,9 +35,25 @@ public class DeployAppPolicy extends BasePolicies {
             }
 
             if(bDownload) {
-                // execute the policy
-                PoliciesController policiesController = new PoliciesController(context);
-                policiesController.installPackage(deployApp, id, versionCode, taskId);
+
+                EnrollmentHelper sToken = new EnrollmentHelper(this.context);
+                sToken.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
+                    @Override
+                    public void onSuccess(String sessionToken) {
+                        try {
+                            FlyveLog.d("Install package: " + deployApp + " id: " + id);
+                            PoliciesFiles policiesFiles = new PoliciesFiles(context);
+                            policiesFiles.execute("package", deployApp, id, sessionToken, taskId);
+                        } catch (Exception ex) {
+                            FlyveLog.e(this.getClass().getName() + ", installPackage", ex.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(int type, String error) {
+                        FlyveLog.e(this.getClass().getName() + ", installPackage", error);
+                    }
+                });
             }
 
             return true;

@@ -26,16 +26,15 @@ package org.flyve.mdm.agent.policies;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.PowerManager;
 
 import org.flyve.mdm.agent.MessagePolicies;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
-import org.flyve.mdm.agent.data.database.MqttData;
+import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.data.database.setup.AppDataBase;
-import org.flyve.mdm.agent.policies.PoliciesController;
+import org.flyve.mdm.agent.ui.UninstallAppActivity;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -49,12 +48,11 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
 
     private Context context;
     private Routes routes;
-    private MqttData cache;
     private String taskId;
     private String type;
-    private String deployFile;
-    private String url;
     private String status;
+
+
 
     /**
      * This constructor loads the context of the current class
@@ -62,9 +60,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
      */
     public PoliciesFiles(Context context) {
         this.context = context;
-        routes = new Routes(context);
-        cache =  new MqttData(context);
-
+        this.routes = new Routes(context);
     }
 
     /**
@@ -90,33 +86,20 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
 
         this.type = args[0];
         this.taskId = args[4];
-        this.deployFile = args[1];
-        this.url = routes.PluginFlyvemdmTaskstatus(taskId);
-        this.status = PoliciesController.FEEDBACK_WAITING;
+        this.status = BasePolicies.FCM_FEEDBACK_WAITING;
 
         if(type.equals("file")) {
-            if(downloadFile(args[1], args[2], args[3])) {
-                return true;
-            }
+            downloadFile(args[1], args[2], args[3]);
         } else if (type.equals("package")) {
-            if(downloadApk(args[1], args[2], args[3])) {
-                return true;
-            }
+            downloadApk(args[1], args[2], args[3],args[4]);
         }
-
-        return false;
+        return true;
     }
 
     protected void onPostExecute(Boolean result) {
         if(result){
-            FlyveLog.d(type + " was stored on: " + deployFile);
-            status = PoliciesController.FEEDBACK_DONE;
-        }else{
-            FlyveLog.d("Failed to download "+type);
-            status = PoliciesController.FEEDBACK_FAILED;
+            MessagePolicies.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
         }
-        MessagePolicies.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
-
     }
 
 
@@ -126,7 +109,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
      * @param id String Id from
      * @param sessionToken
      */
-    public Boolean downloadFile(String path, String id, String sessionToken) {
+    public void downloadFile(String path, String id, String sessionToken) {
 
         //prevent CPU from going off if the user presses the power button during download
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -138,12 +121,17 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
             filePath = new StorageFolder(context).convertPath(path);
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", downloadFile", ex.getMessage());
+            this.status = BasePolicies.FCM_FEEDBACK_FAILED;
         }
 
         final String url = routes.pluginFlyvemdmFile(id);
         String completeFilePath = download(url, filePath, sessionToken);
 
-        return(!completeFilePath.isEmpty());
+        if(!completeFilePath.isEmpty()){
+            this.status = BasePolicies.FCM_FEEDBACK_DONE;
+        }else{
+            this.status = BasePolicies.FCM_FEEDBACK_FAILED;
+        }
     }
 
     /**
@@ -152,9 +140,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
      * @param id String Id from
      * @param sessionToken
      */
-    public Boolean downloadApk(String appName, String id, String sessionToken) {
-
-        FlyveLog.d("Application name: " + appName);
+    public void downloadApk(String appName, String id, String sessionToken,  String taskId) {
 
         //prevent CPU from going off if the user presses the power button during download
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -166,21 +152,27 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
             filePath = new StorageFolder(context).getApkDir();
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", downloadApk", ex.getMessage());
+            this.status = BasePolicies.FCM_FEEDBACK_FAILED;
         }
 
         final String url = routes.pluginFlyvemdmPackage(id);
         String completeFilePath = download(url, filePath, sessionToken);
         if(completeFilePath.isEmpty()) {
-            return false;
+            this.status = BasePolicies.FCM_FEEDBACK_FAILED;
         } else {
             if(Helpers.isSystemApp(context).equalsIgnoreCase("1")) {
                 // Silently for System apps
-                Helpers.installApkSilently(completeFilePath);
+                this.status = BasePolicies.FCM_FEEDBACK_DONE;
+                if(!Helpers.installApkSilently(completeFilePath)){
+                    this.status = BasePolicies.FCM_FEEDBACK_FAILED;
+                }
             } else {
                 // Regular app
-                Helpers.installApk(context, id, completeFilePath);
+                this.status = BasePolicies.FCM_FEEDBACK_DONE;
+                if(!Helpers.installApk(context, id, completeFilePath, taskId)) {
+                    this.status = BasePolicies.FCM_FEEDBACK_WAITING;
+                }
             }
-            return true;
         }
     }
 
@@ -221,10 +213,18 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
                 fileName = jsonObjDownload.getString("name");
             }
 
-            // is APK
+            // is APK / UPK
             if (jsonObjDownload.has("dl_filename")) {
-                fileName = jsonObjDownload.getString("dl_filename");
+                fileName = jsonObjDownload.getString("package_name");
+                if(jsonObjDownload.getString("dl_filename").contains(".apk")){
+                    fileName = fileName + ".apk";
+                }else{
+                    fileName = fileName + ".upk";
+                }
+
             }
+
+            FlyveLog.d(jsonObjDownload);
 
             // validating if folder exists or create
             new File(path).mkdirs();
@@ -281,24 +281,21 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
      * @return boolean true if file deleted, false otherwise
      */
     public void removeFile(String filePath, final String taskId) {
-        this.status = PoliciesController.FEEDBACK_FAILED;
         this.taskId = taskId;
         try {
             String realPath = new StorageFolder(context).convertPath(filePath);
             File file = new File(realPath);
             if(file.delete()){
                 FlyveLog.d("Remove file: " + filePath);
-                this.status = PoliciesController.FEEDBACK_DONE;
+                this.status = BasePolicies.FCM_FEEDBACK_DONE;
             }else{
-                this.status = PoliciesController.FEEDBACK_FAILED;
+                this.status = BasePolicies.FCM_FEEDBACK_FAILED;
             }
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", removeFile", ex.getMessage() + "\n" + filePath);
-            this.status = PoliciesController.FEEDBACK_FAILED;
+            this.status = BasePolicies.FCM_FEEDBACK_FAILED;
         }
-
         MessagePolicies.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
-
     }
 
     /**
@@ -307,20 +304,42 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
      * @return int if it succeed 1, otherwise 0
      */
     public void removeApk(String mPackage, final String taskId){
-        this.status = PoliciesController.FEEDBACK_FAILED;
         this.taskId = taskId;
+        this.status = BasePolicies.FCM_FEEDBACK_WAITING;
 
-        Uri packageUri = Uri.parse("package:"+mPackage);
-        Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        try {
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            FlyveLog.e(this.getClass().getName() + ", removeApk", e.getMessage() + "\n" + mPackage);
-            this.status = PoliciesController.FEEDBACK_FAILED;
+        //update taskID from DAO app
+        AppDataBase dataBase = AppDataBase.getAppDatabase(context);
+        Application[] appsArray = dataBase.applicationDao().getApplicationByPackageName(mPackage);
+        //app installed by agent
+        if(appsArray.length == 1) {
+            dataBase.applicationDao().updateTaskId(mPackage, this.taskId);
         }
-        this.status = PoliciesController.FEEDBACK_DONE;
 
+        //is priv app uninstall silently
+        if(Helpers.isSystemApp(context).equalsIgnoreCase("1")) {
+            // Silently for System apps
+            this.status = BasePolicies.FCM_FEEDBACK_DONE;
+            if(!Helpers.uninstallApkSilently(mPackage)){
+                this.status = BasePolicies.FCM_FEEDBACK_FAILED;
+            }
+        } else {
+
+            this.status = BasePolicies.FCM_FEEDBACK_DONE;
+            if(!Helpers.uninstallApk(context,mPackage)) {
+                this.status = BasePolicies.FCM_FEEDBACK_WAITING;
+            }
+
+           /* try {
+                Intent intent = new Intent(this.context, UninstallAppActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("PACKAGE", mPackage);
+                this.status = BasePolicies.FCM_FEEDBACK_WAITING;
+                this.context.startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                FlyveLog.e(this.getClass().getName() + ", removeApk", e.getMessage() + "\n" + mPackage);
+                this.status = BasePolicies.FCM_FEEDBACK_FAILED;
+            }*/
+        }
         MessagePolicies.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
     }
 

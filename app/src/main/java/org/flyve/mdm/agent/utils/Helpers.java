@@ -59,6 +59,7 @@ import android.widget.TextView;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.entity.Application;
+import org.flyve.mdm.agent.data.database.setup.AppDataBase;
 import org.flyve.mdm.agent.data.localstorage.AppData;
 import org.flyve.mdm.agent.ui.ErrorActivity;
 import org.flyve.mdm.agent.ui.MainActivity;
@@ -68,7 +69,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -91,7 +91,7 @@ public class Helpers {
 	private Helpers() {
 	}
 
-	public static void installApk(Context context, String id, String appPath) {
+	public static Boolean installApk(Context context, String id, String appPath, String taskId) {
 
 		// check if the app is installed
 		ApplicationData apps = new ApplicationData(context);
@@ -99,6 +99,7 @@ public class Helpers {
 
 		if(appsArray.length > 0 && Helpers.isPackageInstalled(context, appsArray[0].appPackage)) {
 			FlyveLog.d("This app is installed: " + appsArray[0].appName);
+			return true;
 		} else {
 			PackageManager packageManager = context.getPackageManager();
 
@@ -118,12 +119,14 @@ public class Helpers {
 				appVersionName = String.valueOf(packageInfo.versionName);
 			} catch (Exception ex) {
 				FlyveLog.e(Helpers.class.getClass().getName() + ", installApk", ex.getMessage());
+
 			}
 
 			if(appsArray.length <=0) {
 				// add into the database
 				Application appsData = new Application();
 				appsData.appId = id;
+				appsData.taskId = taskId;
 				appsData.appName = appName;
 				appsData.appPath = appPath;
 				appsData.appStatus = "1"; // 1 pending | 2 installed
@@ -143,13 +146,31 @@ public class Helpers {
 				// add notification
 				Helpers.sendToNotificationBar(context, Integer.parseInt(id), context.getString(R.string.app_pending_to_install), appName, true, MainActivity.class, "DeployApp");
 			}
+
+			return false;
 		}
 	}
 
-	public static boolean isPackageInstalled(Context context, String packagename) {
+	public static Boolean uninstallApk(Context context, String mPackage) {
+
+		// check if the app is installed
+		AppDataBase dataBase = AppDataBase.getAppDatabase(context);
+		Application[] appsArray = dataBase.applicationDao().getApplicationByPackageName(mPackage);
+
+		if(appsArray.length == 0 || !Helpers.isPackageInstalled(context, appsArray[0].appPackage)) {
+			FlyveLog.d("This app is already uninstalled: " + appsArray[0].appName);
+			return true;
+		} else {
+			// add notification
+			Helpers.sendToNotificationBar(context, appsArray[0].id, context.getString(R.string.app_need_to_be_uninstall), appsArray[0].appName, true, MainActivity.class, "RemoveApp");
+			return false;
+		}
+	}
+
+	public static boolean isPackageInstalled(Context context, String packageName) {
 		try {
 			PackageManager pm = context.getPackageManager();
-			pm.getPackageInfo(packagename, 0);
+			pm.getPackageInfo(packageName, 0);
 			return true;
 		} catch (PackageManager.NameNotFoundException e) {
 			return false;
@@ -181,18 +202,33 @@ public class Helpers {
 		}
 	}
 
-	public static void installApkSilently(String filename) {
+	public static Boolean installApkSilently(String filename) {
 		File file = new File(filename);
 		if(file.exists()) {
 			try {
 				final String command = "pm install -r " + file.getAbsolutePath();
 				Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", command});
 				proc.waitFor();
+				return true;
 			} catch (Exception ex) {
 				FlyveLog.e(Helpers.class.getClass().getName() + ", installApkSilently", ex.getMessage());
+				return false;
 			}
 		} else {
 			FlyveLog.d("File " + file.getAbsolutePath() +  " does not exists");
+			return false;
+		}
+	}
+
+	public static Boolean uninstallApkSilently(String mPackage) {
+		try {
+			final String command = "pm uninstall " + mPackage;
+			Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", command});
+			proc.waitFor();
+			return true;
+		} catch (Exception ex) {
+			FlyveLog.e(Helpers.class.getClass().getName() + ", uninstallApkSilently", ex.getMessage());
+			return false;
 		}
 	}
 

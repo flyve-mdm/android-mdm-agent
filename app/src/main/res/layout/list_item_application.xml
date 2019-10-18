@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         tools:text="App Name"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/imgApp"
@@ -47,16 +47,15 @@
 
     <TextView
         android:id="@+id/txtPackageName"
-        android:layout_width="match_parent"
+        style="@style/regularText"
+        android:layout_width="285dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtAppName"
-        android:layout_toRightOf="@+id/imgApp"
-        android:layout_toEndOf="@+id/imgApp"
-        tools:text="Package Name"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginRight="10dp"
-        style="@style/regularText"
-        />
+        android:layout_toEndOf="@+id/imgApp"
+        android:layout_toRightOf="@+id/imgApp"
+        tools:text="Package Name" />
 
     <TextView
         android:id="@+id/txtVersionCode"
@@ -65,7 +64,7 @@
         android:layout_below="@+id/txtPackageName"
         android:layout_toRightOf="@+id/imgApp"
         android:layout_toEndOf="@+id/imgApp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         tools:text="Version Code: 1230"
@@ -86,5 +85,13 @@
 
         />
 
+    <ImageButton
+        android:id="@+id/btnUninstall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="35dp"
+        android:layout_toRightOf="@+id/txtVersionName"
+        android:src="@drawable/ic_delete_grey" />
 
 </RelativeLayout>

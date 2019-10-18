@@ -52,7 +52,20 @@ public interface ApplicationDao {
     @Query("SELECT * FROM applications WHERE app_id = :id")
     Application[] getApplicationById(String id);
 
+    @Query("SELECT * FROM applications WHERE app_package = :mPackage")
+    Application[] getApplicationByPackageName(String mPackage);
+
     @Query("UPDATE applications SET app_status = :status WHERE app_id = :id")
     int updateStatus(String id, String status);
+
+    @Query("UPDATE applications SET task_id = :taskId WHERE app_package = :mPackage")
+    void updateTaskId(String mPackage, String taskId);
+
+    @Query("DELETE FROM applications WHERE app_package = :mPackage")
+    void deleteByPackageName(String mPackage);
+
+    @Query("DELETE FROM applications WHERE app_id = :id")
+    void deleteById(String id);
+
 
 }

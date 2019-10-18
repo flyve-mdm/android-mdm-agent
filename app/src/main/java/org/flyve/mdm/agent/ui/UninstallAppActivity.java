@@ -24,70 +24,36 @@
 package org.flyve.mdm.agent.ui;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.FileProvider;
 
-import org.flyve.mdm.agent.BuildConfig;
-import org.flyve.mdm.agent.R;
-import org.flyve.mdm.agent.data.database.ApplicationData;
-import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
-import java.io.File;
+public class UninstallAppActivity extends Activity {
 
-public class InstallAppActivity extends Activity {
+    private static final int APP_UNINSTALL_REQUEST = 2020;
+    private String mPackage;
 
-    public static final int APP_INSTALL_REQUEST = 1010;
-    private String id;
-    private String appPath;
-    private ApplicationData appData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_install_app);
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            id = extras.getString("APP_ID");
-            appPath = extras.getString("APP_PATH");
-            appData = new ApplicationData(InstallAppActivity.this);
-
-            // check if the app is installed
-            Application[] apps = appData.getApplicationsById(id);
-
-            if(apps.length > 0 && Helpers.isPackageInstalled(InstallAppActivity.this, apps[0].appPackage)) {
-                PackageManager pm = getPackageManager();
-
-                // check if is a new version or newest
+            this.mPackage = extras.getString("PACKAGE");
+            if(Helpers.isPackageInstalled(UninstallAppActivity.this, mPackage)) {
                 try {
-                    PackageInfo packageInfo = pm.getPackageInfo(apps[0].appPackage, 0);
-                    if (Integer.parseInt(apps[0].appVersionCode) <= packageInfo.versionCode) {
-                        // is the same version of the app or older
-                        finish();
-                    }
-                } catch (Exception ex) {
-                    FlyveLog.e(this.getClass().getName() + ", onCreate", ex.getMessage());
-                    finish();
-                }
-            } else {
-                try {
-                    installApk(appPath);
+                    uninstallApk(mPackage);
                 } catch (Exception ex) {
                     FlyveLog.e(this.getClass().getName() + ", onCreate", ex.getMessage());
                 }
+            }else{
+                FlyveLog.e(this.getClass().getName() + ", onActivityResult", "Uninstallation failed or is uninstalled");
             }
         } else {
             finish();
@@ -96,51 +62,41 @@ public class InstallAppActivity extends Activity {
 
     /**
      * Install the Android Package
-     * @param file to install
+     * @param mPackage to uninstall
      */
-    public void installApk(String file) {
+    public void uninstallApk(String mPackage) {
 
-        FlyveLog.i(file);
-        File toInstall = new File(file);
-        Uri uri = Uri.fromFile(toInstall);
-        if (uri == null) {
-            throw new RuntimeException(getString(R.string.datauri_not_point_apk_location));
-        }
         // https://code.google.com/p/android/issues/detail?id=205827
-//        if ((Build.VERSION.SDK_INT < 24)
-//                && (!uri.getScheme().equals("file"))) {
-//            throw new RuntimeException(getString(R.string.packageinstaller_android_n_support));
-//        }
-        if (Build.VERSION.SDK_INT >= 24) {
-            uri = FileProvider.getUriForFile(InstallAppActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", toInstall);
-        }
+        //        if ((Build.VERSION.SDK_INT < 24)
+        //                && (!uri.getScheme().equals("file"))) {
+        //            throw new RuntimeException(getString(R.string.packageinstaller_android_n_support));
+        //        }
 
         Intent intent = new Intent();
-
         // Note regarding EXTRA_NOT_UNKNOWN_SOURCE:
         // works only when being installed as system-app
         // https://code.google.com/p/android/issues/detail?id=42253
 
         if (Build.VERSION.SDK_INT < 14) {
-            intent.setAction(Intent.ACTION_VIEW);
+            intent.setAction(Intent.ACTION_DELETE);
             //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+            intent.setDataAndType(Uri.parse("package:"+mPackage), "application/vnd.android.package-archive");
         } else if (Build.VERSION.SDK_INT < 16) {
-            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
-            intent.setData(uri);
+            intent.setAction(Intent.ACTION_UNINSTALL_PACKAGE);
+            intent.setData(Uri.parse("package:"+mPackage));
             //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
             intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
             intent.putExtra(Intent.EXTRA_ALLOW_REPLACE, true);
         } else if (Build.VERSION.SDK_INT < 24) {
-            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
-            intent.setData(uri);
+            intent.setAction(Intent.ACTION_UNINSTALL_PACKAGE);
+            intent.setData(Uri.parse("package:"+mPackage));
             //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
             intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
         } else { // Android N
-            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
-            intent.setData(uri);
+            intent.setAction(Intent.ACTION_UNINSTALL_PACKAGE);
+            intent.setData(Uri.parse("package:"+mPackage));
             // grant READ permission for this content Uri
             //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -149,7 +105,7 @@ public class InstallAppActivity extends Activity {
         }
 
         try {
-            startActivityForResult(intent, APP_INSTALL_REQUEST);
+            startActivityForResult(intent, APP_UNINSTALL_REQUEST);
         } catch (ActivityNotFoundException e) {
             FlyveLog.e(this.getClass().getName() + ", installApk", e.getMessage());
         }
@@ -158,17 +114,15 @@ public class InstallAppActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case APP_INSTALL_REQUEST:
+            case APP_UNINSTALL_REQUEST:
                 if (resultCode == RESULT_OK) {
-                    FlyveLog.d("Package Installation Success");
-                    NotificationManager notificationManager = (NotificationManager) InstallAppActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
-                    notificationManager.cancel(Integer.parseInt(id));
+                    FlyveLog.d("Package Uninstall Success");
                 } else {
-                    FlyveLog.e(this.getClass().getName() + ", onActivityResult", "Installation failed or is already installed");
+                    FlyveLog.e(this.getClass().getName() + ", onActivityResult", "Uninstallation failed or is already uninstalled");
                 }
+                break;
         }
 
-        //todo refresh fragment app and file list
         finish();
     }
 

@@ -79,6 +79,7 @@ public class FragmentAppList extends Fragment {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("APP_ID", app.appId);
                 intent.putExtra("APP_PATH", app.appPath);
+                intent.putExtra("TASK_ID", app.taskId);
                 FragmentAppList.this.getContext().startActivity(intent);
             }
         });
@@ -95,7 +96,7 @@ public class FragmentAppList extends Fragment {
         apps = new ApplicationData(FragmentAppList.this.getContext()).getAllApplications();
 
         if(apps.length>0) {
-            ApplicationsAdapter mAdapter = new ApplicationsAdapter(this.getActivity(), apps);
+            ApplicationsAdapter mAdapter = new ApplicationsAdapter(this.getActivity(), apps, getContext());
             lst.setAdapter(mAdapter);
             txtNoData.setVisibility(View.GONE);
         } else {
