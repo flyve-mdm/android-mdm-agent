@@ -17,6 +17,7 @@
                 android:id="@+id/imgLogo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="logo"
                 android:src="@drawable/logo_walkthroug"
                 android:layout_above="@+id/imgStep"
                 android:layout_marginBottom="20dp"
@@ -42,15 +43,15 @@
                 android:layout_marginTop="20dp"
                 />
 
-            <ImageView
-                android:id="@+id/imgMore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/wt_more_information"
-                android:layout_below="@+id/imgDescription"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                />
+    <ImageView
+        android:id="@+id/imgMore"
+        android:layout_width="287dp"
+        android:layout_height="51dp"
+        android:layout_below="@+id/imgDescription"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="more"
+        android:src="@drawable/wt_more_information" />
 
             <LinearLayout
                 android:id="@+id/lnSliders"

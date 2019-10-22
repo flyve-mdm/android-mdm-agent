@@ -14,18 +14,16 @@
         <Switch
             android:id="@+id/swNotifications"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/disable_notifications"
+            android:layout_height="55dp"
             android:layout_margin="5dp"
-            />
+            android:text="@string/disable_notifications" />
 
         <Switch
             android:id="@+id/swConnectionNotification"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/enable_connection_notifications"
+            android:layout_height="55dp"
             android:layout_margin="5dp"
-            />
+            android:text="@string/enable_connection_notifications" />
 
         <Switch
             android:id="@+id/swDarkTheme"

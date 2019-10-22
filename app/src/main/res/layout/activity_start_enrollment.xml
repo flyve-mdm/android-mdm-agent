@@ -12,6 +12,7 @@
 
         <ImageView
             android:id="@+id/imgLogo"
+            android:contentDescription="logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/logoflyve"
@@ -46,6 +47,7 @@
 
         <RelativeLayout
             android:id="@+id/btnEnroll"
+            android:contentDescription="enroll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtTitle"

@@ -10,7 +10,7 @@
     <color name="grayLight">#D7D7D7</color>
     <color name="grayDark">#4C4C4C</color>
     <color name="blue">#4073B9</color>
-    <color name="snackbar_action">#ffff7663</color>
+    <color name="snackbar_action">#FFF</color>
 
     <color name="bg_dialog_title">@android:color/transparent</color>
 
