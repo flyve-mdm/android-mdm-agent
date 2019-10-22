@@ -8,6 +8,7 @@
         android:id="@+id/imgLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="logo"
         android:src="@drawable/logoflyve"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
