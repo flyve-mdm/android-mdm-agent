@@ -25,6 +25,7 @@ package org.flyve.mdm.agent.core.user;
 
 import org.flyve.mdm.agent.data.localstorage.UserData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserSchema {
@@ -40,6 +41,7 @@ public class UserSchema {
     private String administrativeNumber = "";
 
     public UserSchema() {
+        this.emails = new ArrayList<>();
     }
 
     public List<UserData.EmailsData> getEmails() {
