@@ -30,6 +30,7 @@ import android.content.Context;
 
 import org.flyve.mdm.agent.data.database.entity.Topics;
 import org.flyve.mdm.agent.data.database.setup.AppDataBase;
+import org.flyve.mdm.agent.utils.FlyveLog;
 
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class TopicsData {
             dataBase.TopicsDao().update(topics);
         }
 
-        return getAllTopics();
+        return dataBase.TopicsDao().getByTopic(topic);
     }
 
     public void setStatusTopic(String topic, int status) {

@@ -76,11 +76,6 @@ public class MqttPresenter implements mqtt.Presenter {
     }
 
     @Override
-    public void sendInventory(Context context) {
-        model.sendInventory(context);
-    }
-
-    @Override
     public void messageArrived(Context context, String topic, MqttMessage message) {
         model.messageArrived(context, topic, message);
     }

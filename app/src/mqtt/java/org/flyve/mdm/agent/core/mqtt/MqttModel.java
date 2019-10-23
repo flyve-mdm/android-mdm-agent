@@ -25,9 +25,6 @@ package org.flyve.mdm.agent.core.mqtt;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.NetworkOnMainThreadException;
-import android.os.SystemClock;
-import android.util.Base64;
 import android.util.Log;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -42,70 +39,22 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.CommonErrorType;
 import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
-import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.MqttData;
+import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.data.database.TopicsData;
-import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.data.localstorage.AppData;
-import org.flyve.mdm.agent.policies.AirplaneModePolicy;
 import org.flyve.mdm.agent.policies.BasePolicies;
-import org.flyve.mdm.agent.policies.BluetoothPolicy;
-import org.flyve.mdm.agent.policies.CameraPolicy;
-import org.flyve.mdm.agent.policies.GPSPolicy;
-import org.flyve.mdm.agent.policies.HostpotTetheringPolicy;
-import org.flyve.mdm.agent.policies.MaximumFailedPasswordForWipePolicy;
-import org.flyve.mdm.agent.policies.MaximumTimeToLockPolicy;
-import org.flyve.mdm.agent.policies.MobileLinePolicy;
-import org.flyve.mdm.agent.policies.NFCPolicy;
-import org.flyve.mdm.agent.policies.PasswordEnablePolicy;
-import org.flyve.mdm.agent.policies.PasswordMinLengthPolicy;
-import org.flyve.mdm.agent.policies.PasswordMinLetterPolicy;
-import org.flyve.mdm.agent.policies.PasswordMinLowerCasePolicy;
-import org.flyve.mdm.agent.policies.PasswordMinNonLetterPolicy;
-import org.flyve.mdm.agent.policies.PasswordMinNumericPolicy;
-import org.flyve.mdm.agent.policies.PasswordMinSymbolsPolicy;
-import org.flyve.mdm.agent.policies.PasswordMinUpperCasePolicy;
-import org.flyve.mdm.agent.policies.PasswordQualityPolicy;
-import org.flyve.mdm.agent.policies.RoamingPolicy;
-import org.flyve.mdm.agent.policies.SMSPolicy;
-import org.flyve.mdm.agent.policies.ScreenCapturePolicy;
-import org.flyve.mdm.agent.policies.SpeakerphonePolicy;
-import org.flyve.mdm.agent.policies.StatusBarPolicy;
-import org.flyve.mdm.agent.policies.StorageEncryptionPolicy;
-import org.flyve.mdm.agent.policies.StreamAccessibilityPolicy;
-import org.flyve.mdm.agent.policies.StreamAlarmPolicy;
-import org.flyve.mdm.agent.policies.StreamMusicPolicy;
-import org.flyve.mdm.agent.policies.StreamNotificationPolicy;
-import org.flyve.mdm.agent.policies.StreamRingPolicy;
-import org.flyve.mdm.agent.policies.StreamVoiceCallPolicy;
-import org.flyve.mdm.agent.policies.UsbAdbPolicy;
-import org.flyve.mdm.agent.policies.UsbMtpPolicy;
-import org.flyve.mdm.agent.policies.UsbPtpPolicy;
-import org.flyve.mdm.agent.policies.VPNPolicy;
-import org.flyve.mdm.agent.policies.WifiPolicy;
+import org.flyve.mdm.agent.policies.PoliciesAsyncTask;
 import org.flyve.mdm.agent.services.MQTTService;
-import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.ui.MainActivity;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.spongycastle.util.encoders.Base64Encoder;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.security.KeyStore;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Date;
@@ -113,30 +62,17 @@ import java.util.Enumeration;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import java.security.cert.X509Certificate;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 public class MqttModel implements mqtt.Model {
+
+    public static final int PING = 1;
+    public static final int GEOLOCATE = 2;
+    public static final int INVENTORY = 3;
+    public static final int POLICIES = 4;
+    public static final int SUBSCRIBE = 5;
 
     private static final String QUERY = "query";
 
@@ -153,7 +89,7 @@ public class MqttModel implements mqtt.Model {
     private Boolean executeConnection = true;
     private int tryEverySeconds = 30;
 
-    private MqttPoliciesController policiesController = null;
+    private MqttController policiesController = null;
 
     public MqttModel(mqtt.Presenter presenter) {
         this.presenter = presenter;
@@ -167,15 +103,6 @@ public class MqttModel implements mqtt.Model {
     @Override
     public Boolean isConnected() {
         return connected;
-    }
-
-    @Override
-    public void sendInventory(Context context) {
-        if(isConnected()) {
-            new MqttPoliciesController(context, getMqttClient()).createInventory();
-        } else {
-            showDetailError(context, CommonErrorType.MQTT_INVENTORY_FAIL, context.getString(R.string.inventory_cannot_send_offline));
-        }
     }
 
     @Override
@@ -196,11 +123,11 @@ public class MqttModel implements mqtt.Model {
         final String mTLS = cache.getTls();
 
         final StringBuilder connectionInformation = new StringBuilder();
-        connectionInformation.append("\n\nBroker: " + mBroker + "\n");
-        connectionInformation.append("Port: " + mPort + "\n");
-        connectionInformation.append("User: " + mUser + "\n");
-        connectionInformation.append("Topic: " + mTopic + "\n");
-        connectionInformation.append("TLS: " + mTLS + "\n");
+        connectionInformation.append("\n\nBroker: ").append(mBroker).append("\n");
+        connectionInformation.append("Port: ").append(mPort).append("\n");
+        connectionInformation.append("User: ").append(mUser).append("\n");
+        connectionInformation.append("Topic: ").append(mTopic).append("\n");
+        connectionInformation.append("TLS: ").append(mTLS).append("\n");
 
         Log.d("MQTT", connectionInformation.toString());
         Helpers.storeLog("MQTT", "Connection Information", connectionInformation.toString());
@@ -307,7 +234,7 @@ public class MqttModel implements mqtt.Model {
                     Helpers.storeLog("MQTT", "Connection Success", "");
 
                     // Everything ready waiting for message
-                    policiesController = new MqttPoliciesController(context, client);
+                    policiesController = new MqttController(context, client);
 
                     // We are connected
                     setStatus(context, callback, true);
@@ -392,11 +319,11 @@ public class MqttModel implements mqtt.Model {
     }
 
     public void messageArrived(Context context, String topic, MqttMessage message) {
-        FlyveLog.d("- Topic: " + topic + "\n\n- Message: " + new String(message.getPayload()));
         int priority = topic.contains("fleet") ? 0 : 1;
 
+
         String messageBody = new String(message.getPayload());
-        MqttPoliciesController mqttPoliciesController = new MqttPoliciesController(context, getMqttClient());
+        MqttController mqttController = new MqttController(context, getMqttClient());
 
         Helpers.storeLog("MQTT Message", "Body", messageBody);
 
@@ -405,66 +332,36 @@ public class MqttModel implements mqtt.Model {
             return;
         }
 
+        // Delete policy information
+        if(messageBody.contains("default")) {
+            try {
+                String taskId = new JSONObject(messageBody).getString("taskId");
+                new PoliciesData(context).removeValue(taskId);
+                FlyveLog.i("Deleting policy " + message + " - " + topic);
+            } catch (Exception ex) {
+                FlyveLog.e("fcm", "error deleting policy " + message + " - " + topic, ex.getMessage());
+            }
+            return;
+        }
+
+
+        //Command/Policies
+        new PoliciesAsyncTask().execute(context, POLICIES, topic, messageBody, this.client);
+
+
         // Command/Ping
         if(topic.toLowerCase().contains("ping")) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-                if (jsonObj.has(QUERY) && "Ping".equalsIgnoreCase(jsonObj.getString(QUERY))) {
-                    //mqttPoliciesController.sendKeepAlive();
-
-                    String data = "{\"input\":{\"_pong\":\"!\"}}";
-                    Routes routes = new Routes(context);
-                    MqttData cache = new MqttData(context);
-                    String url = routes.pluginFlyvemdmAgent(cache.getAgentId());
-
-                    pluginHttpResponse(context, url, data);
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_PING, ex.getMessage());
-            }
+            new PoliciesAsyncTask().execute(context, PING, topic,messageBody, this.client);
         }
 
         // Command/Geolocate
         if(topic.toLowerCase().contains("geolocate")) {
-            Routes routes = new Routes(context);
-            final String url = routes.pluginFlyvemdmGeolocation();
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-                if (jsonObj.has(QUERY)
-                        && "Geolocate".equalsIgnoreCase(jsonObj.getString(QUERY))) {
-                    mqttPoliciesController.sendGPS();
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_GEOLOCATE, ex.getMessage());
-            }
+            new PoliciesAsyncTask().execute(context, GEOLOCATE, topic,messageBody, this.client);
         }
 
         // Command/Inventory
         if(topic.toLowerCase().contains("inventory")) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-                if (jsonObj.has(QUERY)
-                        && "Inventory".equalsIgnoreCase(jsonObj.getString(QUERY))) {
-                    mqttPoliciesController.createInventory();
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_INVENTORY, ex.getMessage());
-            }
-        }
-
-        // Command/Lock
-        if(topic.toLowerCase().contains("lock")) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if (jsonObj.has("lock")) {
-                    String lock = jsonObj.getString("lock");
-                    mqttPoliciesController.lockDevice(lock.equalsIgnoreCase("now"));
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_LOCK, ex.getMessage());
-            }
+            new PoliciesAsyncTask().execute(context, INVENTORY, topic,messageBody, this.client);
         }
 
         // Command/Wipe
@@ -473,12 +370,13 @@ public class MqttModel implements mqtt.Model {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
                 if(jsonObj.has("wipe") && "NOW".equalsIgnoreCase(jsonObj.getString("wipe")) ) {
-                    mqttPoliciesController.wipe();
+                    mqttController.wipe();
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_WIPE, ex.getMessage());
             }
         }
+
 
         // Command/Unenroll
         if(topic.toLowerCase().contains("unenroll")) {
@@ -487,12 +385,13 @@ public class MqttModel implements mqtt.Model {
 
                 if(jsonObj.has("unenroll") && "NOW".equalsIgnoreCase(jsonObj.getString("unenroll")) ) {
                     FlyveLog.d("unroll");
-                    mqttPoliciesController.unenroll();
+                    mqttController.unenroll();
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_UNENROLL, ex.getMessage());
             }
         }
+
 
         // Command/Subscribe
         if(topic.toLowerCase().contains("subscribe")) {
@@ -508,7 +407,7 @@ public class MqttModel implements mqtt.Model {
                         FlyveLog.d(channel);
 
                         // Add new channel
-                        mqttPoliciesController.subscribe(channel);
+                        mqttController.subscribe(channel);
                     }
                 }
             } catch (Exception ex) {
@@ -516,250 +415,20 @@ public class MqttModel implements mqtt.Model {
             }
         }
 
-        // Policy/resetPassword
-        // ROOT
-        String RESET_PASSWORD = "resetPassword";
-        if(topic.toLowerCase().contains(RESET_PASSWORD.toLowerCase())) {
+        // Command/Lock
+        if(topic.toLowerCase().contains("lock")) {
             try {
                 JSONObject jsonObj = new JSONObject(messageBody);
 
-                if(jsonObj.has(RESET_PASSWORD)) {
-                    Boolean disable = jsonObj.getBoolean(RESET_PASSWORD);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    //mqttPoliciesController.resetPassword(taskId, disable);
+                if (jsonObj.has("lock")) {
+                    String lock = jsonObj.getString("lock");
+                    mqttController.lockDevice(lock.equalsIgnoreCase("now"));
                 }
             } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_RESETPASSWORD, ex.getMessage());
+                showDetailError(context, CommonErrorType.MQTT_LOCK, ex.getMessage());
             }
         }
 
-        // Policy/useTLS
-        String USE_TLS = "useTLS";
-        if(topic.toLowerCase().contains(USE_TLS.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if (jsonObj.has(USE_TLS)) {
-                    Boolean enable = jsonObj.getBoolean(USE_TLS);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    mqttPoliciesController.useTLS(taskId, enable);
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_USETLS, ex.getMessage());
-            }
-        }
-
-        // Policy/passwordEnabled
-        callPolicy(context, PasswordEnablePolicy.class, PasswordEnablePolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/passwordQuality
-        callPolicy(context, PasswordQualityPolicy.class, PasswordQualityPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/passwordMinLength
-        callPolicy(context, PasswordMinLengthPolicy.class, PasswordMinLengthPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/passwordMinLowerCase
-        callPolicy(context, PasswordMinLowerCasePolicy.class, PasswordMinLowerCasePolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/passwordMinUpperCase
-        callPolicy(context, PasswordMinUpperCasePolicy.class, PasswordMinUpperCasePolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/passwordMinNonLetter
-        callPolicy(context, PasswordMinNonLetterPolicy.class, PasswordMinNonLetterPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/passwordMinLetters
-        callPolicy(context, PasswordMinLetterPolicy.class, PasswordMinLetterPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/passwordMinNumeric
-        callPolicy(context, PasswordMinNumericPolicy.class, PasswordMinNumericPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/passwordMinSymbols
-        callPolicy(context, PasswordMinSymbolsPolicy.class, PasswordMinSymbolsPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/MaximumFailedPasswordsForWipe
-        callPolicy(context, MaximumFailedPasswordForWipePolicy.class, MaximumFailedPasswordForWipePolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/MaximumTimeToLock
-        callPolicy(context, MaximumTimeToLockPolicy.class, MaximumTimeToLockPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/storageEncryption
-        callPolicy(context, StorageEncryptionPolicy.class, StorageEncryptionPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableCamera
-        callPolicy(context, CameraPolicy.class, CameraPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableBluetooth
-        callPolicy(context, BluetoothPolicy.class, BluetoothPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableHostpotTethering
-        callPolicy(context, HostpotTetheringPolicy.class, HostpotTetheringPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableRoaming
-        callPolicy(context, RoamingPolicy.class, RoamingPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableWifi
-        callPolicy(context, WifiPolicy.class, WifiPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableSpeakerphone
-        callPolicy(context, SpeakerphonePolicy.class, SpeakerphonePolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableUsbOnTheGo
-        callPolicy(context, SMSPolicy.class, SMSPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableCreateVpnProfiles
-        callPolicy(context, VPNPolicy.class, VPNPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableStreamMusic
-        callPolicy(context, StreamMusicPolicy.class, StreamMusicPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableStreamRing
-        callPolicy(context, StreamRingPolicy.class, StreamRingPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableStreamAlarm
-        callPolicy(context, StreamAlarmPolicy.class, StreamAlarmPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableStreamNotification
-        callPolicy(context, StreamNotificationPolicy.class, StreamNotificationPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableStreamAccessibility
-        callPolicy(context, StreamAccessibilityPolicy.class, StreamAccessibilityPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableStreamVoiceCall
-        callPolicy(context, StreamVoiceCallPolicy.class, StreamVoiceCallPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableStreamDTMF
-        callPolicy(context, StreamVoiceCallPolicy.class, StreamVoiceCallPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableScreenCapture
-        //  ROOT REQUIRED
-        callPolicy(context, ScreenCapturePolicy.class, ScreenCapturePolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableAirplaneMode
-        //  ROOT REQUIRED
-        callPolicy(context, AirplaneModePolicy.class, AirplaneModePolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableGPS
-        //  ROOT REQUIRED
-        callPolicy(context, GPSPolicy.class, GPSPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableMobileLine
-        // ROOT
-        callPolicy(context, MobileLinePolicy.class, MobileLinePolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableNfc
-        // ROOT
-        callPolicy(context, NFCPolicy.class, NFCPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableStatusBar
-        // ROOT
-        callPolicy(context, StatusBarPolicy.class, StatusBarPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableUsbMtp
-        // ROOT
-        callPolicy(context, UsbMtpPolicy.class, UsbMtpPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableUsbPtp
-        // ROOT
-        callPolicy(context, UsbPtpPolicy.class, UsbPtpPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/disableUsbAdb
-        // ROOT
-        callPolicy(context, UsbAdbPolicy.class, UsbAdbPolicy.POLICY_NAME, priority, topic, messageBody);
-
-        // Policy/deployApp
-        String DEPLOY_APP = "deployApp";
-        if(topic.toLowerCase().contains(DEPLOY_APP.toLowerCase())) {
-            MDMAgent.setMqttClient(getMqttClient());
-            try {
-
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DEPLOY_APP)) {
-
-                    String deployApp = jsonObj.getString("deployApp");
-                    String id = jsonObj.getString("id");
-                    String versionCode = jsonObj.getString("versionCode");
-                    String taskId = jsonObj.getString("taskId");
-
-                    ApplicationData apps = new ApplicationData(context);
-                    Application[] appsArray = apps.getApplicationsById(id);
-
-                    // check if the app exists with same version or older
-                    Boolean bDownload = true;
-                    if(appsArray.length>0 && Integer.parseInt(versionCode) >= Integer.parseInt(appsArray[0].appVersionCode)) {
-                        bDownload = false;
-                    }
-
-                    if(bDownload) {
-                        // execute the policy
-                        mqttPoliciesController.installPackage(deployApp, id, versionCode, taskId);
-                        SystemClock.sleep(2000);
-                    }
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_DEPLOYAPP, ex.getMessage());
-            }
-        }
-
-        // Policy/deployApp
-        String REMOVE_APP = "removeApp";
-        if(topic.toLowerCase().contains(REMOVE_APP.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(REMOVE_APP)) {
-                    String removeApp = jsonObj.getString(REMOVE_APP);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    mqttPoliciesController.removePackage(taskId, removeApp);
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_REMOVEAPP, ex.getMessage());
-            }
-        }
-
-        // Policy/deployFile
-        String DEPLOY_FILE = "deployFile";
-        if(topic.toLowerCase().contains(DEPLOY_FILE.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(DEPLOY_FILE)) {
-                    String deployFile = jsonObj.getString(DEPLOY_FILE);
-                    String id = jsonObj.getString("id");
-                    String versionCode = jsonObj.getString("version");
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    mqttPoliciesController.downloadFile(deployFile, id, versionCode, taskId);
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_DEPLOYFILE, ex.getMessage());
-            }
-        }
-
-        // Policy/deployFile
-        String REMOVE_FILE = "removeFile";
-        if(topic.toLowerCase().contains(REMOVE_FILE.toLowerCase())) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(REMOVE_FILE)) {
-                    String removeFile = jsonObj.getString(REMOVE_FILE);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    mqttPoliciesController.removeFile(taskId, removeFile);
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_REMOVEFILE, ex.getMessage());
-            }
-        }
     }
 
     @Override
@@ -810,6 +479,41 @@ public class MqttModel implements mqtt.Model {
 
     }
 
+    public static void sendTaskStatusbyHttp(final Context context,final String status, final String taskId ){
+        EnrollmentHelper enrollmentHelper = new EnrollmentHelper(context);
+        enrollmentHelper.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
+            @Override
+            public void onSuccess(String sessionToken) {
+                Helpers.storeLog("mqtt", "http response session token", sessionToken);
+                String payload = "";
+                try {
+                    JSONObject jsonPayload = new JSONObject();
+                    jsonPayload.put("status", status);
+
+                    JSONObject jsonInput = new JSONObject();
+                    jsonInput.put("input", jsonPayload);
+
+                    payload = jsonInput.toString();
+                } catch (Exception ex) {
+                    Helpers.storeLog("mqtt", "Error sending status http", ex.getMessage());
+                }
+
+                ConnectionHTTP.sendHttpResponsePolicies(context, taskId, payload, sessionToken, new ConnectionHTTP.DataCallback() {
+                    @Override
+                    public void callback(String data) {
+                        Helpers.storeLog("mqtt", "http response from policy", data);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(int type, String error) {
+                Helpers.storeLog("mqtt", "problem with session token", error);
+            }
+        });
+    }
+
+
     public static void sendStatusbyHttp(Context context, boolean status) {
         try {
             JSONObject jsonPayload = new JSONObject();
@@ -830,15 +534,16 @@ public class MqttModel implements mqtt.Model {
     }
 
 
-    public void callPolicy(Context context, Class<? extends BasePolicies> classPolicy, String policyName, int policyPriority, String topic, String messageBody) {
+    static public void callPolicy(Context context, Class<? extends BasePolicies> classPolicy, String policyName, int policyPriority, String topic, String messageBody, MqttAndroidClient client) {
         if(topic.toLowerCase().contains(policyName.toLowerCase())) {
 
             BasePolicies policies;
+            FlyveLog.d("Call policies "+messageBody);
 
             try {
                 policies = classPolicy.getDeclaredConstructor(Context.class).newInstance(context);
             } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_CALLPOLICY_NEWINSTANCE, ex.getMessage());
+                FlyveLog.e("MqttModel, showDetailError", context.getResources().getString(R.string.error_message_with_number, String.valueOf(CommonErrorType.MQTT_CALLPOLICY_NEWINSTANCE), ex.getMessage()));
                 return;
             }
 
@@ -855,13 +560,13 @@ public class MqttModel implements mqtt.Model {
                     String taskId = jsonObj.getString("taskId");
 
                     // execute the policy
-                    policies.setMQTTparameters(this.client, topic, taskId);
+                    policies.setMQTTparameters(client, topic, taskId, messageBody);
                     policies.setValue(value);
                     policies.setPriority(policyPriority);
                     policies.execute();
                 }
             } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_CALLPOLICY_JSON_PARSE, ex.getMessage());
+                FlyveLog.e("MqttModel, showDetailError", context.getResources().getString(R.string.error_message_with_number, String.valueOf(CommonErrorType.MQTT_CALLPOLICY_JSON_PARSE), ex.getMessage()));
             }
         }
     }
@@ -891,4 +596,6 @@ public class MqttModel implements mqtt.Model {
 
         Helpers.sendBroadcast(isConnected, Helpers.BROADCAST_STATUS, context);
     }
+
+
 }

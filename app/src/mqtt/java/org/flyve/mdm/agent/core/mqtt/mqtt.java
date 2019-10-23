@@ -42,7 +42,6 @@ public interface mqtt {
         // Models
         MqttAndroidClient getMqttClient();
         Boolean isConnected();
-        void sendInventory(Context context);
         void connect(Context context, MqttCallback callback);
         void connectionLost(Context context, MqttCallback callback, String message);
         void messageArrived(Context context, String topic, MqttMessage message);
@@ -54,7 +53,6 @@ public interface mqtt {
     interface Model {
         MqttAndroidClient getMqttClient();
         Boolean isConnected();
-        void sendInventory(Context context);
         void connect(Context context, MqttCallback callback);
         void connectionLost(Context context, MqttCallback callback, String message);
         void messageArrived(Context context, String topic, MqttMessage message);

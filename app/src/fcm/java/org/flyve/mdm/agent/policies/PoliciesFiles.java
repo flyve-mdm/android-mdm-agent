@@ -224,8 +224,6 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
 
             }
 
-            FlyveLog.d(jsonObjDownload);
-
             // validating if folder exists or create
             new File(path).mkdirs();
 
