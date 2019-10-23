@@ -68,10 +68,6 @@ public class MQTTService extends Service implements MqttCallback, mqtt.View {
         }
     }
 
-    public void sendInventory() {
-        presenter.sendInventory(getApplicationContext());
-    }
-
     /**
      * Return the communication channel to the service
      * @param intent that was used to bind to this service
@@ -136,6 +132,8 @@ public class MQTTService extends Service implements MqttCallback, mqtt.View {
      */
     @Override
     public void messageArrived(String topic, MqttMessage message) {
+        String debugInfo = "Notification (message): " + message + "\n" + "Notification (topic): " + topic;
+        FlyveLog.d(debugInfo);
         presenter.messageArrived(getApplicationContext(), topic, message);
     }
 }

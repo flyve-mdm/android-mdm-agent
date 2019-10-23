@@ -43,12 +43,12 @@ public abstract class BasePolicies {
     private static final String ERROR = "ERROR";
     private static final String MQTT_SEND = "MQTT Send";
 
-    private static final String MQTT_FEEDBACK_PENDING = "pending";
-    private static final String MQTT_FEEDBACK_RECEIVED = "received";
-    private static final String MQTT_FEEDBACK_DONE = "done";
-    private static final String MQTT_FEEDBACK_FAILED = "failed";
-    private static final String MQTT_FEEDBACK_CANCELED = "canceled";
-    private static final String MQTT_FEEDBACK_WAITING = "waiting";
+    public static final String MQTT_FEEDBACK_PENDING = "pending";
+    public static final String MQTT_FEEDBACK_RECEIVED = "received";
+    public static final String MQTT_FEEDBACK_DONE = "done";
+    public static final String MQTT_FEEDBACK_FAILED = "failed";
+    public static final String MQTT_FEEDBACK_CANCELED = "canceled";
+    public static final String MQTT_FEEDBACK_WAITING = "waiting";
 
     private boolean enableLog;
     protected Context context;
@@ -61,6 +61,7 @@ public abstract class BasePolicies {
     private boolean mqttEnable;
     private String mqttTopic;
     private String mqttTaskId;
+    protected String message;
 
     public BasePolicies(Context context, String name) {
         this.context = context;
@@ -93,10 +94,11 @@ public abstract class BasePolicies {
         this.enableLog = enable;
     }
 
-    public void setMQTTparameters(MqttAndroidClient client, String topic, String taskId) {
+    public void setMQTTparameters(MqttAndroidClient client, String topic, String taskId, String message) {
         this.mqttClient = client;
         this.mqttTopic = topic;
         this.mqttTaskId = taskId;
+        this.message = message;
     }
 
     private void storage()  {
@@ -183,11 +185,17 @@ public abstract class BasePolicies {
         validate();
         Log("Execute Policy", "Policy " + this.policyName, "Start the policy: " + this.policyName + "\nvalue: " + this.policyValue + "\npriority:" + this.policyPriority);
         boolean status = process();
-        if(status) {
-            policyDone();
-        } else {
-            policyFail();
+
+
+        if(!this.policyName.equalsIgnoreCase("removeApp")
+        && !this.policyName.equalsIgnoreCase("deployApp")){
+            if(status) {
+                policyDone();
+            } else {
+                policyFail();
+            }
         }
+
     }
 
     protected void policyDone() {

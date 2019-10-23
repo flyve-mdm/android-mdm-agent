@@ -104,8 +104,6 @@ public class MessagePolicies {
 
     public void messageArrived(final Context context, String topic, String message) {
 
-        int priority = 1;
-
         // Delete policy information
         if(message.contains("default")) {
             try {
@@ -119,22 +117,22 @@ public class MessagePolicies {
         }
 
         //Command/Policies
-        new PoliciesAsyncTask().execute(context,this.POLICIES, topic, message);
+        new PoliciesAsyncTask().execute(context,POLICIES, topic, message);
 
 
         // Command/Ping
         if(topic.toLowerCase().contains("ping")) {
-            new PoliciesAsyncTask().execute(context,this.PING, topic,message);
+            new PoliciesAsyncTask().execute(context,PING, topic,message);
         }
 
         // Command/Geolocate
         if(topic.toLowerCase().contains("geolocate")) {
-            new PoliciesAsyncTask().execute(context,this.GEOLOCATE, topic,message);
+            new PoliciesAsyncTask().execute(context,GEOLOCATE, topic,message);
         }
 
         // Command/Inventory
         if(topic.toLowerCase().contains("inventory")) {
-            new PoliciesAsyncTask().execute(context,this.INVENTORY, topic,message);
+            new PoliciesAsyncTask().execute(context,INVENTORY, topic,message);
         }
 
         // Command/Wipe
