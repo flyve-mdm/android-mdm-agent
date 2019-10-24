@@ -73,7 +73,7 @@
     <string name="validate_check_details">Please check problem details at the bottom of the form</string>
     <string name="validate_fcm_token">The FCM token is not present, close the app and try again</string>
 
-    <string name="lock_message">This device has been blocked by user, please enter your code to unlock</string>
+    <string name="lock_message">This device has been blocked by administrator, please contact her</string>
     <string name="lock_email">Please enter your email</string>
     <string name="lock_unlock">UNLOCK</string>
 
@@ -179,6 +179,13 @@
     <string name="permission_button_share">Share the inventory</string>
     <string name="permission_button_continue">Continue</string>
     <string name="permission_error_result">All the permissions are required</string>
+
+    <string name="option_title">Android options</string>
+    <string name="option_message">Some FlyveMDM features require the activation of android options (it is not mandatory, you can enable/disable them in the FlyveMDM options later:</string>
+    <string name="option_draw_overlay">Draw overlay \n For FlyveMDM new lock screen feature</string>
+
+
+
 
     <string name="feedback_message_hint">Add any additional message</string>
     <string name="feedback_title">Please help us to confirm if the policies are working correctly on your device\n\n <b>Important: if you check the policy is working fine for you</b></string>

@@ -43,10 +43,19 @@ public class MDMAgent extends Application {
 
     private static MDMAgent instance;
     private static Boolean isDebuggable;
+    private LockActivity lockActivity = null;
 
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+    }
+
+    public void setLockActivity (LockActivity activity) {
+        this.lockActivity = activity ;
+    }
+
+    public LockActivity getLockActivity () {
+        return this.lockActivity;
     }
 
     /**

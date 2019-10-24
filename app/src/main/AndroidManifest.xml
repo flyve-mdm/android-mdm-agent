@@ -5,6 +5,11 @@
     android:versionCode="3686"
     android:versionName="2.0.0-rc.7">
 
+    <!-- For LockScreen -->
+    <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <!-- For writing logfiles -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
@@ -115,6 +120,9 @@
             android:launchMode="singleTask"></activity>
         <activity
             android:name=".ui.UninstallAppActivity"
+            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".ui.OptionsEnrollmentActivity"
             android:launchMode="singleTask"></activity>
         <activity
             android:name=".ui.ScanActivity"
