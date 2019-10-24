@@ -41,7 +41,7 @@ public class DeployAppPolicy extends BasePolicies {
                     @Override
                     public void onSuccess(String sessionToken) {
                         try {
-                            FlyveLog.d("Install package: " + deployApp + " id: " + id);
+                            FlyveLog.d("Download package: " + deployApp + " id: " + id);
                             PoliciesFiles policiesFiles = new PoliciesFiles(context);
                             policiesFiles.execute("package", deployApp, id, sessionToken, taskId);
                         } catch (Exception ex) {

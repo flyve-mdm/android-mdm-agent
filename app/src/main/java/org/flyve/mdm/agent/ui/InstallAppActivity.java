@@ -100,7 +100,7 @@ public class InstallAppActivity extends Activity {
      */
     public void installApk(String file) {
 
-        FlyveLog.i(file);
+        FlyveLog.i("Install APK -> " + file);
         File toInstall = new File(file);
         Uri uri = Uri.fromFile(toInstall);
         if (uri == null) {
