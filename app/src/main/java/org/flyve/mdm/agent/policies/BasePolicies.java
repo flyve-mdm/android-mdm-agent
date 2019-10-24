@@ -29,10 +29,7 @@ package org.flyve.mdm.agent.policies;
 
 import android.content.Context;
 
-import org.flyve.mdm.agent.MessagePolicies;
-import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
-import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.data.database.entity.Policies;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
@@ -45,12 +42,12 @@ public abstract class BasePolicies {
     private static final String ERROR = "ERROR";
     private static final String MQTT_SEND = "MQTT Send";
 
-    public static final String FCM_FEEDBACK_PENDING = "pending";
-    public static final String FCM_FEEDBACK_RECEIVED = "received";
-    public static final String FCM_FEEDBACK_DONE = "done";
-    public static final String FCM_FEEDBACK_FAILED = "failed";
-    public static final String FCM_FEEDBACK_CANCELED = "canceled";
-    public static final String FCM_FEEDBACK_WAITING = "waiting";
+    public static final String FEEDBACK_PENDING = "pending";
+    public static final String FEEDBACK_RECEIVED = "received";
+    public static final String FEEDBACK_DONE = "done";
+    public static final String FEEDBACK_FAILED = "failed";
+    public static final String FEEDBACK_CANCELED = "canceled";
+    public static final String FEEDBACK_WAITING = "waiting";
 
     private boolean enableLog;
     protected Context context;
@@ -108,7 +105,7 @@ public abstract class BasePolicies {
         }
     }
 
-    private void sendTaskStatus(final String taskId, final String status) {
+    public static void sendTaskStatusbyHttp(final Context context,final String status, final String taskId ){
         EnrollmentHelper enrollmentHelper = new EnrollmentHelper(context);
         enrollmentHelper.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
             @Override
@@ -117,7 +114,6 @@ public abstract class BasePolicies {
                 String payload = "";
                 try {
                     JSONObject jsonPayload = new JSONObject();
-
                     jsonPayload.put("status", status);
 
                     JSONObject jsonInput = new JSONObject();
@@ -144,7 +140,7 @@ public abstract class BasePolicies {
     }
 
     private void policyResponse(String status) {
-        this.sendTaskStatus(this.taskId, status);
+        sendTaskStatusbyHttp(context, status,  this.taskId);
     }
 
 
@@ -181,12 +177,12 @@ public abstract class BasePolicies {
     }
 
     protected void policyDone() {
-        policyResponse(FCM_FEEDBACK_DONE);
+        policyResponse(FEEDBACK_DONE);
     }
 
     protected void policyFail() {
         Log("Policy ERROR", "Policy " + this.policyName,"Policy Fail: " + this.policyName + "\nvalue: " + this.policyValue + "\npriority: " + this.policyPriority);
-        policyResponse(FCM_FEEDBACK_FAILED);
+        policyResponse(FEEDBACK_FAILED);
     }
 
     protected abstract boolean process();

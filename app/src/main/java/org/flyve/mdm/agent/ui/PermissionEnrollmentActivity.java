@@ -107,6 +107,7 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.RECEIVE_SMS,
                         Manifest.permission.READ_SMS,
+                        Manifest.permission.SYSTEM_ALERT_WINDOW,
                 },
                 1);
     }

@@ -41,6 +41,7 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.DrawerAdapter;
 import org.flyve.mdm.agent.core.mqtt.MqttModel;
 import org.flyve.mdm.agent.data.localstorage.AppData;
+import org.flyve.mdm.agent.policies.PoliciesAsyncTask;
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         if (type != null) {
             switch (type) {
                 case "DeployApp":
+                case "RemoveApp":
                     menuItemSelected = 1;
                     extra = "DeployApp";
                     break;
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         loadListDrawer(menuItemSelected, extra);
         checkNotifications();
 
-        MqttModel.sendStatusbyHttp(MainActivity.this, true);
+        PoliciesAsyncTask.sendStatusbyHttp(MainActivity.this, true);
     }
 
     private void checkNotifications() {

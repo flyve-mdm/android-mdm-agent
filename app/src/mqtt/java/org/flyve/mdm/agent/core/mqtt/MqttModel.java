@@ -37,17 +37,13 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.CommonErrorType;
-import org.flyve.mdm.agent.core.Routes;
-import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.data.database.TopicsData;
 import org.flyve.mdm.agent.data.localstorage.AppData;
-import org.flyve.mdm.agent.policies.BasePolicies;
 import org.flyve.mdm.agent.policies.PoliciesAsyncTask;
 import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.ui.MainActivity;
-import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 import org.json.JSONArray;
@@ -67,12 +63,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
 public class MqttModel implements mqtt.Model {
-
-    public static final int PING = 1;
-    public static final int GEOLOCATE = 2;
-    public static final int INVENTORY = 3;
-    public static final int POLICIES = 4;
-    public static final int SUBSCRIBE = 5;
 
     private static final String QUERY = "query";
 
@@ -321,11 +311,8 @@ public class MqttModel implements mqtt.Model {
     public void messageArrived(Context context, String topic, MqttMessage message) {
         int priority = topic.contains("fleet") ? 0 : 1;
 
-
         String messageBody = new String(message.getPayload());
         MqttController mqttController = new MqttController(context, getMqttClient());
-
-        Helpers.storeLog("MQTT Message", "Body", messageBody);
 
         if(topic.isEmpty()) {
             // exit if the topic if empty
@@ -344,54 +331,38 @@ public class MqttModel implements mqtt.Model {
             return;
         }
 
-
         //Command/Policies
-        new PoliciesAsyncTask().execute(context, POLICIES, topic, messageBody, this.client);
-
+        new PoliciesAsyncTask().execute(context, PoliciesAsyncTask.POLICIES, topic, messageBody, this.client);
 
         // Command/Ping
         if(topic.toLowerCase().contains("ping")) {
-            new PoliciesAsyncTask().execute(context, PING, topic,messageBody, this.client);
+            new PoliciesAsyncTask().execute(context, PoliciesAsyncTask.PING, topic,messageBody, this.client);
         }
 
         // Command/Geolocate
         if(topic.toLowerCase().contains("geolocate")) {
-            new PoliciesAsyncTask().execute(context, GEOLOCATE, topic,messageBody, this.client);
+            new PoliciesAsyncTask().execute(context, PoliciesAsyncTask.GEOLOCATE, topic,messageBody, this.client);
         }
 
         // Command/Inventory
         if(topic.toLowerCase().contains("inventory")) {
-            new PoliciesAsyncTask().execute(context, INVENTORY, topic,messageBody, this.client);
+            new PoliciesAsyncTask().execute(context, PoliciesAsyncTask.INVENTORY, topic,messageBody, this.client);
         }
 
         // Command/Wipe
         if(topic.toLowerCase().contains("wipe")) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has("wipe") && "NOW".equalsIgnoreCase(jsonObj.getString("wipe")) ) {
-                    mqttController.wipe();
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_WIPE, ex.getMessage());
-            }
+            new PoliciesAsyncTask().execute(context,PoliciesAsyncTask.WIPE, topic,messageBody);
         }
-
 
         // Command/Unenroll
         if(topic.toLowerCase().contains("unenroll")) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has("unenroll") && "NOW".equalsIgnoreCase(jsonObj.getString("unenroll")) ) {
-                    FlyveLog.d("unroll");
-                    mqttController.unenroll();
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_UNENROLL, ex.getMessage());
-            }
+            new PoliciesAsyncTask().execute(context,PoliciesAsyncTask.UNENROLL, topic,messageBody);
         }
 
+        // Command/Lock
+        if(topic.toLowerCase().contains("lock")) {
+            new PoliciesAsyncTask().execute(context,PoliciesAsyncTask.LOCK, topic,messageBody);
+        }
 
         // Command/Subscribe
         if(topic.toLowerCase().contains("subscribe")) {
@@ -412,20 +383,6 @@ public class MqttModel implements mqtt.Model {
                 }
             } catch (Exception ex) {
                 showDetailError(context, CommonErrorType.MQTT_SUBSCRIBE, ex.getMessage());
-            }
-        }
-
-        // Command/Lock
-        if(topic.toLowerCase().contains("lock")) {
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if (jsonObj.has("lock")) {
-                    String lock = jsonObj.getString("lock");
-                    mqttController.lockDevice(lock.equalsIgnoreCase("now"));
-                }
-            } catch (Exception ex) {
-                showDetailError(context, CommonErrorType.MQTT_LOCK, ex.getMessage());
             }
         }
 
@@ -456,121 +413,6 @@ public class MqttModel implements mqtt.Model {
         }
     }
 
-    public static void pluginHttpResponse(final Context context, final String url, final String data) {
-        Helpers.storeLog("mqtt", "http response payload", data);
-
-        EnrollmentHelper enrollmentHelper = new EnrollmentHelper(context);
-        enrollmentHelper.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
-            @Override
-            public void onSuccess(String sessionToken) {
-                ConnectionHTTP.sendHttpResponse(context, url, data, sessionToken, new ConnectionHTTP.DataCallback() {
-                    @Override
-                    public void callback(String data) {
-                        Helpers.storeLog("mqtt", "http response from url", data);
-                    }
-                });
-            }
-
-            @Override
-            public void onError(int type, String error) {
-                Helpers.storeLog("mqtt", "active session fail", data);
-            }
-        });
-
-    }
-
-    public static void sendTaskStatusbyHttp(final Context context,final String status, final String taskId ){
-        EnrollmentHelper enrollmentHelper = new EnrollmentHelper(context);
-        enrollmentHelper.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
-            @Override
-            public void onSuccess(String sessionToken) {
-                Helpers.storeLog("mqtt", "http response session token", sessionToken);
-                String payload = "";
-                try {
-                    JSONObject jsonPayload = new JSONObject();
-                    jsonPayload.put("status", status);
-
-                    JSONObject jsonInput = new JSONObject();
-                    jsonInput.put("input", jsonPayload);
-
-                    payload = jsonInput.toString();
-                } catch (Exception ex) {
-                    Helpers.storeLog("mqtt", "Error sending status http", ex.getMessage());
-                }
-
-                ConnectionHTTP.sendHttpResponsePolicies(context, taskId, payload, sessionToken, new ConnectionHTTP.DataCallback() {
-                    @Override
-                    public void callback(String data) {
-                        Helpers.storeLog("mqtt", "http response from policy", data);
-                    }
-                });
-            }
-
-            @Override
-            public void onError(int type, String error) {
-                Helpers.storeLog("mqtt", "problem with session token", error);
-            }
-        });
-    }
-
-
-    public static void sendStatusbyHttp(Context context, boolean status) {
-        try {
-            JSONObject jsonPayload = new JSONObject();
-
-            jsonPayload.put("is_online", status);
-
-            JSONObject jsonInput = new JSONObject();
-            jsonInput.put("input", jsonPayload);
-
-            String payload = jsonInput.toString();
-            Routes routes = new Routes(context);
-            MqttData cache = new MqttData(context);
-            String url = routes.pluginFlyvemdmAgent(cache.getAgentId());
-            pluginHttpResponse(context, url, payload);
-        } catch (Exception ex) {
-            Helpers.storeLog("mqtt", "Error sending status http", ex.getMessage());
-        }
-    }
-
-
-    static public void callPolicy(Context context, Class<? extends BasePolicies> classPolicy, String policyName, int policyPriority, String topic, String messageBody, MqttAndroidClient client) {
-        if(topic.toLowerCase().contains(policyName.toLowerCase())) {
-
-            BasePolicies policies;
-            FlyveLog.d("Call policies "+messageBody);
-
-            try {
-                policies = classPolicy.getDeclaredConstructor(Context.class).newInstance(context);
-            } catch (Exception ex) {
-                FlyveLog.e("MqttModel, showDetailError", context.getResources().getString(R.string.error_message_with_number, String.valueOf(CommonErrorType.MQTT_CALLPOLICY_NEWINSTANCE), ex.getMessage()));
-                return;
-            }
-
-            if(messageBody.isEmpty()) {
-                policies.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(policyName)) {
-                    Object value = jsonObj.get(policyName);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    policies.setMQTTparameters(client, topic, taskId, messageBody);
-                    policies.setValue(value);
-                    policies.setPriority(policyPriority);
-                    policies.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e("MqttModel, showDetailError", context.getResources().getString(R.string.error_message_with_number, String.valueOf(CommonErrorType.MQTT_CALLPOLICY_JSON_PARSE), ex.getMessage()));
-            }
-        }
-    }
-
     @Override
     public void connectionLost(Context context, MqttCallback callback, String message) {
         showDetailError(context, CommonErrorType.MQTT_CONNECTION_LOST, "Method: connectionLost " + message);
@@ -585,10 +427,8 @@ public class MqttModel implements mqtt.Model {
         if(!isConnected) {
             reconnect(context, callback);
         } else {
-            // send to mqtt the status connected
-            if(policiesController != null) {
-                policiesController.sendOnlineStatus(isConnected);
-            }
+            // send via http the status connected
+            PoliciesAsyncTask.sendStatusbyHttp(context, true);
         }
 
         AppData cache = new AppData(context);
