@@ -90,6 +90,11 @@ public class MessagePolicies {
             new PoliciesAsyncTask().execute(context,PoliciesAsyncTask.WIPE, topic,message);
         }
 
+        // Command/Lock
+        if(topic.toLowerCase().contains("lock")) {
+            new PoliciesAsyncTask().execute(context,PoliciesAsyncTask.LOCK, topic,message);
+        }
+
         // Command/Unenroll
         if(topic.toLowerCase().contains("unenroll")) {
             new PoliciesAsyncTask().execute(context,PoliciesAsyncTask.UNENROLL, topic,message);

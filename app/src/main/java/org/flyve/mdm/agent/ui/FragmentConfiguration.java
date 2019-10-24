@@ -24,7 +24,11 @@
 package org.flyve.mdm.agent.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -38,21 +42,36 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.localstorage.AppData;
 import org.flyve.mdm.agent.data.localstorage.LocalStorage;
 import org.flyve.mdm.agent.data.database.MqttData;
+import org.flyve.mdm.agent.utils.FlyveLog;
+
+import static org.flyve.mdm.agent.ui.OptionsEnrollmentActivity.REQUEST_DRAWOVERLAY_CODE;
 
 public class FragmentConfiguration extends Fragment {
 
     private AppData cache;
+    private View v;
+    public final static int REQUEST_DRAWOVERLAY_CODE = 54987;
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Switch switchDrawOverlay = this.v.findViewById(R.id.swtDrawOverlay);
+        //use for lock option
+        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            switchDrawOverlay.setChecked(Settings.canDrawOverlays(getActivity()));
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_configuration, container, false);
+        v = inflater.inflate(R.layout.fragment_configuration, container, false);
 
         cache = new AppData(FragmentConfiguration.this.getContext());
 
-        Switch swNotifications = v.findViewById(R.id.swNotifications);
+        Switch swNotifications = this.v.findViewById(R.id.swNotifications);
         swNotifications.setChecked(cache.getDisableNotification());
         swNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -61,7 +80,7 @@ public class FragmentConfiguration extends Fragment {
             }
         });
 
-        Switch swConnectionNotification = v.findViewById(R.id.swConnectionNotification);
+        Switch swConnectionNotification = this.v.findViewById(R.id.swConnectionNotification);
         swConnectionNotification.setChecked(cache.getEnableNotificationConnection());
         swConnectionNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -70,7 +89,7 @@ public class FragmentConfiguration extends Fragment {
             }
         });
 
-        Switch swDarkTheme = v.findViewById(R.id.swDarkTheme);
+        Switch swDarkTheme = this.v.findViewById(R.id.swDarkTheme);
         swDarkTheme.setChecked(cache.getDarkTheme());
         swDarkTheme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -78,6 +97,21 @@ public class FragmentConfiguration extends Fragment {
                 cache.setDarkTheme(b);
             }
         });
+
+        //use for lock option
+        Switch switchDrawOverlay = this.v.findViewById(R.id.swtDrawOverlay);
+        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
+            switchDrawOverlay.setChecked(Settings.canDrawOverlays(getActivity()));
+            switchDrawOverlay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:" + getActivity().getPackageName()));
+                    startActivityForResult(intent, REQUEST_DRAWOVERLAY_CODE);
+                }
+            });
+        }else{
+            switchDrawOverlay.setVisibility(View.INVISIBLE);
+        }
 
         Button btnClear = v.findViewById(R.id.btnClear);
         btnClear.setOnClickListener(new View.OnClickListener() {

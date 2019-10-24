@@ -3,11 +3,12 @@ package org.flyve.mdm.agent.policies;
 import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 
 import org.flyve.inventory.InventoryTask;
-import org.flyve.mdm.agent.core.CommonErrorType;
 import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.core.enrollment.EnrollmentHelper;
 import org.flyve.mdm.agent.data.database.ApplicationData;
@@ -61,9 +62,27 @@ public class PoliciesAsyncTask extends AsyncTask<Object, Integer, Boolean> {
                                         AndroidPolicies androidPolicies = new AndroidPolicies(context, FlyveAdminReceiver.class);
 
                                         if(lock.equalsIgnoreCase("now")) {
-                                            androidPolicies.lockScreen(LockActivity.class);
+                                            //lock screen
+                                            androidPolicies.lockScreen(LockActivity.class,context);
+                                            //lock device
                                             androidPolicies.lockDevice();
                                         } else {
+
+                                            //unlock screen
+                                            if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M
+                                                    && Settings.canDrawOverlays(context)){
+                                                try{
+                                                    MDMAgent mainActivity = ((MDMAgent)
+                                                            context);
+                                                    mainActivity.getLockActivity().unlockScreen();
+                                                }catch (Exception e){
+
+                                                }
+
+                                            }
+                                            //unlock device
+                                            androidPolicies.unlockDevice();
+
                                             Helpers.sendBroadcast("unlock", "org.flyvemdm.finishlock", context);
                                         }
                                     }
@@ -115,7 +134,8 @@ public class PoliciesAsyncTask extends AsyncTask<Object, Integer, Boolean> {
                             BasePolicies.sendTaskStatusbyHttp(context, BasePolicies.FEEDBACK_DONE, taskId);
                         }catch (Exception ex){
                             FlyveLog.e(this.getClass().getName() + ", UNENROLL ",ex.getMessage());
-                        }                    }
+                        }
+                    }
                     break;
 
                     case GEOLOCATE:

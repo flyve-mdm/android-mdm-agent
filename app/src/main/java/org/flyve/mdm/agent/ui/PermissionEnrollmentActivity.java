@@ -24,11 +24,14 @@
 package org.flyve.mdm.agent.ui;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +42,7 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.CommonErrorType;
 import org.flyve.mdm.agent.core.permission.Permission;
 import org.flyve.mdm.agent.core.permission.PermissionPresenter;
+import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
 
 public class PermissionEnrollmentActivity extends Activity implements Permission.View {
@@ -61,7 +65,7 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
         btnPermission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Build.VERSION.SDK_INT >= 23) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     requestPermission();
                 } else {
                     presenter.generateInventory(PermissionEnrollmentActivity.this);
@@ -107,7 +111,6 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.RECEIVE_SMS,
                         Manifest.permission.READ_SMS,
-                        Manifest.permission.SYSTEM_ALERT_WINDOW,
                 },
                 1);
     }
@@ -140,7 +143,8 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
                         && grantResults[2] == PackageManager.PERMISSION_GRANTED
                         && grantResults[3] == PackageManager.PERMISSION_GRANTED
                         && grantResults[4] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[5] == PackageManager.PERMISSION_GRANTED) {
+                        && grantResults[5] == PackageManager.PERMISSION_GRANTED
+                ) {
                     presenter.generateInventory(PermissionEnrollmentActivity.this);
                 } else {
                     presenter.showSnackError(CommonErrorType.PERMISSION_ONREQUESTPERMISSIONSRESULT, getString(R.string.permission_error_result));
@@ -148,4 +152,6 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
             }
         }
     }
+
+
 }

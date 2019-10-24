@@ -150,7 +150,7 @@ public class FragmentTestPolicies extends Fragment {
         btnLock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mdm.lockScreen(LockActivity.class);
+                mdm.lockScreen(LockActivity.class, getContext());
             }
         });
 
