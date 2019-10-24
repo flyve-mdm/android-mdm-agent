@@ -82,6 +82,15 @@
 
         </receiver>
 
+        <receiver android:name=".receivers.AppReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_INSTALL" />
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
+                <data android:scheme="package"/>
+            </intent-filter>
+        </receiver>
+
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
             android:value="b6bc7ce0da33f92fe6c49c568af43963" />
