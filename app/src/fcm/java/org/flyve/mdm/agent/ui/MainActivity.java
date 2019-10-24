@@ -41,6 +41,7 @@ import org.flyve.mdm.agent.MessagePolicies;
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.DrawerAdapter;
 import org.flyve.mdm.agent.data.localstorage.AppData;
+import org.flyve.mdm.agent.policies.PoliciesAsyncTask;
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.policies.manager.AndroidPolicies;
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         loadListDrawer(menuItemSelected, extra);
         checkNotifications();
 
-        MessagePolicies.sendStatusbyHttp(MainActivity.this, true);
+        PoliciesAsyncTask.sendStatusbyHttp(MainActivity.this, true);
     }
 
     private void checkNotifications() {

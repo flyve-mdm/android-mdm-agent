@@ -10,10 +10,9 @@ import org.flyve.mdm.agent.data.database.ApplicationData;
 import org.flyve.mdm.agent.data.database.FileData;
 import org.flyve.mdm.agent.data.database.MqttData;
 import org.flyve.mdm.agent.data.database.PoliciesData;
-import org.flyve.mdm.agent.policies.BasePolicies;
+import org.flyve.mdm.agent.policies.PoliciesAsyncTask;
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
 import org.flyve.mdm.agent.ui.MDMAgent;
-import org.flyve.mdm.agent.policies.PoliciesAsyncTask;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -50,18 +49,13 @@ import org.json.JSONObject;
 
 public class MessagePolicies {
 
-    public static final int PING = 1;
-    public static final int GEOLOCATE = 2;
-    public static final int INVENTORY = 3;
-    public static final int POLICIES = 4;
-
     public MessagePolicies() {
 
     }
 
     public void messageArrived(final Context context, String topic, String message) {
 
-        // Delete policy information
+        // Delete policy information if message contains default
         if(message.contains("default")) {
             try {
                 String taskId = new JSONObject(message).getString("taskId");
@@ -74,175 +68,32 @@ public class MessagePolicies {
         }
 
         //Command/Policies
-        new PoliciesAsyncTask().execute(context,POLICIES, topic, message);
-
+        new PoliciesAsyncTask().execute(context,PoliciesAsyncTask.POLICIES, topic, message);
 
         // Command/Ping
         if(topic.toLowerCase().contains("ping")) {
-            new PoliciesAsyncTask().execute(context,PING, topic,message);
+            new PoliciesAsyncTask().execute(context,PoliciesAsyncTask.PING, topic,message);
         }
 
         // Command/Geolocate
         if(topic.toLowerCase().contains("geolocate")) {
-            new PoliciesAsyncTask().execute(context,GEOLOCATE, topic,message);
+            new PoliciesAsyncTask().execute(context,PoliciesAsyncTask.GEOLOCATE, topic,message);
         }
 
         // Command/Inventory
         if(topic.toLowerCase().contains("inventory")) {
-            new PoliciesAsyncTask().execute(context,INVENTORY, topic,message);
+            new PoliciesAsyncTask().execute(context,PoliciesAsyncTask.INVENTORY, topic,message);
         }
 
         // Command/Wipe
         if(topic.toLowerCase().contains("wipe")) {
-            if(MDMAgent.isSecureVersion()) {
-                MessagePolicies.sendStatusbyHttp(context, false);
-                new AndroidPolicies(context, FlyveAdminReceiver.class).wipe();
-            }
+            new PoliciesAsyncTask().execute(context,PoliciesAsyncTask.WIPE, topic,message);
         }
 
         // Command/Unenroll
         if(topic.toLowerCase().contains("unenroll")) {
-            MessagePolicies.sendStatusbyHttp(context, false);
-
-            // Remove all the information
-            new ApplicationData(context).deleteAll();
-            new FileData(context).deleteAll();
-            new MqttData(context).deleteAll();
-            new PoliciesData(context).deleteAll();
+            new PoliciesAsyncTask().execute(context,PoliciesAsyncTask.UNENROLL, topic,message);
         }
-
-        if(topic.toLowerCase().contains("subscribe")) {
-            try {
-                JSONObject jsonMessage = new JSONObject(message);
-                JSONArray jsonSubscribe = jsonMessage.getJSONArray("subscribe");
-                String newTopic = jsonSubscribe.getJSONObject(0).getString("topic");
-
-                if(!newTopic.contains("null")) {
-                    FirebaseMessaging.getInstance().subscribeToTopic(newTopic);
-                }
-            } catch (Exception ex) {
-                Helpers.storeLog("fcm", "subscribe fail", message);
-            }
-        }
-
-    }
-
-    public static void pluginHttpResponse(final Context context, final String url, final String data) {
-        Helpers.storeLog("fcm", "http response payload", data);
-
-        EnrollmentHelper enrollmentHelper = new EnrollmentHelper(context);
-        enrollmentHelper.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
-            @Override
-            public void onSuccess(String sessionToken) {
-                ConnectionHTTP.sendHttpResponse(context, url, data, sessionToken, new ConnectionHTTP.DataCallback() {
-                    @Override
-                    public void callback(String data) {
-                        Helpers.storeLog("fcm", "http response from url", data);
-                    }
-                });
-            }
-
-            @Override
-            public void onError(int type, String error) {
-                Helpers.storeLog("fcm", "active session fail", data);
-            }
-        });
-
-    }
-
-    public static void sendTaskStatusbyHttp(final Context context,final String status, final String taskId ){
-        EnrollmentHelper enrollmentHelper = new EnrollmentHelper(context);
-        enrollmentHelper.getActiveSessionToken(new EnrollmentHelper.EnrollCallBack() {
-            @Override
-            public void onSuccess(String sessionToken) {
-                Helpers.storeLog("fcm", "http response session token", sessionToken);
-                String payload = "";
-                try {
-                    JSONObject jsonPayload = new JSONObject();
-                    jsonPayload.put("status", status);
-
-                    JSONObject jsonInput = new JSONObject();
-                    jsonInput.put("input", jsonPayload);
-
-                    payload = jsonInput.toString();
-                } catch (Exception ex) {
-                    Helpers.storeLog("fcm", "Error sending status http", ex.getMessage());
-                }
-
-                ConnectionHTTP.sendHttpResponsePolicies(context, taskId, payload, sessionToken, new ConnectionHTTP.DataCallback() {
-                    @Override
-                    public void callback(String data) {
-                        Helpers.storeLog("fcm", "http response from policy", data);
-                    }
-                });
-            }
-
-            @Override
-            public void onError(int type, String error) {
-                Helpers.storeLog("fcm", "problem with session token", error);
-            }
-        });
-    }
-
-    public static void sendStatusbyHttp(Context context, boolean status) {
-        try {
-            JSONObject jsonPayload = new JSONObject();
-
-            jsonPayload.put("is_online", status);
-
-            JSONObject jsonInput = new JSONObject();
-            jsonInput.put("input", jsonPayload);
-
-            String payload = jsonInput.toString();
-            Routes routes = new Routes(context);
-            MqttData cache = new MqttData(context);
-            String url = routes.pluginFlyvemdmAgent(cache.getAgentId());
-            pluginHttpResponse(context, url, payload);
-        } catch (Exception ex) {
-            Helpers.storeLog("fcm", "Error sending status http", ex.getMessage());
-        }
-    }
-
-
-    public static void callPolicy(Context context, Class<? extends BasePolicies> classPolicy, String policyName, int policyPriority, String topic, String messageBody) {
-
-        if(topic.toLowerCase().contains(policyName.toLowerCase())) {
-            
-            FlyveLog.d("Call policies "+messageBody);
-            BasePolicies policies;
-
-            try {
-                policies = classPolicy.getDeclaredConstructor(Context.class).newInstance(context);
-            } catch (Exception ex) {
-                return;
-            }
-
-            if(messageBody.isEmpty()) {
-                policies.remove();
-                return;
-            }
-
-            try {
-                JSONObject jsonObj = new JSONObject(messageBody);
-
-                if(jsonObj.has(policyName)) {
-                    Object value = jsonObj.get(policyName);
-                    String taskId = jsonObj.getString("taskId");
-
-                    // execute the policy
-                    policies.setParameters(topic, taskId, messageBody);
-                    policies.setValue(value);
-                    policies.setPriority(policyPriority);
-                    policies.execute();
-                }
-            } catch (Exception ex) {
-                FlyveLog.e("MessagePolicies " + ", callPolicy",ex.getMessage());
-            }
-        }
-    }
-
-    private void showDetailError(Context context, int ErrorType, String policy){
-        FlyveLog.d(ErrorType + policy);
     }
 
 }

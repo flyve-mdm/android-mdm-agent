@@ -9,6 +9,7 @@ import org.flyve.mdm.agent.core.mqtt.MqttModel;
 import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.data.database.setup.AppDataBase;
 import org.flyve.mdm.agent.policies.BasePolicies;
+import org.flyve.mdm.agent.policies.PoliciesAsyncTask;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.StorageFolder;
 
@@ -47,7 +48,7 @@ public class AppsReceiver extends BroadcastReceiver {
         //app installed by agent update internal status and send status to flyveMDM
         if(appsArray.length == 1) {
             dataBase.applicationDao().updateStatus(Integer.toString(appsArray[0].id), "2");
-            MqttModel.sendTaskStatusbyHttp(context, BasePolicies.MQTT_FEEDBACK_DONE, appsArray[0].taskId);
+            BasePolicies.sendTaskStatusbyHttp(context, BasePolicies.FEEDBACK_DONE, appsArray[0].taskId);
         }
     }
 
@@ -95,7 +96,7 @@ public class AppsReceiver extends BroadcastReceiver {
                 FlyveLog.e(this.getClass().getName() + ", removeApk", ex.getMessage());
             }
 
-            MqttModel.sendTaskStatusbyHttp(context, BasePolicies.MQTT_FEEDBACK_DONE, taskId);
+            BasePolicies.sendTaskStatusbyHttp(context, BasePolicies.FEEDBACK_DONE, taskId);
         }
 
     }

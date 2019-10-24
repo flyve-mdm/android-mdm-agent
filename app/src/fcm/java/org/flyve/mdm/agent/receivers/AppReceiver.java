@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
-import org.flyve.mdm.agent.MessagePolicies;
 import org.flyve.mdm.agent.data.database.entity.Application;
-import org.flyve.mdm.agent.data.database.entity.Policies;
 import org.flyve.mdm.agent.data.database.setup.AppDataBase;
 import org.flyve.mdm.agent.policies.BasePolicies;
 import org.flyve.mdm.agent.utils.FlyveLog;
@@ -48,7 +46,7 @@ public class AppReceiver extends BroadcastReceiver {
         //app installed by agent update internal status and send status to flyveMDM
         if(appsArray.length == 1) {
             dataBase.applicationDao().updateStatus(Integer.toString(appsArray[0].id), "2");
-            MessagePolicies.sendTaskStatusbyHttp(context, BasePolicies.FCM_FEEDBACK_DONE, appsArray[0].taskId);
+            BasePolicies.sendTaskStatusbyHttp(context, BasePolicies.FEEDBACK_DONE, appsArray[0].taskId);
         }
     }
 
@@ -96,7 +94,7 @@ public class AppReceiver extends BroadcastReceiver {
                 FlyveLog.e(this.getClass().getName() + ", removeApk", ex.getMessage());
             }
 
-            MessagePolicies.sendTaskStatusbyHttp(context, BasePolicies.FCM_FEEDBACK_DONE, taskId);
+            BasePolicies.sendTaskStatusbyHttp(context, BasePolicies.FEEDBACK_DONE, taskId);
         }
 
     }

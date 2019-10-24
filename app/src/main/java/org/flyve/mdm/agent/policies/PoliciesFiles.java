@@ -23,16 +23,17 @@
 
 package org.flyve.mdm.agent.policies;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.PowerManager;
 
-
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
-import org.flyve.mdm.agent.core.mqtt.MqttModel;
 import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.data.database.setup.AppDataBase;
+import org.flyve.mdm.agent.ui.UninstallAppActivity;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -84,10 +85,10 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
 
         this.type = args[0];
         this.taskId = args[4];
-        this.status = BasePolicies.MQTT_FEEDBACK_WAITING;
+        this.status = BasePolicies.FEEDBACK_WAITING;
 
         if(type.equals("file")) {
-            downloadFile(args[1], args[2], args[3],args[4]);
+            downloadFile(args[1], args[2], args[3], args[4]);
         } else if (type.equals("package")) {
             downloadApk(args[1], args[2], args[3],args[4]);
         }
@@ -96,7 +97,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
 
     protected void onPostExecute(Boolean result) {
         if(result){
-            MqttModel.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
+            BasePolicies.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
         }
     }
 
@@ -119,16 +120,16 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
             filePath = new StorageFolder(context).convertPath(path);
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", downloadFile", ex.getMessage());
-            this.status = BasePolicies.MQTT_FEEDBACK_FAILED;
+            this.status = BasePolicies.FEEDBACK_FAILED;
         }
 
         final String url = routes.pluginFlyvemdmFile(id);
-        String completeFilePath = download(url, filePath, sessionToken,taskId);
+        String completeFilePath = download(url, filePath, sessionToken, taskId);
 
         if(!completeFilePath.isEmpty()){
-            this.status = BasePolicies.MQTT_FEEDBACK_DONE;
+            this.status = BasePolicies.FEEDBACK_DONE;
         }else{
-            this.status = BasePolicies.MQTT_FEEDBACK_FAILED;
+            this.status = BasePolicies.FEEDBACK_FAILED;
         }
     }
 
@@ -150,26 +151,22 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
             filePath = new StorageFolder(context).getApkDir();
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", downloadApk", ex.getMessage());
-            this.status = BasePolicies.MQTT_FEEDBACK_FAILED;
+            this.status = BasePolicies.FEEDBACK_FAILED;
         }
 
         final String url = routes.pluginFlyvemdmPackage(id);
         String completeFilePath = download(url, filePath, sessionToken, taskId);
         if(completeFilePath.isEmpty()) {
-            this.status = BasePolicies.MQTT_FEEDBACK_FAILED;
+            this.status = BasePolicies.FEEDBACK_FAILED;
         } else {
             if(Helpers.isSystemApp(context).equalsIgnoreCase("1")) {
                 // Silently for System apps
-                this.status = BasePolicies.MQTT_FEEDBACK_DONE;
-                if(!Helpers.installApkSilently(completeFilePath)){
-                    this.status = BasePolicies.MQTT_FEEDBACK_FAILED;
-                }
+                this.status = BasePolicies.FEEDBACK_WAITING;
+                Helpers.installApkSilently(completeFilePath);
             } else {
                 // Regular app
-                this.status = BasePolicies.MQTT_FEEDBACK_DONE;
-                if(!Helpers.installApk(context, id, completeFilePath, taskId)) {
-                    this.status = BasePolicies.MQTT_FEEDBACK_WAITING;
-                }
+                this.status = BasePolicies.FEEDBACK_WAITING;
+                Helpers.installApk(context, id, completeFilePath, taskId);
             }
         }
     }
@@ -187,7 +184,6 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
         String data = ConnectionHTTP.getSyncWebData(url, "GET",header);
         if(data.contains("ERROR")) {
             Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_fail));
-
             FlyveLog.e(this.getClass().getName() + ", download", data + "\n" + url);
         } else {
             try {
@@ -289,15 +285,15 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
                 AppDataBase dataBase = AppDataBase.getAppDatabase(context);
                 dataBase.FileDao().deleteByFilePath(file.getAbsolutePath());
 
-                this.status = BasePolicies.MQTT_FEEDBACK_DONE;
+                this.status = BasePolicies.FEEDBACK_DONE;
             }else{
-                this.status = BasePolicies.MQTT_FEEDBACK_FAILED;
+                this.status = BasePolicies.FEEDBACK_FAILED;
             }
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", removeFile", ex.getMessage() + "\n" + filePath);
-            this.status = BasePolicies.MQTT_FEEDBACK_FAILED;
+            this.status = BasePolicies.FEEDBACK_FAILED;
         }
-        MqttModel.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
+        BasePolicies.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
     }
 
     /**
@@ -307,7 +303,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
      */
     public void removeApk(String mPackage, final String taskId){
         this.taskId = taskId;
-        this.status = BasePolicies.MQTT_FEEDBACK_WAITING;
+        this.status = BasePolicies.FEEDBACK_WAITING;
 
         //update taskID from DAO app
         AppDataBase dataBase = AppDataBase.getAppDatabase(context);
@@ -320,13 +316,14 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
         //is priv app uninstall silently
         if(Helpers.isSystemApp(context).equalsIgnoreCase("1")) {
             // Silently for System apps
-            this.status = BasePolicies.MQTT_FEEDBACK_FAILED;
+            this.status = BasePolicies.FEEDBACK_WAITING;
             Helpers.uninstallApkSilently(mPackage);
         } else {
-            this.status = BasePolicies.MQTT_FEEDBACK_WAITING;
+            //use activity to install apk
+            this.status = BasePolicies.FEEDBACK_WAITING;
             Helpers.uninstallApk(context,mPackage);
         }
-        MqttModel.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
+        BasePolicies.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
     }
 
 }
