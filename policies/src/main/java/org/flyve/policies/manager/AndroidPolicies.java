@@ -23,19 +23,32 @@
 
 package org.flyve.policies.manager;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.app.KeyguardManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.BaseInputConnection;
 
 import org.flyve.policies.utils.FlyveLog;
 import org.flyve.policies.utils.Helpers;
 
 import static android.app.admin.DevicePolicyManager.WIPE_EXTERNAL_STORAGE;
+import static android.content.Context.KEYGUARD_SERVICE;
+import static android.content.Context.POWER_SERVICE;
 
 public class AndroidPolicies {
 
@@ -125,7 +138,7 @@ public class AndroidPolicies {
 
     public void reboot() {
         try {
-            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            PowerManager pm = (PowerManager) context.getSystemService(POWER_SERVICE);
             pm.reboot(null);
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", reboot", ex.getMessage());
@@ -146,10 +159,13 @@ public class AndroidPolicies {
     /**
      * Launch lock activity
      */
-    public void lockScreen(Class<?> lockActivity) {
-        Intent intent = new Intent(context, lockActivity);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+    public void lockScreen(Class<?> lockActivity, Context context) {
+        if ( Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M &&
+                Settings.canDrawOverlays(context)) {
+            Intent intent = new Intent(context, lockActivity);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
     }
 
     /**
@@ -158,6 +174,17 @@ public class AndroidPolicies {
     public void lockDevice() {
         mDPM.lockNow();
     }
+
+    /**
+     * Lock the device now
+     */
+    public void unlockDevice() {
+        PowerManager.WakeLock screenLock = ((PowerManager)context.getSystemService(POWER_SERVICE)).newWakeLock(
+                PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "AndroidPolicies:unlock");
+        screenLock.acquire();
+        screenLock.release();
+    }
+
 
     /**
      * Request to user encrypt files

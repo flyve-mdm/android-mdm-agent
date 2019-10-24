@@ -115,9 +115,19 @@ public class StartEnrollmentActivity extends Activity implements Deeplink.View {
         btnEnroll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent miIntent = new Intent(StartEnrollmentActivity.this, PermissionEnrollmentActivity.class);
-                StartEnrollmentActivity.this.startActivity(miIntent);
-                StartEnrollmentActivity.this.finish();
+
+                if(OptionsEnrollmentActivity.needOptions()){
+                    Intent miIntent = new Intent(StartEnrollmentActivity.this, OptionsEnrollmentActivity.class);
+                    StartEnrollmentActivity.this.startActivity(miIntent);
+                    StartEnrollmentActivity.this.finish();
+                }else{
+                    Intent miIntent = new Intent(StartEnrollmentActivity.this, PermissionEnrollmentActivity.class);
+                    StartEnrollmentActivity.this.startActivity(miIntent);
+                    StartEnrollmentActivity.this.finish();
+                }
+
+
+
             }
         });
     }

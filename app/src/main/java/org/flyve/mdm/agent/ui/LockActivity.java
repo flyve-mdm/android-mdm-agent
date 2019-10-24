@@ -23,10 +23,8 @@
 
 package org.flyve.mdm.agent.ui;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -41,25 +39,24 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.data.localstorage.SupervisorData;
 import org.flyve.mdm.agent.utils.FlyveLog;
 
+import static android.view.View.INVISIBLE;
+
 public class LockActivity extends AppCompatActivity {
 
     private TextView txtNameSupervisor;
     private TextView txtDescriptionSupervisor;
     private ViewGroup mTopView;
     private WindowManager wm;
+    private MDMAgent mainActivity;
 
-    private BroadcastReceiver broadcastLock = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context arg0, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals("org.flyvemdm.finishlock")) {
-                if (mTopView != null) wm.removeView(mTopView);
-                Intent miIntent = new Intent(LockActivity.this, MainActivity.class);
-                LockActivity.this.startActivity(miIntent);
-                LockActivity.this.finish();
-            }
-        }
-    };
+    public void setCurrentActivity() {
+        mainActivity.setLockActivity(this);
+    }
+
+    private void clearReferences () {
+
+        mainActivity.setLockActivity(this);
+    }
 
     @Override
     protected void onPause() {
@@ -68,16 +65,23 @@ public class LockActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        clearReferences();
+    }
+    @Override
     protected void onResume() {
         super.onResume();
-        this.registerReceiver(broadcastLock, new IntentFilter("org.flyvemdm.finishlock"));
+        this.setCurrentActivity();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.registerReceiver(broadcastLock, new IntentFilter("org.flyvemdm.finishlock"));
+        this.mainActivity = ((MDMAgent)
+                getApplicationContext());
+        setCurrentActivity();
 
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.TYPE_SYSTEM_ERROR,
@@ -98,12 +102,13 @@ public class LockActivity extends AppCompatActivity {
         loadSupervisor();
 
         Button btnUnlock = mTopView.findViewById(R.id.btnUnlock);
-        btnUnlock.setOnClickListener(new View.OnClickListener() {
+        btnUnlock.setVisibility(INVISIBLE);
+        /*btnUnlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LockActivity.this.finish();
+                LockActivity.this.unlockScreen();
             }
-        });
+        });*/
     }
 
     /**
@@ -127,10 +132,10 @@ public class LockActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        return; //Do nothing!
+        //Do nothing!
     }
 
-    public void unlockScreen(View view) {
+    public void unlockScreen() {
         if (mTopView != null) wm.removeView(mTopView);
         Intent miIntent = new Intent(LockActivity.this, MainActivity.class);
         LockActivity.this.startActivity(miIntent);
@@ -140,16 +145,11 @@ public class LockActivity extends AppCompatActivity {
     // Handle button clicks
     @Override
     public boolean onKeyDown(int keyCode, android.view.KeyEvent event) {
-
-        if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
+        return ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
                 || (keyCode == KeyEvent.KEYCODE_POWER)
                 || (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
                 || (keyCode == KeyEvent.KEYCODE_CAMERA)
-                || (keyCode == KeyEvent.KEYCODE_HOME)) {
-            return true;
-        }
-
-        return false;
+                || (keyCode == KeyEvent.KEYCODE_HOME)) ;
     }
 
     // handle the key press events here itself
@@ -159,10 +159,6 @@ public class LockActivity extends AppCompatActivity {
                 || (event.getKeyCode() == KeyEvent.KEYCODE_POWER)) {
             return false;
         }
-        if ((event.getKeyCode() == KeyEvent.KEYCODE_HOME)) {
-
-            return true;
-        }
-        return false;
+        return event.getKeyCode() == KeyEvent.KEYCODE_HOME ;
     }
 }

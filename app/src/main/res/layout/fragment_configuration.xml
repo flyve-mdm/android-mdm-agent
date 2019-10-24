@@ -26,6 +26,13 @@
             android:text="@string/enable_connection_notifications" />
 
         <Switch
+            android:id="@+id/swtDrawOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_margin="5dp"
+            android:text="@string/option_draw_overlay" />
+
+        <Switch
             android:id="@+id/swDarkTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

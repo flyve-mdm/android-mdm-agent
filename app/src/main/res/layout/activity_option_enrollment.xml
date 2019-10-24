@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:contentDescription="logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logoflyve"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            />
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/option_title"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/imgLogo"
+            />
+
+        <TextView
+            android:id="@+id/txtOptionMessage"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/option_message"
+            android:layout_below="@+id/txtTitle"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            />
+
+        <TableLayout
+            android:id="@+id/tableOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_below="@+id/txtOptionMessage">
+
+            <TableRow
+                android:id="@+id/rowDrawOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/textDrawOverlay"
+                    android:text="@string/option_draw_overlay"
+                    android:padding="3dip" />
+
+                <Switch
+                    android:id="@+id/swtDrawOverlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.33" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/rowDrawOverlayScreenshot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+                <ImageView
+                    android:layout_span="2"
+                    android:paddingTop="20dp"
+                    android:id="@+id/imgDrawOverlayScreenshot"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/lock"/>
+
+        </TableLayout>
+
+
+        <LinearLayout
+            android:id="@+id/lnButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/tableOptions"
+            android:layout_margin="20dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            >
+
+            <Button
+                android:id="@+id/btnContinueOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/permission_button_continue"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_gravity="center_horizontal"
+                />
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+</ScrollView>
