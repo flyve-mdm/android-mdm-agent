@@ -82,17 +82,6 @@
             </intent-filter>
         </receiver>
 
-        <!-- This receiver check if any app is installed, deleted or updated -->
-        <receiver android:name=".receivers.AppsReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.ACTION_PACKAGE_REPLACED" />
-                <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
         <!--<receiver android:name=".receivers.MqttReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
