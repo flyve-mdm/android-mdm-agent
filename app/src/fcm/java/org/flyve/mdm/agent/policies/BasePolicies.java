@@ -169,11 +169,15 @@ public abstract class BasePolicies {
         validate();
         Log("Execute Policy", "Policy " + this.policyName, "Start the policy: " + this.policyName + "\nvalue: " + this.policyValue + "\npriority:" + this.policyPriority);
         boolean status = process();
-        if(status) {
-            policyDone();
-        } else {
-            policyFail();
+        if(!this.policyName.equalsIgnoreCase("removeApp")
+                && !this.policyName.equalsIgnoreCase("deployApp")){
+            if(status) {
+                policyDone();
+            } else {
+                policyFail();
+            }
         }
+
     }
 
     protected void policyDone() {

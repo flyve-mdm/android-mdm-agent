@@ -162,16 +162,12 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
         } else {
             if(Helpers.isSystemApp(context).equalsIgnoreCase("1")) {
                 // Silently for System apps
-                this.status = BasePolicies.FCM_FEEDBACK_DONE;
-                if(!Helpers.installApkSilently(completeFilePath)){
-                    this.status = BasePolicies.FCM_FEEDBACK_FAILED;
-                }
+                this.status = BasePolicies.FCM_FEEDBACK_WAITING;
+                Helpers.installApkSilently(completeFilePath);
             } else {
                 // Regular app
-                this.status = BasePolicies.FCM_FEEDBACK_DONE;
-                if(!Helpers.installApk(context, id, completeFilePath, taskId)) {
-                    this.status = BasePolicies.FCM_FEEDBACK_WAITING;
-                }
+                this.status = BasePolicies.FCM_FEEDBACK_WAITING;
+                Helpers.installApk(context, id, completeFilePath, taskId);
             }
         }
     }
@@ -189,7 +185,6 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
         String data = ConnectionHTTP.getSyncWebData(url, "GET",header);
         if(data.contains("ERROR")) {
             Helpers.sendToNotificationBar(context, context.getResources().getString(R.string.download_file_fail));
-
             FlyveLog.e(this.getClass().getName() + ", download", data + "\n" + url);
         } else {
             try {
@@ -316,27 +311,12 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
         //is priv app uninstall silently
         if(Helpers.isSystemApp(context).equalsIgnoreCase("1")) {
             // Silently for System apps
-            this.status = BasePolicies.FCM_FEEDBACK_DONE;
-            if(!Helpers.uninstallApkSilently(mPackage)){
-                this.status = BasePolicies.FCM_FEEDBACK_FAILED;
-            }
+            this.status = BasePolicies.FCM_FEEDBACK_WAITING;
+            Helpers.uninstallApkSilently(mPackage);
         } else {
-
-            this.status = BasePolicies.FCM_FEEDBACK_DONE;
-            if(!Helpers.uninstallApk(context,mPackage)) {
-                this.status = BasePolicies.FCM_FEEDBACK_WAITING;
-            }
-
-           /* try {
-                Intent intent = new Intent(this.context, UninstallAppActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("PACKAGE", mPackage);
-                this.status = BasePolicies.FCM_FEEDBACK_WAITING;
-                this.context.startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                FlyveLog.e(this.getClass().getName() + ", removeApk", e.getMessage() + "\n" + mPackage);
-                this.status = BasePolicies.FCM_FEEDBACK_FAILED;
-            }*/
+            //use activity to install apk
+            this.status = BasePolicies.FCM_FEEDBACK_WAITING;
+            Helpers.uninstallApk(context,mPackage);
         }
         MessagePolicies.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
     }

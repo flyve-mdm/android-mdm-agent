@@ -52,8 +52,6 @@ public class StorageFolder {
     public String getApkDir() throws Exception {
         String path = getFolderPath(Environment.DIRECTORY_DOWNLOADS);
         if(!checkPath(path)) { throw new RuntimeException(context.getResources().getString(R.string.check_store_fail)); }
-
-        FlyveLog.d(path);
         return path;
     }
 

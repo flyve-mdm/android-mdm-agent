@@ -1,4 +1,4 @@
-package org.flyve.mdm.agent.ui;
+package org.flyve.mdm.agent.policies;
 
 import android.content.Context;
 import android.location.Location;
