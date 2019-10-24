@@ -44,4 +44,7 @@ public class File {
 
     @ColumnInfo (name = "file_status")
     public String fileStatus;
+
+    @ColumnInfo (name = "task_id")
+    public String taskid;
 }

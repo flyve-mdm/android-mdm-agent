@@ -57,4 +57,10 @@ public interface FileDao {
 
     @Query("DELETE FROM files WHERE file_name = :name")
     void deleteByName(String name);
+
+    @Query("DELETE FROM files WHERE task_id = :taskId")
+    void deteleByTaskId(String taskId);
+
+    @Query("DELETE FROM files WHERE file_path = :filePath")
+    void deleteByFilePath(String filePath);
 }
