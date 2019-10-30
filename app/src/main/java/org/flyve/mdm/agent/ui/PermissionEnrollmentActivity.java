@@ -109,8 +109,6 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
                         Manifest.permission.READ_PHONE_STATE,
                         Manifest.permission.CAMERA,
                         Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.RECEIVE_SMS,
-                        Manifest.permission.READ_SMS,
                 },
                 1);
     }
@@ -143,7 +141,6 @@ public class PermissionEnrollmentActivity extends Activity implements Permission
                         && grantResults[2] == PackageManager.PERMISSION_GRANTED
                         && grantResults[3] == PackageManager.PERMISSION_GRANTED
                         && grantResults[4] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[5] == PackageManager.PERMISSION_GRANTED
                 ) {
                     presenter.generateInventory(PermissionEnrollmentActivity.this);
                 } else {
