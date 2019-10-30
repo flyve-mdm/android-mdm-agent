@@ -69,19 +69,6 @@
             </intent-filter>
         </receiver>
 
-        <!-- This receiver is for information about Wifi or Bluetooth -->
-        <receiver
-            android:name=".receivers.SMSReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.BROADCAST_SMS">
-            <intent-filter android:priority="100">
-                <action android:name="android.provider.Telephony.SMS_DELIVER" />
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-                <action android:name="android.provider.Telephony.WAP_PUSH_RECEIVED" />
-            </intent-filter>
-        </receiver>
-
         <!--<receiver android:name=".receivers.MqttReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />

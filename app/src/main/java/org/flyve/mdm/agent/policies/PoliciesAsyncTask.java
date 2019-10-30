@@ -305,9 +305,6 @@ public class PoliciesAsyncTask extends AsyncTask<Object, Integer, Boolean> {
                         // Policy/disableSpeakerphone
                         callPolicy(context, SpeakerphonePolicy.class, SpeakerphonePolicy.POLICY_NAME, priority, topic, message);
 
-                        // Policy/disableUsbOnTheGo
-                        callPolicy(context, SMSPolicy.class, SMSPolicy.POLICY_NAME, priority, topic, message);
-
                         // Policy/disableCreateVpnProfiles
                         callPolicy(context, VPNPolicy.class, VPNPolicy.POLICY_NAME, priority, topic, message);
 

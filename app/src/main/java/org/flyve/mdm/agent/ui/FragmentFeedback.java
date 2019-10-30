@@ -129,7 +129,6 @@ public class FragmentFeedback extends Fragment {
         map.put("Disable Usb Ptp", Helpers.boolFromString(cache.getValue(UsbPtpPolicy.POLICY_NAME).value));
         map.put("Disable Usb Adb", Helpers.boolFromString(cache.getValue(UsbAdbPolicy.POLICY_NAME).value));
         map.put("Disable speakerphone", Helpers.boolFromString(cache.getValue(SpeakerphonePolicy.POLICY_NAME).value));
-//        map.put("DisableSmsMms",false);
         map.put("Disable create VPN Profiles", Helpers.boolFromString(cache.getValue(VPNPolicy.POLICY_NAME).value));
 
         LinearLayout ln = v.findViewById(R.id.lnFields);
