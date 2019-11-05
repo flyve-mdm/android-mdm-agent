@@ -26,24 +26,16 @@ package org.flyve.mdm.agent.core.mqtt;
 import android.content.Context;
 import android.util.Log;
 
-
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.flyve.mdm.agent.core.Routes;
-import org.flyve.mdm.agent.data.database.ApplicationData;
-import org.flyve.mdm.agent.data.database.FileData;
 import org.flyve.mdm.agent.data.database.MqttData;
-import org.flyve.mdm.agent.data.database.PoliciesData;
 import org.flyve.mdm.agent.data.database.TopicsData;
 import org.flyve.mdm.agent.data.database.entity.Topics;
+import org.flyve.mdm.agent.data.database.setup.AppDataBase;
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
-import org.flyve.mdm.agent.ui.LockActivity;
-import org.flyve.mdm.agent.ui.MDMAgent;
 import org.flyve.mdm.agent.utils.FlyveLog;
-import org.flyve.mdm.agent.utils.Helpers;
 import org.flyve.policies.manager.AndroidPolicies;
 
 import java.util.ArrayList;
@@ -79,6 +71,54 @@ public class MqttController {
         url = routes.pluginFlyvemdmAgent(cache.getAgentId());
     }
 
+    /**
+     * Unsubscribe to the topic
+     * When come from MQTT has a format like this {"subscribe":[{"topic":null}]}
+     */
+    public void unsubscribe() {
+        final AppDataBase dataBase = AppDataBase.getAppDatabase(context);
+        List<Topics> topics = dataBase.TopicsDao().getFleets();
+        if(!topics.isEmpty()) {
+
+            for (int i = 0; i < topics.size(); i++) {
+                final Topics topicToUnsubscribe = topics.get(i);
+                try {
+                    IMqttToken subToken = client.unsubscribe(topicToUnsubscribe.topic);
+                    subToken.setActionCallback(new IMqttActionListener() {
+                        @Override
+                        public void onSuccess(IMqttToken asyncActionToken) {
+                            FlyveLog.d("Unsubscribe from fleet "+topicToUnsubscribe.topic);
+                            dataBase.TopicsDao().delete(topicToUnsubscribe);
+                        }
+
+                        @Override
+                        public void onFailure(IMqttToken asyncActionToken,
+                                              Throwable exception) {
+                            // The unsubscription could not be performed, maybe the user was not
+                            // authorized to subscribe on the specified topic e.g. using wildcards
+                            String errorMessage = " unknown";
+                            if(exception != null) {
+                                errorMessage = exception.getMessage();
+                                Log.d("Unsubscribe","Error", exception);
+                            }
+                            FlyveLog.e(this.getClass().getName() + ", unsubscribe", "ERROR on unsubscribe: " + errorMessage);
+
+                            broadcastReceivedLog(ERROR, "Error on unsubscribe", errorMessage);
+                        }
+                    });
+
+
+                } catch (Exception ex) {
+                    FlyveLog.e(this.getClass().getName() + ", unsubscribe", ex.getMessage());
+                }
+            }
+
+
+
+        }
+
+
+    }
 
     /**
      * Subscribe to the topic
@@ -86,6 +126,9 @@ public class MqttController {
      */
     public void subscribe(final String channel) {
         if(channel == null || channel.contains("null")) {
+            //case of unsubscribe
+            AppDataBase dataBase = AppDataBase.getAppDatabase(context);
+            dataBase.TopicsDao().deleteFleets();
             return;
         }
 
@@ -129,6 +172,7 @@ public class MqttController {
                     // The message was published
                     for(String topic : asyncActionToken.getTopics()) {
                         new TopicsData(context).setStatusTopic(topic, 1);
+                        FlyveLog.d("Subscribe from fleet "+topic);
                         broadcastReceivedLog(" -> " + topic, "Subscribed", String.valueOf(asyncActionToken.getTopics().length));
                     }
                 }

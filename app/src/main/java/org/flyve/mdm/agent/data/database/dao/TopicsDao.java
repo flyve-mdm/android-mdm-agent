@@ -57,6 +57,9 @@ public interface TopicsDao {
     @Query("delete FROM topics where topic like '%fleet%'")
     void deleteFleets();
 
+    @Query("select * FROM topics where topic like '%fleet%'")
+    List<Topics> getFleets();
+
     @Query("update topics set status = 0")
     void clearTopics();
 }
