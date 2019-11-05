@@ -375,10 +375,11 @@ public class MqttModel implements mqtt.Model {
                         JSONObject jsonTopic = jsonTopics.getJSONObject(i);
 
                         String channel = jsonTopic.getString("topic")+"/#";
-                        FlyveLog.d(channel);
-
-                        // Add new channel
-                        mqttController.subscribe(channel);
+                        if(channel == null || channel.contains("null")) {
+                            mqttController.unsubscribe();
+                        }else{
+                            mqttController.subscribe(channel);
+                        }
                     }
                 }
             } catch (Exception ex) {
