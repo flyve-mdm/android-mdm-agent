@@ -39,11 +39,10 @@ import android.widget.TextView;
 
 import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.adapter.DrawerAdapter;
-import org.flyve.mdm.agent.core.mqtt.MqttModel;
+import org.flyve.mdm.agent.core.mqtt.MqttHelper;
 import org.flyve.mdm.agent.data.localstorage.AppData;
 import org.flyve.mdm.agent.policies.PoliciesAsyncTask;
 import org.flyve.mdm.agent.receivers.FlyveAdminReceiver;
-import org.flyve.mdm.agent.services.MQTTService;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.policies.manager.AndroidPolicies;
 import org.flyve.policies.manager.DeviceLockedController;
@@ -59,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, String>> arrDrawer;
     private HashMap<String, String> selectedItem;
     private TextView txtToolbarTitle;
-    private Intent mServiceIntent;
     private AppData cache;
+    private Intent mIntentService;
 
     /**
      * Called when the activity is starting 
@@ -143,8 +142,18 @@ public class MainActivity extends AppCompatActivity {
         // ------------------
         // MQTT SERVICE
         // ------------------
-        mServiceIntent = MQTTService.start( this.getApplicationContext() );
+        if(MqttHelper.isInstanceCreated()){
+            FlyveLog.d("Service already started");
+
+        }else{
+            FlyveLog.d("Start Service");
+            startService(new Intent(this, MqttHelper.class));
+            mIntentService = new Intent(this,MqttHelper.class);
+            startService(mIntentService);
+        }
+
     }
+
 
     /**
      * Loads the Fragment

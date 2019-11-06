@@ -37,9 +37,6 @@ public interface mqtt {
     }
 
     interface Presenter {
-        // Views
-
-        // Models
         MqttAndroidClient getMqttClient();
         Boolean isConnected();
         void connect(Context context, MqttCallback callback);

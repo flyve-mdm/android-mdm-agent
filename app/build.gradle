@@ -14,6 +14,10 @@ android {
         targetSdkVersion 28
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    lintOptions {
+        disable 'GoogleAppIndexingWarning'
+        baseline file("lint-baseline.xml")
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -73,11 +77,11 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.21.0'
     androidTestImplementation 'org.mockito:mockito-android:2.21.0'
     // MQTT libraries
-    mqttImplementation('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
+    mqttImplementation('org.eclipse.paho:org.eclipse.paho.android.service:1.1.1') {
         exclude module: 'support-v4'
         transitive = true
     }
-    mqttImplementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    mqttImplementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.2'
     mqttImplementation 'com.madgag.spongycastle:core:1.54.0.0'
     mqttImplementation 'com.madgag.spongycastle:prov:1.54.0.0'
     mqttImplementation 'com.madgag.spongycastle:pkix:1.54.0.0'

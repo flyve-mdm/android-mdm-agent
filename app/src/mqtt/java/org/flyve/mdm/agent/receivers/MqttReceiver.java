@@ -30,23 +30,22 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import org.flyve.mdm.agent.services.MQTTService;
-import org.flyve.mdm.agent.utils.FlyveLog;
+import org.flyve.mdm.agent.core.mqtt.MqttHelper;
 
 public class MqttReceiver extends BroadcastReceiver {
 
-    private MQTTService mqttService;
+    private MqttHelper mqttHelper;
 
     ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            mqttService = null;
+            mqttHelper = null;
         }
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            MQTTService.LocalBinder mLocalBinder = (MQTTService.LocalBinder)service;
-            mqttService = mLocalBinder.getServerInstance();
+            /*MqttHelper.LocalBinder mLocalBinder = (MqttHelper.LocalBinder)service;
+            mqttHelper = mLocalBinder.getServerInstance();*/
         }
     };
 
@@ -58,11 +57,13 @@ public class MqttReceiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        try {
-            Intent mIntent = new Intent(context, MQTTService.class);
-            context.getApplicationContext().bindService(mIntent, mConnection, Context.BIND_AUTO_CREATE);
+        /*try {
+            if(MqttHelper.isInstanceCreated()){
+                Intent mIntent = new Intent(context, MqttHelper.class);
+                context.getApplicationContext().bindService(mIntent, mConnection, Context.BIND_AUTO_CREATE);
+            }
         } catch (Exception ex) {
             FlyveLog.e(this.getClass().getName() + ", onReceive", ex.getMessage());
-        }
+        }*/
     }
 }

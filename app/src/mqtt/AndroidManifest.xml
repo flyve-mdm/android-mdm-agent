@@ -7,9 +7,9 @@
     <application>
         <service
             android:name="org.eclipse.paho.android.service.MqttService"
-            android:label="Paho MQTT Service"></service>
+            android:label="Paho MQTT Service" />
         <service
-            android:name=".services.MQTTService"
+            android:name=".core.mqtt.MqttHelper"
             android:enabled="true"
             android:label="M2M communications">
             <intent-filter>
@@ -38,7 +38,7 @@
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
-                android:resource="@xml/device_admin"></meta-data>
+                android:resource="@xml/device_admin" />
 
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
@@ -68,16 +68,6 @@
                 <action android:name="android.hardware.usb.action.USB_STATE" />
             </intent-filter>
         </receiver>
-
-        <!--<receiver android:name=".receivers.MqttReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.ACTION_PACKAGE_REPLACED" />
-                <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>-->
 
         <provider
             android:name="android.support.v4.content.FileProvider"
