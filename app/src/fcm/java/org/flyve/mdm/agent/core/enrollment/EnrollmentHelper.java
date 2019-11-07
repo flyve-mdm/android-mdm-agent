@@ -305,7 +305,7 @@ public class EnrollmentHelper {
 
                 if(data.contains("ERROR")){
                     final String msgError = manageError(data);
-                    FlyveLog.e(this.getClass().getName() + ", enrollment", msgError + " - Device serial: " + Helpers.getDeviceSerial());
+                    FlyveLog.e(this.getClass().getName() + ", enrollment", msgError + " - Device UUID: " + Helpers.getDeviceUniqueID(context));
 
                     EnrollmentHelper.runOnUI(new Runnable() {
                         public void run() {

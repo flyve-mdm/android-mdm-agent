@@ -31,10 +31,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -84,6 +84,7 @@ public class Helpers {
 	public static final String BROADCAST_LOG = "flyve.mqtt.log";
 	public static final String BROADCAST_MSG = "flyve.mqtt.msg";
 	public static final String BROADCAST_STATUS = "flyve.mqtt.status";
+	private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID" ;
 
 	/**
 	 * private construtor
@@ -484,6 +485,13 @@ public class Helpers {
 		}
 
 		return serial;
+	}
+
+	public static String getDeviceUniqueID(Context context){
+		SharedPreferences sharedPrefs = context.getSharedPreferences(
+				PREF_UNIQUE_ID, Context.MODE_PRIVATE);
+		return sharedPrefs.getString(PREF_UNIQUE_ID, null);
+
 	}
 
 

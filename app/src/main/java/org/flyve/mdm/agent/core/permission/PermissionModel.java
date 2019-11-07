@@ -67,7 +67,7 @@ public class PermissionModel implements Permission.Model {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // positive button logic
-                        new InventoryTask(context, Inventory.APP_VERSION).shareInventory(type[0]);
+                        new InventoryTask(context, Inventory.APP_VERSION, false).shareInventory(type[0]);
                     }
                 });
 

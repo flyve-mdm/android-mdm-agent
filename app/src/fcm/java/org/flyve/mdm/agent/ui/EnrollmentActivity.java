@@ -323,7 +323,8 @@ public class EnrollmentActivity extends AppCompatActivity implements Enrollment.
                 strPicture,
                 spinnerLanguage.getSelectedItem().toString(),
                 editAdministrative.getText().toString(),
-                fcmToken
+                fcmToken,
+                getApplicationContext()
         );
     }
 
