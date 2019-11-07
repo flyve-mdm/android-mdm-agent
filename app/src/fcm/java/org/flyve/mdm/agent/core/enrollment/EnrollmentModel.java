@@ -101,7 +101,7 @@ public class EnrollmentModel implements Enrollment.Model {
     }
 
     @Override
-    public void enroll(final Activity activity, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber, final String notificationToken) {
+    public void enroll(final Activity activity, final List<UserData.EmailsData> arrEmails, final String firstName, final String lastName, final String phone, final String phone2, final String mobilePhone, final String inventory, final String photo, final String language, final String administrativeNumber, final String notificationToken, Context context) {
 
         StringBuilder errMsg = new StringBuilder(activity.getResources().getString(R.string.validate_error) );
         boolean allow = true;
@@ -155,7 +155,7 @@ public class EnrollmentModel implements Enrollment.Model {
 
             payload.put("_email", arrEmails.get(0).getEmail()); // get first email
             payload.put("_invitation_token", invitationToken);
-            payload.put("_serial", Helpers.getDeviceSerial());
+            payload.put("_serial", Helpers.getDeviceUniqueID(context));
             payload.put("_uuid", new Hardware(activity).getUUID());
             payload.put("csr", "");
             payload.put("firstname", firstName);

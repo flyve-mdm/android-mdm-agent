@@ -24,6 +24,9 @@ allprojects {
         google()
         mavenCentral()
         jcenter()
+        maven {
+            url  "https://dl.bintray.com/flyve-mdm/teclib-repository"
+        }
     }
 }
 
