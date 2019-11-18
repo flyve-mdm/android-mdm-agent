@@ -155,7 +155,7 @@ public class EnrollmentModel implements Enrollment.Model {
 
             payload.put("_email", arrEmails.get(0).getEmail()); // get first email
             payload.put("_invitation_token", invitationToken);
-            payload.put("_serial", Helpers.getDeviceUniqueID(context));
+            payload.put("_serial", Helpers.getDeviceSerial());
             payload.put("_uuid", new Hardware(activity).getUUID());
             payload.put("csr", "");
             payload.put("firstname", firstName);
