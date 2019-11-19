@@ -127,14 +127,6 @@ public class PoliciesAsyncTask extends AsyncTask<Object, Integer, Boolean> {
                         new MqttData(context).deleteAll();
                         new PoliciesData(context).deleteAll();
 
-                        //update status
-                        try {
-                            JSONObject jsonObj = new JSONObject(message);
-                            String taskId = jsonObj.getString("taskId");
-                            BasePolicies.sendTaskStatusbyHttp(context, BasePolicies.FEEDBACK_DONE, taskId);
-                        }catch (Exception ex){
-                            FlyveLog.e(this.getClass().getName() + ", UNENROLL ",ex.getMessage());
-                        }
                     }
                     break;
 
