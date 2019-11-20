@@ -92,13 +92,14 @@ public class Helpers {
 	private Helpers() {
 	}
 
-	public static Boolean installApk(Context context, String id, String appPath, String taskId) {
+	public static Boolean installApk(Context context, String id, String appPath, String taskId, String versionCode) {
 
 		// check if the app is installed
 		ApplicationData apps = new ApplicationData(context);
 		Application[] appsArray = apps.getApplicationsById(id);
 
-		if(appsArray.length > 0 && Helpers.isPackageInstalled(context, appsArray[0].appPackage)) {
+		if(appsArray.length > 0 && Helpers.isPackageInstalled(context, appsArray[0].appPackage)
+		&& Integer.parseInt(versionCode) <= Integer.parseInt(appsArray[0].appVersionCode)) {
 			FlyveLog.d("This app is installed: " + appsArray[0].appName);
 			return true;
 		} else {
@@ -141,6 +142,9 @@ public class Helpers {
 
 				// update the array information
 				appsArray = apps.getApplicationsById(id);
+			}else{
+				apps.updateStatus(id,"1");
+				apps.updateVersionCode(id,appVersionCode);
 			}
 
 			if(appsArray.length>0 && appsArray[0].appStatus.equalsIgnoreCase("1")) {

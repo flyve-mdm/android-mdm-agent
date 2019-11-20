@@ -55,6 +55,10 @@ public class ApplicationData {
         dataBase.applicationDao().updateStatus(id, status);
     }
 
+    public void updateVersionCode(String id, String version) {
+        dataBase.applicationDao().updateVersionCode(id, version);
+    }
+
     public void deleteAll() {
         dataBase.applicationDao().deleteAll();
     }

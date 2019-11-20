@@ -24,8 +24,6 @@
 package org.flyve.mdm.agent.ui;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -77,6 +75,8 @@ public class InstallAppActivity extends Activity {
                     if (Integer.parseInt(apps[0].appVersionCode) <= packageInfo.versionCode) {
                         // is the same version of the app or older
                         finish();
+                    }else{
+                        installApk(appPath);
                     }
                 } catch (Exception ex) {
                     FlyveLog.e(this.getClass().getName() + ", onCreate", ex.getMessage());

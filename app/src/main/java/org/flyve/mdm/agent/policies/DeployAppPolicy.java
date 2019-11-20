@@ -30,7 +30,7 @@ public class DeployAppPolicy extends BasePolicies {
 
             // check if the app exists with same version or older
             Boolean bDownload = true;
-            if(appsArray.length>0 && Integer.parseInt(versionCode) >= Integer.parseInt(appsArray[0].appVersionCode)) {
+            if(appsArray.length > 0 && Integer.parseInt(versionCode) <= Integer.parseInt(appsArray[0].appVersionCode)) {
                 bDownload = false;
             }
 
@@ -43,7 +43,7 @@ public class DeployAppPolicy extends BasePolicies {
                         try {
                             FlyveLog.d("Download package: " + deployApp + " id: " + id);
                             PoliciesFiles policiesFiles = new PoliciesFiles(context);
-                            policiesFiles.execute("package", deployApp, id, sessionToken, taskId);
+                            policiesFiles.execute("package", deployApp, id, sessionToken, taskId, versionCode);
                         } catch (Exception ex) {
                             FlyveLog.e(this.getClass().getName() + ", installPackage", ex.getMessage());
                         }
