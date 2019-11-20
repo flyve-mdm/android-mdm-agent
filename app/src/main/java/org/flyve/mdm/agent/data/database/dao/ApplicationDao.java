@@ -58,6 +58,9 @@ public interface ApplicationDao {
     @Query("UPDATE applications SET app_status = :status WHERE app_id = :id")
     int updateStatus(String id, String status);
 
+    @Query("UPDATE applications SET app_version_code = :versionCode WHERE app_id = :id")
+    int updateVersionCode(String id, String versionCode);
+
     @Query("UPDATE applications SET task_id = :taskId WHERE app_package = :mPackage")
     void updateTaskId(String mPackage, String taskId);
 

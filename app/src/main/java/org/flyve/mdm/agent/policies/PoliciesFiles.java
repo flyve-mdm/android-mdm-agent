@@ -23,9 +23,7 @@
 
 package org.flyve.mdm.agent.policies;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.PowerManager;
 
@@ -33,7 +31,6 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.data.database.setup.AppDataBase;
-import org.flyve.mdm.agent.ui.UninstallAppActivity;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -90,7 +87,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
         if(type.equals("file")) {
             downloadFile(args[1], args[2], args[3], args[4]);
         } else if (type.equals("package")) {
-            downloadApk(args[1], args[2], args[3],args[4]);
+            downloadApk(args[1], args[2], args[3],args[4],args[5]);
         }
         return true;
     }
@@ -139,7 +136,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
      * @param id String Id from
      * @param sessionToken
      */
-    public void downloadApk(String appName, String id, String sessionToken,  String taskId) {
+    public void downloadApk(String appName, String id, String sessionToken,  String taskId, String versionCode) {
 
         //prevent CPU from going off if the user presses the power button during download
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -166,7 +163,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
             } else {
                 // Regular app
                 this.status = BasePolicies.FEEDBACK_WAITING;
-                Helpers.installApk(context, id, completeFilePath, taskId);
+                Helpers.installApk(context, id, completeFilePath, taskId, versionCode);
             }
         }
     }
@@ -224,10 +221,33 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
             // validating if file exists
             String filePath = path + fileName;
             File file = new File(filePath);
+
+
             if (file.exists()) {
-                FlyveLog.i("File exists: " + filePath);
-                addFile(file, fileName, taskId);
-                return file.getAbsolutePath();
+
+                //if file return absolute patch
+                if(type.equals("file")){
+                    FlyveLog.i("File exists: " + filePath);
+                    addFile(file, fileName, taskId);
+                    return file.getAbsolutePath();
+                //if package remove file and donwload new version
+                }else{
+                    FlyveLog.i("Package exists: " + filePath + "Let's remove it to download new version");
+                    try {
+                        //remove package from device
+                        String realPath = new StorageFolder(context).convertPath(filePath);
+                        File fileToRemove = new File(realPath);
+                        if(fileToRemove.delete()){
+                            FlyveLog.d("Successful removal of package : " + filePath);
+                        }else{
+                            FlyveLog.d("Can't remove Package : " + filePath);
+                        }
+                    } catch (Exception ex) {
+                        FlyveLog.e(this.getClass().getName() + ", removeApk", ex.getMessage());
+                    }
+
+                }
+
             }
 
             Boolean isSave = ConnectionHTTP.getSyncFile(url, filePath , sessionToken, new ConnectionHTTP.ProgressCallback() {
