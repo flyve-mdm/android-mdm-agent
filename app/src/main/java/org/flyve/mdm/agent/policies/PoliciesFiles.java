@@ -31,6 +31,7 @@ import org.flyve.mdm.agent.R;
 import org.flyve.mdm.agent.core.Routes;
 import org.flyve.mdm.agent.data.database.entity.Application;
 import org.flyve.mdm.agent.data.database.setup.AppDataBase;
+import org.flyve.mdm.agent.receivers.AppReceiver;
 import org.flyve.mdm.agent.utils.ConnectionHTTP;
 import org.flyve.mdm.agent.utils.FlyveLog;
 import org.flyve.mdm.agent.utils.Helpers;
@@ -133,15 +134,17 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
     /**
      * Download, save and install app
      * @param appName String package of the app
-     * @param id String Id from
-     * @param sessionToken
+     * @param id String Id of app
+     * @param sessionToken String token of user
+     * @param taskId string String Id of task
+     * @param versionCode string version code of app
      */
     public void downloadApk(String appName, String id, String sessionToken,  String taskId, String versionCode) {
 
         //prevent CPU from going off if the user presses the power button during download
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
-        wl.acquire();
+        wl.acquire(10*60*1000L /*10 minutes*/);
 
         String filePath = "";
         try {
@@ -156,13 +159,12 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
         if(completeFilePath.isEmpty()) {
             this.status = BasePolicies.FEEDBACK_FAILED;
         } else {
-            if(Helpers.isSystemApp(context).equalsIgnoreCase("1")) {
-                // Silently for System apps
-                this.status = BasePolicies.FEEDBACK_WAITING;
-                Helpers.installApkSilently(completeFilePath);
-            } else {
-                // Regular app
-                this.status = BasePolicies.FEEDBACK_WAITING;
+            // Try install silently for System apps
+            this.status = BasePolicies.FEEDBACK_WAITING;
+            if(Helpers.installApkSilently(completeFilePath)){
+                new AppReceiver().onInstallApp(appName,context);
+                this.status = BasePolicies.FEEDBACK_DONE;
+            }else{
                 Helpers.installApk(context, id, completeFilePath, taskId, versionCode);
             }
         }
@@ -175,7 +177,7 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
      * @return String complete path with name of the file
      */
     private String download(final String url, final String path, String sessionToken, String taskId) {
-        HashMap<String, String> header = new HashMap();
+        HashMap<String, String> header = new HashMap<>();
         header.put("Session-Token", sessionToken);
 
         String data = ConnectionHTTP.getSyncWebData(url, "GET",header);
@@ -333,16 +335,15 @@ public class PoliciesFiles extends AsyncTask<String, Integer, Boolean> {
             dataBase.applicationDao().updateTaskId(mPackage, this.taskId);
         }
 
-        //is priv app uninstall silently
-        if(Helpers.isSystemApp(context).equalsIgnoreCase("1")) {
-            // Silently for System apps
-            this.status = BasePolicies.FEEDBACK_WAITING;
-            Helpers.uninstallApkSilently(mPackage);
-        } else {
-            //use activity to install apk
-            this.status = BasePolicies.FEEDBACK_WAITING;
+        // Silently for System apps
+        this.status = BasePolicies.FEEDBACK_WAITING;
+        if(Helpers.uninstallApkSilently(mPackage)){
+            new AppReceiver().onRemoveApp(mPackage,context);
+            this.status = BasePolicies.FEEDBACK_DONE;
+        }else{
             Helpers.uninstallApk(context,mPackage);
         }
+
         BasePolicies.sendTaskStatusbyHttp(this.context, this.status, this.taskId);
     }
 
