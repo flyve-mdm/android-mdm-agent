@@ -96,7 +96,7 @@ dependencies {
     // Logger
     implementation 'com.orhanobut:logger:2.1.1'
     // Android Inventory Library
-    implementation 'org.flyve:inventory:1.3.6@aar'
+    implementation 'org.flyve:inventory:1.4.0@aar'
     // Bug snag
     implementation 'com.bugsnag:bugsnag-android:4.1.3'
     implementation project(':policies')
