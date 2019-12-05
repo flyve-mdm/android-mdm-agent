@@ -46,13 +46,13 @@ sudo apt-get update
 sudo apt-get install ruby-full build-essential
 
 # update Rubygems
-sudo gem update --system
+sudo gem update --system --no-document
 
 # install fastlane
-sudo gem install fastlane
+sudo gem install fastlane --no-document
 
 # update bundler
-sudo gem install bundler
+sudo gem install bundler --no-document
 
 # update Gemfile.lock
 sudo bundler update --bundler
