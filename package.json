@@ -31,6 +31,6 @@
     "standard-version": "^7.0.0"
   },
   "dependencies": {
-    "https-proxy-agent": "^4.0.0"
+    "https-proxy-agent": "^5.0.0"
   }
 }
