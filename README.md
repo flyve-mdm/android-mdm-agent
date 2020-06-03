@@ -92,8 +92,7 @@ Follow the steps in this article to learn [How to Install as System App](http://
 
 ### Beta Testing App
 
-* Install the [Beta version of the app](https://play.google.com/apps/testing/org.flyve.mdm.agent)
-
+* Build from source or install the [Beta version of the app](https://play.google.com/apps/testing/org.flyve.mdm.agent)
 ## Documentation
 
 We maintain a detailed documentation of the project on the website, check the [How-tos](http://flyve.org/android-mdm-agent/) and [Development](http://flyve.org/android-mdm-agent/howtos/) section.
